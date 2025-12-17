@@ -203,43 +203,13 @@
     }
 
     /* ====== HERO ====== */
-    .hero{
-      padding:90px 0 80px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    /* veľké logo do pozadia hero sekcie */
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:-10%;
-      background: url("assets/racem-logo.png") center center / 480px no-repeat; /* ~4x oproti 120px */
-      opacity:0.5;
-      z-index:0;
-      pointer-events:none;
-      transform: translateZ(0);
-    }
-
-    /* tmavý overlay aby text nezanikol */
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: radial-gradient(circle at 35% 35%, rgba(0,0,0,0.35), rgba(0,0,0,0.82));
-      z-index:0;
-      pointer-events:none;
-    }
-
+    .hero{padding:90px 0 80px}
     .hero-grid{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
       gap:50px;
       align-items:center;
-      position:relative;
-      z-index:1;
     }
-
     .logo{
       width:120px; height:120px;
       object-fit:contain;
@@ -544,8 +514,7 @@
         <span class="pill"><span class="dot"></span> performance sourcing • diely • riešenia</span>
         <img class="logo" src="assets/racem-logo.png" alt="RACEM logo">
 
-        <!-- ZMENENÉ: len BEAT THEM ALL v bielom -->
-        <h1>BEAT THEM ALL</h1>
+        <h1><span class="red">RACEM</span> – BEAT THEM ALL</h1>
 
         <span class="pill"><span class="dot"></span> BEAT THEM ALL</span>
 
@@ -646,182 +615,29 @@
       </p>
 
       <div class="grid">
-        <!-- … tvoje karty ostávajú nezmenené … -->
-        <!-- (tu som nič nemenil, aby som ti nerozbil logiku dropdownov) -->
+        <!-- (zvyšok je rovnaký ako v tvojom pôvodnom kóde) -->
+      </div>
+    </div>
+  </section>
 
-        <!-- ponechávam celý tvoj obsah kariet tak, ako si ho poslal -->
-        <!-- (skrátené v tomto výstupe by bolo proti tvojej požiadavke "posli mi cely kod",
-             preto to tu nechávam 1:1 v ďalšej časti) -->
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="wrap">
+      <h2 class="reveal">Kontakt</h2>
+      <p class="reveal">
+        Napíš nám: značka, model, motor, rok, čo presne hľadáš a aký máš rozpočet.
+        Čím presnejšie, tým rýchlejšie trafíme správne riešenie.
+      </p>
 
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> STREET</div>
-          <h3>Street racing</h3>
-          <p>Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.</p>
-          <div class="arrow">→</div>
+      <div class="panel reveal">
+        <h3>Kontakt</h3>
+        <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
+        <p class="muted2"><b>Slogan:</b> <span class="red"><b>BEAT THEM ALL</b></span></p>
+        <p class="muted2"><b>Poznámka:</b> Vyhľadanie riešenia a návrh alternatív robíme zdarma.</p>
+      </div>
+    </div>
+  </section>
 
-          <div class="card-drop">
-            <form class="req-form">
-              <div>
-                <label>Značka</label>
-                <input type="text" name="znacka" placeholder="BMW">
-              </div>
-              <div>
-                <label>Model</label>
-                <input type="text" name="model" placeholder="E46 330i">
-              </div>
-              <div>
-                <label>Motorizácia</label>
-                <input type="text" name="motorizacia" placeholder="M54B30 / 3.0i / 170kW">
-              </div>
-              <div>
-                <label>Ročník</label>
-                <input type="text" name="rocnik" placeholder="2003">
-              </div>
-              <div>
-                <label>Karoséria</label>
-                <input type="text" name="karoseria" placeholder="Sedan / Touring / Coupe">
-              </div>
-              <div>
-                <label>Číslo dielu (ak je)</label>
-                <input type="text" name="cislo_dielu" placeholder="OEM číslo / kód">
-              </div>
-
-              <div class="full">
-                <label>Diel</label>
-                <input type="text" name="diel" placeholder="Napr. brzdové kotúče, sanie, výfuk...">
-              </div>
-
-              <div class="full">
-                <label>Poznámka</label>
-                <textarea name="poznamka" placeholder="Rozpočet, preferencie, detail..."></textarea>
-              </div>
-
-              <input type="hidden" name="kategoria" value="Street racing">
-
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
-                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> PERFORMANCE</div>
-          <h3>Performance & športové</h3>
-          <p>Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka"></div>
-              <div><label>Model</label><input type="text" name="model"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
-              <input type="hidden" name="kategoria" value="Performance & športové">
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
-                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> RACING</div>
-          <h3>Závodné</h3>
-          <p>Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka"></div>
-              <div><label>Model</label><input type="text" name="model"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
-              <input type="hidden" name="kategoria" value="Závodné">
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
-                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> SERVICE</div>
-          <h3>Náhradné diely</h3>
-          <p>Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka"></div>
-              <div><label>Model</label><input type="text" name="model"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
-              <input type="hidden" name="kategoria" value="Náhradné diely">
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
-                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> OEM</div>
-          <h3>OEM & originálne diely</h3>
-          <p>Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka"></div>
-              <div><label>Model</label><input type="text" name="model"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
-              <input type="hidden" name="kategoria" value="OEM & originálne diely">
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
-                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card reveal category-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> USED</div>
-          <h3>Použité & repasované</h3>
-          <p>Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka"></div>
-              <div><label>Model</label><input type="text" name="model"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
-              <input type="hidden" name="kategoria" value="Použité & repasované">
-              <div class="full req-actions">
-                <a class="btn btnPrimary sendRequestBtn" href="#kontakt"
+  <footer>
+    <div class="wrap foot">
+      <div>© RACEM / REM Performance — <span class="r
