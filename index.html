@@ -131,26 +131,24 @@
     /* nechávame .nav len ako “hook”, ale reálne riadi .nav-centered */
     .nav{ padding:0; }
 
-    /* vycentrovanie obsahu topbaru (nezávislé od .wrap) */
     .nav-centered{
-      max-width: 980px;              /* viac do stredu */
+      max-width: 980px;
       margin: 0 auto;
       padding: 16px 0;
 
       display:flex;
       align-items:center;
-      justify-content:center;        /* logo + menu spolu v strede */
-      gap: 64px;                     /* vzdialenosť medzi logom a linkami */
+      justify-content:center;
+      gap: 64px;
     }
 
-    /* logo */
     .brand-mini{
       display:flex;
       align-items:center;
       text-decoration:none;
     }
     .brand-mini img{
-      height: 56px;                  /* väčšie logo */
+      height: 56px;
       width:auto;
       display:block;
       object-fit:contain;
@@ -161,7 +159,6 @@
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
 
-    /* nav linky */
     .nav-links{
       display:flex;
       gap: 44px;
@@ -183,7 +180,6 @@
       text-shadow: 0 0 14px rgba(179,31,36,0.25);
     }
 
-    /* underglow animované podčiarknutie */
     .nav-links a::after{
       content:"";
       position:absolute;
@@ -375,6 +371,86 @@
       border-color: rgba(179,31,36,0.35);
     }
 
+    /* ====== CATEGORY CLICK + DROPDOWN FORM ====== */
+    .card.category-card{
+      cursor: pointer;
+      user-select:none;
+    }
+    .card.category-card:focus{outline:none}
+
+    .card.category-card.is-active{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow:
+        0 18px 60px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(179,31,36,0.15) inset;
+      animation: cardHighlight .35s ease both;
+    }
+    @keyframes cardHighlight{
+      from{ transform: translateY(-2px); filter: brightness(1); }
+      to{ transform: translateY(-8px); filter: brightness(1.05); }
+    }
+
+    .card-drop{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 14px;
+
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-6px);
+      transition: max-height .45s ease, opacity .35s ease, transform .35s ease;
+    }
+    .card.category-card.is-active .card-drop{
+      max-height: 520px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .req-form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .req-form .full{ grid-column: 1 / -1; }
+
+    .req-form label{
+      display:block;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 6px;
+    }
+
+    .req-form input,
+    .req-form textarea{
+      width:100%;
+      border-radius: 12px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .req-form textarea{ min-height: 96px; resize: vertical; }
+
+    .req-form input:focus,
+    .req-form textarea:focus{
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
+    }
+
+    .req-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .req-actions .btn{ padding: 12px 18px; }
+
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
@@ -399,7 +475,6 @@
       .split{grid-template-columns:1fr}
       .logo{width:96px;height:96px}
 
-      /* topbar na mobile */
       .nav-centered{
         max-width: 100%;
         flex-direction: column;
@@ -408,6 +483,8 @@
       }
       .nav-links{gap: 22px}
       .brand-mini img{height: 52px}
+
+      .req-form{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -537,68 +614,259 @@
       </p>
 
       <div class="grid">
-        <div class="card reveal">
+
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> STREET</div>
           <h3>Street racing</h3>
           <p>Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div>
+                <label>Značka</label>
+                <input type="text" name="znacka" placeholder="BMW">
+              </div>
+              <div>
+                <label>Model</label>
+                <input type="text" name="model" placeholder="E46 330i">
+              </div>
+              <div>
+                <label>Motorizácia</label>
+                <input type="text" name="motorizacia" placeholder="M54B30 / 3.0i / 170kW">
+              </div>
+              <div>
+                <label>Ročník</label>
+                <input type="text" name="rocnik" placeholder="2003">
+              </div>
+              <div>
+                <label>Karoséria</label>
+                <input type="text" name="karoseria" placeholder="Sedan / Touring / Coupe">
+              </div>
+              <div>
+                <label>Číslo dielu (ak je)</label>
+                <input type="text" name="cislo_dielu" placeholder="OEM číslo / kód">
+              </div>
+
+              <div class="full">
+                <label>Diel</label>
+                <input type="text" name="diel" placeholder="Napr. brzdové kotúče, sanie, výfuk...">
+              </div>
+
+              <div class="full">
+                <label>Poznámka</label>
+                <textarea name="poznamka" placeholder="Rozpočet, preferencie, detail..."></textarea>
+              </div>
+
+              <input type="hidden" name="kategoria" value="Street racing">
+
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> PERFORMANCE</div>
           <h3>Performance & športové</h3>
           <p>Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Performance & športové">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> RACING</div>
           <h3>Závodné</h3>
           <p>Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Závodné">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> SERVICE</div>
           <h3>Náhradné diely</h3>
           <p>Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Náhradné diely">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> OEM</div>
           <h3>OEM & originálne diely</h3>
           <p>Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="OEM & originálne diely">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> USED</div>
           <h3>Použité & repasované</h3>
           <p>Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Použité & repasované">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> BUDGET</div>
           <h3>Budget riešenia</h3>
           <p>Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Budget riešenia">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> BEST VALUE</div>
           <h3>Best value</h3>
           <p>Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.</p>
           <div class="arrow">→</div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Best value">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="card reveal" style="border-color: rgba(179,31,36,0.35)">
+        <div class="card reveal category-card" tabindex="0" style="border-color: rgba(179,31,36,0.35)">
           <div class="tag"><span class="dot"></span> STOCK</div>
           <h3>Čo máme práve na ruke</h3>
           <p>Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie.</p>
           <div class="ctaRow" style="margin-top:12px">
             <a class="btn btnPrimary" href="#kontakt">Zistiť dostupnosť</a>
+          </div>
+
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka"></div>
+              <div><label>Model</label><input type="text" name="model"></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia"></div>
+              <div><label>Ročník</label><input type="text" name="rocnik"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel"></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka"></textarea></div>
+              <input type="hidden" name="kategoria" value="Čo máme práve na ruke">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -648,6 +916,76 @@
       const sc = window.scrollY;
       const bg = document.querySelector('.bg');
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+    });
+
+    // ===== CATEGORY DROPDOWNS =====
+    const cards = Array.from(document.querySelectorAll('.category-card'));
+
+    const closeAll = () => {
+      cards.forEach(c => c.classList.remove('is-active'));
+    };
+
+    const toggleCard = (card) => {
+      const isOpen = card.classList.contains('is-active');
+      closeAll();
+      if(!isOpen){
+        card.classList.add('is-active');
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+      }
+    };
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const tag = e.target.tagName.toLowerCase();
+        if (['input','textarea','button','a','label'].includes(tag)) return;
+        toggleCard(card);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleCard(card);
+        }
+        if (e.key === 'Escape') {
+          card.classList.remove('is-active');
+        }
+      });
+
+      const closeBtn = card.querySelector('.closeCardBtn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          card.classList.remove('is-active');
+        });
+      }
+
+      const sendBtn = card.querySelector('.sendRequestBtn');
+      if (sendBtn) {
+        sendBtn.addEventListener('click', () => {
+          const form = card.querySelector('form');
+          if(!form) return;
+
+          const data = new FormData(form);
+          const msg =
+`Kategória: ${data.get('kategoria') || ''}
+Značka: ${data.get('znacka') || ''}
+Model: ${data.get('model') || ''}
+Motorizácia: ${data.get('motorizacia') || ''}
+Ročník: ${data.get('rocnik') || ''}
+Karoséria: ${data.get('karoseria') || ''}
+Číslo dielu: ${data.get('cislo_dielu') || ''}
+Diel: ${data.get('diel') || ''}
+Poznámka: ${data.get('poznamka') || ''}`;
+
+          try { navigator.clipboard.writeText(msg); } catch (err) {}
+        });
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.category-card')) closeAll();
     });
   </script>
 </body>
