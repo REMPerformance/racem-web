@@ -2,10 +2,194 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <title>RACEM</title>
+  <title>RACEM – Performance Parts & Sourcing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #0b0b0b;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    section {
+      padding: 120px 10%;
+      position: relative;
+    }
+
+    h1, h2 {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #cfcfcf;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .red {
+      color: #b31f24;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.15), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(179,31,36,0.1), transparent 40%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.03) 0,
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+      pointer-events: none;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 16px 36px;
+      border: 2px solid #b31f24;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .cta:hover {
+      background: #b31f24;
+    }
+
+    /* CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .card {
+      background: #141414;
+      padding: 30px;
+      border-left: 4px solid #b31f24;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    /* SCROLL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      padding: 60px 10%;
+      background: #000;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-  <h1>RACEM – web je online</h1>
-  <p>GitHub Pages funguje.</p>
+
+<section class="hero">
+  <h1><span class="red">RACEM</span> Performance Sourcing</h1>
+  <p>
+    Zháňame diely, ktoré inde nenájdeš.  
+    OEM, racing, street, nové aj použité.  
+    Podľa rozpočtu, nie katalógu.
+  </p>
+  <a href="#kontakt" class="cta">Napíšte nám</a>
+</section>
+
+<section>
+  <h2 class="reveal">Čo robíme</h2>
+  <p class="reveal">
+    RACEM je sourcing platforma pre výkon, úpravy a riešenia bez kompromisov.
+    Ak niečo existuje – vieme to zohnať.
+  </p>
+</section>
+
+<section>
+  <h2 class="reveal">Čo vieme zohnať</h2>
+  <div class="grid">
+    <div class="card reveal">OEM & originálne diely</div>
+    <div class="card reveal">Performance & racing</div>
+    <div class="card reveal">Street & daily setupy</div>
+    <div class="card reveal">Použité a repasované diely</div>
+    <div class="card reveal">Ultra budget riešenia</div>
+    <div class="card reveal">Best value (cena / výkon)</div>
+  </div>
+</section>
+
+<section>
+  <h2 class="reveal">Pre koho</h2>
+  <p class="reveal">
+    Pre ľudí, ktorí vedia, čo chcú.  
+    Pre tých, ktorí stavajú projekty.  
+    Pre každého, kto nechce kompromisy.
+  </p>
+</section>
+
+<section id="kontakt">
+  <h2 class="reveal">Kontakt</h2>
+  <p class="reveal">
+    Nenašli ste, čo ste hľadali?  
+    Napíšte nám a my nájdeme riešenie.
+  </p>
+  <p class="reveal"><strong>Email:</strong> info@racem.sk</p>
+</section>
+
+<footer>
+  © RACEM / REM Performance
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  window.addEventListener('scroll', () => {
+    reveals.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 100) {
+        el.classList.add('active');
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
