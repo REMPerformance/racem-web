@@ -269,3 +269,105 @@ footer{
   .split{grid-template-columns:1fr}
   .logo{width:96px;height:96px}
 }
+
+/* TOPBAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.55);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* VNÚTORNÝ WRAP – viac do stredu */
+.nav-centered {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+.brand-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-mini img {
+  height: 36px;
+  transition: transform 0.4s ease;
+}
+
+.brand-mini span {
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* logo hover – jemný flex */
+.brand-mini:hover img {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.25s ease;
+}
+
+/* HOVER TEXT */
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* PODČIARKA – ANIMOVANÁ */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: #b31f24;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* CLICK FEEL */
+.nav-links a:active {
+  transform: scale(0.95);
+}
+
+/* MOBIL */
+@media (max-width: 768px) {
+  .nav-centered {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-links {
+    gap: 18px;
+  }
+}
+
