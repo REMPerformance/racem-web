@@ -118,32 +118,93 @@
     .red{color:var(--red)}
     .muted2{color:var(--muted2)}
 
-    /* ====== NAV ====== */
+    /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
     .topbar{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(10px);
-      background: rgba(10,10,10,0.75);
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.62);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
+
+    /* nechávame .nav len ako “hook”, ale reálne riadi .nav-centered */
+    .nav{ padding:0; }
+
+    /* vycentrovanie obsahu topbaru (nezávislé od .wrap) */
+    .nav-centered{
+      max-width: 980px;              /* viac do stredu */
+      margin: 0 auto;
+      padding: 16px 0;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;        /* logo + menu spolu v strede */
+      gap: 64px;                     /* vzdialenosť medzi logom a linkami */
     }
-    .nav a{
-      color:var(--muted);
-      text-decoration:none;
-      font-size:13px;
-      margin-left:18px;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-      transition:.25s;
-    }
-    .nav a:hover{color:#fff}
+
+    /* logo */
     .brand-mini{
-      display:flex; align-items:center; gap:10px;
-      font-weight:800; letter-spacing:1px;
+      display:flex;
+      align-items:center;
+      text-decoration:none;
     }
-    .brand-mini img{width:26px;height:26px;object-fit:contain}
+    .brand-mini img{
+      height: 56px;                  /* väčšie logo */
+      width:auto;
+      display:block;
+      object-fit:contain;
+      transition: transform .45s ease, filter .45s ease;
+    }
+    .brand-mini:hover img{
+      transform: scale(1.08) rotate(-2deg);
+      filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
+    }
+
+    /* nav linky */
+    .nav-links{
+      display:flex;
+      gap: 44px;
+    }
+
+    .nav-links a{
+      position:relative;
+      color: rgba(255,255,255,0.76);
+      text-decoration:none;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      transition: color .25s ease, text-shadow .25s ease;
+      padding: 6px 0;
+    }
+    .nav-links a:hover{
+      color:#fff;
+      text-shadow: 0 0 14px rgba(179,31,36,0.25);
+    }
+
+    /* underglow animované podčiarknutie */
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-10px;
+      width:0;
+      height:2px;
+      background: var(--red);
+      box-shadow:
+        0 0 10px rgba(179,31,36,.75),
+        0 0 22px rgba(179,31,36,.35);
+      transform: translateX(-50%);
+      transition: width .32s ease;
+    }
+    .nav-links a:hover::after{
+      width: 125%;
+    }
+
+    .nav-links a:active{
+      transform: translateY(1px);
+    }
 
     /* ====== HERO ====== */
     .hero{padding:90px 0 80px}
@@ -337,6 +398,16 @@
       h2{font-size:34px}
       .split{grid-template-columns:1fr}
       .logo{width:96px;height:96px}
+
+      /* topbar na mobile */
+      .nav-centered{
+        max-width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        padding: 14px 0;
+      }
+      .nav-links{gap: 22px}
+      .brand-mini img{height: 52px}
     }
   </style>
 </head>
@@ -347,8 +418,7 @@
 
   <div class="topbar">
     <div class="wrap nav nav-centered">
-      
-      <a href="#top" class="brand-mini">
+      <a href="#top" class="brand-mini" aria-label="RACEM">
         <img src="assets/racem-logo.png" alt="RACEM logo">
       </a>
 
@@ -357,11 +427,8 @@
         <a href="#kategorie">Kategórie</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
-
     </div>
   </div>
-
-
 
   <!-- HERO -->
   <section class="hero">
