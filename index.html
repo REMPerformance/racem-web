@@ -424,10 +424,33 @@
       transition: max-height .45s ease, opacity .35s ease, transform .35s ease;
     }
     .card.category-card.is-active .card-drop{
-      max-height: 520px;
-      opacity: 1;
-      transform: translateY(0);
-    }
+  max-height: 620px;          /* viac priestoru */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* aby sa dalo scrollovať VNÚTRI dropdownu */
+.card-drop{
+  overflow: hidden;           /* default, kým je zatvorené */
+}
+
+.card.category-card.is-active .card-drop{
+  overflow: auto;             /* scroll iba keď otvorené */
+  padding-right: 6px;         /* aby scrollbar nezabil layout */
+}
+
+/* voliteľné: krajší scrollbar (Chrome/Edge) */
+.card.category-card.is-active .card-drop::-webkit-scrollbar{
+  width: 10px;
+}
+.card.category-card.is-active .card-drop::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.14);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+.card.category-card.is-active .card-drop::-webkit-scrollbar-thumb:hover{
+  background: rgba(179,31,36,0.35);
+}
 
     .req-form{
       display:grid;
@@ -1011,58 +1034,63 @@
       const bg = document.querySelector('.bg');
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
+    
+    // ===== CATEGORY DROPDOWNS (ONE OPEN, NO PAGE JUMP) =====
+  const cards = Array.from(document.querySelectorAll('.category-card'));
 
-    // ===== CATEGORY DROPDOWNS =====
-    const cards = Array.from(document.querySelectorAll('.category-card'));
+  const closeAll = () => {
+    cards.forEach(c => c.classList.remove('is-active'));
+  };
 
-    const closeAll = () => {
-      cards.forEach(c => c.classList.remove('is-active'));
-    };
+  const toggleCard = (card) => {
+    const isOpen = card.classList.contains('is-active');
 
-    const toggleCard = (card) => {
-      const isOpen = card.classList.contains('is-active');
-      closeAll();
-      if(!isOpen){
-        card.classList.add('is-active');
-        setTimeout(() => {
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 50);
-      }
-    };
+    // zavri všetko
+    closeAll();
 
-    cards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const tag = e.target.tagName.toLowerCase();
-        if (['input','textarea','button','a','label'].includes(tag)) return;
+    // ak už bolo otvorené, tak ostane zavreté
+    if (isOpen) return;
+
+    // otvor iba túto jednu
+    card.classList.add('is-active');
+  };
+
+  // klik na kartu (okrem inputov a buttonov)
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const tag = e.target.tagName.toLowerCase();
+      if (['input','textarea','button','a','label'].includes(tag)) return;
+      toggleCard(card);
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
         toggleCard(card);
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleCard(card);
-        }
-        if (e.key === 'Escape') {
-          card.classList.remove('is-active');
-        }
-      });
-
-      const closeBtn = card.querySelector('.closeCardBtn');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          card.classList.remove('is-active');
-        });
       }
+      if (e.key === 'Escape') {
+        card.classList.remove('is-active');
+      }
+    });
 
-      const sendBtn = card.querySelector('.sendRequestBtn');
-      if (sendBtn) {
-        sendBtn.addEventListener('click', () => {
-          const form = card.querySelector('form');
-          if(!form) return;
+    // close button (ak existuje)
+    const closeBtn = card.querySelector('.closeCardBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        card.classList.remove('is-active');
+      });
+    }
 
-          const data = new FormData(form);
-          const msg =
+    // copy dopytu (ak existuje)
+    const sendBtn = card.querySelector('.sendRequestBtn');
+    if (sendBtn) {
+      sendBtn.addEventListener('click', () => {
+        const form = card.querySelector('form');
+        if(!form) return;
+
+        const data = new FormData(form);
+        const msg =
 `Kategória: ${data.get('kategoria') || ''}
 Značka: ${data.get('znacka') || ''}
 Model: ${data.get('model') || ''}
@@ -1073,14 +1101,15 @@ Karoséria: ${data.get('karoseria') || ''}
 Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
-          try { navigator.clipboard.writeText(msg); } catch (err) {}
-        });
-      }
-    });
+        try { navigator.clipboard.writeText(msg); } catch (err) {}
+      });
+    }
+  });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.category-card')) closeAll();
-    });
+  // klik mimo kariet => zavri (ALE nie keď klikáš do dropdownu v rámci karty)
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.category-card')) closeAll();
+  });
   </script>
 </body>
 </html>
