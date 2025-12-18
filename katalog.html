@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <title>RACEM / REM Performance – Katalóg dielov</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --red:#b31f24;
+      --bg:#0b0b0b;
+      --panel:#141414;
+      --text:#ffffff;
+      --muted:#cfcfcf;
+      --muted2:#9b9b9b;
+      --line: rgba(255,255,255,0.08);
+      --shadow: 0 20px 60px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x:hidden;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-5;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(179,31,36,0.18), transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(179,31,36,0.10), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%);
+    }
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.55;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 44px);
+      animation: gridMove 24s linear infinite;
+    }
+    @keyframes gridMove{
+      from{ background-position:0 0,0 0 }
+      to{ background-position:600px 0,0 600px }
+    }
+    .noise{
+      position:fixed;
+      inset:-20%;
+      z-index:-4;
+      pointer-events:none;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+      animation: noiseMove 10s steps(10) infinite;
+    }
+    @keyframes noiseMove{
+      0%{transform:translate(0,0)}
+      20%{transform:translate(-3%,2%)}
+      40%{transform:translate(4%,-2%)}
+      60%{transform:translate(-2%,-4%)}
+      80%{transform:translate(3%,3%)}
+      100%{transform:translate(0,0)}
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1160px;
+      margin:0 auto;
+      padding:0 6vw;
+    }
+
+    section{padding:110px 0 80px;}
+
+    h1,h2,h3{
+      margin:0 0 16px 0;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    h1{font-size:40px}
+    h2{font-size:24px}
+    h3{font-size:18px}
+    p{
+      margin:0 0 12px 0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .red{color:var(--red)}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.72);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .nav-centered{
+      max-width:1160px;
+      margin:0 auto;
+      padding:14px 6vw;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:40px;
+    }
+    .brand-mini{display:flex;align-items:center;text-decoration:none;}
+    .brand-mini img{
+      height:50px;
+      width:auto;
+      display:block;
+      transition:.3s;
+    }
+    .brand-mini:hover img{
+      transform:scale(1.06) translateY(-1px);
+      filter:drop-shadow(0 10px 24px rgba(179,31,36,.3));
+    }
+    .nav-links{
+      display:flex;
+      gap:26px;
+      flex-wrap:wrap;
+    }
+    .nav-links a{
+      position:relative;
+      color:rgba(255,255,255,0.75);
+      text-decoration:none;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.13em;
+      padding:4px 0;
+      transition:.25s;
+    }
+    .nav-links a:hover{
+      color:#fff;
+      text-shadow:0 0 14px rgba(179,31,36,0.35);
+    }
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-8px;
+      width:0;
+      height:2px;
+      background:var(--red);
+      transform:translateX(-50%);
+      box-shadow:0 0 10px rgba(179,31,36,.7);
+      transition:.25s;
+    }
+    .nav-links a:hover::after{ width:120%; }
+    .nav-links a.is-active{
+      color:#fff;
+    }
+    .nav-links a.is-active::after{
+      width:120%;
+    }
+
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(20,20,20,0.7);
+      color:var(--muted2);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--red);
+      box-shadow:0 0 18px rgba(179,31,36,.7);
+    }
+
+    .panel{
+      background:rgba(20,20,20,0.9);
+      border-radius:18px;
+      border:1px solid var(--line);
+      padding:24px 22px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      margin-bottom:26px;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background:radial-gradient(circle at 0% 0%, rgba(179,31,36,0.16), transparent 55%);
+      opacity:.9;
+    }
+    .panel > *{position:relative;}
+
+    /* filter bar */
+    .filter-bar{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+      margin-bottom:6px;
+    }
+    .filter-bar label{
+      display:block;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--muted2);
+      margin-bottom:4px;
+    }
+    .filter-bar input,
+    .filter-bar select{
+      width:100%;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:rgba(255,255,255,0.03);
+      color:#fff;
+      font-size:13px;
+      outline:none;
+      transition:.2s;
+    }
+    .filter-bar input:focus,
+    .filter-bar select:focus{
+      border-color:rgba(179,31,36,0.5);
+      box-shadow:0 0 0 3px rgba(179,31,36,0.15);
+    }
+    .filter-actions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(20,20,20,0.8);
+      color:#fff;
+      text-decoration:none;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:11px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .btnPrimary{
+      background:var(--red);
+      border-color:rgba(179,31,36,0.7);
+      box-shadow:0 14px 32px rgba(179,31,36,0.32);
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+    }
+
+    /* product grid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:20px;
+      margin-top:18px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.8));
+      border-radius:16px;
+      border:1px solid var(--line);
+      box-shadow:0 16px 44px rgba(0,0,0,0.6);
+      overflow:hidden;
+      position:relative;
+      transition:transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(179,31,36,0.4);
+      box-shadow:0 22px 60px rgba(0,0,0,0.8);
+    }
+    .card-img{
+      position:relative;
+      aspect-ratio:4/3;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      background:rgba(0,0,0,0.5);
+    }
+    .card-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .badge{
+      position:absolute;
+      left:10px;
+      top:10px;
+      padding:4px 9px;
+      border-radius:999px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(8px);
+    }
+    .badge-new{
+      background:rgba(34,197,94,0.9);
+      box-shadow:0 10px 26px rgba(34,197,94,0.35);
+    }
+    .badge-used{
+      background:rgba(245,158,11,0.95);
+      box-shadow:0 10px 26px rgba(245,158,11,0.35);
+    }
+    .card-body{
+      padding:12px 14px 14px;
+    }
+    .card-title{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:6px;
+    }
+    .card-meta{
+      font-size:12px;
+      color:var(--muted2);
+      margin-bottom:6px;
+    }
+    .card-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-top:10px;
+    }
+    .price{
+      font-weight:900;
+      font-size:14px;
+    }
+
+    .reveal{opacity:0; transform:translateY(24px); transition:.7s ease;}
+    .reveal.active{opacity:1; transform:translateY(0);}
+
+    footer{
+      padding:40px 0;
+      border-top:1px solid rgba(255,255,255,0.06);
+      background:rgba(0,0,0,0.6);
+      margin-top:30px;
+    }
+    .foot{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted2);
+      font-size:13px;
+    }
+    .footer-layout{align-items:center;}
+    .footer-center{text-align:center;}
+
+    @media(max-width:980px){
+      .wrap{padding:0 18px;}
+      section{padding:90px 0 70px;}
+      h1{font-size:32px;}
+      .nav-centered{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+      }
+      .filter-bar{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+    @media(max-width:700px){
+      .filter-bar{grid-template-columns:1fr;}
+      .grid{grid-template-columns:1fr;}
+      .foot{
+        justify-content:center;
+        text-align:center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="noise"></div>
+
+  <div class="topbar">
+    <div class="nav-centered">
+      <a href="index.html#top" class="brand-mini">
+        <img src="assets/racem-logo.png" alt="RACEM logo">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html#kto-sme">Špecifické diely</a>
+        <a href="index.html#kategorie">Kategórie</a>
+        <a href="katalog.html" class="is-active">Katalóg dielov</a>
+        <a href="vop.html">Podmienky</a>
+        <a href="index.html#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <span class="pill reveal"><span class="dot"></span> sklad • katalóg • referenčné diely</span>
+      <h1 class="reveal">Katalóg dielov</h1>
+      <p class="reveal">
+        Toto nie je klasický e-shop. Katalóg slúži ako prehľad dielov, ktoré vieme
+        dodať alebo aktuálne máme na ruke. Pri každom diely klikni na
+        <b>Mám záujem</b> a dole na hlavnej stránke ťa nasmerujeme na kontaktný formulár.
+      </p>
+
+      <!-- FILTER PANEL -->
+      <div class="panel reveal">
+        <h2>Filtrovanie podľa auta</h2>
+        <p>Vyplň, čo vieš – aspoň značka, model a motor. Nie je povinné, slúži to hlavne pre teba.</p>
+
+        <form class="filter-bar" onsubmit="return false;">
+          <div>
+            <label>Značka</label>
+            <input type="text" placeholder="BMW / Audi / Škoda...">
+          </div>
+          <div>
+            <label>Model</label>
+            <input type="text" placeholder="E46 330i / A4 B7...">
+          </div>
+          <div>
+            <label>Motor</label>
+            <input type="text" placeholder="M52TUB25 / 2.0 TDI...">
+          </div>
+          <div>
+            <label>Kategória</label>
+            <select>
+              <option value="">Nešpecifikované</option>
+              <option>Brzdy</option>
+              <option>Podvozok</option>
+              <option>Motor</option>
+              <option>Výfuk</option>
+              <option>Elektrika</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="filter-actions">
+          <a href="#grid" class="btn btnPrimary">Zobraziť diely</a>
+          <a href="index.html#kontakt" class="btn">Neviem – chcem poradiť</a>
+        </div>
+      </div>
+
+      <!-- GRID DIELY -->
+      <div id="grid" class="grid reveal">
+        <!-- Príklad 1 -->
+        <article class="card">
+          <div class="card-img">
+            <img src="assets/stock/produkt-1.jpg" alt="BREMBO 09.7727.75 – Brzdový kotúč">
+            <span class="badge badge-new">Nové</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title">BREMBO 09.7727.75 – Brzdový kotúč</div>
+            <div class="card-meta">
+              OEM kvalita, predná náprava, ventilovaný kotúč. Vhodné pre športovejšie jazdenie.
+            </div>
+            <div class="card-bottom">
+              <div class="price">119 €</div>
+              <a href="index.html#kontakt" class="btn btnPrimary">Mám záujem</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Príklad 2 -->
+        <article class="card">
+          <div class="card-img">
+            <img src="assets/stock/produkt-3.jpg" alt="CONTITECH CT1167 – Rozvodový remeň">
+            <span class="badge badge-new">Nové</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title">CONTITECH CT1167 – Rozvodový remeň</div>
+            <div class="card-meta">
+              Kvalitný rozvodový remeň pre vybrané benzínové motory. Vhodné kombinovať s novými kladkami.
+            </div>
+            <div class="card-bottom">
+              <div class="price">39 €</div>
+              <a href="index.html#kontakt" class="btn btnPrimary">Mám záujem</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Príklad 3 -->
+        <article class="card">
+          <div class="card-img">
+            <img src="assets/stock/produkt-5.jpg" alt="BMW E46 – M-paket volant">
+            <span class="badge badge-used">Použité</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title">BMW E46 – M-paket volant</div>
+            <div class="card-meta">
+              Originálny M-volant, zachovalý stav. Ideálne pre street/track projekt E46.
+            </div>
+            <div class="card-bottom">
+              <div class="price">99 €</div>
+              <a href="index.html#kontakt" class="btn btnPrimary">Mám záujem</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Ďalšie karty si vieš len skopírovať a prepísať -->
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot footer-layout">
+      <div>
+        Prevádzkovateľ webu – <span class="red"><b>REM Performance</b></span>
+      </div>
+      <div class="footer-center">
+        © 2026 REM Performance
+      </div>
+      <div class="muted2">
+        Performance sourcing • diely • riešenia
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const activate = () => {
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 110) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', activate);
+    window.addEventListener('load', activate);
+  </script>
+</body>
+</html>
