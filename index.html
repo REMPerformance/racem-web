@@ -1478,140 +1478,175 @@
   </footer>
 
   <script>
-    // reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const activate = () => {
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 110) el.classList.add('active');
-      });
-    };
-    window.addEventListener('scroll', activate);
-    window.addEventListener('load', activate);
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const activate = () => {
+    reveals.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 110) el.classList.add('active');
+    });
+  };
+  window.addEventListener('scroll', activate);
+  window.addEventListener('load', activate);
 
-    // subtle parallax
-    window.addEventListener('scroll', () => {
-      const sc = window.scrollY;
-      const bg = document.querySelector('.bg');
-      if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  // subtle parallax
+  window.addEventListener('scroll', () => {
+    const sc = window.scrollY;
+    const bg = document.querySelector('.bg');
+    if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  });
+
+  // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
+  const cards = document.querySelectorAll('.category-card');
+
+  const closeAll = () => {
+    cards.forEach(card => card.classList.remove('is-active'));
+  };
+
+  const openCard = (card) => {
+    closeAll();
+    card.classList.add('is-active');
+  };
+
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const clickedTag = e.target.tagName.toLowerCase();
+      if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
+
+      e.stopPropagation();
+      if (card.classList.contains('is-active')) card.classList.remove('is-active');
+      else openCard(card);
     });
 
-    // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
-    const cards = document.querySelectorAll('.category-card');
-
-    const closeAll = () => {
-      cards.forEach(card => card.classList.remove('is-active'));
-    };
-
-    const openCard = (card) => {
-      closeAll();
-      card.classList.add('is-active');
-    };
-
-    cards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const clickedTag = e.target.tagName.toLowerCase();
-        if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
-
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
         e.stopPropagation();
         if (card.classList.contains('is-active')) card.classList.remove('is-active');
         else openCard(card);
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          e.stopPropagation();
-          if (card.classList.contains('is-active')) card.classList.remove('is-active');
-          else openCard(card);
-        }
-        if (e.key === 'Escape') card.classList.remove('is-active');
-      });
-
-      const closeBtn = card.querySelector('.closeCardBtn');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          card.classList.remove('is-active');
-        });
       }
-
-      const sendBtn = card.querySelector('.sendRequestBtn');
-      if (sendBtn) {
-        sendBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          const form = card.querySelector('form');
-          if (!form) return;
-
-          const data = new FormData(form);
-
-          const msg = `Kategória: ${data.get('kategoria') || ''}
-Značka: ${data.get('znacka') || ''}
-Model: ${data.get('model') || ''}
-Označenie motora: ${data.get('oznacenie_motora') || ''}
-Motorizácia: ${data.get('motorizacia') || ''}
-Ročník: ${data.get('rocnik') || ''}
-Karoséria: ${data.get('karoseria') || ''}
-Stav dielu: ${data.get('stav_dielu') || ''}
-Číslo dielu: ${data.get('cislo_dielu') || ''}
-Diel: ${data.get('diel') || ''}
-Poznámka: ${data.get('poznamka') || ''}`;
-
-          navigator.clipboard.writeText(msg).catch(() => {});
-          const oldText = sendBtn.textContent;
-          sendBtn.textContent = "Skopírované ✓";
-          setTimeout(() => sendBtn.textContent = oldText, 1500);
-        });
-      }
+      if (e.key === 'Escape') card.classList.remove('is-active');
     });
 
-    // Klik mimo = zatvoriť
-    document.addEventListener('click', (e) => {
-      const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
-      if (!clickedInsideAnyCard) closeAll();
-    });
-
-    // ===== STOCK: horizontálny scroll aj kolieskom myši =====
-    const stockScroll = document.getElementById('stockScroll');
-    if (stockScroll) {
-      stockScroll.addEventListener('wheel', (e) => {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          e.preventDefault();
-          stockScroll.scrollLeft += e.deltaY;
-        }
-      }, { passive: false });
+    const closeBtn = card.querySelector('.closeCardBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove('is-active');
+      });
     }
 
-    // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.stockInterestBtn');
-      if (!btn) return;
+    // ODOSLAŤ DOPYT -> mailto na info@remperformance.sk
+    const sendBtn = card.querySelector('.sendRequestBtn');
+    if (sendBtn) {
+      sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const card = btn.closest('.stock-item');
-      if (!card) return;
+        const form = card.querySelector('form');
+        if (!form) return;
 
-      const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
-      const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
-      const cond = card.getAttribute('data-condition') || '';
-      const region = card.getAttribute('data-region') || '';
-      const city = card.getAttribute('data-city') || '';
+        const data = new FormData(form);
 
-      const text = `Mám záujem o diel: ${title} (${price}, ${cond}, ${city}, ${region})`;
+        const category   = data.get('kategoria')        || '';
+        const znacka     = data.get('znacka')           || '';
+        const model      = data.get('model')            || '';
+        const oznMotor   = data.get('oznacenie_motora') || '';
+        const motorizacia= data.get('motorizacia')      || '';
+        const rocnik     = data.get('rocnik')           || '';
+        const karoseria  = data.get('karoseria')        || '';
+        const stavDielu  = data.get('stav_dielu')       || '';  // len pri SERVICE, inde prázdne
+        const cisloDielu = data.get('cislo_dielu')      || '';
+        const diel       = data.get('diel')             || '';
+        const poznamka   = data.get('poznamka')         || '';
+        const rozpocet   = data.get('rozpocet')         || '';  // len pri BUDGET, inde prázdne
 
-      window.location.hash = '#kontakt';
-
-      setTimeout(() => {
-        const ta = document.getElementById('kontaktMsg');
-        if (ta) {
-          ta.value = text;
-          ta.focus();
-          ta.selectionStart = ta.selectionEnd = ta.value.length;
+        const lines = [];
+        lines.push('Kategória: ' + category);
+        lines.push('');
+        lines.push('Značka: ' + znacka);
+        lines.push('Model: ' + model);
+        lines.push('Označenie motora: ' + oznMotor);
+        lines.push('Motorizácia: ' + motorizacia);
+        lines.push('Ročník: ' + rocnik);
+        lines.push('Karoséria: ' + karoseria);
+        if (stavDielu) {
+          lines.push('Stav dielu: ' + stavDielu);
         }
-      }, 80);
-    });
-  </script>
+        if (rozpocet) {
+          lines.push('Rozpočet: ' + rozpocet);
+        }
+        lines.push('Číslo dielu: ' + cisloDielu);
+        lines.push('');
+        lines.push('Diel: ' + diel);
+        lines.push('');
+        lines.push('Poznámka:');
+        lines.push(poznamka || '-');
+
+        const body = encodeURIComponent(lines.join('\n'));
+        const subject = encodeURIComponent('RACEM – dopyt na autodiel (' + category + ')');
+        const emailTo = 'info@remperformance.sk';
+
+        const mailtoUrl =
+          'mailto:' + encodeURIComponent(emailTo) +
+          '?subject=' + subject +
+          '&body=' + body;
+
+        // otvorí default mail klient s predvyplneným mailom
+        window.location.href = mailtoUrl;
+
+        const oldText = sendBtn.textContent;
+        sendBtn.textContent = 'Otváram e-mail…';
+        setTimeout(() => { sendBtn.textContent = oldText; }, 1500);
+      });
+    }
+  });
+
+  // Klik mimo = zatvoriť
+  document.addEventListener('click', (e) => {
+    const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
+    if (!clickedInsideAnyCard) closeAll();
+  });
+
+  // ===== STOCK: horizontálny scroll aj kolieskom myši =====
+  const stockScroll = document.getElementById('stockScroll');
+  if (stockScroll) {
+    stockScroll.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        stockScroll.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  }
+
+  // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.stockInterestBtn');
+    if (!btn) return;
+
+    const card = btn.closest('.stock-item');
+    if (!card) return;
+
+    const title  = card.querySelector('.stock-title')?.textContent?.trim() || '';
+    const price  = card.querySelector('.stock-price')?.textContent?.trim() || '';
+    const cond   = card.getAttribute('data-condition') || '';
+    const region = card.getAttribute('data-region')    || '';
+    const city   = card.getAttribute('data-city')      || '';
+
+    const text = `Mám záujem o diel: ${title} (${price}, ${cond}, ${city}, ${region})`;
+
+    window.location.hash = '#kontakt';
+
+    setTimeout(() => {
+      const ta = document.getElementById('kontaktMsg');
+      if (ta) {
+        ta.value = text;
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = ta.value.length;
+      }
+    }, 80);
+  });
+</script>
 </body>
 </html>
