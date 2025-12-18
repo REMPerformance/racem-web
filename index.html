@@ -313,8 +313,6 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap:18px;
       margin-top:30px;
-
-      /* 🔥 FIX: aby sa ostatné karty nenaťahovali na výšku otvorenej */
       align-items:start;
     }
     .card{
@@ -327,7 +325,7 @@
       transform: translateY(0);
       transition: transform .25s, border-color .25s, box-shadow .25s, filter .25s;
       cursor:default;
-      align-self:start; /* 🔥 FIX */
+      align-self:start;
     }
     .card::before{
       content:"";
@@ -400,8 +398,17 @@
       margin-top: 22px;
       display:none;
       padding:28px;
+
+      /* jemný dojazd */
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity .22s ease, transform .22s ease;
     }
-    .category-expander.is-open{ display:block; }
+    .category-expander.is-open{
+      display:block;
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .expander-head{
       display:flex;
@@ -480,6 +487,27 @@
       margin-top: 10px;
     }
     .req-actions .btn{ padding: 12px 18px; }
+
+    /* ===== FLIP TRANSFORM (card -> expander) ===== */
+    .flip-ghost{
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      margin: 0;
+      will-change: transform, width, height, opacity;
+      transform-origin: top left;
+      border-radius: 18px;
+      overflow: hidden;
+      pointer-events: none;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.75);
+      border: 1px solid rgba(179,31,36,0.55);
+      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
+      transition: transform .55s ease, opacity .35s ease;
+    }
+    .flip-ghost .arrow,
+    .flip-ghost .tag{
+      display:none;
+    }
 
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
@@ -714,7 +742,9 @@
       <div class="grid">
 
         <!-- 1 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Street racing" data-desc="Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Street racing"
+             data-desc="Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.">
           <div class="tag"><span class="dot"></span> STREET</div>
           <h3>Street racing</h3>
           <p>Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.</p>
@@ -740,7 +770,9 @@
         </div>
 
         <!-- 2 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Performance & športové" data-desc="Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Performance & športové"
+             data-desc="Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.">
           <div class="tag"><span class="dot"></span> PERFORMANCE</div>
           <h3>Performance & športové</h3>
           <p>Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.</p>
@@ -766,7 +798,9 @@
         </div>
 
         <!-- 3 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Závodné" data-desc="Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Závodné"
+             data-desc="Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.">
           <div class="tag"><span class="dot"></span> RACING</div>
           <h3>Závodné</h3>
           <p>Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.</p>
@@ -792,7 +826,9 @@
         </div>
 
         <!-- 4 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Náhradné diely" data-desc="Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Náhradné diely"
+             data-desc="Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.">
           <div class="tag"><span class="dot"></span> SERVICE</div>
           <h3>Náhradné diely</h3>
           <p>Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.</p>
@@ -818,7 +854,9 @@
         </div>
 
         <!-- 5 -->
-        <div class="card reveal category-card" tabindex="0" data-title="OEM & originálne diely" data-desc="Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="OEM & originálne diely"
+             data-desc="Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.">
           <div class="tag"><span class="dot"></span> OEM</div>
           <h3>OEM & originálne diely</h3>
           <p>Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.</p>
@@ -844,7 +882,9 @@
         </div>
 
         <!-- 6 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Použité & repasované" data-desc="Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Použité & repasované"
+             data-desc="Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.">
           <div class="tag"><span class="dot"></span> USED</div>
           <h3>Použité & repasované</h3>
           <p>Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.</p>
@@ -870,7 +910,9 @@
         </div>
 
         <!-- 7 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Budget riešenia" data-desc="Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Budget riešenia"
+             data-desc="Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.">
           <div class="tag"><span class="dot"></span> BUDGET</div>
           <h3>Budget riešenia</h3>
           <p>Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.</p>
@@ -896,7 +938,9 @@
         </div>
 
         <!-- 8 -->
-        <div class="card reveal category-card" tabindex="0" data-title="Best value" data-desc="Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.">
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Best value"
+             data-desc="Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.">
           <div class="tag"><span class="dot"></span> BEST VALUE</div>
           <h3>Best value</h3>
           <p>Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.</p>
@@ -922,7 +966,9 @@
         </div>
 
         <!-- STOCK -->
-        <div class="card reveal category-card" tabindex="0" data-title="Čo máme práve na ruke" data-desc="Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie."
+        <div class="card reveal category-card" tabindex="0"
+             data-title="Čo máme práve na ruke"
+             data-desc="Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie."
              style="border-color: rgba(179,31,36,0.35)">
           <div class="tag"><span class="dot"></span> STOCK</div>
           <h3>Čo máme práve na ruke</h3>
@@ -1003,22 +1049,28 @@
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    // ===== CATEGORY: iba jedna otvorená + full width pod gridom =====
+    // ===== CATEGORY: iba jedna otvorená + full width pod gridom + FLIP animácia =====
     const cards = Array.from(document.querySelectorAll('.category-card'));
     const expander = document.getElementById('categoryExpander');
 
-    const closeAll = () => {
-      cards.forEach(c => c.classList.remove('is-active'));
+    const hardResetExpander = () => {
       expander.classList.remove('is-open');
+      expander.style.display = 'none';
+      expander.style.visibility = 'visible';
       expander.innerHTML = '';
     };
 
-    const buildExpander = (card) => {
+    const closeAll = () => {
+      cards.forEach(c => c.classList.remove('is-active'));
+      hardResetExpander();
+    };
+
+    const buildExpanderHTML = (card) => {
       const title = card.getAttribute('data-title') || 'Kategória';
       const desc  = card.getAttribute('data-desc') || '';
       const inner = card.querySelector('.card-drop')?.innerHTML || '';
 
-      expander.innerHTML = `
+      return `
         <div class="expander-head">
           <div class="expander-title">
             <span class="pill"><span class="dot"></span> dopyt • špecifikácia • rýchla odpoveď</span>
@@ -1029,13 +1081,53 @@
         </div>
         ${inner}
       `;
+    };
 
-      expander.classList.add('is-open');
+    const animateCardToExpander = (card) => {
+      // 1) priprav expander (naplň HTML, zobraz len kvôli meraniu)
+      expander.innerHTML = buildExpanderHTML(card);
+      expander.style.display = 'block';
+      expander.classList.remove('is-open');
+      expander.style.visibility = 'hidden';
 
-      // jemný scroll na expander (pod grid)
-      setTimeout(() => {
-        expander.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 40);
+      // 2) zmeraj štart a cieľ
+      const start = card.getBoundingClientRect();
+      const end = expander.getBoundingClientRect();
+
+      // 3) ghost karta
+      const ghost = card.cloneNode(true);
+      ghost.classList.add('flip-ghost');
+      document.body.appendChild(ghost);
+
+      ghost.style.left = `${start.left}px`;
+      ghost.style.top = `${start.top}px`;
+      ghost.style.width = `${start.width}px`;
+      ghost.style.height = `${start.height}px`;
+      ghost.style.opacity = '1';
+
+      const dx = end.left - start.left;
+      const dy = end.top - start.top;
+      const sx = end.width / start.width;
+      const sy = end.height / start.height;
+
+      // 4) spusti animáciu
+      requestAnimationFrame(() => {
+        ghost.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+      });
+
+      // 5) po animácii: odstráň ghost, ukáž expander pekne
+      const done = () => {
+        ghost.removeEventListener('transitionend', done);
+        ghost.remove();
+
+        expander.style.visibility = 'visible';
+        expander.classList.add('is-open');
+
+        setTimeout(() => {
+          expander.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      };
+      ghost.addEventListener('transitionend', done);
     };
 
     const toggleCard = (card) => {
@@ -1043,15 +1135,14 @@
 
       // vždy zavri staré
       cards.forEach(c => c.classList.remove('is-active'));
-      expander.classList.remove('is-open');
-      expander.innerHTML = '';
+      hardResetExpander();
 
       // ak klikol na už otvorenú, tak len zavri
       if (isOpen) return;
 
       // otvor novú
       card.classList.add('is-active');
-      buildExpander(card);
+      animateCardToExpander(card);
     };
 
     // click/keyboard na kartách
@@ -1099,7 +1190,6 @@ Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
         try { navigator.clipboard.writeText(msg); } catch (err) {}
-        // necháme href #kontakt aby ťa to zobrali na kontakt, ako máš
       }
     });
 
