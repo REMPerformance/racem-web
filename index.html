@@ -742,7 +742,7 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
+  gap:12px;
   flex-wrap:wrap;
 }
 
@@ -805,6 +805,15 @@
   .pill-row{
     justify-content:flex-start;
   }
+  /* tmavá bublina ktorá drží pillky */
+.pillbar{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 12px 14px;
+  margin-bottom: 18px; /* toto rieši natlačenie na kategórie */
+  box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+}
 }
   </style>
 </head>
@@ -1115,19 +1124,21 @@
       </div><!-- /grid -->
 
       <!-- STOCK (HORIZONTAL SCROLL, BEZ CTA BUTTONOV) -->
-      <div class="pill-row">
-  <span class="pill">
-    <span class="dot"></span>
-    stock • hneď dostupné • rýchle dodanie
-  </span>
-
-  <a class="pill pill--bazos" href="https://www.bazos.sk/hodnotenie.php?idmail=6124650&idphone=5087097&jmeno=REM+Performance+Parts" target="_blank" rel="noopener">
-    <span class="dot dot--orange"></span>
-    <span class="pill-bazos-text">
-      <b>Bazoš</b> • všetky inzeráty a viac
+      <div class="pillbar">
+  <div class="pill-row">
+    <span class="pill">
+      <span class="dot"></span>
+      skladom • ihneď dostupné • odosielame do 24h
     </span>
-    <span class="pill-arrow">↗</span>
-  </a>
+
+    <a class="pill pill--bazos" href="https://www.bazos.sk/hodnotenie.php?idmail=6124650&idphone=5087097&jmeno=REM+Performance+Parts" target="_blank" rel="noopener">
+      <span class="dot dot--orange"></span>
+      <span class="pill-bazos-text">
+        <b>Bazoš</b> • všetky inzeráty
+      </span>
+      <span class="pill-arrow">↗</span>
+    </a>
+  </div>
 </div>
 
         <h2 style="margin-top:16px; max-width:1100px">Čo máme práve na ruke</h2>
