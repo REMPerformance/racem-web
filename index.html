@@ -438,7 +438,8 @@
     }
 
     .req-form input,
-    .req-form textarea{
+    .req-form textarea,
+    .req-form select{
       width:100%;
       border-radius: 12px;
       padding: 12px 12px;
@@ -452,10 +453,28 @@
     .req-form textarea{ min-height: 96px; resize: vertical; }
 
     .req-form input:focus,
-    .req-form textarea:focus{
+    .req-form textarea:focus,
+    .req-form select:focus{
       border-color: rgba(179,31,36,0.45);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
+
+    /* select arrow */
+    .req-form select{
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.7) 50%),
+        linear-gradient(135deg, rgba(255,255,255,0.7) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 34px;
+    }
+    .req-form select option{ color:#000; } /* kvôli čitateľnosti v niektorých browseroch */
 
     .req-actions{
       display:flex;
@@ -643,7 +662,7 @@
       font-size:13px;
     }
 
-    /* ====== STOCK PILL WRAPPER + BAZOS PILL ====== */
+    /* ====== STOCK PILL ROW + BAZOS PILL ====== */
     .pill-row{
       display:flex;
       align-items:center;
@@ -766,7 +785,8 @@
         gap: 10px;
       }
       .req-form input,
-      .req-form textarea{
+      .req-form textarea,
+      .req-form select{
         font-size: 16px;
       }
       .card.category-card.is-active .card-drop{ max-height: 85vh; }
@@ -1066,6 +1086,84 @@
           </div>
         </div>
 
+        <!-- OEM / ORIGINAL -->
+        <div class="card reveal category-card" tabindex="0">
+          <div class="tag"><span class="dot"></span> OEM</div>
+          <h3>OEM / originálne diely</h3>
+          <p>Originál alebo OEM alternatíva. Správne čísla dielov, kompatibilita, bez lotérie.</p>
+          <div class="arrow">→</div>
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Audi / VW..."></div>
+              <div><label>Model</label><input type="text" name="model" placeholder="E46 / A4 B7 / Octavia..."></div>
+              <div><label>Označenie motora</label><input type="text" name="oznacenie_motora" placeholder="M54 / 1.9 TDI / ..."></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia" placeholder="2.5i / 1.9 TDI 77kW..."></div>
+              <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2001–2005"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Sedan / Touring / Coupe"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM číslo / kód"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Senzor, tesnenie, ramená, pumpa..."></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Chcem OEM / originál, prípadne alternatívy."></textarea></div>
+              <input type="hidden" name="kategoria" value="OEM / originálne diely">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- BUDGET -->
+        <div class="card reveal category-card" tabindex="0">
+          <div class="tag"><span class="dot"></span> BUDGET</div>
+          <h3>Budget riešenia</h3>
+          <p>Najnižšia cena, ktorá ešte dáva zmysel. Keď treba jazdiť, nie plakať.</p>
+          <div class="arrow">→</div>
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka" placeholder="Škoda / BMW / Ford..."></div>
+              <div><label>Model</label><input type="text" name="model" placeholder="Octavia / E46 / Focus..."></div>
+              <div><label>Označenie motora</label><input type="text" name="oznacenie_motora" placeholder="ALH / M52TU / ..."></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia" placeholder="1.9 TDI / 2.5i..."></div>
+              <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2000–2008"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Sedan / Kombi / Hatch"></div>
+              <div><label>Rozpočet</label><input type="text" name="rozpocet" placeholder="Napr. do 60 €"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Brzdy, ramená, senzory, filtre..."></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Čo je priorita? Cena / rýchlosť / minimum kvality."></textarea></div>
+              <input type="hidden" name="kategoria" value="Budget riešenia">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- BEST VALUE -->
+        <div class="card reveal category-card" tabindex="0">
+          <div class="tag"><span class="dot"></span> BEST VALUE</div>
+          <h3>Best value</h3>
+          <p>Najlepší pomer cena/výkon. Nie najlacnejšie, ale najrozumnejšie.</p>
+          <div class="arrow">→</div>
+          <div class="card-drop">
+            <form class="req-form">
+              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / VW / Mercedes..."></div>
+              <div><label>Model</label><input type="text" name="model" placeholder="E46 / Golf / C-class..."></div>
+              <div><label>Označenie motora</label><input type="text" name="oznacenie_motora" placeholder="M54 / EA888 / ..."></div>
+              <div><label>Motorizácia</label><input type="text" name="motorizacia" placeholder="2.5i / 2.0 TSI..."></div>
+              <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2004–2012"></div>
+              <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Sedan / Coupe / Kombi"></div>
+              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM / kód"></div>
+              <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Brzdy, podvozok, výfuk, senzory..."></div>
+              <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Chcem najlepší pomer cena/výkon. Preferencie značiek?"></textarea></div>
+              <input type="hidden" name="kategoria" value="Best value">
+              <div class="full req-actions">
+                <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
+                <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <!-- SERVICE -->
         <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> SERVICE</div>
@@ -1080,6 +1178,18 @@
               <div><label>Motorizácia</label><input type="text" name="motorizacia" placeholder="1.9 TDI / 1.6 / 2.0"></div>
               <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2002"></div>
               <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Kombi / Hatch / Sedan"></div>
+
+              <!-- NOVÉ: Stav dielu -->
+              <div class="full">
+                <label>Stav dielu</label>
+                <select name="stav_dielu">
+                  <option value="" selected>Vyber…</option>
+                  <option value="Nové">Nové</option>
+                  <option value="Použité">Použité</option>
+                  <option value="Repasované">Repasované</option>
+                </select>
+              </div>
+
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="Napr. VIN kompatibilita / OEM číslo"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Ramená, ložiská, brzdy, filtre, senzory..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Symptóm, čo to robí, čo už bolo menené..."></textarea></div>
@@ -1096,20 +1206,21 @@
       <!-- STOCK (HORIZONTAL SCROLL) -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:34px;">
 
+        <!-- 2 samostatné pills (žiadna veľká pill obálka) -->
         <div class="pill-row">
-  <span class="pill">
-    <span class="dot"></span>
-    skladom • ihneď dostupné • odosielame do 24h
-  </span>
+          <span class="pill">
+            <span class="dot"></span>
+            skladom • ihneď dostupné • odosielame do 24h
+          </span>
 
-  <a class="pill pill--bazos"
-     href="https://www.bazos.sk/hodnotenie.php?idmail=6124650&idphone=5087097&jmeno=REM+Performance+Parts"
-     target="_blank" rel="noopener">
-    <span class="dot dot--orange"></span>
-    <span class="pill-bazos-text"><b>Bazoš</b> • všetky inzeráty</span>
-    <span class="pill-arrow">↗</span>
-  </a>
-</div>
+          <a class="pill pill--bazos"
+             href="https://www.bazos.sk/hodnotenie.php?idmail=6124650&idphone=5087097&jmeno=REM+Performance+Parts"
+             target="_blank" rel="noopener">
+            <span class="dot dot--orange"></span>
+            <span class="pill-bazos-text"><b>Bazoš</b> • všetky inzeráty</span>
+            <span class="pill-arrow">↗</span>
+          </a>
+        </div>
 
         <h2 style="margin-top:16px; max-width:1100px">Čo máme práve na ruke</h2>
         <p style="font-size:16px; max-width:980px">
@@ -1436,12 +1547,15 @@
           if (!form) return;
 
           const data = new FormData(form);
+
           const msg = `Kategória: ${data.get('kategoria') || ''}
 Značka: ${data.get('znacka') || ''}
 Model: ${data.get('model') || ''}
+Označenie motora: ${data.get('oznacenie_motora') || ''}
 Motorizácia: ${data.get('motorizacia') || ''}
 Ročník: ${data.get('rocnik') || ''}
 Karoséria: ${data.get('karoseria') || ''}
+Stav dielu: ${data.get('stav_dielu') || ''}
 Číslo dielu: ${data.get('cislo_dielu') || ''}
 Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
