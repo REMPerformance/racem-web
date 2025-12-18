@@ -611,12 +611,6 @@
       border-radius: 12px;
       font-size: 12px;
     }
-    /* HOVER EFEKT NA POLIA V KONTAKTE */
-.contact-box input:hover,
-.contact-box textarea:hover {
-  border-color: rgba(255,255,255,0.26);
-  box-shadow: 0 0 0 2px rgba(179,31,36,0.22);
-}
 
     /* ====== CONTACT MESSAGE BOX ====== */
     .contact-box{
@@ -676,79 +670,6 @@
       flex-wrap:wrap;
       gap:10px;
     }
-
-    /* LAYOUT KONTAKT + KARUSEL */
-.contact-layout{
-  display:grid;
-  grid-template-columns: minmax(0,1.15fr) minmax(0,0.85fr);
-  gap:26px;
-  align-items:stretch;
-}
-
-.contact-left{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.contact-right{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-/* KARUSEL VPRAVO */
-.contact-carousel{
-  position:relative;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.12);
-  background:
-    radial-gradient(circle at 10% 0, rgba(179,31,36,0.25), transparent 60%),
-    radial-gradient(circle at 90% 100%, rgba(255,255,255,0.08), transparent 55%),
-    #050505;
-  box-shadow: 0 18px 45px rgba(0,0,0,0.6);
-  min-height:230px;
-}
-
-.contact-carousel-inner{
-  display:flex;
-  width:300%;
-  height:100%;
-  animation: contactCarouselSlide 24s infinite ease-in-out;
-}
-
-.contact-carousel-inner img{
-  flex:0 0 100%;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:scale(1.05);
-  opacity:0.9;
-  transition: filter .4s ease, transform .4s ease, opacity .4s ease;
-}
-
-/* jemné zvýraznenie pri hoveri na celý karusel */
-.contact-carousel:hover .contact-carousel-inner img{
-  filter:brightness(1.06);
-  opacity:1;
-  transform:scale(1.07);
-}
-
-@keyframes contactCarouselSlide{
-  0%, 12%   { transform: translateX(0); }
-  22%, 34%  { transform: translateX(-100%); }
-  44%, 56%  { transform: translateX(-200%); }
-  66%, 100% { transform: translateX(0); }
-}
-
-/* RESPONSIVE – na mobile pod seba */
-@media (max-width: 980px){
-  .contact-layout{
-    grid-template-columns: 1fr;
-  }
-}
-
 
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
@@ -1666,73 +1587,47 @@
 
   <!-- KONTAKT -->
   <section id="kontakt">
-  <div class="wrap">
-    <h2 class="reveal">Kontakt</h2>
-    <p class="reveal">
-      Napíš nám:
-      Čím presnejšie, tým rýchlejšie trafíme správne riešenie.
-    </p>
+    <div class="wrap">
+      <h2 class="reveal">Kontakt</h2>
+      <p class="reveal">
+        Napíš nám:
+        Čím presnejšie, tým rýchlejšie trafíme správne riešenie.
+      </p>
 
-    <div class="panel reveal">
-      <div class="contact-layout">
-        <!-- ĽAVÁ STRANA – FORMULÁR -->
-        <div class="contact-left">
-          <h3>Kontakt</h3>
-          <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
-          <p class="muted2"><b>Poznámka:</b> Vyhľadanie riešenia a návrh alternatív robíme zdarma.</p>
+      <div class="panel reveal">
+        <h3>Kontakt</h3>
+        <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
+        <p class="muted2"><b>Poznámka:</b> Vyhľadanie riešenia a návrh alternatív robíme zdarma.</p>
 
-          <form id="contactForm" class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST">
+        <form id="contactForm" class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST">
+          <div>
+            <label for="contactName">Meno a priezvisko</label>
+            <input id="contactName" name="meno" type="text" placeholder="Meno a priezvisko" required>
+          </div>
+
+          <div class="contact-row">
             <div>
-              <label for="contactName">Meno a priezvisko</label>
-              <input id="contactName" name="meno" type="text" placeholder="Meno a priezvisko" required>
+              <label for="contactEmail">Email</label>
+              <input id="contactEmail" name="email" type="email" placeholder="tvoj@email.sk" required>
             </div>
-
-            <div class="contact-row">
-              <div>
-                <label for="contactEmail">Email</label>
-                <input id="contactEmail" name="email" type="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label for="contactPhone">Telefón</label>
-                <input id="contactPhone" name="telefon" type="text" placeholder="+421..." required>
-              </div>
-            </div>
-
             <div>
-              <label for="kontaktMsg">Správa</label>
-              <textarea id="kontaktMsg" name="sprava" placeholder="Napíš tvoju správu sem..."></textarea>
-            </div>
-
-            <div class="contact-actions">
-              <button type="submit" class="btn btnPrimary">Odoslať dopyt</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- PRAVÁ STRANA – KARUSEL S OBRÁZKAMI -->
-        <div class="contact-right">
-          <p class="muted2" style="font-size:13px; letter-spacing:.12em; text-transform:uppercase;">
-            Ukážky projektov / dielov
-          </p>
-
-          <div class="contact-carousel">
-            <div class="contact-carousel-inner">
-              <!-- Sem si daj vlastné obrázky -->
-              <img src="assets/contact/slide-1.jpg" alt="RACEM – projekt 1">
-              <img src="assets/contact/slide-2.jpg" alt="RACEM – projekt 2">
-              <img src="assets/contact/slide-3.jpg" alt="RACEM – projekt 3">
+              <label for="contactPhone">Telefón</label>
+              <input id="contactPhone" name="telefon" type="text" placeholder="+421..." required>
             </div>
           </div>
 
-          <p class="muted2" style="font-size:13px;">
-            Carousel beží automaticky, pomaly a jemne – stačí vymeniť cesty k obrázkom
-            <code>assets/contact/slide-1.jpg</code>, <code>slide-2.jpg</code>, <code>slide-3.jpg</code>.
-          </p>
-        </div>
+          <div>
+            <label for="kontaktMsg">Správa / dopyt</label>
+            <textarea id="kontaktMsg" name="sprava" placeholder="Sem sa vloží text keď klikneš Mám záujem..."></textarea>
+          </div>
+
+          <div class="contact-actions">
+            <button type="submit" class="btn btnPrimary">Odoslať dopyt</button>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <footer>
     <div class="wrap foot">
