@@ -644,6 +644,32 @@
       border-color: rgba(179,31,36,0.45);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
+    .contact-box input{
+      width:100%;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .contact-box input:focus{
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
+    }
+    .contact-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .contact-actions{
+      margin-top: 8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
 
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
@@ -794,6 +820,10 @@
       .panel{ padding: 22px; }
 
       .stock-item{ flex: 0 0 200px; }
+
+      .contact-row{
+        grid-template-columns: 1fr;
+      }
 
       footer{ padding: 40px 0; }
       .foot{
@@ -999,6 +1029,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM / číslo dielu / kód"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Napr. brzdy, ramená, výfuk, sanie..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Rozpočet, cieľ, čo už máš spravené, preferencie..."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Street racing">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1025,6 +1069,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="Napr. 8V0... / 11 62 ..."></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Downpipe, intercooler, brzdy, podvozok..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Cieľ výkonu, či bude mapa, požiadavky na zvuk..."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Performance & športové">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1051,6 +1109,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="Ak poznáš presný kit/kód, hoď sem"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="LSD, angle kit, ramená, hydro ručka, chladič..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Úroveň (street/comp), aké gumy, aký výkon, cieľ driftu..."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Drift">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1077,6 +1149,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="Spec/part number ak máš"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Závodné brzdy, chladič, palivo, spojka, poloosy..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Okruh/drag, cieľ, hmotnosť auta, podmienky..."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Závodné">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1103,6 +1189,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM číslo / kód"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Senzor, tesnenie, ramená, pumpa..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Chcem OEM / originál, prípadne alternatívy."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="OEM / originálne diely">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1129,6 +1229,20 @@
               <div><label>Rozpočet</label><input type="text" name="rozpocet" placeholder="Napr. do 60 €"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Brzdy, ramená, senzory, filtre..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Čo je priorita? Cena / rýchlosť / minimum kvality."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Budget riešenia">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1155,6 +1269,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM / kód"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Brzdy, podvozok, výfuk, senzory..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Chcem najlepší pomer cena/výkon. Preferencie značiek?"></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Best value">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1179,7 +1307,6 @@
               <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2002"></div>
               <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Kombi / Hatch / Sedan"></div>
 
-              <!-- NOVÉ: Stav dielu -->
               <div class="full">
                 <label>Stav dielu</label>
                 <select name="stav_dielu">
@@ -1193,6 +1320,20 @@
               <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="Napr. VIN kompatibilita / OEM číslo"></div>
               <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Ramená, ložiská, brzdy, filtre, senzory..."></div>
               <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Symptóm, čo to robí, čo už bolo menené..."></textarea></div>
+
+              <div class="full">
+                <label>Meno a priezvisko</label>
+                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input type="text" name="telefon" placeholder="+421..." required>
+              </div>
+
               <input type="hidden" name="kategoria" value="Náhradné diely">
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
@@ -1206,7 +1347,6 @@
       <!-- STOCK (HORIZONTAL SCROLL) -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:34px;">
 
-        <!-- 2 samostatné pills (žiadna veľká pill obálka) -->
         <div class="pill-row">
           <span class="pill">
             <span class="dot"></span>
@@ -1293,7 +1433,8 @@
               </div>
             </article>
 
-            <!-- 4..24 (template, uprav si len názov/cenu/foto) -->
+            <!-- 4..24 – ostatné kusy, nechávam tak ako si mal -->
+            <!-- 4 -->
             <article class="stock-item" data-condition="Nové" data-region="Žilinský kraj" data-city="Žilina">
               <div class="stock-img">
                 <img src="assets/stock/produkt-4.jpg" alt="Eibach Pro-Kit – pružiny">
@@ -1460,12 +1601,32 @@
         <p class="muted2"><b>Slogan:</b> <span class="red"><b>BEAT THEM ALL</b></span></p>
         <p class="muted2"><b>Poznámka:</b> Vyhľadanie riešenia a návrh alternatív robíme zdarma.</p>
 
-        <div class="contact-box">
+        <form id="contactForm" class="contact-box">
           <div>
-            <label for="kontaktMsg">Správa</label>
-            <textarea id="kontaktMsg" placeholder="Sem sa vloží text keď klikneš Mám záujem..."></textarea>
+            <label for="contactName">Meno a priezvisko</label>
+            <input id="contactName" name="meno" type="text" placeholder="Meno a priezvisko" required>
           </div>
-        </div>
+
+          <div class="contact-row">
+            <div>
+              <label for="contactEmail">Email</label>
+              <input id="contactEmail" name="email" type="email" placeholder="tvoj@email.sk" required>
+            </div>
+            <div>
+              <label for="contactPhone">Telefón</label>
+              <input id="contactPhone" name="telefon" type="text" placeholder="+421..." required>
+            </div>
+          </div>
+
+          <div>
+            <label for="kontaktMsg">Správa / dopyt</label>
+            <textarea id="kontaktMsg" name="sprava" placeholder="Sem sa vloží text keď klikneš Mám záujem..."></textarea>
+          </div>
+
+          <div class="contact-actions">
+            <button type="submit" class="btn btnPrimary">Odoslať dopyt e-mailom</button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -1478,114 +1639,219 @@
   </footer>
 
   <script>
-  // reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const activate = () => {
-    reveals.forEach(el => {
-      const top = el.getBoundingClientRect().top;
-      if (top < window.innerHeight - 110) el.classList.add('active');
-    });
-  };
-  window.addEventListener('scroll', activate);
-  window.addEventListener('load', activate);
+    // reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const activate = () => {
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 110) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', activate);
+    window.addEventListener('load', activate);
 
-  // subtle parallax
-  window.addEventListener('scroll', () => {
-    const sc = window.scrollY;
-    const bg = document.querySelector('.bg');
-    if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
-  });
-
-  // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
-  const cards = document.querySelectorAll('.category-card');
-
-  const closeAll = () => {
-    cards.forEach(card => card.classList.remove('is-active'));
-  };
-
-  const openCard = (card) => {
-    closeAll();
-    card.classList.add('is-active');
-  };
-
-  cards.forEach(card => {
-    card.addEventListener('click', (e) => {
-      const clickedTag = e.target.tagName.toLowerCase();
-      if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
-
-      e.stopPropagation();
-      if (card.classList.contains('is-active')) card.classList.remove('is-active');
-      else openCard(card);
+    // subtle parallax
+    window.addEventListener('scroll', () => {
+      const sc = window.scrollY;
+      const bg = document.querySelector('.bg');
+      if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
+    // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
+    const cards = document.querySelectorAll('.category-card');
+
+    const closeAll = () => {
+      cards.forEach(card => card.classList.remove('is-active'));
+    };
+
+    const openCard = (card) => {
+      closeAll();
+      card.classList.add('is-active');
+    };
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const clickedTag = e.target.tagName.toLowerCase();
+        if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
+
         e.stopPropagation();
         if (card.classList.contains('is-active')) card.classList.remove('is-active');
         else openCard(card);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.stopPropagation();
+          if (card.classList.contains('is-active')) card.classList.remove('is-active');
+          else openCard(card);
+        }
+        if (e.key === 'Escape') card.classList.remove('is-active');
+      });
+
+      const closeBtn = card.querySelector('.closeCardBtn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          card.classList.remove('is-active');
+        });
       }
-      if (e.key === 'Escape') card.classList.remove('is-active');
+
+      // ODOSLAŤ DOPYT -> mailto na info@remperformance.sk
+      const sendBtn = card.querySelector('.sendRequestBtn');
+      if (sendBtn) {
+        sendBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const form = card.querySelector('form');
+          if (!form) return;
+
+          const data = new FormData(form);
+
+          const category    = data.get('kategoria')        || '';
+          const znacka      = data.get('znacka')           || '';
+          const model       = data.get('model')            || '';
+          const oznMotor    = data.get('oznacenie_motora') || '';
+          const motorizacia = data.get('motorizacia')      || '';
+          const rocnik      = data.get('rocnik')           || '';
+          const karoseria   = data.get('karoseria')        || '';
+          const stavDielu   = data.get('stav_dielu')       || '';
+          const cisloDielu  = data.get('cislo_dielu')      || '';
+          const diel        = data.get('diel')             || '';
+          const poznamka    = data.get('poznamka')         || '';
+          const rozpocet    = data.get('rozpocet')         || '';
+
+          const meno        = data.get('meno')             || '';
+          const email       = data.get('email')            || '';
+          const telefon     = data.get('telefon')          || '';
+
+          // jednoduchá kontrola povinných údajov
+          if (!meno || !email || !telefon) {
+            alert('Prosím vyplň Meno, Email a Telefón.');
+            return;
+          }
+
+          const lines = [];
+          lines.push('Kategória: ' + category);
+          lines.push('');
+          lines.push('Značka: ' + znacka);
+          lines.push('Model: ' + model);
+          lines.push('Označenie motora: ' + oznMotor);
+          lines.push('Motorizácia: ' + motorizacia);
+          lines.push('Ročník: ' + rocnik);
+          lines.push('Karoséria: ' + karoseria);
+          if (stavDielu) {
+            lines.push('Stav dielu: ' + stavDielu);
+          }
+          if (rozpocet) {
+            lines.push('Rozpočet: ' + rozpocet);
+          }
+          lines.push('Číslo dielu: ' + cisloDielu);
+          lines.push('');
+          lines.push('Diel: ' + diel);
+          lines.push('');
+          lines.push('Poznámka:');
+          lines.push(poznamka || '-');
+          lines.push('');
+          lines.push('--- Kontakt na zákazníka ---');
+          lines.push('Meno: ' + meno);
+          lines.push('Email: ' + email);
+          lines.push('Telefón: ' + telefon);
+
+          const body = encodeURIComponent(lines.join('\n'));
+          const subject = encodeURIComponent('RACEM – dopyt na autodiel (' + category + ')');
+          const emailTo = 'info@remperformance.sk';
+
+          const mailtoUrl =
+            'mailto:' + encodeURIComponent(emailTo) +
+            '?subject=' + subject +
+            '&body=' + body;
+
+          window.location.href = mailtoUrl;
+
+          const oldText = sendBtn.textContent;
+          sendBtn.textContent = 'Otváram e-mail…';
+          setTimeout(() => { sendBtn.textContent = oldText; }, 1500);
+        });
+      }
     });
 
-    const closeBtn = card.querySelector('.closeCardBtn');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        card.classList.remove('is-active');
-      });
+    // Klik mimo = zatvoriť
+    document.addEventListener('click', (e) => {
+      const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
+      if (!clickedInsideAnyCard) closeAll();
+    });
+
+    // ===== STOCK: horizontálny scroll aj kolieskom myši =====
+    const stockScroll = document.getElementById('stockScroll');
+    if (stockScroll) {
+      stockScroll.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          e.preventDefault();
+          stockScroll.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
     }
 
-    // ODOSLAŤ DOPYT -> mailto na info@remperformance.sk
-    const sendBtn = card.querySelector('.sendRequestBtn');
-    if (sendBtn) {
-      sendBtn.addEventListener('click', (e) => {
+    // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.stockInterestBtn');
+      if (!btn) return;
+
+      const card = btn.closest('.stock-item');
+      if (!card) return;
+
+      const title  = card.querySelector('.stock-title')?.textContent?.trim() || '';
+      const price  = card.querySelector('.stock-price')?.textContent?.trim() || '';
+      const cond   = card.getAttribute('data-condition') || '';
+      const region = card.getAttribute('data-region')    || '';
+      const city   = card.getAttribute('data-city')      || '';
+
+      const text = `Mám záujem o diel: ${title} (${price}, ${cond}, ${city}, ${region})`;
+
+      window.location.hash = '#kontakt';
+
+      setTimeout(() => {
+        const ta = document.getElementById('kontaktMsg');
+        if (ta) {
+          ta.value = text;
+          ta.focus();
+          ta.selectionStart = ta.selectionEnd = ta.value.length;
+        }
+      }, 80);
+    });
+
+    // ===== GLOBÁLNY KONTAKTNÝ FORMULÁR -> mailto =====
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        e.stopPropagation();
 
-        const form = card.querySelector('form');
-        if (!form) return;
+        const formData = new FormData(contactForm);
+        const meno     = formData.get('meno')    || '';
+        const email    = formData.get('email')   || '';
+        const telefon  = formData.get('telefon') || '';
+        const sprava   = formData.get('sprava')  || '';
 
-        const data = new FormData(form);
-
-        const category   = data.get('kategoria')        || '';
-        const znacka     = data.get('znacka')           || '';
-        const model      = data.get('model')            || '';
-        const oznMotor   = data.get('oznacenie_motora') || '';
-        const motorizacia= data.get('motorizacia')      || '';
-        const rocnik     = data.get('rocnik')           || '';
-        const karoseria  = data.get('karoseria')        || '';
-        const stavDielu  = data.get('stav_dielu')       || '';  // len pri SERVICE, inde prázdne
-        const cisloDielu = data.get('cislo_dielu')      || '';
-        const diel       = data.get('diel')             || '';
-        const poznamka   = data.get('poznamka')         || '';
-        const rozpocet   = data.get('rozpocet')         || '';  // len pri BUDGET, inde prázdne
+        if (!meno || !email || !telefon) {
+          alert('Prosím vyplň Meno, Email a Telefón.');
+          return;
+        }
 
         const lines = [];
-        lines.push('Kategória: ' + category);
+        lines.push('Kontakt / dopyt z formulára na stránke RACEM');
         lines.push('');
-        lines.push('Značka: ' + znacka);
-        lines.push('Model: ' + model);
-        lines.push('Označenie motora: ' + oznMotor);
-        lines.push('Motorizácia: ' + motorizacia);
-        lines.push('Ročník: ' + rocnik);
-        lines.push('Karoséria: ' + karoseria);
-        if (stavDielu) {
-          lines.push('Stav dielu: ' + stavDielu);
-        }
-        if (rozpocet) {
-          lines.push('Rozpočet: ' + rozpocet);
-        }
-        lines.push('Číslo dielu: ' + cisloDielu);
+        lines.push('Meno: ' + meno);
+        lines.push('Email: ' + email);
+        lines.push('Telefón: ' + telefon);
         lines.push('');
-        lines.push('Diel: ' + diel);
-        lines.push('');
-        lines.push('Poznámka:');
-        lines.push(poznamka || '-');
+        lines.push('Správa:');
+        lines.push(sprava || '-');
 
         const body = encodeURIComponent(lines.join('\n'));
-        const subject = encodeURIComponent('RACEM – dopyt na autodiel (' + category + ')');
+        const subject = encodeURIComponent('RACEM – kontakt / dopyt z formulára');
         const emailTo = 'info@remperformance.sk';
 
         const mailtoUrl =
@@ -1593,60 +1859,9 @@
           '?subject=' + subject +
           '&body=' + body;
 
-        // otvorí default mail klient s predvyplneným mailom
         window.location.href = mailtoUrl;
-
-        const oldText = sendBtn.textContent;
-        sendBtn.textContent = 'Otváram e-mail…';
-        setTimeout(() => { sendBtn.textContent = oldText; }, 1500);
       });
     }
-  });
-
-  // Klik mimo = zatvoriť
-  document.addEventListener('click', (e) => {
-    const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
-    if (!clickedInsideAnyCard) closeAll();
-  });
-
-  // ===== STOCK: horizontálny scroll aj kolieskom myši =====
-  const stockScroll = document.getElementById('stockScroll');
-  if (stockScroll) {
-    stockScroll.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        stockScroll.scrollLeft += e.deltaY;
-      }
-    }, { passive: false });
-  }
-
-  // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.stockInterestBtn');
-    if (!btn) return;
-
-    const card = btn.closest('.stock-item');
-    if (!card) return;
-
-    const title  = card.querySelector('.stock-title')?.textContent?.trim() || '';
-    const price  = card.querySelector('.stock-price')?.textContent?.trim() || '';
-    const cond   = card.getAttribute('data-condition') || '';
-    const region = card.getAttribute('data-region')    || '';
-    const city   = card.getAttribute('data-city')      || '';
-
-    const text = `Mám záujem o diel: ${title} (${price}, ${cond}, ${city}, ${region})`;
-
-    window.location.hash = '#kontakt';
-
-    setTimeout(() => {
-      const ta = document.getElementById('kontaktMsg');
-      if (ta) {
-        ta.value = text;
-        ta.focus();
-        ta.selectionStart = ta.selectionEnd = ta.value.length;
-      }
-    }, 80);
-  });
-</script>
+  </script>
 </body>
 </html>
