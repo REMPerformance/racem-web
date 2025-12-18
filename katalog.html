@@ -38,11 +38,12 @@
       z-index:-1;
     }
 
+    /* FULL WIDTH WRAP */
     .wrap{
       width:100%;
-      max-width:1100px;
-      margin:0 auto;
-      padding:0 18px 40px;
+      max-width:none;     /* zrušený limit 1100px */
+      margin:0;
+      padding:0 32px 40px; /* trocha okrajov od kraja */
     }
 
     /* NAVBAR */
@@ -56,9 +57,10 @@
     }
 
     .nav{
-      max-width:1100px;
-      margin:0 auto;
-      padding:14px 18px 10px;
+      width:100%;
+      max-width:none;     /* tiež full width */
+      margin:0;
+      padding:14px 32px 10px; /* rovnaký padding ako .wrap */
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -149,7 +151,7 @@
     .page-sub{
       font-size:14px;
       color:var(--muted);
-      max-width:620px;
+      max-width:none;  /* žiadne obmedzenie, full width text */
       line-height:1.5;
     }
 
@@ -188,7 +190,7 @@
     .section-note{
       font-size:12px;
       color:var(--muted2);
-      max-width:420px;
+      max-width:none; /* tiež full width */
       line-height:1.4;
     }
 
@@ -361,6 +363,7 @@
       justify-content:space-between;
       flex-wrap:wrap;
       gap:8px;
+      padding:0 32px; /* zarovnanie s .wrap */
     }
 
     footer a{
@@ -373,6 +376,15 @@
     }
 
     @media (max-width:640px){
+      .nav{
+        padding:10px 16px;
+      }
+      .wrap{
+        padding:0 16px 32px;
+      }
+      footer .row{
+        padding:0 16px;
+      }
       .page-title{font-size:26px;}
     }
   </style>
