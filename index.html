@@ -76,7 +76,7 @@
       width:100%;
       max-width:none;
       margin:0;
-      padding:0 6vw;
+      padding:0 6vw; /* zmen na 3vw ak chceš ešte širšie */
     }
 
     section{padding:110px 0; position:relative}
@@ -117,26 +117,30 @@
     }
     .red{color:var(--red)}
     .muted2{color:var(--muted2)}
-
     /* ===== HERO TITLE INLINE LOGO ===== */
-    .hero-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .hero-logo-inline{
-      height:90px;
-      width:auto;
-      object-fit:contain;
-      vertical-align:middle;
-    }
-    .hero-dash{ color: var(--muted2); }
-    .hero-slogan{
-      color:#fff;
-      font-weight:800;
-    }
+.hero-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    /* ====== NAV ====== */
+.hero-logo-inline{
+  height:90px;        /* 👈 TU je to 5× menšie */
+  width:auto;
+  object-fit:contain;
+  vertical-align:middle;
+}
+
+.hero-dash{
+  color: var(--muted2);
+}
+
+.hero-slogan{
+  color:#fff;
+  font-weight:800;
+}
+
+    /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
     .topbar{
       position:sticky;
       top:0;
@@ -145,6 +149,8 @@
       background: rgba(10,10,10,0.62);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+
+    /* nechávame .nav len ako “hook”, ale reálne riadi .nav-centered */
     .nav{ padding:0; }
 
     .nav-centered{
@@ -157,6 +163,7 @@
       justify-content:center;
       gap: 64px;
     }
+
     .brand-mini{
       display:flex;
       align-items:center;
@@ -178,6 +185,7 @@
       display:flex;
       gap: 44px;
     }
+
     .nav-links a{
       position:relative;
       color: rgba(255,255,255,0.76);
@@ -193,6 +201,7 @@
       color:#fff;
       text-shadow: 0 0 14px rgba(179,31,36,0.25);
     }
+
     .nav-links a::after{
       content:"";
       position:absolute;
@@ -207,7 +216,13 @@
       transform: translateX(-50%);
       transition: width .32s ease;
     }
-    .nav-links a:hover::after{ width: 125%; }
+    .nav-links a:hover::after{
+      width: 125%;
+    }
+
+    .nav-links a:active{
+      transform: translateY(1px);
+    }
 
     /* ====== HERO ====== */
     .hero{padding:90px 0 80px}
@@ -216,6 +231,11 @@
       grid-template-columns: 1.15fr .85fr;
       gap:50px;
       align-items:center;
+    }
+    .logo{
+      width:120px; height:120px;
+      object-fit:contain;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,.6));
     }
     .headline{
       display:flex;
@@ -243,16 +263,17 @@
       transition:.25s;
       user-select:none;
       border:1px solid rgba(255,255,255,0.10);
-      color:#fff;
     }
     .btnPrimary{
       background: var(--red);
       border-color: rgba(179,31,36,0.65);
       box-shadow: 0 18px 40px rgba(179,31,36,0.18);
+      color:#fff;
     }
     .btnPrimary:hover{transform: translateY(-2px); filter: brightness(1.05)}
     .btnGhost{
       background: rgba(20,20,20,0.65);
+      color:#fff;
     }
     .btnGhost:hover{transform: translateY(-2px); border-color: rgba(255,255,255,0.22)}
     .heroCard{
@@ -313,7 +334,6 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap:18px;
       margin-top:30px;
-      align-items:start;
     }
     .card{
       background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
@@ -323,9 +343,8 @@
       position:relative;
       overflow:hidden;
       transform: translateY(0);
-      transition: transform .25s, border-color .25s, box-shadow .25s, filter .25s;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
       cursor:default;
-      align-self:start;
     }
     .card::before{
       content:"";
@@ -342,7 +361,6 @@
     }
     .card:hover::before{opacity:1}
     .card > *{position:relative}
-
     .tag{
       display:inline-flex;
       align-items:center;
@@ -375,79 +393,46 @@
       border-color: rgba(179,31,36,0.35);
     }
 
-    /* ====== CATEGORY ACTIVE (HIGHLIGHT) ====== */
+    /* ====== CATEGORY CLICK + DROPDOWN FORM ====== */
     .card.category-card{
-      cursor:pointer;
+      cursor: pointer;
       user-select:none;
     }
+    .card.category-card:focus{outline:none}
+
     .card.category-card.is-active{
-      border-color: rgba(179,31,36,0.80);
+      border-color: rgba(179,31,36,0.55);
       box-shadow:
         0 18px 60px rgba(0,0,0,0.55),
-        0 0 0 1px rgba(179,31,36,0.22) inset,
-        0 0 26px rgba(179,31,36,0.22);
-      filter: brightness(1.06);
-      transform: translateY(-8px);
+        0 0 0 1px rgba(179,31,36,0.15) inset;
+      animation: cardHighlight .35s ease both;
+    }
+    @keyframes cardHighlight{
+      from{ transform: translateY(-2px); filter: brightness(1); }
+      to{ transform: translateY(-8px); filter: brightness(1.05); }
     }
 
-    /* Form je uložený v karte len ako template (skryté) */
-    .card-drop{ display:none; }
+    .card-drop{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 14px;
 
-    /* ====== FULL-WIDTH EXPANDER (pod gridom) ====== */
-    .category-expander{
-      margin-top: 22px;
-      display:none;
-      padding:28px;
-
-      /* plynulejšie, pomalšie */
-      transform: translateY(12px);
+      max-height: 0;
       opacity: 0;
-      transition: opacity .38s ease, transform .38s ease;
+      overflow: hidden;
+      transform: translateY(-6px);
+      transition: max-height .45s ease, opacity .35s ease, transform .35s ease;
     }
-    .category-expander.is-open{
-      display:block;
+    .card.category-card.is-active .card-drop{
+      max-height: 520px;
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .expander-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:14px;
-    }
-    .expander-title{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      max-width: 980px;
-    }
-    .expander-title h3{ margin:0; }
-    .expander-title p{ margin:0; max-width:980px; }
-    .expander-close{
-      padding:12px 16px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color:#fff;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      cursor:pointer;
-      transition:.25s;
-    }
-    .expander-close:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.35);
     }
 
     .req-form{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 12px;
     }
     .req-form .full{ grid-column: 1 / -1; }
 
@@ -472,11 +457,11 @@
       outline: none;
       transition: border-color .2s ease, box-shadow .2s ease;
     }
-    .req-form textarea{ min-height: 110px; resize: vertical; }
+    .req-form textarea{ min-height: 96px; resize: vertical; }
 
     .req-form input:focus,
     .req-form textarea:focus{
-      border-color: rgba(179,31,36,0.55);
+      border-color: rgba(179,31,36,0.45);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
 
@@ -488,59 +473,21 @@
     }
     .req-actions .btn{ padding: 12px 18px; }
 
-    /* ===== FLIP TRANSFORM (card -> expander) ===== */
-    .flip-ghost{
-      position: fixed;
-      z-index: 9999;
-      left: 0; top: 0;
-      margin: 0;
-      will-change: transform, width, height, opacity;
-      transform-origin: top left;
-      border-radius: 18px;
-      overflow: hidden;
-      pointer-events: none;
-      box-shadow: 0 30px 90px rgba(0,0,0,0.75);
-      border: 1px solid rgba(179,31,36,0.55);
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
-      transition: transform .78s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
-    }
-
-    /* aby “ghost” neškáloval text (text vôbec nebude v ghost) */
-    .flip-ghost::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background: radial-gradient(circle at 25% 25%, rgba(179,31,36,0.18), transparent 55%);
-      opacity:.9;
-    }
-
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
 
-    /* ====== STOCK AREA (oddelené) ====== */
-    .stock-area{
-      margin-top: 34px;
-      padding: 34px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(20,20,20,0.82), rgba(10,10,10,0.55));
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow:hidden;
+    /* ====== FOOTER ====== */
+    footer{
+      padding:55px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.45);
     }
-    .stock-area::before{
-      content:"";
-      position:absolute;
-      inset:-80px;
-      background: radial-gradient(circle at 15% 25%, rgba(179,31,36,0.18), transparent 55%);
-      transform: rotate(10deg);
-    }
-    .stock-area > *{ position:relative; }
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,0.08);
-      margin: 24px 0;
+    .foot{
+      display:flex; gap:18px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      color: var(--muted2);
+      font-size:13px;
     }
 
     @media (max-width: 980px){
@@ -548,6 +495,7 @@
       h1{font-size:48px}
       h2{font-size:34px}
       .split{grid-template-columns:1fr}
+      .logo{width:96px;height:96px}
 
       .nav-centered{
         max-width: 100%;
@@ -559,11 +507,6 @@
       .brand-mini img{height: 52px}
 
       .req-form{ grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .flip-ghost{ transition:none !important; }
-      .category-expander{ transition:none !important; }
     }
   </style>
 </head>
@@ -590,17 +533,21 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="headline">
+        
+
         <h1 class="hero-title">
-          <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
-            <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
-          </a>
-          <span class="hero-dash">–</span>
-          <span class="hero-slogan">BEAT THEM ALL</span>
-        </h1>
+  <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
+  <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
+</a>
+  <span class="hero-dash">–</span>
+  <span class="hero-slogan">BEAT THEM ALL</span>
+</h1>
+
+        
 
         <p class="subline">
           Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach, u nás v RACEM ti zoženieme všetko.
-          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám.
+          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám. 
         </p>
 
         <div class="ctaRow">
@@ -641,64 +588,64 @@
       <div class="split">
         <div class="reveal">
           <h2>Podporujeme Vás</h2>
-
           <div class="panel" style="margin-top:18px">
-            <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
+  <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
 
-            <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
+  <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
 
-            <p>
-              Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
-              RACEM aktívne podporuje jazdcov a projekty, ktoré to myslia vážne –
-              od lokálnych drift tímov až po profesionálne pretekárske zostavy.
-            </p>
+  <p>
+    Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
+    RACEM aktívne podporuje jazdcov a projekty, ktoré to myslia vážne –
+    od lokálnych drift tímov až po profesionálne pretekárske zostavy.
+  </p>
 
-            <p class="muted2">
-              <b>Podporujeme:</b><br>
-              • drift tímy a jednotlivcov<br>
-              • amatérske aj profesionálne preteky<br>
-              • lokálne aj národné motoristické podujatia
-            </p>
+  <p class="muted2">
+    <b>Podporujeme:</b><br>
+    • drift tímy a jednotlivcov<br>
+    • amatérske aj profesionálne preteky<br>
+    • lokálne aj národné motoristické podujatia
+  </p>
 
-            <p class="muted2" style="margin-top:12px">
-              <b>Ponúkame:</b><br>
-              • sponzoring tímov a jazdcov<br>
-              • zvýhodnené ceny dielov a služieb<br>
-              • technickú a traťovú podporu<br>
-              • individuálny a férový prístup
-            </p>
+  <p class="muted2" style="margin-top:12px">
+    <b>Ponúkame:</b><br>
+    • sponzoring tímov a jazdcov<br>
+    • zvýhodnené ceny dielov a služieb<br>
+    • technickú a traťovú podporu<br>
+    • individuálny a férový prístup
+  </p>
 
-            <p style="margin-top:14px">
-              Ak buduješ auto, tím alebo celý projekt a hľadáš partnera,
-              ktorý rozumie realite motorsportu, <b>radi sa staneme súčasťou tvojej cesty</b>.
-            </p>
+  <p style="margin-top:14px">
+    Ak buduješ auto, tím alebo celý projekt a hľadáš partnera,
+    ktorý rozumie realite motorsportu, <b>radi sa staneme súčasťou tvojej cesty</b>.
+  </p>
 
-            <div class="ctaRow" style="margin-top:12px">
-              <a class="btn btnPrimary" href="#kontakt">Kontaktuj nás</a>
-            </div>
-          </div>
+  <div class="ctaRow" style="margin-top:12px">
+    <a class="btn btnPrimary" href="#kontakt">Kontaktuj nás</a>
+  </div>
+</div>
+          
         </div>
 
         <div class="panel reveal">
-          <h3>Čo robíme (v praxi)</h3>
+  <h3>Čo robíme (v praxi)</h3>
 
-          <p class="muted2">
-            Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.
-          </p>
+  <p class="muted2">
+    Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.
+  </p>
 
-          <p class="muted2" style="margin-top:10px">
-            <b>Postup:</b><br>
-            • overenie kompatibility (značka, model, motor, ročník)<br>
-            • návrh riešení podľa cieľa projektu (OEM / aftermarket / budget / performance)<br>
-            • preverenie dostupnosti, dodacích lehôt a reálnej ceny<br>
-            • dohoda na riešení, objednanie a zabezpečenie dodania
-          </p>
+  <p class="muted2" style="margin-top:10px">
+    <b>Postup:</b><br>
+    • overenie kompatibility (značka, model, motor, ročník)<br>
+    • návrh riešení podľa cieľa projektu (OEM / aftermarket / budget / performance)<br>
+    • preverenie dostupnosti, dodacích lehôt a reálnej ceny<br>
+    • dohoda na riešení, objednanie a zabezpečenie dodania
+  </p>
 
-          <p class="muted2" style="margin-top:14px">
-            Ak ide o <b>použitý alebo repasovaný diel</b>, stav komunikujeme otvorene a bez obchádzania.
-            Vieš presne, čo kupuješ, v akom je to stave a prečo to odporúčame.
-          </p>
-        </div>
+  <p class="muted2" style="margin-top:14px">
+    Ak ide o <b>použitý alebo repasovaný diel</b>, stav komunikujeme otvorene a bez obchádzania.
+    Vieš presne, čo kupuješ, v akom je to stave a prečo to odporúčame.
+  </p>
+</div>
 
       </div>
     </div>
@@ -706,52 +653,51 @@
 
   <!-- NEZOHNATELNY DIEL -->
   <section>
-    <div class="wrap">
-      <div class="panel reveal" style="padding:40px">
+  <div class="wrap">
+    <div class="panel reveal" style="padding:40px">
 
-        <span class="pill">
-          <span class="dot"></span>
-          nezohnateľné • špecifické • atypické • racing
-        </span>
+      <span class="pill">
+        <span class="dot"></span>
+        nezohnateľné • špecifické • atypické • racing
+      </span>
 
-        <h2 style="margin-top:22px; max-width:1100px">
-          Máš nezohnateľný diel alebo riešiš niečo, čo bežné e-shopy nevedia?
-        </h2>
+      <h2 style="margin-top:22px; max-width:1100px">
+        Máš nezohnateľný diel alebo riešiš niečo, čo bežné e-shopy nevedia?
+      </h2>
 
-        <p style="font-size:17px; max-width:1000px">
-          Presne na toto je tu náš tím.
-          Nezáleží, či ide o jeden špecifický šrób, diel z limitovanej edície,
-          komponent zo závodného auta alebo riešenie mimo katalógu.
-        </p>
+      <p style="font-size:17px; max-width:1000px">
+        Presne na toto je tu náš tím.
+        Nezáleží, či ide o jeden špecifický šrób, diel z limitovanej edície,
+        komponent zo závodného auta alebo riešenie mimo katalógu.
+      </p>
 
-        <p class="muted2" style="margin-top:16px; max-width:980px">
-          <b>Čo pre teba spravíme:</b><br>
-          • aktívne vyhľadáme diely mimo bežnej distribúcie<br>
-          • preveríme kompatibilitu a reálne použitie v praxi<br>
-          • oslovíme zahraničných dodávateľov, sklady aj súkromné zdroje<br>
-          • navrhneme alternatívy, ak originál nie je dostupný
-        </p>
+      <p class="muted2" style="margin-top:16px; max-width:980px">
+        <b>Čo pre teba spravíme:</b><br>
+        • aktívne vyhľadáme diely mimo bežnej distribúcie<br>
+        • preveríme kompatibilitu a reálne použitie v praxi<br>
+        • oslovíme zahraničných dodávateľov, sklady aj súkromné zdroje<br>
+        • navrhneme alternatívy, ak originál nie je dostupný
+      </p>
 
-        <p class="muted2" style="margin-top:14px; max-width:980px">
-          Vyhľadanie a návrh riešenia robíme <span class="red"><b>zadarmo</b></span>.
-          Platíš až vtedy, keď sa dohodneme na konkrétnom diele, cene a dodaní.
-          Bez záväzkov, bez skrytých poplatkov.
-        </p>
+      <p class="muted2" style="margin-top:14px; max-width:980px">
+        Vyhľadanie a návrh riešenia robíme <span class="red"><b>zadarmo</b></span>.
+        Platíš až vtedy, keď sa dohodneme na konkrétnom diele, cene a dodaní.
+        Bez záväzkov, bez skrytých poplatkov.
+      </p>
 
-        <p style="margin-top:16px; max-width:980px">
-          Ak riešiš projekt, kde bežné riešenia nestačia,
-          radi to preberieme a nájdeme cestu, ktorá dáva technický aj finančný zmysel.
-        </p>
+      <p style="margin-top:16px; max-width:980px">
+        Ak riešiš projekt, kde bežné riešenia nestačia,
+        radi to preberieme a nájdeme cestu, ktorá dáva technický aj finančný zmysel.
+      </p>
 
-        <div class="ctaRow" style="margin-top:20px">
-          <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
-          <a class="btn btnGhost" href="#kategorie">Pozrieť kategórie</a>
-        </div>
-
+      <div class="ctaRow" style="margin-top:20px">
+        <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
+        <a class="btn btnGhost" href="#kategorie">Pozrieť kategórie</a>
       </div>
-    </div>
-  </section>
 
+    </div>
+  </div>
+</section>
   <!-- KATEGORIE -->
   <section id="kategorie">
     <div class="wrap">
@@ -763,10 +709,7 @@
 
       <div class="grid">
 
-        <!-- 1 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Street racing"
-             data-desc="Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> STREET</div>
           <h3>Street racing</h3>
           <p>Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.</p>
@@ -774,15 +717,43 @@
 
           <div class="card-drop">
             <form class="req-form">
-              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW"></div>
-              <div><label>Model</label><input type="text" name="model" placeholder="E46 330i"></div>
-              <div><label>Motorizácia</label><input type="text" name="motorizacia" placeholder="M54B30 / 3.0i / 170kW"></div>
-              <div><label>Ročník</label><input type="text" name="rocnik" placeholder="2003"></div>
-              <div><label>Karoséria</label><input type="text" name="karoseria" placeholder="Sedan / Touring / Coupe"></div>
-              <div><label>Číslo dielu (ak je)</label><input type="text" name="cislo_dielu" placeholder="OEM číslo / kód"></div>
-              <div class="full"><label>Diel</label><input type="text" name="diel" placeholder="Napr. brzdové kotúče, sanie, výfuk..."></div>
-              <div class="full"><label>Poznámka</label><textarea name="poznamka" placeholder="Rozpočet, preferencie, detail..."></textarea></div>
+              <div>
+                <label>Značka</label>
+                <input type="text" name="znacka" placeholder="BMW">
+              </div>
+              <div>
+                <label>Model</label>
+                <input type="text" name="model" placeholder="E46 330i">
+              </div>
+              <div>
+                <label>Motorizácia</label>
+                <input type="text" name="motorizacia" placeholder="M54B30 / 3.0i / 170kW">
+              </div>
+              <div>
+                <label>Ročník</label>
+                <input type="text" name="rocnik" placeholder="2003">
+              </div>
+              <div>
+                <label>Karoséria</label>
+                <input type="text" name="karoseria" placeholder="Sedan / Touring / Coupe">
+              </div>
+              <div>
+                <label>Číslo dielu (ak je)</label>
+                <input type="text" name="cislo_dielu" placeholder="OEM číslo / kód">
+              </div>
+
+              <div class="full">
+                <label>Diel</label>
+                <input type="text" name="diel" placeholder="Napr. brzdové kotúče, sanie, výfuk...">
+              </div>
+
+              <div class="full">
+                <label>Poznámka</label>
+                <textarea name="poznamka" placeholder="Rozpočet, preferencie, detail..."></textarea>
+              </div>
+
               <input type="hidden" name="kategoria" value="Street racing">
+
               <div class="full req-actions">
                 <a class="btn btnPrimary sendRequestBtn" href="#kontakt">Odoslať dopyt</a>
                 <a class="btn btnGhost closeCardBtn" href="javascript:void(0)">Zavrieť</a>
@@ -791,10 +762,7 @@
           </div>
         </div>
 
-        <!-- 2 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Performance & športové"
-             data-desc="Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> PERFORMANCE</div>
           <h3>Performance & športové</h3>
           <p>Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.</p>
@@ -819,10 +787,7 @@
           </div>
         </div>
 
-        <!-- 3 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Závodné"
-             data-desc="Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> RACING</div>
           <h3>Závodné</h3>
           <p>Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.</p>
@@ -847,10 +812,7 @@
           </div>
         </div>
 
-        <!-- 4 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Náhradné diely"
-             data-desc="Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> SERVICE</div>
           <h3>Náhradné diely</h3>
           <p>Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.</p>
@@ -875,10 +837,7 @@
           </div>
         </div>
 
-        <!-- 5 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="OEM & originálne diely"
-             data-desc="Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> OEM</div>
           <h3>OEM & originálne diely</h3>
           <p>Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.</p>
@@ -903,10 +862,7 @@
           </div>
         </div>
 
-        <!-- 6 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Použité & repasované"
-             data-desc="Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> USED</div>
           <h3>Použité & repasované</h3>
           <p>Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.</p>
@@ -931,10 +887,7 @@
           </div>
         </div>
 
-        <!-- 7 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Budget riešenia"
-             data-desc="Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> BUDGET</div>
           <h3>Budget riešenia</h3>
           <p>Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.</p>
@@ -959,10 +912,7 @@
           </div>
         </div>
 
-        <!-- 8 -->
-        <div class="card reveal category-card" tabindex="0"
-             data-title="Best value"
-             data-desc="Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.">
+        <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> BEST VALUE</div>
           <h3>Best value</h3>
           <p>Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.</p>
@@ -987,31 +937,13 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- FULL-WIDTH DROPDOWN (iba jeden) -->
-      <div id="categoryExpander" class="panel category-expander reveal" aria-live="polite"></div>
-
-      <!-- ODDELENÁ SEKCIA: ČO MÁME PRÁVE NA RUKE -->
-      <div class="stock-area reveal" id="stock">
-        <span class="pill"><span class="dot"></span> skladom • rýchly deal • hneď</span>
-        <h2 style="margin-top:18px">Čo máme práve na ruke</h2>
-        <p class="muted2" style="max-width:980px">
-          Veci, ktoré sú fyzicky dostupné hneď. Ideálne, keď potrebuješ rýchlo poskladať auto, spraviť deal a nechceš čakať.
-        </p>
-
-        <div class="divider"></div>
-
-        <div class="card category-card" tabindex="0"
-             data-title="Čo máme práve na ruke"
-             data-desc="Veci, ktoré sú fyzicky dostupné hneď. Napíš čo hľadáš a pozrieme sklad / možnosti.">
+        <div class="card reveal category-card" tabindex="0" style="border-color: rgba(179,31,36,0.35)">
           <div class="tag"><span class="dot"></span> STOCK</div>
-          <h3>Aktuálna dostupnosť</h3>
-          <p>Napíš čo hľadáš, na aké auto a či to chceš nové/použité – dáme ti rýchlo odpoveď.</p>
+          <h3>Čo máme práve na ruke</h3>
+          <p>Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie.</p>
           <div class="ctaRow" style="margin-top:12px">
             <a class="btn btnPrimary" href="#kontakt">Zistiť dostupnosť</a>
           </div>
-          <div class="arrow">→</div>
 
           <div class="card-drop">
             <form class="req-form">
@@ -1033,7 +965,6 @@
         </div>
 
       </div>
-
     </div>
   </section>
 
@@ -1081,101 +1012,24 @@
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    // ===== CATEGORY: iba jedna otvorená + full width pod gridom + plynulejšie, bez skákania =====
+    // ===== CATEGORY DROPDOWNS =====
     const cards = Array.from(document.querySelectorAll('.category-card'));
-    const expander = document.getElementById('categoryExpander');
-
-    const hardResetExpander = () => {
-      expander.classList.remove('is-open');
-      expander.style.display = 'none';
-      expander.style.visibility = 'visible';
-      expander.innerHTML = '';
-    };
 
     const closeAll = () => {
       cards.forEach(c => c.classList.remove('is-active'));
-      hardResetExpander();
-    };
-
-    const buildExpanderHTML = (card) => {
-      const title = card.getAttribute('data-title') || 'Kategória';
-      const desc  = card.getAttribute('data-desc') || '';
-      const inner = card.querySelector('.card-drop')?.innerHTML || '';
-
-      return `
-        <div class="expander-head">
-          <div class="expander-title">
-            <span class="pill"><span class="dot"></span> dopyt • špecifikácia • rýchla odpoveď</span>
-            <h3 style="margin-top:14px">${title}</h3>
-            <p class="muted2">${desc}</p>
-          </div>
-          <button class="expander-close" type="button">Zavrieť</button>
-        </div>
-        ${inner}
-      `;
-    };
-
-    const animateCardToExpander = (card) => {
-      // 1) priprav expander (naplň HTML, zobraz len kvôli meraniu)
-      expander.innerHTML = buildExpanderHTML(card);
-      expander.style.display = 'block';
-      expander.classList.remove('is-open');
-      expander.style.visibility = 'hidden';
-
-      // 2) zmeraj štart a cieľ
-      const start = card.getBoundingClientRect();
-      const end = expander.getBoundingClientRect();
-
-      // 3) ghost (bez textu) -> žiadne naťahovanie písmen
-      const ghost = document.createElement('div');
-      ghost.className = 'flip-ghost';
-      document.body.appendChild(ghost);
-
-      ghost.style.left = `${start.left}px`;
-      ghost.style.top = `${start.top}px`;
-      ghost.style.width = `${start.width}px`;
-      ghost.style.height = `${start.height}px`;
-      ghost.style.opacity = '1';
-
-      const dx = end.left - start.left;
-      const dy = end.top - start.top;
-      const sx = end.width / start.width;
-      const sy = end.height / start.height;
-
-      // 4) spusti animáciu
-      requestAnimationFrame(() => {
-        ghost.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
-      });
-
-      // 5) po animácii: odstráň ghost, ukáž expander plynulo
-      const done = () => {
-        ghost.removeEventListener('transitionend', done);
-        ghost.remove();
-
-        expander.style.visibility = 'visible';
-        expander.classList.add('is-open');
-
-        // DÔLEŽITÉ: žiadne scrollIntoView -> obrazovka sa nepohne
-      };
-      ghost.addEventListener('transitionend', done);
     };
 
     const toggleCard = (card) => {
       const isOpen = card.classList.contains('is-active');
-
-      // vždy zavri staré
-      cards.forEach(c => c.classList.remove('is-active'));
-      hardResetExpander();
-
-      // ak klikol na už otvorenú, tak len zavri
-      if (isOpen) return;
-
-      // otvor novú
-      card.classList.add('is-active');
-      animateCardToExpander(card);
+      closeAll();
+      if(!isOpen){
+        card.classList.add('is-active');
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+      }
     };
 
-    // click/keyboard na kartách
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         const tag = e.target.tagName.toLowerCase();
@@ -1188,27 +1042,27 @@
           e.preventDefault();
           toggleCard(card);
         }
-        if (e.key === 'Escape') closeAll();
+        if (e.key === 'Escape') {
+          card.classList.remove('is-active');
+        }
       });
-    });
 
-    // event delegation pre expander (close + copy)
-    document.addEventListener('click', (e) => {
-      // zavrieť expander
-      if (e.target.closest('.expander-close') || e.target.closest('.closeCardBtn')) {
-        e.preventDefault?.();
-        closeAll();
-        return;
+      const closeBtn = card.querySelector('.closeCardBtn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          card.classList.remove('is-active');
+        });
       }
 
-      // copy dopytu do clipboardu
-      const sendBtn = e.target.closest('.sendRequestBtn');
+      const sendBtn = card.querySelector('.sendRequestBtn');
       if (sendBtn) {
-        const form = expander.querySelector('form');
-        if(!form) return;
+        sendBtn.addEventListener('click', () => {
+          const form = card.querySelector('form');
+          if(!form) return;
 
-        const data = new FormData(form);
-        const msg =
+          const data = new FormData(form);
+          const msg =
 `Kategória: ${data.get('kategoria') || ''}
 Značka: ${data.get('znacka') || ''}
 Model: ${data.get('model') || ''}
@@ -1219,15 +1073,13 @@ Karoséria: ${data.get('karoseria') || ''}
 Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
-        try { navigator.clipboard.writeText(msg); } catch (err) {}
+          try { navigator.clipboard.writeText(msg); } catch (err) {}
+        });
       }
     });
 
-    // klik mimo karty aj mimo expandera = zavri
     document.addEventListener('click', (e) => {
-      const inCard = e.target.closest('.category-card');
-      const inExp  = e.target.closest('#categoryExpander');
-      if (!inCard && !inExp) closeAll();
+      if (!e.target.closest('.category-card')) closeAll();
     });
   </script>
 </body>
