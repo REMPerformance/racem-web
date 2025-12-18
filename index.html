@@ -76,7 +76,7 @@
       width:100%;
       max-width:none;
       margin:0;
-      padding:0 6vw; /* zmen na 3vw ak chceš ešte širšie */
+      padding:0 6vw;
     }
 
     section{padding:110px 0; position:relative}
@@ -124,18 +124,13 @@
       align-items:center;
       gap:12px;
     }
-
     .hero-logo-inline{
       height:90px;
       width:auto;
       object-fit:contain;
       vertical-align:middle;
     }
-
-    .hero-dash{
-      color: var(--muted2);
-    }
-
+    .hero-dash{ color: var(--muted2); }
     .hero-slogan-image{
       height:45px;
       width:auto;
@@ -151,14 +146,12 @@
       background: rgba(10,10,10,0.62);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-
     .nav{ padding:0; }
 
     .nav-centered{
       max-width: 980px;
       margin: 0 auto;
       padding: 16px 0;
-
       display:flex;
       align-items:center;
       justify-content:center;
@@ -182,11 +175,7 @@
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
 
-    .nav-links{
-      display:flex;
-      gap: 44px;
-    }
-
+    .nav-links{ display:flex; gap: 44px; }
     .nav-links a{
       position:relative;
       color: rgba(255,255,255,0.76);
@@ -202,7 +191,6 @@
       color:#fff;
       text-shadow: 0 0 14px rgba(179,31,36,0.25);
     }
-
     .nav-links a::after{
       content:"";
       position:absolute;
@@ -217,13 +205,8 @@
       transform: translateX(-50%);
       transition: width .32s ease;
     }
-    .nav-links a:hover::after{
-      width: 125%;
-    }
-
-    .nav-links a:active{
-      transform: translateY(1px);
-    }
+    .nav-links a:hover::after{ width: 125%; }
+    .nav-links a:active{ transform: translateY(1px); }
 
     /* ====== HERO ====== */
     .hero{padding:90px 0 80px}
@@ -264,6 +247,7 @@
       transition:.25s;
       user-select:none;
       border:1px solid rgba(255,255,255,0.10);
+      cursor:pointer;
     }
     .btnPrimary{
       background: var(--red);
@@ -395,10 +379,7 @@
     }
 
     /* ====== CATEGORY CLICK + DROPDOWN FORM ====== */
-    .card.category-card{
-      cursor: pointer;
-      user-select:none;
-    }
+    .card.category-card{ cursor: pointer; user-select:none; }
     .card.category-card:focus{outline:none}
 
     .card.category-card.is-active{
@@ -417,7 +398,6 @@
       margin-top: 14px;
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 14px;
-
       max-height: 0;
       opacity: 0;
       overflow: hidden;
@@ -490,6 +470,106 @@
     }
     .req-actions .btn{ padding: 12px 18px; }
 
+    /* ====== STOCK PRODUCTS ===== */
+    .stock-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 22px;
+    }
+    .stock-item{
+      border:1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.40);
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .stock-item:hover{
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.35);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.52);
+    }
+    .stock-img{
+      position:relative;
+      aspect-ratio: 16 / 10;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .stock-img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .bubble{
+      position:absolute;
+      left: 12px;
+      top: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .12em;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 0 1px rgba(179,31,36,0.12) inset;
+    }
+    .bubble-used{ opacity:.92; box-shadow:none; }
+    .stock-body{ padding: 18px; }
+    .stock-top{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      justify-content: space-between;
+    }
+    .stock-title{
+      font-size: 15px;
+      margin: 0;
+      letter-spacing: .06em;
+      line-height: 1.25;
+    }
+    .stock-price{
+      font-weight: 900;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+    .stock-meta{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .stock-desc{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+      min-height: 66px;
+    }
+    .stock-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .stock-actions .btn{ width:auto; }
+
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
@@ -510,49 +590,34 @@
     /* ====== MOBILE (UPRAVENÉ) ====== */
     @media (max-width: 980px){
 
-      /* 1) spravíme z obsahu “pekný stĺpec” a vycentrujeme */
       .wrap{
-        padding: 0 18px;         /* väčší “vzduch” po bokoch */
-        max-width: 720px;        /* nech to nepôsobí nalepené */
-        margin: 0 auto;          /* centrovanie */
+        padding: 0 18px;
+        max-width: 720px;
+        margin: 0 auto;
       }
 
-      /* 2) menej natlačené sekcie */
-      section{
-        padding: 78px 0;
-      }
-      .hero{
-        padding: 70px 0 60px;
-      }
+      section{ padding: 78px 0; }
+      .hero{ padding: 70px 0 60px; }
 
-      /* 3) layout */
       .hero-grid{grid-template-columns:1fr; gap:22px}
       .split{grid-template-columns:1fr; gap:18px}
 
-      /* 4) typografia */
       h1{
         font-size: clamp(34px, 7vw, 48px);
         line-height: 1.08;
       }
-      h2{
-        font-size: clamp(26px, 5.6vw, 34px);
-      }
+      h2{ font-size: clamp(26px, 5.6vw, 34px); }
       p, .subline{
         font-size: 15px;
         line-height: 1.7;
         max-width: 100%;
       }
 
-      /* 5) HERO title nech sa zalomí pekne */
-      .hero-title{
-        flex-wrap: wrap;
-        gap: 10px;
-      }
+      .hero-title{ flex-wrap: wrap; gap: 10px; }
       .hero-logo-inline{ height: 64px; }
       .hero-dash{ font-size: 22px; }
       .hero-slogan-image{ height: 28px; }
 
-      /* 6) CTA tlačidlá: full width */
       .ctaRow{ gap: 10px; }
       .btn{
         width: 100%;
@@ -561,12 +626,10 @@
         font-size: 13px;
       }
 
-      /* 7) hero card + stats */
       .heroCard{ padding: 18px; }
       .statRow{ grid-template-columns: 1fr; gap: 10px; }
       .stat b{ font-size: 16px; }
 
-      /* 8) NAV */
       .nav-centered{
         max-width: 100%;
         flex-direction: column;
@@ -584,29 +647,19 @@
       }
       .brand-mini img{height: 52px}
 
-      /* 9) KATEGÓRIE: voľné, čitateľné, nie natlačené */
       .grid{
         grid-template-columns: 1fr;
-        gap: 20px;               /* viac miesta medzi kartami */
+        gap: 20px;
         margin-top: 22px;
       }
-
       .card{
         padding: 20px;
-        max-width: 680px;        /* karta nebude “nalepená” */
-        margin: 0 auto;          /* centrovanie karty */
+        max-width: 680px;
+        margin: 0 auto;
       }
+      .card:hover{ transform: translateY(-3px); }
+      .arrow{ right: 14px; bottom: 14px; }
 
-      .card:hover{
-        transform: translateY(-3px);
-      }
-
-      .arrow{
-        right: 14px;
-        bottom: 14px;
-      }
-
-      /* 10) dropdown: čitateľný + bez iOS zoomu */
       .req-form{
         grid-template-columns: 1fr;
         gap: 10px;
@@ -615,19 +668,24 @@
       .req-form textarea{
         font-size: 16px;
       }
-      .card.category-card.is-active .card-drop{
-        max-height: 85vh;
+      .card.category-card.is-active .card-drop{ max-height: 85vh; }
+
+      .panel{ padding: 22px; }
+
+      /* STOCK mobile */
+      .stock-grid{
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .stock-item{
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .stock-actions .btn{
+        width: 100%;
       }
 
-      /* 11) panely nech nie sú “stiesnené” */
-      .panel{
-        padding: 22px;
-      }
-
-      /* footer */
-      footer{
-        padding: 40px 0;
-      }
+      footer{ padding: 40px 0; }
       .foot{
         justify-content: center;
         text-align: center;
@@ -659,24 +717,17 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="headline">
-
         <h1 class="hero-title">
           <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
             <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
           </a>
-
           <span class="hero-dash">–</span>
-
-          <img 
-            src="assets/text.png" 
-            alt="BEAT THEM ALL" 
-            class="hero-slogan-image"
-          >
+          <img src="assets/text.png" alt="BEAT THEM ALL" class="hero-slogan-image">
         </h1>
 
         <p class="subline">
           Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach, u nás v RACEM ti zoženieme všetko.
-          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám. 
+          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám.
         </p>
 
         <div class="ctaRow">
@@ -690,22 +741,10 @@
         <p class="muted2">Keď to nevieš nájsť, alebo nechceš preplatiť, náš tím tu je pre teba. Odpovedáme rýchlo a priamo.</p>
 
         <div class="statRow">
-          <div class="stat">
-            <b>Autodiely</b>
-            <span>vyhľadáme, overíme, dodáme</span>
-          </div>
-          <div class="stat">
-            <b>Deals</b>
-            <span>Nájdeme najlepší pomer cena - kvalita</span>
-          </div>
-          <div class="stat">
-            <b>Nové / použité</b>
-            <span>Rating dielov od 1-10</span>
-          </div>
-          <div class="stat">
-            <b>Doručenie domov</b>
-            <span>Kuriérom alebo na dobierku</span>
-          </div>
+          <div class="stat"><b>Autodiely</b><span>vyhľadáme, overíme, dodáme</span></div>
+          <div class="stat"><b>Deals</b><span>Nájdeme najlepší pomer cena - kvalita</span></div>
+          <div class="stat"><b>Nové / použité</b><span>Rating dielov od 1-10</span></div>
+          <div class="stat"><b>Doručenie domov</b><span>Kuriérom alebo na dobierku</span></div>
         </div>
       </div>
     </div>
@@ -719,7 +758,6 @@
           <h2>Podporujeme Vás</h2>
           <div class="panel" style="margin-top:18px">
             <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
-
             <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
 
             <p>
@@ -756,10 +794,7 @@
 
         <div class="panel reveal">
           <h3>Čo robíme (v praxi)</h3>
-
-          <p class="muted2">
-            Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.
-          </p>
+          <p class="muted2">Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.</p>
 
           <p class="muted2" style="margin-top:10px">
             <b>Postup:</b><br>
@@ -783,7 +818,6 @@
   <section>
     <div class="wrap">
       <div class="panel reveal" style="padding:40px">
-
         <span class="pill">
           <span class="dot"></span>
           nezohnateľné • špecifické • atypické • racing
@@ -822,7 +856,6 @@
           <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
           <a class="btn btnGhost" href="#kategorie">Pozrieť kategórie</a>
         </div>
-
       </div>
     </div>
   </section>
@@ -837,14 +870,12 @@
       </p>
 
       <div class="grid">
-
         <!-- STREET -->
         <div class="card reveal category-card" tabindex="0">
           <div class="tag"><span class="dot"></span> STREET</div>
           <h3>Street racing</h3>
           <p>Setupy na bežné jazdenie aj tvrdšie konfigurácie. Praktické, funkčné, bez kompromisov.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Audi / VW..."></div>
@@ -871,7 +902,6 @@
           <h3>Performance & športové</h3>
           <p>Výkon, brzdy, podvozok, sanie, výfuk, chladenie – diely, ktoré robia rozdiel.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="VW / BMW / Mercedes..."></div>
@@ -898,7 +928,6 @@
           <h3>Drift</h3>
           <p>Angle kit, LSD, chladiace sety, brzdy, ramená, steering úpravy – veci, čo drift reálne potrebuje.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Nissan / Toyota..."></div>
@@ -925,7 +954,6 @@
           <h3>Závodné</h3>
           <p>Komponenty pre okruh, drag aj šprinty. Priorita je funkcia, odolnosť a výsledok.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="Nissan / BMW / Honda..."></div>
@@ -952,7 +980,6 @@
           <h3>Náhradné diely</h3>
           <p>Bežné aj špecifické servisné veci. Keď potrebuješ rýchlo opraviť a jazdiť ďalej.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="Škoda / Ford / Opel..."></div>
@@ -979,7 +1006,6 @@
           <h3>OEM & originálne diely</h3>
           <p>Originál kvalita, správna kompatibilita, jasný pôvod. Pre tých, čo chcú istotu.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Mercedes / Audi..."></div>
@@ -1006,7 +1032,6 @@
           <h3>Použité & repasované</h3>
           <p>Keď to dáva zmysel, vieš ušetriť. Stav komunikujeme férovo a jasne.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="Subaru / BMW / Volvo..."></div>
@@ -1033,7 +1058,6 @@
           <h3>Budget riešenia</h3>
           <p>Keď je cieľ funkčné riešenie za čo najmenej. Povieme narovinu, kde sa šetriť oplatí a kde nie.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="Opel / Peugeot / Seat..."></div>
@@ -1060,7 +1084,6 @@
           <h3>Best value</h3>
           <p>Najlepší pomer cena/výkon. Toto je kategória, ktorú si vyberie väčšina rozumných projektov.</p>
           <div class="arrow">→</div>
-
           <div class="card-drop">
             <form class="req-form">
               <div><label>Značka</label><input type="text" name="znacka" placeholder="Honda / BMW / VW..."></div>
@@ -1080,22 +1103,89 @@
             </form>
           </div>
         </div>
-
       </div><!-- /grid -->
 
-      <!-- STOCK -->
+      <!-- STOCK (S PRODUKTMI) -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:40px;">
         <span class="pill"><span class="dot"></span> stock • hneď dostupné • rýchle dodanie</span>
 
         <h2 style="margin-top:18px; max-width:1100px">Čo máme práve na ruke</h2>
         <p style="font-size:17px; max-width:980px">
           Veci, ktoré sú fyzicky dostupné ihneď. Ideálne na rýchly deal a rýchle dodanie.
-          Toto ešte upravíme neskôr – zatiaľ to len oddeľujem ako samostatný veľký blok mimo kategórií.
+          Klikni <b>Mám záujem</b> a skopíruje sa ti hotový text do správy.
         </p>
 
         <div class="ctaRow" style="margin-top:18px">
           <a class="btn btnPrimary" href="#kontakt">Zistiť dostupnosť</a>
           <a class="btn btnGhost" href="#kontakt">Napísať čo hľadám</a>
+        </div>
+
+        <div class="stock-grid">
+          <article class="stock-item" data-condition="Nové" data-region="Trnavský kraj" data-city="Piešťany">
+            <div class="stock-img">
+              <img src="assets/stock/produkt-1.jpg" alt="BREMBO 09.7727.75 – Brzdový kotúč">
+              <span class="bubble">NOVÉ</span>
+            </div>
+            <div class="stock-body">
+              <div class="stock-top">
+                <h3 class="stock-title">BREMBO 09.7727.75 – Brzdový kotúč</h3>
+                <div class="stock-price">119 €</div>
+              </div>
+              <div class="stock-meta">
+                <span class="chip">Piešťany</span>
+                <span class="chip">Trnavský kraj</span>
+              </div>
+              <p class="stock-desc">Vnútorné chladenie, drážkovaný, vysokouhlíkový, so skrutkami. Rýchly upgrade / rýchly servis.</p>
+              <div class="stock-actions">
+                <button class="btn btnPrimary stockCopyBtn" type="button">Mám záujem</button>
+                <a class="btn btnGhost" href="#kontakt">Kontakt</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="stock-item" data-condition="Použité" data-region="Bratislavský kraj" data-city="Bratislava">
+            <div class="stock-img">
+              <img src="assets/stock/produkt-2.jpg" alt="OEM BMW E46 – Svetlo pravé (použité)">
+              <span class="bubble bubble-used">POUŽITÉ</span>
+            </div>
+            <div class="stock-body">
+              <div class="stock-top">
+                <h3 class="stock-title">OEM BMW E46 – Svetlo pravé</h3>
+                <div class="stock-price">65 €</div>
+              </div>
+              <div class="stock-meta">
+                <span class="chip">Bratislava</span>
+                <span class="chip">Bratislavský kraj</span>
+              </div>
+              <p class="stock-desc">Originál diel, vizuálne OK, úchyty v poriadku. Ideálne ako rýchla náhrada na daily.</p>
+              <div class="stock-actions">
+                <button class="btn btnPrimary stockCopyBtn" type="button">Mám záujem</button>
+                <a class="btn btnGhost" href="#kontakt">Kontakt</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="stock-item" data-condition="Nové" data-region="Nitriansky kraj" data-city="Nitra">
+            <div class="stock-img">
+              <img src="assets/stock/produkt-3.jpg" alt="CONTITECH CT1167 – rozvodový remeň">
+              <span class="bubble">NOVÉ</span>
+            </div>
+            <div class="stock-body">
+              <div class="stock-top">
+                <h3 class="stock-title">CONTITECH CT1167 – Rozvodový remeň</h3>
+                <div class="stock-price">39 €</div>
+              </div>
+              <div class="stock-meta">
+                <span class="chip">Nitra</span>
+                <span class="chip">Nitriansky kraj</span>
+              </div>
+              <p class="stock-desc">Nový diel so zárukou. Kompatibilitu overíme podľa VIN / motora – aby to sadlo na 100%.</p>
+              <div class="stock-actions">
+                <button class="btn btnPrimary stockCopyBtn" type="button">Mám záujem</button>
+                <a class="btn btnGhost" href="#kontakt">Kontakt</a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
 
@@ -1161,31 +1251,21 @@
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         const clickedTag = e.target.tagName.toLowerCase();
-        if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) {
-          return;
-        }
-        e.stopPropagation();
+        if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
 
-        if (card.classList.contains('is-active')) {
-          card.classList.remove('is-active');
-        } else {
-          openCard(card);
-        }
+        e.stopPropagation();
+        if (card.classList.contains('is-active')) card.classList.remove('is-active');
+        else openCard(card);
       });
 
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           e.stopPropagation();
-          if (card.classList.contains('is-active')) {
-            card.classList.remove('is-active');
-          } else {
-            openCard(card);
-          }
+          if (card.classList.contains('is-active')) card.classList.remove('is-active');
+          else openCard(card);
         }
-        if (e.key === 'Escape') {
-          card.classList.remove('is-active');
-        }
+        if (e.key === 'Escape') card.classList.remove('is-active');
       });
 
       const closeBtn = card.querySelector('.closeCardBtn');
@@ -1218,7 +1298,6 @@ Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
           navigator.clipboard.writeText(msg).catch(() => {});
-
           const oldText = sendBtn.textContent;
           sendBtn.textContent = "Skopírované ✓";
           setTimeout(() => sendBtn.textContent = oldText, 1500);
@@ -1226,13 +1305,38 @@ Poznámka: ${data.get('poznamka') || ''}`;
       }
     });
 
+    // Klik mimo = zatvoriť
     document.addEventListener('click', (e) => {
-      const clickedInsideAnyCard = Array.from(cards).some(card =>
-        card.contains(e.target)
-      );
-      if (!clickedInsideAnyCard) {
-        closeAll();
-      }
+      const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
+      if (!clickedInsideAnyCard) closeAll();
+    });
+
+    // ===== STOCK COPY BUTTONS =====
+    document.querySelectorAll('.stockCopyBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.stock-item');
+        if (!card) return;
+
+        const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
+        const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
+        const cond = card.getAttribute('data-condition') || '';
+        const region = card.getAttribute('data-region') || '';
+        const city = card.getAttribute('data-city') || '';
+        const desc = card.querySelector('.stock-desc')?.textContent?.trim() || '';
+
+        const msg = `Mám záujem o produkt:
+Názov: ${title}
+Cena: ${price}
+Stav: ${cond}
+Lokalita: ${city}
+Kraj: ${region}
+Popis: ${desc}`;
+
+        navigator.clipboard.writeText(msg).catch(() => {});
+        const old = btn.textContent;
+        btn.textContent = "Skopírované ✓";
+        setTimeout(() => btn.textContent = old, 1500);
+      });
     });
   </script>
 </body>
