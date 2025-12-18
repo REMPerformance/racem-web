@@ -399,10 +399,10 @@
       display:none;
       padding:28px;
 
-      /* jemný dojazd */
-      transform: translateY(8px);
+      /* plynulejšie, pomalšie */
+      transform: translateY(12px);
       opacity: 0;
-      transition: opacity .22s ease, transform .22s ease;
+      transition: opacity .38s ease, transform .38s ease;
     }
     .category-expander.is-open{
       display:block;
@@ -502,28 +502,45 @@
       box-shadow: 0 30px 90px rgba(0,0,0,0.75);
       border: 1px solid rgba(179,31,36,0.55);
       background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
-      transition: transform .55s ease, opacity .35s ease;
+      transition: transform .78s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
     }
-    .flip-ghost .arrow,
-    .flip-ghost .tag{
-      display:none;
+
+    /* aby “ghost” neškáloval text (text vôbec nebude v ghost) */
+    .flip-ghost::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(circle at 25% 25%, rgba(179,31,36,0.18), transparent 55%);
+      opacity:.9;
     }
 
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
 
-    /* ====== FOOTER ====== */
-    footer{
-      padding:55px 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      background: rgba(0,0,0,0.45);
+    /* ====== STOCK AREA (oddelené) ====== */
+    .stock-area{
+      margin-top: 34px;
+      padding: 34px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(20,20,20,0.82), rgba(10,10,10,0.55));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow:hidden;
     }
-    .foot{
-      display:flex; gap:18px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
-      color: var(--muted2);
-      font-size:13px;
+    .stock-area::before{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background: radial-gradient(circle at 15% 25%, rgba(179,31,36,0.18), transparent 55%);
+      transform: rotate(10deg);
+    }
+    .stock-area > *{ position:relative; }
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,0.08);
+      margin: 24px 0;
     }
 
     @media (max-width: 980px){
@@ -542,6 +559,11 @@
       .brand-mini img{height: 52px}
 
       .req-form{ grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .flip-ghost{ transition:none !important; }
+      .category-expander{ transition:none !important; }
     }
   </style>
 </head>
@@ -965,14 +987,27 @@
           </div>
         </div>
 
-        <!-- STOCK -->
-        <div class="card reveal category-card" tabindex="0"
+      </div>
+
+      <!-- FULL-WIDTH DROPDOWN (iba jeden) -->
+      <div id="categoryExpander" class="panel category-expander reveal" aria-live="polite"></div>
+
+      <!-- ODDELENÁ SEKCIA: ČO MÁME PRÁVE NA RUKE -->
+      <div class="stock-area reveal" id="stock">
+        <span class="pill"><span class="dot"></span> skladom • rýchly deal • hneď</span>
+        <h2 style="margin-top:18px">Čo máme práve na ruke</h2>
+        <p class="muted2" style="max-width:980px">
+          Veci, ktoré sú fyzicky dostupné hneď. Ideálne, keď potrebuješ rýchlo poskladať auto, spraviť deal a nechceš čakať.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="card category-card" tabindex="0"
              data-title="Čo máme práve na ruke"
-             data-desc="Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie."
-             style="border-color: rgba(179,31,36,0.35)">
+             data-desc="Veci, ktoré sú fyzicky dostupné hneď. Napíš čo hľadáš a pozrieme sklad / možnosti.">
           <div class="tag"><span class="dot"></span> STOCK</div>
-          <h3>Čo máme práve na ruke</h3>
-          <p>Veci, ktoré sú fyzicky dostupné hneď. Ideálne na rýchly deal a rýchle dodanie.</p>
+          <h3>Aktuálna dostupnosť</h3>
+          <p>Napíš čo hľadáš, na aké auto a či to chceš nové/použité – dáme ti rýchlo odpoveď.</p>
           <div class="ctaRow" style="margin-top:12px">
             <a class="btn btnPrimary" href="#kontakt">Zistiť dostupnosť</a>
           </div>
@@ -998,9 +1033,6 @@
         </div>
 
       </div>
-
-      <!-- FULL-WIDTH DROPDOWN (iba jeden) -->
-      <div id="categoryExpander" class="panel category-expander reveal" aria-live="polite"></div>
 
     </div>
   </section>
@@ -1049,7 +1081,7 @@
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    // ===== CATEGORY: iba jedna otvorená + full width pod gridom + FLIP animácia =====
+    // ===== CATEGORY: iba jedna otvorená + full width pod gridom + plynulejšie, bez skákania =====
     const cards = Array.from(document.querySelectorAll('.category-card'));
     const expander = document.getElementById('categoryExpander');
 
@@ -1094,9 +1126,9 @@
       const start = card.getBoundingClientRect();
       const end = expander.getBoundingClientRect();
 
-      // 3) ghost karta
-      const ghost = card.cloneNode(true);
-      ghost.classList.add('flip-ghost');
+      // 3) ghost (bez textu) -> žiadne naťahovanie písmen
+      const ghost = document.createElement('div');
+      ghost.className = 'flip-ghost';
       document.body.appendChild(ghost);
 
       ghost.style.left = `${start.left}px`;
@@ -1115,7 +1147,7 @@
         ghost.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
       });
 
-      // 5) po animácii: odstráň ghost, ukáž expander pekne
+      // 5) po animácii: odstráň ghost, ukáž expander plynulo
       const done = () => {
         ghost.removeEventListener('transitionend', done);
         ghost.remove();
@@ -1123,9 +1155,7 @@
         expander.style.visibility = 'visible';
         expander.classList.add('is-open');
 
-        setTimeout(() => {
-          expander.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 60);
+        // DÔLEŽITÉ: žiadne scrollIntoView -> obrazovka sa nepohne
       };
       ghost.addEventListener('transitionend', done);
     };
