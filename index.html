@@ -470,156 +470,105 @@
     }
     .req-actions .btn{ padding: 12px 18px; }
 
-    /* ====== STOCK PRODUCTS (DENSE GRID) ===== */
-.stock-grid{
-  display:grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
-  margin-top: 18px;
-}
-
-/* menšia karta */
-.stock-item{
-  border:1px solid rgba(255,255,255,0.08);
-  background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
-  border-radius: 16px;
-  overflow:hidden;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.32);
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-}
-.stock-item:hover{
-  transform: translateY(-4px);
-  border-color: rgba(179,31,36,0.30);
-  box-shadow: 0 18px 55px rgba(0,0,0,0.45);
-}
-
-/* menší obrázok */
-.stock-img{
-  position:relative;
-  aspect-ratio: 4 / 3;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.stock-img img{
-  width:100%;
-  height:100%;
-  object-fit: cover;
-  display:block;
-}
-
-/* bublina */
-.bubble{
-  position:absolute;
-  left: 10px;
-  top: 10px;
-  padding: 6px 9px;
-  border-radius: 999px;
-  font-size: 10px;
-  letter-spacing: .12em;
-  font-weight: 900;
-  text-transform: uppercase;
-  color:#fff;
-  border: 1px solid rgba(255,255,255,0.16);
-  backdrop-filter: blur(8px);
-}
-
-/* farebné rozdelenie */
-.bubble-new{
-  background: rgba(34,197,94,0.86); /* zelená */
-  box-shadow: 0 10px 26px rgba(34,197,94,0.18);
-}
-.bubble-used{
-  background: rgba(245,158,11,0.88); /* oranžová */
-  box-shadow: 0 10px 26px rgba(245,158,11,0.16);
-}
-
-/* kompaktné telo */
-.stock-body{ padding: 12px; }
-
-.stock-top{
-  display:flex;
-  gap: 10px;
-  align-items:flex-start;
-  justify-content: space-between;
-}
-
-.stock-title{
-  font-size: 12px;
-  margin: 0;
-  letter-spacing: .08em;
-  line-height: 1.25;
-  text-transform: uppercase;
-}
-
-.stock-price{
-  font-weight: 900;
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-/* meta */
-.stock-meta{
-  display:flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-.chip{
-  display:inline-flex;
-  align-items:center;
-  padding: 5px 8px;
-  border-radius: 999px;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-}
-
-/* krátky popis (nech je to husté) */
-.stock-desc{
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-  font-size: 12px;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  min-height: 54px;
-}
-
-/* tlačidlá nech sú malé a cez celú kartu */
-.stock-actions{
-  display:flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-.stock-actions .btn{
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-/* ====== responsive hustota ====== */
-@media (max-width: 1400px){
-  .stock-grid{ grid-template-columns: repeat(5, 1fr); }
-}
-@media (max-width: 1200px){
-  .stock-grid{ grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 980px){
-  .stock-grid{ grid-template-columns: repeat(2, 1fr); gap: 12px; }
-}
-@media (max-width: 520px){
-  .stock-grid{ grid-template-columns: 1fr; }
-}
+    /* ====== STOCK PRODUCTS ===== */
+    .stock-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 22px;
+    }
+    .stock-item{
+      border:1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.40);
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .stock-item:hover{
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.35);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.52);
+    }
+    .stock-img{
+      position:relative;
+      aspect-ratio: 16 / 10;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .stock-img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .bubble{
+      position:absolute;
+      left: 12px;
+      top: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .12em;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 0 1px rgba(179,31,36,0.12) inset;
+    }
+    .bubble-used{ opacity:.92; box-shadow:none; }
+    .stock-body{ padding: 18px; }
+    .stock-top{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      justify-content: space-between;
+    }
+    .stock-title{
+      font-size: 15px;
+      margin: 0;
+      letter-spacing: .06em;
+      line-height: 1.25;
+    }
+    .stock-price{
+      font-weight: 900;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+    .stock-meta{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .stock-desc{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+      min-height: 66px;
+    }
+    .stock-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .stock-actions .btn{ width:auto; }
 
     /* ====== REVEAL ====== */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
@@ -1175,7 +1124,7 @@
           <article class="stock-item" data-condition="Nové" data-region="Trnavský kraj" data-city="Piešťany">
             <div class="stock-img">
               <img src="assets/stock/produkt-1.jpg" alt="BREMBO 09.7727.75 – Brzdový kotúč">
-              <span class="bubble bubble-new">NOVÉ</span>
+              <span class="bubble">NOVÉ</span>
             </div>
             <div class="stock-body">
               <div class="stock-top">
@@ -1219,7 +1168,7 @@
           <article class="stock-item" data-condition="Nové" data-region="Nitriansky kraj" data-city="Nitra">
             <div class="stock-img">
               <img src="assets/stock/produkt-3.jpg" alt="CONTITECH CT1167 – rozvodový remeň">
-              <span class="bubble bubble-new">NOVÉ</span>
+              <span class="bubble">NOVÉ</span>
             </div>
             <div class="stock-body">
               <div class="stock-top">
@@ -1362,22 +1311,20 @@ Poznámka: ${data.get('poznamka') || ''}`;
       if (!clickedInsideAnyCard) closeAll();
     });
 
-    // ===== STOCK COPY BUTTONS (delegácia) =====
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.stockCopyBtn');
-  if (!btn) return;
+    // ===== STOCK COPY BUTTONS =====
+    document.querySelectorAll('.stockCopyBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.stock-item');
+        if (!card) return;
 
-  const card = btn.closest('.stock-item');
-  if (!card) return;
+        const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
+        const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
+        const cond = card.getAttribute('data-condition') || '';
+        const region = card.getAttribute('data-region') || '';
+        const city = card.getAttribute('data-city') || '';
+        const desc = card.querySelector('.stock-desc')?.textContent?.trim() || '';
 
-  const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
-  const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
-  const cond = card.getAttribute('data-condition') || '';
-  const region = card.getAttribute('data-region') || '';
-  const city = card.getAttribute('data-city') || '';
-  const desc = card.querySelector('.stock-desc')?.textContent?.trim() || '';
-
-  const msg = `Mám záujem o produkt:
+        const msg = `Mám záujem o produkt:
 Názov: ${title}
 Cena: ${price}
 Stav: ${cond}
@@ -1385,11 +1332,11 @@ Lokalita: ${city}
 Kraj: ${region}
 Popis: ${desc}`;
 
-  navigator.clipboard.writeText(msg).catch(() => {});
-  const old = btn.textContent;
-  btn.textContent = "Skopírované ✓";
-  setTimeout(() => btn.textContent = old, 1500);
-});
+        navigator.clipboard.writeText(msg).catch(() => {});
+        const old = btn.textContent;
+        btn.textContent = "Skopírované ✓";
+        setTimeout(() => btn.textContent = old, 1500);
+      });
     });
   </script>
 </body>
