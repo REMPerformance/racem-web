@@ -41,9 +41,9 @@
     /* FULL WIDTH WRAP */
     .wrap{
       width:100%;
-      max-width:none;     /* zrušený limit 1100px */
+      max-width:none;
       margin:0;
-      padding:0 32px 40px; /* trocha okrajov od kraja */
+      padding:0 32px 40px;
     }
 
     /* NAVBAR */
@@ -58,9 +58,9 @@
 
     .nav{
       width:100%;
-      max-width:none;     /* tiež full width */
+      max-width:none;
       margin:0;
-      padding:14px 32px 10px; /* rovnaký padding ako .wrap */
+      padding:14px 32px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -151,7 +151,7 @@
     .page-sub{
       font-size:14px;
       color:var(--muted);
-      max-width:none;  /* žiadne obmedzenie, full width text */
+      max-width:none;
       line-height:1.5;
     }
 
@@ -190,14 +190,16 @@
     .section-note{
       font-size:12px;
       color:var(--muted2);
-      max-width:none; /* tiež full width */
+      max-width:none;
       line-height:1.4;
     }
 
+    /* >>> TU JE DÔLEŽITÁ ZMENA <<< */
     .parts-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      grid-template-columns:repeat(auto-fill, minmax(280px, 320px));
       gap:16px;
+      justify-content:flex-start; /* karty majú fixnejšiu šírku, len sa pridávajú nové stĺpce */
     }
 
     .part-card{
@@ -363,7 +365,7 @@
       justify-content:space-between;
       flex-wrap:wrap;
       gap:8px;
-      padding:0 32px; /* zarovnanie s .wrap */
+      padding:0 32px;
     }
 
     footer a{
