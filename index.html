@@ -1023,55 +1023,59 @@
   </footer>
 
   <script>
-    // reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const activate = () => {
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 110) el.classList.add('active');
-      });
-    };
-    window.addEventListener('scroll', activate);
-    window.addEventListener('load', activate);
-
-    // subtle parallax
-    window.addEventListener('scroll', () => {
-      const sc = window.scrollY;
-      const bg = document.querySelector('.bg');
-      if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const activate = () => {
+    reveals.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 110) el.classList.add('active');
     });
-    
-    // ===== CATEGORY DROPDOWNS (ONE OPEN, NO PAGE JUMP) =====
+  };
+  window.addEventListener('scroll', activate);
+  window.addEventListener('load', activate);
+
+  // subtle parallax
+  window.addEventListener('scroll', () => {
+    const sc = window.scrollY;
+    const bg = document.querySelector('.bg');
+    if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  });
+
+  // ===== CATEGORY DROPDOWNS (ONE OPEN, NO PAGE JUMP) =====
   const cards = Array.from(document.querySelectorAll('.category-card'));
 
-  const closeAll = () => {
-    cards.forEach(c => c.classList.remove('is-active'));
+  const closeAll = (exceptCard = null) => {
+    cards.forEach(c => {
+      if (c !== exceptCard) c.classList.remove('is-active');
+    });
   };
 
   const toggleCard = (card) => {
     const isOpen = card.classList.contains('is-active');
 
-    // zavri všetko
-    closeAll();
+    // zavri všetko okrem tejto
+    closeAll(card);
 
-    // ak už bolo otvorené, tak ostane zavreté
-    if (isOpen) return;
-
-    // otvor iba túto jednu
-    card.classList.add('is-active');
+    // toggle iba tejto jednej
+    if (isOpen) card.classList.remove('is-active');
+    else card.classList.add('is-active');
   };
 
-  // klik na kartu (okrem inputov a buttonov)
   cards.forEach(card => {
+
+    // klik na kartu (okrem inputov a buttonov)
     card.addEventListener('click', (e) => {
       const tag = e.target.tagName.toLowerCase();
-      if (['input','textarea','button','a','label'].includes(tag)) return;
+      if (['input','textarea','button','a','label','select','option'].includes(tag)) return;
+
+      e.stopPropagation();   // <<< kľúčové
       toggleCard(card);
     });
 
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
+        e.stopPropagation();
         toggleCard(card);
       }
       if (e.key === 'Escape') {
@@ -1084,6 +1088,7 @@
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         card.classList.remove('is-active');
       });
     }
@@ -1091,7 +1096,10 @@
     // copy dopytu (ak existuje)
     const sendBtn = card.querySelector('.sendRequestBtn');
     if (sendBtn) {
-      sendBtn.addEventListener('click', () => {
+      sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();   // <<< aby neskákalo na #kontakt
+        e.stopPropagation();
+
         const form = card.querySelector('form');
         if(!form) return;
 
@@ -1108,14 +1116,19 @@ Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
         try { navigator.clipboard.writeText(msg); } catch (err) {}
+
+        // mini feedback
+        const old = sendBtn.textContent;
+        sendBtn.textContent = "Skopírované ✓";
+        setTimeout(() => sendBtn.textContent = old, 1200);
       });
     }
   });
 
-  // klik mimo kariet => zavri (ALE nie keď klikáš do dropdownu v rámci karty)
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.category-card')) closeAll();
+  // klik mimo kariet => zavri
+  document.addEventListener('click', () => {
+    closeAll();
   });
-  </script>
+</script>
 </body>
 </html>
