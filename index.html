@@ -1023,89 +1023,94 @@
   </footer>
 
   <script>
-  // reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const activate = () => {
-    reveals.forEach(el => {
-      const top = el.getBoundingClientRect().top;
-      if (top < window.innerHeight - 110) el.classList.add('active');
-    });
-  };
-  window.addEventListener('scroll', activate);
-  window.addEventListener('load', activate);
-
-  // subtle parallax
-  window.addEventListener('scroll', () => {
-    const sc = window.scrollY;
-    const bg = document.querySelector('.bg');
-    if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+// reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const activate = () => {
+  reveals.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < window.innerHeight - 110) el.classList.add('active');
   });
+};
+window.addEventListener('scroll', activate);
+window.addEventListener('load', activate);
 
-  // ===== CATEGORY DROPDOWNS (ONE OPEN, NO PAGE JUMP) =====
-  const cards = Array.from(document.querySelectorAll('.category-card'));
+// subtle parallax
+window.addEventListener('scroll', () => {
+  const sc = window.scrollY;
+  const bg = document.querySelector('.bg');
+  if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+});
 
-  const closeAll = (exceptCard = null) => {
-    cards.forEach(c => {
-      if (c !== exceptCard) c.classList.remove('is-active');
-    });
-  };
+// ===== CATEGORY DROPDOWNS – iba jedna otvorená =====
+const cards = document.querySelectorAll('.category-card');
 
-  const toggleCard = (card) => {
-    const isOpen = card.classList.contains('is-active');
+const closeAll = (exceptCard = null) => {
+  cards.forEach(c => {
+    if (c !== exceptCard) c.classList.remove('is-active');
+  });
+};
 
-    // zavri všetko okrem tejto
-    closeAll(card);
+const toggleCard = (card) => {
+  const isCurrentlyActive = card.classList.contains('is-active');
 
-    // toggle iba tejto jednej
-    if (isOpen) card.classList.remove('is-active');
-    else card.classList.add('is-active');
-  };
+  // zavrieme všetky ostatné
+  closeAll(card);
 
-  cards.forEach(card => {
+  // ak bola už otvorená, zavrieme ju úplne
+  if (isCurrentlyActive) {
+    card.classList.remove('is-active');
+  } else {
+    card.classList.add('is-active');
+  }
+};
 
-    // klik na kartu (okrem inputov a buttonov)
-    card.addEventListener('click', (e) => {
-      const tag = e.target.tagName.toLowerCase();
-      if (['input','textarea','button','a','label','select','option'].includes(tag)) return;
-
-      e.stopPropagation();   // <<< kľúčové
-      toggleCard(card);
-    });
-
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleCard(card);
-      }
-      if (e.key === 'Escape') {
-        card.classList.remove('is-active');
-      }
-    });
-
-    // close button (ak existuje)
-    const closeBtn = card.querySelector('.closeCardBtn');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        card.classList.remove('is-active');
-      });
+// klik na kartu (ale nie na inputy, buttony atď.)
+cards.forEach(card => {
+  card.addEventListener('click', (e) => {
+    // ignorujeme kliky na formulárové prvky
+    const tag = e.target.tagName.toLowerCase();
+    if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(tag)) {
+      return;
     }
 
-    // copy dopytu (ak existuje)
-    const sendBtn = card.querySelector('.sendRequestBtn');
-    if (sendBtn) {
-      sendBtn.addEventListener('click', (e) => {
-        e.preventDefault();   // <<< aby neskákalo na #kontakt
-        e.stopPropagation();
+    e.stopPropagation(); // zabráni globálnemu click listeneru
+    toggleCard(card);
+  });
 
-        const form = card.querySelector('form');
-        if(!form) return;
+  // klávesnica
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleCard(card);
+    }
+    if (e.key === 'Escape') {
+      card.classList.remove('is-active');
+    }
+  });
 
-        const data = new FormData(form);
-        const msg =
-`Kategória: ${data.get('kategoria') || ''}
+  // tlačidlo Zavrieť
+  const closeBtn = card.querySelector('.closeCardBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      card.classList.remove('is-active');
+    });
+  }
+
+  // tlačidlo Odoslať dopyt (kopírovanie do schránky)
+  const sendBtn = card.querySelector('.sendRequestBtn');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const form = card.querySelector('form');
+      if (!form) return;
+
+      const data = new FormData(form);
+      const msg = `Kategória: ${data.get('kategoria') || ''}
 Značka: ${data.get('znacka') || ''}
 Model: ${data.get('model') || ''}
 Motorizácia: ${data.get('motorizacia') || ''}
@@ -1115,20 +1120,27 @@ Karoséria: ${data.get('karoseria') || ''}
 Diel: ${data.get('diel') || ''}
 Poznámka: ${data.get('poznamka') || ''}`;
 
-        try { navigator.clipboard.writeText(msg); } catch (err) {}
+      navigator.clipboard.writeText(msg).catch(() => {});
 
-        // mini feedback
-        const old = sendBtn.textContent;
-        sendBtn.textContent = "Skopírované ✓";
-        setTimeout(() => sendBtn.textContent = old, 1200);
-      });
+      const oldText = sendBtn.textContent;
+      sendBtn.textContent = "Skopírované ✓";
+      setTimeout(() => sendBtn.textContent = oldText, 1500);
+    });
+  }
+});
+
+// klik mimo otvorenej karty = zavrie všetky
+document.addEventListener('click', (e) => {
+  // ak sme klikli priamo na kartu alebo do jej vnútra, nerobíme nič
+  let target = e.target;
+  while (target && target !== document) {
+    if (target.classList && target.classList.contains('category-card')) {
+      return;
     }
-  });
-
-  // klik mimo kariet => zavri
-  document.addEventListener('click', () => {
-    closeAll();
-  });
+    target = target.parentElement;
+  }
+  closeAll();
+});
 </script>
 </body>
 </html>
