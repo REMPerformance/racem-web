@@ -153,50 +153,6 @@
       line-height:1.5;
     }
 
-    /* FILTER BAR (voliteľné – nechávam pripravené) */
-    .filter-bar{
-      margin:24px 0 28px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .filter-pill{
-      border-radius:999px;
-      padding:7px 13px;
-      border:1px solid var(--line);
-      background:rgba(13,13,13,0.9);
-      font-size:12px;
-      color:var(--muted);
-      display:flex;
-      align-items:center;
-      gap:8px;
-      cursor:pointer;
-      transition:all .16s ease-out;
-    }
-
-    .filter-pill strong{
-      font-size:11px;
-      text-transform:uppercase;
-      color:#fff;
-      letter-spacing:0.12em;
-    }
-
-    .filter-pill:hover{
-      border-color:rgba(255,255,255,0.18);
-      transform:translateY(-1px);
-      box-shadow:0 10px 30px rgba(0,0,0,0.6);
-    }
-
-    .filter-pill span.badge{
-      padding:2px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.18);
-      font-size:10px;
-      text-transform:uppercase;
-      color:var(--muted2);
-    }
-
     /* SEKCIE – SKLADOM / NA OBJEDNÁVKU */
     section.catalog-section{
       margin:18px 0 32px;
@@ -307,6 +263,24 @@
       color:#ffe7b5;
       background:radial-gradient(circle at top, rgba(255,182,72,0.2), transparent 55%);
       box-shadow:0 0 18px rgba(255,182,72,0.45);
+    }
+
+    /* MALÝ OBRÁZOK PRI KAŽDOM DIELE (SKLADOM) */
+    .part-image{
+      width:100%;
+      height:130px;
+      border-radius:14px;
+      overflow:hidden;
+      margin:6px 0 10px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:#050505;
+    }
+
+    .part-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     .part-tags{
@@ -448,22 +422,6 @@
       Nižšie nájdeš diely <b>na objednávku</b>, ktoré berieme od našich partnerov zo Slovenska, Česka aj EÚ.
       Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
     </p>
-
-    <!-- VOLITEĽNÝ FILTER BAR – môžeš si texty prepísať alebo úplne vymazať -->
-    <div class="filter-bar">
-      <div class="filter-pill">
-        <strong>Filtrovať podľa auta</strong>
-        <span class="badge">Značka · model · motor</span>
-      </div>
-      <div class="filter-pill">
-        <strong>Brzdy / motor / podvozok</strong>
-        <span class="badge">Kategória dielu</span>
-      </div>
-      <div class="filter-pill">
-        <strong>OEM číslo</strong>
-        <span class="badge">Zadaj číslo dielu</span>
-      </div>
-    </div>
   </section>
 
   <!-- SKLADOM – IHNEĎ K ODPOSLANIU -->
@@ -488,6 +446,11 @@
             </div>
           </div>
           <div class="part-badge in-stock">Skladom 2 ks</div>
+        </div>
+
+        <div class="part-image">
+          <!-- sem si daj vlastné foto kotúča -->
+          <img src="https://via.placeholder.com/600x300" alt="BREMBO 09.7727.75 – brzdový kotúč">
         </div>
 
         <div class="part-tags">
@@ -521,6 +484,11 @@
           <div class="part-badge in-stock">Skladom 1 sada</div>
         </div>
 
+        <div class="part-image">
+          <!-- sem svoje foto zadných kotúčov -->
+          <img src="https://via.placeholder.com/600x300" alt="MAXGEAR 19-1018 – brzdový kotúč">
+        </div>
+
         <div class="part-tags">
           <span class="tag">BMW E46</span>
           <span class="tag">Zadná náprava</span>
@@ -542,6 +510,10 @@
       <!-- ĎALŠIE SKLADOVÉ DIELY – KOPÍRUJ A ÚPRAV -->
       <!--
       <article class="part-card">
+        <div class="part-top">...</div>
+        <div class="part-image">
+          <img src="TVOJ-OBRAZOK.jpg" alt="Názov dielu">
+        </div>
         ...
       </article>
       -->
