@@ -1038,58 +1038,58 @@ window.addEventListener('load', activate);
 window.addEventListener('scroll', () => {
   const sc = window.scrollY;
   const bg = document.querySelector('.bg');
-  if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
 });
 
-// ===== CATEGORY DROPDOWNS – iba jedna otvorená =====
+// ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
 const cards = document.querySelectorAll('.category-card');
 
-const closeAll = (exceptCard = null) => {
-  cards.forEach(c => {
-    if (c !== exceptCard) c.classList.remove('is-active');
-  });
+const closeAll = () => {
+  cards.forEach(card => card.classList.remove('is-active'));
 };
 
-const toggleCard = (card) => {
-  const isCurrentlyActive = card.classList.contains('is-active');
-
-  // zavrieme všetky ostatné
-  closeAll(card);
-
-  // ak bola už otvorená, zavrieme ju úplne
-  if (isCurrentlyActive) {
-    card.classList.remove('is-active');
-  } else {
-    card.classList.add('is-active');
-  }
+const openCard = (card) => {
+  closeAll();
+  card.classList.add('is-active');
 };
 
-// klik na kartu (ale nie na inputy, buttony atď.)
+// Kliknutie priamo na kartu (nie na formulárové prvky)
 cards.forEach(card => {
   card.addEventListener('click', (e) => {
-    // ignorujeme kliky na formulárové prvky
-    const tag = e.target.tagName.toLowerCase();
-    if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(tag)) {
+    // Ak klikol na input, textarea, button, a, label – necháme to tak (neotvárame/zatvárame)
+    const clickedTag = e.target.tagName.toLowerCase();
+    if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) {
       return;
     }
 
-    e.stopPropagation(); // zabráni globálnemu click listeneru
-    toggleCard(card);
+    // Zabránime, aby sa tento klik preniesol na document
+    e.stopPropagation();
+
+    // Ak je už otvorená, zatvoríme ju; inak otvoríme
+    if (card.classList.contains('is-active')) {
+      card.classList.remove('is-active');
+    } else {
+      openCard(card);
+    }
   });
 
-  // klávesnica
+  // Klávesnica (Enter alebo medzera)
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       e.stopPropagation();
-      toggleCard(card);
+      if (card.classList.contains('is-active')) {
+        card.classList.remove('is-active');
+      } else {
+        openCard(card);
+      }
     }
     if (e.key === 'Escape') {
       card.classList.remove('is-active');
     }
   });
 
-  // tlačidlo Zavrieť
+  // Tlačidlo "Zavrieť"
   const closeBtn = card.querySelector('.closeCardBtn');
   if (closeBtn) {
     closeBtn.addEventListener('click', (e) => {
@@ -1099,7 +1099,7 @@ cards.forEach(card => {
     });
   }
 
-  // tlačidlo Odoslať dopyt (kopírovanie do schránky)
+  // Tlačidlo "Odoslať dopyt" – kopírovanie do schránky
   const sendBtn = card.querySelector('.sendRequestBtn');
   if (sendBtn) {
     sendBtn.addEventListener('click', (e) => {
@@ -1129,17 +1129,15 @@ Poznámka: ${data.get('poznamka') || ''}`;
   }
 });
 
-// klik mimo otvorenej karty = zavrie všetky
+// Klik mimo akejkoľvek karty = zatvoríme všetky
 document.addEventListener('click', (e) => {
-  // ak sme klikli priamo na kartu alebo do jej vnútra, nerobíme nič
-  let target = e.target;
-  while (target && target !== document) {
-    if (target.classList && target.classList.contains('category-card')) {
-      return;
-    }
-    target = target.parentElement;
+  const clickedInsideAnyCard = Array.from(cards).some(card => 
+    card.contains(e.target)
+  );
+
+  if (!clickedInsideAnyCard) {
+    closeAll();
   }
-  closeAll();
 });
 </script>
 </body>
