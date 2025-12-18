@@ -117,28 +117,27 @@
     }
     .red{color:var(--red)}
     .muted2{color:var(--muted2)}
+
     /* ===== HERO TITLE INLINE LOGO ===== */
-.hero-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .hero-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.hero-logo-inline{
-  height:90px;        /* 👈 TU je to 5× menšie */
-  width:auto;
-  object-fit:contain;
-  vertical-align:middle;
-}
+    .hero-logo-inline{
+      height:90px;
+      width:auto;
+      object-fit:contain;
+      vertical-align:middle;
+    }
 
-.hero-dash{
-  color: var(--muted2);
-}
+    .hero-dash{ color: var(--muted2); }
 
-.hero-slogan{
-  color:#fff;
-  font-weight:800;
-}
+    .hero-slogan{
+      color:#fff;
+      font-weight:800;
+    }
 
     /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
     .topbar{
@@ -150,7 +149,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* nechávame .nav len ako “hook”, ale reálne riadi .nav-centered */
     .nav{ padding:0; }
 
     .nav-centered{
@@ -400,33 +398,38 @@
     }
     .card.category-card:focus{outline:none}
 
+    /* ✅ ACTIVE CARD – viditeľné červené zvýraznenie */
     .card.category-card.is-active{
-      border-color: rgba(179,31,36,0.55);
+      border-color: var(--red);
       box-shadow:
-        0 18px 60px rgba(0,0,0,0.55),
-        0 0 0 1px rgba(179,31,36,0.15) inset;
-      animation: cardHighlight .35s ease both;
+        0 0 0 2px rgba(179,31,36,0.45),
+        0 22px 70px rgba(179,31,36,0.35),
+        inset 0 0 0 1px rgba(179,31,36,0.25);
+      transform: translateY(-8px);
     }
-    @keyframes cardHighlight{
-      from{ transform: translateY(-2px); filter: brightness(1); }
-      to{ transform: translateY(-8px); filter: brightness(1.05); }
+    .card.category-card.is-active::before{
+      opacity: 1;
+      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.35), transparent 60%);
     }
 
+    /* ✅ Full-width “feel” dropdown (v rámci karty, ale na 100% šírky karty) */
     .card-drop{
-      margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 14px;
+      width:100%;
+      margin-top:22px;
+      padding-top:22px;
+      border-top:1px solid rgba(255,255,255,0.12);
 
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transform: translateY(-6px);
-      transition: max-height .45s ease, opacity .35s ease, transform .35s ease;
+      max-height:0;
+      opacity:0;
+      overflow:hidden;
+
+      transition:
+        max-height .45s ease,
+        opacity .35s ease;
     }
     .card.category-card.is-active .card-drop{
-      max-height: 520px;
-      opacity: 1;
-      transform: translateY(0);
+      max-height:1000px;
+      opacity:1;
     }
 
     .req-form{
@@ -533,21 +536,18 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="headline">
-        
 
         <h1 class="hero-title">
-  <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
-  <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
-</a>
-  <span class="hero-dash">–</span>
-  <span class="hero-slogan">BEAT THEM ALL</span>
-</h1>
-
-        
+          <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
+            <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
+          </a>
+          <span class="hero-dash">–</span>
+          <span class="hero-slogan">BEAT THEM ALL</span>
+        </h1>
 
         <p class="subline">
           Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach, u nás v RACEM ti zoženieme všetko.
-          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám. 
+          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám.
         </p>
 
         <div class="ctaRow">
@@ -589,63 +589,62 @@
         <div class="reveal">
           <h2>Podporujeme Vás</h2>
           <div class="panel" style="margin-top:18px">
-  <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
+            <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
 
-  <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
+            <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
 
-  <p>
-    Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
-    RACEM aktívne podporuje jazdcov a projekty, ktoré to myslia vážne –
-    od lokálnych drift tímov až po profesionálne pretekárske zostavy.
-  </p>
+            <p>
+              Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
+              RACEM aktívne podporuje jazdcov a projekty, ktoré to myslia vážne –
+              od lokálnych drift tímov až po profesionálne pretekárske zostavy.
+            </p>
 
-  <p class="muted2">
-    <b>Podporujeme:</b><br>
-    • drift tímy a jednotlivcov<br>
-    • amatérske aj profesionálne preteky<br>
-    • lokálne aj národné motoristické podujatia
-  </p>
+            <p class="muted2">
+              <b>Podporujeme:</b><br>
+              • drift tímy a jednotlivcov<br>
+              • amatérske aj profesionálne preteky<br>
+              • lokálne aj národné motoristické podujatia
+            </p>
 
-  <p class="muted2" style="margin-top:12px">
-    <b>Ponúkame:</b><br>
-    • sponzoring tímov a jazdcov<br>
-    • zvýhodnené ceny dielov a služieb<br>
-    • technickú a traťovú podporu<br>
-    • individuálny a férový prístup
-  </p>
+            <p class="muted2" style="margin-top:12px">
+              <b>Ponúkame:</b><br>
+              • sponzoring tímov a jazdcov<br>
+              • zvýhodnené ceny dielov a služieb<br>
+              • technickú a traťovú podporu<br>
+              • individuálny a férový prístup
+            </p>
 
-  <p style="margin-top:14px">
-    Ak buduješ auto, tím alebo celý projekt a hľadáš partnera,
-    ktorý rozumie realite motorsportu, <b>radi sa staneme súčasťou tvojej cesty</b>.
-  </p>
+            <p style="margin-top:14px">
+              Ak buduješ auto, tím alebo celý projekt a hľadáš partnera,
+              ktorý rozumie realite motorsportu, <b>radi sa staneme súčasťou tvojej cesty</b>.
+            </p>
 
-  <div class="ctaRow" style="margin-top:12px">
-    <a class="btn btnPrimary" href="#kontakt">Kontaktuj nás</a>
-  </div>
-</div>
-          
+            <div class="ctaRow" style="margin-top:12px">
+              <a class="btn btnPrimary" href="#kontakt">Kontaktuj nás</a>
+            </div>
+          </div>
         </div>
 
         <div class="panel reveal">
-  <h3>Čo robíme (v praxi)</h3>
+          <h3>Čo robíme (v praxi)</h3>
 
-  <p class="muted2">
-    Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.
-  </p>
+          <p class="muted2">
+            Nehrá sa tu na katalógové kliky. Každý dopyt riešime individuálne a technicky správne.
+          </p>
 
-  <p class="muted2" style="margin-top:10px">
-    <b>Postup:</b><br>
-    • overenie kompatibility (značka, model, motor, ročník)<br>
-    • návrh riešení podľa cieľa projektu (OEM / aftermarket / budget / performance)<br>
-    • preverenie dostupnosti, dodacích lehôt a reálnej ceny<br>
-    • dohoda na riešení, objednanie a zabezpečenie dodania
-  </p>
+          <p class="muted2" style="margin-top:10px">
+            <b>Postup:</b><br>
+            • overenie kompatibility (značka, model, motor, ročník)<br>
+            • návrh riešení podľa cieľa projektu (OEM / aftermarket / budget / performance)<br>
+            • preverenie dostupnosti, dodacích lehôt a reálnej ceny<br>
+            • dohoda na riešení, objednanie a zabezpečenie dodania
+          </p>
 
-  <p class="muted2" style="margin-top:14px">
-    Ak ide o <b>použitý alebo repasovaný diel</b>, stav komunikujeme otvorene a bez obchádzania.
-    Vieš presne, čo kupuješ, v akom je to stave a prečo to odporúčame.
-  </p>
-</div>
+          <p class="muted2" style="margin-top:14px">
+            Ak ide o <b>použitý alebo repasovaný diel</b>, stav komunikujeme otvorene a bez obchádzania.
+            Vieš presne, čo kupuješ, v akom je to stave a prečo to odporúčame.
+          </p>
+        </div>
 
       </div>
     </div>
@@ -653,51 +652,52 @@
 
   <!-- NEZOHNATELNY DIEL -->
   <section>
-  <div class="wrap">
-    <div class="panel reveal" style="padding:40px">
+    <div class="wrap">
+      <div class="panel reveal" style="padding:40px">
 
-      <span class="pill">
-        <span class="dot"></span>
-        nezohnateľné • špecifické • atypické • racing
-      </span>
+        <span class="pill">
+          <span class="dot"></span>
+          nezohnateľné • špecifické • atypické • racing
+        </span>
 
-      <h2 style="margin-top:22px; max-width:1100px">
-        Máš nezohnateľný diel alebo riešiš niečo, čo bežné e-shopy nevedia?
-      </h2>
+        <h2 style="margin-top:22px; max-width:1100px">
+          Máš nezohnateľný diel alebo riešiš niečo, čo bežné e-shopy nevedia?
+        </h2>
 
-      <p style="font-size:17px; max-width:1000px">
-        Presne na toto je tu náš tím.
-        Nezáleží, či ide o jeden špecifický šrób, diel z limitovanej edície,
-        komponent zo závodného auta alebo riešenie mimo katalógu.
-      </p>
+        <p style="font-size:17px; max-width:1000px">
+          Presne na toto je tu náš tím.
+          Nezáleží, či ide o jeden špecifický šrób, diel z limitovanej edície,
+          komponent zo závodného auta alebo riešenie mimo katalógu.
+        </p>
 
-      <p class="muted2" style="margin-top:16px; max-width:980px">
-        <b>Čo pre teba spravíme:</b><br>
-        • aktívne vyhľadáme diely mimo bežnej distribúcie<br>
-        • preveríme kompatibilitu a reálne použitie v praxi<br>
-        • oslovíme zahraničných dodávateľov, sklady aj súkromné zdroje<br>
-        • navrhneme alternatívy, ak originál nie je dostupný
-      </p>
+        <p class="muted2" style="margin-top:16px; max-width:980px">
+          <b>Čo pre teba spravíme:</b><br>
+          • aktívne vyhľadáme diely mimo bežnej distribúcie<br>
+          • preveríme kompatibilitu a reálne použitie v praxi<br>
+          • oslovíme zahraničných dodávateľov, sklady aj súkromné zdroje<br>
+          • navrhneme alternatívy, ak originál nie je dostupný
+        </p>
 
-      <p class="muted2" style="margin-top:14px; max-width:980px">
-        Vyhľadanie a návrh riešenia robíme <span class="red"><b>zadarmo</b></span>.
-        Platíš až vtedy, keď sa dohodneme na konkrétnom diele, cene a dodaní.
-        Bez záväzkov, bez skrytých poplatkov.
-      </p>
+        <p class="muted2" style="margin-top:14px; max-width:980px">
+          Vyhľadanie a návrh riešenia robíme <span class="red"><b>zadarmo</b></span>.
+          Platíš až vtedy, keď sa dohodneme na konkrétnom diele, cene a dodaní.
+          Bez záväzkov, bez skrytých poplatkov.
+        </p>
 
-      <p style="margin-top:16px; max-width:980px">
-        Ak riešiš projekt, kde bežné riešenia nestačia,
-        radi to preberieme a nájdeme cestu, ktorá dáva technický aj finančný zmysel.
-      </p>
+        <p style="margin-top:16px; max-width:980px">
+          Ak riešiš projekt, kde bežné riešenia nestačia,
+          radi to preberieme a nájdeme cestu, ktorá dáva technický aj finančný zmysel.
+        </p>
 
-      <div class="ctaRow" style="margin-top:20px">
-        <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
-        <a class="btn btnGhost" href="#kategorie">Pozrieť kategórie</a>
+        <div class="ctaRow" style="margin-top:20px">
+          <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
+          <a class="btn btnGhost" href="#kategorie">Pozrieť kategórie</a>
+        </div>
+
       </div>
-
     </div>
-  </div>
-</section>
+  </section>
+
   <!-- KATEGORIE -->
   <section id="kategorie">
     <div class="wrap">
@@ -1012,51 +1012,54 @@
       if(bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    // ===== CATEGORY DROPDOWNS =====
+    // ✅ CATEGORY DROPDOWNS – vždy iba jedna otvorená + jasné zvýraznenie
     const cards = Array.from(document.querySelectorAll('.category-card'));
 
-    const closeAll = () => {
+    function closeAll(){
       cards.forEach(c => c.classList.remove('is-active'));
-    };
-
-    const toggleCard = (card) => {
-      const isOpen = card.classList.contains('is-active');
-      closeAll();
-      if(!isOpen){
-        card.classList.add('is-active');
-        setTimeout(() => {
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 50);
-      }
-    };
+    }
 
     cards.forEach(card => {
+      // click
       card.addEventListener('click', (e) => {
-        const tag = e.target.tagName.toLowerCase();
-        if (['input','textarea','button','a','label'].includes(tag)) return;
-        toggleCard(card);
+        if (e.target.closest('input, textarea, a, button, label')) return;
+
+        const isOpen = card.classList.contains('is-active');
+        closeAll();
+
+        if (!isOpen) {
+          card.classList.add('is-active');
+          setTimeout(() => {
+            card.scrollIntoView({ behavior:'smooth', block:'center' });
+          }, 80);
+        }
       });
 
+      // keyboard
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          toggleCard(card);
+          const isOpen = card.classList.contains('is-active');
+          closeAll();
+          if(!isOpen) card.classList.add('is-active');
         }
         if (e.key === 'Escape') {
           card.classList.remove('is-active');
         }
       });
 
+      // close button
       const closeBtn = card.querySelector('.closeCardBtn');
-      if (closeBtn) {
+      if(closeBtn){
         closeBtn.addEventListener('click', (e) => {
           e.preventDefault();
           card.classList.remove('is-active');
         });
       }
 
+      // copy to clipboard
       const sendBtn = card.querySelector('.sendRequestBtn');
-      if (sendBtn) {
+      if(sendBtn){
         sendBtn.addEventListener('click', () => {
           const form = card.querySelector('form');
           if(!form) return;
@@ -1078,6 +1081,7 @@ Poznámka: ${data.get('poznamka') || ''}`;
       }
     });
 
+    // klik mimo kariet zavrie všetko
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.category-card')) closeAll();
     });
