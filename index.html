@@ -152,7 +152,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* nechávame .nav len ako “hook”, ale reálne riadi .nav-centered */
     .nav{ padding:0; }
 
     .nav-centered{
@@ -333,7 +332,7 @@
     /* ====== CATEGORY GRID ====== */
     .grid{
       display:grid;
-      grid-template-columns: repeat(5, 1fr); /* 5 kariet v jednom riadku */
+      grid-template-columns: repeat(5, 1fr);
       gap:22px;
       margin-top:34px;
     }
@@ -431,20 +430,13 @@
       transform: translateY(0);
     }
 
-    /* aby sa dalo scrollovať VNÚTRI dropdownu */
-    .card-drop{
-      overflow: hidden;
-    }
-
+    .card-drop{ overflow: hidden; }
     .card.category-card.is-active .card-drop{
       overflow: auto;
       padding-right: 6px;
     }
 
-    /* voliteľné: krajší scrollbar (Chrome/Edge) */
-    .card.category-card.is-active .card-drop::-webkit-scrollbar{
-      width: 10px;
-    }
+    .card.category-card.is-active .card-drop::-webkit-scrollbar{ width: 10px; }
     .card.category-card.is-active .card-drop::-webkit-scrollbar-thumb{
       background: rgba(255,255,255,0.14);
       border-radius: 999px;
@@ -515,28 +507,29 @@
       font-size:13px;
     }
 
-    /* ====== EXISTING MOBILE ====== */
+    /* ====== MOBILE (UPRAVENÉ) ====== */
     @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr; gap:26px}
-      h1{font-size:48px}
-      h2{font-size:34px}
-      .split{grid-template-columns:1fr}
-      .logo{width:96px;height:96px}
 
-      .nav-centered{
-        max-width: 100%;
-        flex-direction: column;
-        gap: 16px;
-        padding: 14px 0;
+      /* 1) spravíme z obsahu “pekný stĺpec” a vycentrujeme */
+      .wrap{
+        padding: 0 18px;         /* väčší “vzduch” po bokoch */
+        max-width: 720px;        /* nech to nepôsobí nalepené */
+        margin: 0 auto;          /* centrovanie */
       }
-      .nav-links{gap: 22px}
-      .brand-mini img{height: 52px}
 
-      .req-form{ grid-template-columns: 1fr; }
+      /* 2) menej natlačené sekcie */
+      section{
+        padding: 78px 0;
+      }
+      .hero{
+        padding: 70px 0 60px;
+      }
 
-      /* ===== MOBILE FIXES (ADDED) ===== */
+      /* 3) layout */
+      .hero-grid{grid-template-columns:1fr; gap:22px}
+      .split{grid-template-columns:1fr; gap:18px}
 
-      /* responsívne škálovanie nadpisov a textu */
+      /* 4) typografia */
       h1{
         font-size: clamp(34px, 7vw, 48px);
         line-height: 1.08;
@@ -550,33 +543,17 @@
         max-width: 100%;
       }
 
-      /* menej natlačené sekcie */
-      section{
-        padding: 70px 0;
-      }
-      .hero{
-        padding: 65px 0 55px;
-      }
-
-      /* HERO logo + slogan nech sa zalomia pekne */
+      /* 5) HERO title nech sa zalomí pekne */
       .hero-title{
         flex-wrap: wrap;
         gap: 10px;
       }
-      .hero-logo-inline{
-        height: 64px;
-      }
-      .hero-dash{
-        font-size: 22px;
-      }
-      .hero-slogan-image{
-        height: 28px;
-      }
+      .hero-logo-inline{ height: 64px; }
+      .hero-dash{ font-size: 22px; }
+      .hero-slogan-image{ height: 28px; }
 
-      /* tlačidlá na celú šírku */
-      .ctaRow{
-        gap: 10px;
-      }
+      /* 6) CTA tlačidlá: full width */
+      .ctaRow{ gap: 10px; }
       .btn{
         width: 100%;
         justify-content: center;
@@ -584,32 +561,52 @@
         font-size: 13px;
       }
 
-      /* hero card + staty */
-      .heroCard{
-        padding: 18px;
-      }
-      .statRow{
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-      .stat b{
-        font-size: 16px;
-      }
+      /* 7) hero card + stats */
+      .heroCard{ padding: 18px; }
+      .statRow{ grid-template-columns: 1fr; gap: 10px; }
+      .stat b{ font-size: 16px; }
 
-      /* kategórie: 1 stĺpec */
+      /* 8) NAV */
+      .nav-centered{
+        max-width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        padding: 14px 0;
+      }
+      .nav-links{
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .nav-links a{
+        font-size: 12px;
+        letter-spacing: .12em;
+      }
+      .brand-mini img{height: 52px}
+
+      /* 9) KATEGÓRIE: voľné, čitateľné, nie natlačené */
       .grid{
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 20px;               /* viac miesta medzi kartami */
+        margin-top: 22px;
       }
+
       .card{
-        padding: 18px;
+        padding: 20px;
+        max-width: 680px;        /* karta nebude “nalepená” */
+        margin: 0 auto;          /* centrovanie karty */
       }
+
+      .card:hover{
+        transform: translateY(-3px);
+      }
+
       .arrow{
         right: 14px;
         bottom: 14px;
       }
 
-      /* dropdown: čitateľný + bez iOS zoomu */
+      /* 10) dropdown: čitateľný + bez iOS zoomu */
       .req-form{
         grid-template-columns: 1fr;
         gap: 10px;
@@ -622,15 +619,19 @@
         max-height: 85vh;
       }
 
-      /* nav linky nech sa nezlejú */
-      .nav-links{
-        gap: 18px;
-        flex-wrap: wrap;
-        justify-content: center;
+      /* 11) panely nech nie sú “stiesnené” */
+      .panel{
+        padding: 22px;
       }
-      .nav-links a{
-        font-size: 12px;
-        letter-spacing: .12em;
+
+      /* footer */
+      footer{
+        padding: 40px 0;
+      }
+      .foot{
+        justify-content: center;
+        text-align: center;
+        gap: 10px;
       }
     }
   </style>
@@ -1082,7 +1083,7 @@
 
       </div><!-- /grid -->
 
-      <!-- STOCK (MIMO KATEGÓRIÍ) – VEĽKÝ ELEMENT -->
+      <!-- STOCK -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:40px;">
         <span class="pill"><span class="dot"></span> stock • hneď dostupné • rýchle dodanie</span>
 
@@ -1157,14 +1158,12 @@
       card.classList.add('is-active');
     };
 
-    // Kliknutie priamo na kartu (nie na formulárové prvky)
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         const clickedTag = e.target.tagName.toLowerCase();
         if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) {
           return;
         }
-
         e.stopPropagation();
 
         if (card.classList.contains('is-active')) {
@@ -1174,7 +1173,6 @@
         }
       });
 
-      // Klávesnica (Enter alebo medzera)
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -1190,7 +1188,6 @@
         }
       });
 
-      // Tlačidlo "Zavrieť"
       const closeBtn = card.querySelector('.closeCardBtn');
       if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
@@ -1200,7 +1197,6 @@
         });
       }
 
-      // Tlačidlo "Odoslať dopyt" – kopírovanie do schránky
       const sendBtn = card.querySelector('.sendRequestBtn');
       if (sendBtn) {
         sendBtn.addEventListener('click', (e) => {
@@ -1230,12 +1226,10 @@ Poznámka: ${data.get('poznamka') || ''}`;
       }
     });
 
-    // Klik mimo akejkoľvek karty = zatvoríme všetky
     document.addEventListener('click', (e) => {
-      const clickedInsideAnyCard = Array.from(cards).some(card => 
+      const clickedInsideAnyCard = Array.from(cards).some(card =>
         card.contains(e.target)
       );
-
       if (!clickedInsideAnyCard) {
         closeAll();
       }
