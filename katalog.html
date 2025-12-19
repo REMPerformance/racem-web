@@ -269,7 +269,7 @@
       box-shadow:0 0 18px rgba(255,182,72,0.45);
     }
 
-    /* MALÝ OBRÁZOK PRI KAŽDOM DIELE (SKLADOM) */
+    /* OBRÁZOK PRI DIELE */
     .part-image{
       width:100%;
       height:130px;
@@ -377,6 +377,135 @@
       text-decoration:underline;
     }
 
+    /* MODAL – FORMULÁR NA DIEL */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.80);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+    }
+    .modal-backdrop.active{
+      display:flex;
+    }
+    .modal{
+      background:#101010;
+      border-radius:22px;
+      border:1px solid var(--line);
+      box-shadow:0 24px 80px rgba(0,0,0,0.85);
+      width:100%;
+      max-width:640px;
+      padding:20px 22px 18px;
+    }
+    .modal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .modal-title{
+      font-size:16px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+    }
+    .modal-sub{
+      font-size:12px;
+      color:var(--muted2);
+      margin-top:4px;
+    }
+    .modal-close{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      font-size:18px;
+      cursor:pointer;
+      padding:2px 6px;
+      border-radius:999px;
+    }
+    .modal-close:hover{
+      background:rgba(255,255,255,0.08);
+      color:#fff;
+    }
+
+    .modal-body{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .form-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:12px;
+    }
+    label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.09em;
+      color:var(--muted2);
+    }
+    input, textarea{
+      background:#050505;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:8px 10px;
+      font-size:13px;
+      color:var(--text);
+      font-family:inherit;
+      resize:vertical;
+    }
+    input:focus, textarea:focus{
+      outline:none;
+      border-color:var(--red);
+      box-shadow:0 0 0 1px rgba(179,31,36,0.6);
+    }
+    textarea{
+      min-height:70px;
+    }
+
+    .checkbox-row{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      font-size:11px;
+      margin-top:4px;
+    }
+    .checkbox-row input{
+      width:14px;
+      height:14px;
+      margin-top:2px;
+    }
+
+    .modal-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:10px;
+      font-size:11px;
+    }
+    .status{
+      min-height:16px;
+      color:var(--muted2);
+    }
+    .status.ok{
+      color:#7dffba;
+    }
+    .status.err{
+      color:#ff9b9b;
+    }
+
     @media (max-width:640px){
       .nav{
         padding:10px 16px;
@@ -388,6 +517,13 @@
         padding:0 16px;
       }
       .page-title{font-size:26px;}
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+      .modal{
+        margin:0 12px;
+        padding:16px 14px 14px;
+      }
     }
   </style>
 </head>
@@ -490,9 +626,13 @@
 
         <div class="part-bottom">
           <div class="price">Cena: individuálna <span>/ podľa špecifikácie</span></div>
-          <a href="mailto:info@remperformance.sk?subject=Dopyt%20na%20RDX%20predny%20naraznik" class="cta-mini">
+          <button type="button" class="cta-mini" onclick="openOrderModal({
+            name: 'RDX Racedesign – predný nárazník',
+            meta: 'Pre vybraný model (doplň) · TUV schválenie podľa typu · plast ABS / GRP podľa verzie',
+            tags: ['Bodykit','Exteriér','Styling']
+          })">
             Chcem naceniť
-          </a>
+          </button>
         </div>
       </article>
 
@@ -521,9 +661,13 @@
 
         <div class="part-bottom">
           <div class="price">Cena: projektovo <span>/ podľa rozsahu</span></div>
-          <a href="mailto:info@remperformance.sk?subject=Dopyt%20na%20vyfuk%20na%20mieru" class="cta-mini">
+          <button type="button" class="cta-mini" onclick="openOrderModal({
+            name: 'Výfukové zvody + výfuk na mieru',
+            meta: 'Performance zvody, downpipe, catback · uličné / track použitie · nerez / Inconel podľa dohody',
+            tags: ['Výfuk','Performance','Custom riešenie']
+          })">
             Chcem riešiť
-          </a>
+          </button>
         </div>
       </article>
 
@@ -544,55 +688,121 @@
   </div>
 </footer>
 
-<!-- JS: načítanie skladom.json a generovanie kariet -->
+<!-- MODAL FORM – objednávka dielu -->
+<div id="order-modal" class="modal-backdrop">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">DOPYT NA DIEL</div>
+        <div class="modal-sub">
+          Vyplň údaje nižšie, my ti diel overíme, potvrdíme dostupnosť a pošleme na dobierku cez kuriéra.
+        </div>
+      </div>
+      <button type="button" class="modal-close" id="modal-close-btn">&times;</button>
+    </div>
+
+    <form id="part-order-form">
+      <div class="modal-body">
+
+        <div class="form-row">
+          <label for="field-part">Diel / poznámka</label>
+          <textarea id="field-part" name="Diel a podrobnosti" rows="3"></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="field-firstname">Meno</label>
+            <input id="field-firstname" name="Meno" type="text" required>
+          </div>
+          <div class="form-row">
+            <label for="field-lastname">Priezvisko</label>
+            <input id="field-lastname" name="Priezvisko" type="text" required>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="field-email">E-mail</label>
+            <input id="field-email" name="Email" type="email" required>
+          </div>
+          <div class="form-row">
+            <label for="field-phone">Telefón</label>
+            <input id="field-phone" name="Telefón" type="tel" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="field-address">Dodacia adresa</label>
+          <textarea id="field-address" name="Dodacia adresa" rows="2" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <label for="field-extra">Ďalšia poznámka (nepovinné)</label>
+          <textarea id="field-extra" name="Ďalšia poznámka" rows="2"></textarea>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="field-cod" name="Súhlas s dobierkou kuriérom" type="checkbox" required>
+          <label for="field-cod">
+            Súhlasím s odoslaním dielu/dielov cez kuriéra na dobierku a beriem na vedomie, že po potvrdení dostupnosti bude objednávka záväzná.
+          </label>
+        </div>
+
+        <!-- skrytý field, aby si vedel, že to prišlo z katalógu -->
+        <input type="hidden" name="Zdroj" value="Katalóg RACEM">
+
+      </div>
+
+      <div class="modal-footer">
+        <div id="form-status" class="status"></div>
+        <button type="submit" class="cta-mini">
+          Odoslať dopyt
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JS: načítanie skladom.json + modal logika + Formspree -->
 <script>
-  function createPartCard(part){
-    const tags = Array.isArray(part.tags) ? part.tags : [];
-    const tagsHtml = tags.map(t => `<span class="tag">${t}</span>`).join("");
+  const FORM_ENDPOINT = "https://formspree.io/f/mwvekvgy";
 
-    const imageSrc = part.image && part.image.trim()
-      ? part.image
-      : "img/placeholder-part.jpg";
-
-    const priceValue = part.price && part.price !== "<doplň>"
-      ? part.price + " €"
-      : "—";
-
-    const priceSuffix = part.price_suffix ? `<span>${part.price_suffix}</span>` : "";
-
-    const mailSubject = encodeURIComponent(part.mailSubject || part.name || "Dopyt na diel");
-
-    return `
-      <article class="part-card">
-        <div class="part-top">
-          <div>
-            <div class="part-name">${part.name || ""}</div>
-            <div class="part-meta">${part.meta || ""}</div>
-          </div>
-          <div class="part-badge in-stock">${part.stockLabel || ""}</div>
-        </div>
-
-        <div class="part-image">
-          <img src="${imageSrc}" alt="${part.name || "diel"}">
-        </div>
-
-        ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
-
-        <p class="part-note">${part.note || ""}</p>
-
-        <div class="part-bottom">
-          <div class="price">
-            Cena: ${priceValue}
-            ${priceSuffix}
-          </div>
-          <a href="mailto:info@remperformance.sk?subject=${mailSubject}" class="cta-mini">
-            Chcem tento diel
-          </a>
-        </div>
-      </article>
-    `;
+  function buildPartDescription(part){
+    const lines = [];
+    if (part.name) lines.push(part.name);
+    if (part.meta) lines.push(part.meta);
+    if (Array.isArray(part.tags) && part.tags.length){
+      lines.push("Tagy: " + part.tags.join(" · "));
+    }
+    if (part.price){
+      lines.push("Cena (aktuálne na webe): " + part.price + " € " + (part.price_suffix || ""));
+    }
+    return lines.join("\\n");
   }
 
+  function openOrderModal(part){
+    const modal = document.getElementById("order-modal");
+    const fieldPart = document.getElementById("field-part");
+    const statusEl = document.getElementById("form-status");
+
+    const text = buildPartDescription(part || {});
+    fieldPart.value = text || "";
+
+    statusEl.textContent = "";
+    statusEl.classList.remove("ok","err");
+
+    modal.classList.add("active");
+  }
+
+  function closeOrderModal(){
+    const modal = document.getElementById("order-modal");
+    modal.classList.remove("active");
+  }
+
+  document.getElementById("order-modal").addEventListener("click", closeOrderModal);
+  document.getElementById("modal-close-btn").addEventListener("click", closeOrderModal);
+
+  // Načítanie skladom.json a generovanie kariet
   fetch('skladom.json')
     .then(res => res.json())
     .then(parts => {
@@ -602,11 +812,106 @@
         console.error('skladom.json neobsahuje pole objektov');
         return;
       }
-      container.innerHTML = parts.map(createPartCard).join('');
+
+      const partsById = {};
+      parts.forEach(p => {
+        if (p.id) partsById[p.id] = p;
+      });
+
+      function createPartCard(part){
+        const tags = Array.isArray(part.tags) ? part.tags : [];
+        const tagsHtml = tags.map(t => `<span class="tag">${t}</span>`).join("");
+
+        const imageSrc = part.image && part.image.trim()
+          ? part.image
+          : "img/placeholder-part.jpg";
+
+        const priceValue = part.price
+          ? part.price + " €"
+          : "—";
+
+        const priceSuffix = part.price_suffix ? `<span>${part.price_suffix}</span>` : "";
+
+        return `
+          <article class="part-card">
+            <div class="part-top">
+              <div>
+                <div class="part-name">${part.name || ""}</div>
+                <div class="part-meta">${part.meta || ""}</div>
+              </div>
+              <div class="part-badge in-stock">${part.stockLabel || ""}</div>
+            </div>
+
+            <div class="part-image">
+              <img src="${imageSrc}" alt="${part.name || "diel"}">
+            </div>
+
+            ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
+
+            <p class="part-note">${part.note || ""}</p>
+
+            <div class="part-bottom">
+              <div class="price">
+                Cena: ${priceValue}
+                ${priceSuffix}
+              </div>
+              <button type="button"
+                      class="cta-mini part-cta"
+                      data-part-id="${part.id || ""}">
+                Chcem tento diel
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      container.innerHTML = parts.map(createPartCard).join("");
+
+      // naviazanie klikov na tlačidlá
+      document.querySelectorAll('.part-cta[data-part-id]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.partId;
+          const part = partsById[id];
+          openOrderModal(part || {});
+        });
+      });
     })
     .catch(err => {
       console.error('Chyba pri načítaní skladom.json', err);
     });
+
+  // Odoslanie formulára cez Formspree bez presmerovania
+  document.getElementById("part-order-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    const form = e.target;
+    const statusEl = document.getElementById("form-status");
+    statusEl.textContent = "Odosielam...";
+    statusEl.classList.remove("ok","err");
+
+    const formData = new FormData(form);
+
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      body: formData,
+      headers: { "Accept": "application/json" }
+    })
+    .then(response => {
+      if (response.ok) {
+        statusEl.textContent = "Dopyt bol odoslaný. Čoskoro sa ti ozveme.";
+        statusEl.classList.add("ok");
+        // neresetuj pole dielu, aby zákazník videl, čo poslal
+        form.querySelector("#field-extra").value = "";
+      } else {
+        statusEl.textContent = "Niečo sa pokazilo pri odosielaní. Skús to prosím neskôr alebo nás kontaktuj e-mailom.";
+        statusEl.classList.add("err");
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      statusEl.textContent = "Chyba pripojenia pri odosielaní formulára.";
+      statusEl.classList.add("err");
+    });
+  });
 </script>
 
 </body>
