@@ -1630,7 +1630,7 @@
     try {
       const response = await fetch('skladom.json');
       if (!response.ok) {
-        console.error('Nepodarilo sa načítať data/skladom.json');
+        console.error('Nepodarilo sa načítať skladom.json');
         return;
       }
 
@@ -1648,29 +1648,53 @@
         // ak v JSON dáš "showOnHome": false, tak sa nezobrazí
         if (item.showOnHome === false) return;
 
+        // condition: "new" z tvojho JSON → NOVÉ
         const condText = (item.condition || '').toLowerCase();
-        const isNew = condText.startsWith('nov'); // "Nové" / "nove" / "new"
+        const isNew =
+          condText.startsWith('nov') || // "nové", "nove"
+          condText === 'new';           // "new" z JSONu
+
         const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
         const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
+
+        // tagy
+        const tagsHtml = Array.isArray(item.tags)
+          ? item.tags.map(tag => `<span class="chip chip--tag">${tag}</span>`).join('')
+          : '';
 
         const article = document.createElement('article');
         article.className = 'stock-item';
         article.dataset.condition = isNew ? 'Nové' : 'Použité';
         article.dataset.city = item.city || '';
+        article.dataset.partId = item.id || '';
 
         article.innerHTML = `
           <div class="stock-img">
-            <img src="${item.image || 'assets/stock/placeholder.jpg'}" alt="${item.name || ''}">
+            <img src="${item.image || 'img/placeholder.jpg'}" alt="${item.name || ''}">
             <span class="bubble ${bubbleClass}">${bubbleLabel}</span>
           </div>
+
           <div class="stock-body">
             <div class="stock-top">
               <h3 class="stock-title">${item.name || ''}</h3>
-              <div class="stock-price">${item.price || ''}</div>
+              <div class="stock-price-wrap">
+                <div class="stock-price">
+                  ${item.price || 'Na dopyt'}
+                </div>
+                ${item.price_suffix ? `<div class="stock-price-suffix">${item.price_suffix}</div>` : ''}
+              </div>
             </div>
+
             <div class="stock-meta">
               ${item.city ? `<span class="chip">${item.city}</span>` : ''}
+              ${item.stockLabel ? `<span class="chip chip--stock">${item.stockLabel}</span>` : ''}
             </div>
+
+            ${item.meta ? `<p class="stock-desc">${item.meta}</p>` : ''}
+            ${item.note ? `<p class="stock-note">${item.note}</p>` : ''}
+
+            ${tagsHtml ? `<div class="stock-tags">${tagsHtml}</div>` : ''}
+
             <div class="stock-actions">
               <button
                 class="btn btnPrimary stockInterestBtn"
@@ -1780,7 +1804,7 @@
     }, { passive: false });
   }
 
-  // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text (len mesto) =====
+  // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.stockInterestBtn');
     if (!btn) return;
@@ -1792,14 +1816,16 @@
     const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
     const cond  = card.getAttribute('data-condition') || '';
     const city  = card.getAttribute('data-city') || '';
+    const partId = card.dataset.partId || '';
 
     let text = `Mám záujem o diel: ${title}`;
-    if (price) text += ` (${price}`;
-    if (cond || city) {
-      const extra = [cond, city].filter(Boolean).join(', ');
-      text += price ? `, ${extra}` : ` (${extra}`;
-    }
-    if (text.includes('(') && !text.endsWith(')')) text += ')';
+    if (partId) text += ` (ID: ${partId}`;
+    else text += ' (';
+
+    const extra = [price, cond, city].filter(Boolean).join(', ');
+    if (extra) text += (partId ? ', ' : '') + extra;
+
+    if (!text.endsWith(')')) text += ')';
 
     window.location.hash = '#kontakt';
 
@@ -1813,6 +1839,7 @@
     }, 80);
   });
 </script>
+
 
 </body>
 </html>
