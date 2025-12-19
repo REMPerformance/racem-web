@@ -2,7 +2,7 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <title>RACEM / REM Performance – Podmienky & Reklamácie</title>
+  <title>RACEM – VOP & reklamačný poriadok</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -15,6 +15,7 @@
       --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
       --shadow: 0 20px 60px rgba(0,0,0,0.55);
+      --radius-xl: 18px;
     }
 
     *{box-sizing:border-box}
@@ -22,314 +23,520 @@
     body{
       margin:0;
       font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background: radial-gradient(circle at top, #151515 0, #050505 55%, #000 100%);
+      color:var(--text);
       overflow-x:hidden;
     }
 
-    .bg{
-      position:fixed;
-      inset:0;
-      z-index:-5;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 20% 25%, rgba(179,31,36,0.18), transparent 45%),
-        radial-gradient(circle at 85% 75%, rgba(179,31,36,0.10), transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%);
-    }
-    .bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      opacity:.55;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 44px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 44px);
-      animation: gridMove 24s linear infinite;
-    }
-    @keyframes gridMove{
-      from{ background-position:0 0,0 0 }
-      to{ background-position:600px 0,0 600px }
-    }
     .noise{
-      position:fixed;
-      inset:-20%;
-      z-index:-4;
       pointer-events:none;
-      opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
-      animation: noiseMove 10s steps(10) infinite;
-    }
-    @keyframes noiseMove{
-      0%{transform:translate(0,0)}
-      20%{transform:translate(-3%,2%)}
-      40%{transform:translate(4%,-2%)}
-      60%{transform:translate(-2%,-4%)}
-      80%{transform:translate(3%,3%)}
-      100%{transform:translate(0,0)}
+      position:fixed;
+      inset:0;
+      opacity:0.09;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.52'/%3E%3C/svg%3E");
+      z-index:-1;
     }
 
     .wrap{
       width:100%;
-      max-width:1100px;
-      margin:0 auto;
-      padding:0 6vw;
+      max-width:none;
+      margin:0;
+      padding:0 32px 40px;
     }
 
-    section{padding:110px 0 80px;}
-
-    h1,h2,h3,h4{
-      margin:0 0 14px 0;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
-    h1{font-size:42px}
-    h2{font-size:26px}
-    h3{font-size:18px}
-    h4{font-size:15px}
-    p{
-      margin:0 0 12px 0;
-      color:var(--muted);
-      line-height:1.7;
-    }
-    ul{
-      margin:0 0 14px 0;
-      padding-left:20px;
-      color:var(--muted);
-      line-height:1.7;
-    }
-    .red{color:var(--red)}
-
-    .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(20,20,20,0.7);
-      color:var(--muted2);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      margin-bottom:16px;
-    }
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background:var(--red);
-      box-shadow:0 0 18px rgba(179,31,36,.7);
-    }
-
-    .topbar{
+    /* NAVBAR */
+    header{
       position:sticky;
       top:0;
-      z-index:100;
-      backdrop-filter: blur(12px);
-      background: rgba(10,10,10,0.72);
-      border-bottom:1px solid rgba(255,255,255,0.06);
+      z-index:50;
+      backdrop-filter:blur(18px);
+      background:linear-gradient(to bottom, rgba(5,5,5,0.96), rgba(5,5,5,0.8), transparent);
+      border-bottom:1px solid rgba(255,255,255,0.04);
     }
+
     .nav{
-      padding:0;
-    }
-    .nav-centered{
-      max-width:1100px;
-      margin:0 auto;
-      padding:14px 6vw;
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:14px 32px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:40px;
+      gap:18px;
     }
-    .brand-mini{
+
+    .logo{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:var(--red);
       display:flex;
       align-items:center;
-      text-decoration:none;
+      gap:10px;
     }
-    .brand-mini img{
-      height:50px;
-      width:auto;
-      display:block;
-      object-fit:contain;
-      transition:.3s;
+    .logo-tagline{
+      font-size:10px;
+      text-transform:uppercase;
+      color:var(--muted2);
+      letter-spacing:0.16em;
     }
-    .brand-mini:hover img{
-      transform:scale(1.06) translateY(-1px);
-      filter:drop-shadow(0 10px 24px rgba(179,31,36,.3));
-    }
+
     .nav-links{
       display:flex;
-      gap:26px;
-      flex-wrap:wrap;
-    }
-    .nav-links a{
-      position:relative;
-      color:rgba(255,255,255,0.75);
-      text-decoration:none;
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.13em;
-      padding:4px 0;
-      transition:.25s;
-    }
-    .nav-links a:hover{
-      color:#fff;
-      text-shadow:0 0 14px rgba(179,31,36,0.35);
-    }
-    .nav-links a::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-8px;
-      width:0;
-      height:2px;
-      background:var(--red);
-      transform:translateX(-50%);
-      box-shadow:0 0 10px rgba(179,31,36,.7);
-      transition:.25s;
-    }
-    .nav-links a:hover::after{ width:120%; }
-    .nav-links a.is-active{
-      color:#fff;
-    }
-    .nav-links a.is-active::after{
-      width:120%;
-    }
-
-    .panel{
-      background:rgba(20,20,20,0.88);
-      border-radius:18px;
-      border:1px solid var(--line);
-      padding:26px 22px 26px;
-      box-shadow:var(--shadow);
-      margin-bottom:26px;
-      position:relative;
-      overflow:hidden;
-    }
-    .panel::before{
-      content:"";
-      position:absolute;
-      inset:-80px;
-      background:radial-gradient(circle at 10% 0, rgba(179,31,36,0.18), transparent 55%);
-      opacity:.9;
-    }
-    .panel > *{position:relative;}
-
-    .panel-title{
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:10px;
       align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      font-size:13px;
+      text-transform:uppercase;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:var(--muted);
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:rgba(20,20,20,0.7);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:all .18s ease-out;
+    }
+
+    .nav-links a span.dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.3);
+    }
+
+    .nav-links a:hover{
+      color:var(--text);
+      border-color:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    }
+
+    .nav-links a.active{
+      color:#fff;
+      border-color:var(--red);
+      background:linear-gradient(135deg, rgba(179,31,36,0.12), rgba(179,31,36,0.02));
+    }
+    .nav-links a.active .dot{
+      background:var(--red);
+      box-shadow:0 0 12px rgba(179,31,36,0.85);
+    }
+
+    /* HLAVIČKA STRÁNKY */
+    .page-header{
+      padding:30px 0 10px;
+    }
+    .page-kicker{
+      font-size:11px;
+      text-transform:uppercase;
+      color:var(--muted2);
+      letter-spacing:0.25em;
       margin-bottom:8px;
     }
-    .panel-title small{
-      font-size:11px;
-      color:var(--muted2);
+    .page-title{
+      font-size:30px;
+      font-weight:800;
+      letter-spacing:0.08em;
       text-transform:uppercase;
-      letter-spacing:.15em;
+      margin:0 0 8px;
+    }
+    .page-sub{
+      font-size:14px;
+      color:var(--muted);
+      max-width:900px;
+      line-height:1.5;
     }
 
-    .subnav{
+    /* PODHLAVIČKOVÉ PILL LINKY */
+    .pill-nav{
+      margin:18px 0 24px;
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin:14px 0 22px;
     }
-    .subnav a{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
+    .pill-nav a{
       text-decoration:none;
-      padding:6px 10px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      padding:7px 14px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.08);
-      color:var(--muted2);
-      background:rgba(0,0,0,0.3);
-      transition:.2s;
+      border:1px solid var(--line);
+      background:rgba(12,12,12,0.95);
+      color:var(--muted);
+      transition:all 0.16s ease-out;
     }
-    .subnav a:hover{
+    .pill-nav a:hover{
       border-color:var(--red);
       color:#fff;
-      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+      box-shadow:0 10px 24px rgba(0,0,0,0.7);
       transform:translateY(-1px);
     }
 
-    .reveal{opacity:0; transform:translateY(24px); transition:.7s ease;}
-    .reveal.active{opacity:1; transform:translateY(0);}
-
-    footer{
-      padding:40px 0;
-      border-top:1px solid rgba(255,255,255,0.06);
-      background:rgba(0,0,0,0.6);
-      margin-top:30px;
+    /* OBSAH VOP */
+    .legal-section{
+      background:rgba(10,10,10,0.92);
+      border-radius:var(--radius-xl);
+      border:1px solid var(--line);
+      padding:18px 18px 16px;
+      margin-bottom:22px;
+      box-shadow:var(--shadow);
     }
-    .foot{
-      display:flex;
-      gap:18px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      color:var(--muted2);
+
+    .legal-section h2{
+      margin:0 0 8px;
+      font-size:16px;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+    }
+
+    .legal-section h3{
+      margin:14px 0 6px;
       font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:var(--muted);
     }
-    .footer-layout{align-items:center;}
-    .footer-center{text-align:center;}
 
-    @media(max-width:900px){
-      .wrap{padding:0 18px;}
-      section{padding:90px 0 70px;}
-      h1{font-size:32px;}
-      .nav-centered{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:12px;
+    .legal-section p{
+      margin:4px 0 8px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .legal-section ul{
+      margin:4px 0 8px 18px;
+      padding:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .legal-section li{
+      margin-bottom:4px;
+    }
+
+    .highlight-box{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed rgba(255,255,255,0.16);
+      background:rgba(5,5,5,0.9);
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* FOOTER */
+    footer{
+      border-top:1px solid rgba(255,255,255,0.05);
+      padding:18px 0 30px;
+      font-size:11px;
+      color:var(--muted2);
+    }
+
+    footer .row{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:0 32px;
+    }
+
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+    }
+    footer a:hover{
+      color:#fff;
+      text-decoration:underline;
+    }
+
+    @media (max-width:640px){
+      .nav{
+        padding:10px 16px;
       }
-      .nav-links{flex-wrap:wrap;}
-      .foot{
-        justify-content:center;
-        text-align:center;
+      .wrap{
+        padding:0 16px 32px;
       }
+      footer .row{
+        padding:0 16px;
+      }
+      .page-title{font-size:24px;}
     }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="noise"></div>
+<div class="noise"></div>
 
-  <div class="topbar">
-    <div class="nav nav-centered">
-      <a href="index.html#top" class="brand-mini">
-        <img src="assets/racem-logo.png" alt="RACEM logo">
+<header>
+  <nav class="nav">
+    <div class="logo">
+      RACEM
+      <span class="logo-tagline">BEAT THEM ALL</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html">
+        <span class="dot"></span>
+        <span>Homepage</span>
       </a>
-      <nav class="nav-links">
-        <a href="index.html#kto-sme">Špecifické diely</a>
-        <a href="index.html#kategorie">Kategórie</a>
-        <a href="katalog.html">Katalóg dielov</a>
-        <a href="#top" class="is-active">Podmienky</a>
-        <a href="index.html#kontakt">Kontakt</a>
-      </nav>
+
+      <a href="katalog.html">
+        <span class="dot"></span>
+        <span>Katalóg dielov</span>
+      </a>
+
+      <a href="kontakt.html">
+        <span class="dot"></span>
+        <span>Kontakt</span>
+      </a>
+
+      <a href="vop.html" class="active">
+        <span class="dot"></span>
+        <span>VOP & reklamácie</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HLAVIČKA -->
+  <section class="page-header">
+    <div class="page-kicker">REM PERFORMANCE · RACEM</div>
+    <h1 class="page-title">Všeobecné obchodné podmienky</h1>
+    <p class="page-sub">
+      Táto stránka upravuje podmienky predaja autodielov cez e-shop RACEM / REM Performance,
+      spôsob dopravy, postup pri objednávke dielov a reklamačný poriadok. Text je písaný zrozumiteľne,
+      ale zodpovedá štandardu pre internetový predaj podľa slovenských zákonov.
+    </p>
+  </section>
+
+  <!-- VNÚTORNÁ NAVIGÁCIA -->
+  <nav class="pill-nav">
+    <a href="#vop">VOP – základné ustanovenia</a>
+    <a href="#doprava">Doprava & platba</a>
+    <a href="#postup">Postup objednávky dielov</a>
+    <a href="#reklamacie">Reklamácie & vrátenie</a>
+    <a href="#zaver">Záverečné ustanovenia</a>
+  </nav>
+
+  <!-- VOP -->
+  <section id="vop" class="legal-section">
+    <h2>1. Identifikačné údaje predávajúceho</h2>
+    <p>
+      Prevádzkovateľ / predávajúci:<br>
+      <b>Lukáš Tonkovič – REM Performance</b><br>
+      IČO: 57321205<br>
+      Miesto podnikania: 83106 Bratislava-Rača, Karpatské námestie 10A 7770<br>
+      Zapísaný na: Okresný úrad Piešťany<br>
+      E-mail: <a href="mailto:info@remperformance.sk">info@remperformance.sk</a><br>
+      Web: racem.sk
+    </p>
+
+    <h3>2. Predmet činnosti</h3>
+    <p>
+      Predávajúci sa zaoberá najmä:
+    </p>
+    <ul>
+      <li>sprostredkovaním, vyhľadaním a dodaním autodielov,</li>
+      <li>predajom nových aj použitých autodielov,</li>
+      <li>zabezpečením ťažko dostupných dielov zo Slovenska, Česka, EÚ aj mimo EÚ,</li>
+      <li>poradenstvom v oblasti úprav vozidiel, motorsportu a špeciálnych projektov.</li>
+    </ul>
+    <p>
+      Predaj je určený pre zákazníkov zo Slovenskej republiky a podľa dohody aj do iných krajín EÚ.
+    </p>
+
+    <h3>3. Vymedzenie pojmov</h3>
+    <ul>
+      <li><b>Zákazník / kupujúci</b> – fyzická osoba – spotrebiteľ alebo podnikateľ, ktorý uzatvára zmluvu s predávajúcim.</li>
+      <li><b>E-shop RACEM</b> – webová stránka predávajúceho, cez ktorú zákazník zadáva objednávky.</li>
+      <li><b>Tovar / diel</b> – autodiel, komponent alebo služba uvedená v ponuke predávajúceho.</li>
+      <li><b>Zmluva na diaľku</b> – kúpna zmluva uzatvorená prostredníctvom internetu.</li>
+    </ul>
+  </section>
+
+  <!-- DOPRAVA & PLATBA -->
+  <section id="doprava" class="legal-section">
+    <h2>4. Ceny, platobné podmienky a doprava</h2>
+
+    <h3>4.1 Ceny</h3>
+    <p>
+      Ceny tovaru sú uvedené pri jednotlivých položkách. Pokiaľ nie je uvedené inak, ceny sú v eurách
+      a vrátane DPH (ak je predávajúci platiteľom DPH) a nezahŕňajú náklady na dopravu.
+    </p>
+
+    <h3>4.2 Spôsob platby</h3>
+    <ul>
+      <li>dobierka – platba kuriérovi pri prevzatí zásielky,</li>
+      <li>platba kartou online (ak je v e-shope dostupná),</li>
+      <li>bankový prevod na účet predávajúceho na základe zálohovej faktúry.</li>
+    </ul>
+
+    <h3>4.3 Spôsob dopravy</h3>
+    <ul>
+      <li>kuriérska služba (štandardný kuriér predávajúceho),</li>
+      <li>Zásielkovňa / Packeta – doručenie na výdajné miesto alebo adresu (ak je dostupné),</li>
+      <li>Slovenská pošta – podľa povahy zásielky,</li>
+      <li>osobné prevzatie – len po predchádzajúcej dohode (ak je aktuálne dostupné).</li>
+    </ul>
+
+    <p>
+      Konkrétne možnosti a ceny dopravy sú vždy zobrazené v košíku pred potvrdením objednávky.
+    </p>
+
+    <h3>4.4 Dodacie lehoty</h3>
+    <ul>
+      <li>tovar <b>skladom</b> – obvykle expedícia do 1–3 pracovných dní od potvrdenia objednávky,</li>
+      <li>tovar <b>na objednávku</b> – orientačne 1–7 pracovných dní, pri špeciálnych dieloch aj dlhšie;</li>
+    </ul>
+    <p>
+      Presný termín dodania závisí od konkrétneho dodávateľa a logistiky. O prípadných zmenách
+      alebo zdržaní je zákazník informovaný e-mailom.
+    </p>
+
+    <div class="highlight-box">
+      Pri dieloch na mieru alebo pri špeciálnych objednávkach (custom výfuky, individual bodykit,
+      závodné projekty) môže predávajúci požadovať zálohu alebo plnú úhradu vopred.
+    </div>
+  </section>
+
+  <!-- POSTUP OBJEDNÁVKY -->
+  <section id="postup" class="legal-section">
+    <h2>5. Postup objednávky dielov</h2>
+
+    <h3>5.1 Štandardné diely (košík)</h3>
+    <p>
+      Pri dieloch, ktoré sú priamo uvedené v katalógu e-shopu, prebieha objednávka štandardne:
+    </p>
+    <ul>
+      <li>výber dielu a množstva,</li>
+      <li>vyplnenie fakturačných a dodacích údajov,</li>
+      <li>výber spôsobu dopravy a platby,</li>
+      <li>potvrdenie objednávky – objednávka je záväzná pri jej odoslaní.</li>
+    </ul>
+
+    <h3>5.2 Diely „na dopyt“ (vyhľadanie dielu)</h3>
+    <p>
+      Pri dieloch, ktoré nie sú bežne skladom alebo nie sú priamo v katalógu, prebieha proces takto:
+    </p>
+    <ul>
+      <li>zákazník vyplní kontaktný formulár pri konkrétnom diele alebo v sekcii Kontakt,</li>
+      <li>uvedie čo najpresnejšie údaje – značka, model, motorizácia, rok výroby, VIN a prípadné OEM číslo dielu,</li>
+      <li>predávajúci vyhľadá vhodný diel u partnerov (Slovensko, Česko, EÚ, prípadne mimo EÚ),</li>
+      <li>zákazníkovi pošle e-mail s ponukou – cena, dostupnosť, odhad dodacej lehoty a podmienky dodania,</li>
+      <li>zákazník potvrdí objednávku (e-mailom alebo podľa pokynov), čím sa ponuka mení na záväznú objednávku.</li>
+    </ul>
+
+    <div class="highlight-box">
+      Pri špeciálnych projektoch (motorsport, extrémne úpravy, custom riešenia) je súčasťou procesu aj
+      konzultácia – telefonicky alebo e-mailom – kde sa upresní rozsah, záruky a spôsob použitia dielov.
+    </div>
+  </section>
+
+  <!-- REKLAMÁCIE -->
+  <section id="reklamacie" class="legal-section">
+    <h2>6. Reklamačný poriadok a odstúpenie od zmluvy</h2>
+
+    <h3>6.1 Zodpovednosť za vady</h3>
+    <p>
+      Predávajúci zodpovedá za to, že dodaný tovar je pri prevzatí bez vád, funkčný a zodpovedá popisu
+      na e-shope alebo v individuálnej ponuke. Záruka sa riadi platnými právnymi predpismi SR.
+    </p>
+
+    <h3>6.2 Uplatnenie reklamácie</h3>
+    <p>
+      Reklamáciu je možné uplatniť e-mailom na adrese
+      <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> alebo poštou
+      na adresu uvedenú v časti identifikačné údaje. Do správy odporúčame uviesť:
+    </p>
+    <ul>
+      <li>meno, priezvisko a kontaktné údaje,</li>
+      <li>číslo objednávky alebo faktúry,</li>
+      <li>presný popis závady a fotodokumentáciu (ak je to možné),</li>
+      <li>preferovaný spôsob vybavenia – oprava, výmena, zľava, odstúpenie od zmluvy.</li>
+    </ul>
+    <p>
+      Predávajúci potvrdí prijatie reklamácie a informuje zákazníka o ďalšom postupe. Reklamácia bude
+      vybavená v zákonnej lehote.
+    </p>
+
+    <h3>6.3 Odstúpenie spotrebiteľa od zmluvy do 14 dní</h3>
+    <p>
+      Spotrebiteľ (fyzická osoba, ktorá nenakupuje na IČO) má právo odstúpiť od zmluvy uzatvorenej
+      na diaľku bez udania dôvodu v lehote 14 dní od prevzatia tovaru, pokiaľ ide o štandardný tovar
+      a nie tovar vyrobený na mieru.
+    </p>
+    <p>
+      Na uplatnenie tohto práva nás kontaktuj e-mailom a uveď číslo objednávky a ktoré diely vraciaš.
+      Tovar musí byť nepoškodený, kompletný a pokiaľ možno v pôvodnom balení. Náklady na vrátenie
+      tovaru nesie zákazník.
+    </p>
+
+    <h3>6.4 Tovar, pri ktorom nie je možné odstúpiť bez dôvodu</h3>
+    <p>
+      Odstúpenie bez udania dôvodu sa štandardne nevzťahuje najmä na:
+    </p>
+    <ul>
+      <li>tovar zhotovený podľa osobitných požiadaviek zákazníka (napr. custom výfuk, individuálny bodykit),</li>
+      <li>tovar jednoznačne prispôsobený pre konkrétne vozidlo,</li>
+      <li>tovar, ktorý bol montovaný alebo zjavne používaný spôsobom nezlučiteľným s bežným odskúšaním.</li>
+    </ul>
+
+    <h3>6.5 Postup pri vrátení tovaru</h3>
+    <p>
+      Po dohode o vrátení tovaru zákazník pošle balík na adresu predávajúceho. Po doručení a kontrole
+      tovaru bude zákazníkovi vrátená kúpna cena (alebo jej časť) rovnakým spôsobom, akým platil,
+      pokiaľ sa nedohodne inak.
+    </p>
+  </section>
+
+  <!-- ZÁVER -->
+  <section id="zaver" class="legal-section">
+    <h2>7. Ochrana osobných údajov</h2>
+    <p>
+      Pri spracúvaní osobných údajov zákazníkov sa predávajúci riadi platnou legislatívou a zásadou
+      minimalizácie údajov. Údaje sú používané len na účely vybavenia objednávky, fakturácie, doručenia
+      tovaru a riešenia reklamácií. Podrobnejší popis spracúvania osobných údajov môže byť uvedený
+      v samostatnej sekcii alebo dokumente o ochrane osobných údajov.
+    </p>
+
+    <h3>8. Záverečné ustanovenia</h3>
+    <ul>
+      <li>Odoslaním objednávky zákazník potvrdzuje, že sa oboznámil s týmito VOP a súhlasí s nimi.</li>
+      <li>VOP sú platné pre všetky objednávky vybavované cez e-shop RACEM / REM Performance.</li>
+      <li>Predávajúci si vyhradzuje právo VOP priebežne aktualizovať. Rozhodujúca je verzia zverejnená v deň objednávky.</li>
+      <li>Právne vzťahy neupravené týmito VOP sa riadia všeobecne záväznými právnymi predpismi Slovenskej republiky.</li>
+    </ul>
+
+    <div class="highlight-box">
+      Tento text VOP je pripravený ako zrozumiteľný prehľad pre zákazníkov. Pred finálnym použitím
+      v e-shope odporúčame skonzultovať ho s účtovníkom alebo právnikom, aby bol zosúladený
+      s aktuálne platnou legislatívou a špecifikami tvojho podnikania.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
+      <div>
+        <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
+        <a href="vop.html">VOP a reklamačný poriadok</a>
+      </div>
     </div>
   </div>
+</footer>
 
-  <section id="top">
-    <div class="wrap">
-      <span class="pill reveal"><span class="dot"></span> právne informácie • podmienky • reklamácie</span>
-      <h1 class="reveal">Podmienky & informácie pre zákazníkov</h1>
-      <p class="reveal">
-        Tu nájdeš všetko dôležité – od všeobecných obchodných podmienok až po
-        reklamácie, dopravu a presný postup, ako u nás prebieha objednávka dielov.
-      </p>
-
-      <div class="subnav reveal">
-        <a href="#vop">VOP</a>
-        <a href="#reklamacie">Reklamačný poriadok</a>
-        <a href="#doprava">Doprava a platba</a>
-        <a href="#postup">Postup objednávky</a>
-      </div>
-
-      <!-- VOP -->
-      <article id="vop" class="panel reveal">
-        <div class="panel-title">
-          <h2>Všeobecné obchodné podmienky</h2>
-          <small>RACEM / REM Perfor
+</body>
+</html>
