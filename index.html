@@ -1543,174 +1543,194 @@
   </footer>
 
   <script>
-    async function loadHomepageStock() {
-      try {
-        const response = await fetch('data/skladom.json'); // cesta k JSON
-        if (!response.ok) {
-          console.error('Nepodarilo sa načítať skladom.json');
-          return;
-        }
-
-        const data = await response.json();
-        const items = data.inStock || [];
-        const container = document.getElementById('stockScroll');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        items.forEach(item => {
-          // ak nechceš niektoré na home, daj im v JSON "showOnHome": false
-          if (item.showOnHome === false) return;
-
-          const isNew = item.condition === 'new';
-          const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
-          const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
-
-          const article = document.createElement('article');
-          article.className = 'stock-item';
-          article.dataset.condition = isNew ? 'Nové' : 'Použité';
-          article.dataset.city = item.city || '';
-
-          article.innerHTML = `
-            <div class="stock-img">
-              <img src="${item.image || 'assets/stock/placeholder.jpg'}" alt="${item.name || ''}">
-              <span class="bubble ${bubbleClass}">${bubbleLabel}</span>
-            </div>
-            <div class="stock-body">
-              <div class="stock-top">
-                <h3 class="stock-title">${item.name || ''}</h3>
-                <div class="stock-price">${item.price || ''}</div>
-              </div>
-              <div class="stock-meta">
-                ${item.city ? `<span class="chip">${item.city}</span>` : ''}
-              </div>
-              <div class="stock-actions">
-                <button
-                  class="btn btnPrimary stockInterestBtn"
-                  type="button"
-                  data-part-id="${item.id || ''}"
-                  data-part-name="${item.name || ''}"
-                  data-part-price="${item.price || ''}"
-                  data-part-city="${item.city || ''}"
-                >
-                  Mám záujem
-                </button>
-              </div>
-            </div>
-          `;
-
-          container.appendChild(article);
-        });
-      } catch (err) {
-        console.error('Chyba pri načítaní skladom.json:', err);
+  // ===== HOMEPAGE STOCK Z JSONU =====
+  async function loadHomepageStock() {
+    try {
+      const response = await fetch('data/skladom.json');
+      if (!response.ok) {
+        console.error('Nepodarilo sa načítať data/skladom.json');
+        return;
       }
-    }
 
-    document.addEventListener('DOMContentLoaded', loadHomepageStock);
+      const data = await response.json();
 
-    // reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const activate = () => {
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 110) el.classList.add('active');
+      // Podpora: buď je to priamo pole, alebo objekt { inStock: [...] }
+      const items = Array.isArray(data) ? data : (data.inStock || []);
+
+      const container = document.getElementById('stockScroll');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      items.forEach(item => {
+        // ak v JSON dáš "showOnHome": false, tak sa nezobrazí
+        if (item.showOnHome === false) return;
+
+        const condText = (item.condition || '').toLowerCase();
+        const isNew = condText.startsWith('nov'); // "Nové" / "nove" / "new"
+        const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
+        const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
+
+        const article = document.createElement('article');
+        article.className = 'stock-item';
+        article.dataset.condition = isNew ? 'Nové' : 'Použité';
+        article.dataset.city = item.city || '';
+
+        article.innerHTML = `
+          <div class="stock-img">
+            <img src="${item.image || 'assets/stock/placeholder.jpg'}" alt="${item.name || ''}">
+            <span class="bubble ${bubbleClass}">${bubbleLabel}</span>
+          </div>
+          <div class="stock-body">
+            <div class="stock-top">
+              <h3 class="stock-title">${item.name || ''}</h3>
+              <div class="stock-price">${item.price || ''}</div>
+            </div>
+            <div class="stock-meta">
+              ${item.city ? `<span class="chip">${item.city}</span>` : ''}
+            </div>
+            <div class="stock-actions">
+              <button
+                class="btn btnPrimary stockInterestBtn"
+                type="button"
+                data-part-id="${item.id || ''}"
+                data-part-name="${item.name || ''}"
+                data-part-price="${item.price || ''}"
+                data-part-city="${item.city || ''}"
+              >
+                Mám záujem
+              </button>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(article);
       });
-    };
-    window.addEventListener('scroll', activate);
-    window.addEventListener('load', activate);
 
-    // subtle parallax
-    window.addEventListener('scroll', () => {
-      const sc = window.scrollY;
-      const bg = document.querySelector('.bg');
-      if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+      // Ak by náhodou nebol žiadny item
+      if (!container.children.length) {
+        container.innerHTML = `
+          <div style="color:var(--muted2); font-size:14px;">
+            Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
+          </div>`;
+      }
+    } catch (err) {
+      console.error('Chyba pri načítaní skladom.json:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadHomepageStock);
+
+  // ===== REVEAL ON SCROLL =====
+  const reveals = document.querySelectorAll('.reveal');
+  const activate = () => {
+    reveals.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 110) el.classList.add('active');
+    });
+  };
+  window.addEventListener('scroll', activate);
+  window.addEventListener('load', activate);
+
+  // subtle parallax
+  window.addEventListener('scroll', () => {
+    const sc = window.scrollY;
+    const bg = document.querySelector('.bg');
+    if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+  });
+
+  // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
+  const cards = document.querySelectorAll('.category-card');
+
+  const closeAll = () => {
+    cards.forEach(card => card.classList.remove('is-active'));
+  };
+
+  const openCard = (card) => {
+    closeAll();
+    card.classList.add('is-active');
+  };
+
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const clickedTag = e.target.tagName.toLowerCase();
+      if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
+
+      e.stopPropagation();
+      if (card.classList.contains('is-active')) card.classList.remove('is-active');
+      else openCard(card);
     });
 
-    // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
-    const cards = document.querySelectorAll('.category-card');
-
-    const closeAll = () => {
-      cards.forEach(card => card.classList.remove('is-active'));
-    };
-
-    const openCard = (card) => {
-      closeAll();
-      card.classList.add('is-active');
-    };
-
-    cards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const clickedTag = e.target.tagName.toLowerCase();
-        if (['input', 'textarea', 'button', 'a', 'label', 'select', 'option'].includes(clickedTag)) return;
-
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
         e.stopPropagation();
         if (card.classList.contains('is-active')) card.classList.remove('is-active');
         else openCard(card);
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          e.stopPropagation();
-          if (card.classList.contains('is-active')) card.classList.remove('is-active');
-          else openCard(card);
-        }
-        if (e.key === 'Escape') card.classList.remove('is-active');
-      });
-
-      const closeBtn = card.querySelector('.closeCardBtn');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          card.classList.remove('is-active');
-        });
       }
+      if (e.key === 'Escape') card.classList.remove('is-active');
     });
 
-    // Klik mimo = zatvoriť
-    document.addEventListener('click', (e) => {
-      const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
-      if (!clickedInsideAnyCard) closeAll();
-    });
-
-    // ===== STOCK: horizontálny scroll aj kolieskom myši =====
-    const stockScroll = document.getElementById('stockScroll');
-    if (stockScroll) {
-      stockScroll.addEventListener('wheel', (e) => {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          e.preventDefault();
-          stockScroll.scrollLeft += e.deltaY;
-        }
-      }, { passive: false });
+    const closeBtn = card.querySelector('.closeCardBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove('is-active');
+      });
     }
+  });
 
-    // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.stockInterestBtn');
-      if (!btn) return;
+  // Klik mimo = zatvoriť
+  document.addEventListener('click', (e) => {
+    const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
+    if (!clickedInsideAnyCard) closeAll();
+  });
 
-      const card = btn.closest('.stock-item');
-      if (!card) return;
+  // ===== STOCK: horizontálny scroll aj kolieskom myši =====
+  const stockScroll = document.getElementById('stockScroll');
+  if (stockScroll) {
+    stockScroll.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        stockScroll.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  }
 
-      const title  = card.querySelector('.stock-title')?.textContent?.trim() || '';
-      const price  = card.querySelector('.stock-price')?.textContent?.trim() || '';
-      const cond   = card.dataset.condition || '';
-      const city   = card.dataset.city || '';
+  // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text (len mesto) =====
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.stockInterestBtn');
+    if (!btn) return;
 
-      const text = `Mám záujem o diel: ${title} (${price}${cond ? ', ' + cond : ''}${city ? ', ' + city : ''})`;
+    const card = btn.closest('.stock-item');
+    if (!card) return;
 
-      window.location.hash = '#kontakt';
+    const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
+    const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
+    const cond  = card.getAttribute('data-condition') || '';
+    const city  = card.getAttribute('data-city') || '';
 
-      setTimeout(() => {
-        const ta = document.getElementById('kontaktMsg');
-        if (ta) {
-          ta.value = text;
-          ta.focus();
-          ta.selectionStart = ta.selectionEnd = ta.value.length;
-        }
-      }, 80);
-    });
-  </script>
+    let text = `Mám záujem o diel: ${title}`;
+    if (price) text += ` (${price}`;
+    if (cond || city) {
+      const extra = [cond, city].filter(Boolean).join(', ');
+      text += price ? `, ${extra}` : ` (${extra}`;
+    }
+    if (text.includes('(') && !text.endsWith(')')) text += ')';
+
+    window.location.hash = '#kontakt';
+
+    setTimeout(() => {
+      const ta = document.getElementById('kontaktMsg');
+      if (ta) {
+        ta.value = text;
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = ta.value.length;
+      }
+    }, 80);
+  });
+</script>
+
 </body>
 </html>
