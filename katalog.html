@@ -770,9 +770,10 @@
       lines.push("Tagy: " + part.tags.join(" · "));
     }
     if (part.price){
-      lines.push("Cena (aktuálne na webe): " + part.price + " € " + (part.price_suffix || ""));
+      // part.price už obsahuje "EUR" alebo "€", tak tam nič nepridávame
+      lines.push("Cena (aktuálne na webe): " + part.price + " " + (part.price_suffix || ""));
     }
-    return lines.join("\\n");
+    return lines.join("\n");
   }
 
   function openOrderModal(part){
@@ -799,17 +800,30 @@
 
   // Načítanie skladom.json a generovanie kariet
   fetch('skladom.json')
-    .then(res => res.json())
-    .then(parts => {
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Nepodarilo sa načítať skladom.json');
+      }
+      return res.json();
+    })
+    .then(data => {
       const container = document.getElementById('parts-skladom');
       if (!container) return;
-      if (!Array.isArray(parts)) {
-        console.error('skladom.json neobsahuje pole objektov');
+
+      // Podpora formátu: buď pole, alebo objekt { inStock: [...] }
+      const items = Array.isArray(data) ? data : (data.inStock || []);
+
+      if (!items.length) {
+        container.innerHTML = `
+          <div style="color:var(--muted2); font-size:13px;">
+            Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
+          </div>`;
         return;
       }
 
+      // Mapa podľa ID, aby sme vedeli doplniť detail do modalu
       const partsById = {};
-      parts.forEach(p => {
+      items.forEach(p => {
         if (p.id) partsById[p.id] = p;
       });
 
@@ -821,10 +835,8 @@
           ? part.image
           : "img/placeholder-part.jpg";
 
-        const priceValue = part.price
-          ? part.price + " €"
-          : "—";
-
+        // part.price už obsahuje "EUR" → necháme to tak, nelepíme ďalšie "€"
+        const priceValue = part.price || "Na dopyt";
         const priceSuffix = part.price_suffix ? `<span>${part.price_suffix}</span>` : "";
 
         return `
@@ -834,7 +846,7 @@
                 <div class="part-name">${part.name || ""}</div>
                 <div class="part-meta">${part.meta || ""}</div>
               </div>
-              <div class="part-badge in-stock">${part.stockLabel || ""}</div>
+              <div class="part-badge in-stock">${part.stockLabel || "Skladom"}</div>
             </div>
 
             <div class="part-image">
@@ -860,7 +872,8 @@
         `;
       }
 
-      container.innerHTML = parts.map(createPartCard).join("");
+      // Všetky položky z inStock → sekcia „Skladom – k odoslaniu ihneď“
+      container.innerHTML = items.map(createPartCard).join("");
 
       // naviazanie klikov na tlačidlá
       document.querySelectorAll('.part-cta[data-part-id]').forEach(btn => {
@@ -873,6 +886,13 @@
     })
     .catch(err => {
       console.error('Chyba pri načítaní skladom.json', err);
+      const container = document.getElementById('parts-skladom');
+      if (container) {
+        container.innerHTML = `
+          <div style="color:var(--muted2); font-size:13px;">
+            Nepodarilo sa načítať skladové diely. Skús stránku obnoviť alebo nás kontaktuj e-mailom.
+          </div>`;
+      }
     });
 
   // Odoslanie formulára cez Formspree bez presmerovania
