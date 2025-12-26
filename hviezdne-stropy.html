@@ -1,1 +1,1259 @@
 
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hviezdne stropy | REM Performance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --violet:#7c3aed;         /* primary */
+      --violet2:#a855f7;        /* glow */
+      --bg:#05050a;             /* deep space */
+      --panel:#0c0c14;
+      --text:#ffffff;
+      --muted:#cfcfe6;
+      --muted2:#a0a0bd;
+      --line: rgba(255,255,255,0.10);
+      --shadow: 0 22px 70px rgba(0,0,0,0.62);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x:hidden;
+    }
+
+    /* ====== SPACE BACKGROUND (stars canvas + soft nebula layers) ====== */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-5;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(124,58,237,0.20), transparent 48%),
+        radial-gradient(circle at 80% 75%, rgba(168,85,247,0.12), transparent 50%),
+        radial-gradient(circle at 55% 45%, rgba(255,255,255,0.03), transparent 60%),
+        radial-gradient(circle at 40% 90%, rgba(124,58,237,0.08), transparent 55%);
+      transform: translateY(0);
+      transition: transform .05s linear;
+    }
+
+    .noise{
+      position:fixed;
+      inset:-20%;
+      z-index:-4;
+      pointer-events:none;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+      animation: noiseMove 10s steps(10) infinite;
+    }
+    @keyframes noiseMove{
+      0%{transform:translate(0,0)}
+      20%{transform:translate(-3%,2%)}
+      40%{transform:translate(4%,-2%)}
+      60%{transform:translate(-2%,-4%)}
+      80%{transform:translate(3%,3%)}
+      100%{transform:translate(0,0)}
+    }
+
+    /* Stars canvas sits above bg */
+    #starsCanvas{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      pointer-events:none;
+    }
+
+    /* ====== LAYOUT ====== */
+    .wrap{
+      width:100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 6vw;
+    }
+
+    section{ padding: 110px 0; position:relative; }
+
+    h1,h2,h3{
+      margin:0 0 16px 0;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    h1{ font-size:62px; line-height:1.03; }
+    h2{ font-size:40px; }
+    h3{ font-size:18px; }
+
+    p{
+      margin:0 0 14px 0;
+      color: var(--muted);
+      line-height:1.70;
+      max-width: 980px;
+    }
+    .muted2{ color: var(--muted2); }
+    .violet{ color: var(--violet2); }
+
+    /* ====== PILL ====== */
+    .pill{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 16px;
+      border:1px solid rgba(168,85,247,0.45);
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(124,58,237,0.05));
+      border-radius:999px;
+      color:#fff;
+      font-size:12px;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      width: fit-content;
+      box-shadow: 0 16px 45px rgba(124,58,237,0.12);
+      user-select:none;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--violet2);
+      box-shadow: 0 0 20px rgba(168,85,247,.85);
+    }
+    .pill--ghost{
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.03);
+      box-shadow:none;
+      color: rgba(255,255,255,0.88);
+    }
+
+    /* ====== NAV ====== */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter: blur(12px);
+      background: rgba(7,7,14,0.62);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+      gap:18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .brand-badge{
+      width:38px;height:38px;
+      border-radius:12px;
+      border:1px solid rgba(168,85,247,0.35);
+      background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.22), rgba(255,255,255,0.03));
+      box-shadow: 0 18px 50px rgba(124,58,237,0.16);
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .brand-badge::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background: radial-gradient(circle, rgba(168,85,247,0.26), transparent 55%);
+      transform: rotate(16deg);
+      opacity:.9;
+    }
+    .brand-badge span{
+      position:relative;
+      font-weight:1000;
+      font-size:14px;
+      letter-spacing:.18em;
+    }
+
+    .nav-links{ display:flex; gap: 26px; flex-wrap:wrap; justify-content:flex-end; }
+    .nav-links a{
+      position:relative;
+      color: rgba(255,255,255,0.78);
+      text-decoration:none;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      padding: 6px 0;
+      transition: color .25s ease, text-shadow .25s ease;
+      white-space: nowrap;
+    }
+    .nav-links a:hover{
+      color:#fff;
+      text-shadow: 0 0 18px rgba(168,85,247,0.28);
+    }
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-10px;
+      width:0;
+      height:2px;
+      background: var(--violet2);
+      box-shadow:
+        0 0 12px rgba(168,85,247,.85),
+        0 0 28px rgba(124,58,237,.35);
+      transform: translateX(-50%);
+      transition: width .32s ease;
+    }
+    .nav-links a:hover::after{ width: 125%; }
+
+    /* ====== HERO ====== */
+    .hero{ padding: 90px 0 80px; }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 42px;
+      align-items:center;
+    }
+    .headline{ display:flex; flex-direction:column; gap:16px; }
+    .subline{
+      font-size:16px;
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    .ctaRow{ display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 22px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      font-size:12px;
+      transition:.25s;
+      user-select:none;
+      border:1px solid rgba(255,255,255,0.12);
+      cursor:pointer;
+    }
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(168,85,247,1), rgba(124,58,237,1));
+      border-color: rgba(168,85,247,0.70);
+      box-shadow: 0 22px 55px rgba(124,58,237,0.22);
+      color:#fff;
+    }
+    .btnPrimary:hover{ transform: translateY(-2px); filter: brightness(1.05); }
+    .btnGhost{
+      background: rgba(255,255,255,0.04);
+      color:#fff;
+    }
+    .btnGhost:hover{ transform: translateY(-2px); border-color: rgba(168,85,247,0.35); }
+
+    .heroCard{
+      background: linear-gradient(180deg, rgba(12,12,20,0.92), rgba(6,6,10,0.70));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius:18px;
+      padding:22px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .heroCard::before{
+      content:"";
+      position:absolute;
+      inset:-70px;
+      background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.22), transparent 55%);
+      transform: rotate(12deg);
+    }
+    .heroCard > *{ position:relative; }
+
+    .statRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .stat{
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stat b{ display:block; font-size:16px; color:#fff; margin-bottom:6px; }
+    .stat span{ font-size:11px; color:var(--muted2); text-transform:uppercase; letter-spacing:.12em; }
+
+    /* ====== PANELS / SPLIT ====== */
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items:start;
+    }
+    .panel{
+      background: rgba(10,10,18,0.72);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius:18px;
+      padding:26px;
+      box-shadow: 0 14px 46px rgba(0,0,0,0.42);
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute;
+      left:-70px; top:-70px;
+      width:200px; height:200px;
+      background: radial-gradient(circle, rgba(168,85,247,0.18), transparent 60%);
+    }
+    .panel > *{ position:relative; }
+
+    /* ====== CAROUSEL ====== */
+    .carousel{
+      margin-top: 18px;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.50);
+      position:relative;
+    }
+    .carousel-viewport{
+      display:flex;
+      width:100%;
+      overflow:hidden;
+      position:relative;
+    }
+    .slide{
+      min-width:100%;
+      height: 420px;
+      position:relative;
+      background: rgba(255,255,255,0.02);
+    }
+    .slide img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .slide::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(168,85,247,0.18), transparent 45%),
+        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
+      pointer-events:none;
+    }
+    .carousel-ui{
+      position:absolute;
+      inset: 0;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      padding: 14px;
+      pointer-events:none;
+      gap: 12px;
+    }
+    .carousel-caption{
+      pointer-events:none;
+      max-width: 72%;
+    }
+    .carousel-caption h3{
+      margin:0 0 8px 0;
+      font-size: 16px;
+      letter-spacing:.12em;
+    }
+    .carousel-caption p{
+      margin:0;
+      color: rgba(255,255,255,0.82);
+      font-size: 13px;
+      max-width:none;
+    }
+
+    .carousel-controls{
+      display:flex;
+      gap:10px;
+      pointer-events:auto;
+    }
+    .iconBtn{
+      width:44px;height:44px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(10,10,18,0.55);
+      backdrop-filter: blur(10px);
+      color:#fff;
+      font-weight:1000;
+      cursor:pointer;
+      transition:.2s;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+    .iconBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(168,85,247,0.35);
+      box-shadow: 0 22px 60px rgba(124,58,237,0.18);
+    }
+    .dots{
+      position:absolute;
+      left: 16px;
+      top: 16px;
+      display:flex;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(10,10,18,0.55);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .dotx{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,0.25);
+      box-shadow:none;
+      transition:.2s;
+    }
+    .dotx.active{
+      background: var(--violet2);
+      box-shadow: 0 0 16px rgba(168,85,247,0.9);
+    }
+
+    /* ====== PACKAGES GRID ====== */
+    .pkgGrid{
+      margin-top: 26px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .pkgCard{
+      background: linear-gradient(180deg, rgba(12,12,20,0.92), rgba(6,6,10,0.70));
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+      position:relative;
+    }
+    .pkgCard:hover{
+      transform: translateY(-6px);
+      border-color: rgba(168,85,247,0.35);
+      box-shadow: 0 26px 70px rgba(0,0,0,0.55);
+    }
+    .pkgImg{
+      aspect-ratio: 4/3;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position:relative;
+    }
+    .pkgImg img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .pkgBody{ padding: 14px 14px 16px; }
+    .pkgTop{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .pkgTitle{
+      margin:0;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      line-height: 1.25;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(168,85,247,0.38);
+      background: rgba(168,85,247,0.10);
+      color:#fff;
+      font-size: 10px;
+      letter-spacing:.12em;
+      font-weight: 1000;
+      white-space:nowrap;
+      box-shadow: 0 16px 40px rgba(124,58,237,0.14);
+    }
+    .pkgDesc{
+      margin:0;
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+      line-height: 1.6;
+      max-width:none;
+    }
+
+    /* ====== CONTACT ====== */
+    .contactGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 26px;
+      align-items:start;
+    }
+    .contact-box{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+      max-width: 860px;
+    }
+    .contact-box label{
+      display:block;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 6px;
+    }
+    .contact-box textarea,
+    .contact-box input,
+    .contact-box select{
+      width:100%;
+      border-radius: 14px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .contact-box textarea{ min-height: 140px; resize: vertical; }
+    .contact-box textarea:focus,
+    .contact-box input:focus,
+    .contact-box select:focus{
+      border-color: rgba(168,85,247,0.50);
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.14);
+    }
+    .contact-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* select arrow */
+    select{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.72) 50%),
+        linear-gradient(135deg, rgba(255,255,255,0.72) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat:no-repeat;
+      padding-right: 34px;
+    }
+    select option{ color:#000; }
+
+    .infoBox{
+      background: rgba(8,8,14,0.80);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:18px;
+      padding:22px 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.5);
+    }
+    .infoBox h3{ margin-top:0; margin-bottom:12px; }
+
+    /* ====== REVEAL ====== */
+    .reveal{ opacity:0; transform: translateY(26px); transition: .8s ease; }
+    .reveal.active{ opacity:1; transform: translateY(0); }
+
+    /* ====== FOOTER ====== */
+    footer{
+      padding: 55px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.38);
+    }
+    .foot{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+    .foot strong{ color:#fff; }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 980px){
+      .wrap{ padding: 0 18px; }
+      section{ padding: 78px 0; }
+      .hero{ padding: 70px 0 60px; }
+
+      .hero-grid{ grid-template-columns: 1fr; gap: 18px; }
+      .split{ grid-template-columns: 1fr; gap: 18px; }
+      .contactGrid{ grid-template-columns: 1fr; gap: 18px; }
+      .pkgGrid{ grid-template-columns: 1fr; }
+
+      h1{ font-size: clamp(34px, 7vw, 48px); line-height: 1.08; }
+      h2{ font-size: clamp(26px, 5.6vw, 34px); }
+      p, .subline{ font-size: 15px; max-width: 100%; }
+
+      .btn{ width:100%; }
+      .slide{ height: 320px; }
+      .contact-row{ grid-template-columns: 1fr; }
+      .nav{ flex-direction: column; align-items:flex-start; }
+      .nav-links{ justify-content:flex-start; }
+    }
+  </style>
+</head>
+
+<body id="top">
+  <div class="bg" id="bgLayer"></div>
+  <canvas id="starsCanvas"></canvas>
+  <div class="noise"></div>
+
+  <div class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Hviezdne stropy">
+        <div class="brand-badge"><span>★</span></div>
+        Hviezdne stropy
+      </a>
+
+      <nav class="nav-links">
+        <a href="#co-to-je">Čo to je</a>
+        <a href="#postup">Postup</a>
+        <a href="#galeria">Galéria</a>
+        <a href="#balicky">Balíčky</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="headline">
+        <span class="pill"><span class="dot"></span> ambient • luxury • interiér</span>
+
+        <h1>
+          Hviezdny strop<br />
+          <span class="violet">ako z vesmíru</span>
+        </h1>
+
+        <p class="subline">
+          Jemné bodky, rôzne veľkosti, decentný glow a občas “padajúca hviezda”.
+          Výsledok je interiér, ktorý vyzerá draho aj vtedy, keď auto stojí na mieste.
+        </p>
+
+        <div class="ctaRow">
+          <a class="btn btnPrimary" href="#kontakt">Chcem cenovú ponuku</a>
+          <a class="btn btnGhost" href="#galeria">Pozrieť galériu</a>
+        </div>
+
+        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="pill pill--ghost">montáž u nás</span>
+          <span class="pill pill--ghost">rôzne hustoty hviezd</span>
+          <span class="pill pill--ghost">twinkle + shooting star</span>
+        </div>
+      </div>
+
+      <div class="heroCard reveal">
+        <h3>Čo dostaneš</h3>
+        <p class="muted2">
+          Nie “svetielka v strope”, ale <b>komplet zážitok</b>: rozloženie hviezd, jednotný glow,
+          čisté vedenie vlákien a výsledok, ktorý vyzerá ako OEM+.
+        </p>
+
+        <div class="statRow">
+          <div class="stat"><b>Glow</b><span>jemný, elegantný, nie lacný led pás</span></div>
+          <div class="stat"><b>Rôzne hviezdy</b><span>menšie + väčšie bodky</span></div>
+          <div class="stat"><b>Shooting star</b><span>občasný efekt padajúcej hviezdy</span></div>
+          <div class="stat"><b>Twinkle</b><span>jemné blikanie, nie diskotéka</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS IT -->
+  <section id="co-to-je">
+    <div class="wrap">
+      <h2 class="reveal">Čo to je</h2>
+      <p class="reveal">
+        Hviezdny strop je systém optických vlákien (a riadiacej jednotky), ktoré vytvoria
+        hustú “nočnú oblohu” priamo v čalúnení stropu. Vďaka rôznym priemerom vlákien
+        vzniknú malé aj väčšie hviezdy, ktoré majú jemný glow.
+      </p>
+
+      <div class="split" style="margin-top:18px">
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> vibe • luxus • detail</span>
+          <h3 style="margin-top:14px">Pre koho je to</h3>
+          <p class="muted2">
+            Pre človeka, ktorý chce interiér posunúť o level vyššie – či už daily, showcar,
+            alebo niečo “clean” bez prehnaného tuningu.
+          </p>
+          <p class="muted2" style="margin-top:10px">
+            Najviac to vynikne v noci. A áno – každý, kto si sadne dnu, sa automaticky otočí hore.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> kontrola • čistota • výsledok</span>
+          <h3 style="margin-top:14px">Na čom si dávame pozor</h3>
+          <p class="muted2">
+            • rozloženie hviezd (aby to nevyzeralo “random lacno”)<br/>
+            • správna hustota podľa veľkosti stropu<br/>
+            • čisté vedenie a fixácia vlákien<br/>
+            • rovnomerný glow bez miest s “prepalom”
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="postup">
+    <div class="wrap">
+      <h2 class="reveal">Ako postupujeme</h2>
+      <p class="reveal">
+        Žiadne kúzla. Len precízna robota a systém.
+      </p>
+
+      <div class="split" style="margin-top:18px">
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> krok 1</span>
+          <h3 style="margin-top:14px">Diagnostika & plán</h3>
+          <p class="muted2">
+            Pozrieme typ stropnice, tvarovanie, airbagy, uchytenia a navrhneme hustotu hviezd.
+            Dohodneme sa, či chceš aj <b>twinkle</b> a <b>shooting star</b>.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> krok 2</span>
+          <h3 style="margin-top:14px">Príprava stropu</h3>
+          <p class="muted2">
+            Stropnicu zložíme, pripravíme povrch a urobíme rozmiestnenie bodov tak,
+            aby boli menšie aj väčšie hviezdy a aby to pôsobilo prirodzene.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> krok 3</span>
+          <h3 style="margin-top:14px">Inštalácia vlákien</h3>
+          <p class="muted2">
+            Vŕtanie bodov, preťahovanie vlákien, fixácia, strih do presnej dĺžky
+            a príprava na rovnomerný glow. Toto je tá časť, kde sa láme kvalita.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> krok 4</span>
+          <h3 style="margin-top:14px">Zapojenie & finálny look</h3>
+          <p class="muted2">
+            Zapojíme riadiacu jednotku, nastavíme efekty, spravíme finálny test,
+            poskladáme a odovzdáme. Výsledok musí vyzerať “factory++”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="galeria">
+    <div class="wrap">
+      <h2 class="reveal">Galéria</h2>
+      <p class="reveal">
+        Reálne ukážky. Klikaj šípkami alebo nechaj autoplay.
+      </p>
+
+      <div class="panel reveal" style="margin-top:18px; padding:22px;">
+        <span class="pill"><span class="dot"></span> photos • ambience • details</span>
+
+        <div class="carousel" style="margin-top:14px;">
+          <div class="dots" id="dots"></div>
+
+          <div class="carousel-viewport" id="viewport">
+            <!-- slides injected by JS -->
+          </div>
+
+          <div class="carousel-ui">
+            <div class="carousel-caption">
+              <h3 id="capTitle">—</h3>
+              <p id="capText">—</p>
+            </div>
+
+            <div class="carousel-controls">
+              <button class="iconBtn" id="prevBtn" type="button" aria-label="Predchádzajúca">←</button>
+              <button class="iconBtn" id="nextBtn" type="button" aria-label="Ďalšia">→</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="pill pill--ghost">tip: najlepšie to vidno v noci</span>
+          <span class="pill pill--ghost">rôzne hustoty podľa auta</span>
+          <span class="pill pill--ghost">shooting star voliteľne</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="balicky">
+    <div class="wrap">
+      <h2 class="reveal">Balíčky hustoty hviezd</h2>
+      <p class="reveal">
+        Vyber si hustotu podľa toho, či chceš jemný luxus alebo “wow efekt”.
+        Počet hviezd prispôsobíme aj tvaru a veľkosti stropu.
+      </p>
+
+      <div class="panel reveal" style="margin-top:18px;">
+        <span class="pill"><span class="dot"></span> 600 • 800 • 1000 • 1300</span>
+
+        <div class="pkgGrid">
+          <!-- 1300 -->
+          <article class="pkgCard">
+            <div class="pkgImg">
+              <img src="assets/strop-1300.jpg" alt="1300 hviezd - ultra hustota">
+            </div>
+            <div class="pkgBody">
+              <div class="pkgTop">
+                <h3 class="pkgTitle">Ultra hustota</h3>
+                <span class="badge">1300 ks</span>
+              </div>
+              <p class="pkgDesc">
+                Maximálny “vesmír”. Najviac bodiek, výraznejší wow efekt.
+                Ideálne pre väčšie autá alebo show look.
+              </p>
+            </div>
+          </article>
+
+          <!-- 1000 -->
+          <article class="pkgCard">
+            <div class="pkgImg">
+              <img src="assets/strop-1000.jpg" alt="1000 hviezd - premium hustota">
+            </div>
+            <div class="pkgBody">
+              <div class="pkgTop">
+                <h3 class="pkgTitle">Premium hustota</h3>
+                <span class="badge">1000 ks</span>
+              </div>
+              <p class="pkgDesc">
+                Najlepší kompromis. Husté, luxusné, bez prehnania.
+                Top voľba pre väčšinu áut.
+              </p>
+            </div>
+          </article>
+
+          <!-- 800 -->
+          <article class="pkgCard">
+            <div class="pkgImg">
+              <img src="assets/strop-800.jpg" alt="800 hviezd - balanced hustota">
+            </div>
+            <div class="pkgBody">
+              <div class="pkgTop">
+                <h3 class="pkgTitle">Balanced</h3>
+                <span class="badge">800 ks</span>
+              </div>
+              <p class="pkgDesc">
+                Čistý decentný look. Stále to má atmosféru,
+                ale je to viac “OEM+”.
+              </p>
+            </div>
+          </article>
+
+          <!-- 600 -->
+          <article class="pkgCard">
+            <div class="pkgImg">
+              <img src="assets/strop-600.jpg" alt="600 hviezd - decent hustota">
+            </div>
+            <div class="pkgBody">
+              <div class="pkgTop">
+                <h3 class="pkgTitle">Decent</h3>
+                <span class="badge">600 ks</span>
+              </div>
+              <p class="pkgDesc">
+                Jemný luxusný doplnok. Menej bodiek,
+                ideálne ak chceš fakt minimalistický výsledok.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="ctaRow" style="margin-top:18px;">
+          <a class="btn btnPrimary" href="#kontakt">Vybrať balík & napísať</a>
+          <a class="btn btnGhost" href="#postup">Pozrieť postup</a>
+        </div>
+
+        <p class="muted2" style="margin-top:14px;">
+          Tip: ak nevieš čo vybrať, napíš auto + karosériu + čo chceš docieliť
+          (decent / wow / show) a navrhneme hustotu za teba.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="kontakt">
+    <div class="wrap">
+      <h2 class="reveal">Kontakt</h2>
+      <p class="reveal">Napíš nám a pošli detaily auta. Odpovieme priamo a rýchlo.</p>
+
+      <div class="panel reveal contactGrid" style="margin-top:18px;">
+        <div>
+          <span class="pill"><span class="dot"></span> dopyt • cena • termín</span>
+
+          <form class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST" style="margin-top:14px;">
+            <div>
+              <label>Meno a priezvisko</label>
+              <input name="meno" type="text" placeholder="Meno a priezvisko" required>
+            </div>
+
+            <div class="contact-row">
+              <div>
+                <label>Email</label>
+                <input name="email" type="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label>Telefón</label>
+                <input name="telefon" type="text" placeholder="+421..." required>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div>
+                <label>Auto</label>
+                <input name="auto" type="text" placeholder="BMW E46 / Audi A4...">
+              </div>
+              <div>
+                <label>Balík</label>
+                <select name="balik">
+                  <option value="" selected>Vyber…</option>
+                  <option value="600">600 ks (Decent)</option>
+                  <option value="800">800 ks (Balanced)</option>
+                  <option value="1000">1000 ks (Premium)</option>
+                  <option value="1300">1300 ks (Ultra)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label>Správa</label>
+              <textarea name="sprava" placeholder="Chcem twinkle? Shooting star? Kedy to chceš? Aký vibe?"></textarea>
+            </div>
+
+            <input type="hidden" name="sluzba" value="Hviezdne stropy" />
+
+            <div class="ctaRow" style="margin-top:6px;">
+              <button class="btn btnPrimary" type="submit">Odoslať dopyt</button>
+              <a class="btn btnGhost" href="#top">Späť hore</a>
+            </div>
+          </form>
+        </div>
+
+        <div class="infoBox">
+          <h3>Čo budeš potrebovať</h3>
+
+          <p class="muted2">
+            <b>1) Auto + karoséria</b><br/>
+            (napr. E46 coupe / Octavia combi)
+          </p>
+
+          <p class="muted2">
+            <b>2) Vibe</b><br/>
+            Decent / Luxus / Wow / Show
+          </p>
+
+          <p class="muted2">
+            <b>3) Efekty</b><br/>
+            Twinkle (jemné) + Shooting star (občas) – voliteľné
+          </p>
+
+          <p class="muted2">
+            <b>Poznámka</b><br/>
+            Cenová ponuka závisí od veľkosti stropu, hustoty, efektov a náročnosti demontáže.
+            Ale vybavíš to jednou správou – zvyšok vyriešime my.
+          </p>
+
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill pill--ghost">čistá montáž</span>
+            <span class="pill pill--ghost">fialový vesmír vibe</span>
+            <span class="pill pill--ghost">glow bez prepalu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <div>Prevádzkovateľ – <strong>REM Performance</strong></div>
+      <div>© 2026 REM Performance</div>
+      <div>Hviezdne stropy • ambient • interiér</div>
+    </div>
+  </footer>
+
+  <script>
+    // ==============================
+    // STARS + SHOOTING STAR BACKGROUND
+    // ==============================
+    const canvas = document.getElementById('starsCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let W = 0, H = 0;
+    function resize(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const rand = (min, max) => min + Math.random() * (max - min);
+
+    // Star field (different sizes, subtle glow)
+    const STAR_COUNT = Math.min(850, Math.floor((window.innerWidth * window.innerHeight) / 2400)); // adapts by screen size
+    const stars = Array.from({length: STAR_COUNT}, () => ({
+      x: rand(0, W),
+      y: rand(0, H),
+      r: rand(0.35, 1.55),                 // small vs bigger stars
+      a: rand(0.25, 0.95),                 // alpha
+      tw: rand(0.002, 0.012),              // twinkle speed
+      ph: rand(0, Math.PI*2),              // phase
+    }));
+
+    // Shooting star
+    let shooting = null;
+    function spawnShootingStar(){
+      const startX = rand(W * 0.15, W * 0.95);
+      const startY = rand(H * 0.05, H * 0.45);
+      const len = rand(160, 340);
+      const speed = rand(12, 20);
+
+      shooting = {
+        x: startX,
+        y: startY,
+        vx: speed,
+        vy: speed * rand(0.35, 0.65),
+        len,
+        life: rand(18, 30),
+        maxLife: 30
+      };
+    }
+
+    // Spawn sometimes (not too often)
+    let nextShootIn = rand(180, 520);
+    let frame = 0;
+
+    // Scroll parallax speed (stars move down when you scroll)
+    let scrollY = 0;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const now = window.scrollY;
+      const delta = now - lastScrollY;
+      lastScrollY = now;
+      // move "through space"
+      scrollY += delta * 0.55;
+    }, { passive: true });
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+
+      // star drift based on scroll + subtle animation
+      for (let i=0;i<stars.length;i++){
+        const s = stars[i];
+
+        // twinkle
+        s.ph += s.tw;
+        const tw = (Math.sin(s.ph) + 1) * 0.5; // 0..1
+        const alpha = Math.min(1, s.a * (0.55 + tw * 0.75));
+
+        // parallax: stars "fall" when scrolling
+        const y = (s.y + (scrollY * (0.12 + s.r * 0.08))) % (H + 40) - 20;
+        const x = s.x;
+
+        // glow
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.shadowBlur = 12 + s.r * 10;
+        ctx.shadowColor = 'rgba(168,85,247,0.45)';
+        ctx.arc(x, y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+
+      // shooting star tick
+      frame++;
+      if (!shooting){
+        nextShootIn--;
+        if (nextShootIn <= 0){
+          spawnShootingStar();
+          nextShootIn = rand(240, 680);
+        }
+      } else {
+        shooting.x += shooting.vx;
+        shooting.y += shooting.vy;
+        shooting.life--;
+
+        // draw tail
+        const t = Math.max(0, shooting.life / shooting.maxLife);
+        const tailX = shooting.x - shooting.vx * (shooting.len / 18);
+        const tailY = shooting.y - shooting.vy * (shooting.len / 18);
+
+        const grad = ctx.createLinearGradient(shooting.x, shooting.y, tailX, tailY);
+        grad.addColorStop(0, `rgba(255,255,255,${0.95 * t})`);
+        grad.addColorStop(0.4, `rgba(168,85,247,${0.55 * t})`);
+        grad.addColorStop(1, `rgba(255,255,255,0)`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2.2;
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = 'rgba(168,85,247,0.55)';
+
+        ctx.beginPath();
+        ctx.moveTo(shooting.x, shooting.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+
+        if (shooting.life <= 0 || shooting.x > W + 260 || shooting.y > H + 260){
+          shooting = null;
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // ==============================
+    // BACKGROUND LAYER PARALLAX
+    // ==============================
+    const bgLayer = document.getElementById('bgLayer');
+    window.addEventListener('scroll', () => {
+      const sc = window.scrollY;
+      if (bgLayer) bgLayer.style.transform = `translateY(${sc * 0.02}px)`;
+    }, { passive: true });
+
+    // ==============================
+    // REVEAL ON SCROLL
+    // ==============================
+    const reveals = document.querySelectorAll('.reveal');
+    const activate = () => {
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 110) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', activate);
+    window.addEventListener('load', activate);
+    activate();
+
+    // ==============================
+    // CAROUSEL (no libs)
+    // ==============================
+    const slides = [
+      {
+        img: "assets/galeria-1.jpg",
+        title: "Jemný glow + prirodzené rozloženie",
+        text: "Malé aj väčšie hviezdy, aby to pôsobilo ako skutočná obloha."
+      },
+      {
+        img: "assets/galeria-2.jpg",
+        title: "Twinkle (jemné)",
+        text: "Efekt, ktorý dáva život. Nie stroboskop, ale luxus."
+      },
+      {
+        img: "assets/galeria-3.jpg",
+        title: "Shooting star (občas)",
+        text: "Krátky prelet – presne ten detail, čo spraví wow."
+      },
+      {
+        img: "assets/galeria-4.jpg",
+        title: "OEM+ výsledok",
+        text: "Čistá montáž a jednotný look bez prehnaných svetiel."
+      }
+    ];
+
+    const viewport = document.getElementById('viewport');
+    const dotsWrap = document.getElementById('dots');
+    const capTitle = document.getElementById('capTitle');
+    const capText  = document.getElementById('capText');
+    const prevBtn  = document.getElementById('prevBtn');
+    const nextBtn  = document.getElementById('nextBtn');
+
+    let idx = 0;
+    let timer = null;
+
+    function renderSlides(){
+      viewport.innerHTML = slides.map(s => `
+        <div class="slide">
+          <img src="${s.img}" alt="${s.title}">
+        </div>
+      `).join('');
+
+      dotsWrap.innerHTML = slides.map((_,i)=>`<div class="dotx ${i===0?'active':''}" data-i="${i}"></div>`).join('');
+      setCaption();
+      goTo(0, false);
+    }
+
+    function setCaption(){
+      capTitle.textContent = slides[idx].title;
+      capText.textContent  = slides[idx].text;
+      [...dotsWrap.children].forEach((d,i)=> d.classList.toggle('active', i===idx));
+    }
+
+    function goTo(i, smooth=true){
+      idx = (i + slides.length) % slides.length;
+      const x = idx * viewport.clientWidth;
+      viewport.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' });
+      setCaption();
+    }
+
+    function next(){ goTo(idx+1); }
+    function prev(){ goTo(idx-1); }
+
+    nextBtn.addEventListener('click', () => { next(); restartAuto(); });
+    prevBtn.addEventListener('click', () => { prev(); restartAuto(); });
+
+    dotsWrap.addEventListener('click', (e) => {
+      const dot = e.target.closest('.dotx');
+      if (!dot) return;
+      const i = Number(dot.dataset.i);
+      if (Number.isFinite(i)) { goTo(i); restartAuto(); }
+    });
+
+    // Keep in sync when user drags on mobile
+    let snapTimeout = null;
+    viewport.addEventListener('scroll', () => {
+      clearTimeout(snapTimeout);
+      snapTimeout = setTimeout(() => {
+        const w = viewport.clientWidth || 1;
+        const i = Math.round(viewport.scrollLeft / w);
+        if (i !== idx) { idx = i; setCaption(); }
+      }, 80);
+    }, { passive: true });
+
+    function startAuto(){
+      timer = setInterval(() => next(), 5200);
+    }
+    function restartAuto(){
+      if (timer) clearInterval(timer);
+      startAuto();
+    }
+
+    window.addEventListener('resize', () => goTo(idx, false));
+    renderSlides();
+    startAuto();
+  </script>
+</body>
+</html>
