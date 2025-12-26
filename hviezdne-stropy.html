@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="sk">
 <head>
@@ -8,9 +7,9 @@
 
   <style>
     :root{
-      --violet:#7c3aed;         /* primary */
-      --violet2:#a855f7;        /* glow */
-      --bg:#05050a;             /* deep space */
+      --violet:#7c3aed;
+      --violet2:#a855f7;
+      --bg:#05050a;
       --panel:#0c0c14;
       --text:#ffffff;
       --muted:#cfcfe6;
@@ -29,7 +28,7 @@
       overflow-x:hidden;
     }
 
-    /* ====== SPACE BACKGROUND (stars canvas + soft nebula layers) ====== */
+    /* ====== SPACE BACKGROUND ====== */
     .bg{
       position:fixed;
       inset:0;
@@ -62,7 +61,6 @@
       100%{transform:translate(0,0)}
     }
 
-    /* Stars canvas sits above bg */
     #starsCanvas{
       position:fixed;
       inset:0;
@@ -70,13 +68,17 @@
       pointer-events:none;
     }
 
-    /* ====== LAYOUT ====== */
+    /* ====== FULL-WIDTH WRAP ====== */
     .wrap{
       width:100%;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 6vw;
+      max-width:none;      /* FULL WIDE */
+      margin:0;
+      padding: 0 6vw;      /* len okraje */
     }
+
+    /* content width helpers (aby text nebol cez celú obrazovku) */
+    .content-max{ max-width: 1180px; }
+    .text-max{ max-width: 980px; }
 
     section{ padding: 110px 0; position:relative; }
 
@@ -93,7 +95,6 @@
       margin:0 0 14px 0;
       color: var(--muted);
       line-height:1.70;
-      max-width: 980px;
     }
     .muted2{ color: var(--muted2); }
     .violet{ color: var(--violet2); }
@@ -221,11 +222,7 @@
       align-items:center;
     }
     .headline{ display:flex; flex-direction:column; gap:16px; }
-    .subline{
-      font-size:16px;
-      color: var(--muted);
-      max-width: 980px;
-    }
+    .subline{ font-size:16px; color: var(--muted); }
 
     .ctaRow{ display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; }
 
@@ -335,7 +332,7 @@
     }
     .slide{
       min-width:100%;
-      height: 420px;
+      height: 520px; /* o kus väčšie na full wide */
       position:relative;
       background: rgba(255,255,255,0.02);
     }
@@ -365,10 +362,7 @@
       pointer-events:none;
       gap: 12px;
     }
-    .carousel-caption{
-      pointer-events:none;
-      max-width: 72%;
-    }
+    .carousel-caption{ pointer-events:none; max-width: 72%; }
     .carousel-caption h3{
       margin:0 0 8px 0;
       font-size: 16px;
@@ -378,14 +372,9 @@
       margin:0;
       color: rgba(255,255,255,0.82);
       font-size: 13px;
-      max-width:none;
     }
 
-    .carousel-controls{
-      display:flex;
-      gap:10px;
-      pointer-events:auto;
-    }
+    .carousel-controls{ display:flex; gap:10px; pointer-events:auto; }
     .iconBtn{
       width:44px;height:44px;
       border-radius:14px;
@@ -418,7 +407,6 @@
     .dotx{
       width:8px;height:8px;border-radius:999px;
       background: rgba(255,255,255,0.25);
-      box-shadow:none;
       transition:.2s;
     }
     .dotx.active{
@@ -440,7 +428,6 @@
       overflow:hidden;
       box-shadow: 0 18px 60px rgba(0,0,0,0.45);
       transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-      position:relative;
     }
     .pkgCard:hover{
       transform: translateY(-6px);
@@ -451,7 +438,6 @@
       aspect-ratio: 4/3;
       background: rgba(255,255,255,0.03);
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      position:relative;
     }
     .pkgImg img{
       width:100%;
@@ -494,7 +480,6 @@
       color: rgba(255,255,255,0.78);
       font-size: 13px;
       line-height: 1.6;
-      max-width:none;
     }
 
     /* ====== CONTACT ====== */
@@ -543,8 +528,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-
-    /* select arrow */
     select{
       appearance:none;
       -webkit-appearance:none;
@@ -604,7 +587,7 @@
 
       h1{ font-size: clamp(34px, 7vw, 48px); line-height: 1.08; }
       h2{ font-size: clamp(26px, 5.6vw, 34px); }
-      p, .subline{ font-size: 15px; max-width: 100%; }
+      p, .subline{ font-size: 15px; }
 
       .btn{ width:100%; }
       .slide{ height: 320px; }
@@ -621,62 +604,66 @@
   <div class="noise"></div>
 
   <div class="topbar">
-    <div class="wrap nav">
-      <a class="brand" href="#top" aria-label="Hviezdne stropy">
-        <div class="brand-badge"><span>★</span></div>
-        Hviezdne stropy
-      </a>
+    <div class="wrap">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="Hviezdne stropy">
+          <div class="brand-badge"><span>★</span></div>
+          Hviezdne stropy
+        </a>
 
-      <nav class="nav-links">
-        <a href="#co-to-je">Čo to je</a>
-        <a href="#postup">Postup</a>
-        <a href="#galeria">Galéria</a>
-        <a href="#balicky">Balíčky</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
+        <nav class="nav-links">
+          <a href="#co-to-je">Čo to je</a>
+          <a href="#postup">Postup</a>
+          <a href="#galeria">Galéria</a>
+          <a href="#balicky">Balíčky</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+      </div>
     </div>
   </div>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="headline">
-        <span class="pill"><span class="dot"></span> ambient • luxury • interiér</span>
+    <div class="wrap">
+      <div class="hero-grid content-max">
+        <div class="headline">
+          <span class="pill"><span class="dot"></span> ambient • luxury • interiér</span>
 
-        <h1>
-          Hviezdny strop<br />
-          <span class="violet">ako z vesmíru</span>
-        </h1>
+          <h1>
+            Hviezdny strop<br />
+            <span class="violet">ako z vesmíru</span>
+          </h1>
 
-        <p class="subline">
-          Jemné bodky, rôzne veľkosti, decentný glow a občas “padajúca hviezda”.
-          Výsledok je interiér, ktorý vyzerá draho aj vtedy, keď auto stojí na mieste.
-        </p>
+          <p class="subline text-max">
+            Jemné bodky, rôzne veľkosti, decentný glow a občas “padajúca hviezda”.
+            Výsledok je interiér, ktorý vyzerá draho aj vtedy, keď auto stojí na mieste.
+          </p>
 
-        <div class="ctaRow">
-          <a class="btn btnPrimary" href="#kontakt">Chcem cenovú ponuku</a>
-          <a class="btn btnGhost" href="#galeria">Pozrieť galériu</a>
+          <div class="ctaRow">
+            <a class="btn btnPrimary" href="#kontakt">Chcem cenovú ponuku</a>
+            <a class="btn btnGhost" href="#galeria">Pozrieť galériu</a>
+          </div>
+
+          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill pill--ghost">montáž u nás</span>
+            <span class="pill pill--ghost">rôzne hustoty hviezd</span>
+            <span class="pill pill--ghost">twinkle + shooting star</span>
+          </div>
         </div>
 
-        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
-          <span class="pill pill--ghost">montáž u nás</span>
-          <span class="pill pill--ghost">rôzne hustoty hviezd</span>
-          <span class="pill pill--ghost">twinkle + shooting star</span>
-        </div>
-      </div>
+        <div class="heroCard reveal">
+          <h3>Čo dostaneš</h3>
+          <p class="muted2">
+            Nie “svetielka v strope”, ale <b>komplet zážitok</b>: rozloženie hviezd, jednotný glow,
+            čisté vedenie vlákien a výsledok, ktorý vyzerá ako OEM+.
+          </p>
 
-      <div class="heroCard reveal">
-        <h3>Čo dostaneš</h3>
-        <p class="muted2">
-          Nie “svetielka v strope”, ale <b>komplet zážitok</b>: rozloženie hviezd, jednotný glow,
-          čisté vedenie vlákien a výsledok, ktorý vyzerá ako OEM+.
-        </p>
-
-        <div class="statRow">
-          <div class="stat"><b>Glow</b><span>jemný, elegantný, nie lacný led pás</span></div>
-          <div class="stat"><b>Rôzne hviezdy</b><span>menšie + väčšie bodky</span></div>
-          <div class="stat"><b>Shooting star</b><span>občasný efekt padajúcej hviezdy</span></div>
-          <div class="stat"><b>Twinkle</b><span>jemné blikanie, nie diskotéka</span></div>
+          <div class="statRow">
+            <div class="stat"><b>Glow</b><span>jemný, elegantný, nie lacný</span></div>
+            <div class="stat"><b>Rôzne hviezdy</b><span>menšie + väčšie bodky</span></div>
+            <div class="stat"><b>Shooting star</b><span>občasný efekt</span></div>
+            <div class="stat"><b>Twinkle</b><span>jemné blikanie</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -685,35 +672,37 @@
   <!-- WHAT IS IT -->
   <section id="co-to-je">
     <div class="wrap">
-      <h2 class="reveal">Čo to je</h2>
-      <p class="reveal">
-        Hviezdny strop je systém optických vlákien (a riadiacej jednotky), ktoré vytvoria
-        hustú “nočnú oblohu” priamo v čalúnení stropu. Vďaka rôznym priemerom vlákien
-        vzniknú malé aj väčšie hviezdy, ktoré majú jemný glow.
-      </p>
+      <div class="content-max">
+        <h2 class="reveal">Čo to je</h2>
+        <p class="reveal text-max">
+          Hviezdny strop je systém optických vlákien (a riadiacej jednotky), ktoré vytvoria
+          hustú “nočnú oblohu” priamo v čalúnení stropu. Vďaka rôznym priemerom vlákien
+          vzniknú malé aj väčšie hviezdy, ktoré majú jemný glow.
+        </p>
 
-      <div class="split" style="margin-top:18px">
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> vibe • luxus • detail</span>
-          <h3 style="margin-top:14px">Pre koho je to</h3>
-          <p class="muted2">
-            Pre človeka, ktorý chce interiér posunúť o level vyššie – či už daily, showcar,
-            alebo niečo “clean” bez prehnaného tuningu.
-          </p>
-          <p class="muted2" style="margin-top:10px">
-            Najviac to vynikne v noci. A áno – každý, kto si sadne dnu, sa automaticky otočí hore.
-          </p>
-        </div>
+        <div class="split" style="margin-top:18px">
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> vibe • luxus • detail</span>
+            <h3 style="margin-top:14px">Pre koho je to</h3>
+            <p class="muted2">
+              Pre človeka, ktorý chce interiér posunúť o level vyššie – či už daily, showcar,
+              alebo niečo “clean” bez prehnaného tuningu.
+            </p>
+            <p class="muted2" style="margin-top:10px">
+              Najviac to vynikne v noci. A áno – každý, kto si sadne dnu, sa automaticky otočí hore.
+            </p>
+          </div>
 
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> kontrola • čistota • výsledok</span>
-          <h3 style="margin-top:14px">Na čom si dávame pozor</h3>
-          <p class="muted2">
-            • rozloženie hviezd (aby to nevyzeralo “random lacno”)<br/>
-            • správna hustota podľa veľkosti stropu<br/>
-            • čisté vedenie a fixácia vlákien<br/>
-            • rovnomerný glow bez miest s “prepalom”
-          </p>
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> kontrola • čistota • výsledok</span>
+            <h3 style="margin-top:14px">Na čom si dávame pozor</h3>
+            <p class="muted2">
+              • rozloženie hviezd (aby to nevyzeralo “random lacno”)<br/>
+              • správna hustota podľa veľkosti stropu<br/>
+              • čisté vedenie a fixácia vlákien<br/>
+              • rovnomerný glow bez miest s “prepalom”
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -722,46 +711,46 @@
   <!-- PROCESS -->
   <section id="postup">
     <div class="wrap">
-      <h2 class="reveal">Ako postupujeme</h2>
-      <p class="reveal">
-        Žiadne kúzla. Len precízna robota a systém.
-      </p>
+      <div class="content-max">
+        <h2 class="reveal">Ako postupujeme</h2>
+        <p class="reveal text-max">Žiadne kúzla. Len precízna robota a systém.</p>
 
-      <div class="split" style="margin-top:18px">
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> krok 1</span>
-          <h3 style="margin-top:14px">Diagnostika & plán</h3>
-          <p class="muted2">
-            Pozrieme typ stropnice, tvarovanie, airbagy, uchytenia a navrhneme hustotu hviezd.
-            Dohodneme sa, či chceš aj <b>twinkle</b> a <b>shooting star</b>.
-          </p>
-        </div>
+        <div class="split" style="margin-top:18px">
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> krok 1</span>
+            <h3 style="margin-top:14px">Diagnostika & plán</h3>
+            <p class="muted2">
+              Pozrieme typ stropnice, tvarovanie, airbagy, uchytenia a navrhneme hustotu hviezd.
+              Dohodneme sa, či chceš aj <b>twinkle</b> a <b>shooting star</b>.
+            </p>
+          </div>
 
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> krok 2</span>
-          <h3 style="margin-top:14px">Príprava stropu</h3>
-          <p class="muted2">
-            Stropnicu zložíme, pripravíme povrch a urobíme rozmiestnenie bodov tak,
-            aby boli menšie aj väčšie hviezdy a aby to pôsobilo prirodzene.
-          </p>
-        </div>
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> krok 2</span>
+            <h3 style="margin-top:14px">Príprava stropu</h3>
+            <p class="muted2">
+              Stropnicu zložíme, pripravíme povrch a urobíme rozmiestnenie bodov tak,
+              aby boli menšie aj väčšie hviezdy a aby to pôsobilo prirodzene.
+            </p>
+          </div>
 
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> krok 3</span>
-          <h3 style="margin-top:14px">Inštalácia vlákien</h3>
-          <p class="muted2">
-            Vŕtanie bodov, preťahovanie vlákien, fixácia, strih do presnej dĺžky
-            a príprava na rovnomerný glow. Toto je tá časť, kde sa láme kvalita.
-          </p>
-        </div>
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> krok 3</span>
+            <h3 style="margin-top:14px">Inštalácia vlákien</h3>
+            <p class="muted2">
+              Vŕtanie bodov, preťahovanie vlákien, fixácia, strih do presnej dĺžky
+              a príprava na rovnomerný glow. Toto je tá časť, kde sa láme kvalita.
+            </p>
+          </div>
 
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> krok 4</span>
-          <h3 style="margin-top:14px">Zapojenie & finálny look</h3>
-          <p class="muted2">
-            Zapojíme riadiacu jednotku, nastavíme efekty, spravíme finálny test,
-            poskladáme a odovzdáme. Výsledok musí vyzerať “factory++”.
-          </p>
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> krok 4</span>
+            <h3 style="margin-top:14px">Zapojenie & finálny look</h3>
+            <p class="muted2">
+              Zapojíme riadiacu jednotku, nastavíme efekty, spravíme finálny test,
+              poskladáme a odovzdáme. Výsledok musí vyzerať “factory++”.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -770,38 +759,36 @@
   <!-- GALLERY -->
   <section id="galeria">
     <div class="wrap">
-      <h2 class="reveal">Galéria</h2>
-      <p class="reveal">
-        Reálne ukážky. Klikaj šípkami alebo nechaj autoplay.
-      </p>
+      <div class="content-max">
+        <h2 class="reveal">Galéria</h2>
+        <p class="reveal text-max">Reálne ukážky. Klikaj šípkami alebo nechaj autoplay.</p>
 
-      <div class="panel reveal" style="margin-top:18px; padding:22px;">
-        <span class="pill"><span class="dot"></span> photos • ambience • details</span>
+        <div class="panel reveal" style="margin-top:18px; padding:22px;">
+          <span class="pill"><span class="dot"></span> photos • ambience • details</span>
 
-        <div class="carousel" style="margin-top:14px;">
-          <div class="dots" id="dots"></div>
+          <div class="carousel" style="margin-top:14px;">
+            <div class="dots" id="dots"></div>
 
-          <div class="carousel-viewport" id="viewport">
-            <!-- slides injected by JS -->
-          </div>
+            <div class="carousel-viewport" id="viewport"></div>
 
-          <div class="carousel-ui">
-            <div class="carousel-caption">
-              <h3 id="capTitle">—</h3>
-              <p id="capText">—</p>
-            </div>
+            <div class="carousel-ui">
+              <div class="carousel-caption">
+                <h3 id="capTitle">—</h3>
+                <p id="capText">—</p>
+              </div>
 
-            <div class="carousel-controls">
-              <button class="iconBtn" id="prevBtn" type="button" aria-label="Predchádzajúca">←</button>
-              <button class="iconBtn" id="nextBtn" type="button" aria-label="Ďalšia">→</button>
+              <div class="carousel-controls">
+                <button class="iconBtn" id="prevBtn" type="button" aria-label="Predchádzajúca">←</button>
+                <button class="iconBtn" id="nextBtn" type="button" aria-label="Ďalšia">→</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-          <span class="pill pill--ghost">tip: najlepšie to vidno v noci</span>
-          <span class="pill pill--ghost">rôzne hustoty podľa auta</span>
-          <span class="pill pill--ghost">shooting star voliteľne</span>
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill pill--ghost">tip: najlepšie to vidno v noci</span>
+            <span class="pill pill--ghost">rôzne hustoty podľa auta</span>
+            <span class="pill pill--ghost">shooting star voliteľne</span>
+          </div>
         </div>
       </div>
     </div>
@@ -810,94 +797,71 @@
   <!-- PACKAGES -->
   <section id="balicky">
     <div class="wrap">
-      <h2 class="reveal">Balíčky hustoty hviezd</h2>
-      <p class="reveal">
-        Vyber si hustotu podľa toho, či chceš jemný luxus alebo “wow efekt”.
-        Počet hviezd prispôsobíme aj tvaru a veľkosti stropu.
-      </p>
-
-      <div class="panel reveal" style="margin-top:18px;">
-        <span class="pill"><span class="dot"></span> 600 • 800 • 1000 • 1300</span>
-
-        <div class="pkgGrid">
-          <!-- 1300 -->
-          <article class="pkgCard">
-            <div class="pkgImg">
-              <img src="assets/strop-1300.jpg" alt="1300 hviezd - ultra hustota">
-            </div>
-            <div class="pkgBody">
-              <div class="pkgTop">
-                <h3 class="pkgTitle">Ultra hustota</h3>
-                <span class="badge">1300 ks</span>
-              </div>
-              <p class="pkgDesc">
-                Maximálny “vesmír”. Najviac bodiek, výraznejší wow efekt.
-                Ideálne pre väčšie autá alebo show look.
-              </p>
-            </div>
-          </article>
-
-          <!-- 1000 -->
-          <article class="pkgCard">
-            <div class="pkgImg">
-              <img src="assets/strop-1000.jpg" alt="1000 hviezd - premium hustota">
-            </div>
-            <div class="pkgBody">
-              <div class="pkgTop">
-                <h3 class="pkgTitle">Premium hustota</h3>
-                <span class="badge">1000 ks</span>
-              </div>
-              <p class="pkgDesc">
-                Najlepší kompromis. Husté, luxusné, bez prehnania.
-                Top voľba pre väčšinu áut.
-              </p>
-            </div>
-          </article>
-
-          <!-- 800 -->
-          <article class="pkgCard">
-            <div class="pkgImg">
-              <img src="assets/strop-800.jpg" alt="800 hviezd - balanced hustota">
-            </div>
-            <div class="pkgBody">
-              <div class="pkgTop">
-                <h3 class="pkgTitle">Balanced</h3>
-                <span class="badge">800 ks</span>
-              </div>
-              <p class="pkgDesc">
-                Čistý decentný look. Stále to má atmosféru,
-                ale je to viac “OEM+”.
-              </p>
-            </div>
-          </article>
-
-          <!-- 600 -->
-          <article class="pkgCard">
-            <div class="pkgImg">
-              <img src="assets/strop-600.jpg" alt="600 hviezd - decent hustota">
-            </div>
-            <div class="pkgBody">
-              <div class="pkgTop">
-                <h3 class="pkgTitle">Decent</h3>
-                <span class="badge">600 ks</span>
-              </div>
-              <p class="pkgDesc">
-                Jemný luxusný doplnok. Menej bodiek,
-                ideálne ak chceš fakt minimalistický výsledok.
-              </p>
-            </div>
-          </article>
-        </div>
-
-        <div class="ctaRow" style="margin-top:18px;">
-          <a class="btn btnPrimary" href="#kontakt">Vybrať balík & napísať</a>
-          <a class="btn btnGhost" href="#postup">Pozrieť postup</a>
-        </div>
-
-        <p class="muted2" style="margin-top:14px;">
-          Tip: ak nevieš čo vybrať, napíš auto + karosériu + čo chceš docieliť
-          (decent / wow / show) a navrhneme hustotu za teba.
+      <div class="content-max">
+        <h2 class="reveal">Balíčky hustoty hviezd</h2>
+        <p class="reveal text-max">
+          Vyber si hustotu podľa toho, či chceš jemný luxus alebo “wow efekt”.
+          Počet hviezd prispôsobíme aj tvaru a veľkosti stropu.
         </p>
+
+        <div class="panel reveal" style="margin-top:18px;">
+          <span class="pill"><span class="dot"></span> 600 • 800 • 1000 • 1300</span>
+
+          <div class="pkgGrid">
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1300.jpg" alt="1300 hviezd - ultra hustota"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">Ultra hustota</h3>
+                  <span class="badge">1300 ks</span>
+                </div>
+                <p class="pkgDesc">Maximálny “vesmír”. Najviac bodiek, výraznejší wow efekt. Ideálne pre show look.</p>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1000.jpg" alt="1000 hviezd - premium hustota"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">Premium hustota</h3>
+                  <span class="badge">1000 ks</span>
+                </div>
+                <p class="pkgDesc">Najlepší kompromis. Husté, luxusné, bez prehnania. Top voľba pre väčšinu áut.</p>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-800.jpg" alt="800 hviezd - balanced hustota"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">Balanced</h3>
+                  <span class="badge">800 ks</span>
+                </div>
+                <p class="pkgDesc">Čistý decentný look. Stále to má atmosféru, ale je to viac “OEM+”.</p>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-600.jpg" alt="600 hviezd - decent hustota"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">Decent</h3>
+                  <span class="badge">600 ks</span>
+                </div>
+                <p class="pkgDesc">Jemný luxusný doplnok. Menej bodiek, ideálne ak chceš minimalistický výsledok.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="ctaRow" style="margin-top:18px;">
+            <a class="btn btnPrimary" href="#kontakt">Vybrať balík & napísať</a>
+            <a class="btn btnGhost" href="#postup">Pozrieť postup</a>
+          </div>
+
+          <p class="muted2" style="margin-top:14px;">
+            Tip: ak nevieš čo vybrať, napíš auto + karosériu + vibe (decent / wow / show) a navrhneme hustotu za teba.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -905,89 +869,77 @@
   <!-- CONTACT -->
   <section id="kontakt">
     <div class="wrap">
-      <h2 class="reveal">Kontakt</h2>
-      <p class="reveal">Napíš nám a pošli detaily auta. Odpovieme priamo a rýchlo.</p>
+      <div class="content-max">
+        <h2 class="reveal">Kontakt</h2>
+        <p class="reveal text-max">Napíš nám a pošli detaily auta. Odpovieme priamo a rýchlo.</p>
 
-      <div class="panel reveal contactGrid" style="margin-top:18px;">
-        <div>
-          <span class="pill"><span class="dot"></span> dopyt • cena • termín</span>
+        <div class="panel reveal contactGrid" style="margin-top:18px;">
+          <div>
+            <span class="pill"><span class="dot"></span> dopyt • cena • termín</span>
 
-          <form class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST" style="margin-top:14px;">
-            <div>
-              <label>Meno a priezvisko</label>
-              <input name="meno" type="text" placeholder="Meno a priezvisko" required>
-            </div>
-
-            <div class="contact-row">
+            <form class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST" style="margin-top:14px;">
               <div>
-                <label>Email</label>
-                <input name="email" type="email" placeholder="tvoj@email.sk" required>
+                <label>Meno a priezvisko</label>
+                <input name="meno" type="text" placeholder="Meno a priezvisko" required>
               </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Email</label>
+                  <input name="email" type="email" placeholder="tvoj@email.sk" required>
+                </div>
+                <div>
+                  <label>Telefón</label>
+                  <input name="telefon" type="text" placeholder="+421..." required>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Auto</label>
+                  <input name="auto" type="text" placeholder="BMW E46 / Audi A4...">
+                </div>
+                <div>
+                  <label>Balík</label>
+                  <select name="balik">
+                    <option value="" selected>Vyber…</option>
+                    <option value="600">600 ks (Decent)</option>
+                    <option value="800">800 ks (Balanced)</option>
+                    <option value="1000">1000 ks (Premium)</option>
+                    <option value="1300">1300 ks (Ultra)</option>
+                  </select>
+                </div>
+              </div>
+
               <div>
-                <label>Telefón</label>
-                <input name="telefon" type="text" placeholder="+421..." required>
+                <label>Správa</label>
+                <textarea name="sprava" placeholder="Chcem twinkle? Shooting star? Kedy to chceš? Aký vibe?"></textarea>
               </div>
-            </div>
 
-            <div class="contact-row">
-              <div>
-                <label>Auto</label>
-                <input name="auto" type="text" placeholder="BMW E46 / Audi A4...">
+              <input type="hidden" name="sluzba" value="Hviezdne stropy" />
+
+              <div class="ctaRow" style="margin-top:6px;">
+                <button class="btn btnPrimary" type="submit">Odoslať dopyt</button>
+                <a class="btn btnGhost" href="#top">Späť hore</a>
               </div>
-              <div>
-                <label>Balík</label>
-                <select name="balik">
-                  <option value="" selected>Vyber…</option>
-                  <option value="600">600 ks (Decent)</option>
-                  <option value="800">800 ks (Balanced)</option>
-                  <option value="1000">1000 ks (Premium)</option>
-                  <option value="1300">1300 ks (Ultra)</option>
-                </select>
-              </div>
+            </form>
+          </div>
+
+          <div class="infoBox">
+            <h3>Čo budeš potrebovať</h3>
+            <p class="muted2"><b>1) Auto + karoséria</b><br/>(napr. E46 coupe / Octavia combi)</p>
+            <p class="muted2"><b>2) Vibe</b><br/>Decent / Luxus / Wow / Show</p>
+            <p class="muted2"><b>3) Efekty</b><br/>Twinkle + Shooting star – voliteľné</p>
+            <p class="muted2"><b>Poznámka</b><br/>
+              Cenová ponuka závisí od veľkosti stropu, hustoty, efektov a náročnosti demontáže.
+              Ale vybavíš to jednou správou – zvyšok vyriešime my.
+            </p>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <span class="pill pill--ghost">čistá montáž</span>
+              <span class="pill pill--ghost">fialový vesmír vibe</span>
+              <span class="pill pill--ghost">glow bez prepalu</span>
             </div>
-
-            <div>
-              <label>Správa</label>
-              <textarea name="sprava" placeholder="Chcem twinkle? Shooting star? Kedy to chceš? Aký vibe?"></textarea>
-            </div>
-
-            <input type="hidden" name="sluzba" value="Hviezdne stropy" />
-
-            <div class="ctaRow" style="margin-top:6px;">
-              <button class="btn btnPrimary" type="submit">Odoslať dopyt</button>
-              <a class="btn btnGhost" href="#top">Späť hore</a>
-            </div>
-          </form>
-        </div>
-
-        <div class="infoBox">
-          <h3>Čo budeš potrebovať</h3>
-
-          <p class="muted2">
-            <b>1) Auto + karoséria</b><br/>
-            (napr. E46 coupe / Octavia combi)
-          </p>
-
-          <p class="muted2">
-            <b>2) Vibe</b><br/>
-            Decent / Luxus / Wow / Show
-          </p>
-
-          <p class="muted2">
-            <b>3) Efekty</b><br/>
-            Twinkle (jemné) + Shooting star (občas) – voliteľné
-          </p>
-
-          <p class="muted2">
-            <b>Poznámka</b><br/>
-            Cenová ponuka závisí od veľkosti stropu, hustoty, efektov a náročnosti demontáže.
-            Ale vybavíš to jednou správou – zvyšok vyriešime my.
-          </p>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <span class="pill pill--ghost">čistá montáž</span>
-            <span class="pill pill--ghost">fialový vesmír vibe</span>
-            <span class="pill pill--ghost">glow bez prepalu</span>
           </div>
         </div>
       </div>
@@ -995,10 +947,12 @@
   </section>
 
   <footer>
-    <div class="wrap foot">
-      <div>Prevádzkovateľ – <strong>REM Performance</strong></div>
-      <div>© 2026 REM Performance</div>
-      <div>Hviezdne stropy • ambient • interiér</div>
+    <div class="wrap">
+      <div class="foot content-max">
+        <div>Prevádzkovateľ – <strong>REM Performance</strong></div>
+        <div>© 2026 REM Performance</div>
+        <div>Hviezdne stropy • ambient • interiér</div>
+      </div>
     </div>
   </footer>
 
@@ -1019,18 +973,16 @@
 
     const rand = (min, max) => min + Math.random() * (max - min);
 
-    // Star field (different sizes, subtle glow)
-    const STAR_COUNT = Math.min(850, Math.floor((window.innerWidth * window.innerHeight) / 2400)); // adapts by screen size
+    const STAR_COUNT = Math.min(950, Math.floor((window.innerWidth * window.innerHeight) / 2200));
     const stars = Array.from({length: STAR_COUNT}, () => ({
       x: rand(0, W),
       y: rand(0, H),
-      r: rand(0.35, 1.55),                 // small vs bigger stars
-      a: rand(0.25, 0.95),                 // alpha
-      tw: rand(0.002, 0.012),              // twinkle speed
-      ph: rand(0, Math.PI*2),              // phase
+      r: rand(0.35, 1.65),
+      a: rand(0.25, 0.95),
+      tw: rand(0.002, 0.012),
+      ph: rand(0, Math.PI*2),
     }));
 
-    // Shooting star
     let shooting = null;
     function spawnShootingStar(){
       const startX = rand(W * 0.15, W * 0.95);
@@ -1049,11 +1001,7 @@
       };
     }
 
-    // Spawn sometimes (not too often)
     let nextShootIn = rand(180, 520);
-    let frame = 0;
-
-    // Scroll parallax speed (stars move down when you scroll)
     let scrollY = 0;
     let lastScrollY = window.scrollY;
 
@@ -1061,27 +1009,21 @@
       const now = window.scrollY;
       const delta = now - lastScrollY;
       lastScrollY = now;
-      // move "through space"
       scrollY += delta * 0.55;
     }, { passive: true });
 
     function draw(){
       ctx.clearRect(0,0,W,H);
 
-      // star drift based on scroll + subtle animation
       for (let i=0;i<stars.length;i++){
         const s = stars[i];
-
-        // twinkle
         s.ph += s.tw;
-        const tw = (Math.sin(s.ph) + 1) * 0.5; // 0..1
+        const tw = (Math.sin(s.ph) + 1) * 0.5;
         const alpha = Math.min(1, s.a * (0.55 + tw * 0.75));
 
-        // parallax: stars "fall" when scrolling
         const y = (s.y + (scrollY * (0.12 + s.r * 0.08))) % (H + 40) - 20;
         const x = s.x;
 
-        // glow
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${alpha})`;
         ctx.shadowBlur = 12 + s.r * 10;
@@ -1091,8 +1033,6 @@
       }
       ctx.shadowBlur = 0;
 
-      // shooting star tick
-      frame++;
       if (!shooting){
         nextShootIn--;
         if (nextShootIn <= 0){
@@ -1104,7 +1044,6 @@
         shooting.y += shooting.vy;
         shooting.life--;
 
-        // draw tail
         const t = Math.max(0, shooting.life / shooting.maxLife);
         const tailX = shooting.x - shooting.vx * (shooting.len / 18);
         const tailY = shooting.y - shooting.vy * (shooting.len / 18);
@@ -1135,18 +1074,14 @@
     }
     draw();
 
-    // ==============================
-    // BACKGROUND LAYER PARALLAX
-    // ==============================
+    // BG parallax
     const bgLayer = document.getElementById('bgLayer');
     window.addEventListener('scroll', () => {
       const sc = window.scrollY;
       if (bgLayer) bgLayer.style.transform = `translateY(${sc * 0.02}px)`;
     }, { passive: true });
 
-    // ==============================
-    // REVEAL ON SCROLL
-    // ==============================
+    // Reveal
     const reveals = document.querySelectorAll('.reveal');
     const activate = () => {
       reveals.forEach(el => {
@@ -1158,30 +1093,12 @@
     window.addEventListener('load', activate);
     activate();
 
-    // ==============================
-    // CAROUSEL (no libs)
-    // ==============================
+    // Carousel
     const slides = [
-      {
-        img: "assets/galeria-1.jpg",
-        title: "Jemný glow + prirodzené rozloženie",
-        text: "Malé aj väčšie hviezdy, aby to pôsobilo ako skutočná obloha."
-      },
-      {
-        img: "assets/galeria-2.jpg",
-        title: "Twinkle (jemné)",
-        text: "Efekt, ktorý dáva život. Nie stroboskop, ale luxus."
-      },
-      {
-        img: "assets/galeria-3.jpg",
-        title: "Shooting star (občas)",
-        text: "Krátky prelet – presne ten detail, čo spraví wow."
-      },
-      {
-        img: "assets/galeria-4.jpg",
-        title: "OEM+ výsledok",
-        text: "Čistá montáž a jednotný look bez prehnaných svetiel."
-      }
+      { img: "assets/galeria-1.jpg", title: "Jemný glow + prirodzené rozloženie", text: "Malé aj väčšie hviezdy, aby to pôsobilo ako skutočná obloha." },
+      { img: "assets/galeria-2.jpg", title: "Twinkle (jemné)", text: "Efekt, ktorý dáva život. Nie stroboskop, ale luxus." },
+      { img: "assets/galeria-3.jpg", title: "Shooting star (občas)", text: "Krátky prelet – presne ten detail, čo spraví wow." },
+      { img: "assets/galeria-4.jpg", title: "OEM+ výsledok", text: "Čistá montáž a jednotný look bez prehnaných svetiel." }
     ];
 
     const viewport = document.getElementById('viewport');
@@ -1194,18 +1111,6 @@
     let idx = 0;
     let timer = null;
 
-    function renderSlides(){
-      viewport.innerHTML = slides.map(s => `
-        <div class="slide">
-          <img src="${s.img}" alt="${s.title}">
-        </div>
-      `).join('');
-
-      dotsWrap.innerHTML = slides.map((_,i)=>`<div class="dotx ${i===0?'active':''}" data-i="${i}"></div>`).join('');
-      setCaption();
-      goTo(0, false);
-    }
-
     function setCaption(){
       capTitle.textContent = slides[idx].title;
       capText.textContent  = slides[idx].text;
@@ -1217,6 +1122,15 @@
       const x = idx * viewport.clientWidth;
       viewport.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' });
       setCaption();
+    }
+
+    function renderSlides(){
+      viewport.innerHTML = slides.map(s => `
+        <div class="slide"><img src="${s.img}" alt="${s.title}"></div>
+      `).join('');
+      dotsWrap.innerHTML = slides.map((_,i)=>`<div class="dotx ${i===0?'active':''}" data-i="${i}"></div>`).join('');
+      setCaption();
+      goTo(0, false);
     }
 
     function next(){ goTo(idx+1); }
@@ -1232,7 +1146,6 @@
       if (Number.isFinite(i)) { goTo(i); restartAuto(); }
     });
 
-    // Keep in sync when user drags on mobile
     let snapTimeout = null;
     viewport.addEventListener('scroll', () => {
       clearTimeout(snapTimeout);
@@ -1243,13 +1156,8 @@
       }, 80);
     }, { passive: true });
 
-    function startAuto(){
-      timer = setInterval(() => next(), 5200);
-    }
-    function restartAuto(){
-      if (timer) clearInterval(timer);
-      startAuto();
-    }
+    function startAuto(){ timer = setInterval(() => next(), 5200); }
+    function restartAuto(){ if (timer) clearInterval(timer); startAuto(); }
 
     window.addEventListener('resize', () => goTo(idx, false));
     renderSlides();
