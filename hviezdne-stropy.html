@@ -154,6 +154,7 @@
       letter-spacing:.12em;
       text-transform:uppercase;
       white-space:nowrap;
+      cursor:default;
     }
 
     /* ====== DUAL BRAND BADGE ====== */
@@ -161,7 +162,7 @@
       display:flex;
       align-items:center;
       gap:10px;
-      padding:8px 12px;
+      padding:8px 14px;
       border-radius:999px;
       border:1px solid rgba(168,85,247,0.35);
       background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.18), rgba(255,255,255,0.03));
@@ -183,24 +184,35 @@
     .brand-logos{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
     }
+
+    .brand-logo-link{
+      display:flex;
+      align-items:center;
+      text-decoration:none;
+    }
+
     .brand-logos img{
-      height: 20px;
+      height: 26px;
       width:auto;
       object-fit: contain;
       display:block;
-      filter: drop-shadow(0 10px 20px rgba(168,85,247,0.12));
+      filter: drop-shadow(0 10px 20px rgba(168,85,247,0.18));
+      transition: transform .2s ease, filter .2s ease, opacity .2s ease;
     }
-    .brand-logos img:last-child{
-      height:24px;
-      filter: drop-shadow(0 0 18px rgba(168,85,247,.65));
+
+    .brand-logos img:hover{
+      transform: translateY(-1px);
+      filter: drop-shadow(0 0 22px rgba(168,85,247,.75));
+      opacity: 1;
     }
 
     .brand-slash{
       font-weight:1000;
       opacity:.85;
       transform: translateY(-1px);
+      pointer-events:none;
     }
 
     .nav-links{ display:flex; gap: 26px; flex-wrap:wrap; justify-content:flex-end; }
@@ -640,8 +652,7 @@
       .nav{ flex-direction: column; align-items:flex-start; }
       .nav-links{ justify-content:flex-start; }
       .brand-badge{ width:100%; justify-content:flex-start; }
-      .brand-logos img{ height: 18px; }
-      .brand-logos img:last-child{ height:22px; }
+      .brand-logos img{ height: 24px; }
     }
   </style>
 </head>
@@ -655,15 +666,19 @@
     <div class="wrap">
       <div class="shell">
         <div class="nav">
-          <a class="brand" href="#top" aria-label="Hviezdne stropy">
+          <div class="brand" aria-label="Hviezdne stropy – RACEM & LEDOCI">
             <div class="brand-badge" aria-label="RACEM / LEDOCI">
               <div class="brand-logos">
-                <img src="assets/racem-logo.png" alt="RACEM logo">
+                <a href="https://racem.sk" class="brand-logo-link" target="_blank" rel="noopener noreferrer">
+                  <img src="assets/racem-logo.png" alt="RACEM logo">
+                </a>
                 <span class="brand-slash">/</span>
-                <img src="assets/ledocilogo.png" alt="LEDOCI logo">
+                <a href="https://ledoci.sk" class="brand-logo-link" target="_blank" rel="noopener noreferrer">
+                  <img src="assets/ledocilogo.png" alt="LEDOCI logo">
+                </a>
               </div>
             </div>
-          </a>
+          </div>
 
           <nav class="nav-links">
             <a href="#co-to-je">Čo...</a>
