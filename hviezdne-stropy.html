@@ -113,6 +113,7 @@
       width: fit-content;
       box-shadow: 0 16px 45px rgba(124,58,237,0.12);
       user-select:none;
+      white-space:nowrap;
     }
     .dot{
       width:8px;height:8px;border-radius:50%;
@@ -160,18 +161,18 @@
       display:flex;
       align-items:center;
       gap:10px;
-      padding:8px 10px;                  /* nezväčšujeme */
-      border-radius:14px;                /* nezväčšujeme */
+      padding:8px 12px;
+      border-radius:999px;
       border:1px solid rgba(168,85,247,0.35);
       background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.18), rgba(255,255,255,0.03));
       box-shadow: 0 18px 50px rgba(124,58,237,0.16);
       position:relative;
-      overflow: visible;                 /* dôležité: nech sa logo neoreže */
+      overflow:hidden; /* aby logo a glow ostali pekne vnútri pillu */
     }
     .brand-badge::after{
       content:"";
       position:absolute;
-      inset:-60px;
+      inset:-40px;
       background: radial-gradient(circle, rgba(168,85,247,0.20), transparent 55%);
       transform: rotate(14deg);
       opacity:.9;
@@ -185,18 +186,17 @@
       gap:10px;
     }
     .brand-logos img{
-      height: 22px;                      /* layout ostáva rovnaký */
+      height: 20px;
       width:auto;
       object-fit: contain;
       display:block;
       filter: drop-shadow(0 10px 20px rgba(168,85,247,0.12));
     }
 
-    /* ✅ LEDOCI logo: 3× vizuálne, bez zmeny pillu */
+    /* LEDOCI logo – vizuálne dominantnejšie, ale stále v rámci pillu */
     .brand-logos img:last-child{
-      transform: scale(3);
-      transform-origin: left center;
-      filter: drop-shadow(0 0 22px rgba(168,85,247,.65));
+      height:24px;
+      filter: drop-shadow(0 0 18px rgba(168,85,247,.65));
     }
 
     .brand-slash{
@@ -642,12 +642,8 @@
       .nav{ flex-direction: column; align-items:flex-start; }
       .nav-links{ justify-content:flex-start; }
       .brand-badge{ width:100%; justify-content:flex-start; }
-      .brand-logos img{ height: 20px; }
-
-      /* mobile: nech to nie je až brutálne */
-      .brand-logos img:last-child{
-        transform: scale(2.4);
-      }
+      .brand-logos img{ height: 18px; }
+      .brand-logos img:last-child{ height:22px; }
     }
   </style>
 </head>
@@ -744,14 +740,14 @@
         <p class="reveal text-max">
           Hviezdny strop je systém optických vlákien a riadiacej jednotky, ktoré vytvoria
           hustú “nočnú oblohu” priamo v čalúnení. Vďaka rôznym priemerom vlákien vzniknú
-          malé aj väčšie hviezdy. Vstupné napájenie je DC 12V.
+          malé aj väčšie hviezdy. Vstupné napájanie je DC 12V.
         </p>
 
         <div class="split" style="margin-top:18px">
           <div class="panel reveal">
             <span class="pill"><span class="dot"></span> Látkovanie </span>
             <p class="muted2">
-              Hviezdy najviac vinikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
+              Hviezdy najviac vynikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
             </p>
           </div>
 
@@ -759,7 +755,7 @@
             <span class="pill"><span class="dot"></span> Vždy vieš, kde sme </span>
             <p class="muted2">
               Zákazník dostáva <b>aktuálne informácie</b> o tom, v akom štádiu je práca:
-              priebežné fotky, status, informácie o následujúcich krokoch.
+              priebežné fotky, status, informácie o nasledujúcich krokoch.
             </p>
             <p class="muted2" style="margin-top:10px">
               Príprava môže trvať kdekoľvek od <b>5 do 10 dní</b> (pri extrémnych prípadoch).
@@ -783,7 +779,7 @@
 
         <div class="split" style="margin-top:18px">
           <div class="panel reveal">
-            <span class="pill"><span class="dot"></span> Časti interíeru </span>
+            <span class="pill"><span class="dot"></span> Časti interiéru </span>
             <p class="muted2">
               • stropnica <br/>
               • dvere a výplne<br/>
@@ -850,7 +846,6 @@
             <h3 style="margin-top:14px">Inštalácia vlákien</h3>
             <p class="muted2">
               Inštalácia vlákien, fixácia, strihanie a doladenie výrazu (jas, hustota, rovnováha).
-              
             </p>
           </div>
 
@@ -919,7 +914,6 @@
                   <h3 class="pkgTitle">LIGHT</h3>
                   <span class="badge">600 ks</span>
                 </div>
-                
                 <div class="priceLine">
                   <div class="priceTag">od 440 € <span>s DPH </span></div>
                 </div>
@@ -933,7 +927,6 @@
                   <h3 class="pkgTitle">NIGHT</h3>
                   <span class="badge">800 ks</span>
                 </div>
-                
                 <div class="priceLine">
                   <div class="priceTag">od 590 € <span>s DPH </span></div>
                 </div>
@@ -947,7 +940,6 @@
                   <h3 class="pkgTitle">midNIGHT</h3>
                   <span class="badge">1000 ks</span>
                 </div>
-                
                 <div class="priceLine">
                   <div class="priceTag">od 660 € <span>s DPH </span></div>
                 </div>
@@ -961,22 +953,19 @@
                   <h3 class="pkgTitle">spaceBOUND</h3>
                   <span class="badge">1300 ks</span>
                 </div>
-              
                 <div class="priceLine">
                   <div class="priceTag">od 810 € <span>s DPH </span></div>
                 </div>
               </div>
             </article>
-          </div>
 
-          <article class="pkgCard">
-              <div class="pkgImg"><img src="assets/custom.jpg" alt="1300 hviezd - spaceBOUND"></div>
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/custom.jpg" alt="Vlastné množstvo hviezd"></div>
               <div class="pkgBody">
                 <div class="pkgTop">
                   <h3 class="pkgTitle">Vlastné</h3>
                   <span class="badge">XXXX ks</span>
                 </div>
-              
                 <div class="priceLine">
                   <div class="priceTag">od 1300 € <span>s DPH </span></div>
                 </div>
@@ -1007,7 +996,6 @@
 
           <p class="muted2" style="margin-top:14px;">
             Stále Vám vieme poradiť s výberom balíka podľa plochy a výsledku o ktorý sa snažíte.
-
             Naše moduly sa dajú použiť aj v domácnostiach. 
           </p>
         </div>
@@ -1059,8 +1047,8 @@
               <br/>• prevliekanie a fixácia vlákien
               <br/>• organizácia a estetické uloženie vlákien
               <br/>• fotodokumentácia pre zákaznika
-              <br/>• napojenie a tahanie kabeláže cez vozidlo
-              <br/>• napojenie do zapaľovania alebo na tlačítko
+              <br/>• napojenie a ťahanie kabeláže cez vozidlo
+              <br/>• napojenie do zapaľovania alebo na tlačidlo
               <br/>• <b>24 mesiacov záruka</b>
             </p>
           </div>
