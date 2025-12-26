@@ -142,6 +142,7 @@
       padding: 14px 0;
       gap:18px;
     }
+
     .brand{
       display:flex;
       align-items:center;
@@ -153,25 +154,47 @@
       text-transform:uppercase;
       white-space:nowrap;
     }
+
+    /* New: dual brand badge (RACEM / LEDOCI) */
     .brand-badge{
-      width:38px;height:38px;
-      border-radius:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:14px;
       border:1px solid rgba(168,85,247,0.35);
-      background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.22), rgba(255,255,255,0.03));
+      background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.18), rgba(255,255,255,0.03));
       box-shadow: 0 18px 50px rgba(124,58,237,0.16);
-      display:flex;align-items:center;justify-content:center;
       position:relative;
       overflow:hidden;
     }
     .brand-badge::after{
       content:"";
       position:absolute;
-      inset:-40px;
-      background: radial-gradient(circle, rgba(168,85,247,0.26), transparent 55%);
-      transform: rotate(16deg);
+      inset:-60px;
+      background: radial-gradient(circle, rgba(168,85,247,0.20), transparent 55%);
+      transform: rotate(14deg);
       opacity:.9;
     }
-    .brand-badge span{ position:relative; font-weight:1000; font-size:14px; letter-spacing:.18em; }
+    .brand-badge > *{ position:relative; }
+
+    .brand-logos{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand-logos img{
+      height: 22px;
+      width:auto;
+      object-fit: contain;
+      display:block;
+      filter: drop-shadow(0 10px 20px rgba(168,85,247,0.12));
+    }
+    .brand-slash{
+      font-weight:1000;
+      opacity:.85;
+      transform: translateY(-1px);
+    }
 
     .nav-links{ display:flex; gap: 26px; flex-wrap:wrap; justify-content:flex-end; }
     .nav-links a{
@@ -470,6 +493,32 @@
       font-size: 13px;
       line-height: 1.6;
     }
+    .priceLine{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .priceTag{
+      font-weight:1000;
+      letter-spacing:.10em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color:#fff;
+      white-space:nowrap;
+    }
+    .priceTag span{
+      color: rgba(255,255,255,0.78);
+      font-weight: 800;
+      letter-spacing:.08em;
+      margin-left: 6px;
+      text-transform: none;
+      font-size: 12px;
+    }
 
     /* ====== CONTACT ====== */
     .contactGrid{
@@ -583,6 +632,8 @@
       .contact-row{ grid-template-columns: 1fr; }
       .nav{ flex-direction: column; align-items:flex-start; }
       .nav-links{ justify-content:flex-start; }
+      .brand-badge{ width:100%; justify-content:flex-start; }
+      .brand-logos img{ height: 20px; }
     }
   </style>
 </head>
@@ -597,7 +648,13 @@
       <div class="shell">
         <div class="nav">
           <a class="brand" href="#top" aria-label="Hviezdne stropy">
-            <div class="brand-badge"><span>★</span></div>
+            <div class="brand-badge" aria-label="RACEM / LEDOCI">
+              <div class="brand-logos">
+                <img src="assets/racem-logo.png" alt="RACEM logo">
+                <span class="brand-slash">/</span>
+                <img src="assets/ledoci-logo.png" alt="LEDOCI logo">
+              </div>
+            </div>
             Hviezdne stropy
           </a>
 
@@ -860,50 +917,65 @@
         <div class="panel reveal" style="margin-top:18px;">
           <span class="pill"><span class="dot"></span> 600 • 800 • 1000 • 1300</span>
 
+          <!-- Order: 600 -> 800 -> 1000 -> 1300 -->
           <div class="pkgGrid">
-            <article class="pkgCard">
-              <div class="pkgImg"><img src="assets/strop-1300.jpg" alt="1300 hviezd - ultra hustota"></div>
-              <div class="pkgBody">
-                <div class="pkgTop">
-                  <h3 class="pkgTitle">Ultra hustota</h3>
-                  <span class="badge">1300 ks</span>
-                </div>
-                <p class="pkgDesc">Maximálny “vesmír”. Najviac bodiek, výraznejší wow efekt. Show look.</p>
-              </div>
-            </article>
 
             <article class="pkgCard">
-              <div class="pkgImg"><img src="assets/strop-1000.jpg" alt="1000 hviezd - premium hustota"></div>
+              <div class="pkgImg"><img src="assets/strop-600.jpg" alt="600 hviezd - dayLIGHT"></div>
               <div class="pkgBody">
                 <div class="pkgTop">
-                  <h3 class="pkgTitle">Premium hustota</h3>
-                  <span class="badge">1000 ks</span>
-                </div>
-                <p class="pkgDesc">Najlepší kompromis. Husté, luxusné, bez prehnania.</p>
-              </div>
-            </article>
-
-            <article class="pkgCard">
-              <div class="pkgImg"><img src="assets/strop-800.jpg" alt="800 hviezd - balanced hustota"></div>
-              <div class="pkgBody">
-                <div class="pkgTop">
-                  <h3 class="pkgTitle">Balanced</h3>
-                  <span class="badge">800 ks</span>
-                </div>
-                <p class="pkgDesc">Decentný look. Stále atmosféra, viac “OEM+”.</p>
-              </div>
-            </article>
-
-            <article class="pkgCard">
-              <div class="pkgImg"><img src="assets/strop-600.jpg" alt="600 hviezd - decent hustota"></div>
-              <div class="pkgBody">
-                <div class="pkgTop">
-                  <h3 class="pkgTitle">Decent</h3>
+                  <h3 class="pkgTitle">dayLIGHT</h3>
                   <span class="badge">600 ks</span>
                 </div>
-                <p class="pkgDesc">Jemný doplnok. Minimalistický výsledok.</p>
+                <p class="pkgDesc">Jemný doplnok. Minimalistický výsledok, čistý luxus bez prehnania.</p>
+                <div class="priceLine">
+                  <div class="priceTag">440 € <span>s DPH (montáž)</span></div>
+                </div>
               </div>
             </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-800.jpg" alt="800 hviezd - sunSET"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">sunSET</h3>
+                  <span class="badge">800 ks</span>
+                </div>
+                <p class="pkgDesc">Balanced vibe. Atmosféra je výrazná, stále to pôsobí OEM+.</p>
+                <div class="priceLine">
+                  <div class="priceTag">590 € <span>s DPH (montáž)</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1000.jpg" alt="1000 hviezd - midNIGHT"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">midNIGHT</h3>
+                  <span class="badge">1000 ks</span>
+                </div>
+                <p class="pkgDesc">Najlepší kompromis. Husté, luxusné, vyvážené na väčšinu áut.</p>
+                <div class="priceLine">
+                  <div class="priceTag">660 € <span>s DPH (montáž)</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1300.jpg" alt="1300 hviezd - spaceBOUND"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">spaceBOUND</h3>
+                  <span class="badge">1300 ks</span>
+                </div>
+                <p class="pkgDesc">Maximálny “vesmír”. Najviac bodiek, show look a top wow efekt.</p>
+                <div class="priceLine">
+                  <div class="priceTag">810 € <span>s DPH (montáž)</span></div>
+                </div>
+              </div>
+            </article>
+
           </div>
 
           <div class="ctaRow" style="margin-top:18px;">
@@ -911,6 +983,27 @@
             <a class="btn btnGhost" href="#cennik">Pozrieť cenník</a>
           </div>
         </div>
+
+        <!-- NEW: MODULE-ONLY PRICES (NO INSTALL) -->
+        <div class="panel reveal" style="margin-top:18px;">
+          <span class="pill"><span class="dot"></span> predaj modulov • bez montáže</span>
+          <h3 style="margin-top:14px">Ceny modulov bez montáže</h3>
+          <p class="muted2 text-max">
+            Ak chceš len komponenty (modul) bez montáže u nás, ceny sú podľa balíka:
+          </p>
+
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill pill--ghost">600 dayLIGHT – <b>150 €</b></span>
+            <span class="pill pill--ghost">800 sunSET – <b>180 €</b></span>
+            <span class="pill pill--ghost">1000 midNIGHT – <b>200 €</b></span>
+            <span class="pill pill--ghost">1300 spaceBOUND – <b>220 €</b></span>
+          </div>
+
+          <p class="muted2" style="margin-top:14px;">
+            Stále ti vieme poradiť s výberom balíka podľa plochy a výsledku, ktorý chceš dosiahnuť.
+          </p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -921,27 +1014,36 @@
       <div class="shell">
         <h2 class="reveal">Cenník</h2>
         <p class="reveal text-max">
-          Transparentne: vieš kúpiť len modul, alebo to necháš celé na nás aj s montážou.
+          Dve cesty: buď si kúpiš modul, alebo to necháš celé na nás aj s montážou a zapojením.
         </p>
 
         <div class="split" style="margin-top:18px">
           <div class="panel reveal">
-            <span class="pill"><span class="dot"></span> modul</span>
+            <span class="pill"><span class="dot"></span> modul • bez montáže</span>
             <h3 style="margin-top:14px">Samotný modul</h3>
             <p class="muted2">
-              <b>Od 190 €</b><br/>
-              Predaj samotného modulu (komponenty). Vhodné, ak si to montuješ sám alebo máš svoj servis.
+              Ceny podľa balíka:<br><br>
+              • <b>600 dayLIGHT</b> – 150 €<br>
+              • <b>800 sunSET</b> – 180 €<br>
+              • <b>1000 midNIGHT</b> – 200 €<br>
+              • <b>1300 spaceBOUND</b> – 220 €<br>
+              <span style="opacity:.9;">(ceny sú uvedené s DPH)</span>
             </p>
           </div>
 
           <div class="panel reveal">
-            <span class="pill"><span class="dot"></span> montáž</span>
+            <span class="pill"><span class="dot"></span> montáž • s DPH</span>
             <h3 style="margin-top:14px">Modul + montáž + zapojenie</h3>
             <p class="muted2">
-              <b>Od 440 €</b> (a vyššie)<br/>
-              Cena závisí od množstva hviezd a rozmerov dotknutej plochy.
+              Ceny podľa balíka:<br><br>
+              • <b>600 dayLIGHT</b> – 440 €<br>
+              • <b>800 sunSET</b> – 590 €<br>
+              • <b>1000 midNIGHT</b> – 660 €<br>
+              • <b>1300 spaceBOUND</b> – 810 €<br>
+              <span style="opacity:.9;">(ceny sú uvedené s DPH)</span>
             </p>
-            <p class="muted2" style="margin-top:10px">
+
+            <p class="muted2" style="margin-top:12px">
               V cene je:
               <br/>• montáž a zapojenie
               <br/>• napojenie do zapaľovania <b>alebo</b> samostatné tlačidlo (podľa možností auta)
@@ -956,6 +1058,9 @@
           <p class="muted2">
             Ak chceš úplne bez starostí: <b>prídeme pre auto</b>, odvezieme ho k nám, spravíme a
             <b>odovzdáme naspäť priamo domov</b>.
+          </p>
+          <p class="muted2" style="margin-top:10px">
+            Táto služba je nacenená individuálne podľa lokality a logistiky (mesto/okolie).
           </p>
         </div>
       </div>
@@ -1003,21 +1108,21 @@
 
               <div class="contact-row">
                 <div>
-                  <label>Balík (hustota)</label>
+                  <label>Balík</label>
                   <select name="balik">
                     <option value="" selected>Vyber…</option>
-                    <option value="600">600 ks (Decent)</option>
-                    <option value="800">800 ks (Balanced)</option>
-                    <option value="1000">1000 ks (Premium)</option>
-                    <option value="1300">1300 ks (Ultra)</option>
+                    <option value="600 dayLIGHT">600 dayLIGHT</option>
+                    <option value="800 sunSET">800 sunSET</option>
+                    <option value="1000 midNIGHT">1000 midNIGHT</option>
+                    <option value="1300 spaceBOUND">1300 spaceBOUND</option>
                   </select>
                 </div>
                 <div>
                   <label>Služba</label>
                   <select name="sluzba_typ">
                     <option value="" selected>Vyber…</option>
-                    <option value="Len modul (od 190€)">Len modul (od 190€)</option>
-                    <option value="Montáž u nás (od 440€)">Montáž u nás (od 440€)</option>
+                    <option value="Len modul (600/800/1000/1300)">Len modul</option>
+                    <option value="Montáž u nás (s DPH)">Montáž u nás</option>
                     <option value="Montáž + prevzatie auta">Montáž + prevzatie auta</option>
                   </select>
                 </div>
@@ -1064,14 +1169,16 @@
             <p class="muted2"><b>• Najlepší výsledok:</b> alcantara na stropnici</p>
             <p class="muted2"><b>• Vieme aj:</b> dvere, palubovka, sedadlá, kufor, koberčeky</p>
             <p class="muted2"><b>• Záruka:</b> 24 mesiacov</p>
-            <p class="muted2"><b>• Ceny:</b> modul od 190 €, montáž od 440 € (podľa plochy a množstva)</p>
+            <p class="muted2"><b>• Modul bez montáže:</b> 150–220 € (podľa balíka)</p>
+            <p class="muted2"><b>• Montáž:</b> 440–810 € s DPH (podľa balíka)</p>
             <p class="muted2"><b>• Čas:</b> väčšinou do týždňa, štandard 5–10 dní</p>
             <p class="muted2"><b>• Priebežné info:</b> status + fotky + ďalší krok</p>
 
             <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <span class="pill pill--ghost">čistý výsledok</span>
-              <span class="pill pill--ghost">bez prepáleného glow</span>
-              <span class="pill pill--ghost">fialový vesmír vibe</span>
+              <span class="pill pill--ghost">dayLIGHT</span>
+              <span class="pill pill--ghost">sunSET</span>
+              <span class="pill pill--ghost">midNIGHT</span>
+              <span class="pill pill--ghost">spaceBOUND</span>
             </div>
           </div>
         </div>
@@ -1140,7 +1247,6 @@
     let nextShootIn = rand(180, 520);
 
     // ====== SCROLL PARALLAX – JEMNEJŠIE + SMOOTHING ======
-    // Namiesto tvrdého prirátania scrollu robíme "target" a jemne doťahujeme.
     let scrollTarget = 0;
     let scrollSmooth = 0;
     let lastScrollY = window.scrollY;
@@ -1149,14 +1255,12 @@
       const now = window.scrollY;
       const delta = now - lastScrollY;
       lastScrollY = now;
-      // jemnejší faktor (predtým 0.55). Teraz cca 0.22.
       scrollTarget += delta * 0.22;
     }, { passive: true });
 
     function draw(){
       ctx.clearRect(0,0,W,H);
 
-      // doťahovanie (smoothing)
       scrollSmooth += (scrollTarget - scrollSmooth) * 0.06;
 
       for (let i=0;i<stars.length;i++){
@@ -1165,7 +1269,6 @@
         const tw = (Math.sin(s.ph) + 1) * 0.5;
         const alpha = Math.min(1, s.a * (0.55 + tw * 0.75));
 
-        // Jemnejší posun hviezd (predtým 0.10 + ...). Teraz menšie čísla.
         const y = (s.y + (scrollSmooth * (0.055 + s.r * 0.03) * s.depth)) % (H + 40) - 20;
         const x = s.x;
 
@@ -1219,7 +1322,7 @@
     }
     draw();
 
-    // BG parallax – tiež jemnejšie (predtým 0.02)
+    // BG parallax – jemné
     const bgLayer = document.getElementById('bgLayer');
     window.addEventListener('scroll', () => {
       const sc = window.scrollY;
