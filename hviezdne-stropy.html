@@ -139,7 +139,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.09);
     }
 
-    /* roztiahnutý header cez celú šírku */
     .topbar .shell{
       max-width:none;
       padding: 0 32px;
@@ -673,55 +672,49 @@
     }
     .foot strong{ color:#fff; }
 
-    /* ====== PRICING – GLOW PANELS ====== */
+    /* ====== PRICING – GLOW PANELS (bez točiaceho fialového pozadia) ====== */
     .pricePanel{
       border:1px solid rgba(168,85,247,0.60);
       background:
-        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.20), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(124,58,237,0.14), rgba(10,10,18,0.94));
+        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.10), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(124,58,237,0.10), rgba(10,10,18,0.94));
       box-shadow:
         0 0 0 1px rgba(168,85,247,0.22),
         0 24px 76px rgba(0,0,0,0.76),
-        0 0 34px rgba(124,58,237,0.60);
+        0 0 34px rgba(124,58,237,0.40);
       position:relative;
       overflow:hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
+
+    /* statický jemný glow, žiadna animácia ani točenie */
     .pricePanel::before{
       content:"";
       position:absolute;
-      inset:-40%;
-      background: conic-gradient(
-        from 210deg,
-        rgba(168,85,247,0.0),
-        rgba(168,85,247,0.75),
-        rgba(124,58,237,0.0)
-      );
+      inset:-30%;
+      background: radial-gradient(circle at 0 0, rgba(168,85,247,0.36), transparent 60%);
       mix-blend-mode: screen;
-      opacity:0.0;
-      animation: priceSweep 7s linear infinite;
+      opacity:0.28;
       pointer-events:none;
     }
+
     .pricePanel:hover::before{
-      opacity:0.7;
+      opacity:0.42;
     }
+
     .pricePanel:hover{
       transform: translateY(-4px);
       box-shadow:
         0 0 0 1px rgba(168,85,247,0.32),
         0 30px 90px rgba(0,0,0,0.85),
-        0 0 50px rgba(168,85,247,0.82);
-    }
-
-    @keyframes priceSweep{
-      0%{ transform: translate3d(-15%, -10%, 0) rotate(0deg); }
-      50%{ transform: translate3d(10%, 12%, 0) rotate(180deg); }
-      100%{ transform: translate3d(-15%, -10%, 0) rotate(360deg); }
+        0 0 46px rgba(168,85,247,0.62);
     }
 
     .pricePanel .pill{
       box-shadow: 0 0 26px rgba(168,85,247,0.60);
       background: linear-gradient(135deg, rgba(124,58,237,0.36), rgba(10,10,18,0.92));
       border-color: rgba(255,255,255,0.30);
+      position:relative;
     }
 
     .pricePanel h3{
@@ -746,6 +739,7 @@
       margin-bottom:8px;
       list-style:none;
       padding:0;
+      position:relative;
     }
     .priceList li{
       margin-bottom:10px;
@@ -806,6 +800,7 @@
       letter-spacing:.09em;
       text-transform:uppercase;
       opacity:.88;
+      position:relative;
     }
 
     .priceNote::before{
@@ -1468,7 +1463,6 @@
 
     let nextShootIn = rand(180, 520);
 
-    // ====== SCROLL PARALLAX – JEMNEJŠIE + SMOOTHING ======
     let scrollTarget = 0;
     let scrollSmooth = 0;
     let lastScrollY = window.scrollY;
@@ -1544,14 +1538,12 @@
     }
     draw();
 
-    // BG parallax – jemné
     const bgLayer = document.getElementById('bgLayer');
     window.addEventListener('scroll', () => {
       const sc = window.scrollY;
       if (bgLayer) bgLayer.style.transform = `translateY(${sc * 0.012}px)`;
     }, { passive: true });
 
-    // Reveal
     const reveals = document.querySelectorAll('.reveal');
     const activate = () => {
       reveals.forEach(el => {
@@ -1563,7 +1555,6 @@
     window.addEventListener('load', activate);
     activate();
 
-    // Carousel
     const slides = [
       { img: "assets/galeria-1.jpg", title: "Jemný glow + prirodzené rozloženie", text: "Malé aj väčšie hviezdy, aby to pôsobilo ako skutočná obloha." },
       { img: "assets/galeria-2.jpg", title: "Twinkle (jemné)", text: "Efekt, ktorý dáva život. Nie stroboskop, ale luxus." },
