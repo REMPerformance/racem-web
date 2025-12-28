@@ -142,31 +142,34 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding: 18px 0;
+      /* užší header */
+      padding: 10px 0;
       gap:26px;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:18px;
+      gap:16px;
       text-decoration:none;
       color:#fff;
       white-space:nowrap;
       cursor:default;
+      min-width:0;
     }
 
     .brand-badge{
       display:flex;
       align-items:center;
       gap:12px;
-      padding:9px 16px;
+      padding:8px 14px;
       border-radius:999px;
       border:1px solid rgba(168,85,247,0.45);
       background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.24), rgba(10,10,18,0.96));
       box-shadow: 0 20px 52px rgba(124,58,237,0.25);
       position:relative;
       overflow:hidden;
+      flex-shrink:0;
     }
     .brand-badge::after{
       content:"";
@@ -182,7 +185,7 @@
     .brand-logos{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
     }
 
     .brand-logo-link{
@@ -192,7 +195,7 @@
     }
 
     .brand-logos img{
-      height: 32px;
+      height: 30px;
       width:auto;
       object-fit: contain;
       display:block;
@@ -200,10 +203,10 @@
       transition: transform .2s ease, filter .2s ease, opacity .2s ease;
     }
 
+    /* zväčšené LEDOCI logo */
     .ledoci-logo{
-  height: 40px;
-}
-
+      height: 38px;
+    }
 
     .brand-logos img:hover{
       transform: translateY(-1px) scale(1.02);
@@ -225,34 +228,36 @@
       gap:2px;
     }
     .brand-title{
-      font-size:15px;
+      font-size:14px;
       font-weight:800;
-      letter-spacing:.22em;
+      letter-spacing:.20em;
       text-transform:uppercase;
     }
     .brand-sub{
-      font-size:11px;
-      letter-spacing:.28em;
+      font-size:10px;
+      letter-spacing:.26em;
       text-transform:uppercase;
       color: rgba(255,255,255,0.7);
     }
 
     .nav-links{ 
       display:flex; 
-      gap: 30px; 
-      flex-wrap:wrap; 
+      gap: 24px; 
+      flex-wrap:nowrap;          /* nech sa to neláme na dva riadky */
       justify-content:flex-end; 
       align-items:center;
+      min-width:0;
+      margin-left:auto;
     }
     .nav-links a{
       position:relative;
       color: rgba(255,255,255,0.80);
       text-decoration:none;
-      font-size:13px;
+      font-size:12px;            /* mierne menší text aby sa zmestilo */
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: .16em;
-      padding: 7px 0;
+      letter-spacing: .15em;
+      padding: 5px 0;
       transition: color .25s ease, text-shadow .25s ease, opacity .25s ease;
       white-space: nowrap;
       opacity:.86;
@@ -266,7 +271,7 @@
       content:"";
       position:absolute;
       left:50%;
-      bottom:-10px;
+      bottom:-8px;
       width:0;
       height:2px;
       background: var(--violet2);
@@ -274,10 +279,10 @@
       transform: translateX(-50%);
       transition: width .32s ease;
     }
-    .nav-links a:hover::after{ width: 135%; }
+    .nav-links a:hover::after{ width: 120%; }
 
     /* ====== HERO ====== */
-    .hero{ padding: 100px 0 90px; }
+    .hero{ padding: 90px 0 90px; }
     .hero-grid{
       display:grid;
       grid-template-columns: 1.2fr .8fr;
@@ -822,10 +827,10 @@
       .btn{ width:100%; justify-content:center; }
       .slide{ height: 340px; }
       .contact-row{ grid-template-columns: 1fr; }
+
       .nav{ flex-direction: column; align-items:flex-start; }
-      .nav-links{ justify-content:flex-start; gap:18px; }
-      .brand-badge{ width:100%; justify-content:flex-start; }
-      .brand-logos img{ height: 26px; }
+      .nav-links{ justify-content:flex-start; gap:18px; flex-wrap:wrap; }
+      .brand-badge{ width:auto; }
       .brand{ align-items:flex-start; flex-direction:column; gap:10px; }
     }
   </style>
