@@ -631,6 +631,148 @@
     }
     .foot strong{ color:#fff; }
 
+    /* ====== PRICING – GLOW PANELS ====== */
+    .pricePanel{
+      border:1px solid rgba(168,85,247,0.55);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.18), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(124,58,237,0.12), rgba(10,10,18,0.90));
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.20),
+        0 22px 70px rgba(0,0,0,0.72),
+        0 0 32px rgba(124,58,237,0.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .pricePanel::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: conic-gradient(
+        from 210deg,
+        rgba(168,85,247,0.0),
+        rgba(168,85,247,0.65),
+        rgba(124,58,237,0.0)
+      );
+      mix-blend-mode: screen;
+      opacity:0.0;
+      animation: priceSweep 7s linear infinite;
+      pointer-events:none;
+    }
+    .pricePanel:hover::before{
+      opacity:0.6;
+    }
+    .pricePanel:hover{
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.28),
+        0 28px 80px rgba(0,0,0,0.80),
+        0 0 45px rgba(168,85,247,0.75);
+    }
+
+    @keyframes priceSweep{
+      0%{ transform: translate3d(-15%, -10%, 0) rotate(0deg); }
+      50%{ transform: translate3d(10%, 12%, 0) rotate(180deg); }
+      100%{ transform: translate3d(-15%, -10%, 0) rotate(360deg); }
+    }
+
+    .pricePanel .pill{
+      box-shadow: 0 0 24px rgba(168,85,247,0.55);
+      background: linear-gradient(135deg, rgba(124,58,237,0.32), rgba(10,10,18,0.9));
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    .pricePanel h3{
+      position:relative;
+    }
+
+    .pricePanel h3::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-8px;
+      width:68px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(168,85,247,1), rgba(124,58,237,0));
+      box-shadow: 0 0 18px rgba(168,85,247,0.9);
+      opacity:.9;
+    }
+
+    .priceList{
+      margin-top:18px;
+      margin-bottom:6px;
+      list-style:none;
+      padding:0;
+    }
+    .priceList li{
+      margin-bottom:8px;
+      color: var(--muted2);
+      font-size:15px;
+    }
+
+    .priceLabel{
+      font-weight:700;
+      color:#fff;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .priceValue{
+      display:inline-block;
+      margin-left:6px;
+      font-size:17px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:none;
+      background: linear-gradient(120deg, #ffffff, #f5d0ff, #c4b5fd);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:
+        0 0 18px rgba(168,85,247,0.95),
+        0 0 32px rgba(124,58,237,0.85);
+      animation: pricePulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes pricePulse{
+      0%{
+        text-shadow:
+          0 0 10px rgba(168,85,247,0.65),
+          0 0 22px rgba(124,58,237,0.50);
+        transform: translateY(0);
+      }
+      40%{
+        text-shadow:
+          0 0 20px rgba(168,85,247,1),
+          0 0 36px rgba(124,58,237,0.95);
+        transform: translateY(-1px);
+      }
+      100%{
+        text-shadow:
+          0 0 10px rgba(168,85,247,0.65),
+          0 0 22px rgba(124,58,237,0.50);
+        transform: translateY(0);
+      }
+    }
+
+    .priceNote{
+      display:inline-block;
+      margin-top:6px;
+      font-size:12px;
+      color: rgba(255,255,255,0.76);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      opacity:.85;
+    }
+
+    .priceNote::before{
+      content:"•";
+      margin-right:6px;
+      color: rgba(168,85,247,0.9);
+      text-shadow: 0 0 12px rgba(168,85,247,1);
+    }
+
     /* ====== RESPONSIVE ====== */
     @media (max-width: 980px){
       .shell{ padding: 0 18px; }
@@ -1024,33 +1166,62 @@
         <h2 class="reveal">Orientačný cenník</h2>
 
         <div class="split" style="margin-top:18px">
-          <div class="panel reveal">
+          <div class="panel reveal pricePanel">
             <span class="pill"><span class="dot"></span> modul • bez montáže</span>
             <h3 style="margin-top:14px">Samotný modul</h3>
-            <p class="muted2">
-              Ceny podľa balíka:<br><br>
-              • <b>600 dayLIGHT</b> – 150 €<br>
-              • <b>800 NIGHT</b> – 180 €<br>
-              • <b>1000 midNIGHT</b> – 200 €<br>
-              • <b>1300 spaceBOUND</b> – 220 €<br>
-              <span style="opacity:.9;">(ceny sú uvedené s DPH)</span>
-            </p>
+
+            <ul class="priceList">
+              <li>
+                <span class="priceLabel">600 dayLIGHT</span> –
+                <span class="priceValue">150 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">800 NIGHT</span> –
+                <span class="priceValue">180 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1000 midNIGHT</span> –
+                <span class="priceValue">200 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1300 spaceBOUND</span> –
+                <span class="priceValue">220 €</span>
+              </li>
+            </ul>
+
+            <span class="priceNote">(ceny sú uvedené s DPH)</span>
           </div>
 
-          <div class="panel reveal">
+          <div class="panel reveal pricePanel">
             <span class="pill"><span class="dot"></span> montáž • s DPH</span>
             <h3 style="margin-top:14px">Modul + montáž + zapojenie</h3>
-            <p class="muted2">
-              Ceny podľa balíka:<br><br>
-              • <b>600 dayLIGHT</b> – od 440 €<br>
-              • <b>800 sunSET</b> – od 590 €<br>
-              • <b>1000 midNIGHT</b> – od 660 €<br>
-              • <b>1300 spaceBOUND</b> – od 810 €<br>
-              • <b>XXX vlastné množstvo</b> – od 1300 €<br>
-              <span style="opacity:.9;">(ceny sú uvedené s DPH)</span>
-            </p>
 
-            <p class="muted2" style="margin-top:12px">
+            <ul class="priceList">
+              <li>
+                <span class="priceLabel">600 dayLIGHT</span> –
+                <span class="priceValue">od 440 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">800 sunSET</span> –
+                <span class="priceValue">od 590 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1000 midNIGHT</span> –
+                <span class="priceValue">od 660 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1300 spaceBOUND</span> –
+                <span class="priceValue">od 810 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">XXX vlastné množstvo</span> –
+                <span class="priceValue">od 1300 €</span>
+              </li>
+            </ul>
+
+            <span class="priceNote">(ceny sú uvedené s DPH)</span>
+
+            <p class="muted2" style="margin-top:16px">
               V cene je:
               <br/>• samotný modul, elektronika, vlákna, jednorázový spotrebný materiál
               <br/>• kompletná demontáž a montáž plochy alebo dielu
