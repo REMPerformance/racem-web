@@ -68,7 +68,7 @@
       pointer-events:none;
     }
 
-    /* ====== LAYOUT ====== */
+    /* ====== FULL WIDTH SECTIONS + CENTERED CONTENT ====== */
     .wrap{ width:100%; max-width:none; padding: 0; }
     .shell{
       width:100%;
@@ -385,347 +385,289 @@
     }
     .panel > *{ position:relative; }
 
-    /* =======================================
-       NOVÁ GALÉRIA – KOZMICÝ PÁS
-    ======================================== */
-    .cosmoGallery{
-      position:relative;
-      margin-top:22px;
-      border-radius:22px;
-      padding:20px 20px 24px;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.25), rgba(10,10,20,0.96)),
-        radial-gradient(circle at 100% 100%, rgba(15,23,42,0.95), rgba(5,5,12,1));
-      border:1px solid rgba(255,255,255,0.12);
-      box-shadow:
-        0 26px 80px rgba(0,0,0,0.85),
-        0 0 40px rgba(124,58,237,0.55);
-      overflow:hidden;
-    }
+    /* ====== (OLD CAROUSEL STYLES – NECHÁME, NEVADIA) ====== */
+    .carousel-viewport{ scroll-behavior:smooth; }
 
-    .cosmoGallery::before,
-    .cosmoGallery::after{
-      content:"";
-      position:absolute;
-      width:180%;
-      height:180%;
-      pointer-events:none;
-      mix-blend-mode:screen;
-      opacity:0.25;
-    }
-
-    .cosmoGallery::before{
-      left:-40%;
-      top:-60%;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.25), transparent 60%),
-        radial-gradient(circle at 90% 120%, rgba(124,58,237,0.9), transparent 60%);
-      animation: cosmoGlow 26s linear infinite;
-    }
-
-    .cosmoGallery::after{
-      left:-20%;
-      top:-10%;
-      background:
-        conic-gradient(
-          from 220deg,
-          rgba(255,255,255,0.0),
-          rgba(168,85,247,0.55),
-          rgba(255,255,255,0.0),
-          rgba(124,58,237,0.85),
-          rgba(255,255,255,0.0)
-        );
-      animation: cosmoComets 34s linear infinite;
-    }
-
-    @keyframes cosmoGlow{
-      0%{ transform:rotate(0deg) scale(1); }
-      50%{ transform:rotate(180deg) scale(1.05); }
-      100%{ transform:rotate(360deg) scale(1); }
-    }
-    @keyframes cosmoComets{
-      0%{ transform:translate3d(0,0,0) rotate(0deg); opacity:0.18; }
-      40%{ opacity:0.45; }
-      100%{ transform:translate3d(-6%,4%,0) rotate(360deg); opacity:0.18; }
-    }
-
-    .cosmoInner{
-      position:relative;
-      z-index:1;
+    /* ====== NOVÁ GALÉRIA – ORBIT STRIP + MAIN PREVIEW ====== */
+    .galleryOrbit{
+      margin-top: 22px;
       display:grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      gap:22px;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 26px;
       align-items:stretch;
     }
 
-    /* Hlavný náhľad */
-    .cosmoMain{
+    .galleryMain{
       position:relative;
-      border-radius:20px;
+      border-radius:24px;
       overflow:hidden;
-      background: radial-gradient(circle at 50% 0%, rgba(15,23,42,1), rgba(3,7,18,1));
-      border:1px solid rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.18);
       box-shadow:
-        0 24px 70px rgba(0,0,0,0.85),
-        0 0 32px rgba(168,85,247,0.60);
-      transform-style:preserve-3d;
-      transition:
-        transform .18s ease-out,
-        box-shadow .18s ease-out,
-        border-color .18s ease-out;
+        0 28px 80px rgba(0,0,0,0.80),
+        0 0 40px rgba(124,58,237,0.50);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(168,85,247,0.30), transparent 55%),
+        radial-gradient(circle at 120% 120%, rgba(15,15,30,0.95), rgba(5,5,12,1));
+      transform-style: preserve-3d;
+      transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
     }
 
-    .cosmoMainImgWrap{
+    .galleryMainGlow{
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
+        radial-gradient(circle at 90% 120%, rgba(124,58,237,0.65), transparent 60%);
+      opacity:0.55;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+
+    .galleryMain img{
       position:relative;
       width:100%;
-      height:0;
-      padding-top:56.25%; /* 16:9 */
-      background:#000;
+      height: 440px;
+      display:block;
+      object-fit: cover;
+      filter: saturate(1.1) contrast(1.03);
+      transform: translateZ(12px);
     }
 
-    .cosmoMainImgWrap img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:contain; /* celý obrázok, nie orez */
-      background:#000;
-      filter:saturate(1.05) contrast(1.05);
-      transform:translateZ(12px);
-    }
-
-    .cosmoMainOverlay{
+    .galleryMainOverlay{
       position:absolute;
       left:0;
       right:0;
       bottom:0;
-      padding:16px 18px 18px;
+      padding: 18px 22px 20px;
       background:
-        linear-gradient(180deg, rgba(3,7,18,0.0), rgba(3,7,18,0.92));
-      transform:translateZ(18px);
+        linear-gradient(180deg, rgba(3,3,8,0.0), rgba(0,0,0,0.82));
+      transform: translateZ(18px);
     }
-
-    .cosmoMainOverlay h3{
+    .galleryMainOverlay h3{
       margin:0 0 6px 0;
-      font-size:14px;
+      font-size: 16px;
       letter-spacing:.18em;
       text-transform:uppercase;
     }
-    .cosmoMainOverlay p{
+    .galleryMainOverlay p{
       margin:0;
-      font-size:13px;
-      color:rgba(255,255,255,0.88);
+      font-size: 14px;
+      color: rgba(255,255,255,0.88);
     }
 
-    .cosmoMainBadge{
-      position:absolute;
-      left:14px;
-      top:14px;
-      padding:6px 11px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.46);
-      background:rgba(3,7,18,0.86);
-      font-size:10px;
-      letter-spacing:.20em;
-      text-transform:uppercase;
-    }
-
-    .cosmoMain:hover{
+    .galleryMain:hover{
       box-shadow:
-        0 30px 90px rgba(0,0,0,0.95),
-        0 0 42px rgba(168,85,247,0.92);
-      border-color:rgba(168,85,247,0.95);
+        0 36px 96px rgba(0,0,0,0.9),
+        0 0 50px rgba(168,85,247,0.85);
+      border-color: rgba(168,85,247,0.80);
     }
 
-    /* Pás náhľadov */
-    .cosmoSide{
+    .galleryThumbCol{
+      position:relative;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:14px;
     }
 
-    .cosmoSideLabel{
+    .galleryThumbLabel{
       font-size:11px;
       letter-spacing:.26em;
       text-transform:uppercase;
-      color:rgba(255,255,255,0.78);
+      color: rgba(255,255,255,0.72);
+      opacity:.9;
     }
 
-    .cosmoRailMask{
-      position:relative;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.16);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(15,23,42,1), rgba(3,7,18,1));
-      overflow:hidden;
-      padding:10px 0;
-    }
-
-    .cosmoRailMask::before,
-    .cosmoRailMask::after{
-      content:"";
-      position:absolute;
-      top:0;
-      width:46px;
-      height:100%;
-      pointer-events:none;
-      z-index:3;
-    }
-
-    .cosmoRailMask::before{
-      left:0;
-      background:linear-gradient(90deg, rgba(3,7,18,1), rgba(3,7,18,0));
-    }
-    .cosmoRailMask::after{
-      right:0;
-      background:linear-gradient(-90deg, rgba(3,7,18,1), rgba(3,7,18,0));
-    }
-
-    .cosmoRail{
+    .galleryThumbStrip{
       display:flex;
       gap:12px;
-      will-change:transform;
-      padding:0 30px;
+      padding:10px 4px 6px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.22), rgba(12,12,22,0.96));
+      overflow-x:auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(168,85,247,0.7) rgba(10,10,18,1);
+      scroll-snap-type:x mandatory;
     }
 
-    .cosmoTile{
+    .galleryThumbStrip::-webkit-scrollbar{
+      height:6px;
+    }
+    .galleryThumbStrip::-webkit-scrollbar-track{
+      background:rgba(5,5,12,1);
+    }
+    .galleryThumbStrip::-webkit-scrollbar-thumb{
+      background:rgba(168,85,247,0.7);
+      border-radius:999px;
+    }
+
+    .galleryThumb{
       position:relative;
-      flex:0 0 160px;
-      height:100px;
-      border-radius:14px;
+      flex:0 0 140px;
+      height: 90px;
+      border-radius:16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.16);
-      background:#000;
       cursor:pointer;
+      scroll-snap-align:start;
+      background: rgba(0,0,0,0.9);
       transition:
         transform .18s ease,
-        box-shadow .18s ease,
         border-color .18s ease,
+        box-shadow .18s ease,
         opacity .18s ease;
-      opacity:.76;
+      opacity:.78;
     }
 
-    .cosmoTileImg{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      background:#000;
-      filter:saturate(1.05) contrast(1.05);
-    }
-
-    .cosmoTile::before{
+    .galleryThumb::before{
       content:"";
       position:absolute;
-      inset:-40%;
+      inset:-30%;
       background:
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.32), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(124,58,237,0.8), transparent 60%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%),
+        radial-gradient(circle at 120% 120%, rgba(124,58,237,0.60), transparent 60%);
       mix-blend-mode:screen;
       opacity:0;
-      transition:opacity .18s ease;
+      transition:opacity .2s ease;
       pointer-events:none;
     }
 
-    .cosmoTileIndex{
+    .galleryThumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .galleryThumb span{
       position:absolute;
-      left:9px;
-      bottom:7px;
-      font-size:9px;
+      left:10px;
+      bottom:8px;
+      font-size:10px;
       letter-spacing:.18em;
       text-transform:uppercase;
-      padding:4px 7px;
+      padding:4px 8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.35);
-      background:rgba(3,7,18,0.9);
+      background: rgba(3,3,10,0.85);
+      border:1px solid rgba(255,255,255,0.30);
     }
 
-    .cosmoTile:hover{
-      transform:translateY(-4px) scale(1.04);
-      border-color:rgba(255,255,255,0.78);
+    .galleryThumb:hover{
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(255,255,255,0.75);
+      box-shadow:0 18px 40px rgba(0,0,0,0.85);
       opacity:1;
-      box-shadow:0 18px 40px rgba(0,0,0,0.9);
     }
 
-    .cosmoTile.active{
-      border-color:rgba(168,85,247,0.98);
-      opacity:1;
+    .galleryThumb.active{
+      border-color: rgba(168,85,247,0.95);
       box-shadow:
-        0 0 0 1px rgba(168,85,247,0.65),
-        0 18px 48px rgba(0,0,0,0.96);
-    }
-    .cosmoTile.active::before{
-      opacity:0.95;
+        0 0 0 1px rgba(168,85,247,0.55),
+        0 18px 50px rgba(0,0,0,0.90);
+      opacity:1;
     }
 
-    .cosmoControls{
-      margin-top:10px;
+    .galleryThumb.active::before{
+      opacity:0.9;
+    }
+
+    /* ====== PACKAGES GRID ====== */
+    .pkgGrid{
+      margin-top: 28px;
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    .pkgCard{
+      background: linear-gradient(180deg, rgba(12,12,20,0.96), rgba(6,6,10,0.78));
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow: 0 20px 64px rgba(0,0,0,0.48);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    .pkgCard:hover{
+      transform: translateY(-6px);
+      border-color: rgba(168,85,247,0.40);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.60);
+    }
+    .pkgImg{
+      aspect-ratio: 4/3;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    .pkgImg img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .pkgBody{ padding: 16px 16px 18px; }
+    .pkgTop{
       display:flex;
+      gap:10px;
+      align-items:flex-start;
       justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .pkgTitle{
+      margin:0;
+      font-size: 13px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      line-height: 1.25;
+    }
+    .badge{
+      display:inline-flex;
       align-items:center;
-      gap:10px;
-      font-size:11px;
-      color:rgba(255,255,255,0.75);
-      letter-spacing:.16em;
-      text-transform:uppercase;
-    }
-
-    .cosmoControlsLeft{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .cosmoDotLive{
-      width:7px;height:7px;border-radius:999px;
-      background:var(--violet2);
-      box-shadow:0 0 16px rgba(168,85,247,0.95);
-      animation:cosmoPulse 1.8s ease-in-out infinite;
-    }
-
-    @keyframes cosmoPulse{
-      0%{ transform:scale(1); opacity:0.9; }
-      50%{ transform:scale(1.25); opacity:1; }
-      100%{ transform:scale(1); opacity:0.9; }
-    }
-
-    .cosmoArrows{
-      display:flex;
       gap:8px;
-    }
-
-    .cosmoBtn{
-      width:32px;
-      height:32px;
+      padding:8px 11px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.28);
-      background:rgba(3,7,18,0.9);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:14px;
+      border:1px solid rgba(168,85,247,0.40);
+      background: rgba(168,85,247,0.16);
       color:#fff;
-      cursor:pointer;
-      box-shadow:0 14px 36px rgba(0,0,0,0.7);
-      transition:
-        transform .15s ease,
-        border-color .15s ease,
-        box-shadow .15s ease,
-        background .15s ease;
+      font-size: 11px;
+      letter-spacing:.13em;
+      font-weight: 1000;
+      white-space:nowrap;
+      box-shadow: 0 18px 44px rgba(124,58,237,0.18);
+    }
+    .pkgDesc{
+      margin:0;
+      color: rgba(255,255,255,0.80);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .priceLine{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+    .priceTag{
+      font-weight:1000;
+      letter-spacing:.11em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color:#fff;
+      white-space:nowrap;
+    }
+    .priceTag span{
+      color: rgba(255,255,255,0.80);
+      font-weight: 800;
+      letter-spacing:.08em;
+      margin-left: 6px;
+      text-transform: none;
+      font-size: 12px;
     }
 
-    .cosmoBtn:hover{
-      transform:translateY(-2px);
-      border-color:rgba(168,85,247,0.9);
-      background:radial-gradient(circle at 0% 0%, rgba(168,85,247,0.5), rgba(3,7,18,1));
-      box-shadow:
-        0 18px 46px rgba(0,0,0,0.9),
-        0 0 22px rgba(168,85,247,0.7);
-    }
-
-    /* ====== CONTACT / PRICING / FOOTER – nezmenené ====== */
+    /* ====== CONTACT ====== */
     .contactGrid{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -733,6 +675,7 @@
       align-items:start;
     }
 
+    /* extra vesmírny panel pre kontakt */
     .contactPanel{
       background: radial-gradient(circle at 0% 0%, rgba(168,85,247,0.18), rgba(8,8,14,0.95));
       border:1px solid rgba(168,85,247,0.55);
@@ -743,6 +686,7 @@
       position:relative;
       overflow:hidden;
     }
+
     .contactPanel::before{
       content:"";
       position:absolute;
@@ -764,6 +708,7 @@
       animation: orbitGlow 26s linear infinite;
       pointer-events:none;
     }
+
     .contactPanel::after{
       content:"";
       position:absolute;
@@ -774,10 +719,12 @@
       opacity:0.55;
       pointer-events:none;
     }
+
     .contactPanel > *{
       position:relative;
       z-index:1;
     }
+
     @keyframes orbitGlow{
       0%{ transform: rotate(0deg); }
       50%{ transform: rotate(180deg); }
@@ -790,6 +737,22 @@
       gap: 12px;
       max-width: 880px;
       position:relative;
+    }
+
+    .contact-box::before{
+      content:"";
+      position:absolute;
+      top:-26px;
+      left:0;
+      font-size:11px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.72);
+      padding:4px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.16), rgba(10,10,18,0.92));
+      box-shadow:0 14px 35px rgba(0,0,0,0.65);
     }
 
     .contact-box label{
@@ -836,6 +799,15 @@
       transform: translateY(-1px);
     }
 
+    .contact-box input:hover,
+    .contact-box textarea:hover,
+    .contact-box select:hover{
+      border-color: rgba(168,85,247,0.55);
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.40),
+        0 14px 40px rgba(0,0,0,0.80);
+    }
+
     .contact-row{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -856,6 +828,8 @@
       background-repeat:no-repeat;
       padding-right: 36px;
     }
+
+    /* DROPDOWN – BIELY TEXT V OPTION */
     select option{
       background:#05050a;
       color:#ffffff;
@@ -880,10 +854,14 @@
       opacity:0.45;
       pointer-events:none;
     }
+    .infoBox > *{ position:relative; z-index:1; }
+    .infoBox h3{ margin-top:0; margin-bottom:14px; }
 
+    /* ====== REVEAL ====== */
     .reveal{ opacity:0; transform: translateY(28px); transition: .8s ease; }
     .reveal.active{ opacity:1; transform: translateY(0); }
 
+    /* ====== FOOTER ====== */
     footer{
       padding: 60px 0;
       border-top: 1px solid rgba(255,255,255,0.08);
@@ -900,7 +878,7 @@
     }
     .foot strong{ color:#fff; }
 
-    /* PRICING – nechávam ako bolo, skrátené v texte */
+    /* ====== PRICING – GLOW PANELS ====== */
     .pricePanel{
       border:1px solid rgba(168,85,247,0.60);
       background:
@@ -914,11 +892,130 @@
       overflow:hidden;
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
-    .pricePanel:hover{
-      transform: translateY(-4px);
+
+    .pricePanel::before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background: radial-gradient(circle at 0 0, rgba(168,85,247,0.36), transparent 60%);
+      mix-blend-mode: screen;
+      opacity:0.28;
+      pointer-events:none;
     }
 
-    /* RESPONSIVE */
+    .pricePanel:hover::before{
+      opacity:0.42;
+    }
+
+    .pricePanel:hover{
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.32),
+        0 30px 90px rgba(0,0,0,0.85),
+        0 0 46px rgba(168,85,247,0.62);
+    }
+
+    .pricePanel .pill{
+      box-shadow: 0 0 26px rgba(168,85,247,0.60);
+      background: linear-gradient(135deg, rgba(124,58,237,0.36), rgba(10,10,18,0.92));
+      border-color: rgba(255,255,255,0.30);
+      position:relative;
+    }
+
+    .pricePanel h3{
+      position:relative;
+    }
+
+    .pricePanel h3::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-10px;
+      width:80px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(168,85,247,1), rgba(124,58,237,0));
+      box-shadow: 0 0 20px rgba(168,85,247,0.96);
+      opacity:.9;
+    }
+
+    .priceList{
+      margin-top:22px;
+      margin-bottom:8px;
+      list-style:none;
+      padding:0;
+      position:relative;
+    }
+    .priceList li{
+      margin-bottom:10px;
+      color: var(--muted2);
+      font-size:16px;
+    }
+
+    .priceLabel{
+      font-weight:700;
+      color:#fff;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+    }
+
+    .priceValue{
+      display:inline-block;
+      margin-left:8px;
+      font-size:19px;
+      font-weight:900;
+      letter-spacing:.09em;
+      text-transform:none;
+      background: linear-gradient(120deg, #ffffff, #f5d0ff, #c4b5fd);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:
+        0 0 18px rgba(168,85,247,0.98),
+        0 0 34px rgba(124,58,237,0.90);
+      animation: pricePulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes pricePulse{
+      0%{
+        text-shadow:
+          0 0 11px rgba(168,85,247,0.70),
+          0 0 24px rgba(124,58,237,0.55);
+        transform: translateY(0);
+      }
+      40%{
+        text-shadow:
+          0 0 22px rgba(168,85,247,1),
+          0 0 38px rgba(124,58,237,0.98);
+        transform: translateY(-1px);
+      }
+      100%{
+        text-shadow:
+          0 0 11px rgba(168,85,247,0.70),
+          0 0 24px rgba(124,58,237,0.55);
+        transform: translateY(0);
+      }
+    }
+
+    .priceNote{
+      display:inline-block;
+      margin-top:8px;
+      font-size:13px;
+      color: rgba(255,255,255,0.80);
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      opacity:.88;
+      position:relative;
+    }
+
+    .priceNote::before{
+      content:"•";
+      margin-right:6px;
+      color: rgba(168,85,247,0.95);
+      text-shadow: 0 0 14px rgba(168,85,247,1);
+    }
+
+    /* ====== RESPONSIVE ====== */
     @media (max-width: 980px){
       .shell{ padding: 0 18px; }
       .topbar .shell{ padding: 0 18px; }
@@ -928,6 +1025,7 @@
       .hero-grid{ grid-template-columns: 1fr; gap: 22px; }
       .split{ grid-template-columns: 1fr; gap: 20px; }
       .contactGrid{ grid-template-columns: 1fr; gap: 20px; }
+      .pkgGrid{ grid-template-columns: 1fr; }
 
       h1{ font-size: clamp(38px, 8vw, 52px); line-height: 1.08; }
       h2{ font-size: clamp(28px, 6vw, 38px); }
@@ -940,11 +1038,14 @@
       .brand-badge{ width:auto; }
       .brand{ align-items:flex-start; flex-direction:column; gap:10px; }
 
-      .cosmoInner{
+      .galleryOrbit{
         grid-template-columns: 1fr;
       }
-      .cosmoMainImgWrap{
-        padding-top:62%;
+      .galleryMain img{
+        height: 320px;
+      }
+      .galleryThumbStrip{
+        padding-bottom:10px;
       }
     }
   </style>
@@ -991,7 +1092,7 @@
     </div>
   </div>
 
-  <!-- HERO (nezmenený obsah) -->
+  <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <div class="shell">
@@ -1175,68 +1276,366 @@
     </div>
   </section>
 
-  <!-- GALÉRIA – KOZMICÝ PÁS -->
+  <!-- GALLERY – NOVÝ ŠTÝL -->
   <section id="galeria">
     <div class="wrap">
       <div class="shell">
         <h2 class="reveal">Galéria</h2>
         <p class="reveal text-max">
-          Automatický “hviezdny kolotoč”, ktorý ide dokola. Vieš ho zastaviť klikom – vyber scénu, ktorá ti najviac sedí.
+          Posúvaj náhľady, klikaj na scény a sleduj, ako môže vyzerať tvoj interiér. Všetko reálne hviezdne stropy.
         </p>
 
         <div class="panel reveal" style="margin-top:18px; padding:24px;">
           <span class="pill"><span class="dot"></span> Toto môže byť vaše auto </span>
 
-          <div class="cosmoGallery" style="margin-top:18px;">
-            <div class="cosmoInner">
-              <!-- Hlavný náhľad -->
-              <div class="cosmoMain" id="cosmoMain">
-                <div class="cosmoMainImgWrap">
-                  <img id="cosmoMainImg" src="assets/strop1.png" alt="Hviezdny strop">
-                  <span class="cosmoMainBadge" id="cosmoMainBadge">SCÉNA 01</span>
-                </div>
-                <div class="cosmoMainOverlay">
-                  <h3 id="cosmoMainTitle">Hviezdny strop</h3>
-                  <p id="cosmoMainText">Luxusný efekt v interiéri – jemný, ale výrazný glow.</p>
-                </div>
+          <div class="galleryOrbit">
+            <!-- LEFT – hlavný náhľad -->
+            <div class="galleryMain" id="galleryMain">
+              <div class="galleryMainGlow"></div>
+              <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
+              <div class="galleryMainOverlay">
+                <h3 id="galleryMainTitle">Hviezdny strop</h3>
+                <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
               </div>
+            </div>
 
-              <!-- Pás náhľadov -->
-              <div class="cosmoSide">
-                <div class="cosmoSideLabel">Posúvaj očami po hviezdach</div>
-
-                <div class="cosmoRailMask">
-                  <div class="cosmoRail" id="cosmoRail">
-                    <!-- dlaždice doplní JS -->
-                  </div>
-                </div>
-
-                <div class="cosmoControls">
-                  <div class="cosmoControlsLeft">
-                    <span class="cosmoDotLive"></span>
-                    <span>autoplay · dá sa stopnúť klikom</span>
-                  </div>
-                  <div class="cosmoArrows">
-                    <button type="button" class="cosmoBtn" id="cosmoPrev" aria-label="Predchádzajúca scéna">←</button>
-                    <button type="button" class="cosmoBtn" id="cosmoNext" aria-label="Ďalšia scéna">→</button>
-                  </div>
-                </div>
+            <!-- RIGHT – orbit strip náhľadov -->
+            <div class="galleryThumbCol">
+              <div class="galleryThumbLabel">Vyber scénu / posuň do strán</div>
+              <div class="galleryThumbStrip" id="galleryThumbStrip">
+                <!-- náhľady doplní JS -->
               </div>
-            </div> <!-- /cosmoInner -->
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BALÍČKY, CENNÍK, KONTAKT, FOOTER – nechávam ako v tvojom kóde (skrátené kvôli dĺžke odpovede)
-       ... SEM si môžeš vložiť svoj pôvodný obsah balíčkov, cenníka, kontaktu a footeru bez zmeny ... -->
+  <!-- PACKAGES -->
+  <section id="balicky">
+    <div class="wrap">
+      <div class="shell">
+        <h2 class="reveal">Balíčky hviezd</h2>
 
-  <!-- Tu by pokračoval tvoj pôvodný balíčky / cenník / kontakt / footer kód -->
+        <div class="panel reveal" style="margin-top:18px;">
+          <span class="pill"><span class="dot"></span> 600 • 800 • 1000 • 1300 • Vlastné</span>
+
+          <div class="pkgGrid">
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-600.jpg" alt="600 hviezd - dayLIGHT"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">LIGHT</h3>
+                  <span class="badge">600 ks</span>
+                </div>
+                <div class="priceLine">
+                  <div class="priceTag">od 440 € <span>s DPH </span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-800.jpg" alt="800 hviezd - sunSET"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">NIGHT</h3>
+                  <span class="badge">800 ks</span>
+                </div>
+                <div class="priceLine">
+                  <div class="priceTag">od 590 € <span>s DPH </span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1000.jpg" alt="1000 hviezd - midNIGHT"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">midNIGHT</h3>
+                  <span class="badge">1000 ks</span>
+                </div>
+                <div class="priceLine">
+                  <div class="priceTag">od 660 € <span>s DPH </span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/strop-1300.jpg" alt="1300 hviezd - spaceBOUND"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">spaceBOUND</h3>
+                  <span class="badge">1300 ks</span>
+                </div>
+                <div class="priceLine">
+                  <div class="priceTag">od 810 € <span>s DPH </span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="pkgCard">
+              <div class="pkgImg"><img src="assets/custom.jpg" alt="Vlastné množstvo hviezd"></div>
+              <div class="pkgBody">
+                <div class="pkgTop">
+                  <h3 class="pkgTitle">Vlastné</h3>
+                  <span class="badge">XXXX ks</span>
+                </div>
+                <div class="priceLine">
+                  <div class="priceTag">od 1300 € <span>s DPH </span></div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="ctaRow" style="margin-top:20px;">
+            <a class="btn btnPrimary" href="#kontakt">Naceniť</a>
+            <a class="btn btnGhost" href="#cennik">Pozrieť cenník</a>
+          </div>
+        </div>
+
+        <!-- MODULE-ONLY -->
+        <div class="panel reveal" style="margin-top:18px;">
+          <span class="pill"><span class="dot"></span> predaj modulov • bez montáže</span>
+          <h3 style="margin-top:14px">Ceny modulov bez montáže</h3>
+          <p class="muted2 text-max">
+            Ak chcete len modul s vláknami a napájaním, bez montáže u nás, ceny sú následovné:
+          </p>
+
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill pill--ghost">600 LIGHT – <b>150 €</b></span>
+            <span class="pill pill--ghost">800 NIGHT – <b>180 €</b></span>
+            <span class="pill pill--ghost">1000 MIDNIGHT – <b>200 €</b></span>
+            <span class="pill pill--ghost">1300 SPACEBOUND – <b>220 €</b></span>
+          </div>
+
+          <p class="muted2" style="margin-top:16px;">
+            Stále Vám vieme poradiť s výberom balíka podľa plochy a výsledku o ktorý sa snažíte.
+            Naše moduly sa dajú použiť aj v domácnostiach. 
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="cennik">
+    <div class="wrap">
+      <div class="shell">
+        <h2 class="reveal">Orientačný cenník</h2>
+
+        <div class="split" style="margin-top:18px">
+          <div class="panel reveal pricePanel">
+            <span class="pill"><span class="dot"></span> modul • bez montáže</span>
+            <h3 style="margin-top:14px">Samotný modul</h3>
+
+            <ul class="priceList">
+              <li>
+                <span class="priceLabel">600 dayLIGHT</span> –
+                <span class="priceValue">150 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">800 NIGHT</span> –
+                <span class="priceValue">180 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1000 midNIGHT</span> –
+                <span class="priceValue">200 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1300 spaceBOUND</span> –
+                <span class="priceValue">220 €</span>
+              </li>
+            </ul>
+
+            <span class="priceNote">(ceny sú uvedené s DPH)</span>
+          </div>
+
+          <div class="panel reveal pricePanel">
+            <span class="pill"><span class="dot"></span> montáž • s DPH</span>
+            <h3 style="margin-top:14px">Modul + montáž + zapojenie</h3>
+
+            <ul class="priceList">
+              <li>
+                <span class="priceLabel">600 dayLIGHT</span> –
+                <span class="priceValue">od 440 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">800 sunSET</span> –
+                <span class="priceValue">od 590 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1000 midNIGHT</span> –
+                <span class="priceValue">od 660 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">1300 spaceBOUND</span> –
+                <span class="priceValue">od 810 €</span>
+              </li>
+              <li>
+                <span class="priceLabel">XXX vlastné množstvo</span> –
+                <span class="priceValue">od 1300 €</span>
+              </li>
+            </ul>
+
+            <span class="priceNote">(ceny sú uvedené s DPH)</span>
+
+            <p class="muted2" style="margin-top:18px">
+              V cene je:
+              <br/>• samotný modul, elektronika, vlákna, jednorázový spotrebný materiál
+              <br/>• kompletná demontáž a montáž plochy alebo dielu
+              <br/>• kontrola plochy z oboch strán
+              <br/>• zaznačenie jednotlivých vstupov vlákien na zadnej strane plochy
+              <br/>• dierkovanie
+              <br/>• prevliekanie a fixácia vlákien
+              <br/>• organizácia a estetické uloženie vlákien
+              <br/>• fotodokumentácia pre zákaznika
+              <br/>• napojenie a ťahanie kabeláže cez vozidlo
+              <br/>• napojenie do zapaľovania alebo na tlačidlo
+              <br/>• <b>24 mesiacov záruka</b>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="shell">
+        <h2 class="reveal">Kontakt</h2>
+        <p class="reveal text-max">
+          Kontaktujte nás pre nezáväznú ponuku. Ozveme sa s detajlným návrhom a cenovou ponukou.
+        </p>
+
+        <div class="panel reveal contactGrid contactPanel" style="margin-top:18px;">
+          <div>
+            <span class="pill"><span class="dot"></span> dopyt • cena • termín</span>
+
+            <form class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST" style="margin-top:32px;">
+              <div>
+                <label>Meno a priezvisko</label>
+                <input name="meno" type="text" placeholder="Vaše meno" required>
+              </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Email</label>
+                  <input name="email" type="email" placeholder="Váš email" required>
+                </div>
+                <div>
+                  <label>Telefón</label>
+                  <input name="telefon" type="text" placeholder="+421..." required>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Vozidlo</label>
+                  <input name="auto" type="text" placeholder="VW, BMW, Nissan...">
+                </div>
+                <div>
+                  <label>Umiestnenie hviezd</label>
+                  <input name="plocha" type="text" placeholder="stropnica / dvere / kufor / viac plôch...">
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Veľkosť</label>
+                  <select name="balik">
+                    <option value="" selected>Vyber…</option>
+                    <option value="600 dayLIGHT">600ks DAYLIGHT</option>
+                    <option value="800 sunSET">800 SUNSET </option>
+                    <option value="1000 midNIGHT">1000 MIDNIGHT </option>
+                    <option value="1300 spaceBOUND">1300 SPACEBOUND </option>
+                    <option value="Vlastné">Vlastné množstvo (1400+) </option>
+                  </select>
+                </div>
+                <div>
+                  <label>Služba</label>
+                  <select name="sluzba_typ">
+                    <option value="" selected>Vyber…</option>
+                    <option value="Len modul (600/800/1000/1300)">Samotný modul</option>
+                    <option value="Montáž u nás (s DPH)">Modul + montáž u nás</option>
+                    <option value="Montáž + prevzatie auta">Montáž + prevzatie auta</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div>
+                  <label>Napájanie</label>
+                  <select name="napajanie">
+                    <option value="" selected>Vyber…</option>
+                    <option value="Do zapaľovania">Napojenie na zapaľovanie</option>
+                    <option value="Samostatné tlačidlo">Samostatné tlačidlo </option>
+                    <option value="Neviem / poradte">Vlastný návrh po dohode</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Efekty</label>
+                  <select name="efekty">
+                    <option value="" selected>Vyber…</option>
+                    <option value="basic">Základné efekty</option>
+                    <option value="basic + star">Základné efekty + padajúce hviezdy </option>
+                    <option value="basic + art">Základné efekty + nápis alebo obrázok z hviezd</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label>Správa</label>
+                <textarea name="sprava" placeholder="Poznámky..."></textarea>
+              </div>
+
+              <input type="hidden" name="sluzba" value="Hviezdne stropy" />
+
+              <div class="ctaRow" style="margin-top:12px;">
+                <button class="btn btnPrimary" type="submit">Odoslať</button>
+                <a class="btn btnGhost" href="#top">Späť hore</a>
+              </div>
+            </form>
+          </div>
+
+          <div class="infoBox">
+            <h3>Rýchle info</h3>
+            <p class="muted2"><b>• Ideálne auto:</b> tmavší strop (alcantara/látka), ale vieme sa pozrieť na čokoľvek.</p>
+            <p class="muted2"><b>• Miesta:</b> najčastejšie stropnica, vieme riešiť aj dvere, palubovku, sedadlá, kufor.</p>
+            <p class="muted2"><b>• Modul bez montáže:</b> približne 150–220 € podľa balíka.</p>
+            <p class="muted2"><b>• Modul + montáž:</b> približne 440–810 € s DPH podľa balíka a auta.</p>
+            <p class="muted2"><b>• Čas:</b> väčšinou do 1 týždňa (pri extrémoch 5–10 dní).</p>
+            <p class="muted2"><b>• Priebežne:</b> posielame fotky a status, vieš v akom kroku je tvoje auto.</p>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <span class="pill pill--ghost">dayLIGHT</span>
+              <span class="pill pill--ghost">sunSET</span>
+              <span class="pill pill--ghost">midNIGHT</span>
+              <span class="pill pill--ghost">spaceBOUND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="shell">
+        <div class="foot">
+          <div>Prevádzkovateľ – <strong>REM Performance</strong></div>
+          <div>© 2026 REM Performance</div>
+          <div>Hviezdne stropy • Ambient • Interiér</div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     // ==============================
-    // STARS BACKGROUND
+    // STARS + SHOOTING STAR BACKGROUND (OPTIMALIZED)
     // ==============================
     const canvas = document.getElementById('starsCanvas');
     const ctx = canvas.getContext('2d');
@@ -1378,7 +1777,9 @@
     }
     draw();
 
-    // REVEAL
+    // ==============================
+    // REVEAL – IntersectionObserver
+    // ==============================
     const revealEls = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window){
       const io = new IntersectionObserver((entries, observer) => {
@@ -1404,143 +1805,96 @@
     }
 
     // ==============================
-    // KOZMICÝ PÁS – GALÉRIA
+    // GALÉRIA – orbit strip + hlavný náhľad
     // ==============================
-    const cosmoSlides = [
+    const gallerySlides = [
       { img: "assets/strop1.png",  title: "Hviezdny strop – LIGHT GLOW", text: "Jemný, elegantný jas a prirodzené rozloženie hviezd." },
       { img: "assets/strop2.webp", title: "Hviezdny strop – NIGHT",      text: "Hustejšie hviezdy, viac atmosféry, stále luxusný look." },
       { img: "assets/strop3.webp", title: "Hviezdny strop – MIDNIGHT",   text: "Tmavší interiér, silnejší kontrast a viac WOW efektu." },
-      { img: "assets/strop4.webp", title: "Hviezdny strop – SPACEBOUND", text: "Extrémna hustota hviezd pre totálny vesmírny pocit." },
-      { img: "assets/strop5.webp", title: "Hviezdny strop – DETAIL",     text: "Detail vlákien a prechodu cez látku stropnice." },
-      { img: "assets/strop6.png",  title: "Hviezdny strop – AMBIENT",    text: "Ambientné svetlo, ktoré neruší, ale stále dominuje." },
-      { img: "assets/strop7.png",  title: "Hviezdny strop – INTERIÉR",   text: "Ako hviezdy ladia so zvyškom interiéru." },
+      { img: "assets/strop4.webp", title: "Hviezdny strop – SPACEBOUND", text: "Extrémne hustota hviezd pre totálny vesmírny pocit." },
+      { img: "assets/strop5.webp", title: "Hviezdny strop – DETAIL",     text: "Detail vlákien a spôsob, akým hviezdy prechádzajú látkou." },
+      { img: "assets/strop6.png",  title: "Hviezdny strop – AMBIENT",    text: "Ambientné osvetlenie, ktoré neruší, ale stále dominuje." },
+      { img: "assets/strop7.png",  title: "Hviezdny strop – INTERIÉR",   text: "Ako hviezdy ladia so zvyškom interiéru a ambientom." },
       { img: "assets/strop8.png",  title: "Hviezdny strop – PERSPEKTÍVA",text: "Pohľad zozadu dopredu, plná dĺžka stropu." },
-      { img: "assets/strop9.png",  title: "Hviezdny strop – DYNAMIKA",   text: "Efekty pri zapnutých ostatných svetlách v aute." },
-      { img: "assets/strop10.png", title: "Hviezdny strop – TVOJ BUILD", text: "Predstava, ako môže vyzerať tvoje vlastné auto." }
+      { img: "assets/strop9.png",  title: "Hviezdny strop – DYNAMIKA",   text: "Efekty a rozloženie pri zapnutých ambientných svetlách." },
+      { img: "assets/strop10.png", title: "Hviezdny strop – TVOJ BUILD", text: "Predstava, ako môže vyzerať tvoje auto po úprave." }
     ];
 
-    const cosmoMainImg   = document.getElementById('cosmoMainImg');
-    const cosmoMainTitle = document.getElementById('cosmoMainTitle');
-    const cosmoMainText  = document.getElementById('cosmoMainText');
-    const cosmoMainBadge = document.getElementById('cosmoMainBadge');
-    const cosmoMain      = document.getElementById('cosmoMain');
+    const mainImg   = document.getElementById('galleryMainImg');
+    const mainTitle = document.getElementById('galleryMainTitle');
+    const mainText  = document.getElementById('galleryMainText');
+    const thumbStrip = document.getElementById('galleryThumbStrip');
+    const mainCard  = document.getElementById('galleryMain');
 
-    const cosmoRail      = document.getElementById('cosmoRail');
-    const cosmoPrev      = document.getElementById('cosmoPrev');
-    const cosmoNext      = document.getElementById('cosmoNext');
+    let galleryIndex = 0;
+    let galleryTimer = null;
 
-    let cosmoIndex = 0;
-    let cosmoOffset = 0;
-    let cosmoSpeed = 0.35;        // rýchlosť “kolotoča”
-    let cosmoPausedUntil = 0;     // dokedy je spomalený po kliknutí
-    let lastTime = performance.now();
+    function setGallery(index){
+      if (!gallerySlides.length) return;
+      galleryIndex = (index + gallerySlides.length) % gallerySlides.length;
+      const slide = gallerySlides[galleryIndex];
 
-    function setCosmoMain(i){
-      const slide = cosmoSlides[i];
-      cosmoMainImg.src = slide.img;
-      cosmoMainImg.alt = slide.title;
-      cosmoMainTitle.textContent = slide.title;
-      cosmoMainText.textContent  = slide.text;
-      cosmoMainBadge.textContent = "SCÉNA " + String(i+1).padStart(2, "0");
+      mainImg.src = slide.img;
+      mainImg.alt = slide.title;
+      mainTitle.textContent = slide.title;
+      mainText.textContent  = slide.text;
 
-      if (cosmoRail){
-        [...cosmoRail.children].forEach((tile, idx) => {
-          const real = Number(tile.dataset.idx);
-          tile.classList.toggle('active', real === i);
+      if (thumbStrip){
+        [...thumbStrip.children].forEach((thumb, i) => {
+          thumb.classList.toggle('active', i === galleryIndex);
         });
       }
     }
 
-    function renderCosmoRail(){
-      if (!cosmoRail) return;
-      cosmoRail.innerHTML = "";
+    function renderGallery(){
+      if (!thumbStrip) return;
+      thumbStrip.innerHTML = gallerySlides.map((s, i) => `
+        <div class="galleryThumb" data-i="${i}">
+          <img src="${s.img}" alt="${s.title}">
+          <span>${(i+1).toString().padStart(2,'0')}</span>
+        </div>
+      `).join('');
 
-      // Duplikácia pre plynulé opakovanie
-      const repeats = 3;
-      for (let r = 0; r < repeats; r++){
-        cosmoSlides.forEach((s, i) => {
-          const tile = document.createElement('div');
-          tile.className = 'cosmoTile';
-          tile.dataset.idx = i;
-
-          const img = document.createElement('img');
-          img.className = 'cosmoTileImg';
-          img.src = s.img;
-          img.alt = s.title;
-
-          const badge = document.createElement('span');
-          badge.className = 'cosmoTileIndex';
-          badge.textContent = String(i+1).padStart(2, "0");
-
-          tile.appendChild(img);
-          tile.appendChild(badge);
-
-          tile.addEventListener('click', () => {
-            cosmoIndex = i;
-            setCosmoMain(cosmoIndex);
-            cosmoPausedUntil = performance.now() + 8000; // 8 sekúnd spomalený po kliknutí
-          });
-
-          cosmoRail.appendChild(tile);
-        });
-      }
-
-      setCosmoMain(0);
-    }
-
-    function stepCosmo(now){
-      const dt = now - lastTime;
-      lastTime = now;
-
-      if (cosmoRail){
-        const baseSpeed = cosmoSpeed;
-        const activeSpeed = (now < cosmoPausedUntil) ? baseSpeed * 0.15 : baseSpeed;
-
-        cosmoOffset -= activeSpeed * (dt / 16.7); // normalizácia na ~60fps
-
-        const railWidth = cosmoRail.scrollWidth;
-        const singleWidth = railWidth / 3; // lebo repeats=3
-
-        if (Math.abs(cosmoOffset) >= singleWidth){
-          cosmoOffset = cosmoOffset + singleWidth * Math.sign(cosmoOffset);
+      thumbStrip.addEventListener('click', (e) => {
+        const t = e.target.closest('.galleryThumb');
+        if (!t) return;
+        const i = Number(t.dataset.i);
+        if (Number.isFinite(i)){
+          setGallery(i);
+          restartGalleryAuto();
         }
+      });
 
-        cosmoRail.style.transform = `translateX(${cosmoOffset}px)`;
-      }
-
-      requestAnimationFrame(stepCosmo);
+      setGallery(0);
     }
 
-    renderCosmoRail();
-    requestAnimationFrame((t) => { lastTime = t; stepCosmo(t); });
+    function nextGallery(){ setGallery(galleryIndex + 1); }
 
-    function goCosmo(delta){
-      cosmoIndex = (cosmoIndex + delta + cosmoSlides.length) % cosmoSlides.length;
-      setCosmoMain(cosmoIndex);
-      cosmoPausedUntil = performance.now() + 6000;
+    function startGalleryAuto(){
+      galleryTimer = setInterval(nextGallery, 6500);
+    }
+    function restartGalleryAuto(){
+      if (galleryTimer) clearInterval(galleryTimer);
+      startGalleryAuto();
     }
 
-    if (cosmoPrev){
-      cosmoPrev.addEventListener('click', () => goCosmo(-1));
-    }
-    if (cosmoNext){
-      cosmoNext.addEventListener('click', () => goCosmo(1));
-    }
-
-    // jemný tilt efekt na hlavnom náhľade
-    if (cosmoMain){
-      cosmoMain.addEventListener('mousemove', (e) => {
-        const rect = cosmoMain.getBoundingClientRect();
+    // jemný 3D tilt na hlavnej fotke
+    if (mainCard){
+      mainCard.addEventListener('mousemove', (e) => {
+        const rect = mainCard.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
         const tiltX = y * -6;
         const tiltY = x *  6;
-        cosmoMain.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        mainCard.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       });
-      cosmoMain.addEventListener('mouseleave', () => {
-        cosmoMain.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      mainCard.addEventListener('mouseleave', () => {
+        mainCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
       });
     }
+
+    renderGallery();
+    startGalleryAuto();
   </script>
 </body>
 </html>
