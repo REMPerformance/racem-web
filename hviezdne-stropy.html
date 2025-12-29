@@ -245,11 +245,11 @@
       color: rgba(255,255,255,0.7);
     }
 
-    .nav-links{ 
-      display:flex; 
-      gap: 24px; 
+    .nav-links{
+      display:flex;
+      gap: 24px;
       flex-wrap:nowrap;
-      justify-content:flex-end; 
+      justify-content:flex-end;
       align-items:center;
       min-width:0;
       margin-left:auto;
@@ -385,105 +385,192 @@
     }
     .panel > *{ position:relative; }
 
-    /* ====== CAROUSEL ====== */
-    .carousel{
-      margin-top: 20px;
-      border-radius: 20px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.02);
-      box-shadow: 0 20px 64px rgba(0,0,0,0.52);
-      position:relative;
+    /* ====== (OLD CAROUSEL STYLES – NECHÁME, NEVADIA) ====== */
+    .carousel-viewport{ scroll-behavior:smooth; }
+
+    /* ====== NOVÁ GALÉRIA – ORBIT STRIP + MAIN PREVIEW ====== */
+    .galleryOrbit{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 26px;
+      align-items:stretch;
     }
-    .carousel-viewport{
-      display:flex;
+
+    .galleryMain{
+      position:relative;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:
+        0 28px 80px rgba(0,0,0,0.80),
+        0 0 40px rgba(124,58,237,0.50);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(168,85,247,0.30), transparent 55%),
+        radial-gradient(circle at 120% 120%, rgba(15,15,30,0.95), rgba(5,5,12,1));
+      transform-style: preserve-3d;
+      transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
+    }
+
+    .galleryMainGlow{
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
+        radial-gradient(circle at 90% 120%, rgba(124,58,237,0.65), transparent 60%);
+      opacity:0.55;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+
+    .galleryMain img{
+      position:relative;
       width:100%;
+      height: 440px;
+      display:block;
+      object-fit: cover;
+      filter: saturate(1.1) contrast(1.03);
+      transform: translateZ(12px);
+    }
+
+    .galleryMainOverlay{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding: 18px 22px 20px;
+      background:
+        linear-gradient(180deg, rgba(3,3,8,0.0), rgba(0,0,0,0.82));
+      transform: translateZ(18px);
+    }
+    .galleryMainOverlay h3{
+      margin:0 0 6px 0;
+      font-size: 16px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    .galleryMainOverlay p{
+      margin:0;
+      font-size: 14px;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .galleryMain:hover{
+      box-shadow:
+        0 36px 96px rgba(0,0,0,0.9),
+        0 0 50px rgba(168,85,247,0.85);
+      border-color: rgba(168,85,247,0.80);
+    }
+
+    .galleryThumbCol{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .galleryThumbLabel{
+      font-size:11px;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,0.72);
+      opacity:.9;
+    }
+
+    .galleryThumbStrip{
+      display:flex;
+      gap:12px;
+      padding:10px 4px 6px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.22), rgba(12,12,22,0.96));
+      overflow-x:auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(168,85,247,0.7) rgba(10,10,18,1);
+      scroll-snap-type:x mandatory;
+    }
+
+    .galleryThumbStrip::-webkit-scrollbar{
+      height:6px;
+    }
+    .galleryThumbStrip::-webkit-scrollbar-track{
+      background:rgba(5,5,12,1);
+    }
+    .galleryThumbStrip::-webkit-scrollbar-thumb{
+      background:rgba(168,85,247,0.7);
+      border-radius:999px;
+    }
+
+    .galleryThumb{
+      position:relative;
+      flex:0 0 140px;
+      height: 90px;
+      border-radius:16px;
       overflow:hidden;
-      position:relative;
-      scroll-behavior:smooth;
+      border:1px solid rgba(255,255,255,0.16);
+      cursor:pointer;
+      scroll-snap-align:start;
+      background: rgba(0,0,0,0.9);
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        opacity .18s ease;
+      opacity:.78;
     }
-    .slide{
-      min-width:100%;
-      height: 540px;
-      position:relative;
-      background: rgba(255,255,255,0.02);
+
+    .galleryThumb::before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%),
+        radial-gradient(circle at 120% 120%, rgba(124,58,237,0.60), transparent 60%);
+      mix-blend-mode:screen;
+      opacity:0;
+      transition:opacity .2s ease;
+      pointer-events:none;
     }
-    .slide img{
+
+    .galleryThumb img{
       width:100%;
       height:100%;
       object-fit: cover;
       display:block;
       filter: saturate(1.05) contrast(1.02);
     }
-    .slide::after{
-      content:"";
+
+    .galleryThumb span{
       position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(168,85,247,0.18), transparent 45%),
-        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
-      pointer-events:none;
-    }
-    .carousel-ui{
-      position:absolute;
-      inset: 0;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      padding: 16px;
-      pointer-events:none;
-      gap: 12px;
-    }
-    .carousel-caption{ pointer-events:none; max-width: 72%; }
-    .carousel-caption h3{
-      margin:0 0 8px 0;
-      font-size: 18px;
-      letter-spacing:.12em;
-    }
-    .carousel-caption p{
-      margin:0;
-      color: rgba(255,255,255,0.86);
-      font-size: 14px;
-    }
-    .carousel-controls{ display:flex; gap:10px; pointer-events:auto; }
-    .iconBtn{
-      width:46px;height:46px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.16);
-      background: rgba(10,10,18,0.60);
-      backdrop-filter: blur(10px);
-      color:#fff;
-      font-weight:1000;
-      cursor:pointer;
-      transition:.2s;
-      box-shadow: 0 20px 54px rgba(0,0,0,0.38);
-      font-size:18px;
-    }
-    .iconBtn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(168,85,247,0.45);
-      box-shadow: 0 24px 70px rgba(124,58,237,0.22);
-    }
-    .dots{
-      position:absolute;
-      left: 18px;
-      top: 18px;
-      display:flex;
-      gap:8px;
-      padding:10px 13px;
+      left:10px;
+      bottom:8px;
+      font-size:10px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      padding:4px 8px;
       border-radius:999px;
-      background: rgba(10,10,18,0.60);
-      border:1px solid rgba(255,255,255,0.14);
-      backdrop-filter: blur(10px);
+      background: rgba(3,3,10,0.85);
+      border:1px solid rgba(255,255,255,0.30);
     }
-    .dotx{
-      width:8px;height:8px;border-radius:999px;
-      background: rgba(255,255,255,0.25);
-      transition:.2s;
+
+    .galleryThumb:hover{
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(255,255,255,0.75);
+      box-shadow:0 18px 40px rgba(0,0,0,0.85);
+      opacity:1;
     }
-    .dotx.active{
-      background: var(--violet2);
-      box-shadow: 0 0 16px rgba(168,85,247,0.9);
+
+    .galleryThumb.active{
+      border-color: rgba(168,85,247,0.95);
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.55),
+        0 18px 50px rgba(0,0,0,0.90);
+      opacity:1;
+    }
+
+    .galleryThumb.active::before{
+      opacity:0.9;
     }
 
     /* ====== PACKAGES GRID ====== */
@@ -945,13 +1032,21 @@
       p, .subline{ font-size: 16px; }
 
       .btn{ width:100%; justify-content:center; }
-      .slide{ height: 340px; }
-      .contact-row{ grid-template-columns: 1fr; }
 
       .nav{ flex-direction: column; align-items:flex-start; }
       .nav-links{ justify-content:flex-start; gap:18px; flex-wrap:wrap; }
       .brand-badge{ width:auto; }
       .brand{ align-items:flex-start; flex-direction:column; gap:10px; }
+
+      .galleryOrbit{
+        grid-template-columns: 1fr;
+      }
+      .galleryMain img{
+        height: 320px;
+      }
+      .galleryThumbStrip{
+        padding-bottom:10px;
+      }
     }
   </style>
 </head>
@@ -1113,7 +1208,7 @@
             <p class="muted2">
               V rámci služby vieme zabezpečiť aj <b>prevzatie vozidla</b>:
               prídeme pre vaše auto, odvezieme ho ku nám do garáže, prerobíme dohodnuté miesta a
-              <b>odovzdáme Vám priamo domov</b>..
+              <b>odovzdáme Vám priamo domov</b>.
             </p>
           </div>
         </div>
@@ -1181,29 +1276,34 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
+  <!-- GALLERY – NOVÝ ŠTÝL -->
   <section id="galeria">
     <div class="wrap">
       <div class="shell">
         <h2 class="reveal">Galéria</h2>
-        <p class="reveal text-max">Klikaj šípkami alebo nechaj autoplay.</p>
+        <p class="reveal text-max">
+          Posúvaj náhľady, klikaj na scény a sleduj, ako môže vyzerať tvoj interiér. Všetko reálne hviezdne stropy.
+        </p>
 
         <div class="panel reveal" style="margin-top:18px; padding:24px;">
-          <span class="pill"><span class="dot"></span> Toto môže byť Vaše auto </span>
+          <span class="pill"><span class="dot"></span> Toto môže byť vaše auto </span>
 
-          <div class="carousel" style="margin-top:16px;">
-            <div class="dots" id="dots"></div>
-            <div class="carousel-viewport" id="viewport"></div>
-
-            <div class="carousel-ui">
-              <div class="carousel-caption">
-                <h3 id="capTitle">—</h3>
-                <p id="capText">—</p>
+          <div class="galleryOrbit">
+            <!-- LEFT – hlavný náhľad -->
+            <div class="galleryMain" id="galleryMain">
+              <div class="galleryMainGlow"></div>
+              <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
+              <div class="galleryMainOverlay">
+                <h3 id="galleryMainTitle">Hviezdny strop</h3>
+                <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
               </div>
+            </div>
 
-              <div class="carousel-controls">
-                <button class="iconBtn" id="prevBtn" type="button" aria-label="Predchádzajúca">←</button>
-                <button class="iconBtn" id="nextBtn" type="button" aria-label="Ďalšia">→</button>
+            <!-- RIGHT – orbit strip náhľadov -->
+            <div class="galleryThumbCol">
+              <div class="galleryThumbLabel">Vyber scénu / posuň do strán</div>
+              <div class="galleryThumbStrip" id="galleryThumbStrip">
+                <!-- náhľady doplní JS -->
               </div>
             </div>
           </div>
@@ -1407,7 +1507,7 @@
       <div class="shell">
         <h2 class="reveal">Kontakt</h2>
         <p class="reveal text-max">
-          Kontaktujte nás pre nezáväznú ponuku. Ozveme sa s detajlným návrhom a cenovou punukou.
+          Kontaktujte nás pre nezáväznú ponuku. Ozveme sa s detajlným návrhom a cenovou ponukou.
         </p>
 
         <div class="panel reveal contactGrid contactPanel" style="margin-top:18px;">
@@ -1551,7 +1651,6 @@
 
     const rand = (min, max) => min + Math.random() * (max - min);
 
-    // adaptívny počet hviezd – menej na mobiloch, viac na desktope
     function getStarCount(){
       const area = window.innerWidth * window.innerHeight;
       const isMobile = window.innerWidth < 768;
@@ -1573,7 +1672,6 @@
         tw: rand(0.002, 0.012),
         ph: rand(0, Math.PI*2),
         depth,
-        // predpočítaný faktor pre parallax – menej počítania v každom frame
         parallax: (0.055 + r * 0.03) * depth
       };
     });
@@ -1602,7 +1700,6 @@
     let scrollSmooth = 0;
     let lastScrollY = window.scrollY;
 
-    // jeden scroll listener, ktorý rieši aj parallax aj background
     const bgLayer = document.getElementById('bgLayer');
     window.addEventListener('scroll', () => {
       const now = window.scrollY;
@@ -1639,7 +1736,6 @@
       }
       ctx.shadowBlur = 0;
 
-      // shooting star
       if (!shooting){
         nextShootIn--;
         if (nextShootIn <= 0){
@@ -1682,7 +1778,7 @@
     draw();
 
     // ==============================
-    // REVEAL – IntersectionObserver namiesto scroll loopu
+    // REVEAL – IntersectionObserver
     // ==============================
     const revealEls = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window){
@@ -1697,7 +1793,6 @@
 
       revealEls.forEach(el => io.observe(el));
     } else {
-      // fallback – ak by nebolo IO (staré prehliadače)
       const activate = () => {
         revealEls.forEach(el => {
           const top = el.getBoundingClientRect().top;
@@ -1710,83 +1805,96 @@
     }
 
     // ==============================
-    // CAROUSEL
+    // GALÉRIA – orbit strip + hlavný náhľad
     // ==============================
-    const slides = [
-      { img: "assets/strop1.png",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop2.webp",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop3.webp",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop4.webp",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop5.webp",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop6.png",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop7.png",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop8.png",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop9.png",  title: "Hviezdny strop", text: "Luxusný efekt v interiéri." },
-  { img: "assets/strop10.png", title: "Hviezdny strop", text: "Luxusný efekt v interiéri." }
+    const gallerySlides = [
+      { img: "assets/strop1.png",  title: "Hviezdny strop – LIGHT GLOW", text: "Jemný, elegantný jas a prirodzené rozloženie hviezd." },
+      { img: "assets/strop2.webp", title: "Hviezdny strop – NIGHT",      text: "Hustejšie hviezdy, viac atmosféry, stále luxusný look." },
+      { img: "assets/strop3.webp", title: "Hviezdny strop – MIDNIGHT",   text: "Tmavší interiér, silnejší kontrast a viac WOW efektu." },
+      { img: "assets/strop4.webp", title: "Hviezdny strop – SPACEBOUND", text: "Extrémne hustota hviezd pre totálny vesmírny pocit." },
+      { img: "assets/strop5.webp", title: "Hviezdny strop – DETAIL",     text: "Detail vlákien a spôsob, akým hviezdy prechádzajú látkou." },
+      { img: "assets/strop6.png",  title: "Hviezdny strop – AMBIENT",    text: "Ambientné osvetlenie, ktoré neruší, ale stále dominuje." },
+      { img: "assets/strop7.png",  title: "Hviezdny strop – INTERIÉR",   text: "Ako hviezdy ladia so zvyškom interiéru a ambientom." },
+      { img: "assets/strop8.png",  title: "Hviezdny strop – PERSPEKTÍVA",text: "Pohľad zozadu dopredu, plná dĺžka stropu." },
+      { img: "assets/strop9.png",  title: "Hviezdny strop – DYNAMIKA",   text: "Efekty a rozloženie pri zapnutých ambientných svetlách." },
+      { img: "assets/strop10.png", title: "Hviezdny strop – TVOJ BUILD", text: "Predstava, ako môže vyzerať tvoje auto po úprave." }
     ];
 
-    const viewport = document.getElementById('viewport');
-    const dotsWrap = document.getElementById('dots');
-    const capTitle = document.getElementById('capTitle');
-    const capText  = document.getElementById('capText');
-    const prevBtn  = document.getElementById('prevBtn');
-    const nextBtn  = document.getElementById('nextBtn');
+    const mainImg   = document.getElementById('galleryMainImg');
+    const mainTitle = document.getElementById('galleryMainTitle');
+    const mainText  = document.getElementById('galleryMainText');
+    const thumbStrip = document.getElementById('galleryThumbStrip');
+    const mainCard  = document.getElementById('galleryMain');
 
-    let idx = 0;
-    let timer = null;
+    let galleryIndex = 0;
+    let galleryTimer = null;
 
-    function setCaption(){
-      capTitle.textContent = slides[idx].title;
-      capText.textContent  = slides[idx].text;
-      [...dotsWrap.children].forEach((d,i)=> d.classList.toggle('active', i===idx));
+    function setGallery(index){
+      if (!gallerySlides.length) return;
+      galleryIndex = (index + gallerySlides.length) % gallerySlides.length;
+      const slide = gallerySlides[galleryIndex];
+
+      mainImg.src = slide.img;
+      mainImg.alt = slide.title;
+      mainTitle.textContent = slide.title;
+      mainText.textContent  = slide.text;
+
+      if (thumbStrip){
+        [...thumbStrip.children].forEach((thumb, i) => {
+          thumb.classList.toggle('active', i === galleryIndex);
+        });
+      }
     }
 
-    function goTo(i, smooth = true){
-      idx = (i + slides.length) % slides.length;
-      const x = idx * viewport.clientWidth;
-      viewport.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' });
-      setCaption();
-    }
-
-    function renderSlides(){
-      viewport.innerHTML = slides.map(s => `
-        <div class="slide"><img src="${s.img}" alt="${s.title}"></div>
+    function renderGallery(){
+      if (!thumbStrip) return;
+      thumbStrip.innerHTML = gallerySlides.map((s, i) => `
+        <div class="galleryThumb" data-i="${i}">
+          <img src="${s.img}" alt="${s.title}">
+          <span>${(i+1).toString().padStart(2,'0')}</span>
+        </div>
       `).join('');
-      dotsWrap.innerHTML = slides.map((_,i)=>`<div class="dotx ${i===0?'active':''}" data-i="${i}"></div>`).join('');
-      setCaption();
-      goTo(0, false);
+
+      thumbStrip.addEventListener('click', (e) => {
+        const t = e.target.closest('.galleryThumb');
+        if (!t) return;
+        const i = Number(t.dataset.i);
+        if (Number.isFinite(i)){
+          setGallery(i);
+          restartGalleryAuto();
+        }
+      });
+
+      setGallery(0);
     }
 
-    function next(){ goTo(idx+1); }
-    function prev(){ goTo(idx-1); }
+    function nextGallery(){ setGallery(galleryIndex + 1); }
 
-    nextBtn.addEventListener('click', () => { next(); restartAuto(); });
-    prevBtn.addEventListener('click', () => { prev(); restartAuto(); });
+    function startGalleryAuto(){
+      galleryTimer = setInterval(nextGallery, 6500);
+    }
+    function restartGalleryAuto(){
+      if (galleryTimer) clearInterval(galleryTimer);
+      startGalleryAuto();
+    }
 
-    dotsWrap.addEventListener('click', (e) => {
-      const dot = e.target.closest('.dotx');
-      if (!dot) return;
-      const i = Number(dot.dataset.i);
-      if (Number.isFinite(i)) { goTo(i); restartAuto(); }
-    });
+    // jemný 3D tilt na hlavnej fotke
+    if (mainCard){
+      mainCard.addEventListener('mousemove', (e) => {
+        const rect = mainCard.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const tiltX = y * -6;
+        const tiltY = x *  6;
+        mainCard.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      });
+      mainCard.addEventListener('mouseleave', () => {
+        mainCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
 
-    let snapTimeout = null;
-    viewport.addEventListener('scroll', () => {
-      clearTimeout(snapTimeout);
-      snapTimeout = setTimeout(() => {
-        const w = viewport.clientWidth || 1;
-        const i = Math.round(viewport.scrollLeft / w);
-        if (i !== idx) { idx = i; setCaption(); }
-      }, 80);
-    }, { passive: true });
-
-    function startAuto(){ timer = setInterval(() => next(), 5200); }
-    function restartAuto(){ if (timer) clearInterval(timer); startAuto(); }
-
-    window.addEventListener('resize', () => goTo(idx, false));
-
-    renderSlides();
-    startAuto();
+    renderGallery();
+    startGalleryAuto();
   </script>
 </body>
 </html>
