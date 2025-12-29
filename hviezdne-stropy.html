@@ -28,7 +28,7 @@
       overflow-x:hidden;
     }
 
-    /* ====== SPACE BACKGROUND ====== */
+    /* ====== SPACE BACKGROUND – PÔVODNÁ VERZIA (BEZ MEGA FIALOVÉHO KOLA) ====== */
     .bg{
       position:fixed;
       inset:0;
@@ -41,33 +41,6 @@
         radial-gradient(circle at 40% 90%, rgba(124,58,237,0.08), transparent 55%);
       transform: translateY(0);
       transition: transform .08s linear;
-    }
-
-    /* rotujúca fialová orbita v pozadí */
-    .bg::before{
-      content:"";
-      position:absolute;
-      inset:-50%;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(168,85,247,0.45), transparent 60%),
-        conic-gradient(
-          from 210deg,
-          rgba(168,85,247,0.0),
-          rgba(168,85,247,0.55),
-          rgba(255,255,255,0.0),
-          rgba(124,58,237,0.75),
-          rgba(168,85,247,0.0)
-        );
-      mix-blend-mode:screen;
-      opacity:0.28;
-      animation:bgSpin 40s linear infinite;
-      pointer-events:none;
-    }
-
-    @keyframes bgSpin{
-      0%{ transform:rotate(0deg) scale(1.05); }
-      50%{ transform:rotate(180deg) scale(1.08); }
-      100%{ transform:rotate(360deg) scale(1.05); }
     }
 
     .noise{
@@ -412,65 +385,40 @@
     }
     .panel > *{ position:relative; }
 
-    /* ====== CO-TO-JE LAYOUT (TEXT + GALÉRIA) ====== */
-    .coLayout{
+    /* ====== CO-TO-JE GRID – PANELY + GALÉRIA ====== */
+    .coGrid{
       display:grid;
       grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
-      gap:32px;
-      align-items:flex-start;
-      margin-top:18px;
-    }
-    .coLeft .split{
-      margin-top:18px;
+      grid-template-rows:auto auto;
+      gap:26px;
+      align-items:stretch;
+      margin-top:20px;
     }
 
-    /* ====== NOVÁ GALÉRIA – MAIN PREVIEW + STRIP ====== */
+    /* vrch: Látkovanie (ľavo) + Vždy vieš kde sme (pravo) */
+    .coGrid .panel:nth-child(1){
+      grid-column:1 / 2;
+      grid-row:1 / 2;
+    }
+    .coGrid .panel:nth-child(2){
+      grid-column:2 / 3;
+      grid-row:1 / 2;
+    }
+
+    /* galéria – vľavo dole pod Látkovanie */
+    .galleryPanel{
+      grid-column:1 / 2;
+      grid-row:2 / 3;
+      padding:24px;
+    }
+
+    /* ====== GALÉRIA – MAIN + VERTIKÁLNE NÁHĽADY ====== */
     .galleryOrbit{
       margin-top: 18px;
       display:grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 20px;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 18px;
       align-items:stretch;
-    }
-
-    .galleryPanel{
-      position:relative;
-      overflow:hidden;
-    }
-    .galleryPanel::before,
-    .galleryPanel::after{
-      content:"";
-      position:absolute;
-      width:220%;
-      height:220%;
-      left:-60%;
-      top:-80%;
-      mix-blend-mode:screen;
-      opacity:0.40;
-      pointer-events:none;
-    }
-    .galleryPanel::before{
-      background:
-        radial-gradient(circle at 0% 0%, rgba(168,85,247,0.48), transparent 60%),
-        conic-gradient(
-          from 240deg,
-          rgba(168,85,247,0.0),
-          rgba(168,85,247,0.60),
-          rgba(255,255,255,0.0),
-          rgba(124,58,237,0.85),
-          rgba(168,85,247,0.0)
-        );
-      animation: galleryOrbitSpin 32s linear infinite;
-    }
-    .galleryPanel::after{
-      background:
-        radial-gradient(circle at 120% 120%, rgba(15,23,42,0.95), transparent 60%);
-      opacity:0.65;
-    }
-
-    @keyframes galleryOrbitSpin{
-      0%{ transform:rotate(0deg); }
-      100%{ transform:rotate(360deg); }
     }
 
     .galleryMain{
@@ -502,7 +450,7 @@
     .galleryMainInner{
       position:relative;
       width:100%;
-      padding:18px 18px 64px;
+      padding:18px 18px 68px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -512,7 +460,7 @@
       position:relative;
       max-width:100%;
       height:auto;
-      max-height:480px;
+      max-height:520px;
       display:block;
       object-fit:contain;
       background:#000;
@@ -554,7 +502,7 @@
       position:relative;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:12px;
     }
 
     .galleryThumbLabel{
@@ -565,22 +513,24 @@
       opacity:.9;
     }
 
+    /* vertikálne náhľady zhora dole */
     .galleryThumbStrip{
       display:flex;
-      gap:12px;
-      padding:10px 4px 6px;
+      flex-direction:column;
+      gap:10px;
+      padding:8px 4px 4px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,0.12);
       background:
         radial-gradient(circle at 0% 0%, rgba(168,85,247,0.22), rgba(12,12,22,0.96));
-      overflow-x:auto;
+      overflow-y:auto;
+      max-height: 460px;
       scrollbar-width: thin;
       scrollbar-color: rgba(168,85,247,0.7) rgba(10,10,18,1);
-      scroll-snap-type:x mandatory;
     }
 
     .galleryThumbStrip::-webkit-scrollbar{
-      height:6px;
+      width:6px;
     }
     .galleryThumbStrip::-webkit-scrollbar-track{
       background:rgba(5,5,12,1);
@@ -592,13 +542,13 @@
 
     .galleryThumb{
       position:relative;
-      flex:0 0 140px;
-      height: 90px;
+      flex:0 0 auto;
+      width:100%;
+      height: 104px;
       border-radius:16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.16);
       cursor:pointer;
-      scroll-snap-align:start;
       background: rgba(0,0,0,0.9);
       transition:
         transform .18s ease,
@@ -643,7 +593,7 @@
     }
 
     .galleryThumb:hover{
-      transform: translateY(-4px) scale(1.03);
+      transform: translateY(-3px) scale(1.02);
       border-color: rgba(255,255,255,0.75);
       box-shadow:0 18px 40px rgba(0,0,0,0.85);
       opacity:1;
@@ -1124,20 +1074,34 @@
       .brand-badge{ width:auto; }
       .brand{ align-items:flex-start; flex-direction:column; gap:10px; }
 
-      .coLayout{
+      .coGrid{
         grid-template-columns:1fr;
+        grid-template-rows:auto auto auto;
       }
+      .galleryPanel{
+        grid-column:1 / 2;
+        grid-row:auto;
+      }
+
       .galleryOrbit{
         grid-template-columns:1fr;
       }
+
+      .galleryThumbStrip{
+        flex-direction:row;
+        max-height:none;
+        overflow-x:auto;
+        overflow-y:hidden;
+      }
+      .galleryThumb{
+        width:160px;
+        height:100px;
+      }
       .galleryMainInner{
-        padding-bottom:56px;
+        padding-bottom:64px;
       }
       .galleryMain img{
         max-height:360px;
-      }
-      .galleryThumbStrip{
-        padding-bottom:10px;
       }
     }
   </style>
@@ -1240,66 +1204,61 @@
       <div class="shell">
         <h2 class="reveal">Čo vlastne je hviezdny strop?</h2>
 
-        <div class="coLayout">
-          <!-- LEFT – text + panely -->
-          <div class="coLeft">
-            <p class="reveal text-max">
-              Hviezdny strop je systém optických vlákien a riadiacej jednotky, ktoré vytvoria
-              hustú “nočnú oblohu” priamo v čalúnení. Vďaka rôznym priemerom vlákien vzniknú
-              malé aj väčšie hviezdy. Vstupné napájanie je DC 12V.
+        <p class="reveal text-max">
+          Hviezdny strop je systém optických vlákien a riadiacej jednotky, ktoré vytvoria
+          hustú “nočnú oblohu” priamo v čalúnení. Vďaka rôznym priemerom vlákien vzniknú
+          malé aj väčšie hviezdy. Vstupné napájanie je DC 12V.
+        </p>
+
+        <div class="coGrid">
+          <!-- 1: Látkovanie (hore vľavo) -->
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> Látkovanie </span>
+            <p class="muted2">
+              Hviezdy najviac vynikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
             </p>
-
-            <div class="split" style="margin-top:18px">
-              <div class="panel reveal">
-                <span class="pill"><span class="dot"></span> Látkovanie </span>
-                <p class="muted2">
-                  Hviezdy najviac vynikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
-                </p>
-              </div>
-
-              <div class="panel reveal">
-                <span class="pill"><span class="dot"></span> Vždy vieš, kde sme </span>
-                <p class="muted2">
-                  Zákazník dostáva <b>aktuálne informácie</b> o tom, v akom štádiu je práca:
-                  priebežné fotky, status, informácie o nasledujúcich krokoch.
-                </p>
-                <p class="muted2" style="margin-top:10px">
-                  Príprava môže trvať kdekoľvek od <b>5 do 10 dní</b> (pri extrémnych prípadoch).
-                  <b>Väčšinou vieme mať auto pripravené do 1 týždňa</b>.
-                </p>
-              </div>
-            </div>
           </div>
 
-          <!-- RIGHT – GALÉRIA (nav link #galeria smeruje sem) -->
-          <div class="coRight">
-            <div class="panel reveal galleryPanel" id="galeria" style="padding:24px;">
-              <span class="pill"><span class="dot"></span> Galéria • Toto môže byť vaše auto </span>
+          <!-- 2: Vždy vieš, kde sme (hore vpravo) -->
+          <div class="panel reveal">
+            <span class="pill"><span class="dot"></span> Vždy vieš, kde sme </span>
+            <p class="muted2">
+              Zákazník dostáva <b>aktuálne informácie</b> o tom, v akom štádiu je práca:
+              priebežné fotky, status, informácie o nasledujúcich krokoch.
+            </p>
+            <p class="muted2" style="margin-top:10px">
+              Príprava môže trvať kdekoľvek od <b>5 do 10 dní</b> (pri extrémnych prípadoch).
+              <b>Väčšinou vieme mať auto pripravené do 1 týždňa</b>.
+            </p>
+          </div>
 
-              <div class="galleryOrbit">
-                <!-- LEFT – hlavný náhľad -->
-                <div class="galleryMain" id="galleryMain">
-                  <div class="galleryMainGlow"></div>
-                  <div class="galleryMainInner">
-                    <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
-                  </div>
-                  <div class="galleryMainOverlay">
-                    <h3 id="galleryMainTitle">Hviezdny strop</h3>
-                    <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
-                  </div>
+          <!-- 3: Galéria – vľavo dole pod Látkovanie -->
+          <div class="panel reveal galleryPanel" id="galeria">
+            <span class="pill"><span class="dot"></span> Galéria • Toto môže byť vaše auto </span>
+
+            <div class="galleryOrbit">
+              <!-- LEFT – hlavný náhľad -->
+              <div class="galleryMain" id="galleryMain">
+                <div class="galleryMainGlow"></div>
+                <div class="galleryMainInner">
+                  <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
                 </div>
+                <div class="galleryMainOverlay">
+                  <h3 id="galleryMainTitle">Hviezdny strop</h3>
+                  <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
+                </div>
+              </div>
 
-                <!-- RIGHT – orbit strip náhľadov -->
-                <div class="galleryThumbCol">
-                  <div class="galleryThumbLabel">Vyber scénu / posuň do strán</div>
-                  <div class="galleryThumbStrip" id="galleryThumbStrip">
-                    <!-- náhľady doplní JS -->
-                  </div>
+              <!-- RIGHT – vertikálne náhľady -->
+              <div class="galleryThumbCol">
+                <div class="galleryThumbLabel">Vyber scénu</div>
+                <div class="galleryThumbStrip" id="galleryThumbStrip">
+                  <!-- náhľady doplní JS -->
                 </div>
               </div>
             </div>
           </div>
-        </div> <!-- /coLayout -->
+        </div> <!-- /coGrid -->
       </div>
     </div>
   </section>
