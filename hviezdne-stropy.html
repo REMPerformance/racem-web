@@ -412,16 +412,27 @@
     }
     .panel > *{ position:relative; }
 
+    /* ====== CO-TO-JE LAYOUT (TEXT + GALÉRIA) ====== */
+    .coLayout{
+      display:grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:32px;
+      align-items:flex-start;
+      margin-top:18px;
+    }
+    .coLeft .split{
+      margin-top:18px;
+    }
+
     /* ====== NOVÁ GALÉRIA – MAIN PREVIEW + STRIP ====== */
     .galleryOrbit{
-      margin-top: 22px;
+      margin-top: 18px;
       display:grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 26px;
+      gap: 20px;
       align-items:stretch;
     }
 
-    /* extra vesmírny efekt len za galériou */
     .galleryPanel{
       position:relative;
       overflow:hidden;
@@ -488,7 +499,6 @@
       pointer-events:none;
     }
 
-    /* nový wrapper pre plný obrázok */
     .galleryMainInner{
       position:relative;
       width:100%;
@@ -906,7 +916,6 @@
       padding-right: 36px;
     }
 
-    /* DROPDOWN – BIELY TEXT V OPTION */
     select option{
       background:#05050a;
       color:#ffffff;
@@ -1115,8 +1124,11 @@
       .brand-badge{ width:auto; }
       .brand{ align-items:flex-start; flex-direction:column; gap:10px; }
 
+      .coLayout{
+        grid-template-columns:1fr;
+      }
       .galleryOrbit{
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
       }
       .galleryMainInner{
         padding-bottom:56px;
@@ -1222,37 +1234,72 @@
     </div>
   </section>
 
-  <!-- WHAT IS IT -->
+  <!-- WHAT IS IT + GALÉRIA -->
   <section id="co-to-je">
     <div class="wrap">
       <div class="shell">
         <h2 class="reveal">Čo vlastne je hviezdny strop?</h2>
-        <p class="reveal text-max">
-          Hviezdny strop je systém optických vlákien a riadiacej jednotky, ktoré vytvoria
-          hustú “nočnú oblohu” priamo v čalúnení. Vďaka rôznym priemerom vlákien vzniknú
-          malé aj väčšie hviezdy. Vstupné napájanie je DC 12V.
-        </p>
 
-        <div class="split" style="margin-top:18px">
-          <div class="panel reveal">
-            <span class="pill"><span class="dot"></span> Látkovanie </span>
-            <p class="muted2">
-              Hviezdy najviac vynikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
+        <div class="coLayout">
+          <!-- LEFT – text + panely -->
+          <div class="coLeft">
+            <p class="reveal text-max">
+              Hviezdny strop je systém optických vlákien a riadiacej jednotky, ktoré vytvoria
+              hustú “nočnú oblohu” priamo v čalúnení. Vďaka rôznym priemerom vlákien vzniknú
+              malé aj väčšie hviezdy. Vstupné napájanie je DC 12V.
             </p>
+
+            <div class="split" style="margin-top:18px">
+              <div class="panel reveal">
+                <span class="pill"><span class="dot"></span> Látkovanie </span>
+                <p class="muted2">
+                  Hviezdy najviac vynikajú na <b>alcantare</b>, no vieme pracovať s akoukoľvek látkou, s pár výnimkami.
+                </p>
+              </div>
+
+              <div class="panel reveal">
+                <span class="pill"><span class="dot"></span> Vždy vieš, kde sme </span>
+                <p class="muted2">
+                  Zákazník dostáva <b>aktuálne informácie</b> o tom, v akom štádiu je práca:
+                  priebežné fotky, status, informácie o nasledujúcich krokoch.
+                </p>
+                <p class="muted2" style="margin-top:10px">
+                  Príprava môže trvať kdekoľvek od <b>5 do 10 dní</b> (pri extrémnych prípadoch).
+                  <b>Väčšinou vieme mať auto pripravené do 1 týždňa</b>.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div class="panel reveal">
-            <span class="pill"><span class="dot"></span> Vždy vieš, kde sme </span>
-            <p class="muted2">
-              Zákazník dostáva <b>aktuálne informácie</b> o tom, v akom štádiu je práca:
-              priebežné fotky, status, informácie o nasledujúcich krokoch.
-            </p>
-            <p class="muted2" style="margin-top:10px">
-              Príprava môže trvať kdekoľvek od <b>5 do 10 dní</b> (pri extrémnych prípadoch).
-              <b>Väčšinou vieme mať auto pripravené do 1 týždňa</b>.
-            </p>
+          <!-- RIGHT – GALÉRIA (nav link #galeria smeruje sem) -->
+          <div class="coRight">
+            <div class="panel reveal galleryPanel" id="galeria" style="padding:24px;">
+              <span class="pill"><span class="dot"></span> Galéria • Toto môže byť vaše auto </span>
+
+              <div class="galleryOrbit">
+                <!-- LEFT – hlavný náhľad -->
+                <div class="galleryMain" id="galleryMain">
+                  <div class="galleryMainGlow"></div>
+                  <div class="galleryMainInner">
+                    <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
+                  </div>
+                  <div class="galleryMainOverlay">
+                    <h3 id="galleryMainTitle">Hviezdny strop</h3>
+                    <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
+                  </div>
+                </div>
+
+                <!-- RIGHT – orbit strip náhľadov -->
+                <div class="galleryThumbCol">
+                  <div class="galleryThumbLabel">Vyber scénu / posuň do strán</div>
+                  <div class="galleryThumbStrip" id="galleryThumbStrip">
+                    <!-- náhľady doplní JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </div> <!-- /coLayout -->
       </div>
     </div>
   </section>
@@ -1350,44 +1397,6 @@
               <b>Čas:</b> štandardne môže príprava trvať <b>5–10 dní</b> (pri extrémne veľkých plochách),
               no <b>väčšinou vieme mať vozidlo pripravené do týždňa</b>.
             </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GALLERY – NOVÝ ŠTÝL -->
-  <section id="galeria">
-    <div class="wrap">
-      <div class="shell">
-        <h2 class="reveal">Galéria</h2>
-        <p class="reveal text-max">
-          Posúvaj náhľady, klikaj na scény a sleduj, ako môže vyzerať tvoj interiér. Všetko reálne hviezdne stropy.
-        </p>
-
-        <div class="panel reveal galleryPanel" style="margin-top:18px; padding:24px;">
-          <span class="pill"><span class="dot"></span> Toto môže byť vaše auto </span>
-
-          <div class="galleryOrbit">
-            <!-- LEFT – hlavný náhľad -->
-            <div class="galleryMain" id="galleryMain">
-              <div class="galleryMainGlow"></div>
-              <div class="galleryMainInner">
-                <img id="galleryMainImg" src="assets/strop1.png" alt="Hviezdny strop">
-              </div>
-              <div class="galleryMainOverlay">
-                <h3 id="galleryMainTitle">Hviezdny strop</h3>
-                <p id="galleryMainText">Luxusný efekt v interiéri. Jemný glow, husté hviezdy, žiadny cirkus.</p>
-              </div>
-            </div>
-
-            <!-- RIGHT – orbit strip náhľadov -->
-            <div class="galleryThumbCol">
-              <div class="galleryThumbLabel">Vyber scénu / posuň do strán</div>
-              <div class="galleryThumbStrip" id="galleryThumbStrip">
-                <!-- náhľady doplní JS -->
-              </div>
-            </div>
           </div>
         </div>
       </div>
