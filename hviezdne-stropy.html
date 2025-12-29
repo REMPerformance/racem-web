@@ -342,7 +342,6 @@
       position:absolute;
       inset:-70px;
       background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.26), transparent 55%);
-      transform: rotate(12deg);
     }
     .heroCard > *{ position:relative; }
 
@@ -401,6 +400,7 @@
       width:100%;
       overflow:hidden;
       position:relative;
+      scroll-behavior:smooth;
     }
     .slide{
       min-width:100%;
@@ -791,7 +791,7 @@
     }
     .foot strong{ color:#fff; }
 
-    /* ====== PRICING – GLOW PANELS (bez točiaceho fialového pozadia) ====== */
+    /* ====== PRICING – GLOW PANELS ====== */
     .pricePanel{
       border:1px solid rgba(168,85,247,0.60);
       background:
@@ -1134,7 +1134,7 @@
             <h3 style="margin-top:14px">Dohodnutie detailov</h3>
             <p class="muted2">
               Dohodneme <b>množstvo hviezd</b>, <b>prevzatie vozidla</b> a <b>dotknutú plochu</b>.
-              Potvrdíme kompatibilitu, skontrolujeme látku, pripravíme vlákna,...
+              Potvrdíme kompatibilitu, skontrolujeme látku, pripravíme vlákna,... 
             </p>
           </div>
 
@@ -1535,31 +1535,48 @@
 
   <script>
     // ==============================
-    // STARS + SHOOTING STAR BACKGROUND
+    // STARS + SHOOTING STAR BACKGROUND (OPTIMALIZED)
     // ==============================
     const canvas = document.getElementById('starsCanvas');
     const ctx = canvas.getContext('2d');
 
     let W = 0, H = 0;
-    function resize(){
+
+    function resizeCanvas(){
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     const rand = (min, max) => min + Math.random() * (max - min);
 
-    const STAR_COUNT = Math.min(1100, Math.floor((window.innerWidth * window.innerHeight) / 2000));
-    const stars = Array.from({length: STAR_COUNT}, () => ({
-      x: rand(0, W),
-      y: rand(0, H),
-      r: rand(0.35, 1.75),
-      a: rand(0.22, 0.95),
-      tw: rand(0.002, 0.012),
-      ph: rand(0, Math.PI*2),
-      depth: rand(0.35, 1.15)
-    }));
+    // adaptívny počet hviezd – menej na mobiloch, viac na desktope
+    function getStarCount(){
+      const area = window.innerWidth * window.innerHeight;
+      const isMobile = window.innerWidth < 768;
+      const baseDivisor = isMobile ? 3400 : 2600;
+      const maxStars = isMobile ? 750 : 900;
+      return Math.min(maxStars, Math.floor(area / baseDivisor));
+    }
+
+    const STAR_COUNT = getStarCount();
+
+    const stars = Array.from({length: STAR_COUNT}, () => {
+      const r = rand(0.35, 1.75);
+      const depth = rand(0.35, 1.15);
+      return {
+        x: rand(0, W),
+        y: rand(0, H),
+        r,
+        a: rand(0.22, 0.95),
+        tw: rand(0.002, 0.012),
+        ph: rand(0, Math.PI*2),
+        depth,
+        // predpočítaný faktor pre parallax – menej počítania v každom frame
+        parallax: (0.055 + r * 0.03) * depth
+      };
+    });
 
     let shooting = null;
     function spawnShootingStar(){
@@ -1585,11 +1602,17 @@
     let scrollSmooth = 0;
     let lastScrollY = window.scrollY;
 
+    // jeden scroll listener, ktorý rieši aj parallax aj background
+    const bgLayer = document.getElementById('bgLayer');
     window.addEventListener('scroll', () => {
       const now = window.scrollY;
       const delta = now - lastScrollY;
       lastScrollY = now;
       scrollTarget += delta * 0.22;
+
+      if (bgLayer) {
+        bgLayer.style.transform = `translateY(${now * 0.012}px)`;
+      }
     }, { passive: true });
 
     function draw(){
@@ -1597,24 +1620,26 @@
 
       scrollSmooth += (scrollTarget - scrollSmooth) * 0.06;
 
-      for (let i=0;i<stars.length;i++){
+      ctx.shadowColor = 'rgba(168,85,247,0.45)';
+
+      for (let i = 0; i < stars.length; i++){
         const s = stars[i];
         s.ph += s.tw;
         const tw = (Math.sin(s.ph) + 1) * 0.5;
         const alpha = Math.min(1, s.a * (0.55 + tw * 0.75));
 
-        const y = (s.y + (scrollSmooth * (0.055 + s.r * 0.03) * s.depth)) % (H + 40) - 20;
+        let y = (s.y + scrollSmooth * s.parallax) % (H + 40) - 20;
         const x = s.x;
 
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${alpha})`;
         ctx.shadowBlur = 12 + s.r * 10;
-        ctx.shadowColor = 'rgba(168,85,247,0.45)';
         ctx.arc(x, y, s.r, 0, Math.PI*2);
         ctx.fill();
       }
       ctx.shadowBlur = 0;
 
+      // shooting star
       if (!shooting){
         nextShootIn--;
         if (nextShootIn <= 0){
@@ -1656,23 +1681,37 @@
     }
     draw();
 
-    const bgLayer = document.getElementById('bgLayer');
-    window.addEventListener('scroll', () => {
-      const sc = window.scrollY;
-      if (bgLayer) bgLayer.style.transform = `translateY(${sc * 0.012}px)`;
-    }, { passive: true });
+    // ==============================
+    // REVEAL – IntersectionObserver namiesto scroll loopu
+    // ==============================
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting){
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
 
-    const reveals = document.querySelectorAll('.reveal');
-    const activate = () => {
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 110) el.classList.add('active');
-      });
-    };
-    window.addEventListener('scroll', activate);
-    window.addEventListener('load', activate);
-    activate();
+      revealEls.forEach(el => io.observe(el));
+    } else {
+      // fallback – ak by nebolo IO (staré prehliadače)
+      const activate = () => {
+        revealEls.forEach(el => {
+          const top = el.getBoundingClientRect().top;
+          if (top < window.innerHeight - 110) el.classList.add('active');
+        });
+      };
+      window.addEventListener('scroll', activate);
+      window.addEventListener('load', activate);
+      activate();
+    }
 
+    // ==============================
+    // CAROUSEL
+    // ==============================
     const slides = [
       { img: "assets/galeria-1.jpg", title: "Jemný glow + prirodzené rozloženie", text: "Malé aj väčšie hviezdy, aby to pôsobilo ako skutočná obloha." },
       { img: "assets/galeria-2.jpg", title: "Twinkle (jemné)", text: "Efekt, ktorý dáva život. Nie stroboskop, ale luxus." },
@@ -1696,7 +1735,7 @@
       [...dotsWrap.children].forEach((d,i)=> d.classList.toggle('active', i===idx));
     }
 
-    function goTo(i, smooth=true){
+    function goTo(i, smooth = true){
       idx = (i + slides.length) % slides.length;
       const x = idx * viewport.clientWidth;
       viewport.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' });
@@ -1739,6 +1778,7 @@
     function restartAuto(){ if (timer) clearInterval(timer); startAuto(); }
 
     window.addEventListener('resize', () => goTo(idx, false));
+
     renderSlides();
     startAuto();
   </script>
