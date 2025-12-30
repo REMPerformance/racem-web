@@ -1630,7 +1630,7 @@
   </footer>
 
   <script>
-    // ===== HOMEPAGE STOCK Z JSONU (viac obrázkov na produkt) =====
+    // ===== HOMEPAGE STOCK Z JSONU (viac obrázkov na produkt + fix prázdnych ciest) =====
     async function loadHomepageStock() {
       try {
         const response = await fetch('skladom.json');
@@ -1641,7 +1641,7 @@
 
         const data = await response.json();
 
-        // Podpora: buď priamo pole, alebo objekt { inStock: [...] }
+        // Buď priamo pole, alebo objekt { inStock: [...] }
         const items = Array.isArray(data) ? data : (data.inStock || []);
 
         const container = document.getElementById('stockScroll');
@@ -1653,25 +1653,34 @@
           // ak v JSON dáš "showOnHome": false, tak sa nezobrazí
           if (item.showOnHome === false) return;
 
-          // VIAC OBRÁZKOV – pripravíme pole obrázkov
+          // 1) PRÍPRAVA OBRÁZKOV – vyfiltrujeme prázdne stringy
           let images = [];
 
           if (Array.isArray(item.images) && item.images.length > 0) {
-            images = item.images;
-          } else if (item.image) {
+            images = item.images
+              .filter(src => src && src.trim() !== '');
+          }
+
+          // Fallback na item.image
+          if (!images.length && item.image) {
             images = [item.image];
           }
 
-          // condition: "new" z tvojho JSON → NOVÉ
+          // Posledný fallback
+          if (!images.length) {
+            images = ['img/placeholder.jpg'];
+          }
+
+          // 2) CONDITION: "new" / "used" → bublina
           const condText = (item.condition || '').toLowerCase();
           const isNew =
             condText.startsWith('nov') || // "nové", "nove"
-            condText === 'new';           // "new" z JSONu
+            condText === 'new';           // "new" v JSONe
 
           const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
           const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
 
-          // tagy
+          // 3) TAGY
           const tagsHtml = Array.isArray(item.tags)
             ? item.tags.map(tag => `<span class="chip chip--tag">${tag}</span>`).join('')
             : '';
@@ -1682,14 +1691,14 @@
           article.dataset.city = item.city || '';
           article.dataset.partId = item.id || '';
 
-          // uložíme si zoznam obrázkov do data atribútu (do budúcna pre galériu)
+          // Uložíme zoznam obrázkov do data atribútu
           if (images.length) {
             article.dataset.images = images.join(',');
           }
 
           article.innerHTML = `
             <div class="stock-img">
-              <img src="${images[0] || 'img/placeholder.jpg'}" alt="${item.name || ''}">
+              <img src="${images[0]}" alt="${item.name || ''}">
               <span class="bubble ${bubbleClass}">${bubbleLabel}</span>
             </div>
 
@@ -1725,6 +1734,23 @@
               </div>
             </div>
           `;
+
+          // 4) JEDNODUCHÁ GALÉRIA – kliknutím na fotku prepínaš obrázky
+          if (images.length > 1) {
+            const imgBox = article.querySelector('.stock-img');
+            const imgEl = article.querySelector('.stock-img img');
+            let currentIndex = 0;
+
+            if (imgBox && imgEl) {
+              imgBox.style.cursor = 'pointer';
+              imgBox.title = 'Kliknutím prepneš fotku';
+
+              imgBox.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % images.length;
+                imgEl.src = images[currentIndex];
+              });
+            }
+          }
 
           container.appendChild(article);
         });
