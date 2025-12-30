@@ -529,7 +529,7 @@
     .dot--orange{ background:#ffae42; }
     .dot--catalog{ background:#b31f24; box-shadow:0 0 12px rgba(179,31,36,.9); }
 
-    /* ====== STOCK (TINY + HORIZONTAL SCROLL) ===== */
+    /* ====== STOCK (HORIZONTAL SCROLL) ===== */
     .stock-strip{
       margin-top: 16px;
       padding: 10px 8px 14px;
@@ -682,7 +682,7 @@
       gap:6px;
     }
 
-    /* === NOVÉ: mesto s ikonou, nie pill === */
+    /* === MESTO S IKONOU === */
     .stock-location{
       display:inline-flex;
       align-items:center;
@@ -714,6 +714,189 @@
       padding: 10px 12px;
       border-radius: 12px;
       font-size: 12px;
+    }
+
+    /* ====== MODAL PREVIEW ====== */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.86);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      padding:16px;
+    }
+    .modal-overlay.is-visible{ display:flex; }
+
+    .modal{
+      background: radial-gradient(circle at top, rgba(179,31,36,0.18), rgba(10,10,10,0.95));
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.14);
+      max-width:980px;
+      width:100%;
+      display:grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap:0;
+      box-shadow:0 30px 90px rgba(0,0,0,0.85);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .modal-close{
+      position:absolute;
+      right:14px;
+      top:10px;
+      border:none;
+      background:transparent;
+      color:rgba(255,255,255,0.7);
+      font-size:22px;
+      cursor:pointer;
+      padding:6px;
+      z-index:5;
+      transition:color .2s ease, transform .2s ease;
+    }
+    .modal-close:hover{
+      color:#fff;
+      transform:scale(1.07);
+    }
+
+    .modal-media{
+      position:relative;
+      background:rgba(0,0,0,0.7);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .modal-media img{
+      width:100%;
+      max-height:70vh;
+      object-fit:contain;
+      border-radius:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,0.85);
+      background:#050505;
+    }
+
+    .modal-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:20px;
+      color:#fff;
+      backdrop-filter:blur(6px);
+      transition:background .2s ease, transform .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.85;
+    }
+    .modal-arrow:hover{
+      background:rgba(0,0,0,0.9);
+      border-color:rgba(179,31,36,0.7);
+      transform:translateY(-50%) scale(1.05);
+      opacity:1;
+    }
+    .modal-prev{ left:14px; }
+    .modal-next{ right:14px; }
+
+    .modal-info{
+      padding:24px 24px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      background:linear-gradient(180deg, rgba(10,10,10,0.95), rgba(5,5,5,0.98));
+    }
+    .modal-title{
+      font-size:16px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .modal-location{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted2);
+    }
+    .modal-location svg{
+      width:14px;
+      height:14px;
+    }
+
+    .modal-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:2px;
+    }
+
+    .modal-note{
+      font-size:14px;
+      line-height:1.6;
+      margin-top:4px;
+    }
+
+    .modal-price-wrap{
+      margin-top:8px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:2px;
+    }
+    .modal-price{
+      font-size:26px;
+      font-weight:900;
+      color:var(--red);
+      letter-spacing:.06em;
+    }
+    .modal-price-suffix{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:var(--muted2);
+    }
+
+    .modal-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+    }
+
+    .modal-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+    .modal-actions .btn{
+      padding:12px 18px;
+      font-size:12px;
+    }
+
+    .modal-counter{
+      position:absolute;
+      right:16px;
+      bottom:14px;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.7);
+      background:rgba(0,0,0,0.6);
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      backdrop-filter:blur(6px);
     }
 
     /* ====== CONTACT MESSAGE BOX ====== */
@@ -939,7 +1122,7 @@
       transform: scale(0.98);
     }
 
-    /* ====== MOBILE (UPRAVENÉ) ====== */
+    /* ====== MOBILE ====== */
     @media (max-width: 980px){
       .wrap{
         padding: 0 18px;
@@ -1036,9 +1219,28 @@
         text-align: center;
         gap: 10px;
       }
+
+      .modal{
+        grid-template-columns: 1fr;
+        max-width: 640px;
+      }
+      .modal-media{
+        padding:12px;
+      }
+      .modal-info{
+        padding:18px 16px 16px;
+      }
+      .modal-price{
+        font-size:22px;
+      }
     }
+
     @media (max-width:700px){
       .pill-row{ justify-content:flex-start; }
+      .modal-counter{
+        right:10px;
+        bottom:10px;
+      }
     }
   </style>
 </head>
@@ -1582,7 +1784,7 @@
 
         <h2 style="margin-top:16px; max-width:1100px">Čo máme práve na ruke</h2>
         <p style="font-size:16px; max-width:980px">
-          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán a klikni <b>Mám záujem</b> alebo priamo na kartičku dielu.
+          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán, klikni na kartičku pre veľký náhľad alebo na <b>Mám záujem</b> pre rýchly dopyt.
         </p>
 
         <div class="stock-strip">
@@ -1671,6 +1873,53 @@
     </div>
   </section>
 
+  <!-- MODAL PREVIEW -->
+  <div class="modal-overlay" id="stockModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="Zavrieť náhľad">✕</button>
+
+      <div class="modal-media">
+        <button class="modal-arrow modal-prev" type="button" aria-label="Predchádzajúci obrázok">‹</button>
+        <img id="modalImage" src="" alt="">
+        <button class="modal-arrow modal-next" type="button" aria-label="Nasledujúci obrázok">›</button>
+        <div class="modal-counter" id="modalCounter">1 / 1</div>
+      </div>
+
+      <div class="modal-info">
+        <h3 class="modal-title" id="modalTitle"></h3>
+
+        <div class="modal-location" id="modalLocation" style="display:none;">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor"
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 
+                 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 
+                 2.5 2.5S13.38 11.5 12 11.5z"/>
+          </svg>
+          <span id="modalLocationText"></span>
+        </div>
+
+        <div class="modal-tags" id="modalTags"></div>
+
+        <p class="modal-note muted2" id="modalNote"></p>
+
+        <div class="modal-price-wrap">
+          <div class="modal-price" id="modalPrice"></div>
+          <div class="modal-price-suffix" id="modalPriceSuffix"></div>
+        </div>
+
+        <div class="modal-meta">
+          <span class="chip" id="modalCondition" style="display:none;"></span>
+          <span class="chip" id="modalStockLabel" style="display:none;"></span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btnPrimary" type="button" id="modalInterestBtn">Mám záujem o tento diel</button>
+          <button class="btn btnGhost" type="button" id="modalCloseBtn">Zavrieť</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="wrap foot footer-layout">
       <div>
@@ -1689,7 +1938,160 @@
   </footer>
 
   <script>
-    // ===== HOMEPAGE STOCK Z JSONU (viac obrázkov na produkt + fix prázdnych ciest) =====
+    // ===== MODAL STATE =====
+    const stockModal = document.getElementById('stockModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalNote = document.getElementById('modalNote');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalPriceSuffix = document.getElementById('modalPriceSuffix');
+    const modalLocationWrap = document.getElementById('modalLocation');
+    const modalLocationText = document.getElementById('modalLocationText');
+    const modalTags = document.getElementById('modalTags');
+    const modalCondition = document.getElementById('modalCondition');
+    const modalStockLabel = document.getElementById('modalStockLabel');
+    const modalCounter = document.getElementById('modalCounter');
+    const modalPrev = document.querySelector('.modal-prev');
+    const modalNext = document.querySelector('.modal-next');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCloseIcon = document.querySelector('.modal-close');
+    const modalInterestBtn = document.getElementById('modalInterestBtn');
+
+    const modalState = {
+      images: [],
+      index: 0,
+      card: null
+    };
+
+    function updateModalImage() {
+      if (!modalState.images.length) return;
+      const src = modalState.images[modalState.index];
+      modalImg.src = src;
+      const total = modalState.images.length;
+      modalCounter.textContent = (modalState.index + 1) + ' / ' + total;
+    }
+
+    function openModalFromCard(card) {
+      modalState.card = card;
+
+      const titleEl = card.querySelector('.stock-title');
+      const priceEl = card.querySelector('.stock-price');
+      const suffixEl = card.querySelector('.stock-price-suffix');
+      const tagContainer = card.querySelector('.stock-tags');
+      const stockLabelEl = card.querySelector('.chip--stock');
+      const locSpan = card.querySelector('.stock-location span');
+
+      const title = titleEl ? titleEl.textContent.trim() : '';
+      const price = priceEl ? priceEl.textContent.trim() : '';
+      const suffix = suffixEl ? suffixEl.textContent.trim() : '';
+      const note = card.dataset.note || '';
+      const condition = card.dataset.condition || '';
+      const stockLabel = stockLabelEl ? stockLabelEl.textContent.trim() : '';
+      const city = locSpan ? locSpan.textContent.trim() : '';
+
+      let images = [];
+      if (card.dataset.images) {
+        images = card.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+      }
+      if (!images.length) {
+        const imgEl = card.querySelector('.stock-img img');
+        if (imgEl && imgEl.src) images = [imgEl.src];
+      }
+      if (!images.length) images = ['img/placeholder.jpg'];
+
+      modalState.images = images;
+      modalState.index = 0;
+
+      modalTitle.textContent = title || 'Diel';
+      modalPrice.textContent = price || 'Na dopyt';
+      modalPriceSuffix.textContent = suffix || '';
+      modalNote.textContent = note || '';
+
+      if (city) {
+        modalLocationText.textContent = city;
+        modalLocationWrap.style.display = 'flex';
+      } else {
+        modalLocationWrap.style.display = 'none';
+      }
+
+      if (tagContainer && tagContainer.innerHTML.trim()) {
+        modalTags.innerHTML = tagContainer.innerHTML;
+      } else {
+        modalTags.innerHTML = '';
+      }
+
+      if (condition) {
+        modalCondition.textContent = condition.toUpperCase();
+        modalCondition.style.display = 'inline-flex';
+      } else {
+        modalCondition.style.display = 'none';
+      }
+
+      if (stockLabel) {
+        modalStockLabel.textContent = stockLabel;
+        modalStockLabel.style.display = 'inline-flex';
+      } else {
+        modalStockLabel.style.display = 'none';
+      }
+
+      updateModalImage();
+      stockModal.classList.add('is-visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      stockModal.classList.remove('is-visible');
+      document.body.style.overflow = '';
+      modalState.images = [];
+      modalState.index = 0;
+      modalState.card = null;
+    }
+
+    if (modalPrev) {
+      modalPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!modalState.images.length) return;
+        modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+        updateModalImage();
+      });
+    }
+
+    if (modalNext) {
+      modalNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!modalState.images.length) return;
+        modalState.index = (modalState.index + 1) % modalState.images.length;
+        updateModalImage();
+      });
+    }
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (modalCloseIcon) modalCloseIcon.addEventListener('click', closeModal);
+
+    stockModal.addEventListener('click', (e) => {
+      if (e.target === stockModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!stockModal.classList.contains('is-visible')) return;
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowRight') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index + 1) % modalState.images.length;
+          updateModalImage();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+          updateModalImage();
+        }
+      }
+    });
+
+    // ===== HOMEPAGE STOCK Z JSONU =====
     async function loadHomepageStock() {
       try {
         const response = await fetch('skladom.json');
@@ -1699,8 +2101,6 @@
         }
 
         const data = await response.json();
-
-        // Buď priamo pole, alebo objekt { inStock: [...] }
         const items = Array.isArray(data) ? data : (data.inStock || []);
 
         const container = document.getElementById('stockScroll');
@@ -1709,37 +2109,28 @@
         container.innerHTML = '';
 
         items.forEach(item => {
-          // ak v JSON dáš "showOnHome": false, tak sa nezobrazí
           if (item.showOnHome === false) return;
 
-          // 1) PRÍPRAVA OBRÁZKOV – vyfiltrujeme prázdne stringy
           let images = [];
-
           if (Array.isArray(item.images) && item.images.length > 0) {
             images = item.images
               .filter(src => src && src.trim() !== '');
           }
-
-          // Fallback na item.image
           if (!images.length && item.image) {
             images = [item.image];
           }
-
-          // Posledný fallback
           if (!images.length) {
             images = ['img/placeholder.jpg'];
           }
 
-          // 2) CONDITION: "new" / "used" → bublina
           const condText = (item.condition || '').toLowerCase();
           const isNew =
-            condText.startsWith('nov') || // "nové", "nove"
-            condText === 'new';           // "new" v JSONe
+            condText.startsWith('nov') ||
+            condText === 'new';
 
           const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
           const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
 
-          // 3) TAGY
           const tagsHtml = Array.isArray(item.tags)
             ? item.tags.map(tag => `<span class="chip chip--tag">${tag}</span>`).join('')
             : '';
@@ -1749,8 +2140,11 @@
           article.dataset.condition = isNew ? 'Nové' : 'Použité';
           article.dataset.city = item.city || '';
           article.dataset.partId = item.id || '';
+          article.dataset.note = item.note || '';
+          article.dataset.stockLabel = item.stockLabel || '';
+          article.dataset.price = item.price || '';
+          article.dataset.priceSuffix = item.price_suffix || '';
 
-          // Uložíme zoznam obrázkov do data atribútu
           if (images.length) {
             article.dataset.images = images.join(',');
           }
@@ -1805,7 +2199,7 @@
             </div>
           `;
 
-          // 4) JEDNODUCHÁ GALÉRIA – kliknutím na fotku prepínaš obrázky
+          // jednoduché prepínanie fotiek priamo v kartičke po kliku na obrázok
           if (images.length > 1) {
             const imgBox = article.querySelector('.stock-img');
             const imgEl = article.querySelector('.stock-img img');
@@ -1826,7 +2220,6 @@
           container.appendChild(article);
         });
 
-        // Ak by náhodou nebol žiadny item
         if (!container.children.length) {
           container.innerHTML = `
             <div style="color:var(--muted2); font-size:14px;">
@@ -1858,7 +2251,7 @@
       if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     });
 
-    // ===== CATEGORY DROPDOWNS – otvorí sa len jedna =====
+    // ===== CATEGORY DROPDOWNS =====
     const cards = document.querySelectorAll('.category-card');
 
     const closeAll = () => {
@@ -1900,7 +2293,6 @@
       }
     });
 
-    // Klik mimo = zatvoriť
     document.addEventListener('click', (e) => {
       const clickedInsideAnyCard = Array.from(cards).some(card => card.contains(e.target));
       if (!clickedInsideAnyCard) closeAll();
@@ -1917,9 +2309,9 @@
       }, { passive: false });
     }
 
-    // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
-    function handleInterestFromElement(btn) {
-      const card = btn.closest('.stock-item');
+    // ===== "Mám záujem" -> kontakt + predvyplnená správa =====
+    function handleInterestFromElement(btnOrCard) {
+      const card = btnOrCard.closest('.stock-item');
       if (!card) return;
 
       const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
@@ -1949,7 +2341,7 @@
       }, 80);
     }
 
-    // Klik na samotné tlačidlo
+    // klik na tlačidlo "Mám záujem" v kartičke
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.stockInterestBtn');
       if (!btn) return;
@@ -1957,19 +2349,26 @@
       handleInterestFromElement(btn);
     });
 
-    // ===== CELÁ KARTIČKA KLIKATEĽNÁ =====
+    // klik na CELÚ KARTIČKU -> otvorí MODAL (okrem tlačidla "Mám záujem" a linkov)
     document.addEventListener('click', (e) => {
       const card = e.target.closest('.stock-item');
       if (!card) return;
 
-      // ak klikol na button alebo odkaz, nech sa rieši vyššie
       if (e.target.closest('.stockInterestBtn') || e.target.closest('a')) return;
 
-      const btn = card.querySelector('.stockInterestBtn');
-      if (btn) {
-        handleInterestFromElement(btn);
-      }
+      e.preventDefault();
+      openModalFromCard(card);
     });
+
+    // "Mám záujem o tento diel" priamo z modalu
+    if (modalInterestBtn) {
+      modalInterestBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!modalState.card) return;
+        closeModal();
+        handleInterestFromElement(modalState.card);
+      });
+    }
   </script>
 </body>
 </html>
