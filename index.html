@@ -576,6 +576,7 @@
       aspect-ratio: 4/3;
       background: rgba(255,255,255,0.03);
       border-bottom: 1px solid rgba(255,255,255,0.06);
+      cursor: zoom-in; /* dôležité – naznačí zoom */
     }
     .stock-img img{
       width:100%;
@@ -879,6 +880,121 @@
     .pill--catalog:active{
       transform: scale(0.98);
     }
+
+    /* ===== LIGHTBOX (ZOOM PRODUKTU) ===== */
+    body.lightbox-open{
+      overflow:hidden;
+    }
+
+    .lightbox{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .22s ease;
+    }
+    .lightbox.is-visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .lightbox-backdrop{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.78);
+      backdrop-filter:blur(4px);
+    }
+
+    .lightbox-inner{
+      position:relative;
+      max-width:min(900px, 92vw);
+      max-height:min(80vh, 90vh);
+      padding:16px 18px 20px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(20,20,20,.97), rgba(5,5,5,.97));
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 26px 80px rgba(0,0,0,.9);
+      transform:scale(.94) translateY(10px);
+      transition:transform .22s ease;
+      overflow:hidden;
+    }
+    .lightbox.is-visible .lightbox-inner{
+      transform:scale(1) translateY(0);
+    }
+
+    .lightbox-img-wrap{
+      position:relative;
+      border-radius:14px;
+      overflow:hidden;
+      background:#000;
+      max-height:70vh;
+    }
+    .lightbox-img-wrap img{
+      display:block;
+      max-width:100%;
+      max-height:70vh;
+      width:auto;
+      margin:0 auto;
+    }
+
+    .lightbox-close{
+      position:absolute;
+      top:10px;
+      right:14px;
+      border:none;
+      background:transparent;
+      color:#fff;
+      font-size:26px;
+      cursor:pointer;
+      opacity:.8;
+      padding:0;
+      line-height:1;
+    }
+    .lightbox-close:hover{ opacity:1; }
+
+    .lightbox-caption{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:13px;
+      color:var(--muted2);
+      gap:10px;
+    }
+    #lightboxTitle{
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:11px;
+    }
+
+    .lightbox-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      cursor:pointer;
+      font-size:20px;
+      opacity:.8;
+      padding:0;
+    }
+    .lightbox-nav:hover{
+      opacity:1;
+      background:rgba(0,0,0,0.8);
+    }
+    .lightbox-prev{ left:10px; }
+    .lightbox-next{ right:10px; }
 
     /* ====== MOBILE (UPRAVENÉ) ====== */
     @media (max-width: 980px){
@@ -1523,7 +1639,7 @@
 
         <h2 style="margin-top:16px; max-width:1100px">Čo máme práve na ruke</h2>
         <p style="font-size:16px; max-width:980px">
-          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán a klikni <b>Mám záujem</b>.
+          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán a klikni na fotku pre zväčšenie alebo na <b>Mám záujem</b>.
         </p>
 
         <div class="stock-strip">
@@ -1629,8 +1745,108 @@
     </div>
   </footer>
 
+  <!-- LIGHTBOX HTML -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-inner">
+      <button class="lightbox-close" type="button" aria-label="Zavrieť">×</button>
+
+      <div class="lightbox-img-wrap">
+        <button class="lightbox-nav lightbox-prev" type="button" aria-label="Predošlá fotka">‹</button>
+        <img src="" alt="" id="lightboxImg">
+        <button class="lightbox-nav lightbox-next" type="button" aria-label="Ďalšia fotka">›</button>
+      </div>
+
+      <div class="lightbox-caption">
+        <span id="lightboxTitle"></span>
+        <span id="lightboxCounter"></span>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ===== HOMEPAGE STOCK Z JSONU (viac obrázkov na produkt + fix prázdnych ciest) =====
+    // ===== LIGHTBOX STATE =====
+    let lightboxImages = [];
+    let lightboxIndex = 0;
+    let lightboxTitleText = '';
+
+    function updateLightboxImage() {
+      const imgEl = document.getElementById('lightboxImg');
+      const counterEl = document.getElementById('lightboxCounter');
+      const titleEl = document.getElementById('lightboxTitle');
+      if (!imgEl || !lightboxImages.length) return;
+
+      imgEl.src = lightboxImages[lightboxIndex];
+      titleEl.textContent = lightboxTitleText || '';
+      if (lightboxImages.length > 1) {
+        counterEl.textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+      } else {
+        counterEl.textContent = '';
+      }
+    }
+
+    function openLightbox(images, title) {
+      if (!images || !images.length) return;
+      const lb = document.getElementById('lightbox');
+      if (!lb) return;
+
+      lightboxImages = images.slice();
+      lightboxIndex = 0;
+      lightboxTitleText = title || '';
+
+      updateLightboxImage();
+      lb.classList.add('is-visible');
+      document.body.classList.add('lightbox-open');
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      if (!lb) return;
+      lb.classList.remove('is-visible');
+      document.body.classList.remove('lightbox-open');
+    }
+
+    function showNextLightbox() {
+      if (!lightboxImages.length) return;
+      lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+      updateLightboxImage();
+    }
+
+    function showPrevLightbox() {
+      if (!lightboxImages.length) return;
+      lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+      updateLightboxImage();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const lb = document.getElementById('lightbox');
+      if (!lb) return;
+
+      const closeBtn = lb.querySelector('.lightbox-close');
+      const backdrop = lb.querySelector('.lightbox-backdrop');
+      const prevBtn = lb.querySelector('.lightbox-prev');
+      const nextBtn = lb.querySelector('.lightbox-next');
+
+      [closeBtn, backdrop].forEach(el => {
+        if (!el) return;
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          closeLightbox();
+        });
+      });
+
+      if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); showPrevLightbox(); });
+      if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); showNextLightbox(); });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('is-visible')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') showNextLightbox();
+        if (e.key === 'ArrowLeft') showPrevLightbox();
+      });
+    });
+
+    // ===== HOMEPAGE STOCK Z JSONU =====
     async function loadHomepageStock() {
       try {
         const response = await fetch('skladom.json');
@@ -1640,8 +1856,6 @@
         }
 
         const data = await response.json();
-
-        // Buď priamo pole, alebo objekt { inStock: [...] }
         const items = Array.isArray(data) ? data : (data.inStock || []);
 
         const container = document.getElementById('stockScroll');
@@ -1650,37 +1864,30 @@
         container.innerHTML = '';
 
         items.forEach(item => {
-          // ak v JSON dáš "showOnHome": false, tak sa nezobrazí
           if (item.showOnHome === false) return;
 
-          // 1) PRÍPRAVA OBRÁZKOV – vyfiltrujeme prázdne stringy
           let images = [];
 
           if (Array.isArray(item.images) && item.images.length > 0) {
-            images = item.images
-              .filter(src => src && src.trim() !== '');
+            images = item.images.filter(src => src && src.trim() !== '');
           }
 
-          // Fallback na item.image
           if (!images.length && item.image) {
             images = [item.image];
           }
 
-          // Posledný fallback
           if (!images.length) {
             images = ['img/placeholder.jpg'];
           }
 
-          // 2) CONDITION: "new" / "used" → bublina
           const condText = (item.condition || '').toLowerCase();
           const isNew =
-            condText.startsWith('nov') || // "nové", "nove"
-            condText === 'new';           // "new" v JSONe
+            condText.startsWith('nov') ||
+            condText === 'new';
 
           const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
           const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
 
-          // 3) TAGY
           const tagsHtml = Array.isArray(item.tags)
             ? item.tags.map(tag => `<span class="chip chip--tag">${tag}</span>`).join('')
             : '';
@@ -1691,7 +1898,6 @@
           article.dataset.city = item.city || '';
           article.dataset.partId = item.id || '';
 
-          // Uložíme zoznam obrázkov do data atribútu
           if (images.length) {
             article.dataset.images = images.join(',');
           }
@@ -1735,27 +1941,18 @@
             </div>
           `;
 
-          // 4) JEDNODUCHÁ GALÉRIA – kliknutím na fotku prepínaš obrázky
-          if (images.length > 1) {
-            const imgBox = article.querySelector('.stock-img');
-            const imgEl = article.querySelector('.stock-img img');
-            let currentIndex = 0;
-
-            if (imgBox && imgEl) {
-              imgBox.style.cursor = 'pointer';
-              imgBox.title = 'Kliknutím prepneš fotku';
-
-              imgBox.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                imgEl.src = images[currentIndex];
-              });
-            }
+          // 4) KLIK NA FOTKU = LIGHTBOX ZVÄČŠENIE
+          const imgBox = article.querySelector('.stock-img');
+          if (imgBox) {
+            imgBox.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              openLightbox(images, item.name || '');
+            });
           }
 
           container.appendChild(article);
         });
 
-        // Ak by náhodou nebol žiadny item
         if (!container.children.length) {
           container.innerHTML = `
             <div style="color:var(--muted2); font-size:14px;">
