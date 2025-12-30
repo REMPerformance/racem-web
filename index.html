@@ -538,10 +538,10 @@
 
     .stock-scroll{
       display:flex;
-      gap: 12px;
+      gap: 16px;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: 12px 2px 16px;
+      padding: 16px 2px 18px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
     }
@@ -556,19 +556,22 @@
     }
 
     .stock-item{
-      flex: 0 0 220px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
-      border-radius: 14px;
+      flex: 0 0 270px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(20,20,20,0.96), rgba(10,10,10,0.82));
+      border-radius: 18px;
       overflow:hidden;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.28);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.4);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
       scroll-snap-align: start;
+      cursor: pointer;
+      position: relative;
     }
     .stock-item:hover{
-      transform: translateY(-4px);
-      border-color: rgba(179,31,36,0.28);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.42);
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 20px 55px rgba(0,0,0,0.65);
+      background: linear-gradient(180deg, rgba(24,24,24,1), rgba(8,8,8,0.9));
     }
 
     .stock-img{
@@ -576,12 +579,17 @@
       aspect-ratio: 4/3;
       background: rgba(255,255,255,0.03);
       border-bottom: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
     }
     .stock-img img{
       width:100%;
       height:100%;
       object-fit: cover;
       display:block;
+      transition: transform .25s ease;
+    }
+    .stock-item:hover .stock-img img{
+      transform: scale(1.04);
     }
 
     .bubble{
@@ -607,30 +615,51 @@
       box-shadow: 0 10px 22px rgba(245,158,11,0.14);
     }
 
-    .stock-body{ padding: 10px 10px 12px; }
+    .stock-body{
+      padding: 12px 14px 14px;
+    }
     .stock-top{
       display:flex;
-      gap: 8px;
+      gap: 10px;
       align-items:flex-start;
       justify-content: space-between;
     }
     .stock-title{
-      font-size: 11px;
+      font-size: 12px;
       margin: 0;
-      letter-spacing: .10em;
-      line-height: 1.25;
+      letter-spacing: .11em;
+      line-height: 1.4;
       text-transform: uppercase;
+      color:#fff;
+      max-width: 65%;
+    }
+
+    .stock-price-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:2px;
+      margin-left:8px;
+      flex-shrink:0;
     }
     .stock-price{
       font-weight: 900;
-      font-size: 12px;
+      font-size: 16px;
       white-space: nowrap;
+      color:#fff;
     }
+    .stock-price-suffix{
+      font-size: 11px;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+
     .stock-meta{
       display:flex;
       gap: 6px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 10px;
       margin-bottom: 4px;
     }
     .chip{
@@ -646,6 +675,13 @@
       background: rgba(255,255,255,0.03);
     }
 
+    .stock-tags{
+      margin-top: 6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
     /* === NOVÉ: mesto s ikonou, nie pill === */
     .stock-location{
       display:inline-flex;
@@ -655,7 +691,7 @@
       letter-spacing:.08em;
       text-transform:uppercase;
       color:var(--muted2);
-      margin-top:4px;
+      margin-top:6px;
       opacity:.9;
     }
     .stock-location .pin{
@@ -671,7 +707,7 @@
 
     .stock-actions{
       display:flex;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     .stock-actions .btn{
       width: 100%;
@@ -988,7 +1024,7 @@
 
       .panel{ padding: 22px; }
 
-      .stock-item{ flex: 0 0 200px; }
+      .stock-item{ flex: 0 0 240px; }
 
       .contact-row{
         grid-template-columns: 1fr;
@@ -1546,7 +1582,7 @@
 
         <h2 style="margin-top:16px; max-width:1100px">Čo máme práve na ruke</h2>
         <p style="font-size:16px; max-width:980px">
-          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán a klikni <b>Mám záujem</b>.
+          Veci, ktoré sú fyzicky dostupné ihneď. Scrolluj do strán a klikni <b>Mám záujem</b> alebo priamo na kartičku dielu.
         </p>
 
         <div class="stock-strip">
@@ -1779,7 +1815,8 @@
               imgBox.style.cursor = 'pointer';
               imgBox.title = 'Kliknutím prepneš fotku';
 
-              imgBox.addEventListener('click', () => {
+              imgBox.addEventListener('click', (ev) => {
+                ev.stopPropagation();
                 currentIndex = (currentIndex + 1) % images.length;
                 imgEl.src = images[currentIndex];
               });
@@ -1881,10 +1918,7 @@
     }
 
     // ===== STOCK: "Mám záujem" -> skočí na kontakt + vyplní text =====
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.stockInterestBtn');
-      if (!btn) return;
-
+    function handleInterestFromElement(btn) {
       const card = btn.closest('.stock-item');
       if (!card) return;
 
@@ -1913,6 +1947,28 @@
           ta.selectionStart = ta.selectionEnd = ta.value.length;
         }
       }, 80);
+    }
+
+    // Klik na samotné tlačidlo
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.stockInterestBtn');
+      if (!btn) return;
+      e.stopPropagation();
+      handleInterestFromElement(btn);
+    });
+
+    // ===== CELÁ KARTIČKA KLIKATEĽNÁ =====
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.stock-item');
+      if (!card) return;
+
+      // ak klikol na button alebo odkaz, nech sa rieši vyššie
+      if (e.target.closest('.stockInterestBtn') || e.target.closest('a')) return;
+
+      const btn = card.querySelector('.stockInterestBtn');
+      if (btn) {
+        handleInterestFromElement(btn);
+      }
     });
   </script>
 </body>
