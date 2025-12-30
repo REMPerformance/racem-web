@@ -269,22 +269,56 @@
       box-shadow:0 0 18px rgba(255,182,72,0.45);
     }
 
-    /* OBRÁZOK PRI DIELE */
+    /* OBRÁZOK PRI DIELE – zväčšený + galéria */
     .part-image{
       width:100%;
-      height:130px;
+      height:200px;               /* väčšie ako pôvodných 130px */
       border-radius:14px;
       overflow:hidden;
       margin:6px 0 10px;
       border:1px solid rgba(255,255,255,0.10);
       background:#050505;
+      position:relative;          /* kvôli šípkam */
     }
 
     .part-image img{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit:contain;         /* nech sa tam diel zmestí celý */
       display:block;
+    }
+
+    .image-nav-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:rgba(0,0,0,0.65);
+      color:#fff;
+      font-size:14px;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease-out, transform .18s ease-out;
+    }
+
+    .image-nav-btn.prev{
+      left:6px;
+    }
+    .image-nav-btn.next{
+      right:6px;
+    }
+
+    .part-image:hover .image-nav-btn{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(-50%) scale(1.02);
+    }
+
+    .image-nav-btn:focus{
+      outline:none;
     }
 
     .part-tags{
@@ -798,6 +832,26 @@
   document.getElementById("order-modal").addEventListener("click", closeOrderModal);
   document.getElementById("modal-close-btn").addEventListener("click", closeOrderModal);
 
+  // Normalizácia dielu – pripravíme si allImages na galériu
+  function normalizePart(raw){
+    const part = Object.assign({}, raw);
+
+    const base = (part.image && String(part.image).trim())
+      ? String(part.image).trim()
+      : "img/placeholder-part.jpg";
+
+    const extra = Array.isArray(part.images)
+      ? part.images.map(String).map(s => s.trim()).filter(s => s.length)
+      : [];
+
+    const allImages = [base, ...extra.filter(src => src !== base)];
+
+    part.baseImage = base;
+    part.allImages = allImages;
+
+    return part;
+  }
+
   // Načítanie skladom.json a generovanie kariet
   fetch('skladom.json')
     .then(res => {
@@ -811,9 +865,9 @@
       if (!container) return;
 
       // Podpora formátu: buď pole, alebo objekt { inStock: [...] }
-      const items = Array.isArray(data) ? data : (data.inStock || []);
+      const rawItems = Array.isArray(data) ? data : (data.inStock || []);
 
-      if (!items.length) {
+      if (!rawItems.length) {
         container.innerHTML = `
           <div style="color:var(--muted2); font-size:13px;">
             Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
@@ -821,7 +875,9 @@
         return;
       }
 
-      // Mapa podľa ID, aby sme vedeli doplniť detail do modalu
+      const items = rawItems.map(normalizePart);
+
+      // Mapa podľa ID, aby sme vedeli doplniť detail do modalu aj galérie
       const partsById = {};
       items.forEach(p => {
         if (p.id) partsById[p.id] = p;
@@ -831,13 +887,15 @@
         const tags = Array.isArray(part.tags) ? part.tags : [];
         const tagsHtml = tags.map(t => `<span class="tag">${t}</span>`).join("");
 
-        const imageSrc = part.image && part.image.trim()
-          ? part.image
-          : "img/placeholder-part.jpg";
+        const imageSrc = (part.allImages && part.allImages.length)
+          ? part.allImages[0]
+          : part.baseImage || "img/placeholder-part.jpg";
 
-        // part.price už obsahuje "EUR" → necháme to tak, nelepíme ďalšie "€"
+        // part.price už obsahuje "EUR" → necháme to tak
         const priceValue = part.price || "Na dopyt";
         const priceSuffix = part.price_suffix ? `<span>${part.price_suffix}</span>` : "";
+
+        const hasGallery = part.allImages && part.allImages.length > 1;
 
         return `
           <article class="part-card">
@@ -849,8 +907,12 @@
               <div class="part-badge in-stock">${part.stockLabel || "Skladom"}</div>
             </div>
 
-            <div class="part-image">
+            <div class="part-image" data-part-id="${part.id || ""}" data-current-index="0">
               <img src="${imageSrc}" alt="${part.name || "diel"}">
+              ${hasGallery ? `
+                <button type="button" class="image-nav-btn prev">&#10094;</button>
+                <button type="button" class="image-nav-btn next">&#10095;</button>
+              ` : ""}
             </div>
 
             ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
@@ -875,13 +937,53 @@
       // Všetky položky z inStock → sekcia „Skladom – k odoslaniu ihneď“
       container.innerHTML = items.map(createPartCard).join("");
 
-      // naviazanie klikov na tlačidlá
+      // naviazanie klikov na tlačidlá pre modal
       document.querySelectorAll('.part-cta[data-part-id]').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.dataset.partId;
           const part = partsById[id];
           openOrderModal(part || {});
         });
+      });
+
+      // naviazanie klikov na šípky galérie
+      document.querySelectorAll('.part-image[data-part-id]').forEach(wrapper => {
+        const partId = wrapper.dataset.partId;
+        if (!partId) return;
+
+        const part = partsById[partId];
+        if (!part || !part.allImages || part.allImages.length <= 1) return;
+
+        const imgEl = wrapper.querySelector('img');
+        const prevBtn = wrapper.querySelector('.image-nav-btn.prev');
+        const nextBtn = wrapper.querySelector('.image-nav-btn.next');
+
+        function showIndex(newIndex){
+          const total = part.allImages.length;
+          if (!total) return;
+          let i = newIndex % total;
+          if (i < 0) i += total;
+          wrapper.dataset.currentIndex = String(i);
+          imgEl.src = part.allImages[i];
+        }
+
+        if (prevBtn){
+          prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const current = parseInt(wrapper.dataset.currentIndex || "0", 10) || 0;
+            showIndex(current - 1);
+          });
+        }
+
+        if (nextBtn){
+          nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const current = parseInt(wrapper.dataset.currentIndex || "0", 10) || 0;
+            showIndex(current + 1);
+          });
+        }
       });
     })
     .catch(err => {
