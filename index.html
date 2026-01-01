@@ -15,6 +15,10 @@
       --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
       --shadow: 0 20px 60px rgba(0,0,0,0.55);
+
+      /* fialový vesmír pre hviezdne stropy */
+      --violet:#7c3aed;
+      --violet2:#a855f7;
     }
 
     *{box-sizing:border-box}
@@ -208,6 +212,105 @@
     }
     .nav-links a:hover::after{ width: 125%; }
     .nav-links a:active{ transform: translateY(1px); }
+
+    /* ===== HVIEZDNE STROPY – špeciálny hover efekt ===== */
+    .nav-links a.nav-stars{
+      position:relative;
+      padding:6px 18px;
+      border-radius:999px;
+      overflow:visible;
+    }
+
+    /* fialový pill + mini hviezdy v pozadí */
+    .nav-links a.nav-stars::before{
+      content:"";
+      position:absolute;
+      left:-10px;
+      right:-10px;
+      top:-4px;
+      bottom:-4px;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,0.90) 0 1px, transparent 3px),
+        radial-gradient(circle at 70% 40%, rgba(255,255,255,0.85) 0 2px, transparent 4px),
+        radial-gradient(circle at 40% 75%, rgba(255,255,255,0.80) 0 1px, transparent 3px),
+        linear-gradient(135deg, rgba(124,58,237,0.95), rgba(168,85,247,0.90));
+      opacity:0;
+      transform:scale(0.85);
+      box-shadow:0 0 0 rgba(0,0,0,0);
+      filter:blur(0.15px);
+      transition:
+        opacity .32s ease,
+        transform .32s ease,
+        box-shadow .32s ease;
+      z-index:-1;
+    }
+
+    /* override červeného podčiarknutia – hviezdy pod textom */
+    .nav-links a.nav-stars::after{
+      content:"✶ ✦ ✸";
+      position:absolute;
+      left:50%;
+      bottom:-16px;
+      transform:translateX(-50%) translateY(4px);
+      font-size:10px;
+      letter-spacing:4px;
+      color:#ffffff;
+      opacity:0;
+      text-shadow:0 0 6px rgba(255,255,255,0.7);
+      height:auto;
+      width:auto;
+      background:none;
+      box-shadow:none;
+    }
+    .nav-links a.nav-stars:hover::after{
+      width:auto; /* zruší 125% z generického hoveru */
+    }
+
+    .nav-links a.nav-stars:hover{
+      color:#ffffff;
+      text-shadow:0 0 12px rgba(124,58,237,0.65);
+    }
+
+    .nav-links a.nav-stars:hover::before{
+      opacity:1;
+      transform:scale(1);
+      box-shadow:
+        0 0 18px rgba(124,58,237,0.75),
+        0 14px 36px rgba(0,0,0,0.85);
+      animation: navStarsBg 4s linear infinite;
+    }
+
+    .nav-links a.nav-stars:hover::after{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+      animation: navStarsTwinkle 1.6s ease-in-out infinite;
+    }
+
+    @keyframes navStarsBg{
+      0%{
+        background-position:0 0, 0 0, 0 0, 0 0;
+      }
+      50%{
+        background-position:2px -3px, -2px 3px, 1px 2px, 0 0;
+      }
+      100%{
+        background-position:0 0, 0 0, 0 0, 0 0;
+      }
+    }
+
+    @keyframes navStarsTwinkle{
+      0%,100%{
+        text-shadow:0 0 6px rgba(255,255,255,0.6);
+        opacity:0.85;
+      }
+      50%{
+        text-shadow:
+          0 0 12px rgba(255,255,255,1),
+          0 0 20px rgba(124,58,237,0.9);
+        opacity:1;
+      }
+    }
 
     /* ====== HERO ====== */
     .hero{padding:90px 0 80px}
@@ -1279,7 +1382,7 @@
         <a href="#kategorie">Kategórie</a>
         <a href="#kontakt">Kontakt</a>
         <a href="vop.html">Obchodné podmienky</a>
-        <a href="hviezdne-stropy.html">Hviezdne stropy</a>
+        <a href="hviezdne-stropy.html" class="nav-stars">Hviezdne stropy</a>
       </nav>
     </div>
   </div>
@@ -1333,7 +1436,7 @@
 
             <p>
               Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
-              RACEM aktívne podporuje mladé talenty ktoré bojujú o úspech –
+              RACEM aktívne podporuje mladé talenty ktoré bojujú o úspech – 
               od lokálnych drift tímov až po profesionálne pretekárske zostavy.
             </p>
 
