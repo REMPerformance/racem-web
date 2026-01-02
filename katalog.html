@@ -5,10 +5,6 @@
   <title>RACEM – Katalóg dielov</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --red:#b31f24;
@@ -32,322 +28,282 @@
       overflow-x:hidden;
     }
 
-    .bg-ambient{
-      position:fixed; inset:0; z-index:-5; pointer-events:none;
-      background:
-        radial-gradient(circle at 18% 12%, rgba(179,31,36,0.18), transparent 42%),
-        radial-gradient(circle at 80% 18%, rgba(179,31,36,0.10), transparent 40%),
-        radial-gradient(circle at 55% 75%, rgba(255,255,255,0.03), transparent 52%),
-        radial-gradient(circle at 40% 40%, rgba(255,255,255,0.02), transparent 60%);
-    }
-    .gridlayer{
-      position:fixed; inset:0; z-index:-4; pointer-events:none; opacity:0.18;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 56px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 56px);
-      mask-image: radial-gradient(circle at top, #000 0 55%, transparent 78%);
-      animation: gridMove 26s linear infinite;
-      transform: translateZ(0);
-    }
-    @keyframes gridMove{
-      from{ background-position: 0 0, 0 0; }
-      to{ background-position: 680px 0, 0 680px; }
-    }
+    /* NOISE LAYER */
     .noise{
       pointer-events:none;
-      position:fixed; inset:0; opacity:0.09; z-index:-3;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.52'/%3E%3C/svg%3E");
+      position:fixed;
+      inset:0;
+      opacity:0.09;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.52'/%3E%3C/svg%3E");
+      z-index:-1;
     }
 
-    .wrap{ width:100%; max-width:none; margin:0; padding:0 32px 40px; }
+    .wrap{
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:0 32px 40px;
+    }
 
+    /* NAVBAR */
     header{
-      position:sticky; top:0; z-index:50;
+      position:sticky;
+      top:0;
+      z-index:50;
       backdrop-filter:blur(18px);
-      background: linear-gradient(to bottom, rgba(5,5,5,0.96), rgba(5,5,5,0.85), rgba(5,5,5,0.35));
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    header::after{
-      content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
-      background: linear-gradient(90deg, transparent, rgba(179,31,36,0.55), transparent);
-      opacity:0.5; pointer-events:none;
+      background:linear-gradient(to bottom, rgba(5,5,5,0.96), rgba(5,5,5,0.8), transparent);
+      border-bottom:1px solid rgba(255,255,255,0.04);
     }
 
     .nav{
-      width:100%; max-width:none; margin:0;
+      width:100%;
+      max-width:none;
+      margin:0;
       padding:14px 32px 10px;
-      display:flex; align-items:center; justify-content:space-between; gap:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
     }
 
     .brand{
-      display:flex; align-items:center; gap:12px;
-      text-decoration:none; color:#fff;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#fff;
     }
     .brand img{
-      height:40px; width:auto; display:block;
-      filter: drop-shadow(0 10px 24px rgba(179,31,36,0.25));
-      transition: transform .25s ease, filter .25s ease;
+      height:40px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 10px 24px rgba(179,31,36,0.22));
+      transition: transform .2s ease, filter .2s ease;
     }
     .brand:hover img{ transform: translateY(-1px) scale(1.02); }
 
     .brand-text{ display:flex; flex-direction:column; gap:2px; line-height:1; }
     .brand-title{
-      font-family: "Rajdhani", Arial, sans-serif;
-      font-size:20px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:#fff;
     }
     .brand-sub{
-      font-size:10px; text-transform:uppercase; color:var(--muted2); letter-spacing:.18em; opacity:.95;
+      font-size:10px;
+      text-transform:uppercase;
+      color:var(--muted2);
+      letter-spacing:0.18em;
     }
 
     .nav-links{
-      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-      font-size:13px; text-transform:uppercase;
-    }
-    .nav-links a{
-      text-decoration:none; color:var(--muted);
-      padding:7px 12px; border-radius:999px;
-      border:1px solid transparent; background:rgba(20,20,20,0.7);
-      display:flex; align-items:center; gap:8px;
-      transition:all .18s ease-out;
-    }
-    .nav-links a span.dot{ width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,0.3); }
-    .nav-links a:hover{
-      color:var(--text); border-color:rgba(255,255,255,0.18);
-      transform:translateY(-1px); box-shadow:0 10px 25px rgba(0,0,0,0.6);
-    }
-    .nav-links a.active{
-      color:#fff; border-color:rgba(179,31,36,0.8);
-      background:linear-gradient(135deg, rgba(179,31,36,0.14), rgba(179,31,36,0.02));
-    }
-    .nav-links a.active .dot{ background:var(--red); box-shadow:0 0 12px rgba(179,31,36,0.85); }
-
-    .page-header{ padding:30px 0 10px; }
-    .page-kicker{
-      font-size:11px; text-transform:uppercase; color:var(--muted2);
-      letter-spacing:0.25em; margin-bottom:8px;
-    }
-    .page-title{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-size:36px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
-      margin:0 0 10px;
-    }
-    .page-sub{
-      font-size:14px; color:var(--muted); line-height:1.6; margin: 0 0 16px;
-    }
-
-    /* ===== FILTER (premium, compact, bez bordelu) ===== */
-    .filterbar{
       display:flex;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
-      padding:10px 0 4px;
+      flex-wrap:wrap;
+      font-size:13px;
+      text-transform:uppercase;
     }
 
-    .filter-pill{
-      position:relative;
+    .nav-links a{
+      text-decoration:none;
+      color:var(--muted);
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:rgba(20,20,20,0.7);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:all .18s ease-out;
+    }
+
+    .nav-links a span.dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.3);
+    }
+
+    .nav-links a:hover{
+      color:var(--text);
+      border-color:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    }
+
+    .nav-links a.active{
+      color:#fff;
+      border-color:var(--red);
+      background:linear-gradient(135deg, rgba(179,31,36,0.12), rgba(179,31,36,0.02));
+    }
+    .nav-links a.active .dot{
+      background:var(--red);
+      box-shadow:0 0 12px rgba(179,31,36,0.85);
+    }
+
+    /* PAGE HEADER */
+    .page-header{
+      padding:30px 0 10px;
+    }
+    .page-kicker{
+      font-size:11px;
+      text-transform:uppercase;
+      color:var(--muted2);
+      letter-spacing:0.25em;
+      margin-bottom:8px;
+    }
+    .page-title{
+      font-size:32px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      margin:0 0 8px;
+    }
+    .page-sub{
+      font-size:14px;
+      color:var(--muted);
+      max-width:none;
+      line-height:1.5;
+      margin:0 0 14px;
+    }
+
+    /* ===== PILLS FILTER ===== */
+    .filter-row{
       display:flex;
       align-items:center;
       gap:10px;
-      padding:10px 12px;
+      margin: 10px 0 6px;
+    }
+    .filter-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      color:var(--muted2);
+      white-space:nowrap;
+    }
+
+    .pillbar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      overflow:auto;
+      padding:8px 8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.28);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.22);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+      scroll-behavior:smooth;
+      flex:1;
+      min-height:44px;
+    }
+    .pillbar::-webkit-scrollbar{ display:none; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(20,20,20,0.58);
+      color: rgba(255,255,255,0.88);
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
       cursor:pointer;
       user-select:none;
-      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
-      min-width: 320px;
+      white-space:nowrap;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
     }
-    .filter-pill:hover{
+    .pill:hover{
       transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.26);
-      box-shadow: 0 16px 44px rgba(0,0,0,0.55);
+      border-color: rgba(255,255,255,0.20);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.55);
     }
 
-    .fp-dot{
-      width:8px; height:8px; border-radius:999px;
-      background: rgba(255,255,255,0.22);
-    }
-    .filter-pill.active .fp-dot{
-      background: var(--red);
-      box-shadow: 0 0 14px rgba(179,31,36,0.75);
-    }
-
-    .fp-label{
+    .pill .count{
       font-size:10px;
       letter-spacing:.18em;
-      text-transform:uppercase;
       color: var(--muted2);
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.35);
+      padding:4px 8px;
+      border-radius:999px;
+    }
+
+    .pill.active{
+      border-color: rgba(179,31,36,0.55);
+      background: linear-gradient(135deg, rgba(179,31,36,0.18), rgba(179,31,36,0.05));
+      box-shadow: 0 0 22px rgba(179,31,36,0.16);
+      color:#fff;
+    }
+    .pill.active .count{
+      color:#fff;
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.16);
+    }
+
+    .pill.clear{
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+    }
+    .pill.clear .x{
+      width:18px; height:18px; border-radius:999px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.35);
+      font-size:12px;
       line-height:1;
     }
 
-    .fp-value{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-size:16px;
-      font-weight:700;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color:#fff;
-      line-height:1.05;
-      margin-top:2px;
-      max-width: 220px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .fp-right{
-      margin-left:auto;
-      display:flex; align-items:center; gap:8px;
-    }
-
-    .fp-clear{
-      display:none;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-      color:#fff;
-      border-radius:999px;
-      padding:6px 10px;
-      font-size:10px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease;
-    }
-    .fp-clear:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.35);
-    }
-
-    .fp-chev{
-      width:26px; height:26px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
+    .pill.more{
+      border-color: rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.35);
-      display:grid; place-items:center;
       color:#fff;
-      transition: transform .18s ease;
-    }
-    .filter-pill.open .fp-chev{ transform: rotate(180deg); }
-
-    .filter-menu{
-      position:absolute;
-      left:0;
-      top: calc(100% + 10px);
-      width: min(520px, calc(100vw - 64px));
-      padding:12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(10,10,10,0.95);
-      box-shadow: 0 26px 90px rgba(0,0,0,0.85);
-      display:none;
-      z-index:60;
-      backdrop-filter: blur(10px);
-    }
-    .filter-pill.open .filter-menu{ display:block; }
-
-    .fm-top{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-bottom:10px;
-    }
-    .fm-search{
-      flex:1;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.50);
-      padding:10px 12px;
-      color:#fff;
-      font-size:14px;
-      outline:none;
-    }
-    .fm-search:focus{
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
-    }
-    .fm-all{
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-      color:#fff;
-      padding:10px 12px;
-      font-size:11px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease;
-      white-space:nowrap;
-    }
-    .fm-all:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.35);
     }
 
-    .fm-list{
-      max-height: 280px;
-      overflow:auto;
-      padding-right:6px;
-    }
-    .fm-item{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid transparent;
-      cursor:pointer;
-      transition: background .14s ease, border-color .14s ease, transform .14s ease;
-    }
-    .fm-item:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.10);
-    }
-    .fm-item.active{
-      background: linear-gradient(135deg, rgba(179,31,36,0.16), rgba(179,31,36,0.04));
-      border-color: rgba(179,31,36,0.35);
+    /* SEKCIE */
+    section.catalog-section{
+      margin:18px 0 32px;
     }
 
-    .fm-name{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-weight:700;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:#fff;
-      font-size:14px;
-      line-height:1.15;
-    }
-    .fm-count{
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color: var(--muted2);
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.35);
-      border-radius:999px;
-      padding:6px 10px;
-      white-space:nowrap;
-    }
-
-    /* ===== SEKCIA ===== */
-    section.catalog-section{ margin:18px 0 32px; }
     .section-header{
-      display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
-      gap:10px; margin-bottom:14px; margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
     }
+
     .section-title{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-size:18px; font-weight:700; text-transform:uppercase; letter-spacing:0.16em;
-      display:flex; align-items:center; gap:10px;
+      font-size:18px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
+
     .section-title::before{
-      content:""; width:22px; height:2px; border-radius:999px;
+      content:"";
+      width:22px;
+      height:2px;
+      border-radius:999px;
       background:linear-gradient(90deg, var(--red), transparent);
     }
-    .section-note{ font-size:12px; color:var(--muted2); line-height:1.5; }
+
+    .section-note{
+      font-size:12px;
+      color:var(--muted2);
+      max-width:none;
+      line-height:1.4;
+    }
 
     /* GRID */
     .parts-grid{
@@ -358,7 +314,7 @@
       align-items:stretch;
     }
 
-    /* 7 produktov v riadku na širokých monitoroch */
+    /* 7 produktov v riadku na veľkých monitoroch */
     @media (min-width: 1650px){
       .parts-grid{ grid-template-columns: repeat(7, minmax(0, 1fr)); }
     }
@@ -374,36 +330,50 @@
       padding:14px 14px 12px;
       box-shadow:var(--shadow);
       overflow:hidden;
-      transform: translateZ(0);
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
-      /* performance: renderuj až keď je karta viditeľná */
+      transform: translateZ(0);
+
+      /* performance: renderuj karty až keď sú na obrazovke */
       content-visibility: auto;
       contain-intrinsic-size: 360px;
     }
+
     .part-card:hover{
-      transform: translateY(-2px);
+      transform:translateY(-2px);
       border-color: rgba(179,31,36,0.28);
       box-shadow: 0 18px 54px rgba(0,0,0,0.58);
     }
 
     .part-top{
-      display:flex; justify-content:space-between; gap:10px; margin-bottom:10px; align-items:flex-start;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      align-items:flex-start;
     }
+
     .part-name{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-size:16px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
-      line-height:1.12; margin-bottom:4px;
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      line-height:1.2;
+      margin-bottom:4px;
     }
+
     .part-meta{
-      font-size:12.5px;
+      font-size:12px;
       color: rgba(255,255,255,0.78);
       line-height:1.45;
     }
 
     .part-badge{
-      font-size:10px; text-transform:uppercase; letter-spacing:0.14em;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(34,197,94,0.55);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(34,197,94,0.50);
       background: radial-gradient(circle at top, rgba(34,197,94,0.14), transparent 60%);
       color: rgba(255,255,255,0.92);
       white-space:nowrap;
@@ -411,75 +381,117 @@
     }
 
     .part-image{
-      width:100%; height:190px; border-radius:16px; overflow:hidden;
+      width:100%;
+      height:190px;
+      border-radius:16px;
+      overflow:hidden;
       margin:10px 0 10px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.50);
       position:relative;
     }
+
     .part-image img{
-      width:100%; height:100%; object-fit:contain; display:block;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
       transition: transform .22s ease;
     }
+
     .part-card:hover .part-image img{ transform: scale(1.02); }
 
     .image-nav-btn{
-      position:absolute; top:50%; transform:translateY(-50%);
-      padding:6px 8px; border-radius:999px;
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      padding:6px 8px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,0.35);
       background:rgba(0,0,0,0.60);
-      color:#fff; font-size:14px; cursor:pointer;
-      opacity:0; pointer-events:none;
+      color:#fff;
+      font-size:14px;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
       transition:opacity .18s ease-out, transform .18s ease-out;
       backdrop-filter: blur(8px);
     }
+
     .image-nav-btn.prev{ left:8px; }
     .image-nav-btn.next{ right:8px; }
+
     .part-image:hover .image-nav-btn{
-      opacity:1; pointer-events:auto;
+      opacity:1;
+      pointer-events:auto;
       transform:translateY(-50%) scale(1.02);
     }
 
     .part-tags{
-      display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:10px;
     }
+
     .tag{
-      font-size:10px; text-transform:uppercase; letter-spacing:0.11em;
-      padding:5px 10px; border-radius:999px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:0.11em;
+      padding:5px 10px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
       color: rgba(255,255,255,0.72);
       background: rgba(0,0,0,0.30);
     }
 
     .part-note{
-      font-size:13px; color: rgba(255,255,255,0.86);
-      margin: 0 0 12px; line-height:1.55;
+      font-size:13px;
+      color: rgba(255,255,255,0.86);
+      margin: 0 0 12px;
+      line-height:1.55;
     }
 
     .part-bottom{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
+
     .price{
-      font-family:"Rajdhani", Arial, sans-serif;
-      font-size:18px; font-weight:900; letter-spacing:.08em;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.04em;
       color: var(--red);
       text-shadow: 0 0 18px rgba(179,31,36,0.18);
       line-height:1.1;
     }
+
     .price span{
-      display:inline-block; font-family: Arial, sans-serif;
-      font-size:11px; font-weight:400; color:var(--muted2);
-      margin-left:8px; letter-spacing:.14em; text-transform:uppercase;
+      display:inline-block;
+      font-size:11px;
+      font-weight:400;
+      color:var(--muted2);
+      margin-left:8px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
     }
 
     .cta-mini{
-      padding:9px 12px; border-radius:999px;
+      padding:9px 12px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,0.18);
       background:linear-gradient(135deg, var(--red), #740509);
-      font-size:11px; text-transform:uppercase; letter-spacing:0.16em;
-      cursor:pointer; color:#fff; white-space:nowrap;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      cursor:pointer;
+      color:#fff;
+      white-space:nowrap;
       transition:all .16s ease-out;
     }
+
     .cta-mini:hover{
       transform:translateY(-1px);
       box-shadow:0 14px 36px rgba(179,31,36,0.22);
@@ -503,6 +515,7 @@
       color:var(--muted2);
       background: rgba(0,0,0,0.25);
     }
+
     footer .row{
       display:flex;
       justify-content:space-between;
@@ -510,374 +523,329 @@
       gap:8px;
       padding:0 32px;
     }
-    footer a{ color:var(--muted); text-decoration:none; }
-    footer a:hover{ color:#fff; text-decoration:underline; }
+
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+    }
+    footer a:hover{
+      color:#fff;
+      text-decoration:underline;
+    }
 
     @media (max-width:980px){
       .wrap{ padding:0 16px 32px; }
       .nav{ padding:12px 16px 10px; }
       footer .row{ padding:0 16px; }
-      .page-title{ font-size:30px; }
-      .filter-pill{ min-width: 100%; }
-      .filter-menu{ width: calc(100vw - 32px); }
+      .page-title{ font-size:28px; }
+      .filter-row{ flex-direction:column; align-items:flex-start; gap:8px; }
+      .pillbar{ width:100%; }
     }
+
     @media (max-width:640px){
-      .page-title{ font-size:26px; }
+      .page-title{font-size:26px;}
       .parts-grid{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg-ambient"></div>
-  <div class="gridlayer"></div>
-  <div class="noise"></div>
+<div class="noise"></div>
 
-  <header>
-    <nav class="nav">
-      <a class="brand" href="index.html" aria-label="RACEM homepage">
-        <img src="assets/racem-logo.png" alt="RACEM logo">
-        <div class="brand-text">
-          <div class="brand-sub">BEAT THEM ALL</div>
-        </div>
-      </a>
-
-      <div class="nav-links">
-        <a href="index.html"><span class="dot"></span><span>Homepage</span></a>
-        <a href="katalog.html" class="active"><span class="dot"></span><span>Katalóg dielov</span></a>
-        <a href="vop.html"><span class="dot"></span><span>VOP & reklamácie</span></a>
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html" aria-label="RACEM homepage">
+      <img src="assets/racem-logo.png" alt="RACEM logo">
+      <div class="brand-text">
+        <div class="brand-title">RACEM</div>
+        <div class="brand-sub">BEAT THEM ALL</div>
       </div>
-    </nav>
-  </header>
+    </a>
 
-  <main class="wrap">
-    <section class="page-header">
-      <div class="page-kicker">REM PERFORMANCE · RACEM</div>
-      <h1 class="page-title">KATALÓG DIELOV</h1>
-      <p class="page-sub">
-        Toto sú diely, ktoré máme fyzicky <b>na sklade doma</b> a vieme ich poslať hneď.
-        Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
-      </p>
-
-      <!-- Filter pill -->
-      <div class="filterbar">
-        <div id="filterPill" class="filter-pill" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-          <div class="fp-dot"></div>
-          <div>
-            <div class="fp-label">Model auta</div>
-            <div id="fpValue" class="fp-value">Všetky modely</div>
-          </div>
-          <div class="fp-right">
-            <button id="fpClear" class="fp-clear" type="button" aria-label="Zrušiť filter">Reset</button>
-            <div class="fp-chev" aria-hidden="true">▾</div>
-          </div>
-
-          <div id="filterMenu" class="filter-menu" aria-label="Filter menu">
-            <div class="fm-top">
-              <input id="fmSearch" class="fm-search" type="text" placeholder="Hľadať model… (napr. E46, Octavia)">
-              <button id="fmAll" class="fm-all" type="button">Všetky</button>
-            </div>
-            <div id="fmList" class="fm-list"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="skladom" class="catalog-section">
-      <div class="section-header">
-        <h2 class="section-title">Skladom – k odoslaniu ihneď</h2>
-        <p class="section-note">
-          Diely, ktoré sú fyzicky u nás. Počet kusov je obmedzený.
-        </p>
-      </div>
-
-      <div id="parts-skladom" class="parts-grid"></div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="row">
-      <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
-      <div>
-        <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
-        <a href="vop.html">VOP a reklamačný poriadok</a>
-      </div>
+    <div class="nav-links">
+      <a href="index.html"><span class="dot"></span><span>Homepage</span></a>
+      <a href="katalog.html" class="active"><span class="dot"></span><span>Katalóg dielov</span></a>
+      <a href="vop.html"><span class="dot"></span><span>VOP & reklamácie</span></a>
     </div>
-  </footer>
+  </nav>
+</header>
 
-  <script>
-    const JSON_URL = "skladom.json";
-    const $ = (s, r=document) => r.querySelector(s);
-    const safe = (v) => (v == null) ? "" : String(v);
+<main class="wrap">
+  <section class="page-header">
+    <div class="page-kicker">REM PERFORMANCE · RACEM</div>
+    <h1 class="page-title">KATALÓG DIELOV</h1>
+    <p class="page-sub">
+      Toto sú diely, ktoré máme fyzicky <b>na sklade doma</b> a vieme ich poslať hneď.
+      Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
+    </p>
 
-    let ALL = [];
-    let MODEL_COUNTS = new Map();
-    let ACTIVE_MODEL = "all"; // encoded string alebo "all"
+    <!-- PILLS FILTER -->
+    <div class="filter-row">
+      <div class="filter-label">Filter: model auta</div>
+      <div id="pillbar" class="pillbar" aria-label="Pills filter"></div>
+    </div>
+  </section>
 
-    function inferModel(part){
-      const direct = safe(part.model).trim();
-      if (direct) return direct;
+  <section id="skladom" class="catalog-section">
+    <div class="section-header">
+      <h2 class="section-title">Skladom – k odoslaniu ihneď</h2>
+      <p class="section-note">Diely, ktoré sú fyzicky u nás. Počet kusov je obmedzený.</p>
+    </div>
 
-      const meta = safe(part.meta).trim();
-      if (!meta) return "Neurčené";
+    <div id="parts-skladom" class="parts-grid"></div>
+  </section>
+</main>
 
-      const first = meta.split("·")[0].trim();
-      return first || "Neurčené";
+<footer>
+  <div class="row">
+    <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
+    <div>
+      <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
+      <a href="vop.html">VOP a reklamačný poriadok</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const JSON_URL = "skladom.json";
+  const $ = (s, r=document) => r.querySelector(s);
+  const safe = (v) => (v == null) ? "" : String(v);
+
+  let ALL = [];
+  let ACTIVE_MODEL = "all";       // encoded model alebo "all"
+  let MODEL_COUNTS = new Map();
+  let SHOW_ALL_PILLS = false;
+
+  const MAX_PILLS_COLLAPSED = 10;
+
+  function inferModel(part){
+    const direct = safe(part.model).trim();
+    if (direct) return direct;
+
+    const meta = safe(part.meta).trim();
+    if (!meta) return "Neurčené";
+
+    const first = meta.split("·")[0].trim();
+    return first || "Neurčené";
+  }
+
+  function normalizePart(raw){
+    const p = Object.assign({}, raw);
+    const base = (p.image && String(p.image).trim()) ? String(p.image).trim() : "img/placeholder-part.jpg";
+    const extra = Array.isArray(p.images) ? p.images.map(String).map(s=>s.trim()).filter(Boolean) : [];
+    p.allImages = [base, ...extra.filter(src => src !== base)];
+    p.tags = Array.isArray(p.tags) ? p.tags : [];
+    p._model = inferModel(p);
+    return p;
+  }
+
+  function computeModels(){
+    MODEL_COUNTS = new Map();
+    ALL.forEach(p => MODEL_COUNTS.set(p._model, (MODEL_COUNTS.get(p._model) || 0) + 1));
+  }
+
+  function buildCardHTML(part){
+    const tagsHtml = (part.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+    const imageSrc = (part.allImages && part.allImages.length) ? part.allImages[0] : "img/placeholder-part.jpg";
+    const hasGallery = part.allImages && part.allImages.length > 1;
+    const priceValue = safe(part.price) || "Na dopyt";
+    const suffix = safe(part.price_suffix);
+
+    return `
+      <article class="part-card" data-model="${encodeURIComponent(part._model)}">
+        <div class="part-top">
+          <div>
+            <div class="part-name">${safe(part.name)}</div>
+            <div class="part-meta">${safe(part.meta)}</div>
+          </div>
+          <div class="part-badge">${safe(part.stockLabel) || "Skladom"}</div>
+        </div>
+
+        <div class="part-image" data-current-index="0" data-images="${encodeURIComponent((part.allImages||[]).join("|"))}">
+          <img src="${imageSrc}" alt="${safe(part.name) || "diel"}" loading="lazy">
+          ${hasGallery ? `
+            <button type="button" class="image-nav-btn prev" aria-label="Predchádzajúca fotka">&#10094;</button>
+            <button type="button" class="image-nav-btn next" aria-label="Ďalšia fotka">&#10095;</button>
+          ` : ""}
+        </div>
+
+        ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
+
+        <p class="part-note">${safe(part.note)}</p>
+
+        <div class="part-bottom">
+          <div class="price">
+            ${priceValue}
+            ${suffix ? `<span>${suffix}</span>` : ""}
+          </div>
+          <button type="button" class="cta-mini">Detail</button>
+        </div>
+      </article>
+    `;
+  }
+
+  function bindGallery(container){
+    container.querySelectorAll(".part-card").forEach(card => {
+      const wrap = card.querySelector(".part-image");
+      const prev = card.querySelector(".image-nav-btn.prev");
+      const next = card.querySelector(".image-nav-btn.next");
+      if (!wrap || (!prev && !next)) return;
+
+      const img = wrap.querySelector("img");
+      const images = decodeURIComponent(wrap.dataset.images || "").split("|").filter(Boolean);
+      if (images.length <= 1) return;
+
+      function setIdx(i){
+        const idx = (i + images.length) % images.length;
+        wrap.dataset.currentIndex = String(idx);
+        img.src = images[idx];
+      }
+
+      prev && prev.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
+        setIdx(cur - 1);
+      });
+
+      next && next.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
+        setIdx(cur + 1);
+      });
+    });
+  }
+
+  function applyFilter(){
+    const container = $("#parts-skladom");
+
+    let out = ALL.slice();
+    if (ACTIVE_MODEL !== "all"){
+      out = out.filter(p => encodeURIComponent(p._model) === ACTIVE_MODEL);
     }
 
-    function normalizePart(raw){
-      const p = Object.assign({}, raw);
-      const base = (p.image && String(p.image).trim()) ? String(p.image).trim() : "img/placeholder-part.jpg";
-      const extra = Array.isArray(p.images) ? p.images.map(String).map(s=>s.trim()).filter(Boolean) : [];
-      p.allImages = [base, ...extra.filter(src => src !== base)];
-      p.tags = Array.isArray(p.tags) ? p.tags : [];
-      p._model = inferModel(p);
-      return p;
+    if (!out.length){
+      container.innerHTML = `<div class="empty">Pre tento model tu zatiaľ nič nie je.</div>`;
+      return;
     }
 
-    function buildCardHTML(part){
-      const tagsHtml = (part.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
-      const imageSrc = (part.allImages && part.allImages.length) ? part.allImages[0] : "img/placeholder-part.jpg";
-      const hasGallery = part.allImages && part.allImages.length > 1;
-      const priceValue = safe(part.price) || "Na dopyt";
-      const suffix = safe(part.price_suffix);
+    container.innerHTML = out.map(buildCardHTML).join("");
+    bindGallery(container);
+  }
 
-      return `
-        <article class="part-card" data-model="${encodeURIComponent(part._model)}">
-          <div class="part-top">
-            <div>
-              <div class="part-name">${safe(part.name)}</div>
-              <div class="part-meta">${safe(part.meta)}</div>
-            </div>
-            <div class="part-badge">${safe(part.stockLabel) || "Skladom"}</div>
-          </div>
+  function setActiveModel(encoded){
+    ACTIVE_MODEL = encoded || "all";
+    renderPills();
+    applyFilter();
 
-          <div class="part-image" data-current-index="0" data-images="${encodeURIComponent((part.allImages||[]).join("|"))}">
-            <img src="${imageSrc}" alt="${safe(part.name) || "diel"}" loading="lazy">
-            ${hasGallery ? `
-              <button type="button" class="image-nav-btn prev" aria-label="Predchádzajúca fotka">&#10094;</button>
-              <button type="button" class="image-nav-btn next" aria-label="Ďalšia fotka">&#10095;</button>
-            ` : ""}
-          </div>
+    // jemné "center scroll" na aktívny pill
+    const activeEl = document.querySelector('.pillbar .pill.active');
+    if (activeEl){
+      activeEl.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+    }
+  }
 
-          ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
+  function renderPills(){
+    const bar = $("#pillbar");
+    const models = Array.from(MODEL_COUNTS.entries())
+      .sort((a,b) => a[0].localeCompare(b[0], "sk"));
 
-          <p class="part-note">${safe(part.note)}</p>
+    const totalModels = models.length;
+    const shouldCollapse = !SHOW_ALL_PILLS && totalModels > MAX_PILLS_COLLAPSED;
 
-          <div class="part-bottom">
-            <div class="price">
-              ${priceValue}
-              ${suffix ? `<span>${suffix}</span>` : ""}
-            </div>
-            <button type="button" class="cta-mini">Detail</button>
-          </div>
-        </article>
+    const visibleModels = shouldCollapse ? models.slice(0, MAX_PILLS_COLLAPSED) : models;
+
+    let html = "";
+
+    // "All" pill
+    html += `
+      <div class="pill ${ACTIVE_MODEL==="all" ? "active" : ""}" data-model="all">
+        Všetky <span class="count">${ALL.length}</span>
+      </div>
+    `;
+
+    // Clear pill (iba keď je niečo zvolené)
+    if (ACTIVE_MODEL !== "all"){
+      html += `
+        <div class="pill clear" data-model="all" title="Zrušiť filter">
+          <span class="x">×</span> Reset
+        </div>
       `;
     }
 
-    function bindGallery(container){
-      container.querySelectorAll(".part-card").forEach(card => {
-        const wrap = card.querySelector(".part-image");
-        const prev = card.querySelector(".image-nav-btn.prev");
-        const next = card.querySelector(".image-nav-btn.next");
-        if (!wrap || (!prev && !next)) return;
-
-        const img = wrap.querySelector("img");
-        const images = decodeURIComponent(wrap.dataset.images || "").split("|").filter(Boolean);
-        if (images.length <= 1) return;
-
-        function setIdx(i){
-          const idx = (i + images.length) % images.length;
-          wrap.dataset.currentIndex = String(idx);
-          img.src = images[idx];
-        }
-
-        prev && prev.addEventListener("click", (e) => {
-          e.preventDefault(); e.stopPropagation();
-          const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
-          setIdx(cur - 1);
-        });
-
-        next && next.addEventListener("click", (e) => {
-          e.preventDefault(); e.stopPropagation();
-          const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
-          setIdx(cur + 1);
-        });
-      });
-    }
-
-    function computeModels(){
-      MODEL_COUNTS = new Map();
-      ALL.forEach(p => MODEL_COUNTS.set(p._model, (MODEL_COUNTS.get(p._model) || 0) + 1));
-    }
-
-    function renderModelList(filterText=""){
-      const list = $("#fmList");
-      const q = filterText.trim().toLowerCase();
-
-      const models = Array.from(MODEL_COUNTS.entries())
-        .sort((a,b)=>a[0].localeCompare(b[0], "sk"))
-        .filter(([name]) => !q || name.toLowerCase().includes(q));
-
-      if (!models.length){
-        list.innerHTML = `<div class="empty">Nič nenájdené.</div>`;
-        return;
-      }
-
-      list.innerHTML = models.map(([name, count]) => {
-        const encoded = encodeURIComponent(name);
-        const active = (ACTIVE_MODEL === encoded) ? "active" : "";
-        return `
-          <div class="fm-item ${active}" data-model="${encoded}">
-            <div class="fm-name">${name}</div>
-            <div class="fm-count">${count}</div>
-          </div>
-        `;
-      }).join("");
-
-      list.querySelectorAll(".fm-item").forEach(item => {
-        item.addEventListener("click", () => {
-          const m = item.dataset.model || "all";
-          setActiveModel(m);
-          closeFilter();
-        });
-      });
-    }
-
-    function setActiveModel(encodedModel){
-      ACTIVE_MODEL = encodedModel || "all";
-
-      const pill = $("#filterPill");
-      const value = $("#fpValue");
-      const clearBtn = $("#fpClear");
-
-      if (ACTIVE_MODEL === "all"){
-        value.textContent = "Všetky modely";
-        clearBtn.style.display = "none";
-        pill.classList.remove("active");
-      }else{
-        value.textContent = decodeURIComponent(ACTIVE_MODEL);
-        clearBtn.style.display = "inline-flex";
-        pill.classList.add("active");
-      }
-
-      applyModelFilter();
-      renderModelList($("#fmSearch").value || "");
-    }
-
-    function applyModelFilter(){
-      const container = $("#parts-skladom");
-
-      let out = ALL.slice();
-      if (ACTIVE_MODEL !== "all"){
-        out = out.filter(p => encodeURIComponent(p._model) === ACTIVE_MODEL);
-      }
-
-      if (!out.length){
-        container.innerHTML = `<div class="empty">Pre tento model tu zatiaľ nič nie je.</div>`;
-        return;
-      }
-
-      container.innerHTML = out.map(buildCardHTML).join("");
-      bindGallery(container);
-    }
-
-    function openFilter(){
-      const pill = $("#filterPill");
-      pill.classList.add("open");
-      pill.setAttribute("aria-expanded","true");
-      $("#fmSearch").focus();
-      renderModelList($("#fmSearch").value || "");
-    }
-
-    function closeFilter(){
-      const pill = $("#filterPill");
-      pill.classList.remove("open");
-      pill.setAttribute("aria-expanded","false");
-    }
-
-    function toggleFilter(){
-      const pill = $("#filterPill");
-      pill.classList.contains("open") ? closeFilter() : openFilter();
-    }
-
-    async function load(){
-      const container = $("#parts-skladom");
-      try{
-        const res = await fetch(JSON_URL);
-        if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
-        const data = await res.json();
-        const raw = Array.isArray(data) ? data : (data.inStock || []);
-        ALL = raw.map(normalizePart);
-
-        if (!ALL.length){
-          container.innerHTML = `<div class="empty">Momentálne nemáme žiadne diely označené ako <b>skladom</b>.</div>`;
-          return;
-        }
-
-        computeModels();
-        setActiveModel("all");
-        renderModelList("");
-
-      }catch(err){
-        console.error(err);
-        container.innerHTML = `<div class="empty">Nepodarilo sa načítať skladové diely. Skús obnoviť stránku.</div>`;
-      }
-    }
-
-    // UI events
-    document.addEventListener("DOMContentLoaded", () => {
-      load();
-
-      const pill = $("#filterPill");
-      const menu = $("#filterMenu");
-      const search = $("#fmSearch");
-
-      pill.addEventListener("click", (e) => {
-        // ak klikneš na menu prvky, nepreklikávaj toggle
-        if (e.target.closest(".filter-menu")) return;
-        if (e.target.id === "fpClear") return;
-        toggleFilter();
-      });
-
-      pill.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          toggleFilter();
-        }
-        if (e.key === "Escape"){
-          closeFilter();
-        }
-      });
-
-      $("#fpClear").addEventListener("click", (e) => {
-        e.preventDefault(); e.stopPropagation();
-        setActiveModel("all");
-      });
-
-      $("#fmAll").addEventListener("click", () => {
-        setActiveModel("all");
-        closeFilter();
-      });
-
-      search.addEventListener("input", () => {
-        renderModelList(search.value || "");
-      });
-
-      // klik mimo → zavri
-      document.addEventListener("click", (e) => {
-        const inPill = e.target.closest("#filterPill");
-        if (!inPill) closeFilter();
-      });
-
-      // ESC zavrie aj keď píšeš
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeFilter();
-      });
-
-      // zabráň klikom v menu aby sa to nezatváralo toggle-om
-      menu.addEventListener("click", (e) => e.stopPropagation());
+    // model pills
+    visibleModels.forEach(([name,count]) => {
+      const enc = encodeURIComponent(name);
+      html += `
+        <div class="pill ${ACTIVE_MODEL===enc ? "active" : ""}" data-model="${enc}">
+          ${name} <span class="count">${count}</span>
+        </div>
+      `;
     });
-  </script>
+
+    if (shouldCollapse){
+      const hidden = totalModels - MAX_PILLS_COLLAPSED;
+      html += `
+        <div class="pill more" data-more="1">
+          Viac… <span class="count">+${hidden}</span>
+        </div>
+      `;
+    }else if (SHOW_ALL_PILLS && totalModels > MAX_PILLS_COLLAPSED){
+      html += `
+        <div class="pill more" data-less="1">
+          Menej <span class="count">—</span>
+        </div>
+      `;
+    }
+
+    bar.innerHTML = html;
+
+    // events
+    bar.querySelectorAll(".pill[data-model]").forEach(p => {
+      p.addEventListener("click", () => {
+        const m = p.dataset.model;
+        setActiveModel(m);
+      });
+    });
+
+    const more = bar.querySelector(".pill[data-more]");
+    more && more.addEventListener("click", () => {
+      SHOW_ALL_PILLS = true;
+      renderPills();
+    });
+
+    const less = bar.querySelector(".pill[data-less]");
+    less && less.addEventListener("click", () => {
+      SHOW_ALL_PILLS = false;
+      renderPills();
+    });
+  }
+
+  async function load(){
+    const container = $("#parts-skladom");
+    try{
+      const res = await fetch(JSON_URL);
+      if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
+      const data = await res.json();
+      const raw = Array.isArray(data) ? data : (data.inStock || []);
+
+      ALL = raw.map(normalizePart);
+
+      if (!ALL.length){
+        container.innerHTML = `<div class="empty">Momentálne nemáme žiadne diely označené ako <b>skladom</b>.</div>`;
+        return;
+      }
+
+      computeModels();
+      renderPills();
+      applyFilter();
+    }catch(err){
+      console.error(err);
+      container.innerHTML = `<div class="empty">Nepodarilo sa načítať skladové diely. Skús obnoviť stránku.</div>`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", load);
+</script>
+
 </body>
 </html>
