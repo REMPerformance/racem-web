@@ -467,27 +467,6 @@
       transform: translateZ(0);
     }
 
-    .thumb-row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin: 6px 0 2px;
-    }
-    .thumb{
-      width:38px;
-      height:38px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.12);
-      background:#0a0a0a;
-      overflow:hidden;
-      cursor:pointer;
-      opacity:.85;
-      transition: opacity .14s ease, transform .14s ease, border-color .14s ease;
-    }
-    .thumb:hover{opacity:1; transform: translateY(-1px); border-color: rgba(255,255,255,0.16);}
-    .thumb.is-on{opacity:1; border-color: rgba(179,31,36,0.55);}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-
     .part-tags{
       display:flex;
       flex-wrap:wrap;
@@ -992,7 +971,7 @@
     <h1 class="page-title">KATALÓG DIELov</h1>
     <p class="page-sub">
       Toto sú diely, ktoré máme aktuálne fyzicky <b>na sklade</b> a vieme ich poslať okamžite.
-      Sekcia <b>na objednávku</b> je zatiaľ pripravená len ako placeholder – zapne sa neskôr, keď bude hotové API z Lumarparts.
+      Sekcia <b>na objednávku</b> je zatiaľ pripravená len ako placeholder.
       Potrebuješ niečo mimo katalógu? Napíš na <b>info@remperformance.sk</b>.
     </p>
   </section>
@@ -1055,15 +1034,15 @@
   <!-- NA OBJEDNÁVKU (PLACEHOLDER) -->
   <section id="na-objednavku" class="catalog-section">
     <div class="section-header">
-      <h2 class="section-title">Na objednávku – zatiaľ vypnuté</h2>
+      <h2 class="section-title">Na objednávku</h2>
       <p class="section-note">
-        Táto sekcia sa zapne až keď bude hotové API od Lumarparts. Zatiaľ tu nič nie je, aby sa ľudia nestrácali.
+        Diely na objednávku riešime zatiaľ cez e-mail.
       </p>
     </div>
 
     <div class="empty-box">
-      <b>Coming soon:</b> „Na objednávku“ bude fungovať cez API (dostupnosť, ceny, dodacie lehoty).
-      Dovtedy riešime diely na objednávku cez e-mail: <b>info@remperformance.sk</b>.
+      Ak chceš diel na objednávku, napíš nám na <b>info@remperformance.sk</b> a pošli:
+      <b>značku</b>, <b>model</b>, <b>motorizáciu</b>, <b>rok</b> a ideálne aj <b>číslo dielu</b>.
     </div>
   </section>
 
@@ -1195,7 +1174,6 @@
 <script>
   const FORM_ENDPOINT = "https://formspree.io/f/mwvekvgy";
 
-  // ===== STATE =====
   const state = {
     raw: [],
     filtered: [],
@@ -1206,15 +1184,9 @@
     onlyUsed: false,
     showStock: true,
     sort: "newest",
-    qv: {
-      open: false,
-      part: null,
-      images: [],
-      index: 0
-    }
+    qv: { open: false, part: null, images: [], index: 0 }
   };
 
-  // ===== HELPERS =====
   function normalizePart(raw){
     const p = Object.assign({}, raw);
 
@@ -1231,16 +1203,13 @@
     p.baseImage = base;
     p.allImages = allImages;
 
-    // status: "available" | "reserved" | "sold"
     const st = (p.status || "").toString().trim().toLowerCase();
     p.status = st || "available";
 
-    // condition normalize
     const condText = (p.condition || "").toString().trim().toLowerCase();
     p._isNew = condText.startsWith("nov") || condText === "new";
     p._isUsed = !p._isNew;
 
-    // searchable blob
     const tags = Array.isArray(p.tags) ? p.tags : [];
     const blob = [
       p.id, p.name, p.meta, p.note, p.city, p.stockLabel, p.condition,
@@ -1249,10 +1218,7 @@
 
     p._blob = blob;
 
-    // numeric price (best effort)
     p._priceNum = parsePrice(p.price);
-
-    // sortDate (use index fallback)
     p._addedIndex = 0;
 
     return p;
@@ -1288,7 +1254,6 @@
     return lines.join("\n");
   }
 
-  // ===== RENDER =====
   function createCard(part){
     const tags = Array.isArray(part.tags) ? part.tags : [];
     const tagsHtml = tags.slice(0, 6).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
@@ -1356,7 +1321,6 @@
     const tagsRow = document.getElementById("quickTagsRow");
     const activeTagsText = document.getElementById("activeTagsText");
 
-    // quick tags build (from raw)
     const tagCounts = new Map();
     state.raw.forEach(p => {
       (Array.isArray(p.tags) ? p.tags : []).forEach(t => {
@@ -1379,7 +1343,6 @@
     const activeTagsArr = Array.from(state.activeQuickTags);
     activeTagsText.textContent = activeTagsArr.length ? ("Tagy: " + activeTagsArr.join(", ")) : "";
 
-    // grid
     if (!state.filtered.length){
       container.innerHTML = `
         <div class="empty-box">
@@ -1391,7 +1354,6 @@
       container.innerHTML = state.filtered.map(createCard).join("");
     }
 
-    // result text
     const total = state.raw.length;
     const shown = state.filtered.length;
     resultText.textContent = `Zobrazené: ${shown} / ${total} (Skladom)`;
@@ -1400,17 +1362,14 @@
   function applyFilters(){
     let list = state.raw.slice();
 
-    // stock toggle (zatiaľ jediné dáta, ale nech je pripravené)
     if (!state.showStock) list = [];
 
-    // condition
     if (state.onlyNew && !state.onlyUsed){
       list = list.filter(p => p._isNew);
     } else if (!state.onlyNew && state.onlyUsed){
       list = list.filter(p => p._isUsed);
-    } // ak sú oba zapnuté, necháme všetko (logicky)
+    }
 
-    // tags
     if (state.activeQuickTags.size){
       const required = Array.from(state.activeQuickTags).map(t => t.toLowerCase());
       list = list.filter(p => {
@@ -1419,13 +1378,11 @@
       });
     }
 
-    // search
     const q = (state.search || "").trim().toLowerCase();
     if (q){
       list = list.filter(p => p._blob.includes(q));
     }
 
-    // sort
     list.sort((a,b) => {
       switch(state.sort){
         case "price_asc":{
@@ -1439,7 +1396,6 @@
           return bp - ap;
         }
         case "availability":{
-          // available first, then reserved, then sold
           const rank = (s) => s === "available" ? 0 : (s === "reserved" ? 1 : 2);
           const r = rank(a.status) - rank(b.status);
           if (r !== 0) return r;
@@ -1459,7 +1415,7 @@
     render();
   }
 
-  // ===== QUICK VIEW (DETAIL) =====
+  // QUICK VIEW
   const qvBackdrop = document.getElementById("qv-backdrop");
   const qvImg = document.getElementById("qvImage");
   const qvTitle = document.getElementById("qvTitle");
@@ -1499,11 +1455,9 @@
     qvPrice.textContent = part.price || "Na dopyt";
     qvPriceSuffix.textContent = part.price_suffix || "";
 
-    // tags
     const tags = Array.isArray(part.tags) ? part.tags : [];
     qvTags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
 
-    // mini info
     const condLabel = part._isNew ? "Nové" : "Použité";
     const city = part.city ? escapeHtml(part.city) : "—";
     const stock = part.stockLabel ? escapeHtml(part.stockLabel) : "Skladom";
@@ -1562,7 +1516,6 @@
     }
   });
 
-  // tools
   qvCopyBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
     const p = state.qv.part;
@@ -1573,7 +1526,6 @@
       qvCopyBtn.textContent = "Skopírované ✓";
       setTimeout(()=> qvCopyBtn.textContent = "Kopírovať detaily", 1100);
     }catch{
-      // fallback
       prompt("Skopíruj detaily:", text);
     }
   });
@@ -1592,7 +1544,6 @@
     if (navigator.share){
       try{ await navigator.share(shareData); } catch {}
     } else {
-      // fallback: copy url
       try{
         await navigator.clipboard.writeText(shareData.text + "\n\n" + shareData.url);
         qvShareBtn.textContent = "Skopírované ✓";
@@ -1603,7 +1554,6 @@
     }
   });
 
-  // CTA from quickview
   qvOrderBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     const p = state.qv.part;
@@ -1617,14 +1567,13 @@
     const p = state.qv.part;
     if (!p) return;
     closeQuickView();
-    // predvyplň “soft” otázku do formu
     openOrderModal({
       ...p,
       note: (p.note ? p.note + "\n\n" : "") + "Otázka: (dopíš sem, čo potrebuješ vedieť)"
     });
   });
 
-  // ===== ORDER MODAL =====
+  // ORDER MODAL
   function openOrderModal(part){
     const modal = document.getElementById("order-modal");
     const fieldPart = document.getElementById("field-part");
@@ -1647,7 +1596,7 @@
   document.getElementById("order-modal").addEventListener("click", closeOrderModal);
   document.getElementById("modal-close-btn").addEventListener("click", closeOrderModal);
 
-  // ===== EVENTS: FILTER BAR =====
+  // FILTER BAR EVENTS
   const searchInput = document.getElementById("searchInput");
   const chipStock = document.getElementById("chipStock");
   const chipNew = document.getElementById("chipNew");
@@ -1709,7 +1658,6 @@
     location.hash = "#skladom";
   });
 
-  // quick tags click (delegation)
   document.addEventListener("click", (e) => {
     const chip = e.target.closest(".quickchip");
     if (!chip) return;
@@ -1723,7 +1671,7 @@
     applyFilters();
   });
 
-  // ===== EVENTS: CARDS =====
+  // CARDS EVENTS
   document.addEventListener("click", (e) => {
     const orderBtn = e.target.closest(".order-btn");
     if (orderBtn){
@@ -1754,7 +1702,6 @@
     if (part) openQuickView(part);
   });
 
-  // open with keyboard
   document.addEventListener("keydown", (e) => {
     const focused = document.activeElement;
     if (!focused) return;
@@ -1768,7 +1715,7 @@
     }
   });
 
-  // ===== LOAD DATA (ONLY SKLADOM) =====
+  // LOAD DATA
   async function loadSkladom(){
     const container = document.getElementById("parts-skladom");
     container.innerHTML = `<div class="empty-box"><b>Načítavam…</b></div>`;
@@ -1788,10 +1735,9 @@
 
       const items = rawItems.map(normalizePart);
 
-      // keep newest order based on file order
       items.forEach((p, idx) => p._addedIndex = idx);
 
-      state.raw = items.slice().reverse(); // latest first by default
+      state.raw = items.slice().reverse();
       state.raw.forEach((p, idx) => p._addedIndex = idx);
 
       state.partsById = {};
@@ -1811,7 +1757,7 @@
     }
   }
 
-  // ===== FORMSPREE SUBMIT (AJAX) =====
+  // FORMSPREE SUBMIT
   document.getElementById("part-order-form").addEventListener("submit", function(e){
     e.preventDefault();
     const form = e.target;
@@ -1843,14 +1789,12 @@
     });
   });
 
-  // ===== ESCAPE / CLOSE ORDER MODAL =====
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     const orderOpen = document.getElementById("order-modal").classList.contains("active");
     if (orderOpen) closeOrderModal();
   });
 
-  // ===== SAFE HTML =====
   function escapeHtml(str){
     return (str ?? "").toString()
       .replace(/&/g,"&amp;")
@@ -1861,7 +1805,6 @@
   }
   function escapeAttr(str){ return escapeHtml(str).replace(/`/g, "&#096;"); }
 
-  // init
   loadSkladom();
 </script>
 
