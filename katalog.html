@@ -5,7 +5,6 @@
   <title>RACEM – Katalóg dielov</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FONT (headlines) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,9 +20,6 @@
       --line: rgba(255,255,255,0.08);
       --shadow: 0 18px 55px rgba(0,0,0,0.55);
       --radius-xl: 18px;
-
-      --glass: rgba(255,255,255,0.03);
-      --glass2: rgba(255,255,255,0.06);
     }
 
     *{box-sizing:border-box}
@@ -142,25 +138,24 @@
       font-size:14px; color:var(--muted); line-height:1.6; margin: 0 0 16px;
     }
 
-    /* ===== FILTER PANEL ===== */
-    .filterpanel{
+    /* ===== Model filter (len toto) ===== */
+    .model-filter{
       padding:14px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.28);
       box-shadow: 0 14px 45px rgba(0,0,0,0.45);
-      display:grid;
-      grid-template-columns: 1.4fr 0.7fr 0.9fr 0.9fr auto;
+      display:flex;
       gap:10px;
       align-items:end;
+      flex-wrap:wrap;
     }
-
-    .fgroup{ display:flex; flex-direction:column; gap:6px; }
-    .flabel{
+    .mf-group{ display:flex; flex-direction:column; gap:6px; min-width:260px; }
+    .mf-label{
       font-size:10px; letter-spacing:.18em; text-transform:uppercase;
       color: var(--muted2);
     }
-    .filterpanel input, .filterpanel select{
+    .model-filter select{
       background: rgba(0,0,0,0.40);
       border-radius:12px;
       border:1px solid rgba(255,255,255,0.12);
@@ -169,90 +164,24 @@
       color:#fff;
       outline:none;
       transition: border-color .2s ease, box-shadow .2s ease;
+      min-width:260px;
     }
-    .filterpanel input:focus, .filterpanel select:focus{
+    .model-filter select:focus{
       border-color: rgba(179,31,36,0.55);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
-    .filterpanel select option{ color:#000; }
+    .model-filter select option{ color:#000; }
 
-    .pricegrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-
-    .btn{
-      border:none; cursor:pointer; border-radius:999px;
-      padding:10px 14px;
-      font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:800;
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease, border-color .15s ease;
-      user-select:none; white-space:nowrap;
-    }
-    .btn-primary{
-      background: linear-gradient(135deg, var(--red), #740509);
-      color:#fff;
-      box-shadow: 0 16px 38px rgba(179,31,36,0.20);
-    }
-    .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.04); }
-    .btn-ghost{
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.9);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-    .btn-ghost:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.18);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.45);
-    }
-
-    .tagbar{
-      grid-column: 1 / -1;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,0.08);
-      margin-top:4px;
-    }
-    .chip{
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.32);
-      color: rgba(255,255,255,0.78);
-      cursor:pointer;
-      user-select:none;
-      transition: transform .14s ease, border-color .14s ease, background .14s ease, color .14s ease;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.28);
-      background: rgba(179,31,36,0.08);
-      color:#fff;
-    }
-    .chip.active{
-      border-color: rgba(179,31,36,0.75);
-      background: rgba(179,31,36,0.14);
-      color:#fff;
-      box-shadow: 0 0 0 2px rgba(179,31,36,0.10);
-    }
-
-    .result-meta{
-      margin-top: 12px;
+    .mf-meta{
       color: var(--muted2);
       font-size: 12px;
       letter-spacing:.08em;
       text-transform:uppercase;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+      margin-left:auto;
+      padding-bottom:4px;
+      white-space:nowrap;
     }
-    .result-meta b{ color:#fff; }
+    .mf-meta b{ color:#fff; }
 
     section.catalog-section{ margin:18px 0 32px; }
     .section-header{
@@ -291,7 +220,6 @@
       overflow:hidden;
       transform: translateZ(0);
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, filter .16s ease;
-      cursor:pointer;
     }
     .part-card:hover{
       transform: translateY(-2px);
@@ -346,7 +274,7 @@
       background:rgba(0,0,0,0.60);
       color:#fff; font-size:14px; cursor:pointer;
       opacity:0; pointer-events:none;
-      transition:opacity .18s ease-out, transform .18s ease-out, border-color .18s ease-out;
+      transition:opacity .18s ease-out, transform .18s ease-out;
       backdrop-filter: blur(8px);
     }
     .image-nav-btn.prev{ left:8px; }
@@ -365,14 +293,6 @@
       border:1px solid rgba(255,255,255,0.10);
       color: rgba(255,255,255,0.72);
       background: rgba(0,0,0,0.30);
-      cursor:pointer; user-select:none;
-      transition: transform .14s ease, border-color .14s ease, color .14s ease, background .14s ease;
-    }
-    .tag:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.32);
-      color: rgba(255,255,255,0.92);
-      background: rgba(179,31,36,0.08);
     }
 
     .part-note{
@@ -443,17 +363,15 @@
       .nav{ padding:12px 16px 10px; }
       footer .row{ padding:0 16px; }
       .page-title{ font-size:30px; }
-      .filterpanel{
-        grid-template-columns: 1fr 1fr;
-      }
+      .mf-meta{ margin-left:0; width:100%; }
+      .model-filter select{ min-width: 240px; }
     }
     @media (max-width:640px){
       .page-title{ font-size:26px; }
       .parts-grid{ grid-template-columns: 1fr; }
-      .filterpanel{
-        grid-template-columns: 1fr;
-      }
-      .pricegrid{ grid-template-columns: 1fr; }
+      .model-filter{ gap:12px; }
+      .mf-group{ min-width: 100%; }
+      .model-filter select{ width:100%; min-width:0; }
     }
   </style>
 </head>
@@ -490,51 +408,16 @@
         Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
       </p>
 
-      <!-- FILTER PANEL -->
-      <div class="filterpanel" id="filterPanel">
-        <div class="fgroup">
-          <div class="flabel">Hľadať</div>
-          <input id="fSearch" type="text" placeholder="Názov / meta / popis / tagy...">
-        </div>
-
-        <div class="fgroup">
-          <div class="flabel">Zoradiť</div>
-          <select id="fSort">
-            <option value="default">Odporúčané</option>
-            <option value="price-asc">Cena ↑</option>
-            <option value="price-desc">Cena ↓</option>
-            <option value="name-asc">Názov A–Z</option>
-            <option value="name-desc">Názov Z–A</option>
+      <!-- FILTER: iba model auta -->
+      <div class="model-filter">
+        <div class="mf-group">
+          <div class="mf-label">Model auta</div>
+          <select id="modelSelect">
+            <option value="all">Všetky modely</option>
           </select>
         </div>
-
-        <div class="fgroup">
-          <div class="flabel">Cena (min/max)</div>
-          <div class="pricegrid">
-            <input id="fMin" type="number" inputmode="decimal" placeholder="Min €">
-            <input id="fMax" type="number" inputmode="decimal" placeholder="Max €">
-          </div>
-        </div>
-
-        <div class="fgroup">
-          <div class="flabel">Sklad</div>
-          <select id="fStock">
-            <option value="all">Všetko</option>
-            <option value="in">Len skladom</option>
-          </select>
-        </div>
-
-        <div class="fgroup">
-          <div class="flabel">&nbsp;</div>
-          <button id="fReset" class="btn btn-ghost" type="button">Reset</button>
-        </div>
-
-        <div class="tagbar" id="tagBar">
-          <!-- dynamicky sa doplní -->
-        </div>
+        <div class="mf-meta" id="modelMeta" style="display:none;"></div>
       </div>
-
-      <div class="result-meta" id="resultMeta" style="display:none;"></div>
     </section>
 
     <section id="skladom" class="catalog-section">
@@ -560,58 +443,57 @@
   </footer>
 
   <script>
-    // ========= CONFIG =========
     const JSON_URL = "skladom.json";
 
-    // ========= HELPERS =========
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const safeText = (v) => (v == null) ? "" : String(v);
+    const $ = (s, r=document) => r.querySelector(s);
+    const safe = (v) => (v == null) ? "" : String(v);
 
-    function parseEuroPrice(str){
-      const s = safeText(str).replace(",", ".").toLowerCase();
-      const m = s.match(/(\d+(\.\d+)?)/);
-      return m ? Number(m[1]) : null;
+    let ALL = [];
+
+    // model z produktu:
+    // 1) part.model (ak existuje)
+    // 2) inak prvá časť meta pred "·"
+    function inferModel(part){
+      const direct = safe(part.model).trim();
+      if (direct) return direct;
+
+      const meta = safe(part.meta).trim();
+      if (!meta) return "Neurčené";
+
+      // vezmeme všetko pred prvým "·"
+      const first = meta.split("·")[0].trim();
+      return first || "Neurčené";
     }
 
     function normalizePart(raw){
-      const part = Object.assign({}, raw);
-      const base = (part.image && String(part.image).trim())
-        ? String(part.image).trim()
-        : "img/placeholder-part.jpg";
-      const extra = Array.isArray(part.images)
-        ? part.images.map(String).map(s => s.trim()).filter(Boolean)
-        : [];
-      part.allImages = [base, ...extra.filter(src => src !== base)];
-      part.priceNum = parseEuroPrice(part.price);
-      part.tags = Array.isArray(part.tags) ? part.tags : [];
-      return part;
+      const p = Object.assign({}, raw);
+      const base = (p.image && String(p.image).trim()) ? String(p.image).trim() : "img/placeholder-part.jpg";
+      const extra = Array.isArray(p.images) ? p.images.map(String).map(s=>s.trim()).filter(Boolean) : [];
+      p.allImages = [base, ...extra.filter(src => src !== base)];
+      p.tags = Array.isArray(p.tags) ? p.tags : [];
+      p._model = inferModel(p);
+      return p;
     }
 
     function buildCardHTML(part){
-      const tagsHtml = (part.tags || []).map(t => `<span class="tag" data-tag="${encodeURIComponent(t)}">${t}</span>`).join("");
+      const tagsHtml = (part.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
       const imageSrc = (part.allImages && part.allImages.length) ? part.allImages[0] : "img/placeholder-part.jpg";
       const hasGallery = part.allImages && part.allImages.length > 1;
-      const priceValue = safeText(part.price) || "Na dopyt";
-      const suffix = safeText(part.price_suffix);
+      const priceValue = safe(part.price) || "Na dopyt";
+      const suffix = safe(part.price_suffix);
 
       return `
-        <article class="part-card"
-          data-search="${encodeURIComponent(
-            [part.name, part.meta, part.note, (part.tags||[]).join(" ")].join(" ").toLowerCase()
-          )}"
-          data-tags="${encodeURIComponent((part.tags||[]).join("|"))}"
-          data-price-num="${part.priceNum != null ? part.priceNum : ""}"
-        >
+        <article class="part-card" data-model="${encodeURIComponent(part._model)}">
           <div class="part-top">
             <div>
-              <div class="part-name">${safeText(part.name)}</div>
-              <div class="part-meta">${safeText(part.meta)}</div>
+              <div class="part-name">${safe(part.name)}</div>
+              <div class="part-meta">${safe(part.meta)}</div>
             </div>
-            <div class="part-badge">${safeText(part.stockLabel) || "Skladom"}</div>
+            <div class="part-badge">${safe(part.stockLabel) || "Skladom"}</div>
           </div>
 
           <div class="part-image" data-current-index="0" data-images="${encodeURIComponent((part.allImages||[]).join("|"))}">
-            <img src="${imageSrc}" alt="${safeText(part.name) || "diel"}" loading="lazy">
+            <img src="${imageSrc}" alt="${safe(part.name) || "diel"}" loading="lazy">
             ${hasGallery ? `
               <button type="button" class="image-nav-btn prev" aria-label="Predchádzajúca fotka">&#10094;</button>
               <button type="button" class="image-nav-btn next" aria-label="Ďalšia fotka">&#10095;</button>
@@ -620,132 +502,21 @@
 
           ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
 
-          <p class="part-note">${safeText(part.note)}</p>
+          <p class="part-note">${safe(part.note)}</p>
 
           <div class="part-bottom">
             <div class="price">
               ${priceValue}
               ${suffix ? `<span>${suffix}</span>` : ""}
             </div>
-
             <button type="button" class="cta-mini">Detail</button>
           </div>
         </article>
       `;
     }
 
-    // ========= STATE =========
-    let ALL = [];
-    let ACTIVE_TAGS = new Set();
-
-    const ui = {
-      container: $("#parts-skladom"),
-      resultMeta: $("#resultMeta"),
-      fSearch: $("#fSearch"),
-      fSort: $("#fSort"),
-      fMin: $("#fMin"),
-      fMax: $("#fMax"),
-      fStock: $("#fStock"),
-      fReset: $("#fReset"),
-      tagBar: $("#tagBar"),
-    };
-
-    function setResultMeta(html){
-      if (!html){
-        ui.resultMeta.style.display = "none";
-        ui.resultMeta.innerHTML = "";
-        return;
-      }
-      ui.resultMeta.style.display = "flex";
-      ui.resultMeta.innerHTML = html;
-    }
-
-    function rebuildTagBar(){
-      const map = new Map();
-      ALL.forEach(p => (p.tags||[]).forEach(t => map.set(t, (map.get(t)||0)+1)));
-
-      const tagsSorted = Array.from(map.entries())
-        .sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]))
-        .map(([t,count]) => ({ t, count }));
-
-      ui.tagBar.innerHTML = tagsSorted.map(({t,count}) => `
-        <div class="chip ${ACTIVE_TAGS.has(t) ? "active" : ""}" data-tag="${encodeURIComponent(t)}">
-          ${t} <span style="opacity:.6">(${count})</span>
-        </div>
-      `).join("") || `<div style="color:var(--muted2); font-size:12px;">Žiadne tagy</div>`;
-    }
-
-    function applyFilters(){
-      const q = safeText(ui.fSearch.value).trim().toLowerCase();
-      const min = ui.fMin.value ? Number(ui.fMin.value) : null;
-      const max = ui.fMax.value ? Number(ui.fMax.value) : null;
-      const sort = safeText(ui.fSort.value);
-      const stock = safeText(ui.fStock.value);
-
-      let out = ALL.slice();
-
-      // search
-      if (q){
-        out = out.filter(p => {
-          const hay = [p.name, p.meta, p.note, (p.tags||[]).join(" ")].join(" ").toLowerCase();
-          return hay.includes(q);
-        });
-      }
-
-      // tags (AND) – musí obsahovať všetky vybrané tagy
-      if (ACTIVE_TAGS.size){
-        out = out.filter(p => {
-          const set = new Set(p.tags || []);
-          for (const t of ACTIVE_TAGS){
-            if (!set.has(t)) return false;
-          }
-          return true;
-        });
-      }
-
-      // price range
-      if (min != null){
-        out = out.filter(p => p.priceNum != null && p.priceNum >= min);
-      }
-      if (max != null){
-        out = out.filter(p => p.priceNum != null && p.priceNum <= max);
-      }
-
-      // stock (future-ready)
-      if (stock === "in"){
-        out = out.filter(p => true); // všetko je skladom – placeholder pre budúcnosť
-      }
-
-      // sort
-      if (sort === "price-asc"){
-        out.sort((a,b) => (a.priceNum ?? Number.POSITIVE_INFINITY) - (b.priceNum ?? Number.POSITIVE_INFINITY));
-      } else if (sort === "price-desc"){
-        out.sort((a,b) => (b.priceNum ?? -1) - (a.priceNum ?? -1));
-      } else if (sort === "name-asc"){
-        out.sort((a,b)=> safeText(a.name).localeCompare(safeText(b.name)));
-      } else if (sort === "name-desc"){
-        out.sort((a,b)=> safeText(b.name).localeCompare(safeText(a.name)));
-      }
-
-      if (!out.length){
-        ui.container.innerHTML = `
-          <div class="empty">
-            Nič sa nenašlo. Skús reset filtrov alebo zmeniť hľadanie.
-          </div>
-        `;
-        setResultMeta(`<span>Zobrazené: <b>0</b> / ${ALL.length}</span>`);
-        return;
-      }
-
-      ui.container.innerHTML = out.map(buildCardHTML).join("");
-      setResultMeta(`<span>Zobrazené: <b>${out.length}</b> / ${ALL.length}</span>`);
-
-      // bind gallery arrows after render (event delegation is also OK, but keep it simple)
-      bindGallery();
-    }
-
-    function bindGallery(){
-      ui.container.querySelectorAll(".part-card").forEach(card => {
+    function bindGallery(container){
+      container.querySelectorAll(".part-card").forEach(card => {
         const wrap = card.querySelector(".part-image");
         const prev = card.querySelector(".image-nav-btn.prev");
         const next = card.querySelector(".image-nav-btn.next");
@@ -775,53 +546,53 @@
       });
     }
 
-    function bindUI(){
-      ui.fSearch.addEventListener("input", applyFilters);
-      ui.fSort.addEventListener("change", applyFilters);
-      ui.fMin.addEventListener("input", applyFilters);
-      ui.fMax.addEventListener("input", applyFilters);
-      ui.fStock.addEventListener("change", applyFilters);
+    function populateModelSelect(){
+      const select = $("#modelSelect");
+      const meta = $("#modelMeta");
 
-      ui.fReset.addEventListener("click", () => {
-        ui.fSearch.value = "";
-        ui.fSort.value = "default";
-        ui.fMin.value = "";
-        ui.fMax.value = "";
-        ui.fStock.value = "all";
-        ACTIVE_TAGS.clear();
-        rebuildTagBar();
-        applyFilters();
-      });
+      const counts = new Map();
+      ALL.forEach(p => counts.set(p._model, (counts.get(p._model) || 0) + 1));
 
-      ui.tagBar.addEventListener("click", (e) => {
-        const chip = e.target.closest(".chip");
-        if (!chip) return;
-        const t = decodeURIComponent(chip.dataset.tag || "");
-        if (!t) return;
+      const models = Array.from(counts.keys()).sort((a,b)=>a.localeCompare(b, "sk"));
 
-        if (ACTIVE_TAGS.has(t)) ACTIVE_TAGS.delete(t);
-        else ACTIVE_TAGS.add(t);
+      // reset options
+      select.innerHTML = `<option value="all">Všetky modely</option>` + models.map(m => {
+        const c = counts.get(m);
+        return `<option value="${encodeURIComponent(m)}">${m} (${c})</option>`;
+      }).join("");
 
-        rebuildTagBar();
-        applyFilters();
-      });
+      // meta text
+      meta.style.display = "block";
+      meta.innerHTML = `Zobrazené: <b>${ALL.length}</b> / ${ALL.length}`;
+    }
 
-      // clicking a tag inside a card toggles it too
-      ui.container.addEventListener("click", (e) => {
-        const tagEl = e.target.closest(".tag");
-        if (!tagEl) return;
-        const t = decodeURIComponent(tagEl.dataset.tag || "");
-        if (!t) return;
+    function applyModelFilter(){
+      const select = $("#modelSelect");
+      const meta = $("#modelMeta");
+      const container = $("#parts-skladom");
+      const val = select.value;
 
-        if (ACTIVE_TAGS.has(t)) ACTIVE_TAGS.delete(t);
-        else ACTIVE_TAGS.add(t);
+      let out = ALL.slice();
+      if (val !== "all"){
+        out = out.filter(p => encodeURIComponent(p._model) === val);
+      }
 
-        rebuildTagBar();
-        applyFilters();
-      });
+      if (!out.length){
+        container.innerHTML = `<div class="empty">Pre tento model tu zatiaľ nič nie je.</div>`;
+        meta.style.display = "block";
+        meta.innerHTML = `Zobrazené: <b>0</b> / ${ALL.length}`;
+        return;
+      }
+
+      container.innerHTML = out.map(buildCardHTML).join("");
+      bindGallery(container);
+
+      meta.style.display = "block";
+      meta.innerHTML = `Zobrazené: <b>${out.length}</b> / ${ALL.length}`;
     }
 
     async function load(){
+      const container = $("#parts-skladom");
       try{
         const res = await fetch(JSON_URL);
         if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
@@ -830,26 +601,18 @@
         ALL = raw.map(normalizePart);
 
         if (!ALL.length){
-          ui.container.innerHTML = `
-            <div class="empty">
-              Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
-            </div>
-          `;
-          setResultMeta(`<span>Zobrazené: <b>0</b> / 0</span>`);
+          container.innerHTML = `<div class="empty">Momentálne nemáme žiadne diely označené ako <b>skladom</b>.</div>`;
           return;
         }
 
-        bindUI();
-        rebuildTagBar();
-        applyFilters();
+        populateModelSelect();
+        applyModelFilter();
+
+        $("#modelSelect").addEventListener("change", applyModelFilter);
+
       }catch(err){
         console.error(err);
-        ui.container.innerHTML = `
-          <div class="empty">
-            Nepodarilo sa načítať skladové diely. Skús stránku obnoviť alebo nás kontaktuj:
-            <b>info@remperformance.sk</b>.
-          </div>
-        `;
+        container.innerHTML = `<div class="empty">Nepodarilo sa načítať skladové diely. Skús obnoviť stránku.</div>`;
       }
     }
 
