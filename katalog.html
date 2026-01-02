@@ -18,7 +18,7 @@
       --muted:#cfcfcf;
       --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 18px 55px rgba(0,0,0,0.55);
+      --shadow: 0 14px 40px rgba(0,0,0,0.48);
       --radius-xl: 18px;
     }
 
@@ -77,7 +77,6 @@
       width:100%; max-width:none; margin:0;
       padding:14px 32px 10px;
       display:flex; align-items:center; justify-content:space-between; gap:18px;
-      position:relative;
     }
 
     .brand{
@@ -111,9 +110,7 @@
       display:flex; align-items:center; gap:8px;
       transition:all .18s ease-out;
     }
-    .nav-links a span.dot{
-      width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,0.3);
-    }
+    .nav-links a span.dot{ width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,0.3); }
     .nav-links a:hover{
       color:var(--text); border-color:rgba(255,255,255,0.18);
       transform:translateY(-1px); box-shadow:0 10px 25px rgba(0,0,0,0.6);
@@ -138,51 +135,204 @@
       font-size:14px; color:var(--muted); line-height:1.6; margin: 0 0 16px;
     }
 
-    /* ===== Model filter (len toto) ===== */
-    .model-filter{
-      padding:14px;
-      border-radius:18px;
+    /* ===== FILTER (premium, compact, bez bordelu) ===== */
+    .filterbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 0 4px;
+    }
+
+    .filter-pill{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.28);
-      box-shadow: 0 14px 45px rgba(0,0,0,0.45);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+      cursor:pointer;
+      user-select:none;
+      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      min-width: 320px;
+    }
+    .filter-pill:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.26);
+      box-shadow: 0 16px 44px rgba(0,0,0,0.55);
+    }
+
+    .fp-dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(255,255,255,0.22);
+    }
+    .filter-pill.active .fp-dot{
+      background: var(--red);
+      box-shadow: 0 0 14px rgba(179,31,36,0.75);
+    }
+
+    .fp-label{
+      font-size:10px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      line-height:1;
+    }
+
+    .fp-value{
+      font-family:"Rajdhani", Arial, sans-serif;
+      font-size:16px;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fff;
+      line-height:1.05;
+      margin-top:2px;
+      max-width: 220px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .fp-right{
+      margin-left:auto;
+      display:flex; align-items:center; gap:8px;
+    }
+
+    .fp-clear{
+      display:none;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .fp-clear:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.35);
+    }
+
+    .fp-chev{
+      width:26px; height:26px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
+      display:grid; place-items:center;
+      color:#fff;
+      transition: transform .18s ease;
+    }
+    .filter-pill.open .fp-chev{ transform: rotate(180deg); }
+
+    .filter-menu{
+      position:absolute;
+      left:0;
+      top: calc(100% + 10px);
+      width: min(520px, calc(100vw - 64px));
+      padding:12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(10,10,10,0.95);
+      box-shadow: 0 26px 90px rgba(0,0,0,0.85);
+      display:none;
+      z-index:60;
+      backdrop-filter: blur(10px);
+    }
+    .filter-pill.open .filter-menu{ display:block; }
+
+    .fm-top{
       display:flex;
       gap:10px;
-      align-items:end;
-      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
     }
-    .mf-group{ display:flex; flex-direction:column; gap:6px; min-width:260px; }
-    .mf-label{
-      font-size:10px; letter-spacing:.18em; text-transform:uppercase;
-      color: var(--muted2);
-    }
-    .model-filter select{
-      background: rgba(0,0,0,0.40);
-      border-radius:12px;
+    .fm-search{
+      flex:1;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.50);
       padding:10px 12px;
-      font-size:14px;
       color:#fff;
+      font-size:14px;
       outline:none;
-      transition: border-color .2s ease, box-shadow .2s ease;
-      min-width:260px;
     }
-    .model-filter select:focus{
-      border-color: rgba(179,31,36,0.55);
+    .fm-search:focus{
+      border-color: rgba(179,31,36,0.45);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
-    .model-filter select option{ color:#000; }
-
-    .mf-meta{
-      color: var(--muted2);
-      font-size: 12px;
-      letter-spacing:.08em;
+    .fm-all{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      padding:10px 12px;
+      font-size:11px;
+      letter-spacing:.16em;
       text-transform:uppercase;
-      margin-left:auto;
-      padding-bottom:4px;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease;
       white-space:nowrap;
     }
-    .mf-meta b{ color:#fff; }
+    .fm-all:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.35);
+    }
 
+    .fm-list{
+      max-height: 280px;
+      overflow:auto;
+      padding-right:6px;
+    }
+    .fm-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition: background .14s ease, border-color .14s ease, transform .14s ease;
+    }
+    .fm-item:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.10);
+    }
+    .fm-item.active{
+      background: linear-gradient(135deg, rgba(179,31,36,0.16), rgba(179,31,36,0.04));
+      border-color: rgba(179,31,36,0.35);
+    }
+
+    .fm-name{
+      font-family:"Rajdhani", Arial, sans-serif;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#fff;
+      font-size:14px;
+      line-height:1.15;
+    }
+    .fm-count{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.35);
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+
+    /* ===== SEKCIA ===== */
     section.catalog-section{ margin:18px 0 32px; }
     .section-header{
       display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
@@ -199,12 +349,18 @@
     }
     .section-note{ font-size:12px; color:var(--muted2); line-height:1.5; }
 
+    /* GRID */
     .parts-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(280px, 320px));
+      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
       gap:16px;
       justify-content:flex-start;
       align-items:stretch;
+    }
+
+    /* 7 produktov v riadku na širokých monitoroch */
+    @media (min-width: 1650px){
+      .parts-grid{ grid-template-columns: repeat(7, minmax(0, 1fr)); }
     }
 
     .part-card{
@@ -219,13 +375,15 @@
       box-shadow:var(--shadow);
       overflow:hidden;
       transform: translateZ(0);
-      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, filter .16s ease;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+      /* performance: renderuj až keď je karta viditeľná */
+      content-visibility: auto;
+      contain-intrinsic-size: 360px;
     }
     .part-card:hover{
       transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.32);
-      box-shadow: 0 22px 70px rgba(0,0,0,0.62);
-      filter: brightness(1.02);
+      border-color: rgba(179,31,36,0.28);
+      box-shadow: 0 18px 54px rgba(0,0,0,0.58);
     }
 
     .part-top{
@@ -233,7 +391,7 @@
     }
     .part-name{
       font-family:"Rajdhani", Arial, sans-serif;
-      font-size:17px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+      font-size:16px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
       line-height:1.12; margin-bottom:4px;
     }
     .part-meta{
@@ -245,21 +403,19 @@
     .part-badge{
       font-size:10px; text-transform:uppercase; letter-spacing:0.14em;
       padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(34,197,94,0.75);
-      background: radial-gradient(circle at top, rgba(34,197,94,0.18), transparent 60%);
+      border:1px solid rgba(34,197,94,0.55);
+      background: radial-gradient(circle at top, rgba(34,197,94,0.14), transparent 60%);
       color: rgba(255,255,255,0.92);
       white-space:nowrap;
-      box-shadow:0 0 18px rgba(34,197,94,0.20);
       flex-shrink:0;
     }
 
     .part-image{
-      width:100%; height:210px; border-radius:16px; overflow:hidden;
+      width:100%; height:190px; border-radius:16px; overflow:hidden;
       margin:10px 0 10px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.50);
       position:relative;
-      box-shadow: 0 16px 55px rgba(0,0,0,0.55);
     }
     .part-image img{
       width:100%; height:100%; object-fit:contain; display:block;
@@ -307,7 +463,7 @@
       font-family:"Rajdhani", Arial, sans-serif;
       font-size:18px; font-weight:900; letter-spacing:.08em;
       color: var(--red);
-      text-shadow: 0 0 18px rgba(179,31,36,0.22);
+      text-shadow: 0 0 18px rgba(179,31,36,0.18);
       line-height:1.1;
     }
     .price span{
@@ -323,11 +479,10 @@
       font-size:11px; text-transform:uppercase; letter-spacing:0.16em;
       cursor:pointer; color:#fff; white-space:nowrap;
       transition:all .16s ease-out;
-      box-shadow: 0 14px 34px rgba(179,31,36,0.18);
     }
     .cta-mini:hover{
       transform:translateY(-1px);
-      box-shadow:0 16px 44px rgba(179,31,36,0.30);
+      box-shadow:0 14px 36px rgba(179,31,36,0.22);
       filter: brightness(1.03);
     }
 
@@ -363,15 +518,12 @@
       .nav{ padding:12px 16px 10px; }
       footer .row{ padding:0 16px; }
       .page-title{ font-size:30px; }
-      .mf-meta{ margin-left:0; width:100%; }
-      .model-filter select{ min-width: 240px; }
+      .filter-pill{ min-width: 100%; }
+      .filter-menu{ width: calc(100vw - 32px); }
     }
     @media (max-width:640px){
       .page-title{ font-size:26px; }
       .parts-grid{ grid-template-columns: 1fr; }
-      .model-filter{ gap:12px; }
-      .mf-group{ min-width: 100%; }
-      .model-filter select{ width:100%; min-width:0; }
     }
   </style>
 </head>
@@ -386,7 +538,6 @@
       <a class="brand" href="index.html" aria-label="RACEM homepage">
         <img src="assets/racem-logo.png" alt="RACEM logo">
         <div class="brand-text">
-          <div class="brand-title">RACEM</div>
           <div class="brand-sub">BEAT THEM ALL</div>
         </div>
       </a>
@@ -408,15 +559,27 @@
         Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
       </p>
 
-      <!-- FILTER: iba model auta -->
-      <div class="model-filter">
-        <div class="mf-group">
-          <div class="mf-label">Model auta</div>
-          <select id="modelSelect">
-            <option value="all">Všetky modely</option>
-          </select>
+      <!-- Filter pill -->
+      <div class="filterbar">
+        <div id="filterPill" class="filter-pill" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+          <div class="fp-dot"></div>
+          <div>
+            <div class="fp-label">Model auta</div>
+            <div id="fpValue" class="fp-value">Všetky modely</div>
+          </div>
+          <div class="fp-right">
+            <button id="fpClear" class="fp-clear" type="button" aria-label="Zrušiť filter">Reset</button>
+            <div class="fp-chev" aria-hidden="true">▾</div>
+          </div>
+
+          <div id="filterMenu" class="filter-menu" aria-label="Filter menu">
+            <div class="fm-top">
+              <input id="fmSearch" class="fm-search" type="text" placeholder="Hľadať model… (napr. E46, Octavia)">
+              <button id="fmAll" class="fm-all" type="button">Všetky</button>
+            </div>
+            <div id="fmList" class="fm-list"></div>
+          </div>
         </div>
-        <div class="mf-meta" id="modelMeta" style="display:none;"></div>
       </div>
     </section>
 
@@ -444,15 +607,13 @@
 
   <script>
     const JSON_URL = "skladom.json";
-
     const $ = (s, r=document) => r.querySelector(s);
     const safe = (v) => (v == null) ? "" : String(v);
 
     let ALL = [];
+    let MODEL_COUNTS = new Map();
+    let ACTIVE_MODEL = "all"; // encoded string alebo "all"
 
-    // model z produktu:
-    // 1) part.model (ak existuje)
-    // 2) inak prvá časť meta pred "·"
     function inferModel(part){
       const direct = safe(part.model).trim();
       if (direct) return direct;
@@ -460,7 +621,6 @@
       const meta = safe(part.meta).trim();
       if (!meta) return "Neurčené";
 
-      // vezmeme všetko pred prvým "·"
       const first = meta.split("·")[0].trim();
       return first || "Neurčené";
     }
@@ -546,49 +706,99 @@
       });
     }
 
-    function populateModelSelect(){
-      const select = $("#modelSelect");
-      const meta = $("#modelMeta");
+    function computeModels(){
+      MODEL_COUNTS = new Map();
+      ALL.forEach(p => MODEL_COUNTS.set(p._model, (MODEL_COUNTS.get(p._model) || 0) + 1));
+    }
 
-      const counts = new Map();
-      ALL.forEach(p => counts.set(p._model, (counts.get(p._model) || 0) + 1));
+    function renderModelList(filterText=""){
+      const list = $("#fmList");
+      const q = filterText.trim().toLowerCase();
 
-      const models = Array.from(counts.keys()).sort((a,b)=>a.localeCompare(b, "sk"));
+      const models = Array.from(MODEL_COUNTS.entries())
+        .sort((a,b)=>a[0].localeCompare(b[0], "sk"))
+        .filter(([name]) => !q || name.toLowerCase().includes(q));
 
-      // reset options
-      select.innerHTML = `<option value="all">Všetky modely</option>` + models.map(m => {
-        const c = counts.get(m);
-        return `<option value="${encodeURIComponent(m)}">${m} (${c})</option>`;
+      if (!models.length){
+        list.innerHTML = `<div class="empty">Nič nenájdené.</div>`;
+        return;
+      }
+
+      list.innerHTML = models.map(([name, count]) => {
+        const encoded = encodeURIComponent(name);
+        const active = (ACTIVE_MODEL === encoded) ? "active" : "";
+        return `
+          <div class="fm-item ${active}" data-model="${encoded}">
+            <div class="fm-name">${name}</div>
+            <div class="fm-count">${count}</div>
+          </div>
+        `;
       }).join("");
 
-      // meta text
-      meta.style.display = "block";
-      meta.innerHTML = `Zobrazené: <b>${ALL.length}</b> / ${ALL.length}`;
+      list.querySelectorAll(".fm-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const m = item.dataset.model || "all";
+          setActiveModel(m);
+          closeFilter();
+        });
+      });
+    }
+
+    function setActiveModel(encodedModel){
+      ACTIVE_MODEL = encodedModel || "all";
+
+      const pill = $("#filterPill");
+      const value = $("#fpValue");
+      const clearBtn = $("#fpClear");
+
+      if (ACTIVE_MODEL === "all"){
+        value.textContent = "Všetky modely";
+        clearBtn.style.display = "none";
+        pill.classList.remove("active");
+      }else{
+        value.textContent = decodeURIComponent(ACTIVE_MODEL);
+        clearBtn.style.display = "inline-flex";
+        pill.classList.add("active");
+      }
+
+      applyModelFilter();
+      renderModelList($("#fmSearch").value || "");
     }
 
     function applyModelFilter(){
-      const select = $("#modelSelect");
-      const meta = $("#modelMeta");
       const container = $("#parts-skladom");
-      const val = select.value;
 
       let out = ALL.slice();
-      if (val !== "all"){
-        out = out.filter(p => encodeURIComponent(p._model) === val);
+      if (ACTIVE_MODEL !== "all"){
+        out = out.filter(p => encodeURIComponent(p._model) === ACTIVE_MODEL);
       }
 
       if (!out.length){
         container.innerHTML = `<div class="empty">Pre tento model tu zatiaľ nič nie je.</div>`;
-        meta.style.display = "block";
-        meta.innerHTML = `Zobrazené: <b>0</b> / ${ALL.length}`;
         return;
       }
 
       container.innerHTML = out.map(buildCardHTML).join("");
       bindGallery(container);
+    }
 
-      meta.style.display = "block";
-      meta.innerHTML = `Zobrazené: <b>${out.length}</b> / ${ALL.length}`;
+    function openFilter(){
+      const pill = $("#filterPill");
+      pill.classList.add("open");
+      pill.setAttribute("aria-expanded","true");
+      $("#fmSearch").focus();
+      renderModelList($("#fmSearch").value || "");
+    }
+
+    function closeFilter(){
+      const pill = $("#filterPill");
+      pill.classList.remove("open");
+      pill.setAttribute("aria-expanded","false");
+    }
+
+    function toggleFilter(){
+      const pill = $("#filterPill");
+      pill.classList.contains("open") ? closeFilter() : openFilter();
     }
 
     async function load(){
@@ -605,10 +815,9 @@
           return;
         }
 
-        populateModelSelect();
-        applyModelFilter();
-
-        $("#modelSelect").addEventListener("change", applyModelFilter);
+        computeModels();
+        setActiveModel("all");
+        renderModelList("");
 
       }catch(err){
         console.error(err);
@@ -616,7 +825,59 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", load);
+    // UI events
+    document.addEventListener("DOMContentLoaded", () => {
+      load();
+
+      const pill = $("#filterPill");
+      const menu = $("#filterMenu");
+      const search = $("#fmSearch");
+
+      pill.addEventListener("click", (e) => {
+        // ak klikneš na menu prvky, nepreklikávaj toggle
+        if (e.target.closest(".filter-menu")) return;
+        if (e.target.id === "fpClear") return;
+        toggleFilter();
+      });
+
+      pill.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          toggleFilter();
+        }
+        if (e.key === "Escape"){
+          closeFilter();
+        }
+      });
+
+      $("#fpClear").addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        setActiveModel("all");
+      });
+
+      $("#fmAll").addEventListener("click", () => {
+        setActiveModel("all");
+        closeFilter();
+      });
+
+      search.addEventListener("input", () => {
+        renderModelList(search.value || "");
+      });
+
+      // klik mimo → zavri
+      document.addEventListener("click", (e) => {
+        const inPill = e.target.closest("#filterPill");
+        if (!inPill) closeFilter();
+      });
+
+      // ESC zavrie aj keď píšeš
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeFilter();
+      });
+
+      // zabráň klikom v menu aby sa to nezatváralo toggle-om
+      menu.addEventListener("click", (e) => e.stopPropagation());
+    });
   </script>
 </body>
 </html>
