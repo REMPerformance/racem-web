@@ -221,185 +221,58 @@
       font-size:14px;
       color:var(--muted);
       max-width:none;
-      line-height:1.55;
+      line-height:1.6;
+      margin: 0 0 16px;
     }
 
-    /* ===== Trust strip ===== */
-    .trust-strip{
-      margin-top:16px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .trust-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.15));
-      color:rgba(255,255,255,0.88);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-    }
-    .trust-pill b{color:#fff}
-    .trust-pill .i{
-      width:18px;height:18px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.03);
-      font-size:12px;
-      opacity:.95;
-    }
-    .trust-pill.red{
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 12px 30px rgba(179,31,36,0.16);
-    }
-
-    /* ===== Filter bar ===== */
+    /* ===== SIMPLE FILTER (back to classic) ===== */
     .filterbar{
-      margin-top:18px;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(179,31,36,0.14), transparent 52%),
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.16));
-      border:1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 14px 14px;
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
       align-items:center;
-      box-shadow: 0 18px 55px rgba(0,0,0,0.45);
-      position:relative;
-      overflow:hidden;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      box-shadow: 0 14px 45px rgba(0,0,0,0.45);
     }
-    .filterbar::before{
-      content:"";
-      position:absolute;
-      inset:-60px;
-      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04), transparent 55%);
-      transform: rotate(12deg);
-      pointer-events:none;
-      opacity:.85;
-    }
-    .filterbar > *{ position:relative; }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width: 160px;
-    }
-    .field label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.14em;
-      color:var(--muted2);
-    }
-    .field input, .field select{
-      background: rgba(0,0,0,0.35);
-      border-radius: 12px;
+    .filterbar input,
+    .filterbar select{
+      background: rgba(0,0,0,0.38);
+      border-radius:12px;
       border:1px solid rgba(255,255,255,0.12);
-      padding: 10px 12px;
+      padding:10px 12px;
       font-size:14px;
       color:#fff;
       outline:none;
       transition: border-color .2s ease, box-shadow .2s ease;
     }
-    .field input:focus, .field select:focus{
+    .filterbar input:focus,
+    .filterbar select:focus{
       border-color: rgba(179,31,36,0.55);
       box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
     }
-    .field select option{ color:#000; }
+    .filterbar select option{ color:#000; }
 
-    .field-grow{ flex:1 1 260px; min-width: 220px; }
-
-    .toggle-row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding-top: 18px;
-    }
-    .toggle{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.85);
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-    }
-    .toggle:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.18);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.45);
-    }
-    .switch{
-      width:44px; height:24px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.16);
-      background: rgba(0,0,0,0.45);
-      position:relative;
-    }
-    .switch::after{
-      content:"";
-      position:absolute;
-      top:3px; left:3px;
-      width:18px; height:18px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.75);
-      transition: transform .18s ease, background .18s ease;
-    }
-    .toggle.is-on{
-      border-color: rgba(179,31,36,0.55);
-      box-shadow: 0 12px 30px rgba(179,31,36,0.14);
-    }
-    .toggle.is-on .switch{
-      border-color: rgba(179,31,36,0.55);
-      background: rgba(179,31,36,0.18);
-    }
-    .toggle.is-on .switch::after{
-      transform: translateX(20px);
-      background: #fff;
-    }
-
-    .filter-actions{
-      margin-left:auto;
-      display:flex;
-      gap:10px;
-      align-items:flex-end;
-      padding-top: 18px;
-    }
+    .filterbar .grow{ flex:1 1 320px; min-width:220px; }
     .btn{
       border:none;
       cursor:pointer;
-      border-radius: 999px;
-      padding: 10px 14px;
+      border-radius:999px;
+      padding:10px 14px;
       font-size:12px;
       letter-spacing:.14em;
       text-transform:uppercase;
-      font-weight:700;
+      font-weight:800;
       transition: transform .15s ease, box-shadow .15s ease, filter .15s ease, border-color .15s ease;
       user-select:none;
+      white-space:nowrap;
     }
     .btn-primary{
       background: linear-gradient(135deg, var(--red), #740509);
       color:#fff;
-      box-shadow: 0 16px 38px rgba(179,31,36,0.25);
+      box-shadow: 0 16px 38px rgba(179,31,36,0.20);
     }
     .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.04); }
     .btn-ghost{
@@ -460,7 +333,7 @@
       font-size:12px;
       color:var(--muted2);
       max-width:none;
-      line-height:1.4;
+      line-height:1.5;
     }
 
     /* ===== GRID ===== */
@@ -472,11 +345,11 @@
       align-items:stretch;
     }
 
-    /* ===== CARDS: premium look + shine sweep ===== */
+    /* ===== CARD: readable first ===== */
     .part-card{
       position:relative;
       background:
-        radial-gradient(circle at top left, rgba(179,31,36,0.11), transparent 60%),
+        radial-gradient(circle at top left, rgba(179,31,36,0.10), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.16)),
         var(--panel);
       border-radius:var(--radius-xl);
@@ -487,171 +360,89 @@
       transform: translateZ(0);
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, filter .16s ease;
       cursor:pointer;
-      will-change: transform;
     }
-
-    /* hover outline */
     .part-card:hover{
-      transform: translateY(-3px);
-      border-color: rgba(179,31,36,0.35);
-      box-shadow: 0 22px 70px rgba(0,0,0,0.65);
-      filter: brightness(1.03);
-    }
-
-    /* shine sweep */
-    .part-card::before{
-      content:"";
-      position:absolute;
-      top:-40%;
-      left:-60%;
-      width: 140%;
-      height: 140%;
-      background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.08) 50%, transparent 65%);
-      transform: rotate(10deg);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease;
-    }
-    .part-card:hover::before{
-      opacity:1;
-      animation: shine 1.05s ease forwards;
-    }
-    @keyframes shine{
-      0%{ transform: translateX(-10%) rotate(10deg); }
-      100%{ transform: translateX(28%) rotate(10deg); }
-    }
-
-    /* ribbon for status */
-    .ribbon{
-      position:absolute;
-      top:14px;
-      left:-52px;
-      width: 170px;
-      transform: rotate(-35deg);
-      text-align:center;
-      padding:7px 0;
-      font-size:10px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      font-weight:800;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.20);
-      backdrop-filter: blur(10px);
-      opacity:0.95;
-      pointer-events:none;
-    }
-    .ribbon.reserved{
-      background: rgba(245,158,11,0.82);
-      box-shadow: 0 16px 44px rgba(245,158,11,0.20);
-    }
-    .ribbon.sold{
-      background: rgba(239,68,68,0.78);
-      box-shadow: 0 16px 44px rgba(239,68,68,0.18);
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.32);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.62);
+      filter: brightness(1.02);
     }
 
     .part-top{
       display:flex;
       justify-content:space-between;
       gap:10px;
-      margin-bottom:8px;
+      margin-bottom:10px;
       align-items:flex-start;
     }
 
     .part-name{
-      font-size:15px;
-      font-weight:800;
-      letter-spacing:.06em;
-      text-transform:uppercase;
       font-family:"Rajdhani", Arial, sans-serif;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      line-height:1.12;
+      margin-bottom:4px;
     }
 
     .part-meta{
-      font-size:11px;
-      color:var(--muted2);
-      line-height:1.4;
-      margin-top:2px;
+      font-size:12.5px;
+      color: rgba(255,255,255,0.78);
+      line-height:1.45;
     }
 
     .badge-row{
       display:flex;
       flex-direction:column;
       align-items:flex-end;
-      gap:6px;
+      gap:8px;
       flex-shrink:0;
+      max-width: 45%;
     }
 
     .part-badge{
       font-size:10px;
       text-transform:uppercase;
       letter-spacing:0.14em;
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      white-space:nowrap;
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.9);
-    }
-
-    .part-badge.in-stock{
-      border-color:rgba(34,197,94,0.95);
-      color:#d9ffe9;
-      background: radial-gradient(circle at top, rgba(34,197,94,0.22), transparent 60%);
-      box-shadow:0 0 18px rgba(34,197,94,0.28);
-    }
-
-    /* quick info chips (condition/city/stock) */
-    .quickrow{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .qchip{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:4px 8px;
+      padding:6px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.22);
-      color: rgba(255,255,255,0.85);
-      font-size:10px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      opacity:.92;
+      white-space:nowrap;
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.92);
     }
-    .qchip svg{ width:12px; height:12px; opacity:.9; }
-    .qchip.ok{ border-color: rgba(34,197,94,0.55); }
-    .qchip.warn{ border-color: rgba(245,158,11,0.55); }
+    .part-badge.in-stock{
+      border-color:rgba(34,197,94,0.75);
+      background: radial-gradient(circle at top, rgba(34,197,94,0.18), transparent 60%);
+      box-shadow:0 0 18px rgba(34,197,94,0.20);
+    }
 
-    /* image glass */
+    /* image */
     .part-image{
       width:100%;
       height:210px;
       border-radius:16px;
       overflow:hidden;
-      margin:8px 0 10px;
+      margin:10px 0 10px;
       border:1px solid rgba(255,255,255,0.10);
-      background:
-        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.05), transparent 50%),
-        rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.50);
       position:relative;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      box-shadow: 0 16px 55px rgba(0,0,0,0.55);
     }
-
     .part-image img{
       width:100%;
       height:100%;
       object-fit:contain;
       display:block;
-      transform: scale(1);
       transition: transform .22s ease, filter .22s ease;
       filter: contrast(1.02);
     }
     .part-card:hover .part-image img{
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
+    /* gallery arrows */
     .image-nav-btn{
       position:absolute;
       top:50%;
@@ -680,61 +471,42 @@
       transform: translateY(-50%) scale(1.06);
     }
 
-    .thumbhint{
-      position:absolute;
-      right:10px;
-      bottom:10px;
-      padding:6px 9px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.45);
-      color: rgba(255,255,255,0.85);
-      font-size:10px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      opacity:.88;
-      backdrop-filter: blur(8px);
-      display:none;
-    }
-    .part-image.has-gallery .thumbhint{ display:inline-flex; }
-
+    /* tags */
     .part-tags{
       display:flex;
       flex-wrap:wrap;
       gap:6px;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
-
     .tag{
       font-size:10px;
       text-transform:uppercase;
       letter-spacing:0.11em;
-      padding:4px 9px;
+      padding:5px 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-      color:var(--muted2);
-      background:rgba(8,8,8,0.9);
+      border:1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.72);
+      background: rgba(0,0,0,0.30);
       cursor:pointer;
       user-select:none;
       transition: transform .14s ease, border-color .14s ease, color .14s ease, background .14s ease;
     }
     .tag:hover{
       transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.35);
-      color: rgba(255,255,255,0.9);
+      border-color: rgba(179,31,36,0.32);
+      color: rgba(255,255,255,0.92);
       background: rgba(179,31,36,0.08);
     }
 
+    /* NOTE = fully readable (no clamp) */
     .part-note{
-      font-size:11px;
-      color:var(--muted);
-      margin-bottom:10px;
-      line-height:1.5;
-      opacity:.95;
-      display:-webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
+      font-size:13px;
+      color: rgba(255,255,255,0.86);
+      margin: 0 0 12px;
+      line-height:1.55;
+      white-space: normal;
+      overflow: visible;
+      display:block;
     }
 
     .part-bottom{
@@ -742,32 +514,31 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      font-size:11px;
     }
 
     .price{
-      font-size:13px;
-      font-weight:800;
-      letter-spacing:.06em;
       font-family:"Rajdhani", Arial, sans-serif;
-      color:#fff;
-    }
-    .price .num{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.08em;
       color: var(--red);
-      text-shadow: 0 0 16px rgba(179,31,36,0.25);
+      text-shadow: 0 0 18px rgba(179,31,36,0.22);
+      line-height:1.1;
     }
     .price span{
+      display:inline-block;
+      font-family: Arial, sans-serif;
       font-size:11px;
       font-weight:400;
       color:var(--muted2);
-      margin-left:6px;
-      letter-spacing:.10em;
+      margin-left:8px;
+      letter-spacing:.14em;
       text-transform:uppercase;
-      font-family: Arial, sans-serif;
+      vertical-align:middle;
     }
 
     .cta-mini{
-      padding:8px 12px;
+      padding:9px 12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.18);
       background:linear-gradient(135deg, var(--red), #740509);
@@ -775,7 +546,6 @@
       text-transform:uppercase;
       letter-spacing:0.16em;
       cursor:pointer;
-      text-decoration:none;
       color:#fff;
       white-space:nowrap;
       transition:all .16s ease-out;
@@ -783,7 +553,7 @@
     }
     .cta-mini:hover{
       transform:translateY(-1px);
-      box-shadow:0 16px 44px rgba(179,31,36,0.32);
+      box-shadow:0 16px 44px rgba(179,31,36,0.30);
       filter: brightness(1.03);
     }
 
@@ -990,30 +760,6 @@
       margin:0;
     }
 
-    .modal-meta-line{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
-    }
-
-    .mchip{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.88);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .mchip svg{ width:14px; height:14px; opacity:.9; }
-    .mchip.ok{ border-color: rgba(34,197,94,0.55); }
-    .mchip.warn{ border-color: rgba(245,158,11,0.55); }
-
     .modal-note{
       font-size:14px;
       line-height:1.65;
@@ -1102,24 +848,16 @@
       .wrap{ padding:0 16px 32px; }
       .nav{ padding:12px 16px 10px; }
       footer .row{ padding:0 16px; }
-
-      .filterbar{ padding: 12px; }
-      .filter-actions{ margin-left:0; width:100%; justify-content:flex-start; padding-top:0; }
-
-      .modal{
-        grid-template-columns: 1fr;
-        max-width: 720px;
-      }
+      .modal{ grid-template-columns: 1fr; max-width: 720px; }
       .media-main{ min-height: 320px; }
       .page-title{ font-size:30px; }
+      .badge-row{ max-width: 52%; }
     }
-
     @media (max-width:640px){
-      .field{ min-width: 140px; }
       .page-title{ font-size:26px; }
-      .parts-grid{
-        grid-template-columns: 1fr;
-      }
+      .parts-grid{ grid-template-columns: 1fr; }
+      .badge-row{ max-width: 60%; }
+      .filterbar .grow{ min-width: 180px; }
     }
   </style>
 </head>
@@ -1140,15 +878,9 @@
       </a>
 
       <div class="nav-links">
-        <a href="index.html">
-          <span class="dot"></span><span>Homepage</span>
-        </a>
-        <a href="katalog.html" class="active">
-          <span class="dot"></span><span>Katalóg dielov</span>
-        </a>
-        <a href="vop.html">
-          <span class="dot"></span><span>VOP & reklamácie</span>
-        </a>
+        <a href="index.html"><span class="dot"></span><span>Homepage</span></a>
+        <a href="katalog.html" class="active"><span class="dot"></span><span>Katalóg dielov</span></a>
+        <a href="vop.html"><span class="dot"></span><span>VOP & reklamácie</span></a>
       </div>
     </nav>
   </header>
@@ -1159,60 +891,20 @@
       <h1 class="page-title">KATALÓG DIELOV</h1>
       <p class="page-sub">
         Toto sú diely, ktoré máme fyzicky <b>na sklade doma</b> a vieme ich poslať hneď.
-        Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b> a náš tím to preverí.
+        Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
       </p>
 
-      <div class="trust-strip">
-        <span class="trust-pill red"><span class="i">✓</span> <b>Skladom u nás doma</b></span>
-        <span class="trust-pill"><span class="i">🚚</span> Odosielanie 1–2× týždenne</span>
-        <span class="trust-pill"><span class="i">💬</span> Rýchly dopyt cez formulár</span>
-      </div>
-
-      <!-- FILTER BAR -->
-      <div class="filterbar" id="filterbar">
-        <div class="field field-grow">
-          <label>Hľadať</label>
-          <input id="qSearch" type="text" placeholder="napr. okno e46, brzdy, svetlá...">
-        </div>
-
-        <div class="field">
-          <label>Stav</label>
-          <select id="qCondition">
-            <option value="">Všetko</option>
-            <option value="new">Nové</option>
-            <option value="used">Použité</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Mesto</label>
-          <select id="qCity">
-            <option value="">Všetko</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Sort</label>
-          <select id="qSort">
-            <option value="default">Odporúčané</option>
-            <option value="price-asc">Cena ↑</option>
-            <option value="price-desc">Cena ↓</option>
-            <option value="name-asc">Názov A–Z</option>
-            <option value="name-desc">Názov Z–A</option>
-          </select>
-        </div>
-
-        <div class="toggle-row">
-          <div id="qOnlyAvailable" class="toggle" role="button" tabindex="0" aria-pressed="false">
-            <div class="switch" aria-hidden="true"></div>
-            Len dostupné
-          </div>
-        </div>
-
-        <div class="filter-actions">
-          <button class="btn btn-ghost" id="btnClear" type="button">Clear</button>
-          <button class="btn btn-primary" id="btnContact" type="button">Rýchly dopyt</button>
-        </div>
+      <!-- SIMPLE FILTER BACK -->
+      <div class="filterbar">
+        <input id="qSearch" class="grow" type="text" placeholder="Hľadať (názov, meta, popis, tagy...)">
+        <select id="qSort">
+          <option value="default">Zoradiť: odporúčané</option>
+          <option value="price-asc">Cena ↑</option>
+          <option value="price-desc">Cena ↓</option>
+          <option value="name-asc">Názov A–Z</option>
+          <option value="name-desc">Názov Z–A</option>
+        </select>
+        <button id="btnClear" class="btn btn-ghost" type="button">Vymazať</button>
       </div>
 
       <div class="result-meta" id="resultMeta" style="display:none;"></div>
@@ -1259,8 +951,6 @@
       <div class="modal-info">
         <h3 class="modal-title" id="qmTitle"></h3>
 
-        <div class="modal-meta-line" id="qmMetaLine"></div>
-
         <div class="modal-tags" id="qmTags"></div>
 
         <p class="modal-note" id="qmNote"></p>
@@ -1287,24 +977,14 @@
   <script>
     // ========= CONFIG =========
     const JSON_URL = "skladom.json";
-    const CONTACT_JUMP = "index.html#kontakt"; // rýchly dopyt -> kontakt na home (máš to tam hotové)
-
-    // ========= ICONS (inline svg) =========
-    const ICONS = {
-      check: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2 4.8 12 3.4 13.4 9 19 21 7 19.6 5.6z"/></svg>`,
-      tool: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.7 19.3 14 10.6c.7-2.2.1-4.7-1.7-6.5C10.2 2 7.2 1.6 4.7 2.8l4.1 4.1-2.8 2.8-4.1-4.1C.7 8 .9 11 3.1 13.1c1.8 1.8 4.3 2.4 6.5 1.7l8.7 8.7c.4.4 1 .4 1.4 0l3-3c.4-.4.4-1 0-1.4z"/></svg>`,
-      pin: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>`,
-      box: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 8l-9-5-9 5 9 5 9-5zm-9 7L3 10v10l9 5 9-5V10l-9 5z"/></svg>`
-    };
+    const CONTACT_JUMP = "index.html#kontakt";
 
     // ========= HELPERS =========
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-    function safeText(v){ return (v == null) ? "" : String(v); }
+    const safeText = (v) => (v == null) ? "" : String(v);
 
     function parseEuroPrice(str){
-      // "85 €" / "85€" / "85 EUR" / "Na dopyt" -> number or null
       const s = safeText(str).replace(",", ".").toLowerCase();
       const m = s.match(/(\d+(\.\d+)?)/);
       return m ? Number(m[1]) : null;
@@ -1321,28 +1001,8 @@
         ? part.images.map(String).map(s => s.trim()).filter(s => s.length)
         : [];
 
-      const allImages = [base, ...extra.filter(src => src !== base)];
-
-      // status (optional): "reserved" | "sold" | ""  (you can add this in JSON)
-      const status = safeText(part.status).trim().toLowerCase();
-
-      // condition normalization
-      const cond = safeText(part.condition).trim().toLowerCase();
-      const isNew = cond.startsWith("nov") || cond === "new";
-      const conditionKey = isNew ? "new" : (cond ? "used" : "");
-
-      // stock number extraction (optional)
-      const stockLabel = safeText(part.stockLabel);
-      const stockNumMatch = stockLabel.match(/(\d+)/);
-      const stockNum = stockNumMatch ? parseInt(stockNumMatch[1], 10) : null;
-
-      part.baseImage = base;
-      part.allImages = allImages;
-      part.status = status; // reserved/sold/...
-      part.conditionKey = conditionKey; // new/used/""
-      part.stockNum = stockNum; // number or null
+      part.allImages = [base, ...extra.filter(src => src !== base)];
       part.priceNum = parseEuroPrice(part.price);
-
       return part;
     }
 
@@ -1352,78 +1012,39 @@
 
       const imageSrc = (part.allImages && part.allImages.length)
         ? part.allImages[0]
-        : part.baseImage || "img/placeholder-part.jpg";
+        : "img/placeholder-part.jpg";
 
       const hasGallery = part.allImages && part.allImages.length > 1;
 
-      // ribbon
-      let ribbonHtml = "";
-      if (part.status === "reserved") ribbonHtml = `<div class="ribbon reserved">Rezervované</div>`;
-      if (part.status === "sold") ribbonHtml = `<div class="ribbon sold">Predané</div>`;
-
-      // badges / quick chips
-      const conditionLabel = part.conditionKey === "new" ? "Nové" : (part.conditionKey === "used" ? "Použité" : "");
-      const conditionChip = conditionLabel
-        ? `<span class="qchip ${part.conditionKey === "new" ? "ok" : "warn"}">${ICONS.tool} ${conditionLabel}</span>`
-        : "";
-
-      const cityChip = part.city
-        ? `<span class="qchip">${ICONS.pin} ${safeText(part.city)}</span>`
-        : "";
-
-      const stockChip = part.stockLabel
-        ? `<span class="qchip ok">${ICONS.box} ${safeText(part.stockLabel)}</span>`
-        : "";
-
-      // price styling (number red, suffix gray)
       const priceValue = safeText(part.price) || "Na dopyt";
       const suffix = safeText(part.price_suffix);
 
-      const priceNum = parseEuroPrice(priceValue);
-      const styledPrice = (priceNum != null)
-        ? `<span class="num">${priceValue}</span>`
-        : `${priceValue}`;
-
       return `
         <article class="part-card"
-                 data-id="${safeText(part.id)}"
                  data-name="${encodeURIComponent(safeText(part.name))}"
-                 data-city="${encodeURIComponent(safeText(part.city))}"
-                 data-condition="${safeText(part.conditionKey)}"
-                 data-status="${safeText(part.status)}"
-                 data-price="${safeText(part.price)}"
-                 data-price-num="${part.priceNum != null ? part.priceNum : ""}"
-                 data-suffix="${encodeURIComponent(suffix)}"
-                 data-note="${encodeURIComponent(safeText(part.note))}"
                  data-meta="${encodeURIComponent(safeText(part.meta))}"
-                 data-tags="${encodeURIComponent((Array.isArray(part.tags)?part.tags:[]).join("|"))}"
+                 data-note="${encodeURIComponent(safeText(part.note))}"
+                 data-tags="${encodeURIComponent(tags.join("|"))}"
                  data-images="${encodeURIComponent((part.allImages||[]).join("|"))}"
-                 data-stocknum="${part.stockNum != null ? part.stockNum : ""}"
+                 data-price="${encodeURIComponent(priceValue)}"
+                 data-suffix="${encodeURIComponent(suffix)}"
+                 data-price-num="${part.priceNum != null ? part.priceNum : ""}"
         >
-          ${ribbonHtml}
-
           <div class="part-top">
             <div>
               <div class="part-name">${safeText(part.name)}</div>
               <div class="part-meta">${safeText(part.meta)}</div>
             </div>
-
             <div class="badge-row">
               <div class="part-badge in-stock">${safeText(part.stockLabel) || "Skladom"}</div>
-              <div class="quickrow">
-                ${conditionChip}
-                ${cityChip}
-                ${stockChip}
-              </div>
             </div>
           </div>
 
-          <div class="part-image ${hasGallery ? "has-gallery" : ""}" data-current-index="0">
+          <div class="part-image" data-current-index="0">
             <img src="${imageSrc}" alt="${safeText(part.name) || "diel"}" loading="lazy">
             ${hasGallery ? `
               <button type="button" class="image-nav-btn prev" aria-label="Predchádzajúca fotka">&#10094;</button>
               <button type="button" class="image-nav-btn next" aria-label="Ďalšia fotka">&#10095;</button>
-              <span class="thumbhint">galéria</span>
             ` : ""}
           </div>
 
@@ -1433,7 +1054,7 @@
 
           <div class="part-bottom">
             <div class="price">
-              Cena: ${styledPrice}
+              ${priceValue}
               ${suffix ? `<span>${suffix}</span>` : ""}
             </div>
 
@@ -1453,16 +1074,8 @@
       container: $("#parts-skladom"),
       resultMeta: $("#resultMeta"),
       qSearch: $("#qSearch"),
-      qCondition: $("#qCondition"),
-      qCity: $("#qCity"),
       qSort: $("#qSort"),
-      qOnlyAvailable: $("#qOnlyAvailable"),
       btnClear: $("#btnClear"),
-      btnContact: $("#btnContact"),
-    };
-
-    const toggles = {
-      onlyAvailable: false
     };
 
     function setResultMeta(text){
@@ -1475,15 +1088,8 @@
       ui.resultMeta.innerHTML = text;
     }
 
-    function buildCityOptions(items){
-      const cities = Array.from(new Set(items.map(x => safeText(x.city).trim()).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-      ui.qCity.innerHTML = `<option value="">Všetko</option>` + cities.map(c => `<option value="${encodeURIComponent(c)}">${c}</option>`).join("");
-    }
-
     function applyFilters(){
       const q = safeText(ui.qSearch.value).trim().toLowerCase();
-      const cond = safeText(ui.qCondition.value);
-      const city = decodeURIComponent(safeText(ui.qCity.value || ""));
 
       let out = ALL.slice();
 
@@ -1493,33 +1099,13 @@
             safeText(p.name),
             safeText(p.meta),
             safeText(p.note),
-            safeText(p.city),
             Array.isArray(p.tags) ? p.tags.join(" ") : ""
           ].join(" ").toLowerCase();
           return hay.includes(q);
         });
       }
 
-      if (cond){
-        out = out.filter(p => p.conditionKey === cond);
-      }
-
-      if (city){
-        out = out.filter(p => safeText(p.city).trim() === city);
-      }
-
-      if (toggles.onlyAvailable){
-        // if stockNum exists -> >0
-        // otherwise: allow if not sold
-        out = out.filter(p => {
-          if (p.status === "sold") return false;
-          if (p.stockNum != null) return p.stockNum > 0;
-          // fallback: if stockLabel exists -> true
-          return !!safeText(p.stockLabel).trim();
-        });
-      }
-
-      // sorting
+      // sort
       const sort = safeText(ui.qSort.value);
       if (sort === "price-asc"){
         out.sort((a,b) => {
@@ -1537,17 +1123,14 @@
         out.sort((a,b)=> safeText(a.name).localeCompare(safeText(b.name)));
       } else if (sort === "name-desc"){
         out.sort((a,b)=> safeText(b.name).localeCompare(safeText(a.name)));
-      } else {
-        // default: keep json order
       }
 
       VIEW = out;
 
-      // render
       if (!VIEW.length){
         ui.container.innerHTML = `
           <div class="empty">
-            Nič sa nenašlo pre aktuálne filtre. Skús zmazať filtre alebo napíš na <b>info@remperformance.sk</b>.
+            Nič sa nenašlo. Skús zmazať hľadanie alebo napíš na <b>info@remperformance.sk</b>.
           </div>
         `;
         setResultMeta(`<span>Zobrazené: <b>0</b> / ${ALL.length}</span>`);
@@ -1555,13 +1138,7 @@
       }
 
       ui.container.innerHTML = VIEW.map(buildCardHTML).join("");
-
       setResultMeta(`<span>Zobrazené: <b>${VIEW.length}</b> / ${ALL.length}</span>`);
-    }
-
-    function setToggle(el, on){
-      el.classList.toggle("is-on", !!on);
-      el.setAttribute("aria-pressed", on ? "true" : "false");
     }
 
     // ========= QUICK VIEW MODAL =========
@@ -1579,7 +1156,6 @@
       price: $("#qmPrice"),
       suffix: $("#qmSuffix"),
       tags: $("#qmTags"),
-      metaLine: $("#qmMetaLine"),
       interest: $("#qmInterest"),
     };
 
@@ -1589,11 +1165,7 @@
       close: $("#zoomClose"),
     };
 
-    const modalState = {
-      part: null,
-      images: [],
-      index: 0,
-    };
+    const modalState = { images: [], index: 0, part: null };
 
     function decodePipe(str){
       const s = decodeURIComponent(str || "");
@@ -1606,25 +1178,10 @@
       const note = decodeURIComponent(cardEl.dataset.note || "");
       const tags = decodePipe(cardEl.dataset.tags || "");
       const images = decodePipe(cardEl.dataset.images || "");
-      const price = safeText(cardEl.dataset.price) || "Na dopyt";
+      const price = decodeURIComponent(cardEl.dataset.price || "") || "Na dopyt";
       const suffix = decodeURIComponent(cardEl.dataset.suffix || "");
-      const city = decodeURIComponent(cardEl.dataset.city || "");
-      const condition = safeText(cardEl.dataset.condition || "");
-      const stockLabel = $(".part-badge.in-stock", cardEl)?.textContent?.trim() || "";
 
-      modalState.part = {
-        id: safeText(cardEl.dataset.id),
-        name,
-        meta,
-        note,
-        tags,
-        images,
-        price,
-        suffix,
-        city,
-        condition,
-        stockLabel
-      };
+      modalState.part = { name, meta, note, tags, images, price, suffix };
       modalState.images = images.length ? images : ["img/placeholder-part.jpg"];
       modalState.index = 0;
 
@@ -1632,22 +1189,8 @@
       qm.note.textContent = note || meta || "";
       qm.price.textContent = price || "Na dopyt";
       qm.suffix.textContent = suffix || "";
-
-      // meta chips
-      let condLabel = "";
-      if (condition === "new") condLabel = "Nové";
-      if (condition === "used") condLabel = "Použité";
-
-      qm.metaLine.innerHTML = `
-        ${condLabel ? `<span class="mchip ${condition==="new"?"ok":"warn"}">${ICONS.tool} ${condLabel}</span>` : ""}
-        ${city ? `<span class="mchip">${ICONS.pin} ${city}</span>` : ""}
-        ${stockLabel ? `<span class="mchip ok">${ICONS.box} ${stockLabel}</span>` : ""}
-      `;
-
-      // tags clickable
       qm.tags.innerHTML = tags.map(t => `<span class="tag" data-tag="${encodeURIComponent(t)}">${t}</span>`).join("");
 
-      // thumbs
       qm.thumbs.innerHTML = modalState.images.map((src, i) => `
         <div class="thumb ${i===0?'active':''}" data-idx="${i}">
           <img src="${src}" alt="">
@@ -1657,18 +1200,13 @@
       updateModalImage();
       qm.backdrop.classList.add("active");
       document.body.style.overflow = "hidden";
-      qm.img.focus?.();
     }
 
     function updateModalImage(){
-      if (!modalState.images.length) return;
       const src = modalState.images[modalState.index];
       qm.img.src = src;
-
-      // counter
       qm.counter.textContent = `${modalState.index + 1} / ${modalState.images.length}`;
 
-      // thumbs active
       $$(".thumb", qm.thumbs).forEach(t => t.classList.remove("active"));
       const active = $(`.thumb[data-idx="${modalState.index}"]`, qm.thumbs);
       if (active) active.classList.add("active");
@@ -1683,8 +1221,7 @@
     }
 
     function openZoom(){
-      if (!modalState.images.length) return;
-      zoom.img.src = modalState.images[modalState.index];
+      zoom.img.src = modalState.images[modalState.index] || "";
       zoom.backdrop.classList.add("active");
     }
     function closeZoom(){
@@ -1692,48 +1229,21 @@
       zoom.img.src = "";
     }
 
-    // ========= EVENTS =========
     function bindUI(){
-      // filters
-      ui.qSearch.addEventListener("input", () => applyFilters());
-      ui.qCondition.addEventListener("change", () => applyFilters());
-      ui.qCity.addEventListener("change", () => applyFilters());
-      ui.qSort.addEventListener("change", () => applyFilters());
-
-      ui.qOnlyAvailable.addEventListener("click", () => {
-        toggles.onlyAvailable = !toggles.onlyAvailable;
-        setToggle(ui.qOnlyAvailable, toggles.onlyAvailable);
-        applyFilters();
-      });
-      ui.qOnlyAvailable.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          toggles.onlyAvailable = !toggles.onlyAvailable;
-          setToggle(ui.qOnlyAvailable, toggles.onlyAvailable);
-          applyFilters();
-        }
-      });
+      ui.qSearch.addEventListener("input", applyFilters);
+      ui.qSort.addEventListener("change", applyFilters);
 
       ui.btnClear.addEventListener("click", () => {
         ui.qSearch.value = "";
-        ui.qCondition.value = "";
-        ui.qCity.value = "";
         ui.qSort.value = "default";
-        toggles.onlyAvailable = false;
-        setToggle(ui.qOnlyAvailable, false);
         applyFilters();
       });
 
-      ui.btnContact.addEventListener("click", () => {
-        window.location.href = CONTACT_JUMP;
-      });
-
-      // click delegation on grid
       ui.container.addEventListener("click", (e) => {
         const card = e.target.closest(".part-card");
         if (!card) return;
 
-        // tag click -> filter by tag
+        // tag click -> filter
         const tag = e.target.closest(".tag");
         if (tag){
           const t = decodeURIComponent(tag.dataset.tag || "");
@@ -1742,7 +1252,7 @@
           return;
         }
 
-        // gallery arrows inside card
+        // gallery arrows
         const prev = e.target.closest(".image-nav-btn.prev");
         const next = e.target.closest(".image-nav-btn.next");
         if (prev || next){
@@ -1753,32 +1263,28 @@
           const wrap = $(".part-image", card);
           const img = $("img", wrap);
           let idx = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
-
           idx = prev ? (idx - 1 + images.length) % images.length : (idx + 1) % images.length;
           wrap.dataset.currentIndex = String(idx);
           img.src = images[idx];
           return;
         }
 
-        // open modal (click on button OR whole card)
+        // open modal
         openModalFromCard(card);
       });
 
-      // modal interactions
+      // modal
       qm.close.addEventListener("click", closeModal);
       qm.close2.addEventListener("click", closeModal);
       qm.backdrop.addEventListener("click", (e) => { if (e.target === qm.backdrop) closeModal(); });
 
       qm.prev.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (!modalState.images.length) return;
         modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
         updateModalImage();
       });
-
       qm.next.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (!modalState.images.length) return;
         modalState.index = (modalState.index + 1) % modalState.images.length;
         updateModalImage();
       });
@@ -1786,12 +1292,10 @@
       qm.thumbs.addEventListener("click", (e) => {
         const t = e.target.closest(".thumb");
         if (!t) return;
-        const idx = parseInt(t.dataset.idx || "0", 10) || 0;
-        modalState.index = idx;
+        modalState.index = parseInt(t.dataset.idx || "0", 10) || 0;
         updateModalImage();
       });
 
-      // modal tags click -> filter and close
       qm.tags.addEventListener("click", (e) => {
         const tag = e.target.closest(".tag");
         if (!tag) return;
@@ -1802,27 +1306,23 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
-      // zoom on image click
-      qm.img.addEventListener("click", () => openZoom());
+      qm.img.addEventListener("click", openZoom);
 
-      // interest button -> contact page with prefilled intent (as query param you can use later if you want)
       qm.interest.addEventListener("click", () => {
-        if (!modalState.part) return;
-        const p = modalState.part;
-        const msg = encodeURIComponent(`Mám záujem o diel: ${p.name}${p.id ? ` (ID: ${p.id})` : ""} — ${p.price}${p.city ? `, ${p.city}` : ""}`);
-        // redirect to home contact, you can read msg from hash/query later if you decide
+        const msg = encodeURIComponent(`Mám záujem o: ${modalState.part?.name || "diel"} — ${modalState.part?.price || ""}`);
         window.location.href = CONTACT_JUMP + (CONTACT_JUMP.includes("?") ? "&" : "?") + "msg=" + msg;
       });
 
       // zoom
       zoom.close.addEventListener("click", closeZoom);
       zoom.backdrop.addEventListener("click", (e) => { if (e.target === zoom.backdrop) closeZoom(); });
+
+      // keyboard
       document.addEventListener("keydown", (e) => {
         if (zoom.backdrop.classList.contains("active")){
           if (e.key === "Escape") closeZoom();
           return;
         }
-
         if (!qm.backdrop.classList.contains("active")) return;
 
         if (e.key === "Escape") closeModal();
@@ -1837,13 +1337,11 @@
       });
     }
 
-    // ========= LOAD =========
     async function load(){
       try{
         const res = await fetch(JSON_URL);
         if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
         const data = await res.json();
-
         const raw = Array.isArray(data) ? data : (data.inStock || []);
         ALL = raw.map(normalizePart);
 
@@ -1858,15 +1356,13 @@
           return;
         }
 
-        buildCityOptions(ALL);
-        setToggle(ui.qOnlyAvailable, false);
         bindUI();
         applyFilters();
       }catch(err){
         console.error(err);
         ui.container.innerHTML = `
           <div class="empty">
-            Nepodarilo sa načítať skladové diely. Skús stránku obnoviť alebo nás kontaktuj e-mailom:
+            Nepodarilo sa načítať skladové diely. Skús stránku obnoviť alebo nás kontaktuj:
             <b>info@remperformance.sk</b>.
           </div>
         `;
