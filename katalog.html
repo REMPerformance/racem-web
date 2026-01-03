@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>RACEM – Katalóg dielov</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root{
       --red:#b31f24;
-      --bg:#0b0b0b;
-      --panel:#141414;
+      --bg:#050505;
+      --panel:#101010;
+      --panel2:#141414;
       --text:#ffffff;
       --muted:#cfcfcf;
       --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 14px 40px rgba(0,0,0,0.48);
+      --shadow: 0 18px 60px rgba(0,0,0,0.65);
       --radius-xl: 18px;
+
+      --green:#22c55e;
+      --green2:#16a34a;
     }
 
     *{box-sizing:border-box}
@@ -23,9 +27,53 @@
     body{
       margin:0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #151515 0, #050505 55%, #000 100%);
+      background: var(--bg);
       color:var(--text);
       overflow-x:hidden;
+    }
+
+    /* ====== RACEM BACKGROUND ====== */
+    .bg-grid{
+      pointer-events:none;
+      position:fixed;
+      inset:0;
+      z-index:-4;
+      opacity:.14;
+      background:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size:64px 64px;
+      transform: skewY(-6deg) scale(1.06);
+      transform-origin: top;
+      filter: blur(.2px);
+    }
+
+    .bg-diag{
+      pointer-events:none;
+      position:fixed;
+      inset:-20%;
+      z-index:-5;
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 2px,
+          transparent 2px,
+          transparent 16px
+        );
+      opacity:.15;
+    }
+
+    .bg-glow{
+      pointer-events:none;
+      position:fixed;
+      inset:-40%;
+      z-index:-6;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(179,31,36,0.30), transparent 55%),
+        radial-gradient(circle at 80% 20%, rgba(179,31,36,0.18), transparent 55%),
+        radial-gradient(circle at 50% 90%, rgba(255,255,255,0.06), transparent 60%);
+      filter: blur(2px);
     }
 
     /* NOISE LAYER */
@@ -33,9 +81,10 @@
       pointer-events:none;
       position:fixed;
       inset:0;
-      opacity:0.09;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.52'/%3E%3C/svg%3E");
+      opacity:0.10;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.52'/%3E%3C/svg%3E");
       z-index:-1;
+      mix-blend-mode: overlay;
     }
 
     .wrap{
@@ -45,21 +94,21 @@
       padding:0 32px 40px;
     }
 
-    /* NAVBAR */
+    /* ====== NAVBAR ====== */
     header{
       position:sticky;
       top:0;
       z-index:50;
       backdrop-filter:blur(18px);
-      background:linear-gradient(to bottom, rgba(5,5,5,0.96), rgba(5,5,5,0.8), transparent);
-      border-bottom:1px solid rgba(255,255,255,0.04);
+      background:linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.75), rgba(0,0,0,0.20));
+      border-bottom:1px solid rgba(255,255,255,0.05);
     }
 
     .nav{
       width:100%;
       max-width:none;
       margin:0;
-      padding:14px 32px 10px;
+      padding:14px 32px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -77,7 +126,7 @@
       height:40px;
       width:auto;
       display:block;
-      filter: drop-shadow(0 10px 24px rgba(179,31,36,0.22));
+      filter: drop-shadow(0 10px 24px rgba(179,31,36,0.25));
       transition: transform .2s ease, filter .2s ease;
     }
     .brand:hover img{ transform: translateY(-1px) scale(1.02); }
@@ -112,7 +161,7 @@
       padding:7px 12px;
       border-radius:999px;
       border:1px solid transparent;
-      background:rgba(20,20,20,0.7);
+      background:rgba(20,20,20,0.65);
       display:flex;
       align-items:center;
       gap:8px;
@@ -123,7 +172,7 @@
       width:6px;
       height:6px;
       border-radius:999px;
-      background:rgba(255,255,255,0.3);
+      background:rgba(255,255,255,0.25);
     }
 
     .nav-links a:hover{
@@ -143,7 +192,7 @@
       box-shadow:0 0 12px rgba(179,31,36,0.85);
     }
 
-    /* PAGE HEADER */
+    /* ====== PAGE HEADER ====== */
     .page-header{
       padding:30px 0 10px;
     }
@@ -156,26 +205,29 @@
     }
     .page-title{
       font-size:32px;
-      font-weight:800;
-      letter-spacing:0.08em;
+      font-weight:900;
+      letter-spacing:0.10em;
       text-transform:uppercase;
       margin:0 0 8px;
+      text-shadow: 0 18px 65px rgba(179,31,36,0.12);
     }
     .page-sub{
       font-size:14px;
       color:var(--muted);
       max-width:none;
-      line-height:1.5;
+      line-height:1.6;
       margin:0 0 14px;
     }
 
-    /* ===== PILLS FILTER ===== */
-    .filter-row{
+    /* ====== FILTER BAR (Brand -> Model) ====== */
+    .filter-wrap{
+      margin: 14px 0 6px;
       display:flex;
-      align-items:center;
+      flex-wrap:wrap;
       gap:10px;
-      margin: 10px 0 6px;
+      align-items:center;
     }
+
     .filter-label{
       font-size:11px;
       text-transform:uppercase;
@@ -184,89 +236,89 @@
       white-space:nowrap;
     }
 
-    .pillbar{
+    .filter{
       display:flex;
+      gap:10px;
+      flex-wrap:wrap;
       align-items:center;
-      gap:8px;
-      overflow:auto;
-      padding:8px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.22);
-      box-shadow: 0 18px 55px rgba(0,0,0,0.45);
-      scrollbar-width:none;
-      -ms-overflow-style:none;
-      scroll-behavior:smooth;
       flex:1;
-      min-height:44px;
     }
-    .pillbar::-webkit-scrollbar{ display:none; }
 
-    .pill{
-      display:inline-flex;
+    .select{
+      flex: 0 0 auto;
+      min-width: 220px;
+      position:relative;
+    }
+
+    select{
+      width:100%;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(circle at top left, rgba(179,31,36,0.10), transparent 60%),
+        rgba(10,10,10,0.70);
+      color:#fff;
+      padding: 12px 42px 12px 14px;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      outline:none;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+      transition: border-color .16s ease, transform .16s ease;
+      cursor:pointer;
+    }
+
+    select:hover{
+      border-color: rgba(255,255,255,0.20);
+      transform: translateY(-1px);
+    }
+    select:focus{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.16), 0 18px 55px rgba(0,0,0,0.45);
+    }
+
+    .select:after{
+      content:"▾";
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      color: rgba(255,255,255,0.75);
+      pointer-events:none;
+      font-size:14px;
+    }
+
+    .filter-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
       align-items:center;
-      gap:8px;
-      padding:9px 12px;
-      border-radius:999px;
+      justify-content:flex-end;
+    }
+
+    .btn-ghost{
+      padding: 11px 14px;
+      border-radius: 14px;
       border:1px solid rgba(255,255,255,0.12);
-      background: rgba(20,20,20,0.58);
-      color: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.92);
       font-size:11px;
       letter-spacing:.16em;
       text-transform:uppercase;
       cursor:pointer;
-      user-select:none;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
       white-space:nowrap;
-      transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
     }
-    .pill:hover{
+    .btn-ghost:hover{
       transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.20);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.55);
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.07);
     }
 
-    .pill .count{
-      font-size:10px;
-      letter-spacing:.18em;
-      color: var(--muted2);
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.35);
-      padding:4px 8px;
-      border-radius:999px;
-    }
-
-    .pill.active{
-      border-color: rgba(179,31,36,0.55);
-      background: linear-gradient(135deg, rgba(179,31,36,0.18), rgba(179,31,36,0.05));
-      box-shadow: 0 0 22px rgba(179,31,36,0.16);
-      color:#fff;
-    }
-    .pill.active .count{
-      color:#fff;
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.16);
-    }
-
-    .pill.clear{
-      border-color: rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-    }
-    .pill.clear .x{
-      width:18px; height:18px; border-radius:999px;
-      display:grid; place-items:center;
-      border:1px solid rgba(255,255,255,0.18);
-      background: rgba(0,0,0,0.35);
-      font-size:12px;
-      line-height:1;
-    }
-
-    .pill.more{
-      border-color: rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.35);
-      color:#fff;
-    }
-
-    /* SEKCIE */
+    /* ====== SECTION ====== */
     section.catalog-section{
       margin:18px 0 32px;
     }
@@ -282,12 +334,13 @@
 
     .section-title{
       font-size:18px;
-      font-weight:700;
+      font-weight:800;
       text-transform:uppercase;
       letter-spacing:0.12em;
       display:flex;
       align-items:center;
       gap:10px;
+      margin:0;
     }
 
     .section-title::before{
@@ -303,95 +356,92 @@
       color:var(--muted2);
       max-width:none;
       line-height:1.4;
+      margin:0;
     }
 
-    /* GRID */
+    /* ====== GRID ====== */
     .parts-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
       gap:16px;
       justify-content:flex-start;
       align-items:stretch;
     }
 
-    /* 7 produktov v riadku na veľkých monitoroch */
     @media (min-width: 1650px){
       .parts-grid{ grid-template-columns: repeat(7, minmax(0, 1fr)); }
     }
 
-    .part-card{
+    /* ====== PRODUCT CARD (NEW LAYOUT) ====== */
+    .product{
       position:relative;
       background:
-        radial-gradient(circle at top left, rgba(179,31,36,0.10), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.16)),
-        var(--panel);
+        radial-gradient(circle at top left, rgba(179,31,36,0.12), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.18)),
+        var(--panel2);
       border-radius:var(--radius-xl);
       border:1px solid var(--line);
-      padding:14px 14px 12px;
+      padding:14px;
       box-shadow:var(--shadow);
       overflow:hidden;
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
       transform: translateZ(0);
-
-      /* performance: renderuj karty až keď sú na obrazovke */
       content-visibility: auto;
-      contain-intrinsic-size: 360px;
+      contain-intrinsic-size: 390px;
     }
 
-    .part-card:hover{
+    .product:hover{
       transform:translateY(-2px);
-      border-color: rgba(179,31,36,0.28);
-      box-shadow: 0 18px 54px rgba(0,0,0,0.58);
+      border-color: rgba(179,31,36,0.30);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.72);
     }
 
-    .part-top{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-      align-items:flex-start;
+    .stock-pill{
+      position:absolute;
+      top:12px;
+      right:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(34,197,94,0.55);
+      background: linear-gradient(135deg, rgba(34,197,94,0.25), rgba(34,197,94,0.08));
+      color:#fff;
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
+      white-space:nowrap;
+    }
+    .stock-pill .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(34,197,94,0.95);
     }
 
-    .part-name{
-      font-size:14px;
-      font-weight:800;
+    .product-title{
+      font-size:15px;
+      font-weight:900;
       letter-spacing:.06em;
       text-transform:uppercase;
-      line-height:1.2;
-      margin-bottom:4px;
+      line-height:1.25;
+      margin:0 0 10px;
+      padding-right: 110px; /* priestor pre sklad pill */
     }
 
-    .part-meta{
-      font-size:12px;
-      color: rgba(255,255,255,0.78);
-      line-height:1.45;
-    }
-
-    .part-badge{
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(34,197,94,0.50);
-      background: radial-gradient(circle at top, rgba(34,197,94,0.14), transparent 60%);
-      color: rgba(255,255,255,0.92);
-      white-space:nowrap;
-      flex-shrink:0;
-    }
-
-    .part-image{
+    .product-image{
       width:100%;
       height:190px;
       border-radius:16px;
       overflow:hidden;
-      margin:10px 0 10px;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.50);
+      background: rgba(0,0,0,0.55);
       position:relative;
+      margin-bottom:12px;
     }
 
-    .part-image img{
+    .product-image img{
       width:100%;
       height:100%;
       object-fit:contain;
@@ -399,13 +449,13 @@
       transition: transform .22s ease;
     }
 
-    .part-card:hover .part-image img{ transform: scale(1.02); }
+    .product:hover .product-image img{ transform: scale(1.02); }
 
-    .image-nav-btn{
+    .img-nav{
       position:absolute;
       top:50%;
       transform:translateY(-50%);
-      padding:6px 8px;
+      padding:7px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.35);
       background:rgba(0,0,0,0.60);
@@ -417,42 +467,23 @@
       transition:opacity .18s ease-out, transform .18s ease-out;
       backdrop-filter: blur(8px);
     }
-
-    .image-nav-btn.prev{ left:8px; }
-    .image-nav-btn.next{ right:8px; }
-
-    .part-image:hover .image-nav-btn{
+    .img-nav.prev{ left:8px; }
+    .img-nav.next{ right:8px; }
+    .product-image:hover .img-nav{
       opacity:1;
       pointer-events:auto;
       transform:translateY(-50%) scale(1.02);
     }
 
-    .part-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-bottom:10px;
-    }
-
-    .tag{
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.11em;
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.72);
-      background: rgba(0,0,0,0.30);
-    }
-
-    .part-note{
+    .product-desc{
       font-size:13px;
       color: rgba(255,255,255,0.86);
+      line-height:1.6;
       margin: 0 0 12px;
-      line-height:1.55;
+      min-height: 42px;
     }
 
-    .part-bottom{
+    .product-bottom{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -460,26 +491,26 @@
     }
 
     .price{
-      font-size:16px;
+      font-size:18px;
       font-weight:900;
       letter-spacing:.04em;
       color: var(--red);
-      text-shadow: 0 0 18px rgba(179,31,36,0.18);
+      text-shadow: 0 0 18px rgba(179,31,36,0.20);
       line-height:1.1;
+      white-space:nowrap;
     }
-
     .price span{
       display:inline-block;
       font-size:11px;
-      font-weight:400;
+      font-weight:500;
       color:var(--muted2);
       margin-left:8px;
       letter-spacing:.14em;
       text-transform:uppercase;
     }
 
-    .cta-mini{
-      padding:9px 12px;
+    .btn-detail{
+      padding:10px 14px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.18);
       background:linear-gradient(135deg, var(--red), #740509);
@@ -491,10 +522,9 @@
       white-space:nowrap;
       transition:all .16s ease-out;
     }
-
-    .cta-mini:hover{
+    .btn-detail:hover{
       transform:translateY(-1px);
-      box-shadow:0 14px 36px rgba(179,31,36,0.22);
+      box-shadow:0 14px 36px rgba(179,31,36,0.26);
       filter: brightness(1.03);
     }
 
@@ -508,6 +538,302 @@
       line-height:1.6;
     }
 
+    /* ====== MODAL (DETAIL) ====== */
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:120;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .modal.show{ display:flex; }
+
+    .modal-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-card{
+      position:relative;
+      z-index:2;
+      width: min(980px, 96vw);
+      max-height: 92vh;
+      overflow:hidden;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(circle at top left, rgba(179,31,36,0.14), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.20)),
+        rgba(15,15,15,0.96);
+      box-shadow: 0 30px 110px rgba(0,0,0,0.75);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+    }
+
+    .modal-media{
+      position:relative;
+      padding: 14px;
+      border-right:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.25);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .modal-imgwrap{
+      position:relative;
+      flex:1;
+      min-height: 360px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.55);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .modal-imgwrap img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    .modal-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.60);
+      color:#fff;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .16s ease, opacity .16s ease;
+      backdrop-filter: blur(8px);
+    }
+    .modal-nav:hover{ transform:translateY(-50%) scale(1.04); }
+    .modal-nav.prev{ left:14px; }
+    .modal-nav.next{ right:14px; }
+
+    .thumbs{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding: 4px 2px;
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+    }
+    .thumbs::-webkit-scrollbar{ display:none; }
+
+    .thumb{
+      width:74px;
+      height:54px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.55);
+      overflow:hidden;
+      cursor:pointer;
+      opacity:.75;
+      flex:0 0 auto;
+      transition: opacity .14s ease, transform .14s ease, border-color .14s ease;
+    }
+    .thumb:hover{ opacity:1; transform: translateY(-1px); border-color: rgba(255,255,255,0.18); }
+    .thumb.active{ opacity:1; border-color: rgba(179,31,36,0.55); box-shadow: 0 0 0 3px rgba(179,31,36,0.14); }
+    .thumb img{ width:100%; height:100%; object-fit:contain; display:block; }
+
+    .modal-info{
+      padding: 18px 18px 16px;
+      overflow:auto;
+    }
+
+    .modal-close{
+      position:absolute;
+      top:12px;
+      right:12px;
+      z-index:3;
+      width:40px;
+      height:40px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.40);
+      color:#fff;
+      font-size:20px;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .modal-close:hover{ transform:scale(1.03); border-color: rgba(255,255,255,0.25); }
+
+    .modal-title{
+      margin:0 0 10px;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      line-height:1.25;
+    }
+
+    .modal-meta{
+      color: rgba(255,255,255,0.72);
+      font-size:13px;
+      line-height:1.6;
+      margin:0 0 12px;
+    }
+
+    .modal-stock{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(34,197,94,0.55);
+      background: linear-gradient(135deg, rgba(34,197,94,0.25), rgba(34,197,94,0.08));
+      color:#fff;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
+      margin-bottom: 14px;
+    }
+    .modal-stock .dot{
+      width:9px;height:9px;border-radius:999px;
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(34,197,94,0.95);
+    }
+
+    .modal-note{
+      margin: 0 0 14px;
+      color: rgba(255,255,255,0.90);
+      font-size:14px;
+      line-height:1.7;
+      white-space: pre-line;
+    }
+
+    .modal-price{
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color: var(--red);
+      text-shadow: 0 0 18px rgba(179,31,36,0.22);
+      margin: 0 0 14px;
+    }
+    .modal-price small{
+      display:inline-block;
+      margin-left:10px;
+      font-size:12px;
+      font-weight:600;
+      color: var(--muted2);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    .btn-order{
+      width:100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(135deg, var(--red), #740509);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+    }
+    .btn-order:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 55px rgba(179,31,36,0.30);
+      filter: brightness(1.04);
+    }
+
+    .muted-help{
+      margin-top:10px;
+      font-size:12px;
+      color: var(--muted2);
+      line-height:1.6;
+    }
+
+    /* ====== ORDER FORM (inline in modal) ====== */
+    .order-form{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 14px;
+      display:none;
+    }
+    .order-form.show{ display:block; }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .form-grid .full{ grid-column: 1 / -1; }
+
+    .input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.45);
+      color:#fff;
+      padding: 12px 12px;
+      font-size:13px;
+      outline:none;
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+
+    .input:focus, textarea:focus{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.14);
+    }
+
+    .btn-send{
+      width:100%;
+      padding: 13px 16px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.82));
+      color:#000;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      margin-top: 10px;
+    }
+    .btn-send:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 55px rgba(255,255,255,0.12);
+      filter: brightness(1.02);
+    }
+
+    .form-status{
+      margin-top:10px;
+      font-size:12px;
+      color: var(--muted2);
+      line-height:1.6;
+    }
+    .form-status.ok{ color: rgba(34,197,94,0.95); }
+    .form-status.bad{ color: rgba(239,68,68,0.95); }
+
+    /* ====== FOOTER ====== */
     footer{
       border-top:1px solid rgba(255,255,255,0.06);
       padding:18px 0 30px;
@@ -533,319 +859,635 @@
       text-decoration:underline;
     }
 
+    /* ====== RESPONSIVE ====== */
     @media (max-width:980px){
       .wrap{ padding:0 16px 32px; }
-      .nav{ padding:12px 16px 10px; }
+      .nav{ padding:12px 16px 12px; }
       footer .row{ padding:0 16px; }
       .page-title{ font-size:28px; }
-      .filter-row{ flex-direction:column; align-items:flex-start; gap:8px; }
-      .pillbar{ width:100%; }
+      .select{ min-width: 180px; }
+      .modal-card{ grid-template-columns: 1fr; }
+      .modal-media{ border-right:0; border-bottom:1px solid rgba(255,255,255,0.08); }
+      .modal-imgwrap{ min-height: 320px; }
     }
 
     @media (max-width:640px){
       .page-title{font-size:26px;}
       .parts-grid{ grid-template-columns: 1fr; }
+      .product-title{ padding-right: 0; }
+      .stock-pill{ position:static; margin-bottom: 10px; }
+      .form-grid{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
-<div class="noise"></div>
+  <div class="bg-glow"></div>
+  <div class="bg-diag"></div>
+  <div class="bg-grid"></div>
+  <div class="noise"></div>
 
-<header>
-  <nav class="nav">
-    <a class="brand" href="index.html" aria-label="RACEM homepage">
-      <img src="assets/racem-logo.png" alt="RACEM logo">
-      <div class="brand-text">
-        <div class="brand-title">RACEM</div>
-        <div class="brand-sub">BEAT THEM ALL</div>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="index.html" aria-label="RACEM homepage">
+        <img src="assets/racem-logo.png" alt="RACEM logo">
+        <div class="brand-text">
+          <div class="brand-title">RACEM</div>
+          <div class="brand-sub">BEAT THEM ALL</div>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html"><span class="dot"></span><span>Homepage</span></a>
+        <a href="katalog.html" class="active"><span class="dot"></span><span>Katalóg dielov</span></a>
+        <a href="vop.html"><span class="dot"></span><span>VOP & reklamácie</span></a>
       </div>
-    </a>
+    </nav>
+  </header>
 
-    <div class="nav-links">
-      <a href="index.html"><span class="dot"></span><span>Homepage</span></a>
-      <a href="katalog.html" class="active"><span class="dot"></span><span>Katalóg dielov</span></a>
-      <a href="vop.html"><span class="dot"></span><span>VOP & reklamácie</span></a>
+  <main class="wrap">
+    <section class="page-header">
+      <div class="page-kicker">REM PERFORMANCE · RACEM</div>
+      <h1 class="page-title">KATALÓG DIELOV</h1>
+      <p class="page-sub">
+        Toto sú diely, ktoré máme fyzicky <b>na sklade doma</b> a vieme ich poslať hneď.
+        Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
+      </p>
+
+      <!-- FILTER -->
+      <div class="filter-wrap">
+        <div class="filter-label">Filter: značka a model</div>
+
+        <div class="filter">
+          <div class="select">
+            <select id="brandSelect" aria-label="Značka">
+              <option value="">Značka</option>
+              <option value="BMW">BMW</option>
+              <option value="Škoda">Škoda</option>
+              <option value="Audi">Audi</option>
+              <option value="VW">VW</option>
+              <option value="Seat">Seat</option>
+              <option value="Mercedes">Mercedes</option>
+            </select>
+          </div>
+
+          <div class="select">
+            <select id="modelSelect" aria-label="Model" disabled>
+              <option value="">Model</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button id="resetBtn" class="btn-ghost" type="button">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="skladom" class="catalog-section">
+      <div class="section-header">
+        <h2 class="section-title">Skladom – k odoslaniu ihneď</h2>
+        <p class="section-note">Diely, ktoré sú fyzicky u nás. Počet kusov je obmedzený.</p>
+      </div>
+
+      <div id="parts" class="parts-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="row">
+      <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
+      <div>
+        <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
+        <a href="vop.html">VOP a reklamačný poriadok</a>
+      </div>
     </div>
-  </nav>
-</header>
+  </footer>
 
-<main class="wrap">
-  <section class="page-header">
-    <div class="page-kicker">REM PERFORMANCE · RACEM</div>
-    <h1 class="page-title">KATALÓG DIELOV</h1>
-    <p class="page-sub">
-      Toto sú diely, ktoré máme fyzicky <b>na sklade doma</b> a vieme ich poslať hneď.
-      Potrebuješ niečo iné? Napíš na <b>info@remperformance.sk</b>.
-    </p>
+  <!-- MODAL -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="1"></div>
 
-    <!-- PILLS FILTER -->
-    <div class="filter-row">
-      <div class="filter-label">Filter: model auta</div>
-      <div id="pillbar" class="pillbar" aria-label="Pills filter"></div>
-    </div>
-  </section>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Detail produktu">
+      <button class="modal-close" type="button" title="Zavrieť" data-close="1">×</button>
 
-  <section id="skladom" class="catalog-section">
-    <div class="section-header">
-      <h2 class="section-title">Skladom – k odoslaniu ihneď</h2>
-      <p class="section-note">Diely, ktoré sú fyzicky u nás. Počet kusov je obmedzený.</p>
-    </div>
+      <div class="modal-media">
+        <div class="modal-imgwrap">
+          <img id="modalImg" src="" alt="Produkt">
+          <button id="modalPrev" class="modal-nav prev" type="button" aria-label="Predchádzajúca fotka">&#10094;</button>
+          <button id="modalNext" class="modal-nav next" type="button" aria-label="Ďalšia fotka">&#10095;</button>
+        </div>
+        <div id="modalThumbs" class="thumbs"></div>
+      </div>
 
-    <div id="parts-skladom" class="parts-grid"></div>
-  </section>
-</main>
+      <div class="modal-info">
+        <h3 id="modalTitle" class="modal-title"></h3>
+        <p id="modalMeta" class="modal-meta"></p>
 
-<footer>
-  <div class="row">
-    <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
-    <div>
-      <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
-      <a href="vop.html">VOP a reklamačný poriadok</a>
+        <div id="modalStock" class="modal-stock" title="Sklad">
+          <span class="dot"></span>
+          <span id="modalStockText">Skladom</span>
+        </div>
+
+        <p id="modalNote" class="modal-note"></p>
+
+        <div class="modal-price" id="modalPrice">
+          <span id="modalPriceValue">Na dopyt</span>
+          <small id="modalPriceSuffix"></small>
+        </div>
+
+        <div class="modal-actions">
+          <button id="orderBtn" class="btn-order" type="button">Poslať objednávku</button>
+        </div>
+
+        <div class="order-form" id="orderFormWrap">
+          <form id="orderForm">
+            <div class="form-grid">
+              <input class="input" type="text" name="name" placeholder="Meno a priezvisko" required>
+              <input class="input" type="email" name="email" placeholder="Email" required>
+              <input class="input" type="tel" name="phone" placeholder="Telefón (nepovinné)">
+              <input class="input" type="text" name="city" placeholder="Mesto (nepovinné)">
+              <input class="input full" type="text" name="product" id="formProduct" placeholder="Produkt" readonly>
+              <textarea class="full" name="message" id="formMessage" placeholder="Poznámka k objednávke (napr. doručenie, otázky)"></textarea>
+            </div>
+
+            <button class="btn-send" type="submit">Odoslať</button>
+            <div id="formStatus" class="form-status"></div>
+          </form>
+
+          <div class="muted-help">
+            Odoslaním formulára nám príde objednávka na email cez Formspree. Ozveme sa späť.
+          </div>
+        </div>
+
+        <div class="muted-help">
+          Tip: šípky na klávesnici ← → prepínajú fotky, ESC zatvorí okno.
+        </div>
+      </div>
     </div>
   </div>
-</footer>
 
-<script>
-  const JSON_URL = "skladom.json";
-  const $ = (s, r=document) => r.querySelector(s);
-  const safe = (v) => (v == null) ? "" : String(v);
+  <script>
+    /* =========================
+      SETTINGS
+    ========================== */
+    const JSON_URL = "skladom.json";
 
-  let ALL = [];
-  let ACTIVE_MODEL = "all";       // encoded model alebo "all"
-  let MODEL_COUNTS = new Map();
-  let SHOW_ALL_PILLS = false;
+    // TODO: sem daj svoj Formspree endpoint
+    // napr: https://formspree.io/f/abcdwxyz
+    const FORM_URL = "https://formspree.io/f/XXXXYYYY";
 
-  const MAX_PILLS_COLLAPSED = 10;
+    // Brand -> modely (UI filter)
+    const BRAND_MODELS = {
+      "BMW": ["E36","E46","E90","F10","F30"],
+      "Škoda": ["Octavia","Fabia","Superb"],
+      "Audi": ["A3","A4","A6"],
+      "VW": ["Golf","Passat","Polo"],
+      "Seat": ["Leon","Ibiza"],
+      "Mercedes": ["W203","W204","W211","W212"]
+    };
 
-  function inferModel(part){
-    const direct = safe(part.model).trim();
-    if (direct) return direct;
+    /* =========================
+      HELPERS
+    ========================== */
+    const $ = (s, r=document) => r.querySelector(s);
+    const safe = (v) => (v == null) ? "" : String(v);
+    const norm = (s) => safe(s).trim();
 
-    const meta = safe(part.meta).trim();
-    if (!meta) return "Neurčené";
+    // robustnejšie: vytiahni značku & model z JSON, alebo z meta/názvu
+    function inferBrandModel(part){
+      // preferuj explicitné polia (ak ich raz začneš dávať do JSON)
+      const b = norm(part.brand);
+      const m = norm(part.model);
+      if (b || m) return { brand: b || "", model: m || "" };
 
-    const first = meta.split("·")[0].trim();
-    return first || "Neurčené";
-  }
+      const hay = (norm(part.meta) + " " + norm(part.name)).toLowerCase();
 
-  function normalizePart(raw){
-    const p = Object.assign({}, raw);
-    const base = (p.image && String(p.image).trim()) ? String(p.image).trim() : "img/placeholder-part.jpg";
-    const extra = Array.isArray(p.images) ? p.images.map(String).map(s=>s.trim()).filter(Boolean) : [];
-    p.allImages = [base, ...extra.filter(src => src !== base)];
-    p.tags = Array.isArray(p.tags) ? p.tags : [];
-    p._model = inferModel(p);
-    return p;
-  }
+      const brands = [
+        {k:"BMW", rx:/\bbmw\b/i},
+        {k:"Škoda", rx:/\b(skoda|škoda)\b/i},
+        {k:"Audi", rx:/\baudi\b/i},
+        {k:"VW", rx:/\b(vw|volkswagen)\b/i},
+        {k:"Seat", rx:/\bseat\b/i},
+        {k:"Mercedes", rx:/\b(mercedes|mb)\b/i}
+      ];
 
-  function computeModels(){
-    MODEL_COUNTS = new Map();
-    ALL.forEach(p => MODEL_COUNTS.set(p._model, (MODEL_COUNTS.get(p._model) || 0) + 1));
-  }
-
-  function buildCardHTML(part){
-    const tagsHtml = (part.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
-    const imageSrc = (part.allImages && part.allImages.length) ? part.allImages[0] : "img/placeholder-part.jpg";
-    const hasGallery = part.allImages && part.allImages.length > 1;
-    const priceValue = safe(part.price) || "Na dopyt";
-    const suffix = safe(part.price_suffix);
-
-    return `
-      <article class="part-card" data-model="${encodeURIComponent(part._model)}">
-        <div class="part-top">
-          <div>
-            <div class="part-name">${safe(part.name)}</div>
-            <div class="part-meta">${safe(part.meta)}</div>
-          </div>
-          <div class="part-badge">${safe(part.stockLabel) || "Skladom"}</div>
-        </div>
-
-        <div class="part-image" data-current-index="0" data-images="${encodeURIComponent((part.allImages||[]).join("|"))}">
-          <img src="${imageSrc}" alt="${safe(part.name) || "diel"}" loading="lazy">
-          ${hasGallery ? `
-            <button type="button" class="image-nav-btn prev" aria-label="Predchádzajúca fotka">&#10094;</button>
-            <button type="button" class="image-nav-btn next" aria-label="Ďalšia fotka">&#10095;</button>
-          ` : ""}
-        </div>
-
-        ${tagsHtml ? `<div class="part-tags">${tagsHtml}</div>` : ""}
-
-        <p class="part-note">${safe(part.note)}</p>
-
-        <div class="part-bottom">
-          <div class="price">
-            ${priceValue}
-            ${suffix ? `<span>${suffix}</span>` : ""}
-          </div>
-          <button type="button" class="cta-mini">Detail</button>
-        </div>
-      </article>
-    `;
-  }
-
-  function bindGallery(container){
-    container.querySelectorAll(".part-card").forEach(card => {
-      const wrap = card.querySelector(".part-image");
-      const prev = card.querySelector(".image-nav-btn.prev");
-      const next = card.querySelector(".image-nav-btn.next");
-      if (!wrap || (!prev && !next)) return;
-
-      const img = wrap.querySelector("img");
-      const images = decodeURIComponent(wrap.dataset.images || "").split("|").filter(Boolean);
-      if (images.length <= 1) return;
-
-      function setIdx(i){
-        const idx = (i + images.length) % images.length;
-        wrap.dataset.currentIndex = String(idx);
-        img.src = images[idx];
+      let brand = "";
+      for (const it of brands){
+        if (it.rx.test(hay)){ brand = it.k; break; }
       }
 
-      prev && prev.addEventListener("click", (e) => {
-        e.preventDefault(); e.stopPropagation();
-        const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
-        setIdx(cur - 1);
-      });
+      // model: skúsiť nájsť z mapy BRAND_MODELS podľa textu
+      let model = "";
+      if (brand && BRAND_MODELS[brand]){
+        for (const mm of BRAND_MODELS[brand]){
+          const rx = new RegExp("\\b" + mm.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&") + "\\b", "i");
+          if (rx.test(hay)){ model = mm; break; }
+        }
+      }
 
-      next && next.addEventListener("click", (e) => {
-        e.preventDefault(); e.stopPropagation();
-        const cur = parseInt(wrap.dataset.currentIndex || "0", 10) || 0;
-        setIdx(cur + 1);
-      });
-    });
-  }
-
-  function applyFilter(){
-    const container = $("#parts-skladom");
-
-    let out = ALL.slice();
-    if (ACTIVE_MODEL !== "all"){
-      out = out.filter(p => encodeURIComponent(p._model) === ACTIVE_MODEL);
+      return { brand, model };
     }
 
-    if (!out.length){
-      container.innerHTML = `<div class="empty">Pre tento model tu zatiaľ nič nie je.</div>`;
-      return;
+    function normalizePart(raw){
+      const p = Object.assign({}, raw);
+      const base = (p.image && String(p.image).trim()) ? String(p.image).trim() : "img/placeholder-part.jpg";
+      const extra = Array.isArray(p.images) ? p.images.map(String).map(s=>s.trim()).filter(Boolean) : [];
+      p.allImages = [base, ...extra.filter(src => src !== base)];
+      p.tags = Array.isArray(p.tags) ? p.tags : [];
+
+      const bm = inferBrandModel(p);
+      p._brand = bm.brand || "";
+      p._model = bm.model || "";
+
+      return p;
     }
 
-    container.innerHTML = out.map(buildCardHTML).join("");
-    bindGallery(container);
-  }
-
-  function setActiveModel(encoded){
-    ACTIVE_MODEL = encoded || "all";
-    renderPills();
-    applyFilter();
-
-    // jemné "center scroll" na aktívny pill
-    const activeEl = document.querySelector('.pillbar .pill.active');
-    if (activeEl){
-      activeEl.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+    function parseStockCount(stockLabel){
+      // napr "Skladom 2 ks" -> 2
+      const s = safe(stockLabel);
+      const m = s.match(/(\d+)\s*ks/i);
+      return m ? parseInt(m[1],10) : null;
     }
-  }
 
-  function renderPills(){
-    const bar = $("#pillbar");
-    const models = Array.from(MODEL_COUNTS.entries())
-      .sort((a,b) => a[0].localeCompare(b[0], "sk"));
+    /* =========================
+      STATE
+    ========================== */
+    let ALL = [];
+    let ACTIVE_BRAND = "";
+    let ACTIVE_MODEL = "";
 
-    const totalModels = models.length;
-    const shouldCollapse = !SHOW_ALL_PILLS && totalModels > MAX_PILLS_COLLAPSED;
+    // modal state
+    let MODAL_PART = null;
+    let MODAL_INDEX = 0;
 
-    const visibleModels = shouldCollapse ? models.slice(0, MAX_PILLS_COLLAPSED) : models;
+    /* =========================
+      RENDER
+    ========================== */
+    function buildCard(part){
+      const img0 = (part.allImages && part.allImages.length) ? part.allImages[0] : "img/placeholder-part.jpg";
+      const hasGallery = part.allImages && part.allImages.length > 1;
 
-    let html = "";
+      const stockCount = parseStockCount(part.stockLabel);
+      const stockText = stockCount != null ? `Skladom ${stockCount} ks` : (safe(part.stockLabel) || "Skladom");
 
-    // "All" pill
-    html += `
-      <div class="pill ${ACTIVE_MODEL==="all" ? "active" : ""}" data-model="all">
-        Všetky <span class="count">${ALL.length}</span>
-      </div>
-    `;
+      const priceValue = safe(part.price) || "Na dopyt";
+      const suffix = safe(part.price_suffix);
 
-    // Clear pill (iba keď je niečo zvolené)
-    if (ACTIVE_MODEL !== "all"){
-      html += `
-        <div class="pill clear" data-model="all" title="Zrušiť filter">
-          <span class="x">×</span> Reset
-        </div>
+      const desc = safe(part.note) || safe(part.meta) || "";
+
+      return `
+        <article class="product" data-id="${encodeURIComponent(safe(part.id)||"")}" data-idx="0" data-images="${encodeURIComponent((part.allImages||[]).join("|"))}">
+          <div class="stock-pill"><span class="dot"></span><span>${stockText}</span></div>
+          <h3 class="product-title">${safe(part.name) || "Produkt"}</h3>
+
+          <div class="product-image">
+            <img src="${img0}" alt="${safe(part.name) || "produkt"}" loading="lazy">
+            ${hasGallery ? `
+              <button type="button" class="img-nav prev" aria-label="Predchádzajúca fotka">&#10094;</button>
+              <button type="button" class="img-nav next" aria-label="Ďalšia fotka">&#10095;</button>
+            ` : ""}
+          </div>
+
+          <p class="product-desc">${desc}</p>
+
+          <div class="product-bottom">
+            <div class="price">${priceValue}${suffix ? `<span>${suffix}</span>` : ""}</div>
+            <button type="button" class="btn-detail">Detail</button>
+          </div>
+        </article>
       `;
     }
 
-    // model pills
-    visibleModels.forEach(([name,count]) => {
-      const enc = encodeURIComponent(name);
-      html += `
-        <div class="pill ${ACTIVE_MODEL===enc ? "active" : ""}" data-model="${enc}">
-          ${name} <span class="count">${count}</span>
-        </div>
-      `;
-    });
+    function applyFilter(){
+      const container = $("#parts");
+      let out = ALL.slice();
 
-    if (shouldCollapse){
-      const hidden = totalModels - MAX_PILLS_COLLAPSED;
-      html += `
-        <div class="pill more" data-more="1">
-          Viac… <span class="count">+${hidden}</span>
-        </div>
-      `;
-    }else if (SHOW_ALL_PILLS && totalModels > MAX_PILLS_COLLAPSED){
-      html += `
-        <div class="pill more" data-less="1">
-          Menej <span class="count">—</span>
-        </div>
-      `;
-    }
+      if (ACTIVE_BRAND){
+        out = out.filter(p => (p._brand || "") === ACTIVE_BRAND);
+      }
+      if (ACTIVE_MODEL){
+        out = out.filter(p => (p._model || "") === ACTIVE_MODEL);
+      }
 
-    bar.innerHTML = html;
-
-    // events
-    bar.querySelectorAll(".pill[data-model]").forEach(p => {
-      p.addEventListener("click", () => {
-        const m = p.dataset.model;
-        setActiveModel(m);
-      });
-    });
-
-    const more = bar.querySelector(".pill[data-more]");
-    more && more.addEventListener("click", () => {
-      SHOW_ALL_PILLS = true;
-      renderPills();
-    });
-
-    const less = bar.querySelector(".pill[data-less]");
-    less && less.addEventListener("click", () => {
-      SHOW_ALL_PILLS = false;
-      renderPills();
-    });
-  }
-
-  async function load(){
-    const container = $("#parts-skladom");
-    try{
-      const res = await fetch(JSON_URL);
-      if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
-      const data = await res.json();
-      const raw = Array.isArray(data) ? data : (data.inStock || []);
-
-      ALL = raw.map(normalizePart);
-
-      if (!ALL.length){
-        container.innerHTML = `<div class="empty">Momentálne nemáme žiadne diely označené ako <b>skladom</b>.</div>`;
+      if (!out.length){
+        container.innerHTML = `<div class="empty">Pre tento filter tu zatiaľ nič nie je. Skús iný model alebo reset.</div>`;
         return;
       }
 
-      computeModels();
-      renderPills();
-      applyFilter();
-    }catch(err){
-      console.error(err);
-      container.innerHTML = `<div class="empty">Nepodarilo sa načítať skladové diely. Skús obnoviť stránku.</div>`;
+      container.innerHTML = out.map(buildCard).join("");
+      bindCardEvents(container, out);
     }
-  }
 
-  document.addEventListener("DOMContentLoaded", load);
-</script>
+    function bindCardEvents(container, list){
+      // galéria v karte
+      container.querySelectorAll(".product").forEach((card, i) => {
+        const imgWrap = card.querySelector(".product-image");
+        const img = card.querySelector("img");
+        const prev = card.querySelector(".img-nav.prev");
+        const next = card.querySelector(".img-nav.next");
+        const detail = card.querySelector(".btn-detail");
+        const images = decodeURIComponent(card.dataset.images || "").split("|").filter(Boolean);
 
+        function setIdx(n){
+          if (!images.length) return;
+          const idx = (n + images.length) % images.length;
+          card.dataset.idx = String(idx);
+          img.src = images[idx];
+        }
+
+        prev && prev.addEventListener("click", (e)=>{
+          e.preventDefault(); e.stopPropagation();
+          const cur = parseInt(card.dataset.idx || "0", 10) || 0;
+          setIdx(cur - 1);
+        });
+
+        next && next.addEventListener("click", (e)=>{
+          e.preventDefault(); e.stopPropagation();
+          const cur = parseInt(card.dataset.idx || "0", 10) || 0;
+          setIdx(cur + 1);
+        });
+
+        // detail modal
+        detail && detail.addEventListener("click", ()=>{
+          const part = list[i];
+          openModal(part);
+        });
+
+        // klik na obrázok tiež otvorí detail
+        imgWrap && imgWrap.addEventListener("click", ()=>{
+          const part = list[i];
+          openModal(part);
+        });
+      });
+    }
+
+    /* =========================
+      FILTER UI
+    ========================== */
+    function refreshModelSelect(){
+      const brandSel = $("#brandSelect");
+      const modelSel = $("#modelSelect");
+
+      const b = brandSel.value || "";
+      modelSel.innerHTML = `<option value="">Model</option>`;
+
+      if (!b){
+        modelSel.disabled = true;
+        return;
+      }
+
+      modelSel.disabled = false;
+      const arr = BRAND_MODELS[b] || [];
+      arr.forEach(m=>{
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m;
+        modelSel.appendChild(opt);
+      });
+    }
+
+    function wireFilter(){
+      const brandSel = $("#brandSelect");
+      const modelSel = $("#modelSelect");
+      const resetBtn = $("#resetBtn");
+
+      brandSel.addEventListener("change", ()=>{
+        ACTIVE_BRAND = brandSel.value || "";
+        ACTIVE_MODEL = ""; // reset model pri zmene značky
+        refreshModelSelect();
+        modelSel.value = "";
+        applyFilter();
+      });
+
+      modelSel.addEventListener("change", ()=>{
+        ACTIVE_MODEL = modelSel.value || "";
+        applyFilter();
+      });
+
+      resetBtn.addEventListener("click", ()=>{
+        ACTIVE_BRAND = "";
+        ACTIVE_MODEL = "";
+        brandSel.value = "";
+        refreshModelSelect();
+        modelSel.value = "";
+        applyFilter();
+      });
+    }
+
+    /* =========================
+      MODAL
+    ========================== */
+    function openModal(part){
+      MODAL_PART = part;
+      MODAL_INDEX = 0;
+
+      const modal = $("#modal");
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      // fill info
+      $("#modalTitle").textContent = safe(part.name) || "Produkt";
+      $("#modalMeta").textContent = safe(part.meta) || "";
+      $("#modalNote").textContent = safe(part.note) || "";
+
+      const stockCount = parseStockCount(part.stockLabel);
+      const stockText = stockCount != null ? `Skladom ${stockCount} ks` : (safe(part.stockLabel) || "Skladom");
+      $("#modalStockText").textContent = stockText;
+
+      $("#modalPriceValue").textContent = safe(part.price) || "Na dopyt";
+      $("#modalPriceSuffix").textContent = safe(part.price_suffix) || "";
+
+      // images + thumbs
+      renderModalImages();
+
+      // form preset
+      $("#formProduct").value = safe(part.name) || "";
+      $("#formMessage").value = "";
+
+      // hide form by default
+      $("#orderFormWrap").classList.remove("show");
+      $("#formStatus").textContent = "";
+      $("#formStatus").className = "form-status";
+    }
+
+    function closeModal(){
+      const modal = $("#modal");
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      MODAL_PART = null;
+      MODAL_INDEX = 0;
+    }
+
+    function renderModalImages(){
+      const img = $("#modalImg");
+      const thumbs = $("#modalThumbs");
+      const prev = $("#modalPrev");
+      const next = $("#modalNext");
+
+      const images = (MODAL_PART && MODAL_PART.allImages) ? MODAL_PART.allImages : [];
+      if (!images.length){
+        img.src = "img/placeholder-part.jpg";
+        thumbs.innerHTML = "";
+        prev.style.display = "none";
+        next.style.display = "none";
+        return;
+      }
+
+      img.src = images[MODAL_INDEX] || images[0];
+
+      thumbs.innerHTML = images.map((src, i)=>`
+        <div class="thumb ${i===MODAL_INDEX ? "active" : ""}" data-i="${i}" title="Fotka ${i+1}">
+          <img src="${src}" alt="Thumb ${i+1}">
+        </div>
+      `).join("");
+
+      thumbs.querySelectorAll(".thumb").forEach(t=>{
+        t.addEventListener("click", ()=>{
+          const i = parseInt(t.dataset.i, 10) || 0;
+          MODAL_INDEX = i;
+          renderModalImages();
+        });
+      });
+
+      const showNav = images.length > 1;
+      prev.style.display = showNav ? "" : "none";
+      next.style.display = showNav ? "" : "none";
+    }
+
+    function modalPrev(){
+      const images = (MODAL_PART && MODAL_PART.allImages) ? MODAL_PART.allImages : [];
+      if (images.length <= 1) return;
+      MODAL_INDEX = (MODAL_INDEX - 1 + images.length) % images.length;
+      renderModalImages();
+    }
+
+    function modalNext(){
+      const images = (MODAL_PART && MODAL_PART.allImages) ? MODAL_PART.allImages : [];
+      if (images.length <= 1) return;
+      MODAL_INDEX = (MODAL_INDEX + 1) % images.length;
+      renderModalImages();
+    }
+
+    function wireModal(){
+      const modal = $("#modal");
+
+      // close clicks
+      modal.addEventListener("click", (e)=>{
+        const t = e.target;
+        if (t && t.dataset && t.dataset.close === "1") closeModal();
+      });
+
+      // nav
+      $("#modalPrev").addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); modalPrev(); });
+      $("#modalNext").addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); modalNext(); });
+
+      // keyboard
+      document.addEventListener("keydown", (e)=>{
+        if (!modal.classList.contains("show")) return;
+        if (e.key === "Escape") closeModal();
+        if (e.key === "ArrowLeft") modalPrev();
+        if (e.key === "ArrowRight") modalNext();
+      });
+
+      // order button -> open form inside modal
+      $("#orderBtn").addEventListener("click", ()=>{
+        const w = $("#orderFormWrap");
+        w.classList.toggle("show");
+        if (w.classList.contains("show")){
+          w.scrollIntoView({behavior:"smooth", block:"start"});
+          $("#orderForm").querySelector('input[name="name"]').focus();
+        }
+      });
+
+      // submit form to Formspree
+      $("#orderForm").addEventListener("submit", async (e)=>{
+        e.preventDefault();
+
+        const status = $("#formStatus");
+        status.textContent = "";
+        status.className = "form-status";
+
+        if (!FORM_URL || FORM_URL.includes("XXXXYYYY")){
+          status.textContent = "Nastav FORM_URL na tvoj Formspree endpoint (v kóde).";
+          status.classList.add("bad");
+          return;
+        }
+
+        const form = e.target;
+        const fd = new FormData(form);
+
+        // doplníme aj interné info
+        fd.append("price", safe(MODAL_PART?.price || ""));
+        fd.append("stock", safe(MODAL_PART?.stockLabel || ""));
+        fd.append("product_id", safe(MODAL_PART?.id || ""));
+
+        try{
+          status.textContent = "Odosielam…";
+          const res = await fetch(FORM_URL, {
+            method: "POST",
+            body: fd,
+            headers: { "Accept": "application/json" }
+          });
+
+          if (res.ok){
+            status.textContent = "Hotovo! Objednávka bola odoslaná. Ozveme sa ti späť.";
+            status.classList.add("ok");
+            form.reset();
+            $("#formProduct").value = safe(MODAL_PART?.name || "");
+            $("#formMessage").value = "";
+          }else{
+            let msg = "Nepodarilo sa odoslať. Skús to ešte raz.";
+            try{
+              const data = await res.json();
+              if (data && data.errors && data.errors.length){
+                msg = data.errors.map(x => x.message).join(" · ");
+              }
+            }catch(_){}
+            status.textContent = msg;
+            status.classList.add("bad");
+          }
+        }catch(err){
+          console.error(err);
+          status.textContent = "Chyba pripojenia. Skús to ešte raz.";
+          status.classList.add("bad");
+        }
+      });
+    }
+
+    /* =========================
+      LOAD DATA
+    ========================== */
+    async function load(){
+      const container = $("#parts");
+      try{
+        const res = await fetch(JSON_URL);
+        if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
+        const data = await res.json();
+        const raw = Array.isArray(data) ? data : (data.inStock || []);
+
+        ALL = raw.map(normalizePart);
+
+        if (!ALL.length){
+          container.innerHTML = `<div class="empty">Momentálne nemáme žiadne diely označené ako <b>skladom</b>.</div>`;
+          return;
+        }
+
+        applyFilter();
+      }catch(err){
+        console.error(err);
+        container.innerHTML = `<div class="empty">Nepodarilo sa načítať skladové diely. Skús obnoviť stránku.</div>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      wireFilter();
+      wireModal();
+      refreshModelSelect();
+      load();
+    });
+  </script>
 </body>
 </html>
