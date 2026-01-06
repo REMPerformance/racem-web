@@ -1,1 +1,262 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mobilný autoservis | RACEM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <style>
+    :root{
+      --red:#b31f24;
+      --bg:#0b0b0b;
+      --panel:#141414;
+      --panel2:#101010;
+      --text:#ffffff;
+      --muted:#cfcfcf;
+      --muted2:#9b9b9b;
+      --line: rgba(255,255,255,0.08);
+      --shadow: 0 20px 60px rgba(0,0,0,0.55);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #151515 0, #050505 55%, #000 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    h1,h2,h3{margin:0}
+    p{line-height:1.6}
+
+    /* ===== HEADER ===== */
+    header{
+      padding:48px 24px 64px;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(179,31,36,0.15);
+      color:var(--red);
+      font-size:13px;
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size:44px;
+      max-width:900px;
+      margin-bottom:16px;
+    }
+
+    header p{
+      max-width:820px;
+      color:var(--muted);
+      font-size:18px;
+    }
+
+    /* ===== SECTIONS ===== */
+    section{
+      max-width:1200px;
+      margin:0 auto 64px;
+      padding:0 24px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border-radius:var(--radius);
+      padding:36px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:24px;
+    }
+
+    .card{
+      background:#0f0f0f;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:22px;
+    }
+
+    .card h3{
+      color:var(--red);
+      margin-bottom:10px;
+    }
+
+    /* ===== LIST ===== */
+    ul{
+      padding-left:18px;
+    }
+
+    ul li{
+      margin-bottom:8px;
+      color:var(--muted);
+    }
+
+    /* ===== CTA ===== */
+    .cta{
+      background:linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      border-radius:22px;
+      padding:48px;
+      text-align:center;
+      border:1px solid var(--line);
+    }
+
+    .cta h2{
+      font-size:32px;
+      margin-bottom:12px;
+    }
+
+    .cta p{
+      color:var(--muted);
+      margin-bottom:22px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:14px 26px;
+      border-radius:12px;
+      background:var(--red);
+      color:white;
+      font-weight:bold;
+    }
+
+    /* ===== FOOTER ===== */
+    footer{
+      padding:36px 24px;
+      border-top:1px solid var(--line);
+      color:var(--muted2);
+      text-align:center;
+      font-size:14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <span class="pill">🚐 Mobilný autoservis</span>
+  <h1>RACEM – Mobilný autoservis a technická asistencia</h1>
+  <p>
+    Profesionálne sprostredkovanie mobilných servisných zásahov priamo u zákazníka.
+    Rýchlo, transparentne a legálne – bez zbytočného presunu vozidla do servisu.
+  </p>
+</header>
+
+<section>
+  <div class="panel">
+    <h2>Ako fungujeme</h2>
+    <p class="muted">
+      RACEM vystupuje ako <b>sprostredkovateľ a koordinátor</b> mobilných servisných služieb.
+      Samotné odborné servisné práce vykonáva <b>certifikovaný automechanik</b> s platnou živnosťou
+      a odbornou spôsobilosťou.
+    </p>
+
+    <ul>
+      <li>Objednávku rieši zákazník cez RACEM</li>
+      <li>Výkon servisnej práce vykonáva kvalifikovaný mechanik</li>
+      <li>RACEM zabezpečuje komunikáciu, logistiku a administratívu</li>
+      <li>Fakturácia prebieha transparentne a v súlade so zákonom</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Čo vieme zabezpečiť</h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3>Bežný servis</h3>
+      <ul>
+        <li>Výmena oleja a filtrov</li>
+        <li>Výmena brzdových komponentov</li>
+        <li>Batérie, žiarovky, drobný servis</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Diagnostika</h3>
+      <ul>
+        <li>Chybové hlásenia</li>
+        <li>Základné resetovanie</li>
+        <li>Kontrola stavu vozidla</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Technická asistencia</h3>
+      <ul>
+        <li>Problém so štartom</li>
+        <li>Núdzové zásahy</li>
+        <li>Príprava vozidla na presun</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="panel">
+    <h2>Čo nerobíme</h2>
+    <ul>
+      <li>Nezasahujeme do nosných a bezpečnostných častí bez dielne</li>
+      <li>Nevykonávame práce vyžadujúce zdvihák alebo STK techniku</li>
+      <li>Neposkytujeme úpravy odporujúce zákonu</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="panel">
+    <h2>Cena a objednávka</h2>
+    <p class="muted">
+      Cena sa vždy stanovuje individuálne podľa rozsahu práce, miesta výjazdu
+      a typu vozidla. Pred zásahom zákazník vždy pozná orientačnú cenu.
+    </p>
+
+    <ul>
+      <li>Výjazd mobilného servisu</li>
+      <li>Hodinová sadzba práce</li>
+      <li>Materiál podľa potreby</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="panel">
+    <h2>Ekologická a zákonná zodpovednosť</h2>
+    <p class="muted">
+      Použité oleje, filtre a prevádzkové kvapaliny sú odovzdávané
+      oprávnenej osobe na likvidáciu v súlade s platnou legislatívou SR.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="cta">
+    <h2>Potrebujete výjazd?</h2>
+    <p>Kontaktujte nás a zabezpečíme riešenie.</p>
+    <a href="mailto:racemperformance@outlook.com" class="btn">Kontaktovať RACEM</a>
+  </div>
+</section>
+
+<footer>
+  © RACEM / REM Performance · Mobilný autoservis je poskytovaný formou sprostredkovania
+</footer>
+
+</body>
+</html>
