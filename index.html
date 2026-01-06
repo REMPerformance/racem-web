@@ -334,6 +334,7 @@
     .btnPrimary:hover{transform: translateY(-2px); filter: brightness(1.05)}
     .btnGhost{ background: rgba(20,20,20,0.65); color:#fff; }
     .btnGhost:hover{transform: translateY(-2px); border-color: rgba(255,255,255,0.22)}
+
     .heroCard{
       background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.65));
       border: 1px solid rgba(255,255,255,0.08);
@@ -381,42 +382,51 @@
     }
     .panel > *{position:relative}
 
-    /* ====== SERVICE GRID (mobilný autoservis) ====== */
-    .service-grid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:22px;
-      margin-top:34px;
+    /* ====== CLICKABLE SERVICE CARD (mobilny autoservis) ====== */
+    .service-card{
+      cursor:pointer;
+      user-select:none;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
     }
-
-    .card{
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(12,12,12,0.72));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-      transform: translateY(0);
-      transition: transform .25s, border-color .25s, box-shadow .25s;
-      cursor:default;
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background: radial-gradient(circle at 25% 25%, rgba(179,31,36,0.22), transparent 55%);
-      opacity:0;
-      transition: .25s;
-    }
-    .card:hover{
-      transform: translateY(-8px);
-      border-color: rgba(179,31,36,0.35);
+    .service-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.40);
       box-shadow: 0 18px 60px rgba(0,0,0,0.55);
     }
-    .card:hover::before{opacity:1}
-    .card > *{position:relative}
-
-    .tag{
+    .service-card:active{ transform: translateY(-4px) scale(0.995); }
+    .service-card .service-top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .service-card .service-icon{
+      width:44px; height:44px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+      flex:0 0 auto;
+    }
+    .service-card .service-icon svg{ width:22px; height:22px; color:#fff; opacity:.9; }
+    .service-card .service-arrow{
+      width:38px;height:38px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      opacity:.8;
+      transition:.22s;
+      flex:0 0 auto;
+    }
+    .service-card:hover .service-arrow{
+      opacity:1;
+      transform: translateX(2px);
+      border-color: rgba(179,31,36,0.35);
+    }
+    .service-pills{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .mini-chip{
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -425,138 +435,12 @@
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.03);
       font-size:11px;
-      letter-spacing:.7px;
+      letter-spacing:.10em;
       text-transform:uppercase;
       color: var(--muted2);
-      margin-bottom:12px;
       width: fit-content;
     }
-    .arrow{
-      position:absolute;
-      right:18px; bottom:18px;
-      width:38px; height:38px;
-      border-radius:12px;
-      display:flex; align-items:center; justify-content:center;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      opacity:.7;
-      transition:.25s;
-    }
-    .card:hover .arrow{
-      opacity:1;
-      transform: translateX(2px);
-      border-color: rgba(179,31,36,0.35);
-    }
-
-    /* ====== SERVICE CLICK + DROPDOWN FORM ====== */
-    .card.service-card{ cursor: pointer; user-select:none; }
-    .card.service-card:focus{outline:none}
-
-    .card.service-card.is-active{
-      border-color: rgba(179,31,36,0.55);
-      box-shadow:
-        0 18px 60px rgba(0,0,0,0.55),
-        0 0 0 1px rgba(179,31,36,0.15) inset;
-      animation: cardHighlight .35s ease both;
-    }
-    @keyframes cardHighlight{
-      from{ transform: translateY(-2px); filter: brightness(1); }
-      to{ transform: translateY(-8px); filter: brightness(1.05); }
-    }
-
-    .card-drop{
-      margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 14px;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transform: translateY(-6px);
-      transition: max-height .45s ease, opacity .35s ease, transform .35s ease;
-    }
-    .card.service-card.is-active .card-drop{
-      max-height: 720px;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card-drop{ overflow: hidden; }
-    .card.service-card.is-active .card-drop{
-      overflow: auto;
-      padding-right: 6px;
-    }
-
-    .card.service-card.is-active .card-drop::-webkit-scrollbar{ width: 10px; }
-    .card.service-card.is-active .card-drop::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,0.14);
-      border-radius: 999px;
-      border: 2px solid rgba(0,0,0,0.35);
-    }
-    .card.service-card.is-active .card-drop::-webkit-scrollbar-thumb:hover{
-      background: rgba(179,31,36,0.35);
-    }
-
-    .req-form{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .req-form .full{ grid-column: 1 / -1; }
-
-    .req-form label{
-      display:block;
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted2);
-      margin-bottom: 6px;
-    }
-
-    .req-form input,
-    .req-form textarea,
-    .req-form select{
-      width:100%;
-      border-radius: 12px;
-      padding: 12px 12px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .2s ease, box-shadow .2s ease;
-    }
-    .req-form textarea{ min-height: 96px; resize: vertical; }
-
-    .req-form input:focus,
-    .req-form textarea:focus,
-    .req-form select:focus{
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
-    }
-
-    .req-form select{
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image:
-        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.7) 50%),
-        linear-gradient(135deg, rgba(255,255,255,0.7) 50%, transparent 50%);
-      background-position:
-        calc(100% - 18px) calc(50% - 3px),
-        calc(100% - 12px) calc(50% - 3px);
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
-      padding-right: 34px;
-    }
-    .req-form select option{ color:#000; }
-
-    .req-actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    .req-actions .btn{ padding: 12px 18px; }
+    .mini-dot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
 
     /* ====== STOCK (COLLAPSIBLE GRID) ===== */
     .stock-strip{
@@ -628,9 +512,15 @@
       padding: 16px 2px 18px;
     }
 
-    .stock-strip.is-expanded .stock-collapsible{ max-height: var(--stockExpanded); }
-    .stock-strip.is-expanded .stock-fade{ opacity: 0; }
-    .stock-strip.is-expanded .stock-more .chev{ transform: rotate(180deg); }
+    .stock-strip.is-expanded .stock-collapsible{
+      max-height: var(--stockExpanded);
+    }
+    .stock-strip.is-expanded .stock-fade{
+      opacity: 0;
+    }
+    .stock-strip.is-expanded .stock-more .chev{
+      transform: rotate(180deg);
+    }
 
     .stock-item{
       border:1px solid rgba(255,255,255,0.10);
@@ -726,6 +616,7 @@
       border: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.03);
     }
+
     .chip--stock{
       background: radial-gradient(circle at 20% 0%, rgba(34,197,94,0.35), rgba(6,78,59,0.95));
       border-color: rgba(34,197,94,0.95);
@@ -932,7 +823,7 @@
       backdrop-filter:blur(6px);
     }
 
-    /* kontakt boxy, footer atď – ostáva rovnaké */
+    /* kontakt boxy, footer atď */
     .contact-box{
       margin-top: 14px;
       display:grid;
@@ -1015,6 +906,10 @@
     .company-box p{ margin-bottom:14px; font-size:14px; line-height:1.6; }
     .company-box b{ color:#fff; }
 
+    @media(max-width:980px){
+      .contact-flex{ grid-template-columns:1fr; }
+    }
+
     .pill-row{
       display:flex;
       align-items:center;
@@ -1038,8 +933,11 @@
         border-color .18s ease;
       cursor:pointer;
       margin-left:auto;
+      padding:10px 16px;
+      border-radius:999px;
+      box-shadow:0 10px 25px rgba(0,0,0,.5);
     }
-    .dot--orange{ background:#ffa500; box-shadow:0 0 0 3px rgba(255,165,0,0.25); }
+    .dot--orange{ background:#ffa500; box-shadow:0 0 0 3px rgba(255,165,0,0.25); width:8px;height:8px;border-radius:999px;}
     .pill-bazos-text{ font-size:13.5px; white-space:nowrap; }
     .pill-arrow{
       font-size:14px;
@@ -1070,8 +968,11 @@
         background .18s ease,
         border-color .18s ease;
       cursor:pointer;
+      padding:10px 16px;
+      border-radius:999px;
+      box-shadow:0 10px 25px rgba(0,0,0,.5);
     }
-    .dot--catalog{ background: var(--red); box-shadow:0 0 0 3px rgba(179,31,36,0.35); }
+    .dot--catalog{ background: var(--red); box-shadow:0 0 0 3px rgba(179,31,36,0.35); width:8px;height:8px;border-radius:999px;}
     .pill--catalog:hover{
       background: rgba(179,31,36,0.20);
       border-color: var(--red);
@@ -1088,14 +989,12 @@
     /* ====== RESPONSIVE ====== */
     @media (max-width: 1400px){
       .stock-scroll{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
-      .service-grid{ grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 1200px){
       .stock-scroll{ grid-template-columns: repeat(5, minmax(0, 1fr)); }
-      .service-grid{ grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media(max-width:980px){
+    @media (max-width: 980px){
       .wrap{ padding: 0 18px; max-width: 720px; margin: 0 auto; }
       section{ padding: 78px 0; }
       .hero{ padding: 70px 0 60px; }
@@ -1133,17 +1032,7 @@
       .nav-links a{ font-size: 12px; letter-spacing: .12em; }
       .brand-mini img{height: 52px}
 
-      .service-grid{ grid-template-columns: 1fr; gap: 20px; margin-top: 22px; }
-      .card{ padding: 20px; max-width: 680px; margin: 0 auto; }
-      .card:hover{ transform: translateY(-3px); }
-      .arrow{ right: 14px; bottom: 14px; }
-
-      .req-form{ grid-template-columns: 1fr; gap: 10px; }
-      .req-form input, .req-form textarea, .req-form select{ font-size: 16px; }
-      .card.service-card.is-active .card-drop{ max-height: 85vh; }
-
       .panel{ padding: 22px; }
-
       .contact-row{ grid-template-columns: 1fr; }
 
       footer{ padding: 40px 0; }
@@ -1160,11 +1049,6 @@
 
     @media (max-width:560px){
       .stock-scroll{ grid-template-columns: 1fr; }
-    }
-    @media (max-width:700px){
-      .pill-row{ justify-content:flex-start; }
-      .modal-counter{ right:10px; bottom:10px; }
-      .contact-flex{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -1202,25 +1086,26 @@
         </h1>
 
         <p class="subline">
-          Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach – v RACEM ti zoženieme všetko.
-          A keď treba, prídeme aj <b>priamo k tebe</b> – mobilný výjazd, servis, diagnostika, rýchle zásahy.
+          Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach, u nás v RACEM ti zoženieme všetko.
+          Či sa jedná o skrutky, autodiely, prevádzkové kvapaliny alebo dokonca diely z NASCAR áut, nájdeme to, zjednáme cenu a donesieme ti to priamo ku dverám.
         </p>
 
         <div class="ctaRow">
           <a class="btn btnPrimary" href="#kontakt">Nezáväzná ponuka</a>
-          <a class="btn btnGhost" href="#autoservis">Mobilný autoservis</a>
+          <a class="btn btnGhost" href="#autoservis">Váš servis na cestách</a>
+          <a class="btn btnGhost" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
         </div>
       </div>
 
       <div class="heroCard reveal">
-        <h3>REM Performance – Mobilný autoservis & diely</h3>
-        <p class="muted2">Keď to nevieš nájsť, alebo nechceš preplatiť, náš tím je tu pre teba. Rýchlo, priamo, bez výmyslov.</p>
+        <h3>REM Performance - Distribútor dielov</h3>
+        <p class="muted2">Keď to nevieš nájsť, alebo nechceš preplatiť, náš tím je tu pre teba. Odpovedáme rýchlo a priamo.</p>
 
         <div class="statRow">
           <div class="stat"><b>Autodiely</b><span>vyhľadáme, overíme, dodáme</span></div>
-          <div class="stat"><b>Mobilný servis</b><span>výjazdy • diagnostika • zásahy</span></div>
-          <div class="stat"><b>Nezohnateľné diely</b><span>nájdeme, zjednáme cenu, dodáme</span></div>
-          <div class="stat"><b>Sponzoring</b><span>Podporujeme motošportové talenty</span></div>
+          <div class="stat"><b>Sponzoring</b><span>podporujeme motošportové talenty</span></div>
+          <div class="stat"><b>Mobilný autoservis</b><span>prídeme za tebou • ušetríš čas</span></div>
+          <div class="stat"><b>Zostaň v postrehu</b><span>veci na ruke obmieňame každý mesiac</span></div>
         </div>
       </div>
     </div>
@@ -1232,27 +1117,38 @@
       <div class="split">
         <div class="reveal">
           <h2>Podporujeme Vás</h2>
-
           <div class="panel" style="margin-top:18px">
-            <span class="pill"><span class="dot"></span> výjazdy • servis • podpora</span>
-            <h3 style="margin-top:16px">Mobilný autoservis – vaša podpora na cestách</h3>
+            <span class="pill"><span class="dot"></span> motorsport • tímy • podpora</span>
+            <h3 style="margin-top:16px">Podpora motorsportu & tímov</h3>
 
             <p>
-              Keď auto začne robiť blbosti, posledné čo chceš, je riešiť odťah a stratiť pol dňa.
-              <b>Prídeme k tebe</b> – domov, do práce, na parkovisko. Rýchle zásahy, diagnostika, výmeny a servisné úkony.
+              Motoršport nie je len hobby. Je to <b>disciplína, obeta a vášeň</b>.
+              RACEM aktívne podporuje mladé talenty ktoré bojujú o úspech –
+              od lokálnych drift tímov až po profesionálne pretekárske zostavy.
             </p>
 
             <p class="muted2">
-              <b>Typické zásahy:</b><br>
-              • diagnostika + vymazanie chýb<br>
-              • brzdy (platničky/kotúče podľa možností)<br>
-              • výmena oleja + filtrov<br>
-              • rýchle opravy a núdzové zásahy
+              <b>Podporujeme:</b><br>
+              • drift tímy a jednotlivcov<br>
+              • amatérske aj profesionálne preteky<br>
+              • lokálne aj národné motoristické podujatia
+            </p>
+
+            <p class="muted2" style="margin-top:12px">
+              <b>Ponúkame:</b><br>
+              • sponzoring tímov a jazdcov<br>
+              • zvýhodnené ceny dielov a služieb<br>
+              • technickú a traťovú podporu<br>
+              • individuálny a férový prístup
+            </p>
+
+            <p style="margin-top:14px">
+              Ak buduješ auto, tím alebo celý projekt a hľadáš partnera,
+              ktorý rozumie realite motorsportu, <b>radi sa staneme súčasťou tvojej cesty</b>.
             </p>
 
             <div class="ctaRow" style="margin-top:12px">
-              <a class="btn btnPrimary" href="#autoservis">Objednať výjazd</a>
-              <a class="btn btnGhost" href="#kontakt">Napísať správu</a>
+              <a class="btn btnPrimary" href="#kontakt">Kontaktuj nás</a>
             </div>
           </div>
         </div>
@@ -1261,21 +1157,53 @@
           <h3>Nemáš čo stratiť</h3>
 
           <p class="muted2">
-            Pretože nechceš len diel alebo opravu. Chceš istotu, že to bude dávať zmysel – technicky aj finančne.
+            Pretože nechceš len diel. Chceš istotu, že to čo namontuješ,
+            bude pasovať, vydrží a má zmysel investovať do toho peniaze.
           </p>
 
           <p class="muted2" style="margin-top:10px">
             <b>Čo získaš ty:</b><br>
-            • menšie riziko chybného dielu a zbytočných návratov<br>
-            • výber podľa cieľa a rozpočtu – nie „jedna správna možnosť“<br>
-            • reálne info o dostupnosti a cene, nie marketingové rozprávky<br>
-            • pokoj v hlave, že tvoje auto riešime rozumne a funkčne<br>
-            • neplatíš za nič dopredu – všetko riešime férovo a transparentne
+            • menšie riziko chybného dielu a zbytočných návratov do servisu<br>
+            • výber podľa tvojho cieľa a rozpočtu – nie „jedna správna možnosť“<br>
+            • reálne informácie o dostupnosti a cene, nie marketingové rozprávky<br>
+            • pokoj v hlave, že tvoje auto je riešené rozumne a funkčne<br>
+            • neplatíš za nič, len dodanie a diel, a aj to až keď ho budeš fyzicky držať v rukách
           </p>
 
           <p class="muted2" style="margin-top:14px">
             Výsledok? Menej stresu, menej stratených peňazí, viac radosti z auta.
+            Presne tak to má vyzerať.
           </p>
+
+          <!-- klikateľná mini sekcia autoservis (aby to bolo aj tu, nie len dole) -->
+          <div class="panel service-card reveal" data-go="https://racem.sk/mobilny-autoservis" style="margin-top:16px; padding:18px;">
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M18.92 7.01C18.72 6.42 18.16 6 17.5 6h-11c-.66 0-1.22.42-1.42 1.01L3 13v7c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-7l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13 8 13.67 8 14.5 7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5S16.67 13 17.5 13 19 13.67 19 14.5 18.33 16 17.5 16zM5.2 11l1.16-3.5h11.28L18.8 11H5.2z"/>
+                </svg>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <h3 style="margin:0 0 6px 0;">Váš servis na cestách</h3>
+                <p class="muted2" style="margin:0;">
+                  Mobilný autoservis – prídeme za tebou a vyriešime servis bez zbytočného stresu.
+                </p>
+              </div>
+              <div class="service-arrow">→</div>
+            </div>
+
+            <div class="service-pills">
+              <span class="mini-chip"><span class="mini-dot"></span> diagnostika</span>
+              <span class="mini-chip"><span class="mini-dot"></span> servis</span>
+              <span class="mini-chip"><span class="mini-dot"></span> brzdy</span>
+              <span class="mini-chip"><span class="mini-dot"></span> výmena oleja</span>
+            </div>
+
+            <div class="ctaRow" style="margin-top:12px;">
+              <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1314,211 +1242,109 @@
           Bez záväzkov, bez skrytých poplatkov.
         </p>
 
+        <p style="margin-top:16px; max-width:980px">
+          Ak riešiš projekt, kde bežné riešenia nestačia,
+          radi to preberieme a nájdeme cestu, ktorá dáva technický aj finančný zmysel.
+        </p>
+
         <div class="ctaRow" style="margin-top:20px">
           <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
-          <a class="btn btnGhost" href="#autoservis">Potrebujem servis</a>
+          <a class="btn btnGhost" href="#autoservis">Váš servis na cestách</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MOBILNY AUTOSERVIS -->
+  <!-- MOBILNÝ AUTOSERVIS (HLAVNÁ SEKČIA) -->
   <section id="autoservis">
     <div class="wrap">
       <h2 class="reveal">Mobilný autoservis</h2>
       <p class="reveal">
-        Vaša podpora na cestách. Rýchle výjazdy, diagnostika a servisné zásahy – doma, v práci, kdekoľvek.
-        Klikni na službu a objednaj to rovno cez formulár.
+        Servis priamo u teba – doma, vo firme, na parkovisku. Bez zbytočných presunov, bez straty času.
+        Príde mechanik, spraví prácu a ty máš auto vyriešené.
       </p>
 
-      <div class="service-grid">
-        <!-- VYJAZD -->
-        <div class="card reveal service-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> VÝJAZD</div>
-          <h3>Rýchly výjazd</h3>
-          <p>Keď auto nejde, nechceš čakať. Prídeme k tebe a riešime hneď na mieste.</p>
-          <div class="arrow">→</div>
+      <div class="split" style="margin-top:22px;">
+        <div class="panel reveal" style="padding:40px;">
+          <span class="pill">
+            <span class="dot"></span>
+            mobilne • rýchlo • férovo • prakticky
+          </span>
 
-          <div class="card-drop">
-            <form class="req-form" action="https://formspree.io/f/mwvekvgy" method="POST">
-              <div class="full">
-                <label>Miesto zásahu</label>
-                <input type="text" name="miesto" placeholder="Mesto, ulica, parkovisko..." required>
-              </div>
+          <h3 style="margin-top:18px; font-size:20px; letter-spacing:.14em;">
+            Vaša podpora na cestách
+          </h3>
 
-              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Audi / VW..." required></div>
-              <div><label>Model</label><input type="text" name="model" placeholder="E46 / A4 / Golf..." required></div>
+          <p style="font-size:16px; max-width:1000px;">
+            Toto nie je „len ďalší servis“. Toto je služba pre ľudí, ktorí nechcú riešiť odťah,
+            čakať týždeň na termín a potom ešte stratiť deň behaním po dieloch.
+            Zavoláš / napíšeš, my si vypýtame detaily a prídeme to vyriešiť tam, kde si.
+          </p>
 
-              <div class="full">
-                <label>Čo sa deje?</label>
-                <textarea name="problem" placeholder="Neštartuje, vibruje, svieti kontrolka..." required></textarea>
-              </div>
+          <p class="muted2" style="margin-top:14px;">
+            <b>Najčastejšie zásahy, ktoré sa dajú riešiť mobilne:</b><br>
+            • diagnostika + zistenie problému (chyby, senzory, základné merania)<br>
+            • výmena oleja a filtrov, sviečky, cievky, bežný servis<br>
+            • brzdy (kotúče/platničky) podľa typu auta a podmienok na mieste<br>
+            • podvozkové veci (tyčky, ramená, drobné opravy) keď je prístup a náradie<br>
+            • batéria, štarty, dobíjanie, základná elektrika<br>
+            • výmena kvapalín (podľa situácie)
+          </p>
 
-              <div><label>Preferovaný čas</label><input type="text" name="cas" placeholder="dnes / zajtra / po 18:00..."></div>
+          <p class="muted2" style="margin-top:14px;">
+            <b>Ako prebieha objednanie:</b><br>
+            1) Pošleš auto + problém + lokalitu<br>
+            2) Povieme, či sa to dá spraviť mobilne a čo bude treba<br>
+            3) Dohodneme termín, prídeme, spravíme, odovzdáme<br>
+            4) Ak treba diely – vieme ich zabezpečiť cez RACEM (nové aj použité)
+          </p>
 
-              <div class="full">
-                <label>Meno a priezvisko</label>
-                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
-              </div>
-              <div>
-                <label>Email</label>
-                <input type="email" name="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label>Telefón</label>
-                <input type="text" name="telefon" placeholder="+421..." required>
-              </div>
+          <p class="muted2" style="margin-top:14px;">
+            <b>Pravidlo číslo 1:</b> keď to nedáva zmysel alebo to nie je bezpečné spraviť „na mieste“,
+            povieme to narovinu a dáme ti najlepší postup (servis/odťah/diely).
+          </p>
 
-              <input type="hidden" name="sluzba" value="Mobilný autoservis – rýchly výjazd">
-              <div class="full req-actions">
-                <button class="btn btnPrimary" type="submit">Objednať výjazd</button>
-                <a class="btn btnGhost closeServiceBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
+          <div class="ctaRow" style="margin-top:18px">
+            <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+            <a class="btn btnGhost" href="#kontakt">Rovno dopyt</a>
           </div>
         </div>
 
-        <!-- DIAGNOSTIKA -->
-        <div class="card reveal service-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> DIAG</div>
-          <h3>Diagnostika</h3>
-          <p>Chyby, kontrolky, výkon, režimy. Napojíme sa a povieme ti narovinu čo ďalej.</p>
-          <div class="arrow">→</div>
+        <div class="panel reveal service-card" data-go="https://racem.sk/mobilny-autoservis" style="padding:30px;">
+          <div class="service-top">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a7.35 7.35 0 00-.14-1.45l2.03-1.58-2-3.46-2.46 1a7.96 7.96 0 00-2.5-1.45L14.4 2h-4.8L9.07 5.06a7.96 7.96 0 00-2.5 1.45l-2.46-1-2 3.46 2.03 1.58A7.35 7.35 0 004 12c0 .49.05.98.14 1.45L2.1 15.03l2 3.46 2.46-1a7.96 7.96 0 002.5 1.45L9.6 22h4.8l.53-3.06a7.96 7.96 0 002.5-1.45l2.46 1 2-3.46-2.03-1.58c.09-.47.14-.96.14-1.45zM12 18a6 6 0 110-12 6 6 0 010 12z"/>
+              </svg>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <h3 style="margin:0 0 6px 0;">Prečo je to lepšie ako klasika</h3>
+              <p class="muted2" style="margin:0;">
+                Šetríš čas, riešiš to rýchlejšie a vieš dopredu, čo to bude stáť a čo bude treba.
+              </p>
+            </div>
+            <div class="service-arrow">→</div>
+          </div>
 
-          <div class="card-drop">
-            <form class="req-form" action="https://formspree.io/f/mwvekvgy" method="POST">
-              <div class="full">
-                <label>Miesto zásahu</label>
-                <input type="text" name="miesto" placeholder="Mesto, ulica..." required>
-              </div>
+          <div class="service-pills">
+            <span class="mini-chip"><span class="mini-dot"></span> bez presunov</span>
+            <span class="mini-chip"><span class="mini-dot"></span> rýchla reakcia</span>
+            <span class="mini-chip"><span class="mini-dot"></span> jasná komunikácia</span>
+            <span class="mini-chip"><span class="mini-dot"></span> diely vieme dodať</span>
+          </div>
 
-              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Audi..." required></div>
-              <div><label>Model</label><input type="text" name="model" placeholder="E91 / A6..." required></div>
+          <p class="muted2" style="margin-top:14px;">
+            <b>Dôležité:</b> nie každá práca je vhodná na parkovisku. Väčšie zásahy sa riešia podľa situácieP.
+            My ti povieme rovno, či to je mobilne „yes“, alebo to treba riešiť inak.
+          </p>
 
-              <div class="full">
-                <label>Kontrolka / príznak</label>
-                <input type="text" name="symptom" placeholder="Check engine, ABS, DPF, limp mode..." required>
-              </div>
-
-              <div><label>Preferovaný čas</label><input type="text" name="cas" placeholder="dnes / zajtra..."></div>
-
-              <div class="full">
-                <label>Meno a priezvisko</label>
-                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
-              </div>
-              <div>
-                <label>Email</label>
-                <input type="email" name="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label>Telefón</label>
-                <input type="text" name="telefon" placeholder="+421..." required>
-              </div>
-
-              <input type="hidden" name="sluzba" value="Mobilný autoservis – diagnostika">
-              <div class="full req-actions">
-                <button class="btn btnPrimary" type="submit">Objednať diagnostiku</button>
-                <a class="btn btnGhost closeServiceBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
           </div>
         </div>
+      </div>
 
-        <!-- OLEJ -->
-        <div class="card reveal service-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> SERVIS</div>
-          <h3>Olej & filtre</h3>
-          <p>Rýchla výmena oleja a filtrov u teba. Ideálne pre busy týždne.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form" action="https://formspree.io/f/mwvekvgy" method="POST">
-              <div class="full">
-                <label>Miesto zásahu</label>
-                <input type="text" name="miesto" placeholder="Mesto, ulica..." required>
-              </div>
-
-              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / VW..." required></div>
-              <div><label>Model</label><input type="text" name="model" placeholder="E46 / Octavia..." required></div>
-
-              <div class="full">
-                <label>Motor / typ</label>
-                <input type="text" name="motor" placeholder="M52TU / 1.9 TDI / 2.0 TFSI..." required>
-              </div>
-
-              <div class="full">
-                <label>Poznámka</label>
-                <textarea name="poznamka" placeholder="Aký olej chceš, prípadne či máme zabezpečiť materiál..."></textarea>
-              </div>
-
-              <div class="full">
-                <label>Meno a priezvisko</label>
-                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
-              </div>
-              <div>
-                <label>Email</label>
-                <input type="email" name="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label>Telefón</label>
-                <input type="text" name="telefon" placeholder="+421..." required>
-              </div>
-
-              <input type="hidden" name="sluzba" value="Mobilný autoservis – olej & filtre">
-              <div class="full req-actions">
-                <button class="btn btnPrimary" type="submit">Objednať servis</button>
-                <a class="btn btnGhost closeServiceBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- NUDZOVY ZASAH -->
-        <div class="card reveal service-card" tabindex="0">
-          <div class="tag"><span class="dot"></span> NÚDZA</div>
-          <h3>Núdzový zásah</h3>
-          <p>Keď to riešiš hneď. Auto stojí, problém je urgentný – zavoláš, ideme.</p>
-          <div class="arrow">→</div>
-
-          <div class="card-drop">
-            <form class="req-form" action="https://formspree.io/f/mwvekvgy" method="POST">
-              <div class="full">
-                <label>Miesto zásahu</label>
-                <input type="text" name="miesto" placeholder="Mesto, ulica, GPS opis..." required>
-              </div>
-
-              <div class="full">
-                <label>Popis situácie</label>
-                <textarea name="problem" placeholder="Auto stojí, nejde naštartovať, stráca výkon..." required></textarea>
-              </div>
-
-              <div><label>Značka</label><input type="text" name="znacka" placeholder="BMW / Audi..." required></div>
-              <div><label>Model</label><input type="text" name="model" placeholder="E91 / A4..." required></div>
-
-              <div class="full">
-                <label>Meno a priezvisko</label>
-                <input type="text" name="meno" placeholder="Meno a priezvisko" required>
-              </div>
-              <div>
-                <label>Email</label>
-                <input type="email" name="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label>Telefón</label>
-                <input type="text" name="telefon" placeholder="+421..." required>
-              </div>
-
-              <input type="hidden" name="sluzba" value="Mobilný autoservis – núdzový zásah">
-              <div class="full req-actions">
-                <button class="btn btnPrimary" type="submit">Poslať dopyt</button>
-                <a class="btn btnGhost closeServiceBtn" href="javascript:void(0)">Zavrieť</a>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div><!-- /service-grid -->
-
-      <!-- STOCK (nechávame, je to top) -->
+      <!-- STOCK (ostáva) -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:34px;">
         <div class="pill-row">
           <span class="pill">
@@ -1526,16 +1352,16 @@
             skladom • ihneď dostupné • odosielame do 24h
           </span>
 
-          <a class="pill pill--bazos"
+          <a class="pill--bazos"
              href="https://www.bazos.sk/hodnotenie.php?idmail=6124650&idphone=5087097&jmeno=REM+Performance+Parts"
              target="_blank" rel="noopener">
-            <span class="dot dot--orange"></span>
+            <span class="dot--orange"></span>
             <span class="pill-bazos-text"><b>Bazoš</b> • všetky inzeráty</span>
             <span class="pill-arrow">↗</span>
           </a>
 
-          <a class="pill pill--catalog" href="katalog.html">
-            <span class="dot dot--catalog"></span>
+          <a class="pill--catalog" href="katalog.html">
+            <span class="dot--catalog"></span>
             <span class="pill-bazos-text"><b>Katalóg</b> • všetky diely</span>
             <span class="pill-arrow">→</span>
           </a>
@@ -1554,26 +1380,32 @@
           </button>
 
           <div class="stock-collapsible" id="stockCollapsible">
-            <div class="stock-scroll" id="stockScroll"></div>
+            <div class="stock-scroll" id="stockScroll">
+              <!-- Sem sa to NAČÍTA z JSONu cez JavaScript -->
+            </div>
           </div>
 
           <div class="stock-fade" id="stockFade" style="display:none;"></div>
         </div>
-      </div><!-- /stock panel -->
-    </div><!-- /wrap -->
-  </section><!-- /#autoservis -->
+      </div>
+    </div>
+  </section>
 
   <!-- KONTAKT -->
   <section id="kontakt">
     <div class="wrap">
       <h2 class="reveal">Kontakt</h2>
-      <p class="reveal">Kontaktuj náš tím</p>
+      <p class="reveal">
+        Kontaktuj náš tím
+      </p>
 
       <div class="panel reveal contact-flex">
         <div class="contact-left">
           <h3>KONTAKT</h3>
           <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
-          <p class="muted2">Vyhľadanie dielov, návrh alternatív a individuálne konzultácie robíme zdarma.</p>
+          <p class="muted2">
+            Vyhľadanie dielov, návrh alternatív a individuálne konzultácie robíme zdarma.
+          </p>
 
           <form id="contactForm" class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST">
             <div>
@@ -1608,22 +1440,24 @@
 
           <p class="muted2">
             <b>1. Pozrieme sa na tvoju požiadavku</b><br>
-            Podľa detailov vyberáme riešenie, ktoré dáva zmysel – nie prvú vec z katalógu.
+            Podľa tvojich detailov vyberáme riešenie, ktoré dáva zmysel – nie len prvú vec z katalógu.
           </p>
 
           <p class="muted2">
-            <b>2. Overíme dostupnosť a možnosti</b><br>
-            Diely overíme u partnerov, servis zladíme podľa lokality, času a typu zásahu.
+            <b>2. Overíme dostupnosť u dodávateľov</b><br>
+            Pozrieme sklad u partnerov (SR, ČR, EÚ, USA, JP), stav dielu, reálnu cenu, dodaciu lehotu,
+            cenu dodania, vyžiadame fotky a overíme, či je diel nový alebo použitý.
           </p>
 
           <p class="muted2">
-            <b>3. Pošleme ti ponuku / návrh postupu</b><br>
-            Dostaneš jasné info: čo sa dá spraviť, čo treba pripraviť, a ako rýchlo to vieme riešiť.
+            <b>3. Pošleme ti ponuku na e-mail</b><br>
+            Dostaneš prehľadnú ponuku – diel, stav, cena, doprava, fotky, dodacia lehota, pôvod.
+            Ak súhlasíš, objednávku potvrdíš a diel dovezieme k tebe.
           </p>
 
           <p class="muted2">
             <b>Poznámky:</b><br>
-            U nás nerozhoduje logo na kapote. Škoda, VW, Audi, BMW aj superšport – každý má rovnaký prístup.
+            U nás nerozhoduje logo na kapote. Škoda, VW, Audi, BMW, Lamborghini či Formula – každý má rovnaký prístup.
           </p>
         </div>
       </div>
@@ -1679,9 +1513,18 @@
 
   <footer>
     <div class="wrap foot footer-layout">
-      <div>Prevádzkovateľ webu – <span class="red"><b>REM Performance</b></span></div>
-      <div class="footer-center">© 2026 REM Performance</div>
-      <div class="muted2">Mobilný autoservis • diely • sponzoring</div>
+      <div>
+        Prevádzkovateľ webu –
+        <span class="red"><b>REM Performance</b></span>
+      </div>
+
+      <div class="footer-center">
+        © 2026 REM Performance
+      </div>
+
+      <div class="muted2">
+        Performance diely • mobilný autoservis • sponzoring
+      </div>
     </div>
   </footer>
 
@@ -1711,22 +1554,32 @@
       if (!modalState.images.length) return;
       const src = modalState.images[modalState.index];
       modalImg.src = src;
-      modalCounter.textContent = (modalState.index + 1) + ' / ' + modalState.images.length;
+      const total = modalState.images.length;
+      modalCounter.textContent = (modalState.index + 1) + ' / ' + total;
     }
 
     function openModalFromCard(card) {
       modalState.card = card;
 
-      const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
-      const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
-      const suffix = card.querySelector('.stock-price-suffix')?.textContent?.trim() || '';
+      const titleEl = card.querySelector('.stock-title');
+      const priceEl = card.querySelector('.stock-price');
+      const suffixEl = card.querySelector('.stock-price-suffix');
+      const tagContainer = card.querySelector('.stock-tags');
+      const stockLabelEl = card.querySelector('.chip--stock');
+      const locSpan = card.querySelector('.stock-location span');
+
+      const title = titleEl ? titleEl.textContent.trim() : '';
+      const price = priceEl ? priceEl.textContent.trim() : '';
+      const suffix = suffixEl ? suffixEl.textContent.trim() : '';
       const note = card.dataset.note || '';
       const condition = card.dataset.condition || '';
-      const stockLabel = card.querySelector('.chip--stock')?.textContent?.trim() || '';
-      const city = card.querySelector('.stock-location span')?.textContent?.trim() || '';
+      const stockLabel = stockLabelEl ? stockLabelEl.textContent.trim() : '';
+      const city = locSpan ? locSpan.textContent.trim() : '';
 
       let images = [];
-      if (card.dataset.images) images = card.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+      if (card.dataset.images) {
+        images = card.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+      }
       if (!images.length) {
         const imgEl = card.querySelector('.stock-img img');
         if (imgEl && imgEl.src) images = [imgEl.src];
@@ -1748,22 +1601,18 @@
         modalLocationWrap.style.display = 'none';
       }
 
-      const tagContainer = card.querySelector('.stock-tags');
-      modalTags.innerHTML = (tagContainer && tagContainer.innerHTML.trim()) ? tagContainer.innerHTML : '';
+      if (tagContainer && tagContainer.innerHTML.trim()) modalTags.innerHTML = tagContainer.innerHTML;
+      else modalTags.innerHTML = '';
 
       if (condition) {
         modalCondition.textContent = condition.toUpperCase();
         modalCondition.style.display = 'inline-flex';
-      } else {
-        modalCondition.style.display = 'none';
-      }
+      } else modalCondition.style.display = 'none';
 
       if (stockLabel) {
         modalStockLabel.textContent = stockLabel;
         modalStockLabel.style.display = 'inline-flex';
-      } else {
-        modalStockLabel.style.display = 'none';
-      }
+      } else modalStockLabel.style.display = 'none';
 
       updateModalImage();
       stockModal.classList.add('is-visible');
@@ -1778,33 +1627,48 @@
       modalState.card = null;
     }
 
-    modalPrev?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!modalState.images.length) return;
-      modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
-      updateModalImage();
+    if (modalPrev) {
+      modalPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!modalState.images.length) return;
+        modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+        updateModalImage();
+      });
+    }
+
+    if (modalNext) {
+      modalNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!modalState.images.length) return;
+        modalState.index = (modalState.index + 1) % modalState.images.length;
+        updateModalImage();
+      });
+    }
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (modalCloseIcon) modalCloseIcon.addEventListener('click', closeModal);
+
+    stockModal.addEventListener('click', (e) => {
+      if (e.target === stockModal) closeModal();
     });
-
-    modalNext?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!modalState.images.length) return;
-      modalState.index = (modalState.index + 1) % modalState.images.length;
-      updateModalImage();
-    });
-
-    modalCloseBtn?.addEventListener('click', closeModal);
-    modalCloseIcon?.addEventListener('click', closeModal);
-
-    stockModal.addEventListener('click', (e) => { if (e.target === stockModal) closeModal(); });
 
     document.addEventListener('keydown', (e) => {
       if (!stockModal.classList.contains('is-visible')) return;
       if (e.key === 'Escape') closeModal();
-      if (e.key === 'ArrowRight' && modalState.images.length) { modalState.index = (modalState.index + 1) % modalState.images.length; updateModalImage(); }
-      if (e.key === 'ArrowLeft' && modalState.images.length) { modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length; updateModalImage(); }
+      else if (e.key === 'ArrowRight') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index + 1) % modalState.images.length;
+          updateModalImage();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+          updateModalImage();
+        }
+      }
     });
 
-    // ===== COLLAPSIBLE STOCK =====
+    // ===== COLLAPSIBLE STOCK (1 riadok + max 5 riadkov po rozbalení) =====
     const stockStrip = document.getElementById('stockStrip');
     const stockToggle = document.getElementById('stockToggle');
     const stockToggleText = document.getElementById('stockToggleText');
@@ -1859,10 +1723,14 @@
     async function loadHomepageStock() {
       try {
         const response = await fetch('skladom.json');
-        if (!response.ok) return;
+        if (!response.ok) {
+          console.error('Nepodarilo sa načítať skladom.json');
+          return;
+        }
 
         const data = await response.json();
         const items = Array.isArray(data) ? data : (data.inStock || []);
+
         const container = document.getElementById('stockScroll');
         if (!container) return;
 
@@ -1872,12 +1740,15 @@
           if (item.showOnHome === false) return;
 
           let images = [];
-          if (Array.isArray(item.images) && item.images.length > 0) images = item.images.filter(src => src && src.trim() !== '');
+          if (Array.isArray(item.images) && item.images.length > 0) {
+            images = item.images.filter(src => src && src.trim() !== '');
+          }
           if (!images.length && item.image) images = [item.image];
           if (!images.length) images = ['img/placeholder.jpg'];
 
           const condText = (item.condition || '').toLowerCase();
           const isNew = condText.startsWith('nov') || condText === 'new';
+
           const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
           const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
 
@@ -1891,8 +1762,10 @@
           article.dataset.city = item.city || '';
           article.dataset.partId = item.id || '';
           article.dataset.note = item.note || '';
+          article.dataset.stockLabel = item.stockLabel || '';
           article.dataset.price = item.price || '';
           article.dataset.priceSuffix = item.price_suffix || '';
+
           if (images.length) article.dataset.images = images.join(',');
 
           article.innerHTML = `
@@ -1926,7 +1799,9 @@
               ${tagsHtml ? `<div class="stock-tags">${tagsHtml}</div>` : ''}
 
               <div class="stock-actions">
-                <button class="btn btnPrimary stockInterestBtn" type="button">Mám záujem</button>
+                <button class="btn btnPrimary stockInterestBtn" type="button">
+                  Mám záujem
+                </button>
               </div>
             </div>
           `;
@@ -1935,6 +1810,7 @@
             const imgBox = article.querySelector('.stock-img');
             const imgEl = article.querySelector('.stock-img img');
             let currentIndex = 0;
+
             if (imgBox && imgEl) {
               imgBox.style.cursor = 'pointer';
               imgBox.title = 'Kliknutím prepneš fotku';
@@ -1950,15 +1826,19 @@
         });
 
         if (!container.children.length) {
-          container.innerHTML = `<div style="color:var(--muted2); font-size:14px;">Momentálne nemáme nič označené ako <b>skladom</b>.</div>`;
+          container.innerHTML = `
+            <div style="color:var(--muted2); font-size:14px;">
+              Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
+            </div>`;
           if (stockToggle) stockToggle.style.display = 'none';
           if (stockFade) stockFade.style.display = 'none';
           return;
         }
 
-        requestAnimationFrame(setupStockCollapse);
-
-      } catch (err) { console.error(err); }
+        requestAnimationFrame(() => setupStockCollapse());
+      } catch (err) {
+        console.error('Chyba pri načítaní skladom.json:', err);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadHomepageStock);
@@ -1974,53 +1854,29 @@
     window.addEventListener('scroll', activate, { passive: true });
     window.addEventListener('load', activate);
 
-    // subtle parallax
+    // subtle parallax (passive)
     window.addEventListener('scroll', () => {
       const sc = window.scrollY;
       const bg = document.querySelector('.bg');
       if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
     }, { passive: true });
 
-    // ===== SERVICE DROPDOWNS =====
-    const serviceCards = document.querySelectorAll('.service-card');
-
-    const closeAllServices = () => { serviceCards.forEach(c => c.classList.remove('is-active')); };
-    const openService = (card) => { closeAllServices(); card.classList.add('is-active'); };
-
-    serviceCards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const t = e.target.tagName.toLowerCase();
-        if (['input','textarea','button','a','label','select','option'].includes(t)) return;
-        e.stopPropagation();
-        if (card.classList.contains('is-active')) card.classList.remove('is-active');
-        else openService(card);
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          e.stopPropagation();
-          if (card.classList.contains('is-active')) card.classList.remove('is-active');
-          else openService(card);
-        }
-        if (e.key === 'Escape') card.classList.remove('is-active');
-      });
-
-      const closeBtn = card.querySelector('.closeServiceBtn');
-      if (closeBtn) closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        card.classList.remove('is-active');
-      });
-    });
-
+    // ===== CLICKABLE SERVICE CARDS (data-go) =====
     document.addEventListener('click', (e) => {
-      const inside = Array.from(serviceCards).some(c => c.contains(e.target));
-      if (!inside) closeAllServices();
+      const card = e.target.closest('[data-go]');
+      if (!card) return;
+      const url = card.getAttribute('data-go');
+      if (!url) return;
+      // ak klikneš na link alebo button vnútri, nech to rešpektuje jeho vlastný href
+      if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea') || e.target.closest('select')) return;
+      window.location.href = url;
     });
 
-    // ===== "Mám záujem" -> otvorí modal (alebo predvyplní kontakt) =====
-    function handleInterestFromCard(card) {
+    // ===== "Mám záujem" -> kontakt + predvyplnená správa =====
+    function handleInterestFromElement(btnOrCard) {
+      const card = btnOrCard.closest('.stock-item');
+      if (!card) return;
+
       const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
       const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
       const cond  = card.getAttribute('data-condition') || '';
@@ -2028,12 +1884,16 @@
       const partId = card.dataset.partId || '';
 
       let text = `Mám záujem o diel: ${title}`;
-      text += partId ? ` (ID: ${partId}` : ` (`;
+      if (partId) text += ` (ID: ${partId}`;
+      else text += ' (';
+
       const extra = [price, cond, city].filter(Boolean).join(', ');
       if (extra) text += (partId ? ', ' : '') + extra;
+
       if (!text.endsWith(')')) text += ')';
 
       window.location.hash = '#kontakt';
+
       setTimeout(() => {
         const ta = document.getElementById('kontaktMsg');
         if (ta) {
@@ -2044,28 +1904,32 @@
       }, 80);
     }
 
+    // klik na tlačidlo "Mám záujem" v kartičke
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.stockInterestBtn');
       if (!btn) return;
       e.stopPropagation();
-      const card = btn.closest('.stock-item');
-      if (card) handleInterestFromCard(card);
+      handleInterestFromElement(btn);
     });
 
+    // klik na CELÚ KARTIČKU -> otvorí MODAL (okrem tlačidla "Mám záujem" a linkov)
     document.addEventListener('click', (e) => {
       const card = e.target.closest('.stock-item');
       if (!card) return;
+
       if (e.target.closest('.stockInterestBtn') || e.target.closest('a')) return;
+
       e.preventDefault();
       openModalFromCard(card);
     });
 
+    // "Mám záujem o tento diel" priamo z modalu
     if (modalInterestBtn) {
       modalInterestBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!modalState.card) return;
         closeModal();
-        handleInterestFromCard(modalState.card);
+        handleInterestFromElement(modalState.card);
       });
     }
   </script>
