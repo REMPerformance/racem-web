@@ -1029,9 +1029,11 @@
 
   <script>
     /* =========================
-      SETTINGS
+      SETTINGS (FIX: cache buster)
     ========================== */
-    const JSON_URL = "skladom.json";
+    // PÔVODNE: const JSON_URL = "skladom.json";
+    // FIX: aby sa vždy načítal čerstvý JSON a nebral sa z cache
+    const JSON_URL = "skladom.json?v=" + Date.now();
 
     // TODO: sem daj svoj Formspree endpoint
     // napr: https://formspree.io/f/abcdwxyz
@@ -1458,14 +1460,21 @@
     }
 
     /* =========================
-      LOAD DATA
+      LOAD DATA (FIX + DEBUG)
     ========================== */
     async function load(){
       const container = $("#parts");
       try{
-        const res = await fetch(JSON_URL);
+        console.log("[RACEM] Loading JSON:", JSON_URL);
+
+        const res = await fetch(JSON_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("Nepodarilo sa načítať skladom.json");
+
         const data = await res.json();
+
+        // DEBUG: uvidíš presne, čo stránka reálne načítala
+        console.log("[RACEM] Loaded data:", data);
+
         const raw = Array.isArray(data) ? data : (data.inStock || []);
 
         ALL = raw.map(normalizePart);
