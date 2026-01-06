@@ -442,6 +442,155 @@
     }
     .mini-dot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
 
+    /* ===========================================================
+       MOBILNÝ AUTOSERVIS – rozdelenie textu + vizuál (DOPLNENÉ)
+       =========================================================== */
+    .service-hero{
+      margin-top:16px;
+      padding:22px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(circle at 18% 20%, rgba(179,31,36,0.18), transparent 55%),
+        linear-gradient(180deg, rgba(18,18,18,0.92), rgba(8,8,8,0.70));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .service-hero::after{
+      content:"";
+      position:absolute;
+      right:-70px; top:-70px;
+      width:220px; height:220px;
+      background: radial-gradient(circle, rgba(179,31,36,0.22), transparent 60%);
+    }
+    .service-hero > *{ position:relative; }
+
+    .service-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:14px;
+    }
+    .service-tile{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .service-tile::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(circle at 25% 20%, rgba(179,31,36,0.20), transparent 60%);
+      opacity:0;
+      transition: opacity .18s ease;
+    }
+    .service-tile:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.40);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+    }
+    .service-tile:hover::before{ opacity:1; }
+    .service-tile > *{ position:relative; }
+
+    .service-tile-head{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .service-tile-icon{
+      width:40px;height:40px;
+      border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+      flex:0 0 auto;
+    }
+    .service-tile-icon svg{ width:20px;height:20px;color:#fff;opacity:.95; }
+
+    .info-split{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    .info-card{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+    }
+    .info-card h3{
+      margin:0 0 10px 0;
+      font-size:14px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .info-list{
+      margin:0;
+      padding-left:18px;
+      color: var(--muted);
+      line-height:1.65;
+      font-size:14px;
+    }
+    .info-list li{ margin:6px 0; }
+
+    /* accordion bez JS */
+    .acc{
+      margin-top:12px;
+      display:grid;
+      gap:10px;
+    }
+    .acc details{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .acc summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:12px;
+      color:#fff;
+    }
+    .acc summary::-webkit-details-marker{ display:none; }
+    .acc summary .acc-chev{
+      width:28px;height:28px;
+      border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .acc details[open] summary .acc-chev{
+      transform: rotate(180deg);
+      border-color: rgba(179,31,36,0.35);
+      background: rgba(179,31,36,0.10);
+    }
+    .acc .acc-body{
+      padding:0 16px 14px;
+      color: var(--muted);
+      line-height:1.65;
+      font-size:14px;
+    }
+    .acc .acc-body b{ color:#fff; }
+
     /* ====== STOCK (COLLAPSIBLE GRID) ===== */
     .stock-strip{
       margin-top: 16px;
@@ -1045,6 +1194,10 @@
 
       .stock-scroll{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .stock-more{ right: 10px; bottom: 10px; }
+
+      /* autoservis rozdelenie */
+      .service-grid{ grid-template-columns: 1fr; }
+      .info-split{ grid-template-columns: 1fr; }
     }
 
     @media (max-width:560px){
@@ -1255,107 +1408,203 @@
     </div>
   </section>
 
- <!-- MOBILNÝ AUTOSERVIS (HLAVNÁ SEKČIA) -->
-<section id="autoservis">
-  <div class="wrap">
-    <h2 class="reveal">Mobilný autoservis</h2>
-    <p class="reveal">
-      Autoservis a obhliadky priamo u vás – doma, vo firme, na sídlisku alebo kdekoľvek potrebujete.
-      Keď nechcete presúvať vozidlo alebo platiť odťah do servisu, prídeme za vami a riešime to na mieste.
-    </p>
+  <!-- MOBILNÝ AUTOSERVIS (HLAVNÁ SEKČIA) -->
+  <section id="autoservis">
+    <div class="wrap">
+      <h2 class="reveal">Mobilný autoservis</h2>
+      <p class="reveal">
+        Autoservis a obhliadky priamo u vás – doma, vo firme, na sídlisku alebo kdekoľvek potrebujete.
+        Keď nechcete presúvať vozidlo alebo platiť odťah do servisu, prídeme za vami a riešime to na mieste.
+      </p>
 
-    <div class="split" style="margin-top:22px;">
-      <!-- LEFT (DETAILNÝ POPIS) -->
-      <div class="panel reveal" style="padding:40px;">
-        <span class="pill">
-          <span class="dot"></span>
-          obhliadky • servis • pomoc na ceste • opravy u vás
-        </span>
+      <div class="split" style="margin-top:22px;">
+        <!-- LEFT (ROZDELENÝ + PREHĽADNÝ OBSAH) -->
+        <div class="panel reveal" style="padding:34px;">
+          <span class="pill">
+            <span class="dot"></span>
+            obhliadky • servis • pomoc na ceste • opravy u vás
+          </span>
 
-        <h3 style="margin-top:18px; font-size:20px; letter-spacing:.14em;">
-          Servis, obhliadky a pomoc pri poruche – kdekoľvek ste
-        </h3>
+          <div class="service-hero">
+            <h3 style="margin:0 0 10px 0; font-size:18px; letter-spacing:.14em;">
+              Servis, obhliadky a pomoc pri poruche – kdekoľvek ste
+            </h3>
 
-        <p style="font-size:16px; max-width:1000px;">
-          Toto je služba pre ľudí, ktorí chcú mať auto vyriešené bez zbytočnej logistiky.
-          Nezáleží, či ste doma, v práci alebo vám auto ostalo stáť na krajnici – zavoláte / napíšete,
-          dáte nám základné info a my prídeme. Cieľ je jednoduchý: <b>opraviť to na mieste</b>,
-          alebo aspoň spraviť rýchlu diagnostiku a odporučiť najrozumnejší postup.
-        </p>
-
-        <p class="muted2" style="margin-top:14px;">
-          <b>Čo ponúkame:</b><br>
-          • <b>mobilný autoservis</b> (oprava vozidiel u vás doma, vo firme, na sídlisku, na parkovisku)<br>
-          • <b>obhliadky áut</b> pred kúpou / pri predaji (základný technický stav, vizuál, diagnostika podľa možností)<br>
-          • <b>obhliadka pred STK/EK</b> (predkontrola, odporúčania čo spraviť, aby ste nešli “naslepo”)<br>
-          • <b>podpora na ceste pri poruchách</b> (keď auto nejde, nenaštartuje, vyhadzuje chyby, problémy s elektrinou)<br>
-          • <b>pneuservis / drobné opravy</b> (podľa možností na mieste – defekt, výmena kolesa, základné riešenia)<br>
-          • <b>väčšie poruchy a opravy po nehode</b> (od prvotnej diagnostiky až po komplexnejšie riešenie podľa situácie)
-        </p>
-
-        <p class="muted2" style="margin-top:14px;">
-          <b>Pre koho je to ideálne:</b><br>
-          • keď nechcete riešiť <b>odťah</b> do servisu<br>
-          • keď je auto <b>nepojazdné</b> alebo je presun komplikovaný<br>
-          • keď chcete <b>šetriť čas</b> a riešiť servis bez behania po dieloch a termínoch
-        </p>
-
-        <p class="muted2" style="margin-top:14px;">
-          <b>Ako to prebieha:</b><br>
-          1) Pošlete nám auto (značka/model/motor) + problém + lokalitu<br>
-          2) Povieme, či sa to dá spraviť mobilne a čo bude treba (príp. fotky/video)<br>
-          3) Dohodneme termín, prídeme, spravíme opravu alebo diagnostiku<br>
-          4) Ak treba diely – vieme ich zabezpečiť cez RACEM (nové aj použité)
-        </p>
-
-        <p class="muted2" style="margin-top:14px;">
-          <b>Férovo narovinu:</b> ak to nie je bezpečné alebo rozumné robiť „na mieste“,
-          povieme to hneď a navrhneme najlepší postup (servis / odťah / diely / ďalší krok).
-        </p>
-
-        <div class="ctaRow" style="margin-top:18px">
-          <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
-          <a class="btn btnGhost" href="#kontakt">Rovno dopyt</a>
-        </div>
-      </div>
-
-      <!-- RIGHT (RÝCHLY PREHĽAD / BENEFITY) -->
-      <div class="panel reveal service-card" data-go="https://racem.sk/mobilny-autoservis" style="padding:30px;">
-        <div class="service-top">
-          <div class="service-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a7.35 7.35 0 00-.14-1.45l2.03-1.58-2-3.46-2.46 1a7.96 7.96 0 00-2.5-1.45L14.4 2h-4.8L9.07 5.06a7.96 7.96 0 00-2.5 1.45l-2.46-1-2 3.46 2.03 1.58A7.35 7.35 0 004 12c0 .49.05.98.14 1.45L2.1 15.03l2 3.46 2.46-1a7.96 7.96 0 002.5 1.45L9.6 22h4.8l.53-3.06a7.96 7.96 0 002.5-1.45l2.46 1 2-3.46-2.03-1.58c.09-.47.14-.96.14-1.45zM12 18a6 6 0 110-12 6 6 0 010 12z"/>
-            </svg>
-          </div>
-          <div style="flex:1; min-width:0;">
-            <h3 style="margin:0 0 6px 0;">Prečo je to lepšie ako klasika</h3>
             <p class="muted2" style="margin:0;">
-              Nemusíte riešiť presun auta. Šetríte čas aj peniaze za odťah – a viete dopredu, čo sa dá spraviť na mieste.
+              Toto je služba pre ľudí, ktorí chcú mať auto vyriešené bez zbytočnej logistiky.
+              Cieľ je jednoduchý: <b>opraviť to na mieste</b>, alebo spraviť rýchlu diagnostiku a dať najrozumnejší postup.
             </p>
+
+            <!-- 3 tiles -->
+            <div class="service-grid">
+              <div class="service-tile">
+                <div class="service-tile-head">
+                  <div class="service-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16A1.5 1.5 0 1 1 8 14.5 1.5 1.5 0 0 1 6.5 16zm11 0A1.5 1.5 0 1 1 19 14.5 1.5 1.5 0 0 1 17.5 16zM5.24 11l.87-2.5h11.78l.87 2.5H5.24z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style="margin:0 0 6px 0; font-size:13px; letter-spacing:.14em;">Autoservis u vás</h3>
+                    <p class="muted2" style="margin:0;">
+                      Opravy bez presunu auta – doma, firma, sídlisko, parkovisko.
+                    </p>
+                  </div>
+                </div>
+                <div class="service-pills">
+                  <span class="mini-chip"><span class="mini-dot"></span> olej / filtre</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> brzdy</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> diagnostika</span>
+                </div>
+              </div>
+
+              <div class="service-tile">
+                <div class="service-tile-head">
+                  <div class="service-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm1 7V3.5L18.5 9H15zM7 13h10v2H7v-2zm0 4h10v2H7v-2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style="margin:0 0 6px 0; font-size:13px; letter-spacing:.14em;">Obhliadky áut</h3>
+                    <p class="muted2" style="margin:0;">
+                      Pred kúpou/predajom + obhliadka pred STK/EK, aby ste nešli naslepo.
+                    </p>
+                  </div>
+                </div>
+                <div class="service-pills">
+                  <span class="mini-chip"><span class="mini-dot"></span> pred kúpou</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> report</span>
+                </div>
+              </div>
+
+              <div class="service-tile">
+                <div class="service-tile-head">
+                  <div class="service-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M11 21h-1l1-7H7l6-13h1l-1 7h4l-6 13z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style="margin:0 0 6px 0; font-size:13px; letter-spacing:.14em;">Pomoc na ceste</h3>
+                    <p class="muted2" style="margin:0;">
+                      Keď auto neštartuje/hlási chyby/ostalo stáť – prídeme, zistíme, riešime.
+                    </p>
+                  </div>
+                </div>
+                <div class="service-pills">
+                  <span class="mini-chip"><span class="mini-dot"></span> porucha</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> elektrika</span>
+                  <span class="mini-chip"><span class="mini-dot"></span> diagnostika</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- prehľadné 2 boxy -->
+            <div class="info-split">
+              <div class="info-card">
+                <h3>Čo ponúkame</h3>
+                <ul class="info-list">
+                  <li>oprava vozidiel u vás (doma/firma/sídlisko)</li>
+                  <li>obhliadky áut pred kúpou/predajom</li>
+                  <li>predkontrola pred STK/EK</li>
+                  <li>pomoc na ceste pri poruche</li>
+                  <li>drobné opravy pneu (podľa možností)</li>
+                  <li>väčšie poruchy / po nehode – podľa situácie</li>
+                </ul>
+              </div>
+              <div class="info-card">
+                <h3>Prečo to dáva zmysel</h3>
+                <ul class="info-list">
+                  <li>šetríte čas aj odťah</li>
+                  <li>viete dopredu, čo sa dá spraviť na mieste</li>
+                  <li>férové “áno/nie” podľa bezpečnosti</li>
+                  <li>ak treba diely – vieme ich zabezpečiť</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- accordion: menej textu naraz -->
+            <div class="acc">
+              <details>
+                <summary>
+                  Ako to prebieha
+                  <span class="acc-chev">⌄</span>
+                </summary>
+                <div class="acc-body">
+                  <b>1)</b> Pošlete auto (značka/model/motor) + problém + lokalitu<br>
+                  <b>2)</b> Povieme, či sa to dá spraviť mobilne a čo bude treba (foto/video pomôže)<br>
+                  <b>3)</b> Dohodneme termín, prídeme, opravíme alebo spravíme diagnostiku<br>
+                  <b>4)</b> Ak treba diely – zabezpečíme (nové aj použité)
+                </div>
+              </details>
+
+              <details>
+                <summary>
+                  Kedy povieme “nie” na mieste
+                  <span class="acc-chev">⌄</span>
+                </summary>
+                <div class="acc-body">
+                  Keď by to bolo <b>nebezpečné</b>, alebo oprava vyžaduje dielňu/zdvihák/špeciálne vybavenie.
+                  Povieme to narovinu a dáme <b>najlepší postup</b> (servis/odťah/ďalšie kroky).
+                </div>
+              </details>
+
+              <details>
+                <summary>
+                  Obhliadka pred STK/EK (čo typicky riešime)
+                  <span class="acc-chev">⌄</span>
+                </summary>
+                <div class="acc-body">
+                  Predkontrola, aby ste nešli “naslepo”.
+                  Pozrieme typické veci, ktoré robia problémy a dáme vám <b>jasný zoznam</b>, čo opraviť/upraviť.
+                </div>
+              </details>
+            </div>
+
+            <div class="ctaRow" style="margin-top:14px">
+              <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+              <a class="btn btnGhost" href="#kontakt">Rovno dopyt</a>
+            </div>
           </div>
-          <div class="service-arrow">→</div>
         </div>
 
-        <div class="service-pills">
-          <span class="mini-chip"><span class="mini-dot"></span> servis u vás</span>
-          <span class="mini-chip"><span class="mini-dot"></span> obhliadky áut</span>
-          <span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
-          <span class="mini-chip"><span class="mini-dot"></span> pomoc na ceste</span>
-        </div>
+        <!-- RIGHT (RÝCHLY PREHĽAD / BENEFITY) -->
+        <div class="panel reveal service-card" data-go="https://racem.sk/mobilny-autoservis" style="padding:30px;">
+          <div class="service-top">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9.4 4a7.35 7.35 0 00-.14-1.45l2.03-1.58-2-3.46-2.46 1a7.96 7.96 0 00-2.5-1.45L14.4 2h-4.8L9.07 5.06a7.96 7.96 0 00-2.5 1.45l-2.46-1-2 3.46 2.03 1.58A7.35 7.35 0 004 12c0 .49.05.98.14 1.45L2.1 15.03l2 3.46 2.46-1a7.96 7.96 0 002.5 1.45L9.6 22h4.8l.53-3.06a7.96 7.96 0 002.5-1.45l2.46 1 2-3.46-2.03-1.58c.09-.47.14-.96.14-1.45zM12 18a6 6 0 110-12 6 6 0 010 12z"/>
+              </svg>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <h3 style="margin:0 0 6px 0;">Rýchly prehľad</h3>
+              <p class="muted2" style="margin:0;">
+                Servis u vás • obhliadky áut • pred STK/EK • pomoc na ceste • opravy pri poruchách aj po nehode.
+              </p>
+            </div>
+            <div class="service-arrow">→</div>
+          </div>
 
-        <p class="muted2" style="margin-top:14px;">
-          <b>Dôležité:</b> nie každá oprava je vhodná na parkovisku. Pri väčších zásahoch záleží od prístupu,
-          bezpečnosti a vybavenia. My vám povieme rovno, či je to mobilne „áno“, alebo treba iný postup.
-        </p>
+          <div class="service-pills">
+            <span class="mini-chip"><span class="mini-dot"></span> bez odťahu</span>
+            <span class="mini-chip"><span class="mini-dot"></span> rýchla reakcia</span>
+            <span class="mini-chip"><span class="mini-dot"></span> jasná komunikácia</span>
+            <span class="mini-chip"><span class="mini-dot"></span> diely vieme dodať</span>
+          </div>
 
-        <div class="ctaRow" style="margin-top:14px;">
-          <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+          <p class="muted2" style="margin-top:14px;">
+            <b>Dôležité:</b> nie každá oprava je vhodná na parkovisku. Pri väčších zásahoch rozhoduje bezpečnosť,
+            prístup a vybavenie. My vám povieme rovno, či je to mobilne „áno“, alebo treba iný postup.
+          </p>
+
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+            <a class="btn btnGhost" href="#kontakt">Dopyt</a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
 
       <!-- STOCK (ostáva) -->
       <div class="panel reveal" id="stock" style="margin-top:34px; padding:34px;">
