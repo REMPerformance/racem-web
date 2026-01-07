@@ -1136,7 +1136,7 @@
 
           <p style="font-size:16px;">
             RACEM pomáha projektom a tímom, ktoré to berú vážne – dielmi, cenami a reálnou podporou.
-            Na homepage to držíme stručne, detaily sú na podstránkach.
+            Pre bližšie informácie nás kontaktujte pomocou formuláru.
           </p>
 
           <div class="ctaRow" style="margin-top:14px;">
@@ -1209,7 +1209,6 @@
 
         <div class="ctaRow" style="margin-top:20px">
           <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
-          <a class="btn btnGhost" href="#autoservis">Váš servis na cestách</a>
         </div>
       </div>
     </div>
@@ -1485,6 +1484,30 @@
       </div>
     </div>
   </footer>
+
+  <!-- RACEM COOKIES -->
+<div class="cookieBar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Cookies">
+  <div class="cookieLeft">
+    <div class="cookieIco" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M21 12.6c-1.1.6-2.7.9-4 .5-2-.6-3.4-2.5-3.4-4.6 0-1.6.8-3.1 2.1-4-5.8-.8-10.7 3.7-10.7 9.5 0 5 4.1 9 9.1 9 4.7 0 8.6-3.5 8.9-8.2Z" stroke="white" stroke-width="1.8" opacity="0.85"/>
+        <path d="M8.2 14.1h.01M11.2 16.7h.01M12.7 12.2h.01M9.9 18.6h.01" stroke="white" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <div class="cookieText">
+      Používame <b>nevyhnutné cookies / úložisko</b> na správne fungovanie stránky.
+      So súhlasom môžeme použiť aj <b>analytické cookies</b> na zlepšenie služby.
+      <a href="vop.html#cookies">Viac info</a>.
+    </div>
+  </div>
+
+  <div class="cookieBtns">
+    <button class="cookieBtn" id="cookieNecessary" type="button">Len nevyhnutné</button>
+    <button class="cookieBtn primary" id="cookieAccept" type="button">Prijať</button>
+  </div>
+</div>
+
 
   <script>
     // ===== MODAL STATE =====
@@ -1890,6 +1913,41 @@
         handleInterestFromElement(modalState.card);
       });
     }
+
+    // ===== RACEM COOKIES CONSENT =====
+const COOKIE_KEY = "racem_cookie_consent"; // "all" | "necessary"
+const cookieBar = document.getElementById("cookieBar");
+const btnNecessary = document.getElementById("cookieNecessary");
+const btnAccept = document.getElementById("cookieAccept");
+
+function getConsent(){ return localStorage.getItem(COOKIE_KEY); }
+function setConsent(v){ localStorage.setItem(COOKIE_KEY, v); }
+function showCookie(){ cookieBar?.classList.add("show"); }
+function hideCookie(){ cookieBar?.classList.remove("show"); }
+
+// Sem neskôr vložíš GA/Meta pixel a pustíš len po "all"
+function runAnalyticsIfAllowed(){
+  if(getConsent() !== "all") return;
+  // analytics scripts here
+}
+
+(function initCookieBar(){
+  const c = getConsent();
+  if(!c) showCookie();
+  else runAnalyticsIfAllowed();
+})();
+
+btnNecessary?.addEventListener("click", () => {
+  setConsent("necessary");
+  hideCookie();
+});
+
+btnAccept?.addEventListener("click", () => {
+  setConsent("all");
+  hideCookie();
+  runAnalyticsIfAllowed();
+});
+
   </script>
 </body>
 </html>
