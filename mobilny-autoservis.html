@@ -190,40 +190,178 @@
     }
     .btnPrimary:hover{background:#c8262c}
 
-    .heroCard{
-      background:rgba(255,255,255,0.035);
+    /* ===== NEW: RIGHT HERO “STATS” CARD (TOTAL REMAKE) ===== */
+    .heroSide{
       border:1px solid var(--line);
       border-radius:18px;
-      padding:24px;
+      padding:22px;
+      background: linear-gradient(180deg, rgba(18,18,18,0.80), rgba(8,8,8,0.78));
+      box-shadow: 0 18px 55px rgba(0,0,0,0.50);
+      position:relative;
+      overflow:hidden;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      gap:16px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+      gap:14px;
     }
-    .heroStats{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+    .heroSide:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(620px 260px at 20% 0%, rgba(179,31,36,0.25), transparent 62%),
+        radial-gradient(520px 260px at 85% 20%, rgba(255,255,255,0.06), transparent 65%);
+      pointer-events:none;
+      opacity:.95;
     }
-    .stat{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      background:rgba(0,0,0,0.22);
-    }
-    .stat .k{font-size:12px;color:var(--muted2)}
-    .stat .v{font-size:16px;margin-top:6px}
-    .stat .v b{color:#fff}
+    .heroSide > *{position:relative; z-index:1}
 
-    .noteBox{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px;
-      background:rgba(0,0,0,0.24);
+    .hsTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .hsBadge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .hsDot{
+      width:8px;height:8px;border-radius:99px;background:var(--red);
+      box-shadow:0 0 0 3px rgba(179,31,36,0.18);
+    }
+    .hsTitle{
+      font-family:"Teko", Arial, sans-serif;
+      font-size:28px;
+      letter-spacing:0.6px;
+      text-transform:uppercase;
+      line-height:1;
+      margin-top:2px;
+    }
+    .hsSub{
       color:var(--muted2);
       font-size:13px;
       line-height:1.55;
+      margin-top:6px;
+    }
+
+    .hsGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .hsItem{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      background: rgba(0,0,0,0.26);
+      padding:12px;
+      transition:.18s ease;
+      min-height:84px;
+    }
+    .hsItem:hover{
+      transform:translateY(-2px);
+      border-color: rgba(179,31,36,0.35);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+    }
+    .hsRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .hsIco{
+      width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      flex:0 0 auto;
+    }
+    .hsIco svg{opacity:.95}
+    .hsKpi{
+      font-weight:1000;
+      letter-spacing:-0.3px;
+      font-size:18px;
+      text-align:right;
+      line-height:1.1;
+    }
+    .hsLabel{
+      color:var(--muted2);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+
+    .hsCities{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      background: rgba(255,255,255,0.03);
+      padding:12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .hsCities b{color:#fff}
+
+    .hsNote{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      background: rgba(255,255,255,0.03);
+      padding:12px;
+      color:var(--muted2);
+      font-size:12px;
+      line-height:1.55;
+    }
+    .hsNote b{color:#fff}
+
+    .hsActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:2px;
+    }
+    .hsBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      width:100%;
+    }
+    .hsBtn{
+      flex:1 1 180px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      font-weight:1000;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      font-size:12.5px;
+      transition:.18s ease;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,0.05);
+    }
+    .hsBtn:hover{transform:translateY(-1px); background: rgba(255,255,255,0.08)}
+    .hsBtn.primary{
+      background: linear-gradient(180deg, rgba(179,31,36,0.94), rgba(179,31,36,0.72));
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 18px 55px rgba(179,31,36,0.18);
+    }
+    .hsBtn.primary:hover{filter:brightness(1.06)}
+    .hsBtn.ghost{
+      background: rgba(255,255,255,0.04);
     }
 
     /* ===== GRID CARDS ===== */
@@ -543,36 +681,89 @@
           </p>
         </div>
 
-        <div class="heroCard">
-          <div>
-            <div class="heroStats">
-              <div class="stat">
-                <div class="k">Služby</div>
-                <div class="v"><b>Západné Slovensko</b></div>
+        <!-- TOTAL REMAKE RIGHT SIDE -->
+        <aside class="heroSide">
+          <div class="hsTop">
+            <div>
+              <div class="hsTitle">Rýchly výjazd</div>
+              <div class="hsSub">Z Piešťan • servis priamo pri aute • bez zbytočných presunov</div>
+            </div>
+            <div class="hsBadge"><span class="hsDot"></span> Západné Slovensko • 24/7</div>
+          </div>
+
+          <div class="hsGrid">
+            <div class="hsItem">
+              <div class="hsRow">
+                <div class="hsIco" aria-hidden="true">
+                  <!-- map -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z" stroke="white" stroke-width="1.8" opacity="0.9"/>
+                    <path d="M9 3v15M15 6v15" stroke="white" stroke-width="1.8" opacity="0.55"/>
+                  </svg>
+                </div>
+                <div class="hsKpi">Západ</div>
               </div>
-              <div class="stat">
-                <div class="k">Pripravenosť</div>
-                <div class="v"><b>do 15 minút</b></div>
-              </div>
-              <div class="stat">
-                <div class="k">Kilometre</div>
-                <div class="v"><b>0,15 €</b> / km</div>
-              </div>
-              <div class="stat">
-                <div class="k">Pohotovosť</div>
-                <div class="v"><b>24/7</b></div>
-              </div>
+              <div class="hsLabel">Služby na Západnom Slovensku</div>
             </div>
 
-            <div class="noteBox" style="margin-top:16px">
-              Výjazdy zabezpečujeme aj z ďalších miest: Piešťany, Trnava, Bratislava, Nitra, Topoľčany, Trenčín, Žilina.
+            <div class="hsItem">
+              <div class="hsRow">
+                <div class="hsIco" aria-hidden="true">
+                  <!-- clock -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 7v6l4 2" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="white" stroke-width="1.8" opacity="0.55"/>
+                  </svg>
+                </div>
+                <div class="hsKpi">do 15 min</div>
+              </div>
+              <div class="hsLabel">Pripravenosť podľa lokality</div>
+            </div>
+
+            <div class="hsItem">
+              <div class="hsRow">
+                <div class="hsIco" aria-hidden="true">
+                  <!-- road -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 20l4-16h2l4 16" stroke="white" stroke-width="1.8" opacity="0.75"/>
+                    <path d="M12 6v3m0 3v3" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+                  </svg>
+                </div>
+                <div class="hsKpi">0,15 € / km</div>
+              </div>
+              <div class="hsLabel">Kilometre účtované férovo</div>
+            </div>
+
+            <div class="hsItem">
+              <div class="hsRow">
+                <div class="hsIco" aria-hidden="true">
+                  <!-- bolt -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6Z" stroke="white" stroke-width="1.8" opacity="0.85"/>
+                  </svg>
+                </div>
+                <div class="hsKpi">24/7</div>
+              </div>
+              <div class="hsLabel">Pohotovosť nonstop</div>
             </div>
           </div>
 
-          <div class="noteBox">
-            V prípade urgentnej situácie využite SOS kontakt. Pre plánované úkony odporúčame rezervačný systém.
+          <div class="hsCities">
+            <b>Najčastejšie výjazdy:</b> Piešťany, Trnava, Bratislava, Nitra, Topoľčany, Trenčín, Žilina.
           </div>
-        </div>
+
+          <div class="hsNote">
+            Urgent? použi <b>SOS kontakt</b>. Plánované úkony rieš cez <b>rezervačný systém</b>.
+            Pri ohrození života volaj <b>112</b>.
+          </div>
+
+          <div class="hsActions">
+            <div class="hsBtns">
+              <button class="hsBtn ghost" type="button" data-open-sos="1">SOS kontakt</button>
+              <a class="hsBtn primary" href="rezervacie.html">Rezervovať servis</a>
+            </div>
+          </div>
+        </aside>
       </div>
     </header>
 
@@ -649,7 +840,7 @@
           </div>
         </div>
 
-        <div class="noteBox" style="margin-top:24px">
+        <div class="hsNote" style="margin-top:24px">
           Ak si nie ste istí, či je možné problém vyriešiť na mieste, odporúčame využiť SOS kontakt alebo rezervačný systém.
         </div>
       </div>
@@ -697,7 +888,7 @@
           </div>
         </div>
 
-        <div class="noteBox" style="margin-top:24px">
+        <div class="hsNote" style="margin-top:24px">
           Služby poskytujeme na celom západnom Slovensku. Vzdialenosť a dostupnosť sa potvrdzujú pri nahlásení.
         </div>
       </div>
@@ -837,6 +1028,12 @@
     // ESC zavrie
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    // NEW: hocijaké tlačidlo s data-open-sos otvorí modal (napr. v hero vpravo)
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-open-sos]');
+      if (t) openModal();
     });
   </script>
 
