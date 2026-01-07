@@ -909,7 +909,10 @@
               K cene sa pripočítava <b>0,15 € / km</b> od vzdialenosti od Piešťan.
             </div>
 
-            <a class="hsBtn primary" href="rezervacie.html" style="width:100%">Chcem obhliadku vozidla</a>
+            <a class="hsBtn primary" href="#kontakt" data-prefill="Obhliadka vozidla" style="width:100%">
+  Chcem obhliadku vozidla
+</a>
+
           </div>
         </div>
       </div>
@@ -1076,16 +1079,12 @@
             </div>
             <div>
               <label>Typ požiadavky</label>
-              <select name="typ">
-                <option>Mobilný servis</option>
-                <option>Poruchová služba</option>
-                <option>Cestná asistencia</option>
-                <option>STK / EK kontrola</option>
-                <option>Pneumatiky / defekt</option>
-                <option>Po nehode / zver</option>
-                <option>Pomoc pri kúpe vozidla</option>
-                <option>Iné</option>
-              </select>
+              <select name="typ" id="typSelect" required>
+  <option value="Mobilný servis">Mobilný servis</option>
+  <option value="Obhliadka vozidla">Obhliadka vozidla</option>
+  <option value="Kontrola pred STK / EK">Kontrola pred STK / EK</option>
+  <option value="Oprava pneu / defekt">Oprava pneu / defekt</option>
+</select>
             </div>
           </div>
 
@@ -1184,6 +1183,41 @@
     document.addEventListener('click', (e) => {
       const t = e.target.closest('[data-open-sos]');
       if (t) openModal();
+      const typSelect = document.getElementById('typSelect');
+
+  function scrollToKontakt(){
+    const el = document.getElementById('kontakt');
+    if(!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ak je v URL hash #kontakt, spravíme smooth scroll (niektoré browsery skočia tvrdo)
+  window.addEventListener('load', () => {
+    if (location.hash === '#kontakt') {
+      setTimeout(scrollToKontakt, 40);
+    }
+  });
+
+  // klik na prvok s data-prefill = predvyplní select + scroll
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-prefill]');
+    if(!a) return;
+
+    const val = a.getAttribute('data-prefill');
+    if(typSelect && val){
+      // nastavíme hodnotu, ak existuje v option
+      const opt = Array.from(typSelect.options).find(o => o.value === val);
+      if(opt){
+        typSelect.value = val;
+      }
+    }
+
+    // ak smeruje na #kontakt, spravíme smooth scroll
+    const href = a.getAttribute('href') || '';
+    if(href.includes('#kontakt')){
+      // necháme prejsť hash, ale zároveň urobíme smooth scroll
+      setTimeout(scrollToKontakt, 30);
+    }
     });
   </script>
 
