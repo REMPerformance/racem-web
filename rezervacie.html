@@ -17,7 +17,6 @@
       --line: rgba(255,255,255,0.08);
       --shadow: 0 20px 60px rgba(0,0,0,0.6);
       --radius:18px;
-      --green:#22c55e;
     }
 
     *{box-sizing:border-box}
@@ -69,7 +68,7 @@
     textarea{resize:vertical;min-height:130px}
     .full{grid-column:1 / -1}
 
-    /* ===== SERVICES (CLEAN) ===== */
+    /* ===== SERVICES (CLEAN + CLICKABLE CARDS) ===== */
     .svcWrap{
       margin-top:10px;
       display:grid;
@@ -97,29 +96,94 @@
     .svcTitle span{font-size:12px;color:var(--muted2)}
 
     .svcList{display:flex;flex-direction:column;gap:10px}
+
+    /* --- the card --- */
     .svcItem{
+      position:relative;
       display:flex;
       align-items:flex-start;
-      gap:10px;
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.06);
+      gap:12px;
+      padding:14px 14px 14px 52px; /* space for marker */
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
       background:rgba(255,255,255,0.02);
       cursor:pointer;
-      transition:background .15s ease, border-color .15s ease;
+      user-select:none;
+      transition: border-color .15s ease, background .15s ease, transform .12s ease, box-shadow .15s ease;
     }
     .svcItem:hover{
-      border-color:rgba(179,31,36,0.35);
-      background:rgba(179,31,36,0.06);
+      border-color:rgba(179,31,36,0.30);
+      background:rgba(179,31,36,0.05);
+      transform: translateY(-1px);
     }
+
+    /* hide native checkbox */
     .svcItem input{
-      margin-top:3px;
-      accent-color: var(--red);
-      cursor:pointer;
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
     }
-    .svcItem div{line-height:1.35}
-    .svcItem b{font-size:14px;font-weight:700}
-    .svcItem small{display:block;color:var(--muted2);font-size:12px;margin-top:2px}
+
+    /* marker circle on the left */
+    .svcMark{
+      position:absolute;
+      left:14px;
+      top:16px;
+      width:26px;
+      height:26px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(255,255,255,0.03);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25);
+      transition: border-color .15s ease, background .15s ease, box-shadow .15s ease, transform .12s ease;
+    }
+
+    /* check icon */
+    .svcMark::after{
+      content:"";
+      position:absolute;
+      left:7px;
+      top:6px;
+      width:10px;
+      height:6px;
+      border-left:3px solid rgba(255,255,255,0);
+      border-bottom:3px solid rgba(255,255,255,0);
+      transform: rotate(-45deg);
+      transition: border-color .15s ease;
+    }
+
+    /* checked state (card + marker) */
+    .svcItem input:checked ~ .svcMark{
+      border-color: rgba(179,31,36,0.65);
+      background: rgba(179,31,36,0.22);
+      box-shadow: 0 0 0 4px rgba(179,31,36,0.10), inset 0 0 0 1px rgba(0,0,0,0.25);
+    }
+    .svcItem input:checked ~ .svcMark::after{
+      border-left-color: rgba(255,255,255,0.92);
+      border-bottom-color: rgba(255,255,255,0.92);
+    }
+    .svcItem input:checked ~ .svcText b{
+      color:#fff;
+    }
+    .svcItem input:checked{
+      /* no-op, but keeps structure clear */
+    }
+    .svcItem:has(input:checked){
+      border-color: rgba(179,31,36,0.55);
+      background: rgba(179,31,36,0.08);
+      box-shadow: 0 12px 30px rgba(179,31,36,0.12);
+    }
+
+    /* fallback for browsers without :has (still looks good) */
+    @supports not(selector(:has(*))){
+      .svcItem input:checked ~ .svcText{
+        /* you still get marker + text change */
+      }
+    }
+
+    .svcText{line-height:1.35}
+    .svcText b{font-size:14px;font-weight:800}
+    .svcText small{display:block;color:var(--muted2);font-size:12px;margin-top:2px}
 
     .hint{
       margin-top:10px;
@@ -199,7 +263,6 @@
 
     <div class="panel">
       <form id="serviceForm" action="https://formspree.io/f/xgovgvaj" method="POST" novalidate>
-
         <input type="hidden" name="_subject" value="RACEM – Rezervácia mobilného autoservisu">
         <input type="hidden" name="_replyto" id="replyTo">
         <label class="hp">Nechaj prázdne <input name="website" tabindex="-1" autocomplete="off"></label>
@@ -249,119 +312,89 @@
             <label>Požadované úkony</label>
 
             <div class="svcWrap">
-
               <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Údržba</strong><span>servisné úkony</span>
-                </div>
+                <div class="svcTitle"><strong>Údržba</strong><span>servis</span></div>
                 <div class="svcList">
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Výmena oleja">
-                    <div><b>Výmena oleja</b><small>motor / prevodovka podľa dohody</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Výmena oleja</b><small>motor / prevodovka podľa dohody</small></div>
                   </label>
+
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Výmena filtrov">
-                    <div><b>Výmena filtrov</b><small>vzduchový, kabínový, palivový…</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Výmena filtrov</b><small>vzduchový, kabínový, palivový…</small></div>
                   </label>
+
                   <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Výmena prevádzkových kvapalín (okrem olejov)">
-                    <div><b>Prevádzkové kvapaliny</b><small>brzdová, chladiaca, servo…</small></div>
+                    <input type="checkbox" name="sluzby[]" value="Prevádzkové kvapaliny (okrem olejov)">
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Prevádzkové kvapaliny</b><small>brzdová, chladiaca, servo…</small></div>
                   </label>
                 </div>
               </div>
 
               <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Pneumatiky</strong><span>rýchla pomoc</span>
-                </div>
+                <div class="svcTitle"><strong>Pneumatiky</strong><span>rýchla pomoc</span></div>
                 <div class="svcList">
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Oprava defektu">
-                    <div><b>Oprava defektu</b><small>lepenie / dojazd podľa možností</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Oprava defektu</b><small>lepenie / dojazd podľa možností</small></div>
                   </label>
                 </div>
               </div>
 
               <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Brzdy & podvozok</strong><span>bezpečnosť</span>
-                </div>
+                <div class="svcTitle"><strong>Brzdy & podvozok</strong><span>bezpečnosť</span></div>
                 <div class="svcList">
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Výmena bŕzd">
-                    <div><b>Výmena bŕzd</b><small>platničky / kotúče podľa dohody</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Výmena bŕzd</b><small>platničky / kotúče podľa dohody</small></div>
                   </label>
+
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Opravy na podvozku">
-                    <div><b>Podvozok</b><small>čapy, ramená, silentbloky…</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Podvozok</b><small>čapy, ramená, silentbloky…</small></div>
                   </label>
+
                   <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Riadenie a stabilita">
-                    <div><b>Riadenie & stabilita</b><small>vôle, klepanie, ťahanie…</small></div>
+                    <input type="checkbox" name="sluzby[]" value="Riadenie & stabilita">
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Riadenie & stabilita</b><small>vôle, klepanie, ťahanie…</small></div>
                   </label>
                 </div>
               </div>
 
               <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Diagnostika & kontroly</strong><span>overenie stavu</span>
-                </div>
+                <div class="svcTitle"><strong>Diagnostika & kontroly</strong><span>stav vozidla</span></div>
                 <div class="svcList">
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Diagnostika vozidla">
-                    <div><b>Diagnostika vozidla</b><small>chyby, live data (podľa možností)</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Diagnostika vozidla</b><small>chyby, live data (podľa možností)</small></div>
                   </label>
+
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Kontrola poškodeného vozidla">
-                    <div><b>Kontrola poškodeného vozidla</b><small>po nehode / po škode</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Kontrola poškodeného vozidla</b><small>po nehode / po škode</small></div>
                   </label>
+
                   <label class="svcItem">
                     <input type="checkbox" name="sluzby[]" value="Kontrola pred STK/EK">
-                    <div><b>Kontrola pred STK / EK</b><small>základná kontrola stavu</small></div>
+                    <span class="svcMark"></span>
+                    <div class="svcText"><b>Kontrola pred STK / EK</b><small>základná kontrola stavu</small></div>
                   </label>
                 </div>
               </div>
-
-              <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Motor</strong><span>chladiaci systém</span>
-                </div>
-                <div class="svcList">
-                  <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Chladenie motora">
-                    <div><b>Chladenie motora</b><small>úniky, hadice, výmena dielov</small></div>
-                  </label>
-                </div>
-              </div>
-
-              <div class="svcGroup">
-                <div class="svcTitle">
-                  <strong>Karoséria, interiér, elektronika</strong><span>montáže</span>
-                </div>
-                <div class="svcList">
-                  <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Výmena karosárskych dielov">
-                    <div><b>Karosárske diely</b><small>výmena / montáž dielov</small></div>
-                  </label>
-                  <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Interiérové diely">
-                    <div><b>Interiér</b><small>výmena / montáž dielov</small></div>
-                  </label>
-                  <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Montáž doplnkov">
-                    <div><b>Doplnky</b><small>kamery, senzory, drobnosti…</small></div>
-                  </label>
-                  <label class="svcItem">
-                    <input type="checkbox" name="sluzby[]" value="Elektronika">
-                    <div><b>Elektronika</b><small>základné opravy / diagnostika</small></div>
-                  </label>
-                </div>
-              </div>
-
             </div>
 
             <div class="hint">
-              Tip: Ak nevieš presne, čo vybrať, zaškrtni “Diagnostika” + popíš problém nižšie.
+              Tip: Ak nevieš presne, zaškrtni “Diagnostika vozidla” a popíš problém nižšie.
             </div>
           </div>
 
@@ -381,7 +414,6 @@
         <div class="note">
           REM Performance vystupuje ako sprostredkovateľ služby. Samotné servisné úkony vykonáva certifikovaný mechanik – subdodávateľ.
         </div>
-
       </form>
     </div>
   </div>
@@ -403,7 +435,6 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       replyTo.value = emailInput.value.trim();
 
       const required = form.querySelectorAll('[required]');
