@@ -16,6 +16,9 @@
       --line: rgba(255,255,255,0.08);
       --shadow: 0 20px 60px rgba(0,0,0,0.55);
       --radius-xl: 18px;
+
+      --warn:#f59e0b;
+      --ok:#22c55e;
     }
 
     *{box-sizing:border-box}
@@ -73,6 +76,7 @@
       display:flex;
       align-items:center;
       gap:10px;
+      user-select:none;
     }
     .logo-tagline{
       font-size:10px;
@@ -101,6 +105,7 @@
       align-items:center;
       gap:8px;
       transition:all .18s ease-out;
+      white-space:nowrap;
     }
 
     .nav-links a span.dot{
@@ -216,7 +221,28 @@
     .label{
       font-size:12px;
       color:var(--muted2);
-      margin-bottom:6px;
+      margin:10px 0 6px;
+    }
+
+    .notice{
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+      padding:12px 12px;
+      border-radius:14px;
+      margin:10px 0 6px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .notice strong{color:#fff}
+    .notice.warn{
+      border-color: rgba(245,158,11,0.35);
+      background: rgba(245,158,11,0.08);
+    }
+    .notice.ok{
+      border-color: rgba(34,197,94,0.28);
+      background: rgba(34,197,94,0.08);
     }
 
     hr.divider{
@@ -277,7 +303,7 @@
         <span>Katalóg dielov</span>
       </a>
 
-      <a href="index.html">
+      <a href="index.html#kontakt">
         <span class="dot"></span>
         <span>Kontakt</span>
       </a>
@@ -307,6 +333,7 @@
     <a href="#vop">VOP</a>
     <a href="#reklamacie">Reklamačný poriadok</a>
     <a href="#doprava">Doprava & dodanie</a>
+    <a href="#mobilny-servis">Mobilný autoservis (sprostredkovanie)</a>
   </nav>
 
   <!-- VOP BLOK -->
@@ -493,17 +520,21 @@
     <p>
       Zákazník je pred potvrdením objednávky oboznámený so stavom a hodnotenie potvrdzuje.
     </p>
-    <p>Režim záruky podľa stavu:</p>
+
+    <p class="label">Režim záruky podľa stavu</p>
+
     <p><b>8 – 10</b></p>
     <ul>
       <li>veľmi dobrý stav,</li>
       <li>poskytuje sa primeraná záruka podľa dohody.</li>
     </ul>
+
     <p><b>5 – 7</b></p>
     <ul>
       <li>zjavne použitý diel,</li>
       <li>poskytuje sa záruka na funkčnosť pri prevzatí.</li>
     </ul>
+
     <p><b>1 – 4</b></p>
     <ul>
       <li>výrazne opotrebovaný diel / projektový diel,</li>
@@ -520,6 +551,22 @@
     </p>
     <p>
       Odstúpenie je možné len po individuálnej dohode.
+    </p>
+  </section>
+
+  <!-- DOPLNENÉ: POUČENIE SPOTREBITEĽA -->
+  <section class="legal-section">
+    <h2>12A. Poučenie spotrebiteľa</h2>
+    <p>
+      Spotrebiteľ má právo byť pred uzatvorením zmluvy riadne informovaný o podmienkach predaja,
+      cene, dodacích lehotách, spôsobe platby a obmedzeniach odstúpenia od zmluvy.
+    </p>
+    <p>
+      Keďže predávaný tovar je zabezpečovaný podľa individuálnych požiadaviek zákazníka,
+      spotrebiteľ spravidla nemá právo na odstúpenie od zmluvy bez udania dôvodu do 14 dní.
+    </p>
+    <p>
+      Odoslaním objednávky zákazník potvrdzuje, že bol o tejto skutočnosti riadne informovaný.
     </p>
   </section>
 
@@ -541,18 +588,33 @@
     </ul>
   </section>
 
+  <!-- GDPR UPRAVENÉ -->
   <section class="legal-section">
     <h2>14. Ochrana osobných údajov</h2>
-    <p>Osobné údaje sú spracované výhradne na:</p>
+    <p>
+      Predávajúci spracúva osobné údaje v súlade s Nariadením (EÚ) 2016/679 (GDPR)
+      a zákonom č. 18/2018 Z.z.
+    </p>
+    <p>Osobné údaje sú spracované výhradne za účelom:</p>
     <ul>
-      <li>vybavenie objednávky,</li>
-      <li>komunikáciu,</li>
-      <li>účtovné účely.</li>
+      <li>vybavenia objednávky,</li>
+      <li>komunikácie so zákazníkom,</li>
+      <li>plnenia zákonných povinností (účtovníctvo).</li>
     </ul>
     <p>
       Osobné údaje nie sú poskytované tretím stranám okrem subjektov podieľajúcich sa na dodaní tovaru
-      alebo zákonom stanovených orgánov.
+      alebo zákonom stanovených orgánov (napr. účtovné účely).
     </p>
+    <p>
+      Zákazník má právo:
+    </p>
+    <ul>
+      <li>na prístup k svojim údajom,</li>
+      <li>na opravu nesprávnych údajov,</li>
+      <li>na vymazanie údajov (ak to zákon umožňuje),</li>
+      <li>na obmedzenie spracúvania,</li>
+      <li>podať sťažnosť na Úrad na ochranu osobných údajov SR.</li>
+    </ul>
     <p>
       Predávajúci nepoužíva analytické nástroje ani marketingové cookies.
     </p>
@@ -573,11 +635,27 @@
       Právne vzťahy sa riadia právnym poriadkom Slovenskej republiky.
     </p>
     <p>
-      Slovenská republika – Slovenská obchodná inšpekcia<br>
-      Česká republika – Česká obchodní inspekce
+      Možné je aj mimosúdne riešenie sporov.
+    </p>
+  </section>
+
+  <!-- DOPLNENÉ: ADR -->
+  <section class="legal-section">
+    <h2>16A. Alternatívne riešenie sporov (ADR)</h2>
+    <p>
+      Spotrebiteľ má právo obrátiť sa na predávajúceho so žiadosťou o nápravu, ak nie je spokojný
+      so spôsobom vybavenia reklamácie alebo sa domnieva, že predávajúci porušil jeho práva.
     </p>
     <p>
-      Možné je aj mimosúdne riešenie sporov.
+      Ak predávajúci na žiadosť odpovie zamietavo alebo na ňu neodpovie do 30 dní,
+      spotrebiteľ má právo podať návrh na začatie alternatívneho riešenia sporu.
+    </p>
+    <p>
+      Príslušným subjektom ADR je:
+    </p>
+    <p>
+      <b>Slovenská obchodná inšpekcia</b><br>
+      (Informácie k alternatívnemu riešeniu spotrebiteľských sporov sú dostupné na stránkach SOI.)
     </p>
   </section>
 
@@ -586,6 +664,16 @@
     <p>
       Tieto podmienky nadobúdajú účinnosť dňom zverejnenia.
       Predávajúci si vyhradzuje právo ich meniť.
+    </p>
+  </section>
+
+  <!-- EXTRA DISCLAIMER -->
+  <section class="legal-section">
+    <h2>Upozornenie</h2>
+    <p>
+      Informácie uvedené na stránke majú informatívny charakter.
+      Predávajúci nezodpovedá za škody vzniknuté nesprávnou montážou, použitím mimo schváleného určenia,
+      alebo použitím v súťažných podmienkach.
     </p>
   </section>
 
@@ -620,7 +708,7 @@
 
     <p class="label">2. Lehota na vybavenie</p>
     <p>
-      Lehota na vybavenie reklamácie je maximálne 30 dní od prijatia.
+      Lehota na vybavenie reklamácie je maximálne 30 dní od prijatia, pokiaľ objektívne dôvody nevyžadujú dlhšiu lehotu.
     </p>
 
     <p class="label">3. Spôsoby vybavenia</p>
@@ -671,8 +759,7 @@
     <p>Zákazník je povinný:</p>
     <ul>
       <li>skontrolovať zásielku pri prevzatí,</li>
-      <li>ozn
-ámiť poškodenie kuriérovi,</li>
+      <li>oznámiť poškodenie kuriérovi,</li>
       <li>spísať protokol pri poškodení.</li>
     </ul>
     <p>
@@ -680,19 +767,25 @@
     </p>
   </section>
 
-</main>
+  <hr class="divider">
 
-<footer>
-  <div class="wrap">
-    <div class="row">
-      <div>RACEM / REM Performance · Lukáš Tonkovič · IČO 57321205</div>
-      <div>
-        <a href="mailto:info@remperformance.sk">info@remperformance.sk</a> ·
-        <a href="vop.html">VOP a reklamačný poriadok</a>
-      </div>
+  <!-- MOBILNÝ AUTOSERVIS – SPROSTREDKOVANIE -->
+  <section id="mobilny-servis" class="legal-section">
+    <h2>MOBILNÝ AUTOSERVIS – SPROSTREDKOVANIE CEZ SUBDODÁVATEĽOV</h2>
+
+    <div class="notice warn">
+      <strong>Dôležité:</strong> Pri ohrození života alebo pri dopravnej nehode volajte <b>112</b>.
+      Táto služba nie je linka záchranných zložiek ani dispečing pre krízové situácie.
     </div>
-  </div>
-</footer>
 
-</body>
-</html>
+    <p class="label">1. Charakter služby</p>
+    <p>
+      RACEM / REM Performance vystupuje pri mobilnom autoservise primárne ako <b>sprostredkovateľ</b> – t. j. zabezpečuje komunikáciu,
+      objednanie výjazdu, koordináciu termínu a logistiky. Samotnú opravu vykonáva <b>nezávislý subdodávateľ</b> (automechanik / servis)
+      so zodpovedajúcim oprávnením.
+    </p>
+
+    <p class="label">2. Kto je zmluvná strana opravy</p>
+    <p>
+      Zmluvný vzťah týkajúci sa samotnej opravy a vykonania servisných prác vzniká medzi <b>zákazníkom</b> a <b>subdodávateľom</b>
+      (
