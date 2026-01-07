@@ -17,6 +17,9 @@
       --line: rgba(255,255,255,0.08);
       --shadow: 0 20px 60px rgba(0,0,0,0.55);
       --radius: 18px;
+
+      --good:#22c55e;
+      --warn:#f59e0b;
     }
 
     *{box-sizing:border-box}
@@ -32,231 +35,535 @@
     a{color:inherit;text-decoration:none}
     h1,h2,h3{margin:0}
     p{line-height:1.6}
+    .muted{color:var(--muted)}
+    .muted2{color:var(--muted2)}
 
-    /* ===== HEADER ===== */
-    header{
-      padding:48px 24px 64px;
-      max-width:1200px;
-      margin:auto;
+    /* ===== LAYOUT ===== */
+    .wrap{max-width:1200px;margin:auto;padding:0 24px}
+    section{margin:0 auto 64px}
+
+    .panel{
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:34px;
+      box-shadow:var(--shadow);
     }
 
     .pill{
       display:inline-flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
       padding:8px 14px;
       border-radius:999px;
-      background:rgba(179,31,36,0.15);
-      color:var(--red);
+      background:rgba(179,31,36,0.14);
+      color:#ffd7d8;
+      border:1px solid rgba(179,31,36,0.30);
       font-size:13px;
-      margin-bottom:18px;
+    }
+    .pill strong{color:#fff}
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 0 0;
+    }
+
+    .nav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .nav a{
+      font-size:14px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid transparent;
+      transition: .2s ease;
+    }
+    .nav a:hover{
+      color:#fff;
+      border-color:var(--line);
+      background:rgba(255,255,255,0.03);
+    }
+
+    /* ===== HERO ===== */
+    header{padding:26px 0 0}
+    .hero{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
     }
 
     h1{
       font-size:44px;
-      max-width:900px;
-      margin-bottom:16px;
+      line-height:1.05;
+      margin:14px 0 14px;
     }
-
-    header p{
-      max-width:820px;
-      color:var(--muted);
-      font-size:18px;
-    }
-
-    /* ===== SECTIONS ===== */
-    section{
-      max-width:1200px;
-      margin:0 auto 64px;
-      padding:0 24px;
-    }
-
-    .panel{
-      background:linear-gradient(180deg, var(--panel), var(--panel2));
-      border-radius:var(--radius);
-      padding:36px;
-      box-shadow:var(--shadow);
+    .lead{font-size:18px;max-width:900px}
+    .heroCard{
+      background:rgba(255,255,255,0.03);
       border:1px solid var(--line);
+      border-radius:18px;
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:14px;
     }
 
+    .heroStats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .stat{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background:rgba(0,0,0,0.18);
+    }
+    .stat .k{font-size:12px;color:var(--muted2)}
+    .stat .v{font-size:16px;margin-top:6px}
+    .stat .v b{color:#fff}
+
+    /* ===== BUTTONS ===== */
+    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.04);
+      color:#fff;
+      font-weight:700;
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,0.06)}
+    .btnPrimary{
+      background:var(--red);
+      border-color:rgba(255,255,255,0.12);
+    }
+    .btnPrimary:hover{background:#c8262c}
+
+    .btnGhost{
+      background:rgba(0,0,0,0.25);
+    }
+
+    /* ===== GRID CARDS ===== */
     .grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:24px;
+      gap:18px;
+      margin-top:18px;
     }
-
     .card{
       background:#0f0f0f;
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:22px;
+      border-radius:16px;
+      padding:20px;
     }
-
     .card h3{
-      color:var(--red);
+      color:#fff;
       margin-bottom:10px;
+      font-size:16px;
     }
-
-    /* ===== LIST ===== */
-    ul{
-      padding-left:18px;
+    .card h3 span{
+      color:var(--red);
+      margin-right:8px;
     }
+    ul{padding-left:18px;margin:0}
+    li{margin:8px 0;color:var(--muted)}
 
-    ul li{
-      margin-bottom:8px;
-      color:var(--muted);
+    /* ===== PRICE BLOCK ===== */
+    .priceGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      margin-top:18px;
     }
-
-    /* ===== CTA ===== */
-    .cta{
-      background:linear-gradient(135deg, #1a1a1a, #0d0d0d);
-      border-radius:22px;
-      padding:48px;
-      text-align:center;
+    @media (max-width: 900px){
+      .priceGrid{grid-template-columns:1fr}
+    }
+    .priceItem{
       border:1px solid var(--line);
+      border-radius:16px;
+      padding:20px;
+      background:rgba(255,255,255,0.03);
     }
-
-    .cta h2{
-      font-size:32px;
-      margin-bottom:12px;
-    }
-
-    .cta p{
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,0.25);
+      font-size:12px;
       color:var(--muted);
-      margin-bottom:22px;
     }
-
-    .btn{
-      display:inline-block;
-      padding:14px 26px;
-      border-radius:12px;
-      background:var(--red);
-      color:white;
-      font-weight:bold;
+    .badge.red{
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.12);
+      color:#ffe1e1;
+    }
+    .badge.good{
+      border-color: rgba(34,197,94,0.45);
+      background: rgba(34,197,94,0.10);
+      color:#d9ffe6;
+    }
+    .badge.warn{
+      border-color: rgba(245,158,11,0.45);
+      background: rgba(245,158,11,0.10);
+      color:#fff1d8;
     }
 
     /* ===== FOOTER ===== */
     footer{
-      padding:36px 24px;
+      margin-top:56px;
+      padding:32px 0 38px;
       border-top:1px solid var(--line);
       color:var(--muted2);
-      text-align:center;
       font-size:14px;
+      text-align:center;
+    }
+
+    /* ===== SOS FLOAT ===== */
+    .sosFab{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:999;
+    }
+    .sosMain{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 16px;
+      border-radius:14px;
+      background:var(--red);
+      color:#fff;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      cursor:pointer;
+      user-select:none;
+      transition:.18s ease;
+    }
+    .sosMain:hover{transform:translateY(-1px); background:#c8262c}
+    .sosPanel{
+      margin-top:10px;
+      background:#0f0f0f;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      width:260px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      display:none;
+    }
+    .sosPanel.open{display:block}
+    .sosSmall{
+      color:var(--muted2);
+      font-size:12px;
+      margin:4px 6px 10px;
+      line-height:1.4;
+    }
+    .sosActions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    .sosBtn{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.03);
+      color:#fff;
+      font-weight:800;
+      transition:.18s ease;
+    }
+    .sosBtn:hover{background:rgba(255,255,255,0.06); transform:translateY(-1px)}
+    .sosBtn .sub{font-size:12px;color:var(--muted2);font-weight:600}
+    .sosHint{
+      font-size:12px;
+      color:var(--muted2);
+      margin:10px 6px 2px;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <span class="pill">🚐 Mobilný autoservis</span>
-  <h1>RACEM – Mobilný autoservis a technická asistencia</h1>
-  <p>
-    Profesionálne sprostredkovanie mobilných servisných zásahov priamo u zákazníka.
-    Rýchlo, transparentne a legálne – bez zbytočného presunu vozidla do servisu.
-  </p>
-</header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="pill">🚐 <strong>RACEM</strong> · Mobilný autoservis · 24/7</div>
 
-<section>
-  <div class="panel">
-    <h2>Ako fungujeme</h2>
-    <p class="muted">
-      RACEM vystupuje ako <b>sprostredkovateľ a koordinátor</b> mobilných servisných služieb.
-      Samotné odborné servisné práce vykonáva <b>certifikovaný automechanik</b> s platnou živnosťou
-      a odbornou spôsobilosťou.
-    </p>
-
-    <ul>
-      <li>Objednávku rieši zákazník cez RACEM</li>
-      <li>Výkon servisnej práce vykonáva kvalifikovaný mechanik</li>
-      <li>RACEM zabezpečuje komunikáciu, logistiku a administratívu</li>
-      <li>Fakturácia prebieha transparentne a v súlade so zákonom</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <h2>Čo vieme zabezpečiť</h2>
-  <div class="grid">
-
-    <div class="card">
-      <h3>Bežný servis</h3>
-      <ul>
-        <li>Výmena oleja a filtrov</li>
-        <li>Výmena brzdových komponentov</li>
-        <li>Batérie, žiarovky, drobný servis</li>
-      </ul>
+      <nav class="nav">
+        <a href="/rezervacie-servisu">Rezervácia servisu</a>
+        <a href="#sluzby">Služby</a>
+        <a href="#cennik">Cenník</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
     </div>
 
-    <div class="card">
-      <h3>Diagnostika</h3>
-      <ul>
-        <li>Chybové hlásenia</li>
-        <li>Základné resetovanie</li>
-        <li>Kontrola stavu vozidla</li>
-      </ul>
+    <header>
+      <div class="hero">
+        <div class="panel">
+          <h1>Mobilný autoservis, ktorý príde za tebou.</h1>
+          <p class="lead muted">
+            Sme <b>RACEM Mobilný autoservis</b>. Po prijatí požiadavky vyšleme <b>certifikovaného skúseného mechanika</b>.
+            Výjazdy robíme <b>na počkanie</b> – ty sa môžeš venovať svojim veciam, my riešime auto.
+          </p>
+
+          <div class="btnRow">
+            <a class="btn btnPrimary" href="/rezervacie-servisu">📅 Rezervovať servis</a>
+            <a class="btn btnGhost" href="#cennik">💶 Pozrieť cenník</a>
+            <a class="btn btnGhost" href="#sluzby">🧰 Čo opravujeme</a>
+          </div>
+
+          <p class="muted2" style="margin-top:16px">
+            * Sme pripravení 24/7, 365 dní v roku. Reálne časy príchodu závisia od vyťaženia a vzdialenosti.
+          </p>
+        </div>
+
+        <div class="heroCard">
+          <div>
+            <div class="heroStats">
+              <div class="stat">
+                <div class="k">Výjazdová zóna</div>
+                <div class="v"><b>Piešťany</b> a okolie</div>
+              </div>
+              <div class="stat">
+                <div class="k">Cena za km</div>
+                <div class="v"><b>0,15 €</b> / km</div>
+              </div>
+              <div class="stat">
+                <div class="k">Nočný výjazd</div>
+                <div class="v"><b>+50 €</b></div>
+              </div>
+              <div class="stat">
+                <div class="k">Sviatky</div>
+                <div class="v"><b>+50 €</b></div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px">
+              <span class="badge good">✅ Odpovedáme do pár minút</span>
+            </div>
+          </div>
+
+          <div class="muted2" style="font-size:13px; line-height:1.45">
+            Pri výjazde vieme zabezpečiť aj materiál (olej, filtre, diely) – účtujeme podľa reálnej spotreby.
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="sluzby">
+      <div class="panel">
+        <h2>Služby, ktoré riešime</h2>
+        <p class="muted">Typické zásahy, ktoré vieme zabezpečiť priamo u zákazníka:</p>
+
+        <div class="grid">
+          <div class="card">
+            <h3><span>•</span>Bežný servis</h3>
+            <ul>
+              <li>Výmena oleja a filtrov</li>
+              <li>Drobné opravy a údržba</li>
+              <li>Výmena a montáž interiérových a exteriérových dielov</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span>•</span>Diagnostika a elektronika</h3>
+            <ul>
+              <li>Diagnostika (chybové kódy, základné kontroly)</li>
+              <li>Servis elektroniky a elektrických závad</li>
+              <li>Kontrola funkčnosti vozidla pred cestou</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span>•</span>Pneumatiky</h3>
+            <ul>
+              <li>Opravy pneumatík (podľa situácie a možností)</li>
+              <li>Núdzová pomoc pri defekte</li>
+              <li>Kontrola tlakov, ventilov a únikov</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span>•</span>STK / EK príprava</h3>
+            <ul>
+              <li>Kontrola vozidla pred STK a EK</li>
+              <li>Odhalenie typických problémov (svetlá, chyby, tesnosti…)</li>
+              <li>Odporúčania a opravy podľa dohody</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span>•</span>Po nehode</h3>
+            <ul>
+              <li>Opravy vozidiel po nehode (podľa rozsahu)</li>
+              <li>Dočasné riešenia pre bezpečný presun</li>
+              <li>Kontrola poškodenia a ďalší postup</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span>•</span>Cestná asistencia</h3>
+            <ul>
+              <li>Štartovanie, batéria, núdzové zásahy</li>
+              <li>Rýchla pomoc na ceste</li>
+              <li>Riešenie poruchy na mieste, keď sa dá</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cennik">
+      <div class="panel">
+        <h2>Cenník a podmienky výjazdu</h2>
+        <p class="muted">
+          Jednoducho: <b>výjazd</b> + <b>práca</b> + (ak treba) <b>materiál</b>.
+          Všetko komunikujeme dopredu, aby si vedel, na čom si.
+        </p>
+
+        <div class="priceGrid">
+          <div class="priceItem">
+            <div class="badge red">📍 Výjazd</div>
+            <h3 style="margin-top:12px">Piešťany + 0,15 € / km</h3>
+            <p class="muted" style="margin:10px 0 0">
+              Výjazd štartuje z Piešťan. Účtujeme 0,15 € za kilometer od Piešťan.
+            </p>
+          </div>
+
+          <div class="priceItem">
+            <div class="badge good">🧰 Práca + materiál</div>
+            <h3 style="margin-top:12px">Práca podľa rozsahu + materiál podľa potreby</h3>
+            <p class="muted" style="margin:10px 0 0">
+              Ak zákazník nemá materiál (olej, filtre, diely), vieme ho zabezpečiť – účtujeme podľa reálnej spotreby.
+            </p>
+          </div>
+
+          <div class="priceItem">
+            <div class="badge warn">🌙 Nočný výjazd</div>
+            <h3 style="margin-top:12px">+50 € (23:00 – 05:00)</h3>
+            <p class="muted" style="margin:10px 0 0">
+              Pri výjazde v čase 23:00 až 05:00 účtujeme príplatok +50 €.
+            </p>
+          </div>
+
+          <div class="priceItem">
+            <div class="badge warn">🎉 Sviatky</div>
+            <h3 style="margin-top:12px">+50 € (štátne sviatky, okrem víkendov)</h3>
+            <p class="muted" style="margin:10px 0 0">
+              Pri výjazdoch počas štátnych sviatkov (ak nejde o víkend) účtujeme príplatok +50 €.
+            </p>
+          </div>
+        </div>
+
+        <p class="muted2" style="margin-top:16px">
+          * Uvedené príplatky sa môžu kumulovať podľa situácie (napr. nočný výjazd).  
+        </p>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <div class="panel">
+        <h2>Kontakt</h2>
+        <p class="muted">
+          Najrýchlejšie cez SOS hovor / SOS SMS. Alebo si sprav rezerváciu – trvá to 1 minútu.
+        </p>
+
+        <div class="btnRow" style="margin-top:16px">
+          <a class="btn btnPrimary" href="/rezervacie-servisu">📅 Rezervovať servis</a>
+          <a class="btn btnGhost" href="mailto:racemperformance@outlook.com?subject=RACEM%20Mobiln%C3%BD%20autoservis%20-%20dopyt">✉️ Napísať e-mail</a>
+        </div>
+
+        <p class="muted2" style="margin-top:14px">
+          E-mail: <b style="color:#fff">racemperformance@outlook.com</b>
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      © RACEM / REM Performance · Mobilný autoservis · 24/7 · Piešťany a okolie
+    </footer>
+  </div>
+
+  <!-- ===== SOS FLOATING BUTTON ===== -->
+  <div class="sosFab">
+    <div class="sosMain" id="sosToggle">🆘 SOS</div>
+
+    <div class="sosPanel" id="sosPanel">
+      <div class="sosSmall">
+        SOS hovor / SOS SMS. <b>Odpovedáme do pár minút</b> (podľa vyťaženia).
+      </div>
+
+      <div class="sosActions">
+        <!-- TODO: ZMEŇ TELEFÓN -->
+        <a class="sosBtn" href="tel:+421900000000">
+          <div>
+            SOS HOVOR
+            <div class="sub">klikni a voláš</div>
+          </div>
+          <div>📞</div>
+        </a>
+
+        <!-- TODO: ZMEŇ TELEFÓN -->
+        <a class="sosBtn" href="sms:+421900000000?&body=RACEM%20SOS%0A%0AMesto%2FAdresa%3A%20%0AAuto%3A%20%0AProbl%C3%A9m%3A%20%0A">
+          <div>
+            SOS SMS
+            <div class="sub">mesto · auto · problém</div>
+          </div>
+          <div>💬</div>
+        </a>
+
+        <a class="sosBtn" href="/rezervacie-servisu">
+          <div>
+            Rezervácia servisu
+            <div class="sub">1 minúta formulár</div>
+          </div>
+          <div>📅</div>
+        </a>
+      </div>
+
+      <div class="sosHint">Tip: do SMS napíš mesto, auto, problém.</div>
     </div>
-
-    <div class="card">
-      <h3>Technická asistencia</h3>
-      <ul>
-        <li>Problém so štartom</li>
-        <li>Núdzové zásahy</li>
-        <li>Príprava vozidla na presun</li>
-      </ul>
-    </div>
-
   </div>
-</section>
 
-<section>
-  <div class="panel">
-    <h2>Čo nerobíme</h2>
-    <ul>
-      <li>Nezasahujeme do nosných a bezpečnostných častí bez dielne</li>
-      <li>Nevykonávame práce vyžadujúce zdvihák alebo STK techniku</li>
-      <li>Neposkytujeme úpravy odporujúce zákonu</li>
-    </ul>
-  </div>
-</section>
+  <script>
+    const toggle = document.getElementById('sosToggle');
+    const panel = document.getElementById('sosPanel');
 
-<section>
-  <div class="panel">
-    <h2>Cena a objednávka</h2>
-    <p class="muted">
-      Cena sa vždy stanovuje individuálne podľa rozsahu práce, miesta výjazdu
-      a typu vozidla. Pred zásahom zákazník vždy pozná orientačnú cenu.
-    </p>
+    toggle.addEventListener('click', () => {
+      panel.classList.toggle('open');
+    });
 
-    <ul>
-      <li>Výjazd mobilného servisu</li>
-      <li>Hodinová sadzba práce</li>
-      <li>Materiál podľa potreby</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <div class="panel">
-    <h2>Ekologická a zákonná zodpovednosť</h2>
-    <p class="muted">
-      Použité oleje, filtre a prevádzkové kvapaliny sú odovzdávané
-      oprávnenej osobe na likvidáciu v súlade s platnou legislatívou SR.
-    </p>
-  </div>
-</section>
-
-<section>
-  <div class="cta">
-    <h2>Potrebujete výjazd?</h2>
-    <p>Kontaktujte nás a zabezpečíme riešenie.</p>
-    <a href="mailto:racemperformance@outlook.com" class="btn">Kontaktovať RACEM</a>
-  </div>
-</section>
-
-<footer>
-  © RACEM / REM Performance · Mobilný autoservis je poskytovaný formou sprostredkovania
-</footer>
+    // zavri panel klikom mimo
+    document.addEventListener('click', (e) => {
+      const fab = document.querySelector('.sosFab');
+      if (!fab.contains(e.target)) panel.classList.remove('open');
+    });
+  </script>
 
 </body>
 </html>
