@@ -13,15 +13,21 @@
   <style>
     :root{
       --red:#b31f24;
-      --bg:#0b0b0b;
-      --panel:#141414;
-      --panel2:#101010;
+      --bg:#070707;
+      --panel:#121212;
+      --panel2:#0f0f0f;
       --text:#ffffff;
-      --muted:#cfcfcf;
-      --muted2:#9b9b9b;
+      --muted:#d0d0d0;
+      --muted2:#a4a4a4;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 20px 60px rgba(0,0,0,0.55);
+      --shadow: 0 22px 70px rgba(0,0,0,0.62);
       --radius: 18px;
+
+      --glow: rgba(179,31,36,0.18);
+      --glow2: rgba(255,255,255,0.06);
+
+      --sosA: rgba(179,31,36,0.95);
+      --sosB: rgba(255,255,255,0.12);
     }
 
     *{box-sizing:border-box}
@@ -29,27 +35,56 @@
     body{
       margin:0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #151515 0, #050505 55%, #000 100%);
       color:var(--text);
       overflow-x:hidden;
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(179,31,36,0.18), transparent 55%),
+                  radial-gradient(900px 520px at 85% 20%, rgba(255,255,255,0.06), transparent 60%),
+                  radial-gradient(900px 600px at 55% 110%, rgba(179,31,36,0.12), transparent 55%),
+                  linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #000 100%);
+    }
+
+    /* jemný noise */
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      opacity:.12;
+      mix-blend-mode:overlay;
     }
 
     a{color:inherit;text-decoration:none}
     h1,h2,h3{margin:0}
-    p{line-height:1.65;margin:0}
+    p{line-height:1.7;margin:0}
     .muted{color:var(--muted)}
     .muted2{color:var(--muted2)}
 
     .wrap{max-width:1200px;margin:auto;padding:0 24px}
-    section{margin:0 auto 64px}
+    section{margin:0 auto 72px}
+    @media (max-width: 860px){
+      section{margin-bottom:58px}
+    }
 
     .panel{
-      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      background: linear-gradient(180deg, rgba(18,18,18,0.92), rgba(12,12,12,0.92));
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:34px;
+      padding:38px;
       box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
+    .panel:after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(800px 260px at 25% -10%, rgba(179,31,36,0.22), transparent 60%);
+      pointer-events:none;
+      opacity:.7;
+    }
+    .panel > *{position:relative; z-index:1}
 
     /* ===== TOP NAV ===== */
     .topbar{
@@ -57,38 +92,43 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:22px 0 0;
+      padding:26px 0 0;
+      margin-bottom:14px;
     }
     .brand{
-      font-weight:800;
-      letter-spacing:0.5px;
+      font-weight:900;
+      letter-spacing:0.6px;
       color:#fff;
+      font-size:14px;
+      opacity:.95;
     }
     .brand span{color:var(--red)}
     .nav{
       display:flex;
-      gap:14px;
+      gap:12px;
       flex-wrap:wrap;
       align-items:center;
     }
     .nav a{
       font-size:14px;
-      color:var(--muted);
-      padding:8px 10px;
-      border-radius:10px;
+      color:var(--muted2);
+      padding:9px 12px;
+      border-radius:12px;
       border:1px solid transparent;
-      transition: .2s ease;
+      transition:.2s ease;
+      background:rgba(255,255,255,0.02);
     }
     .nav a:hover{
       color:#fff;
       border-color:var(--line);
-      background:rgba(255,255,255,0.03);
+      background:rgba(255,255,255,0.05);
+      transform:translateY(-1px);
     }
 
     /* ===== HERO ===== */
-    header{padding:22px 0 0}
+    header{padding:6px 0 0}
     .hero{
-      margin-top:18px;
+      margin-top:14px;
       display:grid;
       grid-template-columns: 1.35fr .65fr;
       gap:22px;
@@ -101,45 +141,55 @@
     .heroTitle{
       font-family:"Teko", Arial, sans-serif;
       font-weight:700;
-      font-size:64px;
-      line-height:0.95;
+      font-size:74px;
+      line-height:0.92;
       letter-spacing:1px;
       text-transform:uppercase;
     }
     @media (max-width: 520px){
-      .heroTitle{font-size:52px}
+      .heroTitle{font-size:58px}
     }
 
     .lead{
       font-size:17px;
       max-width:920px;
-      margin-top:14px;
+      margin-top:16px;
       color:var(--muted);
     }
 
-    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .btnRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:14px 16px;
-      border-radius:12px;
+      padding:14px 18px;
+      border-radius:14px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,0.04);
+      background:rgba(255,255,255,0.05);
       color:#fff;
-      font-weight:800;
+      font-weight:900;
+      letter-spacing:.2px;
       transition:.18s ease;
-      min-width: 200px;
+      min-width: 210px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
     }
-    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,0.06)}
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.08);
+    }
     .btnPrimary{
       background:var(--red);
-      border-color:rgba(255,255,255,0.12);
+      border-color:rgba(255,255,255,0.14);
     }
     .btnPrimary:hover{background:#c8262c}
 
     .heroCard{
-      background:rgba(255,255,255,0.03);
+      background:rgba(255,255,255,0.035);
       border:1px solid var(--line);
       border-radius:18px;
       padding:22px;
@@ -147,6 +197,7 @@
       flex-direction:column;
       justify-content:space-between;
       gap:14px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
     }
     .heroStats{
       display:grid;
@@ -157,7 +208,7 @@
       border:1px solid var(--line);
       border-radius:14px;
       padding:12px;
-      background:rgba(0,0,0,0.18);
+      background:rgba(0,0,0,0.22);
     }
     .stat .k{font-size:12px;color:var(--muted2)}
     .stat .v{font-size:16px;margin-top:6px}
@@ -167,28 +218,37 @@
       border:1px solid var(--line);
       border-radius:14px;
       padding:12px;
-      background:rgba(0,0,0,0.22);
+      background:rgba(0,0,0,0.24);
       color:var(--muted2);
       font-size:13px;
-      line-height:1.45;
+      line-height:1.5;
+    }
+    .accentLine{
+      width:84px;
+      height:3px;
+      border-radius:99px;
+      background:linear-gradient(90deg, var(--red), rgba(255,255,255,0.06));
+      margin-top:14px;
+      opacity:.9;
     }
 
     /* ===== GRID CARDS ===== */
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
       gap:18px;
-      margin-top:18px;
+      margin-top:20px;
     }
     .card{
-      background:#0f0f0f;
+      background:rgba(15,15,15,0.88);
       border:1px solid var(--line);
       border-radius:16px;
-      padding:20px;
+      padding:22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.38);
     }
     .card h3{
       color:#fff;
-      margin-bottom:10px;
+      margin-bottom:12px;
       font-size:16px;
       letter-spacing:0.2px;
     }
@@ -200,7 +260,6 @@
       margin-right:10px;
       transform: translateY(-1px);
     }
-
     ul{padding-left:18px;margin:0}
     li{margin:8px 0;color:var(--muted)}
 
@@ -209,7 +268,7 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:18px;
-      margin-top:18px;
+      margin-top:20px;
     }
     @media (max-width: 900px){
       .priceGrid{grid-template-columns:1fr}
@@ -217,8 +276,9 @@
     .priceItem{
       border:1px solid var(--line);
       border-radius:16px;
-      padding:20px;
-      background:rgba(255,255,255,0.03);
+      padding:22px;
+      background:rgba(255,255,255,0.035);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
     }
     .tag{
       display:inline-flex;
@@ -229,76 +289,180 @@
       background: rgba(179,31,36,0.12);
       font-size:12px;
       color:#ffe1e1;
+      letter-spacing:.2px;
+      font-weight:800;
+    }
+    .priceItem h3{
+      margin-top:12px;
+      font-size:18px;
     }
 
+    /* ===== FORM ===== */
+    form{margin-top:18px}
+    .formGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .formGrid{grid-template-columns:1fr}
+    }
+    label{
+      display:block;
+      font-size:13px;
+      color:var(--muted2);
+      margin:12px 0 6px;
+    }
+    input, textarea, select{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.04);
+      color:#fff;
+      padding:12px 12px;
+      outline:none;
+      font-size:14px;
+      transition:.15s ease;
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.14);
+    }
+    textarea{min-height:140px;resize:vertical}
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+      align-items:center;
+    }
+    .small{
+      color:var(--muted2);
+      font-size:12px;
+      line-height:1.5;
+      margin-top:10px;
+    }
+
+    /* ===== FOOTER ===== */
     footer{
-      margin-top:56px;
-      padding:32px 0 38px;
+      margin-top:74px;
+      padding:32px 0 92px; /* miesto pre SOS bar */
       border-top:1px solid var(--line);
       color:var(--muted2);
       font-size:14px;
       text-align:center;
     }
 
-    /* ===== SOS FLOAT ===== */
-    .sosFab{
+    /* ===== SOS BOTTOM BAR ===== */
+    .sosBar{
       position:fixed;
-      right:16px;
-      bottom:16px;
-      z-index:999;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:9999;
+      padding:10px 14px;
+      border-top:1px solid rgba(255,255,255,0.10);
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -18px 60px rgba(0,0,0,0.55);
     }
-    .sosMain{
-      padding:14px 16px;
-      border-radius:14px;
-      background:var(--red);
-      color:#fff;
-      font-weight:900;
-      letter-spacing:0.4px;
-      border:1px solid rgba(255,255,255,0.14);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      cursor:pointer;
-      user-select:none;
-      transition:.18s ease;
-    }
-    .sosMain:hover{transform:translateY(-1px); background:#c8262c}
-    .sosPanel{
-      margin-top:10px;
-      background:#0f0f0f;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      width:280px;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      display:none;
-    }
-    .sosPanel.open{display:block}
-    .sosSmall{
-      color:var(--muted2);
-      font-size:12px;
-      margin:4px 6px 10px;
-      line-height:1.45;
-    }
-    .sosActions{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    .sosBtn{
+    .sosInner{
+      max-width:1200px;
+      margin:0 auto;
       display:flex;
+      gap:10px;
       align-items:center;
       justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .sosLeft{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width: 260px;
+    }
+    .sosLeft .t{
+      font-weight:900;
+      letter-spacing:.4px;
+      color:#fff;
+    }
+    .sosLeft .s{
+      font-size:12px;
+      color:var(--muted2);
+      line-height:1.35;
+    }
+
+    .sosActions{
+      display:flex;
       gap:10px;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.03);
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .sosBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.04);
       color:#fff;
       font-weight:900;
+      letter-spacing:.3px;
+      min-width: 165px;
       transition:.18s ease;
     }
-    .sosBtn:hover{background:rgba(255,255,255,0.06); transform:translateY(-1px)}
-    .sosBtn .sub{font-size:12px;color:var(--muted2);font-weight:700}
-    .sosHint{font-size:12px;color:var(--muted2);margin:10px 6px 2px;line-height:1.45}
+    .sosBtn:hover{transform:translateY(-1px); background:rgba(255,255,255,0.08)}
+
+    .sosBtnPrimary{
+      border-color: rgba(255,255,255,0.18);
+      background: linear-gradient(180deg, rgba(179,31,36,0.92), rgba(179,31,36,0.70));
+      box-shadow: 0 16px 46px rgba(179,31,36,0.24);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* "blikajúci" efekt ako záchranné vozidlo */
+    .sosBtnPrimary:before{
+      content:"";
+      position:absolute;
+      inset:-40px -120px;
+      background: linear-gradient(110deg,
+        rgba(255,255,255,0.00) 0%,
+        rgba(255,255,255,0.16) 35%,
+        rgba(255,255,255,0.00) 60%);
+      transform: translateX(-35%);
+      animation: sweep 1.35s infinite linear;
+      opacity:.9;
+    }
+    .sosBtnPrimary:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(240px 60px at 20% 50%, rgba(255,255,255,0.14), transparent 60%);
+      animation: pulse 1.05s infinite ease-in-out;
+      opacity:.85;
+      pointer-events:none;
+    }
+    @keyframes sweep{
+      0%{transform: translateX(-60%)}
+      100%{transform: translateX(60%)}
+    }
+    @keyframes pulse{
+      0%,100%{opacity:.55}
+      50%{opacity:1}
+    }
+
+    .sosBtnText{
+      position:relative;
+      z-index:2;
+    }
+
+    /* Anchor offset pre sticky bar */
+    .anchorOffset{scroll-margin-top: 18px;}
   </style>
 </head>
 
@@ -309,9 +473,9 @@
       <div class="brand">RACEM <span>|</span> Mobilný autoservis</div>
 
       <nav class="nav">
-        <a href="/rezervacie-servisu">Rezervácia servisu</a>
-        <a href="#sluzby">Služby</a>
+        <a href="rezervacie.html">Rezervačný systém</a>
         <a href="#cennik">Cenník</a>
+        <a href="#sluzby">Ponúkané služby</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
     </div>
@@ -320,21 +484,24 @@
       <div class="hero">
         <div class="panel">
           <div class="heroTitle">Mobilný autoservis</div>
+          <div class="accentLine"></div>
 
           <p class="lead">
-            Spoločnosť RACEM zabezpečuje mobilný servis vozidiel priamo u zákazníka.
-            Po prijatí požiadavky vyšleme certifikovaného a skúseného mechanika.
-            Zásah prebieha na počkanie, aby ste sa mohli venovať svojim povinnostiam.
+            Naša spoločnosť zabezpečuje mobilný servis, poruchovú službu a opravy priamo u zákazníka.
+            Všetko prebieha na mieste, kde sa vozidlo nachádza. Servis je možné realizovať kdekoľvek
+            a po dokončení zabezpečíme ekologické zneškodnenie odpadu a chemikálií.
+            Ponúkame pohotovosť 24/7, 365 dní v roku. Sme pripravení vyraziť do 15 minút od nahlásenia.
+            Pomáhame pri strete so zverou, nehodách a poruchách, pri ktorých nie je potrebný odťah.
           </p>
 
           <div class="btnRow">
-            <a class="btn btnPrimary" href="/rezervacie-servisu">Rezervovať servis</a>
-            <a class="btn" href="#cennik">Cenník a podmienky</a>
-            <a class="btn" href="#sluzby">Rozsah služieb</a>
+            <a class="btn btnPrimary" href="rezervacie.html">Rezervácia servisu</a>
+            <a class="btn" href="#cennik">Cenník</a>
+            <a class="btn" href="#sluzby">Ponúkané služby</a>
           </div>
 
-          <p class="muted2" style="margin-top:14px">
-            Služby sú poskytované 24/7, 365 dní v roku. Čas príchodu sa odvíja od vyťaženia a vzdialenosti.
+          <p class="muted2" style="margin-top:16px">
+            Výjazdy sú realizované z Piešťan. Služby poskytujeme na celom západnom Slovensku.
           </p>
         </div>
 
@@ -343,67 +510,72 @@
             <div class="heroStats">
               <div class="stat">
                 <div class="k">Výjazdová zóna</div>
-                <div class="v"><b>Piešťany</b> a okolie</div>
+                <div class="v"><b>Západné Slovensko</b></div>
+              </div>
+              <div class="stat">
+                <div class="k">Výjazdy z miest</div>
+                <div class="v"><b>viac lokalít</b></div>
               </div>
               <div class="stat">
                 <div class="k">Cena za kilometer</div>
                 <div class="v"><b>0,15 €</b> / km</div>
               </div>
               <div class="stat">
-                <div class="k">Nočný výjazd</div>
-                <div class="v"><b>+50 €</b></div>
-              </div>
-              <div class="stat">
-                <div class="k">Sviatky</div>
-                <div class="v"><b>+50 €</b></div>
+                <div class="k">Pohotovosť</div>
+                <div class="v"><b>24/7</b></div>
               </div>
             </div>
 
             <div class="noteBox" style="margin-top:14px">
-              Materiál je možné zabezpečiť. V prípade, že zákazník nedisponuje materiálom,
-              účtuje sa podľa reálnej spotreby.
+              Pomoc poskytujeme aj pri situáciách, kde nie je potrebný odťah (poruchy, defekty, zver, nehody s možnosťou riešenia na mieste).
             </div>
           </div>
 
           <div class="noteBox">
-            Pre urgentné situácie odporúčame SOS hovor alebo SOS SMS. Odpoveď spravidla do niekoľkých minút.
+            Preferovaný kontakt pre urgentné situácie: SOS hovor alebo SOS SMS.
           </div>
         </div>
       </div>
     </header>
 
-    <section id="sluzby">
+    <section id="sluzby" class="anchorOffset">
       <div class="panel">
-        <h2>Rozsah služieb</h2>
+        <h2>Ponúkané služby</h2>
         <p class="muted" style="margin-top:10px">
-          Zabezpečujeme mobilný servis, technickú asistenciu a vybrané opravy podľa charakteru závady a možností zásahu na mieste.
+          Zabezpečujeme komplexné servisné práce a opravy podľa charakteru závady. Rozsah sa prispôsobuje situácii
+          a technickým možnostiam zásahu na mieste.
         </p>
 
         <div class="grid">
           <div class="card">
-            <h3><span class="dot"></span>Bežný servis a údržba</h3>
+            <h3><span class="dot"></span>Kompletný servis a opravy</h3>
             <ul>
-              <li>Výmena oleja a filtrov</li>
-              <li>Drobné servisné úkony podľa dohody</li>
-              <li>Kontrola základných prevádzkových kvapalín</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3><span class="dot"></span>Pneumatiky</h3>
-            <ul>
-              <li>Opravy pneumatík podľa situácie a možností</li>
-              <li>Núdzové riešenie defektu</li>
-              <li>Kontrola tlakov a únikov</li>
+              <li>Bežné servisné práce a údržba vozidiel</li>
+              <li>Opravy mechanických závad a výmena komponentov</li>
+              <li>Servis podvozku, bŕzd, náprav a uloženia (podľa možností zásahu)</li>
+              <li>Výmena olejov, filtrov, kvapalín a spotrebných dielov</li>
+              <li>Opravy po nehode (vybrané opravy na mieste, dočasné riešenia)</li>
             </ul>
           </div>
 
           <div class="card">
             <h3><span class="dot"></span>Diagnostika a elektronika</h3>
             <ul>
-              <li>Diagnostika a vyhodnotenie chýb</li>
-              <li>Servis elektroniky a elektrických závad</li>
-              <li>Overenie základnej funkčnosti systémov</li>
+              <li>Komplexná diagnostika a vyhodnotenie chýb</li>
+              <li>Riešenie elektrických porúch (svetlá, napájanie, dobíjanie, štarty)</li>
+              <li>Servis elektroniky a elektrických systémov vozidla</li>
+              <li>Kontrola stavu pred cestou a overenie funkčnosti základných systémov</li>
+              <li>Riešenie problémov, ktoré spôsobujú núdzový režim / varovné hlásenia</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3><span class="dot"></span>Pneuservis a defekty</h3>
+            <ul>
+              <li>Riešenie defektov a poškodenia pneumatík podľa situácie</li>
+              <li>Núdzové opravy a dočasné riešenia pre bezpečný presun</li>
+              <li>Kontrola tlakov, ventilov, únikov a poškodenia</li>
+              <li>Pomoc v prípade prázdneho kolesa a nemožnosti pokračovať v jazde</li>
             </ul>
           </div>
 
@@ -411,164 +583,175 @@
             <h3><span class="dot"></span>STK / EK príprava</h3>
             <ul>
               <li>Kontrola vozidla pred STK a EK</li>
-              <li>Identifikácia typických nedostatkov</li>
-              <li>Realizácia dohodnutých opráv na mieste</li>
+              <li>Identifikácia typických nedostatkov (svetlá, chyby, netesnosti, brzdový systém)</li>
+              <li>Odporúčania a realizácia dohodnutých opráv</li>
+              <li>Zameranie na odstránenie problémov, ktoré môžu viesť k neúspechu na kontrole</li>
             </ul>
           </div>
 
           <div class="card">
-            <h3><span class="dot"></span>Po nehode</h3>
-            <ul>
-              <li>Kontrola poškodenia a odporúčaný postup</li>
-              <li>Vybrané opravy podľa rozsahu a možností</li>
-              <li>Dočasné riešenia pre bezpečnejší presun</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3><span class="dot"></span>Montáž dielov</h3>
+            <h3><span class="dot"></span>Interiér a exteriér</h3>
             <ul>
               <li>Výmena a montáž interiérových dielov</li>
               <li>Výmena a montáž exteriérových dielov</li>
-              <li>Inštalácie podľa dohody a možností</li>
+              <li>Montáž doplnkov podľa dohody a možností</li>
+              <li>Riešenie poškodení po nehode (vybrané úkony na mieste)</li>
             </ul>
           </div>
 
           <div class="card">
             <h3><span class="dot"></span>Cestná asistencia</h3>
             <ul>
-              <li>Núdzové zásahy v teréne</li>
-              <li>Problémy so štartom, základné kontroly</li>
-              <li>Riešenie závady na mieste, ak je to možné</li>
+              <li>Poruchová služba a núdzové zásahy</li>
+              <li>Pomoc po strete so zverou (ak nie je potrebný odťah)</li>
+              <li>Pomoc pri nehodách (stabilizácia situácie, vybrané opravy)</li>
+              <li>Riešenie porúch na mieste, ak je to technicky možné</li>
             </ul>
           </div>
+        </div>
+
+        <div class="noteBox" style="margin-top:20px">
+          Ak si nie ste istí, či je možné problém vyriešiť na mieste, odporúčame využiť SOS kontakt alebo rezervačný systém.
         </div>
       </div>
     </section>
 
-    <section id="cennik">
+    <section id="cennik" class="anchorOffset">
       <div class="panel">
-        <h2>Cenník a podmienky</h2>
+        <h2>Cenník</h2>
         <p class="muted" style="margin-top:10px">
-          Cena sa skladá z výjazdu, práce a prípadného materiálu.
+          Cena sa skladá z kilometrov, materiálu a práce. Práca je stanovená na <b>10 € / hod.</b>
         </p>
 
         <div class="priceGrid">
           <div class="priceItem">
-            <span class="tag">Výjazd</span>
-            <h3 style="margin-top:12px">Piešťany + 0,15 € / km</h3>
+            <span class="tag">Kilometre</span>
+            <h3>0,15 € / km</h3>
             <p class="muted" style="margin-top:8px">
-              Výjazd je realizovaný z Piešťan. Účtuje sa 0,15 € za kilometer od Piešťan.
+              Výjazdy sú primárne realizované z Piešťan. Cena za kilometer sa účtuje podľa dohodnutého výjazdu.
             </p>
           </div>
 
           <div class="priceItem">
-            <span class="tag">Práca a materiál</span>
-            <h3 style="margin-top:12px">Práca podľa rozsahu + materiál podľa potreby</h3>
+            <span class="tag">Práca</span>
+            <h3>10 € / hod.</h3>
             <p class="muted" style="margin-top:8px">
-              V prípade, že zákazník nemá materiál, je možné ho zabezpečiť. Účtuje sa podľa reálnej spotreby.
+              Sadzba práce je stanovená na 10 € za hodinu. Rozsah práce sa určuje podľa reálne vykonaných úkonov.
             </p>
           </div>
 
           <div class="priceItem">
-            <span class="tag">Nočný výjazd</span>
-            <h3 style="margin-top:12px">Príplatok +50 € (23:00 – 05:00)</h3>
+            <span class="tag">Materiál</span>
+            <h3>Podľa reálnej spotreby</h3>
             <p class="muted" style="margin-top:8px">
-              Pri výjazde v čase 23:00 až 05:00 sa účtuje príplatok +50 €.
+              Ak zákazník nedisponuje materiálom, je možné ho zabezpečiť. Účtovanie prebieha podľa reálnej spotreby.
             </p>
           </div>
 
           <div class="priceItem">
-            <span class="tag">Sviatky</span>
-            <h3 style="margin-top:12px">Príplatok +50 € (štátne sviatky, okrem víkendov)</h3>
+            <span class="tag">Príplatky</span>
+            <h3>Nočné a sviatky</h3>
             <p class="muted" style="margin-top:8px">
-              Pri výjazdoch počas štátnych sviatkov (ak nejde o víkend) sa účtuje príplatok +50 €.
+              Nočný výjazd (23:00 – 05:00): <b>+50 €</b><br>
+              Výjazdy počas štátnych sviatkov (okrem víkendov): <b>+50 €</b>
             </p>
           </div>
         </div>
 
-        <p class="muted2" style="margin-top:14px">
-          Príplatky sa môžu uplatniť podľa okolností zásahu.
-        </p>
+        <div class="noteBox" style="margin-top:20px">
+          Výjazdy zabezpečujeme z týchto miest: <b>Piešťany, Trnava, Bratislava, Nitra, Topoľčany, Trenčín, Žilina</b>.
+        </div>
       </div>
     </section>
 
-    <section id="kontakt">
+    <section id="kontakt" class="anchorOffset">
       <div class="panel">
-        <h2>Kontakt a rezervácia</h2>
+        <h2>Kontakt</h2>
         <p class="muted" style="margin-top:10px">
-          Pre urgentné situácie odporúčame SOS hovor alebo SOS SMS. Pre plánované úkony odporúčame rezervačný formulár.
+          Pre plánované úkony odporúčame využiť kontaktný formulár. Pre urgentné situácie odporúčame SOS hovor alebo SOS SMS.
         </p>
 
-        <div class="btnRow" style="margin-top:18px">
-          <a class="btn btnPrimary" href="/rezervacie-servisu">Rezervácia servisu</a>
-          <a class="btn" href="mailto:racemperformance@outlook.com?subject=RACEM%20Mobiln%C3%BD%20autoservis%20-%20dopyt">E-mail</a>
-        </div>
+        <form action="https://formspree.io/f/xnjnenjd" method="POST">
+          <div class="formGrid">
+            <div>
+              <label>Meno a priezvisko</label>
+              <input name="meno" required placeholder="Meno a priezvisko" />
+            </div>
+            <div>
+              <label>Telefón</label>
+              <input name="telefon" required placeholder="+421…" />
+            </div>
 
-        <p class="muted2" style="margin-top:14px">
-          E-mail: <b style="color:#fff">racemperformance@outlook.com</b>
-        </p>
+            <div>
+              <label>E-mail</label>
+              <input name="email" type="email" required placeholder="Váš e-mail" />
+            </div>
+            <div>
+              <label>Mesto / lokalita vozidla</label>
+              <input name="lokalita" required placeholder="Mesto, ulica, číslo (ak je možné)" />
+            </div>
+
+            <div>
+              <label>Značka a model</label>
+              <input name="vozidlo" required placeholder="Značka, model" />
+            </div>
+            <div>
+              <label>Typ požiadavky</label>
+              <select name="typ">
+                <option>Mobilný servis</option>
+                <option>Poruchová služba</option>
+                <option>Cestná asistencia</option>
+                <option>STK / EK kontrola</option>
+                <option>Pneumatiky / defekt</option>
+                <option>Po nehode</option>
+                <option>Iné</option>
+              </select>
+            </div>
+          </div>
+
+          <label>Popis problému / požiadavky</label>
+          <textarea name="sprava" required placeholder="Uveďte stručne problém a čo najviac detailov (zvuk, kontrolky, čo sa stalo, či je vozidlo pojazdné)."></textarea>
+
+          <div class="row">
+            <button class="btn btnPrimary" type="submit">Odoslať formulár</button>
+            <a class="btn" href="rezervacie.html">Rezervačný systém</a>
+          </div>
+
+          <div class="small">
+            Odoslaním formulára súhlasíte so spracovaním údajov za účelom kontaktovania a riešenia požiadavky.
+          </div>
+        </form>
       </div>
     </section>
 
     <footer>
-      © RACEM / REM Performance · Mobilný autoservis · Piešťany a okolie
+      © RACEM / REM Performance · Mobilný autoservis · Pohotovosť 24/7
     </footer>
   </div>
 
-  <!-- SOS FLOAT -->
-  <div class="sosFab">
-    <div class="sosMain" id="sosToggle">SOS</div>
-
-    <div class="sosPanel" id="sosPanel">
-      <div class="sosSmall">
-        SOS hovor alebo SOS SMS. Odpoveď spravidla do niekoľkých minút (podľa vyťaženia).
+  <!-- SOS Spodná lišta -->
+  <div class="sosBar" role="region" aria-label="SOS kontakt">
+    <div class="sosInner">
+      <div class="sosLeft">
+        <div class="t">SOS kontakt</div>
+        <div class="s">SOS hovor alebo SOS SMS. Odpoveď spravidla do niekoľkých minút.</div>
       </div>
 
       <div class="sosActions">
         <!-- ZMEŇTE TELEFÓN -->
-        <a class="sosBtn" href="tel:+421900000000">
-          <div>
-            SOS HOVOR
-            <div class="sub">okamžitý kontakt</div>
-          </div>
-          <div>CALL</div>
+        <a class="sosBtn sosBtnPrimary" id="sosCall" href="tel:+421900000000">
+          <span class="sosBtnText">SOS HOVOR</span>
         </a>
 
         <!-- ZMEŇTE TELEFÓN -->
-        <a class="sosBtn" href="sms:+421900000000?&body=RACEM%20SOS%0A%0AMesto%2FAdresa%3A%20%0AAutomobil%3A%20%0AProbl%C3%A9m%3A%20%0A">
-          <div>
-            SOS SMS
-            <div class="sub">mesto · automobil · problém</div>
-          </div>
-          <div>SMS</div>
+        <a class="sosBtn" id="sosSms" href="sms:+421900000000?&body=RACEM%20SOS%0A%0AMesto%2FAdresa%3A%20%0AAutomobil%3A%20%0AProbl%C3%A9m%3A%20%0A">
+          SOS SMS
         </a>
 
-        <a class="sosBtn" href="/rezervacie-servisu">
-          <div>
-            Rezervácia servisu
-            <div class="sub">formulár (1 min)</div>
-          </div>
-          <div>FORM</div>
-        </a>
-      </div>
-
-      <div class="sosHint">
-        Do SMS odporúčame uviesť mesto, typ vozidla a stručný popis problému.
+        <a class="sosBtn" href="rezervacie.html">REZERVÁCIA</a>
       </div>
     </div>
   </div>
-
-  <script>
-    const toggle = document.getElementById('sosToggle');
-    const panel = document.getElementById('sosPanel');
-
-    toggle.addEventListener('click', () => panel.classList.toggle('open'));
-    document.addEventListener('click', (e) => {
-      const fab = document.querySelector('.sosFab');
-      if (!fab.contains(e.target)) panel.classList.remove('open');
-    });
-  </script>
 
 </body>
 </html>
