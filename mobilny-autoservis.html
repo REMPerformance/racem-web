@@ -55,7 +55,7 @@
     .muted2{color:var(--muted2)}
 
     .wrap{max-width:1200px;margin:auto;padding:0 24px}
-    section{margin:0 auto 92px}  /* viac priestoru */
+    section{margin:0 auto 92px}
     @media (max-width: 860px){
       section{margin-bottom:72px}
     }
@@ -64,13 +64,13 @@
       background: linear-gradient(180deg, rgba(18,18,18,0.92), rgba(12,12,12,0.92));
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:44px; /* viac dýcha */
+      padding:44px;
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
     }
     @media (max-width: 720px){
-      .panel{padding:30px}
+      .panel{padding:26px}
     }
     .panel:after{
       content:"";
@@ -88,8 +88,8 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:30px 0 0;
-      margin-bottom:18px;
+      padding:26px 0 0;
+      margin-bottom:16px;
     }
     .brand{
       font-weight:900;
@@ -97,18 +97,20 @@
       color:#fff;
       font-size:14px;
       opacity:.95;
+      white-space:nowrap;
     }
     .brand span{color:var(--red)}
     .nav{
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
       align-items:center;
+      justify-content:flex-end;
     }
     .nav a{
-      font-size:14px;
+      font-size:13.5px;
       color:var(--muted2);
-      padding:10px 12px;
+      padding:9px 11px;
       border-radius:12px;
       border:1px solid transparent;
       transition:.2s ease;
@@ -120,14 +122,18 @@
       background:rgba(255,255,255,0.06);
       transform:translateY(-1px);
     }
+    @media (max-width: 560px){
+      .topbar{align-items:flex-start; flex-direction:column; gap:10px}
+      .nav{justify-content:flex-start}
+    }
 
     /* ===== HERO ===== */
-    header{padding:8px 0 0}
+    header{padding:6px 0 0}
     .hero{
-      margin-top:16px;
+      margin-top:12px;
       display:grid;
       grid-template-columns: 1.35fr .65fr;
-      gap:26px;
+      gap:20px;
       align-items:stretch;
     }
     @media (max-width: 980px){
@@ -142,8 +148,11 @@
       letter-spacing:1px;
       text-transform:uppercase;
     }
-    @media (max-width: 520px){
-      .heroTitle{font-size:60px}
+    @media (max-width: 720px){
+      .heroTitle{font-size:58px}
+    }
+    @media (max-width: 420px){
+      .heroTitle{font-size:50px}
     }
 
     .accentLine{
@@ -151,28 +160,31 @@
       height:3px;
       border-radius:99px;
       background:linear-gradient(90deg, var(--red), rgba(255,255,255,0.06));
-      margin-top:18px;
+      margin-top:16px;
       opacity:.9;
     }
 
     .lead{
-      font-size:17px;
+      font-size:16px;
       max-width:950px;
-      margin-top:18px;
+      margin-top:16px;
       color:var(--muted);
+    }
+    @media (max-width: 520px){
+      .lead{font-size:15px}
     }
 
     .btnRow{
       display:flex;
       gap:12px;
       flex-wrap:wrap;
-      margin-top:26px;
+      margin-top:20px;
     }
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:14px 18px;
+      padding:13px 16px;
       border-radius:14px;
       border:1px solid var(--line);
       background:rgba(255,255,255,0.05);
@@ -180,8 +192,9 @@
       font-weight:900;
       letter-spacing:.2px;
       transition:.18s ease;
-      min-width: 220px;
+      min-width: 200px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      font-size:14px;
     }
     .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,0.08)}
     .btnPrimary{
@@ -189,20 +202,27 @@
       border-color:rgba(255,255,255,0.14);
     }
     .btnPrimary:hover{background:#c8262c}
+    @media (max-width: 520px){
+      .btn{min-width: 0; width:100%}
+    }
 
-    /* ===== NEW: RIGHT HERO “STATS” CARD (TOTAL REMAKE) ===== */
+    /* ===== RIGHT HERO CARD ===== */
     .heroSide{
       border:1px solid var(--line);
       border-radius:18px;
-      padding:22px;
+      padding:20px;
       background: linear-gradient(180deg, rgba(18,18,18,0.80), rgba(8,8,8,0.78));
       box-shadow: 0 18px 55px rgba(0,0,0,0.50);
       position:relative;
       overflow:hidden;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:12px;
     }
+    @media (max-width: 720px){
+      .heroSide{padding:16px}
+    }
+
     .heroSide:before{
       content:"";
       position:absolute; inset:-2px;
@@ -218,7 +238,7 @@
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
     }
     .hsBadge{
@@ -239,7 +259,7 @@
     }
     .hsTitle{
       font-family:"Teko", Arial, sans-serif;
-      font-size:28px;
+      font-size:26px;
       letter-spacing:0.6px;
       text-transform:uppercase;
       line-height:1;
@@ -247,7 +267,7 @@
     }
     .hsSub{
       color:var(--muted2);
-      font-size:13px;
+      font-size:12.8px;
       line-height:1.55;
       margin-top:6px;
     }
@@ -258,6 +278,9 @@
       gap:10px;
       margin-top:6px;
     }
+    @media (max-width: 520px){
+      .hsGrid{grid-template-columns:1fr}
+    }
 
     .hsItem{
       border:1px solid rgba(255,255,255,0.10);
@@ -265,7 +288,7 @@
       background: rgba(0,0,0,0.26);
       padding:12px;
       transition:.18s ease;
-      min-height:84px;
+      min-height:82px;
     }
     .hsItem:hover{
       transform:translateY(-2px);
@@ -286,17 +309,16 @@
       background: rgba(255,255,255,0.04);
       flex:0 0 auto;
     }
-    .hsIco svg{opacity:.95}
     .hsKpi{
       font-weight:1000;
       letter-spacing:-0.3px;
-      font-size:18px;
+      font-size:17px;
       text-align:right;
       line-height:1.1;
     }
     .hsLabel{
       color:var(--muted2);
-      font-size:12.5px;
+      font-size:12.3px;
       line-height:1.45;
     }
 
@@ -306,7 +328,7 @@
       background: rgba(255,255,255,0.03);
       padding:12px;
       color:var(--muted);
-      font-size:13px;
+      font-size:12.8px;
       line-height:1.5;
     }
     .hsCities b{color:#fff}
@@ -322,19 +344,12 @@
     }
     .hsNote b{color:#fff}
 
-    .hsActions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:2px;
-    }
     .hsBtns{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       width:100%;
+      margin-top:2px;
     }
     .hsBtn{
       flex:1 1 180px;
@@ -347,7 +362,7 @@
       font-weight:1000;
       letter-spacing:.6px;
       text-transform:uppercase;
-      font-size:12.5px;
+      font-size:12.2px;
       transition:.18s ease;
       cursor:pointer;
       user-select:none;
@@ -377,6 +392,9 @@
       border-radius:16px;
       padding:24px;
       box-shadow: 0 14px 40px rgba(0,0,0,0.38);
+    }
+    @media (max-width: 520px){
+      .card{padding:18px}
     }
     .card h3{
       color:#fff;
@@ -412,6 +430,9 @@
       background:rgba(255,255,255,0.035);
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
     }
+    @media (max-width: 520px){
+      .priceItem{padding:18px}
+    }
     .tag{
       display:inline-flex;
       align-items:center;
@@ -425,6 +446,81 @@
       font-weight:900;
     }
     .priceItem h3{margin-top:12px;font-size:18px}
+
+    /* ===== BUY-CHECK SECTION (NEW) ===== */
+    .buyGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:20px;
+      margin-top:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .buyGrid{grid-template-columns:1fr}
+    }
+    .buyBox{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      background: rgba(0,0,0,0.22);
+      padding:20px;
+    }
+    @media (max-width: 520px){
+      .buyBox{padding:16px}
+    }
+    .buyTitle{
+      font-family:"Teko", Arial, sans-serif;
+      font-size:30px;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      line-height:1;
+    }
+    .buyLead{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.65;
+    }
+    .buyPoints{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 720px){
+      .buyPoints{grid-template-columns:1fr}
+    }
+    .buyPoint{
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      background: rgba(255,255,255,0.03);
+      padding:14px;
+    }
+    .buyPoint b{display:block; margin-bottom:6px}
+    .buyPoint span{color:var(--muted2); font-size:13px; line-height:1.55}
+
+    .buyPrice{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .buyPrice .big{
+      font-weight:1000;
+      font-size:22px;
+      letter-spacing:-0.2px;
+    }
+    .buyPrice .big b{color:#fff}
+    .buyPill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color:var(--muted);
+      font-size:12px;
+      width:fit-content;
+    }
 
     /* ===== FORM ===== */
     form{margin-top:22px}
@@ -476,7 +572,7 @@
     /* ===== FOOTER ===== */
     footer{
       margin-top:78px;
-      padding:34px 0 120px; /* miesto pre SOS button */
+      padding:34px 0 120px;
       border-top:1px solid var(--line);
       color:var(--muted2);
       font-size:14px;
@@ -495,14 +591,14 @@
       box-shadow: 0 -18px 60px rgba(0,0,0,0.55);
       cursor:pointer;
       user-select:none;
-      padding:16px 18px;
+      padding:15px 18px;
       display:flex;
       align-items:center;
       justify-content:center;
       font-weight:1000;
       letter-spacing:1px;
       text-transform:uppercase;
-      font-size:14px;
+      font-size:13px;
       overflow:hidden;
     }
     .sosFull span{position:relative; z-index:2}
@@ -583,9 +679,7 @@
       transition:.18s ease;
     }
     .closeBtn:hover{background:rgba(255,255,255,0.08); transform:translateY(-1px)}
-    .modalBody{
-      padding:18px;
-    }
+    .modalBody{padding:18px;}
     .modalGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -650,8 +744,9 @@
 
       <nav class="nav">
         <a href="rezervacie.html">Rezervačný systém</a>
+        <a href="#kupa">Pomoc pri kúpe</a>
         <a href="#cennik">Cenník</a>
-        <a href="#sluzby">Ponúkané služby</a>
+        <a href="#sluzby">Služby</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
     </div>
@@ -672,6 +767,7 @@
 
           <div class="btnRow">
             <a class="btn btnPrimary" href="rezervacie.html">Rezervácia servisu</a>
+            <a class="btn" href="#kupa">Pomoc pri kúpe</a>
             <a class="btn" href="#cennik">Cenník</a>
             <a class="btn" href="#sluzby">Ponúkané služby</a>
           </div>
@@ -681,7 +777,6 @@
           </p>
         </div>
 
-        <!-- TOTAL REMAKE RIGHT SIDE -->
         <aside class="heroSide">
           <div class="hsTop">
             <div>
@@ -695,7 +790,6 @@
             <div class="hsItem">
               <div class="hsRow">
                 <div class="hsIco" aria-hidden="true">
-                  <!-- map -->
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z" stroke="white" stroke-width="1.8" opacity="0.9"/>
                     <path d="M9 3v15M15 6v15" stroke="white" stroke-width="1.8" opacity="0.55"/>
@@ -709,7 +803,6 @@
             <div class="hsItem">
               <div class="hsRow">
                 <div class="hsIco" aria-hidden="true">
-                  <!-- clock -->
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M12 7v6l4 2" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
                     <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="white" stroke-width="1.8" opacity="0.55"/>
@@ -723,7 +816,6 @@
             <div class="hsItem">
               <div class="hsRow">
                 <div class="hsIco" aria-hidden="true">
-                  <!-- road -->
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M7 20l4-16h2l4 16" stroke="white" stroke-width="1.8" opacity="0.75"/>
                     <path d="M12 6v3m0 3v3" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
@@ -737,7 +829,6 @@
             <div class="hsItem">
               <div class="hsRow">
                 <div class="hsIco" aria-hidden="true">
-                  <!-- bolt -->
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6Z" stroke="white" stroke-width="1.8" opacity="0.85"/>
                   </svg>
@@ -757,16 +848,76 @@
             Pri ohrození života volaj <b>112</b>.
           </div>
 
-          <div class="hsActions">
-            <div class="hsBtns">
-              <button class="hsBtn ghost" type="button" data-open-sos="1">SOS kontakt</button>
-              <a class="hsBtn primary" href="rezervacie.html">Rezervovať servis</a>
-            </div>
+          <div class="hsBtns">
+            <button class="hsBtn ghost" type="button" data-open-sos="1">SOS kontakt</button>
+            <a class="hsBtn primary" href="rezervacie.html">Rezervovať servis</a>
           </div>
         </aside>
       </div>
     </header>
 
+    <!-- NEW SECTION: pomoc pri kúpe vozidla -->
+    <section id="kupa" class="anchorOffset">
+      <div class="panel">
+        <div class="buyTitle" style="font-family:'Teko', Arial, sans-serif; font-size:44px; letter-spacing:1px; text-transform:uppercase; line-height:.95;">
+          Pomoc pri kúpe vozidla
+        </div>
+        <div class="accentLine" style="margin-top:14px"></div>
+
+        <p class="buyLead" style="margin-top:14px">
+          Máte auto, ktoré sa nachádza na opačnej strane Slovenska? <b>Nie je problém.</b>
+          Prídeme k vozidlu, skontrolujeme históriu a stav, nafotíme ho, a pošleme vám fotografie,
+          detailný popis a náš úprimný názor, či sa oplatí kúpiť.
+        </p>
+
+        <div class="buyGrid">
+          <div class="buyBox">
+            <b style="display:block; margin-bottom:8px;">Čo dostanete</b>
+            <div class="buyPoints">
+              <div class="buyPoint">
+                <b>Fotky + detailný popis</b>
+                <span>Reálne fotky problémov aj pekných miest. Popíšeme stav tak, aby ste vedeli, do čoho idete.</span>
+              </div>
+              <div class="buyPoint">
+                <b>Kontrola histórie</b>
+                <span>Overenie dostupných informácií, logika nájazdu, servisné veci, a čo je podozrivé.</span>
+              </div>
+              <div class="buyPoint">
+                <b>Stav na mieste</b>
+                <span>Vizuál, netesnosti, zvuky, diagnostika (ak dáva zmysel), skúšobná jazda podľa možností.</span>
+              </div>
+              <div class="buyPoint">
+                <b>Náš verdikt</b>
+                <span>Nehráme sa na diplomaciu. Povieme vám „ber / neber / iba za inú cenu“.</span>
+              </div>
+            </div>
+
+            <div class="hsNote" style="margin-top:14px">
+              Cena výjazdu je <b>individuálna podľa lokality</b>. Pri ďalekých trasách vždy dopredu potvrdíme odhad.
+            </div>
+          </div>
+
+          <div class="buyBox buyPrice">
+            <div class="buyPill"><span class="hsDot" style="box-shadow:none"></span> služba po celom Slovensku</div>
+
+            <div class="big">
+              <b>70 €</b> pri vozidle<br>
+              + <b>0,15 € / km</b> cesta
+            </div>
+
+            <div class="hsNote">
+              Účtovanie: po príchode k vozidlu <b>70 €</b> (kontrola, fotky, popis, názor).  
+              Cesta: <b>0,15 € / km</b> podľa trasy (dohoda vopred).
+            </div>
+
+            <a class="hsBtn primary" href="rezervacie.html" style="width:100%">Chcem kontrolu pri kúpe</a>
+            <button class="hsBtn ghost" type="button" data-open-sos="1" style="width:100%">Rýchly SOS kontakt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- zvyšok sekcií ostáva rovnaký -->
     <section id="sluzby" class="anchorOffset">
       <div class="panel">
         <h2>Ponúkané služby</h2>
@@ -934,6 +1085,7 @@
                 <option>STK / EK kontrola</option>
                 <option>Pneumatiky / defekt</option>
                 <option>Po nehode / zver</option>
+                <option>Pomoc pri kúpe vozidla</option>
                 <option>Iné</option>
               </select>
             </div>
@@ -1030,7 +1182,7 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
 
-    // NEW: hocijaké tlačidlo s data-open-sos otvorí modal (napr. v hero vpravo)
+    // hocijaké tlačidlo s data-open-sos otvorí modal
     document.addEventListener('click', (e) => {
       const t = e.target.closest('[data-open-sos]');
       if (t) openModal();
