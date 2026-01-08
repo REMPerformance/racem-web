@@ -379,7 +379,6 @@
             <input id="address" name="miesto" required placeholder="Ulica, mesto, PSČ / parkovisko / GPS popis…">
           </div>
 
-          <!-- nicer date/time picker -->
           <div class="full">
             <div class="dtCard">
               <div class="dtTop">
@@ -443,12 +442,54 @@
         </div>
 
         <div class="svcGrid" id="svcGrid">
-          <!-- (nechávam tvoje úkony ako sú; sem si nechaj celý zoznam checkboxov ktorý už máš) -->
-          <!-- pre ukážku som nechal pár; ty si sem môžeš nechať kompletný zoznam z tvojho súboru -->
+          <!-- FULL LIST (as you wanted) -->
+
           <label class="svcItem" data-svc="Výmena oleja">
             <input type="checkbox" name="sluzby[]" value="Výmena oleja">
             <span class="svcMark"></span>
             <div class="svcText"><b>Výmena oleja</b><small>motor / podľa dohody</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Výmena filtrov">
+            <input type="checkbox" name="sluzby[]" value="Výmena filtrov">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Výmena filtrov</b><small>všetky / kabínový / vzduchový / palivový…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Oprava defektu">
+            <input type="checkbox" name="sluzby[]" value="Oprava defektu">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Oprava defektu</b><small>dojazd / základná oprava podľa možností</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Výmena bŕzd">
+            <input type="checkbox" name="sluzby[]" value="Výmena bŕzd">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Výmena bŕzd</b><small>platničky / kotúče / strmene…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Podvozok">
+            <input type="checkbox" name="sluzby[]" value="Opravy na podvozku">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Opravy na podvozku</b><small>čapy, ramená, silentbloky, ložiská…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Riadenie a stabilita vozidla">
+            <input type="checkbox" name="sluzby[]" value="Oprava riadenia a stability vozidla">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Riadenie a stabilita vozidla</b><small>vôle, klepanie, ťahanie…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Chladenie motora">
+            <input type="checkbox" name="sluzby[]" value="Chladenie motora">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Chladenie motora</b><small>úniky, hadice, termostat, chladič…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Výmena prevádzkových kvapalín">
+            <input type="checkbox" name="sluzby[]" value="Výmena prevádzkových kvapalín (okrem olejov)">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Prevádzkové kvapaliny</b><small>brzdová, chladiaca, servo, ostrekovače…</small></div>
           </label>
 
           <label class="svcItem" data-svc="Diagnostika vozidla">
@@ -457,16 +498,65 @@
             <div class="svcText"><b>Diagnostika vozidla</b><small>chyby, live data (podľa možností)</small></div>
           </label>
 
-          <label class="svcItem" data-svc="Podvozok">
-            <input type="checkbox" name="sluzby[]" value="Opravy na podvozku">
+          <label class="svcItem" data-svc="Kontrola poškodeného vozidla">
+            <input type="checkbox" name="sluzby[]" value="Kontrola poškodeného vozidla">
             <span class="svcMark"></span>
-            <div class="svcText"><b>Podvozok</b><small>čapy, ramená, silentbloky, ložiská…</small></div>
+            <div class="svcText"><b>Kontrola poškodeného vozidla</b><small>po nehode / po škode</small></div>
           </label>
 
-          <label class="svcItem" data-svc="Výmena bŕzd">
-            <input type="checkbox" name="sluzby[]" value="Výmena bŕzd">
+          <label class="svcItem" data-svc="Kontrola vozidla pred STK EK">
+            <input type="checkbox" name="sluzby[]" value="Kontrola vozidla pred STK / EK">
             <span class="svcMark"></span>
-            <div class="svcText"><b>Výmena bŕzd</b><small>platničky / kotúče / strmene…</small></div>
+            <div class="svcText"><b>Kontrola vozidla pred STK / EK</b><small>základná kontrola stavu</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Výmena a montáž interiérových dielov">
+            <input type="checkbox" name="sluzby[]" value="Výmena a montáž interiérových dielov">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Interiérové diely</b><small>výmena a montáž</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Montáž doplnkov">
+            <input type="checkbox" name="sluzby[]" value="Montáž doplnkov">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Montáž doplnkov</b><small>kamery, senzory, audio, držiaky…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Výmena karosárskych dielov">
+            <input type="checkbox" name="sluzby[]" value="Výmena karosárskych dielov">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Karosárske diely</b><small>výmena / montáž dielov</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Elektronika">
+            <input type="checkbox" name="sluzby[]" value="Elektronika">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Elektronika</b><small>základné opravy / hľadanie problému</small></div>
+          </label>
+
+          <!-- bonus items (pridávam viac, aby si mal “čo najviac”) -->
+          <label class="svcItem" data-svc="Batéria štartovanie dobíjanie">
+            <input type="checkbox" name="sluzby[]" value="Batéria / štartovanie / dobíjanie">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Batéria / štartovanie / dobíjanie</b><small>alternátor, štartér, káble…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Osvetlenie">
+            <input type="checkbox" name="sluzby[]" value="Osvetlenie (žiarovky / svetlá)">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Osvetlenie</b><small>žiarovky, svetlá, konektory…</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="ABS senzory kontrolky">
+            <input type="checkbox" name="sluzby[]" value="ABS / senzory / kontrolky">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>ABS / senzory / kontrolky</b><small>základná diagnostika a oprava</small></div>
+          </label>
+
+          <label class="svcItem" data-svc="Stierače ostrekovače">
+            <input type="checkbox" name="sluzby[]" value="Stierače / ostrekovače">
+            <span class="svcMark"></span>
+            <div class="svcText"><b>Stierače / ostrekovače</b><small>ramená, trysky, čerpadlo…</small></div>
           </label>
 
           <label class="svcItem" data-svc="Iné">
@@ -566,9 +656,8 @@
     }
 
     function nextWeekendDate(){
-      // pick next Saturday from today
       const d = new Date();
-      const day = d.getDay(); // 0 Sun ... 6 Sat
+      const day = d.getDay();
       const delta = (6 - day + 7) % 7;
       const sat = new Date(d);
       sat.setDate(d.getDate() + delta);
@@ -577,14 +666,13 @@
 
     function nextWeekMonday(){
       const d = new Date();
-      const day = d.getDay(); // 0 Sun ... 6 Sat
-      const delta = (8 - day) % 7 || 7; // next Monday
+      const day = d.getDay();
+      const delta = (8 - day) % 7 || 7;
       const mon = new Date(d);
       mon.setDate(d.getDate() + delta);
       return mon;
     }
 
-    // chips behavior
     chipsWrap.addEventListener('click', (e)=>{
       const chip = e.target.closest('.chip');
       if(!chip) return;
@@ -599,13 +687,11 @@
         dateInput.value = fmtDate(d);
         return;
       }
-
       if(chip.dataset.weekend){
         const d = nextWeekendDate();
         dateInput.value = fmtDate(d);
         return;
       }
-
       if(chip.dataset.nextweek){
         const d = nextWeekMonday();
         dateInput.value = fmtDate(d);
@@ -613,10 +699,9 @@
       }
     });
 
-    // if user manually changes date => clear chip active
     dateInput.addEventListener('input', ()=> setChipActive(null));
 
-    // search filter for services
+    // service search filter
     svcSearch.addEventListener('input', () => {
       const q = svcSearch.value.trim().toLowerCase();
       svcItems.forEach(item => {
