@@ -1150,40 +1150,48 @@
   </div>
 
   <script>
-    // otvorenie / zatvorenie modalu
-    const openBtn = document.getElementById('openSos');
-    const modal = document.getElementById('sosModal');
-    const closeBtn = document.getElementById('closeSos');
+  // ===== SOS MODAL =====
+  const openBtn = document.getElementById('openSos');
+  const modal = document.getElementById('sosModal');
+  const closeBtn = document.getElementById('closeSos');
 
-    function openModal(){
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden','false');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeModal(){
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-    }
+  function openModal(){
+    if(!modal) return;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
 
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
+  function closeModal(){
+    if(!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
 
-    // klik mimo okna zavrie
+  if(openBtn) openBtn.addEventListener('click', openModal);
+  if(closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  // klik mimo okna zavrie
+  if(modal){
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
     });
+  }
 
-    // ESC zavrie
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-    });
+  // ESC zavrie
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && modal.classList.contains('open')) closeModal();
+  });
 
-    // hocijaké tlačidlo s data-open-sos otvorí modal
-    document.addEventListener('click', (e) => {
-      const t = e.target.closest('[data-open-sos]');
-      if (t) openModal();
-      const typSelect = document.getElementById('typSelect');
+  // hocijaké tlačidlo s data-open-sos otvorí modal
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-open-sos]');
+    if (t) openModal();
+  });
+
+  // ===== PREFILL + SMOOTH SCROLL NA KONTAKT =====
+  const typSelect = document.getElementById('typSelect');
 
   function scrollToKontakt(){
     const el = document.getElementById('kontakt');
@@ -1191,7 +1199,7 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ak je v URL hash #kontakt, spravíme smooth scroll (niektoré browsery skočia tvrdo)
+  // ak je v URL hash #kontakt, spravíme smooth scroll
   window.addEventListener('load', () => {
     if (location.hash === '#kontakt') {
       setTimeout(scrollToKontakt, 40);
@@ -1205,21 +1213,17 @@
 
     const val = a.getAttribute('data-prefill');
     if(typSelect && val){
-      // nastavíme hodnotu, ak existuje v option
       const opt = Array.from(typSelect.options).find(o => o.value === val);
-      if(opt){
-        typSelect.value = val;
-      }
+      if(opt) typSelect.value = val;
     }
 
-    // ak smeruje na #kontakt, spravíme smooth scroll
     const href = a.getAttribute('href') || '';
     if(href.includes('#kontakt')){
-      // necháme prejsť hash, ale zároveň urobíme smooth scroll
       setTimeout(scrollToKontakt, 30);
     }
-    });
-  </script>
+  });
+</script>
+
 
 </body>
 </html>
