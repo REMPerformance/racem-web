@@ -2,9 +2,23 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8" />
-  <title>Mobilný autoservis | RACEM</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- ✅ SEO: TITLE + DESCRIPTION -->
+  <title>Mobilný autoservis Piešťany a západné Slovensko | RACEM</title>
+  <meta name="description" content="Mobilný autoservis u vás doma, v práci alebo na ceste. Diagnostika, brzdy, batéria, podvozok, STK/EK kontrola a obhliadky vozidiel. Výjazdy z Piešťan – celé západné Slovensko." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://racem.sk/mobilny-autoservis.html" />
+
+  <!-- ✅ OpenGraph (zdieľanie) -->
+  <meta property="og:title" content="Mobilný autoservis Piešťany a západné Slovensko | RACEM" />
+  <meta property="og:description" content="Servis a opravy priamo u zákazníka. Výjazdy z Piešťan – celé západné Slovensko. Diagnostika, brzdy, batéria, STK/EK kontrola, obhliadky vozidiel." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://racem.sk/mobilny-autoservis.html" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b31f24" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
@@ -140,6 +154,7 @@
       .hero{grid-template-columns:1fr}
     }
 
+    /* ✅ H1 ostáva vizuálne rovnaký ako .heroTitle */
     .heroTitle{
       font-family:"Teko", Arial, sans-serif;
       font-weight:700;
@@ -579,161 +594,52 @@
       text-align:center;
     }
 
-    /* ===== FULL WIDTH SOS BUTTON ===== */
-    .sosFull{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:9999;
-      border-top:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(179,31,36,0.94), rgba(179,31,36,0.78));
-      box-shadow: 0 -18px 60px rgba(0,0,0,0.55);
-      cursor:pointer;
-      user-select:none;
-      padding:15px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:1000;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      font-size:13px;
-      overflow:hidden;
-    }
-    .sosFull span{position:relative; z-index:2}
-    .sosFull:before{
-      content:"";
-      position:absolute;
-      inset:-60px -160px;
-      background: linear-gradient(110deg,
-        rgba(255,255,255,0.00) 0%,
-        rgba(255,255,255,0.18) 35%,
-        rgba(255,255,255,0.00) 60%);
-      transform: translateX(-40%);
-      animation: sweep 1.35s infinite linear;
-      opacity:.9;
-    }
-    .sosFull:after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: radial-gradient(340px 70px at 20% 50%, rgba(255,255,255,0.16), transparent 60%);
-      animation: pulse 1.05s infinite ease-in-out;
-      opacity:.85;
-      pointer-events:none;
-    }
-    @keyframes sweep{
-      0%{transform: translateX(-60%)}
-      100%{transform: translateX(60%)}
-    }
-    @keyframes pulse{
-      0%,100%{opacity:.55}
-      50%{opacity:1}
-    }
-
-    /* ===== MODAL ===== */
-    .modalOverlay{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.62);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:10000;
-      padding:22px;
-    }
-    .modalOverlay.open{display:flex}
-
-    .modal{
-      width:min(560px, 96vw);
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(16,16,16,0.96), rgba(10,10,10,0.96));
-      box-shadow: 0 30px 120px rgba(0,0,0,0.72);
-      overflow:hidden;
-      position:relative;
-    }
-    .modalTop{
-      padding:18px 18px 14px;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-    }
-    .modalTop .title{
-      font-weight:1000;
-      letter-spacing:0.6px;
-      text-transform:uppercase;
-    }
-    .closeBtn{
-      border:1px solid rgba(255,255,255,0.12);
-      background:rgba(255,255,255,0.04);
-      color:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    .closeBtn:hover{background:rgba(255,255,255,0.08); transform:translateY(-1px)}
-    .modalBody{padding:18px;}
-    .modalGrid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:10px;
-    }
-    @media (max-width: 520px){
-      .modalGrid{grid-template-columns:1fr}
-    }
-    .modalBtn{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      padding:16px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.10);
-      background:rgba(255,255,255,0.04);
-      font-weight:1000;
-      letter-spacing:0.3px;
-      transition:.18s ease;
-      text-align:center;
-    }
-    .modalBtn:hover{background:rgba(255,255,255,0.08); transform:translateY(-1px)}
-    .modalBtn.primary{
-      background: linear-gradient(180deg, rgba(179,31,36,0.92), rgba(179,31,36,0.72));
-      border-color: rgba(255,255,255,0.14);
-      box-shadow: 0 18px 60px rgba(179,31,36,0.18);
-    }
-    .modalBtn .sub{
-      font-size:12px;
-      color:rgba(255,255,255,0.72);
-      font-weight:800;
-      letter-spacing:0.1px;
-    }
-
-    .disclaimer{
-      margin-top:14px;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background:rgba(255,255,255,0.03);
-      color:rgba(255,255,255,0.78);
-      font-size:12px;
-      line-height:1.55;
-    }
-    .disclaimer b{color:#fff}
-    .disclaimer .warn{
-      color:#fff;
-      font-weight:1000;
-    }
-
     /* anchor offset */
     .anchorOffset{scroll-margin-top: 18px;}
   </style>
+
+  <!-- ✅ Structured data (LocalBusiness + Service) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    "name": "RACEM – Mobilný autoservis",
+    "url": "https://racem.sk/mobilny-autoservis.html",
+    "areaServed": ["Piešťany","Trnava","Bratislava","Nitra","Topoľčany","Trenčín","Hlohovec","Nové Mesto nad Váhom","Západné Slovensko"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Piešťany",
+      "addressCountry": "SK"
+    },
+    "serviceType": "Mobilný autoservis"
+  }
+  </script>
+
+  <!-- ✅ FAQ schema (pomáha k rich výsledkom) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Kde poskytujete mobilný autoservis?",
+        "acceptedAnswer":{"@type":"Answer","text":"Výjazdy realizujeme z Piešťan. Najčastejšie pôsobíme v okolí Piešťan, Trnavy, Bratislavy, Nitry, Trenčína a na celom západnom Slovensku podľa dohody."}
+      },
+      {
+        "@type":"Question",
+        "name":"Viete prísť aj k neštartujúcemu autu?",
+        "acceptedAnswer":{"@type":"Answer","text":"Áno. Najčastejšie riešime neštartovanie, batérie, dobíjanie, základnú diagnostiku a poruchy priamo pri vozidle. Ak sa problém nedá vyriešiť na mieste, odporučíme ďalší postup."}
+      },
+      {
+        "@type":"Question",
+        "name":"Koľko stojí výjazd?",
+        "acceptedAnswer":{"@type":"Answer","text":"Výjazd účtujeme podľa kilometrov a práce. Kilometre sú 0,15 €/km a práca je 10 €/hod. Presný odhad vždy potvrdíme podľa lokality a rozsahu úkonu."}
+      }
+    ]
+  }
+  </script>
+
 </head>
 
 <body>
@@ -754,12 +660,13 @@
     <header>
       <div class="hero">
         <div class="panel">
-          <div class="heroTitle">Mobilný autoservis</div>
+          <!-- ✅ Z DIV spravené H1 (SEO boost) -->
+          <h1 class="heroTitle">Mobilný autoservis</h1>
           <div class="accentLine"></div>
 
           <p class="lead">
             Zabezpečíme mobilný servis, poruchovú službu a opravy priamo u zákazníka.
-            Všetko prebieha na mieste, kde sa vozidlo nachádza. 
+            Všetko prebieha na mieste, kde sa vozidlo nachádza.
           </p>
 
           <div class="btnRow">
@@ -771,6 +678,12 @@
 
           <p class="muted2" style="margin-top:18px">
             Výjazdy sú realizované z Piešťan. Služby poskytujeme na celom západnom Slovensku.
+          </p>
+
+          <!-- ✅ Krátky SEO blok (bez spamu, ale s kľúčovými slovami) -->
+          <p class="muted" style="margin-top:14px">
+            Hľadáte <b>mobilný autoservis v Piešťanoch</b> alebo v okolí (Trnava, Bratislava, Nitra, Trenčín)?
+            Prídeme za vami domov, do práce alebo na parkovisko a riešime bežné poruchy, servis aj diagnostiku.
           </p>
         </div>
 
@@ -794,7 +707,7 @@
                 </div>
                 <div class="hsKpi">Západ</div>
               </div>
-              <div class="hsLabel">Služby na Západnom Slovensku</div>
+              <div class="hsLabel">Služby na západnom Slovensku</div>
             </div>
 
             <div class="hsItem">
@@ -807,7 +720,8 @@
                 </div>
                 <div class="hsKpi">do 15 min</div>
               </div>
-              <div class="hsLabel">Sme pripravený kedykoľvek</div>
+              <!-- ✅ gramatika -->
+              <div class="hsLabel">Sme pripravení kedykoľvek</div>
             </div>
 
             <div class="hsItem">
@@ -820,7 +734,7 @@
                 </div>
                 <div class="hsKpi">od 0,15 € / km</div>
               </div>
-              <div class="hsLabel">Najlacnejší servis široko ďaleko</div>
+              <div class="hsLabel">Transparentná cena za výjazd</div>
             </div>
 
             <div class="hsItem">
@@ -832,14 +746,13 @@
                 </div>
                 <div class="hsKpi">24/7</div>
               </div>
-              <div class="hsLabel">Pohotovosť nonstop</div>
+              <div class="hsLabel">Pohotovosť podľa dohody</div>
             </div>
           </div>
 
           <div class="hsCities">
             <b>Najčastejšie výjazdy:</b> Piešťany, Trnava, Bratislava, Nitra, Topoľčany, Trenčín, Žilina, Hlohovec, Nové Zámky.
           </div>
-
 
           <div class="hsBtns">
             <a class="hsBtn primary" href="rezervacie.html">Rezervovať servis</a>
@@ -898,20 +811,19 @@
             </div>
 
             <div class="hsNote">
-              Od vozidla si účtujeme <b>70 €</b>. V cene je zahrnutá samotná kontrola vozidla s diagnostikou, fotografie, popis chýb a poškodení, naše hodnotenie.  
+              Od vozidla si účtujeme <b>70 €</b>. V cene je zahrnutá samotná kontrola vozidla s diagnostikou, fotografie, popis chýb a poškodení, naše hodnotenie.
               K cene sa pripočítava <b>0,15 € / km</b> od vzdialenosti od Piešťan.
             </div>
 
             <a class="hsBtn primary" href="#kontakt" data-prefill="Obhliadka vozidla" style="width:100%">
-  Chcem obhliadku vozidla
-</a>
+              Chcem obhliadku vozidla
+            </a>
 
           </div>
         </div>
       </div>
     </section>
 
-    <!-- zvyšok sekcií ostáva rovnaký -->
     <section id="sluzby" class="anchorOffset">
       <div class="panel">
         <h2>Ponúkané služby</h2>
@@ -986,7 +898,7 @@
         </div>
 
         <div class="hsNote" style="margin-top:24px">
-          Ak si nie ste istí, či je možné problém vyriešiť na mieste, odporúčame využiť SOS kontakt alebo rezervačný systém.
+          Ak si nie ste istí, či je možné problém vyriešiť na mieste, odporúčame využiť rezervačný systém.
         </div>
       </div>
     </section>
@@ -1039,6 +951,27 @@
       </div>
     </section>
 
+    <!-- ✅ FAQ sekcia (normálny text + schema už je hore) -->
+    <section class="anchorOffset">
+      <div class="panel">
+        <h2>Časté otázky</h2>
+        <div class="grid">
+          <div class="card">
+            <h3><span class="dot"></span>Kde pôsobíte?</h3>
+            <p class="muted">Výjazdy realizujeme z Piešťan. Najčastejšie obsluhujeme Trnavu, Bratislavu, Nitru, Trenčín a celý západ Slovenska podľa dohody.</p>
+          </div>
+          <div class="card">
+            <h3><span class="dot"></span>Čo ak auto neštartuje?</h3>
+            <p class="muted">Prídeme k vozidlu, spravíme základnú diagnostiku a riešime najčastejšie príčiny (batéria, dobíjanie, štartér, poistky). Ak to na mieste nejde, odporučíme ďalší postup.</p>
+          </div>
+          <div class="card">
+            <h3><span class="dot"></span>Ako rýchlo viete prísť?</h3>
+            <p class="muted">Závisí od lokality a vyťaženosti. Pri nahlásení vždy povieme reálny odhad a dohodneme termín.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="kontakt" class="anchorOffset">
       <div class="panel">
         <h2>Kontakt</h2>
@@ -1073,11 +1006,11 @@
             <div>
               <label>Typ požiadavky</label>
               <select name="typ" id="typSelect" required>
-  <option value="Mobilný servis">Mobilný servis</option>
-  <option value="Obhliadka vozidla">Obhliadka vozidla</option>
-  <option value="Kontrola pred STK / EK">Kontrola pred STK / EK</option>
-  <option value="Oprava pneu / defekt">Oprava pneu / defekt</option>
-</select>
+                <option value="Mobilný servis">Mobilný servis</option>
+                <option value="Obhliadka vozidla">Obhliadka vozidla</option>
+                <option value="Kontrola pred STK / EK">Kontrola pred STK / EK</option>
+                <option value="Oprava pneu / defekt">Oprava pneu / defekt</option>
+              </select>
             </div>
           </div>
 
@@ -1101,49 +1034,7 @@
     </footer>
   </div>
 
-  
-
   <script>
-  // ===== SOS MODAL =====
-  const openBtn = document.getElementById('openSos');
-  const modal = document.getElementById('sosModal');
-  const closeBtn = document.getElementById('closeSos');
-
-  function openModal(){
-    if(!modal) return;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal(){
-    if(!modal) return;
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  }
-
-  if(openBtn) openBtn.addEventListener('click', openModal);
-  if(closeBtn) closeBtn.addEventListener('click', closeModal);
-
-  // klik mimo okna zavrie
-  if(modal){
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-  }
-
-  // ESC zavrie
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && modal.classList.contains('open')) closeModal();
-  });
-
-  // hocijaké tlačidlo s data-open-sos otvorí modal
-  document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-open-sos]');
-    if (t) openModal();
-  });
-
   // ===== PREFILL + SMOOTH SCROLL NA KONTAKT =====
   const typSelect = document.getElementById('typSelect');
 
@@ -1153,14 +1044,12 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ak je v URL hash #kontakt, spravíme smooth scroll
   window.addEventListener('load', () => {
     if (location.hash === '#kontakt') {
       setTimeout(scrollToKontakt, 40);
     }
   });
 
-  // klik na prvok s data-prefill = predvyplní select + scroll
   document.addEventListener('click', (e) => {
     const a = e.target.closest('[data-prefill]');
     if(!a) return;
@@ -1176,8 +1065,7 @@
       setTimeout(scrollToKontakt, 30);
     }
   });
-</script>
-
+  </script>
 
 </body>
 </html>
