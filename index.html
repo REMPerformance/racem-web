@@ -2,7 +2,31 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <title>RACEM</title>
+
+  <!-- ✅ SEO TITLE -->
+  <title>RACEM | Performance diely & mobilný autoservis</title>
+
+  <!-- ✅ SEO DESCRIPTION (Google snippet) -->
+  <meta name="description" content="RACEM (REM Performance) – performance autodiely, nezohnateľné diely na mieru, overenie kompatibility a mobilný autoservis. Západné Slovensko.">
+
+  <!-- ✅ Canonical (www vs non-www, duplicate content) -->
+  <link rel="canonical" href="https://racem.sk/">
+
+  <!-- ✅ Open Graph (FB/IG/WhatsApp/Discord) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RACEM">
+  <meta property="og:title" content="RACEM | Performance diely & mobilný autoservis">
+  <meta property="og:description" content="Performance diely, nezohnateľné autodiely na mieru, overenie kompatibility a mobilný autoservis na západnom Slovensku.">
+  <meta property="og:url" content="https://racem.sk/">
+  <meta property="og:image" content="https://racem.sk/assets/og-racem.jpg">
+
+  <!-- ✅ Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RACEM | Performance diely & mobilný autoservis">
+  <meta name="twitter:description" content="Performance diely, nezohnateľné autodiely a mobilný autoservis. Overíme kompatibilitu, zjednáme cenu, dodáme.">
+  <meta name="twitter:image" content="https://racem.sk/assets/og-racem.jpg">
+
+  <!-- ✅ Viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -33,6 +57,15 @@
       background: var(--bg);
       color: var(--text);
       overflow-x:hidden;
+    }
+
+    /* ✅ SR-ONLY (SEO text pre Google, neviditeľné pre ľudí) */
+    .sr-only{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
     }
 
     /* ====== BACKGROUND LAYERS ====== */
@@ -526,15 +559,9 @@
       padding: 16px 2px 18px;
     }
 
-    .stock-strip.is-expanded .stock-collapsible{
-      max-height: var(--stockExpanded);
-    }
-    .stock-strip.is-expanded .stock-fade{
-      opacity: 0;
-    }
-    .stock-strip.is-expanded .stock-more .chev{
-      transform: rotate(180deg);
-    }
+    .stock-strip.is-expanded .stock-collapsible{ max-height: var(--stockExpanded); }
+    .stock-strip.is-expanded .stock-fade{ opacity: 0; }
+    .stock-strip.is-expanded .stock-more .chev{ transform: rotate(180deg); }
 
     .stock-item{
       border:1px solid rgba(255,255,255,0.10);
@@ -789,7 +816,6 @@
     .modal-location svg{ width:14px; height:14px; }
 
     .modal-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
-
     .modal-note{ font-size:14px; line-height:1.6; margin-top:4px; }
 
     .modal-price-wrap{
@@ -1201,6 +1227,9 @@
           <span class="hero-dash">–</span>
           <img src="assets/text.png" alt="BEAT THEM ALL" class="hero-slogan-image">
         </h1>
+
+        <!-- ✅ SEO text pre Google (H1 je z obrázkov, tak mu dáme čistý význam) -->
+        <span class="sr-only">RACEM – performance diely, nezohnateľné autodiely a mobilný autoservis</span>
 
         <p class="subline">
           Chceš byť najrýchlejší na trati, no chýbajú ti diely na dokončenie projektu? Nemaj strach, u nás v RACEM ti zoženieme všetko.
