@@ -102,6 +102,34 @@
     .panel > *{position:relative; z-index:1}
 
     /* ===== TOP NAV ===== */
+    .brandLogo{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:14px;
+  border:1px solid transparent;
+  background:rgba(255,255,255,0.02);
+  transition:.18s ease;
+}
+
+.brandLogo:hover{
+  border-color: var(--line);
+  background:rgba(255,255,255,0.06);
+  transform:translateY(-1px);
+}
+
+.brandLogo img{
+  height:34px;          /* uprav podľa chuti (28–42 je sweetspot) */
+  width:auto;
+  display:block;
+  object-fit:contain;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,0.35));
+}
+
+@media (max-width: 560px){
+  .brandLogo img{ height:30px; }
+}
     .topbar{
       display:flex;
       align-items:center;
@@ -651,7 +679,9 @@
 
   <div class="wrap">
     <div class="topbar">
-      <div class="brand">RACEM <span>|</span> Mobilný autoservis</div>
+      <a class="brandLogo" href="index.html" aria-label="MAS RACEM">
+  <img src="masracem.png" alt="MAS RACEM" loading="eager" decoding="async">
+</a>
 
       <nav class="nav">
         <a href="rezervacie.html">Rezervačný systém</a>
