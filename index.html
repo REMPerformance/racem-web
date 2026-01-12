@@ -2163,10 +2163,35 @@
     function showCookie(){ cookieBar?.classList.add("show"); }
     function hideCookie(){ cookieBar?.classList.remove("show"); }
 
-    function runAnalyticsIfAllowed(){
-      if(getConsent() !== "accepted") return;
-      // analytics scripts here (GA/Meta pixel...)
-    }
+    // ===== GA4 (RACEM) =====
+const GA_ID = "G-05JW7F7HZ7"; // tvoje Measurement ID
+
+function loadGA4(){
+  // aby sa to nenačítalo 2x
+  if (window.__ga4_loaded) return;
+  window.__ga4_loaded = true;
+
+  // vloží gtag.js
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  document.head.appendChild(s);
+
+  // inicializácia gtag
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+
+  gtag("js", new Date());
+  gtag("config", GA_ID, {
+    anonymize_ip: true
+  });
+}
+
+function runAnalyticsIfAllowed(){
+  if(getConsent() !== "accepted") return;
+  loadGA4();
+}
 
     (function initCookieBar(){
       const c = getConsent();
