@@ -112,44 +112,121 @@
       border:0;
     }
 
-    /* ===== TOP NAV ===== */
+    /* ===== TOP NAV (UPGRADED) ===== */
     .topbar{
       display:flex;
       align-items:center;
-      justify-content:flex-end; /* logo je preč, menu ide celé */
-      gap:16px;
+      justify-content:center;
       padding:26px 0 0;
       margin-bottom:16px;
     }
 
     .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between; /* roztiahne položky cez šírku */
       width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:0; /* deliace čiary robia spacing */
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .nav:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(520px 140px at 20% 0%, rgba(179,31,36,0.22), transparent 60%),
+        radial-gradient(520px 160px at 85% 60%, rgba(255,255,255,0.06), transparent 65%);
+      opacity:.9;
+      pointer-events:none;
     }
 
     .nav a{
-      font-size:13.5px;
-      color:var(--muted2);
-      padding:9px 11px;
-      border-radius:12px;
-      border:1px solid transparent;
-      transition:.2s ease;
-      background:rgba(255,255,255,0.02);
+      position:relative;
+      z-index:1;
+      font-family:"Teko", Arial, sans-serif;
+      font-size:18px;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.78);
+      padding:10px 14px;
+      border-radius:14px;
+      transition: transform .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease, filter .18s ease;
+      line-height:1;
       white-space:nowrap;
     }
+
+    /* červené deliace čiary medzi položkami */
+    .nav a + a:before{
+      content:"";
+      position:absolute;
+      left:-1px;
+      top:50%;
+      transform:translateY(-50%);
+      width:1px;
+      height:18px;
+      background: linear-gradient(180deg, transparent, rgba(179,31,36,0.85), transparent);
+      opacity:.85;
+    }
+
+    /* underline efekt */
+    .nav a:after{
+      content:"";
+      position:absolute;
+      left:12px;
+      right:12px;
+      bottom:6px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      transform: scaleX(0);
+      transform-origin:center;
+      transition: transform .18s ease;
+      opacity:.95;
+    }
+
     .nav a:hover{
       color:#fff;
-      border-color:var(--line);
-      background:rgba(255,255,255,0.06);
-      transform:translateY(-1px);
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      filter: drop-shadow(0 10px 18px rgba(179,31,36,0.10));
+    }
+    .nav a:hover:after{transform: scaleX(1);}
+
+    /* CTA Kontakt */
+    .nav a.cta{
+      color:#fff;
+      background: rgba(179,31,36,0.18);
+      border:1px solid rgba(179,31,36,0.45);
+      box-shadow: 0 18px 55px rgba(179,31,36,0.12);
+      margin-left:6px;
+    }
+    .nav a.cta:after{transform: scaleX(1);}
+    .nav a.cta:hover{
+      background: rgba(179,31,36,0.28);
+      filter: brightness(1.06);
     }
 
     @media (max-width: 860px){
-      .nav{justify-content:flex-start}
+      .topbar{justify-content:flex-start}
+      .nav{
+        border-radius:18px;
+        justify-content:flex-start;
+        padding:10px;
+      }
+      .nav a{
+        font-size:17px;
+        padding:10px 12px;
+      }
+      .nav a + a:before{display:none;} /* na mobile bez čiar */
+      .nav a.cta{margin-left:0}
     }
 
     /* ===== HERO ===== */
@@ -173,7 +250,7 @@
       margin-top:6px;
     }
     .heroLogo img{
-      height:92px;        /* aby to vyzeralo “ako headline” */
+      height:92px;
       width:auto;
       display:block;
       object-fit:contain;
@@ -662,13 +739,13 @@
 
   <div class="wrap">
     <div class="topbar">
-      <!-- logo je preč, menu je roztiahnuté -->
       <nav class="nav">
+        <a href="index.html">Home</a>
         <a href="rezervacie.html">Rezervačný systém</a>
         <a href="#kupa">Obhliadky vozidiel</a>
         <a href="#cennik">Cenník</a>
         <a href="#sluzby">Služby</a>
-        <a href="#kontakt">Kontakt</a>
+        <a class="cta" href="#kontakt">Kontakt</a>
       </nav>
     </div>
 
