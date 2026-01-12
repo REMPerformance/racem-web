@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <!-- ✅ SEO: TITLE + DESCRIPTION -->
   <title>Mobilný autoservis Piešťany a západné Slovensko | RACEM</title>
@@ -101,59 +101,36 @@
     }
     .panel > *{position:relative; z-index:1}
 
+    /* ===== SR ONLY (SEO H1 nech ostane) ===== */
+    .srOnly{
+      position:absolute !important;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
     /* ===== TOP NAV ===== */
-    .brandLogo{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 10px;
-  border-radius:14px;
-  border:1px solid transparent;
-  background:rgba(255,255,255,0.02);
-  transition:.18s ease;
-}
-
-.brandLogo:hover{
-  border-color: var(--line);
-  background:rgba(255,255,255,0.06);
-  transform:translateY(-1px);
-}
-
-.brandLogo img{
-  height:80px;          /* uprav podľa chuti (28–42 je sweetspot) */
-  width:auto;
-  display:block;
-  object-fit:contain;
-  filter: drop-shadow(0 10px 22px rgba(0,0,0,0.35));
-}
-
-@media (max-width: 560px){
-  .brandLogo img{ height:30px; }
-}
     .topbar{
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-end; /* logo je preč, menu ide celé */
       gap:16px;
       padding:26px 0 0;
       margin-bottom:16px;
     }
-    .brand{
-      font-weight:900;
-      letter-spacing:0.6px;
-      color:#fff;
-      font-size:14px;
-      opacity:.95;
-      white-space:nowrap;
-    }
-    .brand span{color:var(--red)}
+
     .nav{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
-      justify-content:flex-end;
+      justify-content:space-between; /* roztiahne položky cez šírku */
+      width:100%;
     }
+
     .nav a{
       font-size:13.5px;
       color:var(--muted2);
@@ -162,6 +139,7 @@
       border:1px solid transparent;
       transition:.2s ease;
       background:rgba(255,255,255,0.02);
+      white-space:nowrap;
     }
     .nav a:hover{
       color:#fff;
@@ -169,8 +147,8 @@
       background:rgba(255,255,255,0.06);
       transform:translateY(-1px);
     }
-    @media (max-width: 560px){
-      .topbar{align-items:flex-start; flex-direction:column; gap:10px}
+
+    @media (max-width: 860px){
       .nav{justify-content:flex-start}
     }
 
@@ -187,20 +165,25 @@
       .hero{grid-template-columns:1fr}
     }
 
-    /* ✅ H1 ostáva vizuálne rovnaký ako .heroTitle */
-    .heroTitle{
-      font-family:"Teko", Arial, sans-serif;
-      font-weight:700;
-      font-size:78px;
-      line-height:0.92;
-      letter-spacing:1px;
-      text-transform:uppercase;
+    /* HERO LOGO (namiesto titulku) */
+    .heroLogo{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      margin-top:6px;
+    }
+    .heroLogo img{
+      height:92px;        /* aby to vyzeralo “ako headline” */
+      width:auto;
+      display:block;
+      object-fit:contain;
+      filter: drop-shadow(0 16px 30px rgba(0,0,0,0.45));
     }
     @media (max-width: 720px){
-      .heroTitle{font-size:58px}
+      .heroLogo img{height:74px}
     }
     @media (max-width: 420px){
-      .heroTitle{font-size:50px}
+      .heroLogo img{height:66px}
     }
 
     .accentLine{
@@ -648,7 +631,7 @@
   }
   </script>
 
-  <!-- ✅ FAQ schema (pomáha k rich výsledkom) -->
+  <!-- ✅ FAQ schema -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -679,10 +662,7 @@
 
   <div class="wrap">
     <div class="topbar">
-      <a class="brandLogo" href="index.html" aria-label="MAS RACEM">
-  <img src="assets/masracem.png" alt="MAS RACEM" loading="eager" decoding="async">
-</a>
-
+      <!-- logo je preč, menu je roztiahnuté -->
       <nav class="nav">
         <a href="rezervacie.html">Rezervačný systém</a>
         <a href="#kupa">Obhliadky vozidiel</a>
@@ -695,8 +675,15 @@
     <header>
       <div class="hero">
         <div class="panel">
-          <!-- ✅ Z DIV spravené H1 (SEO boost) -->
-          <h1 class="heroTitle">Mobilný autoservis</h1>
+
+          <!-- SEO H1 nech ostane -->
+          <h1 class="srOnly">Mobilný autoservis</h1>
+
+          <!-- Logo namiesto nadpisu -->
+          <div class="heroLogo" aria-label="MAS RACEM Mobilný autoservis">
+            <img src="assets/masracem.png" alt="MAS RACEM – Mobilný autoservis" loading="eager" decoding="async">
+          </div>
+
           <div class="accentLine"></div>
 
           <p class="lead">
@@ -712,11 +699,10 @@
           </div>
 
           <p class="muted2" style="margin-top:18px">
-            Nemáte čas na návštevu servisu? Alebo máte dôležitejšie veci na práci? 
+            Nemáte čas na návštevu servisu? Alebo máte dôležitejšie veci na práci?
             Kontaktujte nás a my prídeme kdekoľvek sa práave nachádzate.
           </p>
 
-          <!-- ✅ Krátky SEO blok (bez spamu, ale s kľúčovými slovami) -->
           <p class="muted" style="margin-top:14px">
             Prídeme za vami domov, do práce alebo na parkovisko a riešime poruchy, servis aj diagnostiku.
           </p>
@@ -755,7 +741,6 @@
                 </div>
                 <div class="hsKpi">do 15 min</div>
               </div>
-              <!-- ✅ gramatika -->
               <div class="hsLabel">Sme pripravení kedykoľvek</div>
             </div>
 
@@ -986,7 +971,6 @@
       </div>
     </section>
 
-    <!-- ✅ FAQ sekcia (normálny text + schema už je hore) -->
     <section class="anchorOffset">
       <div class="panel">
         <h2>Časté otázky</h2>
