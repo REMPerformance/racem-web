@@ -9,17 +9,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <title>RACEM | Bodykity & aero – autorizované značky</title>
-  <meta name="description" content="Bodykity a aero od svetových značiek. Overenie kompatibility, objednávka na mieru, dodanie do SR/ČR/EÚ. RACEM (REM Performance)." />
+  <title>RACEM | Bodykity – autorizované značky</title>
+  <meta name="description" content="RACEM – autorizovaný predaj bodykitov a aero. Overenie kompatibility a dodanie do SR/ČR/EÚ." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://racem.sk/bodykity.html" />
-
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="RACEM">
-  <meta property="og:title" content="RACEM | Bodykity & aero – autorizované značky">
-  <meta property="og:description" content="Bodykity a aero od svetových značiek. Overenie kompatibility, objednávka na mieru, dodanie do SR/ČR/EÚ.">
-  <meta property="og:url" content="https://racem.sk/bodykity.html">
-  <meta property="og:image" content="https://racem.sk/assets/og-racem.jpg">
 
   <style>
     :root{
@@ -30,10 +23,7 @@
       --muted:#cfcfcf;
       --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 20px 60px rgba(0,0,0,0.55);
-
-      --violet:#7c3aed;
-      --violet2:#a855f7;
+      --shadow: 0 22px 70px rgba(0,0,0,0.55);
     }
 
     *{box-sizing:border-box}
@@ -46,10 +36,12 @@
       overflow-x:hidden;
     }
     a{color:inherit}
-    .wrap{ width:100%; max-width:none; margin:0; padding:0 6vw; }
+
+    /* FULL WIDTH LAYOUT */
+    .wrap{ width:100%; padding:0 6vw; }
     section{ padding:110px 0; position:relative; }
 
-    /* ===== BACKGROUND ===== */
+    /* BACKGROUND */
     .bg{
       position:fixed; inset:0; z-index:-5; pointer-events:none;
       background:
@@ -69,111 +61,35 @@
       from{ background-position:0 0, 0 0; }
       to{ background-position:600px 0, 0 600px; }
     }
-    .noise{
-      position:fixed; inset:-20%; z-index:-4; pointer-events:none; opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
-      animation: noiseMove 10s steps(10) infinite;
-    }
-    @keyframes noiseMove{
-      0%{transform:translate(0,0)}
-      20%{transform:translate(-3%,2%)}
-      40%{transform:translate(4%,-2%)}
-      60%{transform:translate(-2%,-4%)}
-      80%{transform:translate(3%,3%)}
-      100%{transform:translate(0,0)}
-    }
 
-    /* ===== TYPO ===== */
-    h1,h2,h3{
-      margin:0 0 16px 0;
-      text-transform:uppercase;
-      letter-spacing:1px;
-    }
-    h1{ font-size:62px; line-height:1.03; }
-    h2{ font-size:40px; }
-    h3{ font-size:18px; }
-    p{
-      margin:0 0 14px 0;
-      color: var(--muted);
-      line-height:1.65;
-      max-width: 980px;
-    }
-    .muted2{ color: var(--muted2); }
-    .red{ color: var(--red); }
-
-    .pill{
-      display:inline-flex; gap:10px; align-items:center;
-      padding:8px 12px;
-      border:1px solid var(--line);
-      background: rgba(20,20,20,0.6);
-      border-radius:999px;
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      width: fit-content;
-    }
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background: var(--red);
-      box-shadow: 0 0 18px rgba(179,31,36,.7);
-    }
-
-    /* ===== TOPBAR ===== */
+    /* TOPBAR */
     .topbar{
       position:sticky; top:0; z-index:100;
       backdrop-filter: blur(12px);
       background: rgba(10,10,10,0.62);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .nav-centered{
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 14px 0;
+    .nav{
+      width:100%;
+      padding: 14px 6vw;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 22px;
+      gap: 20px;
     }
-    .leftNav{ display:flex; align-items:center; gap:26px; }
     .brand-mini{
       display:flex; align-items:center; text-decoration:none;
     }
     .brand-mini img{
-      height: 52px; width:auto; display:block; object-fit:contain;
-      transition: transform .45s ease, filter .45s ease;
+      height:52px; width:auto; display:block; object-fit:contain;
+      transition: transform .35s ease, filter .35s ease;
     }
     .brand-mini:hover img{
-      transform: scale(1.06) rotate(-1.5deg);
+      transform: scale(1.06);
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
-    .nav-links{ display:flex; gap: 22px; flex-wrap:wrap; }
-    .nav-links a{
-      position:relative;
-      color: rgba(255,255,255,0.76);
-      text-decoration:none;
-      font-size: 12.5px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      white-space: nowrap;
-      transition: color .25s ease, text-shadow .25s ease;
-      padding: 6px 0;
-    }
-    .nav-links a:hover{
-      color:#fff;
-      text-shadow: 0 0 14px rgba(179,31,36,0.25);
-    }
-    .nav-links a::after{
-      content:""; position:absolute; left:50%; bottom:-10px;
-      width:0; height:2px; background: var(--red);
-      box-shadow: 0 0 10px rgba(179,31,36,.75), 0 0 22px rgba(179,31,36,.35);
-      transform: translateX(-50%);
-      transition: width .32s ease;
-    }
-    .nav-links a:hover::after{ width: 125%; }
 
-    /* ===== LANG SWITCH ===== */
+    /* LANG SWITCH (RIGHT TOP) */
     .langBox{
       display:flex; align-items:center; gap:10px;
       padding:8px 10px;
@@ -201,40 +117,48 @@
       border:1px solid rgba(179,31,36,0.45);
     }
 
-    /* ===== BUTTONS ===== */
-    .ctaRow{ display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px 22px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:900;
+    /* TYPO */
+    h1,h2{
+      margin:0 0 14px 0;
       text-transform:uppercase;
-      letter-spacing:.7px;
-      font-size:13px;
-      transition:.25s;
-      user-select:none;
-      border:1px solid rgba(255,255,255,0.10);
-      cursor:pointer;
+      letter-spacing:1px;
     }
-    .btnPrimary{
-      background: var(--red);
-      border-color: rgba(179,31,36,0.65);
-      box-shadow: 0 18px 40px rgba(179,31,36,0.18);
-      color:#fff;
+    h1{ font-size: 56px; line-height:1.06; }
+    h2{ font-size: 38px; }
+    p{
+      margin:0 0 14px 0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size:16px;
+      max-width: 920px;
     }
-    .btnPrimary:hover{ transform: translateY(-2px); filter: brightness(1.05); }
-    .btnGhost{ background: rgba(20,20,20,0.65); color:#fff; }
-    .btnGhost:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.22); }
-    .btnArrow .arr{ transition: transform .22s ease, opacity .22s ease; opacity:.95; }
-    .btnArrow:hover .arr{ transform: translateX(6px); opacity:1; }
+    .muted2{ color: var(--muted2); }
+    .red{ color: var(--red); }
 
-    /* ===== PANELS ===== */
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: rgba(20,20,20,0.6);
+      border-radius:999px;
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      width: fit-content;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background: var(--red);
+      box-shadow: 0 0 18px rgba(179,31,36,.7);
+    }
+
+    /* PANELS */
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius:18px;
-      padding:26px;
+      padding:30px;
       box-shadow: 0 12px 40px rgba(0,0,0,0.35);
       position:relative;
       overflow:hidden;
@@ -247,133 +171,13 @@
     }
     .panel > *{ position:relative; }
 
-    /* ===== HERO ===== */
-    .hero{ padding:90px 0 70px; }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:50px;
-      align-items:center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .heroTitleRow{
-      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-    }
-    .heroLogo{
-      height:78px; width:auto; object-fit:contain;
-      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
-    }
-    .heroDash{ color: var(--muted2); font-size: 34px; font-weight:900; }
-    .heroKicker{ font-size:16px; color: var(--muted); max-width: 980px; }
-
-    .heroCard{
-      background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.65));
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:22px;
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .heroCard::before{
-      content:"";
-      position:absolute; inset:-60px;
-      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.20), transparent 55%);
-      transform: rotate(12deg);
-    }
-    .heroCard > *{ position:relative; }
-    .miniStats{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      margin-top:14px;
-    }
-    .miniStat{
-      background: rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
-      padding:14px;
-    }
-    .miniStat b{ display:block; font-size:16px; margin-bottom:6px; color:#fff; }
-    .miniStat span{ font-size:11px; color: var(--muted2); text-transform:uppercase; letter-spacing:.10em; }
-
-    /* ===== TOOLBAR (search + filters) ===== */
-    .toolbar{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-top:18px;
-    }
-    .search{
-      flex:1 1 340px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-    }
-    .search input{
-      width:100%;
-      border:none;
-      outline:none;
-      background:transparent;
-      color:#fff;
-      font-size:14px;
-    }
-    .select{
-      flex:0 0 auto;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color:#fff;
-      font-size:13px;
-      font-weight:800;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      outline:none;
-      cursor:pointer;
-    }
-    .filterChips{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.80);
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      user-select:none;
-    }
-    .chip:hover{ transform: translateY(-2px); border-color: rgba(179,31,36,0.35); }
-    .chip.active{
-      border-color: rgba(179,31,36,0.55);
-      background: rgba(179,31,36,0.14);
-      color:#fff;
-    }
-    .chipDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
-
-    /* ===== BRAND GRID ===== */
+    /* BRAND GRID */
     .brandGrid{
       display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+      grid-template-columns: repeat(5, minmax(0,1fr));
       gap: 16px;
       margin-top: 18px;
+      width:100%;
     }
     .brandCard{
       border:1px solid rgba(255,255,255,0.10);
@@ -383,9 +187,9 @@
       box-shadow: 0 14px 44px rgba(0,0,0,0.42);
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
       position:relative;
-      cursor:pointer;
-      text-decoration:none;
       display:block;
+      text-decoration:none;
+      min-height: 220px;
     }
     .brandCard::after{
       content:"";
@@ -401,21 +205,13 @@
       box-shadow: 0 18px 60px rgba(0,0,0,0.60);
     }
     .brandTop{
-      padding: 16px 16px 14px;
+      padding: 16px 16px 0;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:12px;
       position:relative;
       z-index:1;
-    }
-    .brandLogo{
-      width: 100%;
-      height: 92px;
-      object-fit: contain;
-      opacity:.95;
-      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.6));
-      transform: scale(1.05);
     }
     .badge{
       flex:0 0 auto;
@@ -434,14 +230,35 @@
       backdrop-filter: blur(8px);
     }
     .badge .bDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
+
+    .brandLogoBox{
+      height: 104px;
+      display:grid;
+      place-items:center;
+      margin: 10px 16px 0;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      position:relative;
+      z-index:1;
+      overflow:hidden;
+    }
+    .brandLogo{
+      width: 88%;
+      height: 86px;
+      object-fit: contain;
+      opacity:.95;
+      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.6));
+      transform: scale(1.05);
+    }
     .brandBody{
-      padding: 0 16px 16px;
+      padding: 14px 16px 16px;
       position:relative;
       z-index:1;
     }
     .brandName{
-      margin: 2px 0 6px;
-      font-size: 14px;
+      margin: 0 0 6px;
+      font-size: 13px;
       font-weight: 1000;
       letter-spacing: .16em;
       text-transform: uppercase;
@@ -453,79 +270,29 @@
       line-height:1.6;
       color: rgba(255,255,255,0.72);
     }
-    .brandMeta{
-      margin-top: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .metaPill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      font-size: 10.5px;
-      letter-spacing:.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-    }
 
-    /* ===== SECTIONS ===== */
-    .split{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      align-items:start;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* LOCKED CARD */
+    .locked .brandLogoBox{
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(179,31,36,0.06));
     }
-
-    .steps{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 14px;
-      margin-top: 14px;
-    }
-    .step{
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
+    .lockIcon{
+      width: 54px; height: 54px;
       border-radius: 18px;
-      padding: 16px;
-      position:relative;
-      overflow:hidden;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.35);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+      color: rgba(255,255,255,0.88);
+      font-size: 22px;
     }
-    .step::before{
-      content:"";
-      position:absolute;
-      inset:-80px;
-      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.15), transparent 55%);
-      transform: rotate(14deg);
-    }
-    .step > *{ position:relative; }
-    .stepNum{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 34px; height: 34px;
-      border-radius: 14px;
-      font-weight: 1000;
-      background: rgba(179,31,36,0.20);
-      border:1px solid rgba(179,31,36,0.45);
-      margin-bottom: 10px;
-    }
-    .step b{ display:block; margin-bottom:6px; letter-spacing:.10em; text-transform:uppercase; }
 
-    /* ===== FAQ ===== */
+    /* FAQ */
     .faq{
-      max-width:1200px;
-      margin: 0 auto;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       margin-top: 16px;
+      width:100%;
     }
     details{
       border:1px solid rgba(255,255,255,0.10);
@@ -566,455 +333,196 @@
     }
     details[open] .chev{ transform: rotate(180deg); }
 
-    /* ===== FOOTER ===== */
-    footer{
-      padding:55px 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      background: rgba(0,0,0,0.45);
-    }
-    .foot{
-      max-width: 1200px;
-      margin: 0 auto;
-      display:flex; gap:18px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
-      color: var(--muted2);
-      font-size:13px;
-      padding: 0 6vw;
-    }
-
-    /* ===== REVEAL ===== */
+    /* REVEAL */
     .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
 
-    /* ===== RESPONSIVE ===== */
+    /* RESPONSIVE */
     @media (max-width: 1200px){
       .brandGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .steps{ grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
     @media (max-width: 980px){
-      .wrap{ padding: 0 18px; max-width: 720px; margin: 0 auto; }
+      .wrap{ padding: 0 18px; }
       section{ padding: 78px 0; }
-      .hero{ padding: 70px 0 60px; }
-      .hero-grid{ grid-template-columns:1fr; gap:18px; }
-      .nav-centered{ max-width:100%; flex-direction:column; align-items:flex-start; gap:12px; }
-      .leftNav{ width:100%; justify-content:space-between; }
-      .brand-mini img{ height: 48px; }
-      h1{ font-size: clamp(34px, 7vw, 48px); line-height: 1.08; }
+      h1{ font-size: clamp(34px, 7vw, 46px); }
       h2{ font-size: clamp(26px, 5.6vw, 34px); }
-      p, .heroKicker{ font-size: 15px; line-height: 1.7; max-width: 100%; }
-      .split{ grid-template-columns:1fr; }
+      .faq{ grid-template-columns: 1fr; }
       .brandGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .faq{ grid-template-columns:1fr; }
-      .miniStats{ grid-template-columns:1fr; }
-      .toolbar{ align-items:stretch; }
-      .select{ width:100%; }
+      .nav{ padding: 14px 18px; }
     }
     @media (max-width: 560px){
-      section{ padding: 54px 0; }
+      section{ padding: 56px 0; }
       .brandGrid{ grid-template-columns: 1fr; }
-      .heroLogo{ height: 58px; }
-      .ctaRow .btn{ width: 100%; }
       .langBox{ width:100%; justify-content:space-between; }
-      .leftNav{ flex-direction:column; align-items:flex-start; gap:10px; }
-      .nav-links{ gap: 12px; }
-      .brandLogo{ height: 82px; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ animation:none !important; transition:none !important; }
+      .nav{ flex-direction:column; align-items:flex-start; gap:12px; }
     }
   </style>
 </head>
 
-<body id="top">
+<body>
   <div class="bg"></div>
-  <div class="noise"></div>
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <div class="wrap nav-centered">
-      <div class="leftNav">
-        <a href="index.html" class="brand-mini" aria-label="RACEM">
-          <img src="assets/rmgroup.png" alt="RACEM GROUP logo">
-        </a>
+    <div class="nav">
+      <a href="index.html" class="brand-mini" aria-label="RACEM">
+        <img src="assets/rmgroup.png" alt="RACEM logo">
+      </a>
 
-        <div class="langBox" aria-label="Jazyk">
-          <button class="langBtn active" id="btnSK" type="button">SK</button>
-          <button class="langBtn" id="btnEN" type="button">EN</button>
-        </div>
+      <div class="langBox" aria-label="Language">
+        <button class="langBtn active" id="btnSK" type="button">SK</button>
+        <button class="langBtn" id="btnEN" type="button">EN</button>
       </div>
-
-      <nav class="nav-links" aria-label="Navigácia">
-        <a href="index.html#stock">Skladom</a>
-        <a href="katalog.html">Katalóg</a>
-        <a href="bodykity.html" style="color:#fff;">Bodykity</a>
-        <a href="mobilny-autoservis.html">Mobilný autoservis</a>
-        <a href="hviezdne-stropy.html">Hviezdne stropy</a>
-        <a href="index.html#kontakt">Kontakt</a>
-        <a href="vop.html">VOP</a>
-      </nav>
     </div>
   </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="reveal">
-        <span class="pill">
-          <span class="dot"></span>
-          <span data-i18n="hero_pill">aero • widebody • streetfighter • drift</span>
-        </span>
-
-        <div class="heroTitleRow" style="margin-top:16px;">
-          <img class="heroLogo" src="assets/racem-logo.png" alt="RACEM">
-          <span class="heroDash">–</span>
-          <h1 style="margin:0;" data-i18n="hero_title">Bodykity & aero</h1>
-        </div>
-
-        <p class="heroKicker" style="margin-top:10px;" data-i18n="hero_text">
-          Autorizované značky, reálna kompatibilita a dodanie na mieru. Povieš auto, cieľ a rozpočet – my vyberieme kit, overíme ho a vybavíme logistiku.
-        </p>
-
-        <div class="ctaRow">
-          <a class="btn btnPrimary btnArrow" href="#brands" data-i18n="hero_cta1">Značky <span class="arr">→</span></a>
-          <a class="btn btnGhost btnArrow" href="#ako-to-funguje" data-i18n="hero_cta2">Ako to funguje <span class="arr">→</span></a>
-          <a class="btn btnGhost btnArrow" href="#dopyt" data-i18n="hero_cta3">Nezáväzný dopyt <span class="arr">→</span></a>
-        </div>
-      </div>
-
-      <div class="heroCard reveal">
-        <h3 data-i18n="hero_card_title">RACEM – riešime to na rovinu</h3>
-        <p class="muted2" data-i18n="hero_card_text">
-          Nie si “len objednávka”. Keď niečo nedáva zmysel (fitment, materiál, montáž, homologácia), povieme to hneď a navrhneme lepšiu cestu.
-        </p>
-
-        <div class="miniStats">
-          <div class="miniStat">
-            <b data-i18n="stat1_b">Fitment</b>
-            <span data-i18n="stat1_s">overenie kompatibility</span>
-          </div>
-          <div class="miniStat">
-            <b data-i18n="stat2_b">Logistika</b>
-            <span data-i18n="stat2_s">SR • ČR • EÚ</span>
-          </div>
-          <div class="miniStat">
-            <b data-i18n="stat3_b">Riešenia</b>
-            <span data-i18n="stat3_s">kit • aero • doplnky</span>
-          </div>
-          <div class="miniStat">
-            <b data-i18n="stat4_b">Zmysel</b>
-            <span data-i18n="stat4_s">cieľ & rozpočet</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BRANDS -->
-  <section id="brands">
+  <!-- AUTHORIZED BRANDS -->
+  <section>
     <div class="wrap">
-      <div class="panel reveal" style="max-width:1200px; margin:0 auto; padding:34px;">
-        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-          <div>
-            <h2 style="margin:0;" data-i18n="brands_title">Značky</h2>
-            <p style="font-size:16px; margin-top:10px;" data-i18n="brands_sub">
-              Vyber si štýl a typ. Dole máš filter podľa kategórie, materiálu a použitia.
-            </p>
-          </div>
+      <div class="panel reveal">
+        <span class="pill"><span class="dot"></span><span data-i18n="pill">autorizovaný predaj • bodykity • aero</span></span>
+        <h1 style="margin-top:16px;" data-i18n="title">Autorizovaní predajcovia</h1>
+        <p data-i18n="subtitle">
+          Toto sú značky, pri ktorých máme priame napojenie a vieme riešiť reálnu dostupnosť, fitment a objednávku bez chaosu.
+          Ďalšie autorizácie odomykáme postupne.
+        </p>
 
-          <a class="btn btnPrimary btnArrow" href="#dopyt" data-i18n="brands_cta">
-            Chcem ponuku <span class="arr">→</span>
-          </a>
-        </div>
-
-        <!-- TOOLBAR -->
-        <div class="toolbar">
-          <div class="search" title="Search">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" opacity="0.8"
-                d="M10 2a8 8 0 105.29 14.06l4.32 4.32 1.41-1.41-4.32-4.32A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-            </svg>
-            <input id="q" type="text" placeholder="Streetfighter / widebody / BMW / C63..." />
-          </div>
-
-          <select class="select" id="use">
-            <option value="all" data-i18n="filter_use_all">Použitie: všetko</option>
-            <option value="street" data-i18n="filter_use_street">Street</option>
-            <option value="track" data-i18n="filter_use_track">Track</option>
-            <option value="show" data-i18n="filter_use_show">Show</option>
-          </select>
-
-          <select class="select" id="type">
-            <option value="all" data-i18n="filter_type_all">Typ: všetko</option>
-            <option value="widebody">Widebody</option>
-            <option value="aero">Aero</option>
-            <option value="bumpers" data-i18n="filter_type_bumpers">Nárazníky</option>
-            <option value="diffusers" data-i18n="filter_type_diffusers">Difúzory</option>
-          </select>
-        </div>
-
-        <div class="filterChips" aria-label="Rýchle filtre">
-          <div class="chip active" data-chip="all"><span class="chipDot"></span><span data-i18n="chip_all">Všetko</span></div>
-          <div class="chip" data-chip="premium"><span class="chipDot"></span><span data-i18n="chip_premium">Premium</span></div>
-          <div class="chip" data-chip="carbon"><span class="chipDot"></span><span>Carbon</span></div>
-          <div class="chip" data-chip="frp"><span class="chipDot"></span><span>FRP</span></div>
-          <div class="chip" data-chip="oem"><span class="chipDot"></span><span data-i18n="chip_oem">OEM+ look</span></div>
-          <div class="chip" data-chip="aggressive"><span class="chipDot"></span><span data-i18n="chip_aggr">Agresívne</span></div>
-        </div>
-
-        <!-- BRAND GRID -->
-        <div class="brandGrid" id="brandGrid">
-          <!-- Streetfighter LA -->
-          <a class="brandCard"
-             href="distribucia-kitov.html#streetfighter-la"
-             data-name="Streetfighter LA SFXLA streetfighter widebody aggressive premium"
-             data-use="street"
-             data-type="widebody"
-             data-tags="premium carbon aggressive"
-             title="Streetfighter LA">
+        <div class="brandGrid" style="margin-top:22px;">
+          <!-- SFXLA (REAL) -->
+          <a class="brandCard" href="distribucia-kitov.html#streetfighter-la" title="Streetfighter LA">
             <div class="brandTop">
-              <img class="brandLogo" src="assets/SFXLA_small.avif" alt="Streetfighter LA logo" loading="lazy" decoding="async">
-              <span class="badge"><span class="bDot"></span><span data-i18n="badge_official">oficiálne</span></span>
+              <span class="badge"><span class="bDot"></span><span data-i18n="official">oficiálne</span></span>
             </div>
+
+            <div class="brandLogoBox">
+              <img class="brandLogo" src="assets/SFXLA_small.avif" alt="Streetfighter LA logo" loading="lazy" decoding="async">
+            </div>
+
             <div class="brandBody">
               <div class="brandName">Streetfighter LA</div>
               <p class="brandDesc" data-i18n="sfxla_desc">
-                Brutálny streetfighter dizajn, ostré línie, výrazné rozšírenia. Pre buildy, ktoré majú byť “na prvú”.
+                Brutálny streetfighter dizajn, ostré línie a výrazné rozšírenia. Pre buildy, ktoré majú byť “na prvú”.
               </p>
-              <div class="brandMeta">
-                <span class="metaPill">Widebody</span>
-                <span class="metaPill">Premium</span>
-                <span class="metaPill">Street</span>
-              </div>
             </div>
           </a>
 
-          <!-- Placeholder cards (coming soon) -->
-          <a class="brandCard"
-             href="distribucia-kitov.html"
-             data-name="Liberty Walk LBWK widebody premium show"
-             data-use="show"
-             data-type="widebody"
-             data-tags="premium aggressive"
-             title="Coming soon">
+          <!-- LOCKED 1 -->
+          <div class="brandCard locked" aria-label="Locked brand">
             <div class="brandTop">
-              <img class="brandLogo" src="assets/coming-soon.png" alt="Coming soon" loading="lazy" decoding="async">
-              <span class="badge"><span class="bDot"></span><span data-i18n="badge_soon">čoskoro</span></span>
+              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
             </div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="cs_title">Ďalšie značky</div>
-              <p class="brandDesc" data-i18n="cs_desc">
-                Pridávame ďalšie svetové mená. Ak chceš konkrétnu značku, napíš – vybavíme.
-              </p>
-              <div class="brandMeta">
-                <span class="metaPill" data-i18n="cs_meta1">Na dopyt</span>
-                <span class="metaPill" data-i18n="cs_meta2">Zahraniční dodávatelia</span>
-              </div>
-            </div>
-          </a>
 
-          <a class="brandCard"
-             href="#dopyt"
-             data-name="Rocket Bunny Pandem widebody frp track"
-             data-use="track"
-             data-type="widebody"
-             data-tags="frp aggressive"
-             title="Na dopyt">
-            <div class="brandTop">
-              <img class="brandLogo" src="assets/coming-soon.png" alt="Na dopyt" loading="lazy" decoding="async">
-              <span class="badge"><span class="bDot"></span><span data-i18n="badge_request">na dopyt</span></span>
+            <div class="brandLogoBox">
+              <div class="lockIcon">🔒</div>
             </div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="req_title">Chceš niečo konkrétne?</div>
-              <p class="brandDesc" data-i18n="req_desc">
-                Pošli auto + rok + foto štýlu. My spravíme shortlist, ceny a reálny čas dodania.
-              </p>
-              <div class="brandMeta">
-                <span class="metaPill" data-i18n="req_meta1">Fitment check</span>
-                <span class="metaPill" data-i18n="req_meta2">Cenová optimalizácia</span>
-              </div>
-            </div>
-          </a>
 
-          <a class="brandCard"
-             href="#ako-to-funguje"
-             data-name="Aero lips diffusers bumpers oem frp"
-             data-use="street"
-             data-type="aero"
-             data-tags="oem frp"
-             title="Aero doplnky">
-            <div class="brandTop">
-              <img class="brandLogo" src="assets/coming-soon.png" alt="Aero" loading="lazy" decoding="async">
-              <span class="badge"><span class="bDot"></span><span data-i18n="badge_curated">curated</span></span>
-            </div>
             <div class="brandBody">
-              <div class="brandName" data-i18n="aero_title">Aero doplnky</div>
-              <p class="brandDesc" data-i18n="aero_desc">
-                Predné lipy, difúzory, spoilery, krídla. Keď nechceš widebody, ale chceš “stavbu”.
-              </p>
-              <div class="brandMeta">
-                <span class="metaPill">Aero</span>
-                <span class="metaPill" data-i18n="aero_meta1">OEM+ / šport</span>
-                <span class="metaPill" data-i18n="aero_meta2">Street</span>
-              </div>
+              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+              <p class="brandDesc" data-i18n="locked_desc">Ďalšia značka je v procese autorizácie.</p>
             </div>
-          </a>
+          </div>
+
+          <!-- LOCKED 2 -->
+          <div class="brandCard locked" aria-label="Locked brand">
+            <div class="brandTop">
+              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+            </div>
+
+            <div class="brandLogoBox">
+              <div class="lockIcon">🔒</div>
+            </div>
+
+            <div class="brandBody">
+              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+              <p class="brandDesc" data-i18n="locked_desc">Ďalšia značka je v procese autorizácie.</p>
+            </div>
+          </div>
+
+          <!-- LOCKED 3 -->
+          <div class="brandCard locked" aria-label="Locked brand">
+            <div class="brandTop">
+              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+            </div>
+
+            <div class="brandLogoBox">
+              <div class="lockIcon">🔒</div>
+            </div>
+
+            <div class="brandBody">
+              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+              <p class="brandDesc" data-i18n="locked_desc">Ďalšia značka je v procese autorizácie.</p>
+            </div>
+          </div>
+
+          <!-- LOCKED 4 -->
+          <div class="brandCard locked" aria-label="Locked brand">
+            <div class="brandTop">
+              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+            </div>
+
+            <div class="brandLogoBox">
+              <div class="lockIcon">🔒</div>
+            </div>
+
+            <div class="brandBody">
+              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+              <p class="brandDesc" data-i18n="locked_desc">Ďalšia značka je v procese autorizácie.</p>
+            </div>
+          </div>
         </div>
 
-        <p class="muted2" style="margin-top:16px;" data-i18n="brands_note">
-          Poznámka: dostupnosť a ceny sa menia podľa skladu a krajiny. Vždy ti pošleme reálnu ponuku (diely + doprava + termín).
+        <p class="muted2" style="margin-top:16px;" data-i18n="note">
+          Tip: keď chceš bodykit, pošli auto + rok + karosériu + link na štýl. Fitment riešime skôr, než minieš peniaze.
         </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- AKO TO FUNGUJE -->
-  <section id="ako-to-funguje">
-    <div class="wrap">
-      <div class="panel reveal" style="max-width:1200px; margin:0 auto; padding:34px;">
-        <span class="pill"><span class="dot"></span><span data-i18n="how_pill">proces • fitment • doprava</span></span>
-        <h2 style="margin-top:18px;" data-i18n="how_title">Ako to funguje</h2>
-        <p style="font-size:16px;" data-i18n="how_text">
-          Bodykit nie je “tričko”. Tu rozhoduje typ karosérie, facelift, šírky, materiál, montáž, lak, a reálna použiteľnosť.
-          Preto to robíme takto:
-        </p>
-
-        <div class="steps">
-          <div class="step">
-            <div class="stepNum">1</div>
-            <b data-i18n="how_s1_t">Zadanie</b>
-            <p class="muted2" data-i18n="how_s1_d">Auto, rok, karoséria, fotka štýlu + cieľ (street/track/show).</p>
-          </div>
-          <div class="step">
-            <div class="stepNum">2</div>
-            <b data-i18n="how_s2_t">Fitment check</b>
-            <p class="muted2" data-i18n="how_s2_d">Overíme kompatibilitu + čo treba dokúpiť (úchyty, rozšírenia, doplnky).</p>
-          </div>
-          <div class="step">
-            <div class="stepNum">3</div>
-            <b data-i18n="how_s3_t">Ponuka</b>
-            <p class="muted2" data-i18n="how_s3_d">Pošleme cenu, dopravu, termín, a odporúčanie k montáži/laku.</p>
-          </div>
-          <div class="step">
-            <div class="stepNum">4</div>
-            <b data-i18n="how_s4_t">Dodanie</b>
-            <p class="muted2" data-i18n="how_s4_d">Zabezpečíme logistiku a komunikáciu – ty riešiš len build.</p>
-          </div>
-        </div>
-
-        <div class="ctaRow" style="margin-top:18px;">
-          <a class="btn btnPrimary btnArrow" href="#dopyt" data-i18n="how_cta">Pošli dopyt <span class="arr">→</span></a>
-          <a class="btn btnGhost btnArrow" href="distribucia-kitov.html" data-i18n="how_cta2">Detail značiek <span class="arr">→</span></a>
-        </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq">
+  <section>
     <div class="wrap">
-      <div class="panel reveal" style="max-width:1200px; margin:0 auto; padding:34px;">
-        <span class="pill"><span class="dot"></span><span data-i18n="faq_pill">najčastejšie otázky</span></span>
-        <h2 style="margin-top:18px;" data-i18n="faq_title">FAQ</h2>
+      <div class="panel reveal">
+        <span class="pill"><span class="dot"></span><span data-i18n="faq_pill">FAQ</span></span>
+        <h2 style="margin-top:16px;" data-i18n="faq_title">Najčastejšie otázky</h2>
 
         <div class="faq">
           <details>
             <summary><span data-i18n="faq1_q">Je to plug & play?</span><span class="chev">⌄</span></summary>
             <div class="faqAns" data-i18n="faq1_a">
-              Väčšina kitov nie je 100% plug & play. Počítaj s prispôsobením, najmä pri widebody (rezanie, nity, úchyty, tmel).
-              Presne toto s tebou prejdeme ešte pred objednávkou.
+              Väčšina kitov nie je 100% plug & play. Pri widebody často rátaš s úpravami (rezanie, úchyty, doladenie).
+              My ti dopredu povieme, čo je realita pre tvoje auto.
             </div>
           </details>
 
           <details>
-            <summary><span data-i18n="faq2_q">Aké materiály existujú?</span><span class="chev">⌄</span></summary>
+            <summary><span data-i18n="faq2_q">Ako riešite kompatibilitu (fitment)?</span><span class="chev">⌄</span></summary>
             <div class="faqAns" data-i18n="faq2_a">
-              Najčastejšie FRP (fiberglass), PU, ABS a Carbon. Každý má plusy aj mínusy (váha, pružnosť, opravy, cena).
-              Podľa použitia ti odporučíme, čo je rozumné.
+              Overujeme karosériu, rok, facelift, šírky, prípadné verzie nárazníkov a doplnky. Potom ti pošleme odporúčanie,
+              čo presne objednať a čo bude treba riešiť pri montáži.
             </div>
           </details>
 
           <details>
-            <summary><span data-i18n="faq3_q">Viete zabezpečiť montáž?</span><span class="chev">⌄</span></summary>
+            <summary><span data-i18n="faq3_q">Aké materiály existujú?</span><span class="chev">⌄</span></summary>
             <div class="faqAns" data-i18n="faq3_a">
-              Vieme odporučiť overené dielne podľa regiónu a typu kitu. Pri niektorých projektoch vieme pomôcť koordináciou.
+              Najčastejšie FRP, PU/ABS a Carbon. Každý materiál má výhody aj nevýhody (pružnosť, váha, opravy, cena).
+              Podľa použitia ti odporučíme správnu voľbu.
             </div>
           </details>
 
           <details>
             <summary><span data-i18n="faq4_q">Ako dlho trvá dodanie?</span><span class="chev">⌄</span></summary>
             <div class="faqAns" data-i18n="faq4_a">
-              Závisí od značky a krajiny (EÚ/USA/JP) a od toho, či je kit skladom. V ponuke dostaneš presný odhad aj možnosti.
+              Závisí od výroby a dostupnosti. Vždy ti dáme reálny termín a možnosti dopravy ešte pred objednávkou.
             </div>
           </details>
         </div>
-
-        <p class="muted2" style="margin-top:14px;" data-i18n="faq_note">
-          Ak chceš, pošli rovno fotku auta + link na štýl, ktorý sa ti páči. Ušetríme si 3 kolá dohadovania.
-        </p>
       </div>
     </div>
   </section>
-
-  <!-- DOPYT -->
-  <section id="dopyt">
-    <div class="wrap">
-      <div class="panel reveal" style="max-width:1200px; margin:0 auto; padding:34px;">
-        <span class="pill"><span class="dot"></span><span data-i18n="inq_pill">dopyt • ponuka • fitment</span></span>
-        <h2 style="margin-top:18px;" data-i18n="inq_title">Nezáväzný dopyt</h2>
-        <p style="font-size:16px;" data-i18n="inq_text">
-          Napíš auto + rok + karosériu + čo chceš dosiahnuť. Ideálne prilož link/fotku štýlu.
-          Odpovieme rýchlo a priamo.
-        </p>
-
-        <div class="split" style="margin-top:14px;">
-          <div class="panel" style="padding:22px;">
-            <h3 data-i18n="inq_left_title">Čo poslať, aby to bolo rýchle</h3>
-            <p class="muted2" data-i18n="inq_left_text">
-              • značka/model/rok + karoséria (sedan/coupe…) <br>
-              • facelift/prefacelift (ak relevantné) <br>
-              • cieľ: street / track / show <br>
-              • požadovaná značka (ak máš) <br>
-              • rozpočet (aspoň približne) <br>
-              • link/fotka štýlu
-            </p>
-
-            <div class="ctaRow">
-              <a class="btn btnGhost btnArrow" href="index.html#kontakt" data-i18n="inq_btn2">Kontakt na webe <span class="arr">→</span></a>
-              <a class="btn btnPrimary btnArrow" href="mailto:info@remperformance.sk?subject=RACEM%20Bodykit%20dopyt&body=Auto%3A%0ARok%3A%0AKaroseria%3A%0ACiel%20(street%2Ftrack%2Fshow)%3A%0AZnacka%20kitu%20(ak%20mas)%3A%0ARozpocet%3A%0ALink%2Ffoto%20stylu%3A%0APoznamky%3A%0A" data-i18n="inq_btn1">
-                Poslať e-mail <span class="arr">→</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="panel" style="padding:22px;">
-            <h3 data-i18n="inq_right_title">Dôležité info (na rovinu)</h3>
-            <p class="muted2" data-i18n="inq_right_text">
-              • bodykit často vyžaduje úpravu a profesionálnu montáž <br>
-              • lakovanie riešiš až po “test fit” <br>
-              • pri niektorých kitoch je nutné rozšírenie blatníkov / rezanie <br>
-              • dostupnosť závisí od výroby a skladu
-            </p>
-            <p class="muted2" data-i18n="inq_right_text2">
-              My ti povieme, čo je realita pre tvoje auto ešte predtým, než minieš peniaze.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="foot">
-      <div>Prevádzkovateľ – <span class="red"><b>REM Performance</b></span></div>
-      <div>© 2026 REM Performance</div>
-      <div class="muted2">Bodykity • aero • fitment • logistika</div>
-    </div>
-  </footer>
 
   <script>
-    // ===== REVEAL ON SCROLL =====
+    // REVEAL
     const reveals = document.querySelectorAll('.reveal');
     const activate = () => {
       reveals.forEach(el => {
@@ -1025,235 +533,49 @@
     window.addEventListener('scroll', activate, { passive: true });
     window.addEventListener('load', activate);
 
-    // ===== FILTERING =====
-    const q = document.getElementById('q');
-    const use = document.getElementById('use');
-    const type = document.getElementById('type');
-    const grid = document.getElementById('brandGrid');
-    const chips = Array.from(document.querySelectorAll('.chip'));
-    let activeChip = 'all';
-
-    function norm(s){ return (s||'').toLowerCase().trim(); }
-
-    chips.forEach(c => {
-      c.addEventListener('click', () => {
-        chips.forEach(x => x.classList.remove('active'));
-        c.classList.add('active');
-        activeChip = c.getAttribute('data-chip') || 'all';
-        applyFilters();
-      });
-    });
-
-    function applyFilters(){
-      const query = norm(q.value);
-      const u = use.value;
-      const t = type.value;
-
-      const cards = Array.from(grid.querySelectorAll('.brandCard'));
-      let shown = 0;
-
-      cards.forEach(card => {
-        const name = norm(card.getAttribute('data-name'));
-        const cu = card.getAttribute('data-use') || 'all';
-        const ct = card.getAttribute('data-type') || 'all';
-        const tags = norm(card.getAttribute('data-tags'));
-
-        const okQ = !query || name.includes(query);
-        const okU = (u === 'all') || (cu === u);
-        const okT = (t === 'all') || (ct === t);
-        const okC = (activeChip === 'all') || tags.includes(activeChip);
-
-        const show = okQ && okU && okT && okC;
-        card.style.display = show ? 'block' : 'none';
-        if(show) shown++;
-      });
-
-      // Ak nič nezostalo, zobrazíme “hint”
-      let hint = document.getElementById('noResults');
-      if(!hint){
-        hint = document.createElement('div');
-        hint.id = 'noResults';
-        hint.style.marginTop = '14px';
-        hint.style.padding = '14px';
-        hint.style.border = '1px dashed rgba(255,255,255,0.14)';
-        hint.style.borderRadius = '16px';
-        hint.style.color = 'rgba(255,255,255,0.75)';
-        hint.style.letterSpacing = '.08em';
-        hint.style.textTransform = 'uppercase';
-        hint.style.fontWeight = '900';
-        hint.style.fontSize = '12px';
-        hint.textContent = 'Nič sa nenašlo – skús zmeniť filter alebo napíš dopyt.';
-        grid.parentElement.appendChild(hint);
-      }
-      hint.style.display = shown ? 'none' : 'block';
-    }
-
-    [q, use, type].forEach(el => el.addEventListener('input', applyFilters));
-    [use, type].forEach(el => el.addEventListener('change', applyFilters));
-    applyFilters();
-
-    // ===== I18N (SK/EN) =====
+    // I18N
     const dict = {
       sk: {
-        hero_pill: "aero • widebody • streetfighter • drift",
-        hero_title: "Bodykity & aero",
-        hero_text: "Autorizované značky, reálna kompatibilita a dodanie na mieru. Povieš auto, cieľ a rozpočet – my vyberieme kit, overíme ho a vybavíme logistiku.",
-        hero_cta1: "Značky",
-        hero_cta2: "Ako to funguje",
-        hero_cta3: "Nezáväzný dopyt",
-        hero_card_title: "RACEM – riešime to na rovinu",
-        hero_card_text: "Nie si “len objednávka”. Keď niečo nedáva zmysel (fitment, materiál, montáž, homologácia), povieme to hneď a navrhneme lepšiu cestu.",
-        stat1_b: "Fitment", stat1_s: "overenie kompatibility",
-        stat2_b: "Logistika", stat2_s: "SR • ČR • EÚ",
-        stat3_b: "Riešenia", stat3_s: "kit • aero • doplnky",
-        stat4_b: "Zmysel", stat4_s: "cieľ & rozpočet",
-
-        brands_title: "Značky",
-        brands_sub: "Vyber si štýl a typ. Dole máš filter podľa kategórie, materiálu a použitia.",
-        brands_cta: "Chcem ponuku",
-        filter_use_all: "Použitie: všetko",
-        filter_use_street: "Street",
-        filter_use_track: "Track",
-        filter_use_show: "Show",
-        filter_type_all: "Typ: všetko",
-        filter_type_bumpers: "Nárazníky",
-        filter_type_diffusers: "Difúzory",
-        chip_all: "Všetko",
-        chip_premium: "Premium",
-        chip_oem: "OEM+ look",
-        chip_aggr: "Agresívne",
-        badge_official: "oficiálne",
-        badge_soon: "čoskoro",
-        badge_request: "na dopyt",
-        badge_curated: "curated",
-        sfxla_desc: "Brutálny streetfighter dizajn, ostré línie, výrazné rozšírenia. Pre buildy, ktoré majú byť “na prvú”.",
-        cs_title: "Ďalšie značky",
-        cs_desc: "Pridávame ďalšie svetové mená. Ak chceš konkrétnu značku, napíš – vybavíme.",
-        cs_meta1: "Na dopyt",
-        cs_meta2: "Zahraniční dodávatelia",
-        req_title: "Chceš niečo konkrétne?",
-        req_desc: "Pošli auto + rok + foto štýlu. My spravíme shortlist, ceny a reálny čas dodania.",
-        req_meta1: "Fitment check",
-        req_meta2: "Cenová optimalizácia",
-        aero_title: "Aero doplnky",
-        aero_desc: "Predné lipy, difúzory, spoilery, krídla. Keď nechceš widebody, ale chceš “stavbu”.",
-        aero_meta1: "OEM+ / šport",
-        aero_meta2: "Street",
-        brands_note: "Poznámka: dostupnosť a ceny sa menia podľa skladu a krajiny. Vždy ti pošleme reálnu ponuku (diely + doprava + termín).",
-
-        how_pill: "proces • fitment • doprava",
-        how_title: "Ako to funguje",
-        how_text: "Bodykit nie je “tričko”. Tu rozhoduje typ karosérie, facelift, šírky, materiál, montáž, lak, a reálna použiteľnosť. Preto to robíme takto:",
-        how_s1_t: "Zadanie", how_s1_d: "Auto, rok, karoséria, fotka štýlu + cieľ (street/track/show).",
-        how_s2_t: "Fitment check", how_s2_d: "Overíme kompatibilitu + čo treba dokúpiť (úchyty, rozšírenia, doplnky).",
-        how_s3_t: "Ponuka", how_s3_d: "Pošleme cenu, dopravu, termín, a odporúčanie k montáži/laku.",
-        how_s4_t: "Dodanie", how_s4_d: "Zabezpečíme logistiku a komunikáciu – ty riešiš len build.",
-        how_cta: "Pošli dopyt",
-        how_cta2: "Detail značiek",
-
-        faq_pill: "najčastejšie otázky",
-        faq_title: "FAQ",
+        pill: "autorizovaný predaj • bodykity • aero",
+        title: "Autorizovaní predajcovia",
+        subtitle: "Toto sú značky, pri ktorých máme priame napojenie a vieme riešiť reálnu dostupnosť, fitment a objednávku bez chaosu. Ďalšie autorizácie odomykáme postupne.",
+        official: "oficiálne",
+        locked: "locked",
+        locked_title: "Odomykáme čoskoro",
+        locked_desc: "Ďalšia značka je v procese autorizácie.",
+        sfxla_desc: "Brutálny streetfighter dizajn, ostré línie a výrazné rozšírenia. Pre buildy, ktoré majú byť “na prvú”.",
+        note: "Tip: keď chceš bodykit, pošli auto + rok + karosériu + link na štýl. Fitment riešime skôr, než minieš peniaze.",
+        faq_pill: "FAQ",
+        faq_title: "Najčastejšie otázky",
         faq1_q: "Je to plug & play?",
-        faq1_a: "Väčšina kitov nie je 100% plug & play. Počítaj s prispôsobením, najmä pri widebody (rezanie, nity, úchyty, tmel). Presne toto s tebou prejdeme ešte pred objednávkou.",
-        faq2_q: "Aké materiály existujú?",
-        faq2_a: "Najčastejšie FRP (fiberglass), PU, ABS a Carbon. Každý má plusy aj mínusy (váha, pružnosť, opravy, cena). Podľa použitia ti odporučíme, čo je rozumné.",
-        faq3_q: "Viete zabezpečiť montáž?",
-        faq3_a: "Vieme odporučiť overené dielne podľa regiónu a typu kitu. Pri niektorých projektoch vieme pomôcť koordináciou.",
+        faq1_a: "Väčšina kitov nie je 100% plug & play. Pri widebody často rátaš s úpravami (rezanie, úchyty, doladenie). My ti dopredu povieme, čo je realita pre tvoje auto.",
+        faq2_q: "Ako riešite kompatibilitu (fitment)?",
+        faq2_a: "Overujeme karosériu, rok, facelift, šírky, prípadné verzie nárazníkov a doplnky. Potom ti pošleme odporúčanie, čo presne objednať a čo bude treba riešiť pri montáži.",
+        faq3_q: "Aké materiály existujú?",
+        faq3_a: "Najčastejšie FRP, PU/ABS a Carbon. Každý materiál má výhody aj nevýhody (pružnosť, váha, opravy, cena). Podľa použitia ti odporučíme správnu voľbu.",
         faq4_q: "Ako dlho trvá dodanie?",
-        faq4_a: "Závisí od značky a krajiny (EÚ/USA/JP) a od toho, či je kit skladom. V ponuke dostaneš presný odhad aj možnosti.",
-        faq_note: "Ak chceš, pošli rovno fotku auta + link na štýl, ktorý sa ti páči. Ušetríme si 3 kolá dohadovania.",
-
-        inq_pill: "dopyt • ponuka • fitment",
-        inq_title: "Nezáväzný dopyt",
-        inq_text: "Napíš auto + rok + karosériu + čo chceš dosiahnuť. Ideálne prilož link/fotku štýlu. Odpovieme rýchlo a priamo.",
-        inq_left_title: "Čo poslať, aby to bolo rýchle",
-        inq_left_text: "• značka/model/rok + karoséria (sedan/coupe…) <br>• facelift/prefacelift (ak relevantné) <br>• cieľ: street / track / show <br>• požadovaná značka (ak máš) <br>• rozpočet (aspoň približne) <br>• link/fotka štýlu",
-        inq_btn1: "Poslať e-mail",
-        inq_btn2: "Kontakt na webe",
-        inq_right_title: "Dôležité info (na rovinu)",
-        inq_right_text: "• bodykit často vyžaduje úpravu a profesionálnu montáž <br>• lakovanie riešiš až po “test fit” <br>• pri niektorých kitoch je nutné rozšírenie blatníkov / rezanie <br>• dostupnosť závisí od výroby a skladu",
-        inq_right_text2: "My ti povieme, čo je realita pre tvoje auto ešte predtým, než minieš peniaze."
+        faq4_a: "Závisí od výroby a dostupnosti. Vždy ti dáme reálny termín a možnosti dopravy ešte pred objednávkou."
       },
-
       en: {
-        hero_pill: "aero • widebody • streetfighter • drift",
-        hero_title: "Bodykits & aero",
-        hero_text: "Official brands, real fitment checks, and custom delivery. You tell us the car, goal, and budget — we shortlist, verify and handle logistics.",
-        hero_cta1: "Brands",
-        hero_cta2: "How it works",
-        hero_cta3: "Request a quote",
-        hero_card_title: "RACEM — straight talk only",
-        hero_card_text: "You’re not just an order. If something doesn’t make sense (fitment, material, install, compliance), we’ll say it and propose a better route.",
-        stat1_b: "Fitment", stat1_s: "compatibility check",
-        stat2_b: "Logistics", stat2_s: "SK • CZ • EU",
-        stat3_b: "Solutions", stat3_s: "kits • aero • parts",
-        stat4_b: "Sense", stat4_s: "goal & budget",
-
-        brands_title: "Brands",
-        brands_sub: "Pick a style and type. Use filters below for category, material, and usage.",
-        brands_cta: "Get a quote",
-        filter_use_all: "Use: all",
-        filter_use_street: "Street",
-        filter_use_track: "Track",
-        filter_use_show: "Show",
-        filter_type_all: "Type: all",
-        filter_type_bumpers: "Bumpers",
-        filter_type_diffusers: "Diffusers",
-        chip_all: "All",
-        chip_premium: "Premium",
-        chip_oem: "OEM+ look",
-        chip_aggr: "Aggressive",
-        badge_official: "official",
-        badge_soon: "soon",
-        badge_request: "on request",
-        badge_curated: "curated",
+        pill: "authorized sales • bodykits • aero",
+        title: "Authorized dealers",
+        subtitle: "These are the brands where we have direct access and can handle real availability, fitment verification, and ordering without chaos. More authorizations are unlocking soon.",
+        official: "official",
+        locked: "locked",
+        locked_title: "Unlocking soon",
+        locked_desc: "Another brand authorization is in progress.",
         sfxla_desc: "Brutal streetfighter design, sharp lines, bold overfenders — for builds that must hit instantly.",
-        cs_title: "More brands",
-        cs_desc: "We’re adding more global names. If you want a specific brand, message us — we’ll source it.",
-        cs_meta1: "On request",
-        cs_meta2: "International suppliers",
-        req_title: "Want something specific?",
-        req_desc: "Send car + year + a style reference. We’ll build a shortlist, prices and realistic ETA.",
-        req_meta1: "Fitment check",
-        req_meta2: "Price optimization",
-        aero_title: "Aero add-ons",
-        aero_desc: "Front lips, diffusers, spoilers, wings. When you don’t want widebody but still want presence.",
-        aero_meta1: "OEM+ / sport",
-        aero_meta2: "Street",
-        brands_note: "Note: pricing & availability change by region and stock. We always send a real quote (parts + shipping + ETA).",
-
-        how_pill: "process • fitment • shipping",
-        how_title: "How it works",
-        how_text: "A bodykit isn’t a t-shirt. Body type, facelift, widths, material, install and paint matter. That’s why we do it like this:",
-        how_s1_t: "Brief", how_s1_d: "Car, year, body type + style reference + goal (street/track/show).",
-        how_s2_t: "Fitment check", how_s2_d: "We verify compatibility + what else you’ll need (hardware, add-ons).",
-        how_s3_t: "Quote", how_s3_d: "We send pricing, shipping, ETA, and install/paint notes.",
-        how_s4_t: "Delivery", how_s4_d: "We handle logistics & comms — you focus on the build.",
-        how_cta: "Send request",
-        how_cta2: "Brand details",
-
-        faq_pill: "common questions",
-        faq_title: "FAQ",
+        note: "Tip: for a quote, send your car + year + body type + a style reference. We verify fitment before you spend money.",
+        faq_pill: "FAQ",
+        faq_title: "Frequently asked questions",
         faq1_q: "Is it plug & play?",
-        faq1_a: "Most kits aren’t 100% plug & play. Expect adjustments, especially for widebody (cutting, rivets, brackets, filler). We’ll clarify before you buy.",
-        faq2_q: "What materials are there?",
-        faq2_a: "Most common: FRP, PU, ABS and Carbon. Each has pros/cons (weight, flexibility, repairs, price). We’ll recommend what makes sense for your use.",
-        faq3_q: "Can you help with installation?",
-        faq3_a: "We can recommend proven shops by region and kit type, and help coordinate on larger projects.",
+        faq1_a: "Most kits are not 100% plug & play. Widebody often requires adjustments (cutting, brackets, fine-tuning). We’ll tell you the real situation for your car upfront.",
+        faq2_q: "How do you verify fitment?",
+        faq2_a: "We check body type, year, facelift, widths, bumper versions and required add-ons. Then we send you a recommendation on what to order and what to expect during installation.",
+        faq3_q: "What materials are available?",
+        faq3_a: "Most common: FRP, PU/ABS and Carbon. Each has pros/cons (flex, weight, repairability, price). We recommend what makes sense for your use.",
         faq4_q: "How long is delivery?",
-        faq4_a: "Depends on brand, region (EU/USA/JP) and stock status. Your quote includes a realistic ETA and options.",
-        faq_note: "Tip: send a photo of your car + a link/reference style. Saves multiple back-and-forth rounds.",
-
-        inq_pill: "request • quote • fitment",
-        inq_title: "Request a quote",
-        inq_text: "Send the car + year + body type + what you want to achieve. Ideally attach a style reference. We reply fast and straight.",
-        inq_left_title: "What to send for fastest results",
-        inq_left_text: "• make/model/year + body type (sedan/coupe…) <br>• facelift/pre-facelift (if relevant) <br>• goal: street / track / show <br>• desired brand (if any) <br>• budget (approx) <br>• style link/photo",
-        inq_btn1: "Send email",
-        inq_btn2: "Website contact",
-        inq_right_title: "Important (straight talk)",
-        inq_right_text: "• kits often need professional install & adjustments <br>• paint comes after test-fit <br>• widebody may require cutting/overfenders <br>• availability depends on production & stock",
-        inq_right_text2: "We tell you the real situation for your car before you spend money."
+        faq4_a: "Depends on production and stock. We always provide a realistic ETA and shipping options before you confirm the order."
       }
     };
 
@@ -1265,24 +587,11 @@
       btnSK.classList.toggle('active', lang === 'sk');
       btnEN.classList.toggle('active', lang === 'en');
 
-      // update i18n text
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const val = dict[lang]?.[key];
-        if(typeof val === 'string'){
-          el.innerHTML = val;
-        }
+        if(typeof val === 'string') el.innerHTML = val;
       });
-
-      // update selects option labels
-      // (options have data-i18n too, so the loop above already handles them)
-      // update "no results" hint if exists
-      const hint = document.getElementById('noResults');
-      if(hint){
-        hint.textContent = (lang === 'en')
-          ? 'No results — try different filters or send a request.'
-          : 'Nič sa nenašlo – skús zmeniť filter alebo napíš dopyt.';
-      }
     }
 
     btnSK.addEventListener('click', () => setLang('sk'));
