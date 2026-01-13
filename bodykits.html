@@ -573,6 +573,55 @@
       font-size: 22px;
     }
 
+    /* ===== AUTHORIZED BRANDS (FULL WIDTH, NO PANEL) ===== */
+    .brandsSection{
+      padding: 110px 0;
+      position: relative;
+    }
+    .brandsSection::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(179,31,36,0.12), transparent 55%),
+        radial-gradient(circle at 86% 70%, rgba(255,255,255,0.05), transparent 60%);
+      opacity: 1;
+    }
+    .brandsInner{
+      width:100%;
+      padding: 0 6vw;
+      position:relative;
+      z-index:1;
+    }
+    .brandsHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 22px;
+      flex-wrap:wrap;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 18px;
+    }
+    .brandsHeadLeft{
+      max-width: 980px;
+    }
+    .brandsTitle{
+      margin: 16px 0 10px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: clamp(28px, 4.8vw, 54px);
+      line-height: 1.05;
+    }
+    .brandsLead{
+      margin:0;
+      color: rgba(255,255,255,0.78);
+      line-height:1.7;
+      font-size: 16px;
+      max-width: 980px;
+    }
+
     /* ===== FAQ ===== */
     .faq{
       display:grid;
@@ -647,6 +696,10 @@
       .brand-mini img{ height:60px; }
       .slider{ height: min(64vh, 640px); }
       .heroOverlay{ left:18px; right:18px; bottom: 26px; }
+
+      .brandsInner{ padding: 0 18px; }
+      .brandsHead{ padding-bottom: 14px; margin-bottom: 14px; }
+      .brandsTitle{ margin-top: 14px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
@@ -720,88 +773,90 @@
     </div>
   </section>
 
-  <!-- AUTHORIZED BRANDS -->
-  <section>
-    <div class="wrap">
-      <div class="panel reveal">
-        <span class="pill"><span class="dot"></span><span data-i18n="brands_pill">naša ponuka značiek</span></span>
-        <h2 style="margin-top:16px;" data-i18n="brands_title">Svetové značky</h2>
-        <p data-i18n="brands_text">
-          Klikni na značku a otvorí sa jej stránka. Postupne odomykáme ďalšie autorizácie.
-        </p>
-
-        <div class="brandGrid">
-
-          <!-- SFXLA -->
-          <a class="brandCard" href="distribucia-kitov.html#streetfighter-la" title="Streetfighter LA">
-            <div class="brandTop">
-              <span class="badge"><span class="bDot"></span><span data-i18n="official">USA</span></span>
-            </div>
-            <div class="brandLogoBox">
-              <img class="brandLogo" src="assets/SFXLA_small.avif" alt="Streetfighter LA logo" loading="lazy" decoding="async">
-            </div>
-            <div class="brandBody">
-              <div class="brandName">Streetfighter LA</div>
-              <p class="brandDesc" data-i18n="sfxla_desc">
-                BMW E/F/G , Camaro gen. 5 / 6, EVO X
-              </p>
-              <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-            </div>
-          </a>
-
-          <!-- LOCKED 1 -->
-          <a class="brandCard locked" href="bodykits-znacka-1.html" title="Locked brand 1">
-            <div class="brandTop">
-              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-            </div>
-            <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-              <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-              <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
-            </div>
-          </a>
-
-          <!-- LOCKED 2 -->
-          <a class="brandCard locked" href="bodykits-znacka-2.html" title="Locked brand 2">
-            <div class="brandTop">
-              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-            </div>
-            <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-              <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-              <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
-            </div>
-          </a>
-
-          <!-- LOCKED 3 -->
-          <a class="brandCard locked" href="bodykits-znacka-3.html" title="Locked brand 3">
-            <div class="brandTop">
-              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-            </div>
-            <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-              <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-              <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
-            </div>
-          </a>
-
-          <!-- LOCKED 4 -->
-          <a class="brandCard locked" href="bodykits-znacka-4.html" title="Locked brand 4">
-            <div class="brandTop">
-              <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-            </div>
-            <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-            <div class="brandBody">
-              <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-              <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-              <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
-            </div>
-          </a>
-
+  <!-- AUTHORIZED BRANDS (FULL WIDTH, NO PANEL) -->
+  <section class="brandsSection">
+    <div class="brandsInner">
+      <div class="brandsHead reveal">
+        <div class="brandsHeadLeft">
+          <span class="pill"><span class="dot"></span><span data-i18n="brands_pill">naša ponuka značiek</span></span>
+          <div class="brandsTitle" data-i18n="brands_title">Svetové značky</div>
+          <p class="brandsLead" data-i18n="brands_text">
+            Klikni na značku a otvorí sa jej stránka. Postupne odomykáme ďalšie autorizácie.
+          </p>
         </div>
+      </div>
+
+      <div class="brandGrid reveal">
+
+        <!-- SFXLA -->
+        <a class="brandCard" href="distribucia-kitov.html#streetfighter-la" title="Streetfighter LA">
+          <div class="brandTop">
+            <span class="badge"><span class="bDot"></span><span data-i18n="official">USA</span></span>
+          </div>
+          <div class="brandLogoBox">
+            <img class="brandLogo" src="assets/SFXLA_small.avif" alt="Streetfighter LA logo" loading="lazy" decoding="async">
+          </div>
+          <div class="brandBody">
+            <div class="brandName">Streetfighter LA</div>
+            <p class="brandDesc" data-i18n="sfxla_desc">
+              BMW E/F/G , Camaro gen. 5 / 6, EVO X
+            </p>
+            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
+          </div>
+        </a>
+
+        <!-- LOCKED 1 -->
+        <a class="brandCard locked" href="bodykits-znacka-1.html" title="Locked brand 1">
+          <div class="brandTop">
+            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+          </div>
+          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
+          <div class="brandBody">
+            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
+            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+          </div>
+        </a>
+
+        <!-- LOCKED 2 -->
+        <a class="brandCard locked" href="bodykits-znacka-2.html" title="Locked brand 2">
+          <div class="brandTop">
+            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+          </div>
+          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
+          <div class="brandBody">
+            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
+            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+          </div>
+        </a>
+
+        <!-- LOCKED 3 -->
+        <a class="brandCard locked" href="bodykits-znacka-3.html" title="Locked brand 3">
+          <div class="brandTop">
+            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+          </div>
+          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
+          <div class="brandBody">
+            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
+            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+          </div>
+        </a>
+
+        <!-- LOCKED 4 -->
+        <a class="brandCard locked" href="bodykits-znacka-4.html" title="Locked brand 4">
+          <div class="brandTop">
+            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
+          </div>
+          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
+          <div class="brandBody">
+            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
+            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
+            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
