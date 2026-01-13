@@ -1312,6 +1312,76 @@
 }
 
     /* ====== BODYKIT BRANDS STRIP (INDEX) ====== */
+    /* ====== BRAND TILE WITH NAME ====== */
+.brand-tile{
+  cursor:pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.brand-tile:hover{
+  transform: translateY(-4px);
+  border-color: rgba(179,31,36,0.45);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.60);
+}
+
+.brand-tile .brand-inner{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  text-align:center;
+}
+
+.brand-tile .brand-logo{
+  width:100%;
+  height:72%;
+  object-fit:contain;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+  opacity:.95;
+}
+
+.brand-tile .brand-name{
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 1000;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.2;
+  padding: 0 6px;
+}
+
+.brand-tile .brand-sub{
+  font-size: 10px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.2;
+  margin-top:-4px;
+}
+
+/* a11y link reset */
+.brand-link{
+  width:100%;
+  height:100%;
+  display:block;
+  text-decoration:none;
+  color:inherit;
+}
+
+/* coming soon tile v rovnakom štýle, len "locked" vibe */
+.brand-tile.is-empty{
+  cursor: default;
+}
+.brand-tile.is-empty:hover{
+  transform:none;
+  border-color: rgba(255,255,255,0.10);
+  box-shadow:none;
+}
+.brand-tile.is-empty .brand-name{
+  color: rgba(255,255,255,0.55);
+}
 .brands-wrap{
   margin-top: 16px;
 }
