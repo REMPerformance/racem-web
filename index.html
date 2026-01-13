@@ -1,34 +1,21 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
   <meta charset="UTF-8">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-059W7F7HZZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-    gtag('config', 'G-059W7F7HZZ');
-  </script>
-
-  <!-- ✅ SEO TITLE -->
+  <!-- ✅ SEO -->
   <title>RACEM | Performance diely & mobilný autoservis</title>
-
-  <!-- ✅ SEO DESCRIPTION (Google snippet) -->
   <meta name="description" content="RACEM (REM Performance) – performance autodiely, nezohnateľné diely na mieru, overenie kompatibility a mobilný autoservis. Západné Slovensko.">
-
-  <!-- ✅ Canonical (www vs non-www, duplicate content) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://racem.sk/">
 
-  <!-- ✅ Open Graph (FB/IG/WhatsApp/Discord) -->
+  <!-- ✅ Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="RACEM">
   <meta property="og:title" content="RACEM | Performance diely & mobilný autoservis">
@@ -41,9 +28,6 @@
   <meta name="twitter:title" content="RACEM | Performance diely & mobilný autoservis">
   <meta name="twitter:description" content="Performance diely, nezohnateľné autodiely a mobilný autoservis. Overíme kompatibilitu, zjednáme cenu, dodáme.">
   <meta name="twitter:image" content="https://racem.sk/assets/og-racem.jpg">
-
-  <!-- ✅ Viewport -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     :root{
@@ -75,7 +59,7 @@
       overflow-x:hidden;
     }
 
-    /* ✅ SR-ONLY (SEO text pre Google, neviditeľné pre ľudí) */
+    /* ✅ SR-ONLY (SEO text, neviditeľné pre ľudí) */
     .sr-only{
       position:absolute;
       width:1px;height:1px;
@@ -266,14 +250,13 @@
     .nav-links a:hover::after{ width: 125%; }
     .nav-links a:active{ transform: translateY(1px); }
 
-    /* ===== HVIEZDNE STROPY – špeciálny hover efekt ===== */
+    /* ===== HVIEZDNE STROPY – hover efekt ===== */
     .nav-links a.nav-stars{
       position:relative;
       padding:6px 18px;
       border-radius:999px;
       overflow:visible;
     }
-
     .nav-links a.nav-stars::before{
       content:"";
       position:absolute;
@@ -297,7 +280,6 @@
         box-shadow .32s ease;
       z-index:-1;
     }
-
     .nav-links a.nav-stars::after{
       content:"✶ ✦ ✸";
       position:absolute;
@@ -315,12 +297,10 @@
       box-shadow:none;
     }
     .nav-links a.nav-stars:hover::after{ width:auto; }
-
     .nav-links a.nav-stars:hover{
       color:#ffffff;
       text-shadow:0 0 12px rgba(124,58,237,0.65);
     }
-
     .nav-links a.nav-stars:hover::before{
       opacity:1;
       transform:scale(1);
@@ -329,13 +309,11 @@
         0 14px 36px rgba(0,0,0,0.85);
       animation: navStarsBg 4s linear infinite;
     }
-
     .nav-links a.nav-stars:hover::after{
       opacity:1;
       transform:translateX(-50%) translateY(0);
       animation: navStarsTwinkle 1.6s ease-in-out infinite;
     }
-
     @keyframes navStarsBg{
       0%{ background-position:0 0, 0 0, 0 0, 0 0; }
       50%{ background-position:2px -3px, -2px 3px, 1px 2px, 0 0; }
@@ -1207,347 +1185,275 @@
         bottom:12px;
         width: calc(100vw - 24px);
       }
-      .cookieBtn{ margin-left:0; }
+      .cookieBtn{ margin-left:0; width:100%; justify-content:center; }
     }
+
     /* ====== MOBILE COMPACT PATCH (PC nezmenené) ====== */
-@media (max-width: 560px){
+    @media (max-width: 560px){
+      section{ padding: 52px 0 !important; }
+      .hero{ padding: 46px 0 40px !important; }
+      .wrap{ padding: 0 14px !important; }
 
-  /* menej “vzduchu” všade */
-  section{ padding: 52px 0 !important; }
-  .hero{ padding: 46px 0 40px !important; }
+      h1{ font-size: 34px !important; line-height: 1.08 !important; }
+      h2{ font-size: 24px !important; line-height: 1.15 !important; }
+      h3{ font-size: 16px !important; }
 
-  /* wrap menej široké okraje, viac miesta na obsah */
-  .wrap{ padding: 0 14px !important; }
+      p, .subline{
+        font-size: 14px !important;
+        line-height: 1.65 !important;
+      }
 
-  /* nadpisy menšie + menej agresívne */
-  h1{ font-size: 34px !important; line-height: 1.08 !important; }
-  h2{ font-size: 24px !important; line-height: 1.15 !important; }
-  h3{ font-size: 16px !important; }
+      .hero-logo-inline{ height: 52px !important; }
+      .hero-slogan-image{ height: 22px !important; }
+      .hero-dash{ font-size: 18px !important; }
 
-  p, .subline{
-    font-size: 14px !important;
-    line-height: 1.65 !important;
-  }
+      .panel{ padding: 16px !important; border-radius: 16px !important; }
+      .heroCard{ padding: 16px !important; border-radius: 16px !important; }
 
-  /* hero logo + slogan menšie, nech to nevyzerá jak billboard */
-  .hero-logo-inline{ height: 52px !important; }
-  .hero-slogan-image{ height: 22px !important; }
-  .hero-dash{ font-size: 18px !important; }
+      .pill{
+        font-size: 10px !important;
+        padding: 6px 10px !important;
+        letter-spacing: .45px !important;
+      }
 
-  /* panely menej “tučné” */
-  .panel{ padding: 16px !important; border-radius: 16px !important; }
-  .heroCard{ padding: 16px !important; border-radius: 16px !important; }
+      .ctaRow{ gap: 10px !important; }
+      .ctaRow .btn{
+        width: calc(50% - 5px) !important;
+        padding: 12px 12px !important;
+        font-size: 12px !important;
+        border-radius: 12px !important;
+      }
+      .ctaRow .btn:only-child{ width: 100% !important; }
 
-  /* pills menšie */
-  .pill{
-    font-size: 10px !important;
-    padding: 6px 10px !important;
-    letter-spacing: .45px !important;
-  }
+      .stat{ padding: 12px !important; border-radius: 14px !important; }
+      .stat b{ font-size: 15px !important; }
 
-  /* CTA: namiesto 1-button-per-row urob 2 v riadku (kompaktnejšie) */
-  .ctaRow{
-    gap: 10px !important;
-  }
-  .ctaRow .btn{
-    width: calc(50% - 5px) !important;
-    padding: 12px 12px !important;
-    font-size: 12px !important;
-    border-radius: 12px !important;
-  }
+      .nav-centered{ padding: 10px 0 !important; gap: 10px !important; }
+      .brand-mini img{ height: 42px !important; }
+      .nav-links{ gap: 10px !important; }
+      .nav-links a{
+        font-size: 11px !important;
+        letter-spacing: .10em !important;
+        padding: 4px 0 !important;
+      }
+      .nav-links a::after{ bottom: -8px !important; }
 
-  /* ak je CTA len jeden button, nech je na plnú */
-  .ctaRow .btn:only-child{
-    width: 100% !important;
-  }
+      .pill--bazos, .pill--catalog{ padding: 8px 12px !important; }
+      .pill-bazos-text{ font-size: 12px !important; }
 
-  /* štatistiky menšie, nech netlačia */
-  .stat{ padding: 12px !important; border-radius: 14px !important; }
-  .stat b{ font-size: 15px !important; }
+      .stock-title{ font-size: 10px !important; letter-spacing: .10em !important; }
+      .stock-price{ font-size: 13px !important; }
+      .stock-price-suffix{ font-size: 10px !important; }
 
-  /* NAV: sprav to kompaktnejšie, nech header nezaberie 1/3 obrazovky */
-  .nav-centered{
-    padding: 10px 0 !important;
-    gap: 10px !important;
-  }
-  .brand-mini img{ height: 42px !important; }
+      .modal-info{ padding: 16px 14px 14px !important; }
+      .modal-price{ font-size: 20px !important; }
+    }
 
-  .nav-links{
-    gap: 10px !important;
-  }
-  .nav-links a{
-    font-size: 11px !important;
-    letter-spacing: .10em !important;
-    padding: 4px 0 !important;
-  }
-  .nav-links a::after{ bottom: -8px !important; }
-
-  /* pill-row (Bazoš/Katalóg) aby neboli obrovské */
-  .pill--bazos,
-  .pill--catalog{
-    padding: 8px 12px !important;
-  }
-  .pill-bazos-text{ font-size: 12px !important; }
-
-  /* stock karty jemne menšie texty */
-  .stock-title{ font-size: 10px !important; letter-spacing: .10em !important; }
-  .stock-price{ font-size: 13px !important; }
-  .stock-price-suffix{ font-size: 10px !important; }
-
-  /* modal na mobile – menej paddingu */
-  .modal-info{ padding: 16px 14px 14px !important; }
-  .modal-price{ font-size: 20px !important; }
-
-  /* cookie bar už má breakpoint, ale ešte to zjemníme */
-  .cookieText{ font-size: 12px !important; }
-  .cookieBtn{ width: 100% !important; justify-content: center !important; }
-}
-
-/* EXTRA: medzi 561–980 nech to nie je “tablet = obor” */
-@media (max-width: 980px){
-  section{ padding: 64px 0 !important; }
-  .hero{ padding: 56px 0 48px !important; }
-  .panel{ padding: 20px !important; }
-  .heroCard{ padding: 18px !important; }
-}
+    /* EXTRA: medzi 561–980 nech to nie je “tablet = obor” */
+    @media (max-width: 980px){
+      section{ padding: 64px 0 !important; }
+      .hero{ padding: 56px 0 48px !important; }
+      .panel{ padding: 20px !important; }
+      .heroCard{ padding: 18px !important; }
+    }
 
     /* ====== BODYKIT BRANDS STRIP (INDEX) ====== */
-    /* ====== BRAND TILE WITH NAME ====== */
-.brand-tile{
-  cursor:pointer;
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
-}
-.brand-tile:hover{
-  transform: translateY(-4px);
-  border-color: rgba(179,31,36,0.45);
-  box-shadow: 0 18px 55px rgba(0,0,0,0.60);
-}
-
-.brand-tile .brand-inner{
-  width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  text-align:center;
-}
-
-.brand-tile .brand-logo{
-  width:100%;
-  height:72%;
-  object-fit:contain;
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
-  opacity:.95;
-}
-
-.brand-tile .brand-name{
-  font-size: 10.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  font-weight: 1000;
-  color: rgba(255,255,255,0.88);
-  line-height: 1.2;
-  padding: 0 6px;
-}
-
-.brand-tile .brand-sub{
-  font-size: 10px;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.2;
-  margin-top:-4px;
-}
-
-/* a11y link reset */
-.brand-link{
-  width:100%;
-  height:100%;
-  display:block;
-  text-decoration:none;
-  color:inherit;
-}
-
-/* coming soon tile v rovnakom štýle, len "locked" vibe */
-.brand-tile.is-empty{
-  cursor: default;
-}
-.brand-tile.is-empty:hover{
-  transform:none;
-  border-color: rgba(255,255,255,0.10);
-  box-shadow:none;
-}
-.brand-tile.is-empty .brand-name{
-  color: rgba(255,255,255,0.55);
-}
-.brands-wrap{
-  margin-top: 16px;
-}
+    .brands-wrap{ margin-top: 16px; }
 
     .brand-grid{
-  display:grid;
-  grid-template-columns: repeat(8, minmax(0,1fr));
-  gap: 14px;
-  margin-top: 14px;
-}
-    
-.brands-head{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-bottom: 14px;
-}
+      display:grid;
+      grid-template-columns: repeat(8, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
 
-.brands-title{
-  margin:0;
-}
+    .brands-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
 
-.brands-cta{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
+    .brands-title{ margin:0; }
 
-  text-decoration:none;
-  padding: 16px 22px;
-  border-radius: 16px;
+    .brands-cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      text-decoration:none;
+      padding: 16px 22px;
+      border-radius: 16px;
 
-  color:#fff;
-  font-weight: 1000;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  font-size: 13px;
+      color:#fff;
+      font-weight: 1000;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 13px;
 
-  border: 1px solid rgba(179,31,36,0.60);
-  background: linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.68));
-  box-shadow:
-    0 22px 70px rgba(179,31,36,0.22),
-    0 18px 55px rgba(0,0,0,0.55);
+      border: 1px solid rgba(179,31,36,0.60);
+      background: linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.68));
+      box-shadow:
+        0 22px 70px rgba(179,31,36,0.22),
+        0 18px 55px rgba(0,0,0,0.55);
 
-  position:relative;
-  overflow:hidden;
+      position:relative;
+      overflow:hidden;
 
-  transition:
-    transform .18s ease,
-    filter .18s ease,
-    box-shadow .18s ease,
-    border-color .18s ease;
-}
+      transition:
+        transform .18s ease,
+        filter .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+    }
+    .brands-cta::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 55%);
+      opacity:.65;
+      transform: rotate(12deg);
+    }
+    .brands-cta > *{ position:relative; z-index:1; }
 
-.brands-cta::before{
-  content:"";
-  position:absolute;
-  inset:-40px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 55%);
-  opacity:.65;
-  transform: rotate(12deg);
-}
+    .brands-cta:hover{
+      transform: translateY(-3px);
+      filter: brightness(1.06);
+      border-color: rgba(179,31,36,0.85);
+      box-shadow:
+        0 26px 90px rgba(179,31,36,0.30),
+        0 22px 75px rgba(0,0,0,0.68);
+    }
+    .brands-cta:active{ transform: translateY(-1px) scale(0.99); }
 
-.brands-cta > *{ position:relative; z-index:1; }
+    .brands-cta .ctaArrow{
+      display:inline-flex;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.20);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+      transition: transform .18s ease, background .18s ease;
+    }
+    .brands-cta:hover .ctaArrow{
+      transform: translateX(4px);
+      background: rgba(255,255,255,0.18);
+    }
 
-.brands-cta:hover{
-  transform: translateY(-3px);
-  filter: brightness(1.06);
-  border-color: rgba(179,31,36,0.85);
-  box-shadow:
-    0 26px 90px rgba(179,31,36,0.30),
-    0 22px 75px rgba(0,0,0,0.68);
-}
+    @media (max-width: 980px){
+      .brands-cta{
+        width:100%;
+        padding: 18px 22px;
+        font-size: 13px;
+      }
+    }
 
-.brands-cta:active{
-  transform: translateY(-1px) scale(0.99);
-}
+    /* ====== BRAND TILE WITH NAME (FIXED) ====== */
+    .brand-link{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+    }
 
-.brands-cta .ctaArrow{
-  display:inline-flex;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  align-items:center;
-  justify-content:center;
-  background: rgba(255,255,255,0.14);
-  border: 1px solid rgba(255,255,255,0.20);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-  transition: transform .18s ease, background .18s ease;
-}
+    .brand-tile{
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.75));
+      box-shadow: 0 14px 40px rgba(0,0,0,0.40);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .brand-tile::after{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.18), transparent 55%);
+      transform: rotate(18deg);
+      opacity:.85;
+    }
+    .brand-tile > *{ position:relative; z-index:1; }
 
-.brands-cta:hover .ctaArrow{
-  transform: translateX(4px);
-  background: rgba(255,255,255,0.18);
-}
+    .brand-tile:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.60);
+    }
 
-@media (max-width: 980px){
-  .brands-cta{
-    width:100%;
-    padding: 18px 22px;
-    font-size: 13px;
-  }
-}
+    .brand-inner{
+      width:100%;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-align:center;
+    }
 
-.brand-tile{
-  aspect-ratio: 1/1;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.75));
-  box-shadow: 0 14px 40px rgba(0,0,0,0.40);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 12px;
-  position:relative;
-  overflow:hidden;
-}
+    .brand-logo{
+      width:100%;
+      height:62%;
+      object-fit:contain;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+      opacity:.95;
+    }
 
-.brand-tile::after{
-  content:"";
-  position:absolute;
-  inset:-80px;
-  background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.18), transparent 55%);
-  transform: rotate(18deg);
-  opacity:.85;
-}
+    .brand-name{
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 1000;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.2;
+      padding: 0 6px;
+    }
 
-.brand-tile > *{ position:relative; z-index:1; }
+    /* “coming soon” tile */
+    .brand-tile.is-empty{
+      cursor: default;
+      background: rgba(255,255,255,0.03);
+      box-shadow:none;
+    }
+    .brand-tile.is-empty::after{ display:none; }
+    .brand-tile.is-empty:hover{
+      transform:none;
+      border-color: rgba(255,255,255,0.10);
+      box-shadow:none;
+    }
+    .brand-tile.is-empty span{
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
 
-.brand-tile img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
-  opacity: .95;
-  transform: translateZ(0);
-}
-
-/* “coming soon” tile – keď budeš chcieť viac značiek neskôr */
-.brand-tile.is-empty{
-  background: rgba(255,255,255,0.03);
-  box-shadow:none;
-}
-.brand-tile.is-empty::after{ display:none; }
-.brand-tile.is-empty span{
-  color: rgba(255,255,255,0.55);
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  font-weight: 900;
-}
-
-/* responsive */
-@media (max-width: 1200px){
-  .brand-grid{ grid-template-columns: repeat(6, minmax(0,1fr)); }
-}
-@media (max-width: 980px){
-  .brand-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
-}
-@media (max-width: 560px){
-  .brand-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
-  .brand-tile{ border-radius: 14px; padding: 10px; }
-}
-
+    /* brand-grid responsive */
+    @media (max-width: 1200px){
+      .brand-grid{ grid-template-columns: repeat(6, minmax(0,1fr)); }
+    }
+    @media (max-width: 980px){
+      .brand-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .brand-logo{ height:60%; }
+    }
+    @media (max-width: 560px){
+      .brand-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
+      .brand-tile{ border-radius: 14px; padding: 10px; }
+      .brand-name{ font-size: 10px; }
+      .brand-logo{ height:58%; }
+    }
   </style>
 </head>
 
@@ -1584,7 +1490,6 @@
           <img src="assets/text.png" alt="BEAT THEM ALL" class="hero-slogan-image">
         </h1>
 
-        <!-- ✅ SEO text pre Google (H1 je z obrázkov, tak mu dáme čistý význam) -->
         <span class="sr-only">RACEM – performance diely, nezohnateľné autodiely a mobilný autoservis</span>
 
         <p class="subline">
@@ -1595,7 +1500,7 @@
         <div class="ctaRow">
           <a class="btn btnPrimary" href="#kontakt">Nezáväzná ponuka</a>
           <a class="btn btnGhost" href="#autoservis">Váš servis na cestách</a>
-          <a class="btn btnGhost" href="https://racem.sk/mobilny-autoservis">Zistiť viac</a>
+          <a class="btn btnGhost" href="mobilny-autoservis.html">Zistiť viac</a>
         </div>
       </div>
 
@@ -1613,50 +1518,52 @@
     </div>
   </section>
 
- <!-- BODYKITY / ZNAČKY (INDEX) -->
-<section id="bodykity">
-  <div class="wrap">
-    <div class="panel reveal" style="padding:34px;">
-      <span class="pill">
-        <span class="dot"></span>
-        widebody • streetfighter • drift
-      </span>
+  <!-- BODYKITY / ZNAČKY (INDEX) -->
+  <section id="bodykity">
+    <div class="wrap">
+      <div class="panel reveal" style="padding:34px;">
+        <span class="pill">
+          <span class="dot"></span>
+          widebody • streetfighter • drift
+        </span>
 
-      <div class="brands-head" style="margin-top:14px;">
-        <div>
-          <h2 class="brands-title">Bodykity na Vaše autá</h2>
-          <p style="font-size:16px; max-width:980px; margin-top:10px;">
-            Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.
-          </p>
+        <div class="brands-head" style="margin-top:14px;">
+          <div>
+            <h2 class="brands-title">Bodykity na Vaše autá</h2>
+            <p style="font-size:16px; max-width:980px; margin-top:10px;">
+              Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.
+            </p>
+          </div>
+
+          <a class="brands-cta" href="distribucia-kitov.html">
+            Objavuj značky
+            <span class="ctaArrow">→</span>
+          </a>
         </div>
 
-        <a class="brands-cta" href="distribucia-kitov.html">
-  Objavuj značky
-  <span class="ctaArrow">→</span>
-</a>
-      </div>
+        <div class="brands-wrap">
+          <div class="brand-grid" aria-label="Značky body kitov">
+            <!-- StreetFighter LA -->
+            <a class="brand-link" href="distribucia-kitov.html#streetfighter-la" title="StreetFighter LA (SFXLA)">
+              <div class="brand-tile">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/SFXLA_small.avif" alt="StreetFighter LA logo" loading="lazy" decoding="async">
+                  <div class="brand-name">StreetFighter LA</div>
+                </div>
+              </div>
+            </a>
 
-      <div class="brands-wrap">
-        <div class="brand-grid" aria-label="Značky body kitov">
-          <!-- SFXLA -->
-          <div class="brand-tile" title="StreetFighter LA (SFXLA)">
-  <div class="brand-inner">
-    <img class="brand-logo" src="assets/SFXLA_small.avif" alt="SFXLA logo" loading="lazy" decoding="async">
-    <div class="brand-name">StreetFighter LA</div>
-  </div>
-</div>
-
-          <!-- ak chceš, nechaj pár “coming soon” kociek aby to nepôsobilo prázdne -->
-          <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
-          <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
-          <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
+            <!-- coming soon -->
+            <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
+            <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
+            <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
-</section>
-  
+  </section>
+
   <!-- KTO SME -->
   <section id="kto-sme">
     <div class="wrap">
@@ -1667,22 +1574,22 @@
           <h2 style="margin-top:18px;">Podporujeme vás</h2>
 
           <p style="font-size:16px;">
-  <b>Staň sa členom RACEM Group</b> a získaj prístup k výhodám, ktoré bežný zákazník nemá.
-</p>
+            <b>Staň sa členom RACEM Group</b> a získaj prístup k výhodám, ktoré bežný zákazník nemá.
+          </p>
 
-<p class="muted2" style="margin-top:10px;">
-  <b>Čo získaš ako člen:</b><br>
-  • <b>zľavnené diely</b> a lepšie ceny<br>
-  • <b>prioritné dodanie</b> nezohnateľných dielov a rýchlejší sourcing<br>
-  • <b>plnú nádrž a pneu</b> pred eventami ktoré jazdíš<br>
-  • <b>RACEM Group</b> polepy na auto zdarma<br>
-  • <b>prístup ku komunite</b> RACEM
-</p>
+          <p class="muted2" style="margin-top:10px;">
+            <b>Čo získaš ako člen:</b><br>
+            • <b>zľavnené diely</b> a lepšie ceny<br>
+            • <b>prioritné dodanie</b> nezohnateľných dielov a rýchlejší sourcing<br>
+            • <b>plnú nádrž a pneu</b> pred eventami ktoré jazdíš<br>
+            • <b>RACEM Group</b> polepy na auto zdarma<br>
+            • <b>prístup ku komunite</b> RACEM
+          </p>
 
-<p class="muted2" style="margin-top:10px;">
-  Ak chceš členstvo, napíš nám do formulára <b>„RACEM Group – členstvo“</b>.
-  Pošleme ti bližšie info pre vstup a pravidlá.
-</p>
+          <p class="muted2" style="margin-top:10px;">
+            Ak chceš členstvo, napíš nám do formulára <b>„RACEM Group – členstvo“</b>.
+            Pošleme ti bližšie info pre vstup a pravidlá.
+          </p>
 
           <div class="ctaRow" style="margin-top:14px;">
             <a class="btn btnPrimary btnArrow" href="#kontakt">Zistiť viac <span class="arr">→</span></a>
@@ -1788,7 +1695,7 @@
           </p>
 
           <div class="ctaRow" style="margin-top:16px;">
-            <a class="btn btnPrimary btnArrow" href="https://racem.sk/mobilny-autoservis">
+            <a class="btn btnPrimary btnArrow" href="mobilny-autoservis.html">
               Zistiť viac <span class="arr">→</span>
             </a>
             <a class="btn btnGhost" href="#kontakt">
@@ -1798,7 +1705,7 @@
         </div>
 
         <div class="panel reveal service-card"
-             data-go="https://racem.sk/mobilny-autoservis"
+             data-go="mobilny-autoservis.html"
              style="padding:28px;">
           <div class="service-top">
             <div class="service-icon" aria-hidden="true">
@@ -1832,7 +1739,7 @@
           </div>
 
           <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnGhost btnArrow" href="https://racem.sk/mobilny-autoservis" style="width:100%; justify-content:center;">
+            <a class="btn btnGhost btnArrow" href="mobilny-autoservis.html" style="width:100%; justify-content:center;">
               Zistiť viac <span class="arr">→</span>
             </a>
           </div>
