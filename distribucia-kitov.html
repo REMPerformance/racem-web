@@ -1,1 +1,478 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>RACEM | Distribúcia kitov – Maintenance</title>
+  <meta name="description" content="RACEM – Distribúcia body kitov. Stránka je dočasne v údržbe. Budeme online už čoskoro." />
+  <meta name="robots" content="noindex,nofollow" />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --red:#b31f24;
+      --bg:#070707;
+      --panel:#121212;
+      --panel2:#0f0f0f;
+      --text:#ffffff;
+      --muted:#cfcfcf;
+      --muted2:#9b9b9b;
+      --line: rgba(255,255,255,0.10);
+      --shadow: 0 22px 70px rgba(0,0,0,0.62);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(179,31,36,0.20), transparent 60%),
+        radial-gradient(900px 600px at 80% 90%, rgba(179,31,36,0.12), transparent 55%),
+        radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.05), transparent 60%),
+        var(--bg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* jemný noise overlay */
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.45;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 54px;
+      position:relative;
+      z-index:1;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      background: linear-gradient(180deg, rgba(18,18,18,0.92), rgba(12,12,12,0.85));
+      border:1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
+
+    .brand img{
+      width:44px;
+      height:44px;
+      object-fit:contain;
+      filter: drop-shadow(0 10px 26px rgba(179,31,36,0.35));
+    }
+
+    .brandTitle{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .brandTitle .name{
+      font-family: Teko, Inter, sans-serif;
+      font-size:28px;
+      letter-spacing:.8px;
+    }
+    .brandTitle .tag{
+      font-size:12px;
+      color:var(--muted2);
+      margin-top:2px;
+    }
+
+    .lang{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      padding:9px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      font-weight:600;
+      font-size:12px;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.60);
+      background: rgba(179,31,36,0.10);
+    }
+    .pill.active{
+      border-color: rgba(179,31,36,0.85);
+      background: rgba(179,31,36,0.18);
+      box-shadow: 0 0 0 4px rgba(179,31,36,0.10);
+    }
+
+    .hero{
+      margin-top:18px;
+      padding:28px 18px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(18,18,18,0.88), rgba(10,10,10,0.84));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      inset:-80px -120px auto auto;
+      width:360px;
+      height:360px;
+      background: radial-gradient(circle, rgba(179,31,36,0.35), transparent 62%);
+      filter: blur(2px);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns: 1fr}
+      .brand{min-width:auto}
+    }
+
+    .headline{
+      font-family: Teko, Inter, sans-serif;
+      font-size: 54px;
+      letter-spacing: .6px;
+      margin: 0;
+      line-height: .95;
+    }
+    .headline .accent{
+      color: var(--red);
+      text-shadow: 0 16px 40px rgba(179,31,36,0.30);
+    }
+
+    .sub{
+      margin-top:12px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 58ch;
+    }
+
+    .badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+    .badge{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .badge b{color:var(--text)}
+
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,15,15,0.92), rgba(10,10,10,0.86));
+      border-radius: var(--radius);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card h3{
+      margin:0 0 10px 0;
+      font-family: Teko, Inter, sans-serif;
+      font-size:28px;
+      letter-spacing:.5px;
+    }
+    .card p{
+      margin:0 0 14px 0;
+      color: var(--muted);
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      cursor:pointer;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.65);
+      background: rgba(179,31,36,0.10);
+    }
+    .btn.primary{
+      border-color: rgba(179,31,36,0.85);
+      background: rgba(179,31,36,0.20);
+      box-shadow: 0 10px 34px rgba(179,31,36,0.18);
+    }
+
+    .mini{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .footer{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color: var(--muted2);
+      font-size:12px;
+      padding: 12px 4px;
+      opacity:.95;
+    }
+    .footer a{
+      color: var(--muted);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(255,255,255,0.25);
+    }
+    .footer a:hover{color:var(--text); border-bottom-color: rgba(179,31,36,0.8);}
+
+    /* jazykové bloky */
+    [data-lang] { display:none; }
+    [data-lang].show { display:block; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <!-- ak nemáš logo súbor, kľudne zmeň na text alebo cestu k správnemu PNG -->
+        <img src="/assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'">
+        <div class="brandTitle">
+          <div class="name">RACEM</div>
+          <div class="tag">REM Performance • Beat them all</div>
+        </div>
+      </div>
+
+      <div class="lang" aria-label="Language toggle">
+        <div class="pill" id="btnSK" role="button" tabindex="0">SK</div>
+        <div class="pill" id="btnEN" role="button" tabindex="0">EN</div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="grid">
+        <div>
+          <!-- SLOVENSKY -->
+          <div data-lang="sk" class="show" id="skBlock">
+            <h1 class="headline">
+              Distribúcia kitov <span class="accent">v údržbe</span>
+            </h1>
+
+            <p class="sub">
+              Na tejto stránke práve prebieha údržba a doladenie obsahu.  
+              Chceme to spraviť poriadne – aby si tu našiel značky, informácie a kontakty bez chaosu.
+              <br><br>
+              <b>Budeme online už čoskoro.</b>
+            </p>
+
+            <div class="badges">
+              <div class="badge">Status: <b>Undergoing maintenance</b></div>
+              <div class="badge">Distribúcia: <b>body kity & aero</b></div>
+              <div class="badge">Region: <b>SK • CZ • EU</b></div>
+            </div>
+          </div>
+
+          <!-- ENGLISH -->
+          <div data-lang="en" id="enBlock">
+            <h1 class="headline">
+              Kit distribution <span class="accent">under maintenance</span>
+            </h1>
+
+            <p class="sub">
+              This page is currently being updated and fine-tuned.  
+              We’re building it properly — so you’ll get clean brand listings, clear info, and a smooth experience.
+              <br><br>
+              <b>We’ll be online again very soon.</b>
+            </p>
+
+            <div class="badges">
+              <div class="badge">Status: <b>Undergoing maintenance</b></div>
+              <div class="badge">Distribution: <b>body kits & aero</b></div>
+              <div class="badge">Region: <b>SK • CZ • EU</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <!-- INFO CARD -->
+          <div class="card">
+            <div data-lang="sk" class="show">
+              <h3>Chceš to riešiť hneď?</h3>
+              <p>
+                Ak už teraz riešiš body kit / widebody / aero, napíš nám a povieme ti dostupnosť,
+                cenu, dodanie a čo všetko budeš potrebovať (montáž, doplnky, kompatibilita).
+              </p>
+
+              <div class="actions">
+                <a class="btn primary" href="mailto:racemperformance@outlook.com?subject=RACEM%20-%20Distrib%C3%BAcia%20kitov%20(dopyt)">
+                  ✉️ Napísať e-mail
+                </a>
+                <a class="btn" href="/index.html">
+                  ⟵ Späť na RACEM
+                </a>
+              </div>
+            </div>
+
+            <div data-lang="en">
+              <h3>Need it right now?</h3>
+              <p>
+                If you’re already planning a body kit / widebody / aero build, email us and we’ll confirm availability,
+                pricing, delivery times, and what you’ll need (fitment, extras, compatibility).
+              </p>
+
+              <div class="actions">
+                <a class="btn primary" href="mailto:racemperformance@outlook.com?subject=RACEM%20-%20Kit%20Distribution%20(Enquiry)">
+                  ✉️ Email us
+                </a>
+                <a class="btn" href="/index.html">
+                  ⟵ Back to RACEM
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECOND CARD -->
+          <div class="card">
+            <div data-lang="sk" class="show">
+              <h3>Čo tu bude</h3>
+              <p>
+                Prehľad značiek, podmienky distribúcie, orientačné dodacie doby, FAQ, galéria,
+                a hlavne – klikateľné značky a rýchly dopyt bez zbytočných formulárov.
+              </p>
+            </div>
+
+            <div data-lang="en">
+              <h3>What’s coming</h3>
+              <p>
+                Brand overview, distribution terms, typical lead times, FAQ, gallery,
+                and most importantly — clickable brands and quick enquiries without annoying forms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>© <span id="y"></span> RACEM / REM Performance</div>
+        <div>
+          <span data-lang="sk" class="show">Kontakt:</span>
+          <span data-lang="en">Contact:</span>
+          <a href="mailto:racemperformance@outlook.com">racemperformance@outlook.com</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // rok vo footeri
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const btnSK = document.getElementById('btnSK');
+    const btnEN = document.getElementById('btnEN');
+
+    const blocks = {
+      sk: document.querySelectorAll('[data-lang="sk"]'),
+      en: document.querySelectorAll('[data-lang="en"]')
+    };
+
+    function setLang(lang){
+      // show/hide blocks
+      Object.keys(blocks).forEach(k => {
+        blocks[k].forEach(el => el.classList.toggle('show', k === lang));
+      });
+
+      // pill active
+      btnSK.classList.toggle('active', lang === 'sk');
+      btnEN.classList.toggle('active', lang === 'en');
+
+      // lang attribute
+      document.documentElement.setAttribute('lang', lang);
+
+      // persist
+      try { localStorage.setItem('racem_lang', lang); } catch(e){}
+    }
+
+    // default: localStorage -> browser language -> SK
+    (function init(){
+      let saved = null;
+      try { saved = localStorage.getItem('racem_lang'); } catch(e){}
+      if(saved === 'sk' || saved === 'en') return setLang(saved);
+
+      const nav = (navigator.language || '').toLowerCase();
+      if(nav.startsWith('en')) return setLang('en');
+      return setLang('sk');
+    })();
+
+    // handlers
+    function wire(btn, lang){
+      btn.addEventListener('click', () => setLang(lang));
+      btn.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLang(lang); }
+      });
+    }
+    wire(btnSK, 'sk');
+    wire(btnEN, 'en');
+  </script>
+</body>
+</html>
