@@ -218,9 +218,7 @@
     }
 
     /* ===== HERO SLIDER ===== */
-    .heroSlider{
-      padding: 0;
-    }
+    .heroSlider{ padding: 0; }
     .slider{
       position:relative;
       height: min(72vh, 720px);
@@ -238,10 +236,7 @@
       transform: scale(1.03);
       transition: opacity .8s ease, transform 1.4s ease;
     }
-    .slide.active{
-      opacity:1;
-      transform: scale(1);
-    }
+    .slide.active{ opacity:1; transform: scale(1); }
     .slider::before{
       content:"";
       position:absolute;
@@ -676,6 +671,173 @@
     .reveal{opacity:0; transform: translateY(28px); transition: .85s ease}
     .reveal.active{opacity:1; transform: translateY(0)}
 
+    /* ===== FOOTER ===== */
+    .footer{
+      position:relative;
+      padding: 70px 0 26px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(179,31,36,0.16), transparent 55%),
+        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.05), transparent 62%),
+        linear-gradient(180deg, rgba(8,8,8,0.35), rgba(5,5,5,0.92));
+      overflow:hidden;
+    }
+    .footer::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      pointer-events:none;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 56px);
+      opacity:.35;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1) 32%, rgba(0,0,0,1));
+    }
+    .footerInner{
+      position:relative;
+      z-index:1;
+      padding: 0 6vw;
+    }
+    .footerTop{
+      display:grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 18px;
+      align-items:start;
+    }
+    .fCard{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .fCard::after{
+      content:"";
+      position:absolute; left:-60px; top:-60px;
+      width:160px; height:160px;
+      background: radial-gradient(circle, rgba(179,31,36,0.14), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .fCard > *{ position:relative; z-index:1; }
+
+    .fBrand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      text-decoration:none;
+    }
+    .fBrand img{
+      height: 46px;
+      width:auto;
+      object-fit:contain;
+      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.6));
+    }
+    .fTitle{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-weight:1000;
+      font-size: 11px;
+      color: rgba(255,255,255,0.78);
+      margin-top: 2px;
+    }
+    .fTitle b{
+      font-size: 14px;
+      color:#fff;
+      letter-spacing:.14em;
+    }
+    .fText{
+      margin: 12px 0 0;
+      color: rgba(255,255,255,0.74);
+      line-height:1.65;
+      font-size: 13.5px;
+      max-width: 520px;
+    }
+
+    .fHead{
+      font-weight:1000;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size: 11px;
+      color: rgba(255,255,255,0.86);
+      margin: 2px 0 10px;
+    }
+    .fList{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap: 8px;
+    }
+    .fList a{
+      text-decoration:none;
+      color: rgba(255,255,255,0.72);
+      font-size: 13.5px;
+      line-height:1.55;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      transition: color .18s ease, transform .18s ease, text-shadow .18s ease;
+    }
+    .fList a:hover{
+      color:#fff;
+      text-shadow: 0 0 16px rgba(179,31,36,0.22);
+      transform: translateX(2px);
+    }
+    .fIco{
+      width: 28px;
+      height: 28px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      color:#fff;
+      flex:0 0 auto;
+    }
+    .fFine{
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.60);
+      line-height:1.6;
+    }
+    .footerBottom{
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .copy{
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.62);
+      letter-spacing:.04em;
+    }
+    .miniLinks{
+      display:flex;
+      gap: 14px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .miniLinks a{
+      text-decoration:none;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.62);
+      transition: color .18s ease, text-shadow .18s ease;
+    }
+    .miniLinks a:hover{
+      color:#fff;
+      text-shadow: 0 0 14px rgba(179,31,36,0.22);
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -684,6 +846,7 @@
     /* RESPONSIVE */
     @media (max-width: 1200px){
       .brandGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .footerTop{ grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 980px){
       .wrap{ padding: 0 18px; }
@@ -700,6 +863,8 @@
       .brandsInner{ padding: 0 18px; }
       .brandsHead{ padding-bottom: 14px; margin-bottom: 14px; }
       .brandsTitle{ margin-top: 14px; }
+
+      .footerInner{ padding: 0 18px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
@@ -709,6 +874,9 @@
       .brand-mini img{ height:54px; }
       .slider{ height: 62vh; }
       .heroTitle{ font-size: 36px; }
+
+      .footerTop{ grid-template-columns: 1fr; }
+      .footer{ padding: 56px 0 22px; }
     }
   </style>
 </head>
@@ -750,7 +918,6 @@
   <!-- HERO SLIDER (FULL WIDTH) -->
   <section class="heroSlider" aria-label="Bodykits hero">
     <div class="slider" id="slider">
-      <!-- Použi svoje fotky: assets/bodykit1.jpg ... -->
       <div class="slide active" style="background-image:url('assets/editedsfxla.png')"></div>
       <div class="slide" style="background-image:url('assets/m3logo.png')"></div>
       <div class="slide" style="background-image:url('assets/m3logo2.png')"></div>
@@ -778,10 +945,10 @@
     <div class="brandsInner">
       <div class="brandsHead reveal">
         <div class="brandsHeadLeft">
-          <span class="pill"><span class="dot"></span><span data-i18n="brands_pill">naša ponuka značiek</span></span>
-          <div class="brandsTitle" data-i18n="brands_title">Svetové značky</div>
+          <span class="pill"><span class="dot"></span><span data-i18n="brands_pill"> ponuka značiek</span></span>
+          <div class="brandsTitle" data-i18n="brands_title">Vaši výrobcovia bodykitov</div>
           <p class="brandsLead" data-i18n="brands_text">
-            Klikni na značku a otvorí sa jej stránka. Postupne odomykáme ďalšie autorizácie.
+            Klikni na značku pre zobrazenie kompletnej ponuky.
           </p>
         </div>
       </div>
@@ -814,7 +981,7 @@
           <div class="brandBody">
             <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
             <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
           </div>
         </a>
 
@@ -827,7 +994,7 @@
           <div class="brandBody">
             <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
             <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
           </div>
         </a>
 
@@ -840,7 +1007,7 @@
           <div class="brandBody">
             <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
             <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
           </div>
         </a>
 
@@ -853,7 +1020,7 @@
           <div class="brandBody">
             <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
             <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Otvoriť značku</span> <span class="arr">→</span></div>
+            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
           </div>
         </a>
 
@@ -903,6 +1070,72 @@
       </div>
     </div>
   </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" aria-label="Footer">
+    <div class="footerInner">
+
+      <div class="footerTop">
+        <div class="fCard">
+          <a class="fBrand" href="index.html" aria-label="RACEM">
+            <img src="assets/rmgroup.png" alt="RACEM logo">
+            <div class="fTitle">
+              <span data-i18n="f_brand_sub">RACEM</span>
+              <b data-i18n="f_brand_main">BODYKITS</b>
+            </div>
+          </a>
+          <p class="fText" data-i18n="f_about">
+            Performance & styling diely. Overenie kompatibility, pomoc s výberom a dodanie do SR/ČR/EÚ.
+          </p>
+          <div class="fFine" data-i18n="f_disclaimer">
+            Pozn.: Fitment sa môže líšiť podľa karosérie, ročníka, faceliftu a úprav. Pred objednávkou odporúčame overenie.
+          </div>
+        </div>
+
+        <div class="fCard">
+          <div class="fHead" data-i18n="f_links">Rýchle odkazy</div>
+          <ul class="fList">
+            <li><a href="index.html"><span class="fIco">🏁</span><span data-i18n="f_home">Domov</span></a></li>
+            <li><a href="vop.html"><span class="fIco">📄</span><span data-i18n="f_terms">VOP</span></a></li>
+            <li><a href="index.html#kontakt"><span class="fIco">✉️</span><span data-i18n="f_contact">Kontakt</span></a></li>
+          </ul>
+        </div>
+
+        <div class="fCard">
+          <div class="fHead" data-i18n="f_contact_head">Kontakt</div>
+          <ul class="fList">
+            <li>
+              <a href="mailto:info@remperformance.sk">
+                <span class="fIco">📩</span><span>info@remperformance.sk</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://racem.sk" target="_blank" rel="noopener">
+                <span class="fIco">🌐</span><span>racem.sk</span>
+              </a>
+            </li>
+            <li>
+              <a href="index.html#kontakt">
+                <span class="fIco">📍</span><span data-i18n="f_area">Pôsobnosť: SR / ČR / EÚ</span>
+              </a>
+            </li>
+          </ul>
+          <div class="fFine" data-i18n="f_hours">
+            Odpovedáme čo najrýchlejšie (typicky do 24–48h).
+          </div>
+        </div>
+      </div>
+
+      <div class="footerBottom">
+        <div class="copy" id="copyright"></div>
+        <div class="miniLinks">
+          <a href="vop.html" data-i18n="f_terms2">VOP</a>
+          <a href="index.html#kontakt" data-i18n="f_contact2">Kontakt</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
 
   <script>
     // REVEAL ON SCROLL
@@ -974,6 +1207,11 @@
     slider?.addEventListener('mouseenter', stopAuto);
     slider?.addEventListener('mouseleave', startAuto);
 
+    // Copyright year
+    const year = new Date().getFullYear();
+    const c = document.getElementById('copyright');
+    if (c) c.textContent = `© ${year} RACEM. All rights reserved.`;
+
     // I18N
     const dict = {
       sk: {
@@ -985,15 +1223,15 @@
         pill: "widebody • aero • streetfighter",
         hero_title: "BODYKITS",
         hero_text: "Naša ponuka značiek bodykitov. Klikni na značku a otvorí sa jej stránka.",
-        brands_pill: "naša ponuka značiek",
-        brands_title: "Naše značky",
-        brands_text: "Klikni na značku a otvorí sa jej stránka. Postupne odomykáme ďalšie autorizácie.",
-        official: "oficiálne",
+        brands_pill: "ponuka značiek",
+        brands_title: "Vaši výrobcovia bodykitov",
+        brands_text: "Klikni na značku pre zobrazenie kompletnej ponuky.",
+        official: "USA",
         locked: "locked",
         locked_title: "Odomykáme čoskoro",
         locked_desc: "Stránka značky je pripravená – info dopĺňame.",
-        sfxla_desc: "Brutálny streetfighter dizajn, ostré línie a výrazné rozšírenia.",
-        open: "Otvoriť značku",
+        sfxla_desc: "BMW E/F/G , Camaro gen. 5 / 6, EVO X",
+        open: "Zobraziť ponuku",
         faq_pill: "FAQ",
         faq_title: "Najčastejšie otázky",
         faq1_q: "Je to plug & play?",
@@ -1003,7 +1241,21 @@
         faq3_q: "Aké materiály existujú?",
         faq3_a: "Najčastejšie FRP, PU/ABS a Carbon. Každý má plusy/mínusy (pružnosť, váha, opravy, cena). Podľa použitia ti odporučíme správnu voľbu.",
         faq4_q: "Ako dlho trvá dodanie?",
-        faq4_a: "Závisí od výroby a dostupnosti. Vždy dostaneš reálny termín a možnosti dopravy ešte pred potvrdením objednávky."
+        faq4_a: "Závisí od výroby a dostupnosti. Vždy dostaneš reálny termín a možnosti dopravy ešte pred potvrdením objednávky.",
+
+        f_brand_sub: "RACEM",
+        f_brand_main: "BODYKITS",
+        f_about: "Performance & styling diely. Overenie kompatibility, pomoc s výberom a dodanie do SR/ČR/EÚ.",
+        f_disclaimer: "Pozn.: Fitment sa môže líšiť podľa karosérie, ročníka, faceliftu a úprav. Pred objednávkou odporúčame overenie.",
+        f_links: "Rýchle odkazy",
+        f_home: "Domov",
+        f_terms: "VOP",
+        f_contact: "Kontakt",
+        f_contact_head: "Kontakt",
+        f_area: "Pôsobnosť: SR / ČR / EÚ",
+        f_hours: "Odpovedáme čo najrýchlejšie (typicky do 24–48h).",
+        f_terms2: "VOP",
+        f_contact2: "Kontakt"
       },
       en: {
         nav_sub: "RACEM",
@@ -1014,15 +1266,15 @@
         pill: "widebody • aero • streetfighter",
         hero_title: "BODYKITS",
         hero_text: "Our bodykit brands selection. Click a brand to open its page.",
-        brands_pill: "our brand selection",
-        brands_title: "Our brands",
-        brands_text: "Click a brand to open its page. More authorizations are unlocking soon.",
-        official: "official",
+        brands_pill: "brand selection",
+        brands_title: "Your bodykit manufacturers",
+        brands_text: "Click a brand to view the full selection.",
+        official: "USA",
         locked: "locked",
         locked_title: "Unlocking soon",
         locked_desc: "Brand page is ready — details are being added.",
-        sfxla_desc: "Brutal streetfighter design, sharp lines, bold overfenders.",
-        open: "Open brand",
+        sfxla_desc: "BMW E/F/G, Camaro gen. 5/6, EVO X",
+        open: "View selection",
         faq_pill: "FAQ",
         faq_title: "Frequently asked questions",
         faq1_q: "Is it plug & play?",
@@ -1032,7 +1284,21 @@
         faq3_q: "What materials are available?",
         faq3_a: "Most common: FRP, PU/ABS and Carbon. Each has pros/cons (flex, weight, repairability, price). We recommend what makes sense for your use.",
         faq4_q: "How long is delivery?",
-        faq4_a: "Depends on production and stock. We always provide a realistic ETA and shipping options before you confirm the order."
+        faq4_a: "Depends on production and stock. We always provide a realistic ETA and shipping options before you confirm the order.",
+
+        f_brand_sub: "RACEM",
+        f_brand_main: "BODYKITS",
+        f_about: "Performance & styling parts. Fitment verification, help with selection, delivery across SK/CZ/EU.",
+        f_disclaimer: "Note: Fitment may vary by body, model year, facelift and modifications. We recommend verification before ordering.",
+        f_links: "Quick links",
+        f_home: "Home",
+        f_terms: "Terms",
+        f_contact: "Contact",
+        f_contact_head: "Contact",
+        f_area: "Coverage: SK / CZ / EU",
+        f_hours: "We reply as fast as possible (typically within 24–48h).",
+        f_terms2: "Terms",
+        f_contact2: "Contact"
       }
     };
 
@@ -1049,6 +1315,15 @@
         const val = dict[lang]?.[key];
         if(typeof val === 'string') el.innerHTML = val;
       });
+
+      // Update copyright language
+      const c = document.getElementById('copyright');
+      if (c){
+        const year = new Date().getFullYear();
+        c.textContent = lang === 'en'
+          ? `© ${year} RACEM. All rights reserved.`
+          : `© ${year} RACEM. Všetky práva vyhradené.`;
+      }
     }
 
     btnSK.addEventListener('click', () => setLang('sk'));
