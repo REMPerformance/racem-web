@@ -1346,18 +1346,86 @@
   transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
 }
 
-.brands-cta:hover{
-  transform: translateY(-2px);
-  background: rgba(179,31,36,0.14);
-  border-color: rgba(179,31,36,0.42);
-  box-shadow: 0 16px 44px rgba(0,0,0,0.55);
-}
-.brands-cta:active{ transform: scale(0.98); }
+.brands-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
 
-.brand-grid{
-  display:grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 12px;
+  text-decoration:none;
+  padding: 16px 22px;
+  border-radius: 16px;
+
+  color:#fff;
+  font-weight: 1000;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 13px;
+
+  border: 1px solid rgba(179,31,36,0.60);
+  background: linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.68));
+  box-shadow:
+    0 22px 70px rgba(179,31,36,0.22),
+    0 18px 55px rgba(0,0,0,0.55);
+
+  position:relative;
+  overflow:hidden;
+
+  transition:
+    transform .18s ease,
+    filter .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+
+.brands-cta::before{
+  content:"";
+  position:absolute;
+  inset:-40px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 55%);
+  opacity:.65;
+  transform: rotate(12deg);
+}
+
+.brands-cta > *{ position:relative; z-index:1; }
+
+.brands-cta:hover{
+  transform: translateY(-3px);
+  filter: brightness(1.06);
+  border-color: rgba(179,31,36,0.85);
+  box-shadow:
+    0 26px 90px rgba(179,31,36,0.30),
+    0 22px 75px rgba(0,0,0,0.68);
+}
+
+.brands-cta:active{
+  transform: translateY(-1px) scale(0.99);
+}
+
+.brands-cta .ctaArrow{
+  display:inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.20);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+  transition: transform .18s ease, background .18s ease;
+}
+
+.brands-cta:hover .ctaArrow{
+  transform: translateX(4px);
+  background: rgba(255,255,255,0.18);
+}
+
+@media (max-width: 980px){
+  .brands-cta{
+    width:100%;
+    padding: 18px 22px;
+    font-size: 13px;
+  }
 }
 
 .brand-tile{
@@ -1503,8 +1571,9 @@
         </div>
 
         <a class="brands-cta" href="distribucia-bodykitov.html">
-          Objavuj značky <span style="opacity:.9;">→</span>
-        </a>
+  Objavuj značky
+  <span class="ctaArrow">→</span>
+</a>
       </div>
 
       <div class="brands-wrap">
