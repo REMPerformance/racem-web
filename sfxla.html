@@ -213,7 +213,7 @@
     .pill{
       display:inline-flex; gap:10px; align-items:center;
       padding:8px 12px;
-      border:1px solid var(--line);
+      border:1px solid rgba(255,255,255,0.08);
       background: rgba(20,20,20,0.55);
       border-radius:999px;
       color: rgba(255,255,255,0.78);
@@ -349,7 +349,7 @@
     }
     p{
       margin:0 0 14px 0;
-      color: var(--muted);
+      color: rgba(255,255,255,0.78);
       line-height:1.75;
       font-size:15.5px;
       max-width: 980px;
@@ -404,7 +404,7 @@
       backdrop-filter: blur(10px);
     }
 
-    /* ===== “NORMAL” PRODUCT SECTION (NO EXTRA CONTAINERS) ===== */
+    /* ===== NORMAL PRODUCT SECTION ===== */
     .sectionHead{
       display:flex; flex-wrap:wrap; gap:14px;
       align-items:flex-end; justify-content:space-between;
@@ -420,7 +420,6 @@
       margin: 18px 0;
     }
 
-    /* Cars grid with photos and label UNDER the photo */
     .carCards{
       display:grid;
       grid-template-columns: repeat(6, minmax(0,1fr));
@@ -486,7 +485,6 @@
       white-space:nowrap;
     }
 
-    /* Filters (kept) */
     .filterBar{
       margin-top: 16px;
       display:flex;
@@ -522,7 +520,6 @@
       font-weight: 900;
     }
 
-    /* ===== PRODUCT GRID ===== */
     .productGrid{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -789,49 +786,6 @@
     }
     textarea{ min-height: 120px; resize: vertical; }
 
-    /* ===== FOOTER ===== */
-    footer{
-      border-top: 1px solid rgba(255,255,255,0.06);
-      background: rgba(10,10,10,0.65);
-      backdrop-filter: blur(10px);
-      padding: 34px 0;
-    }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr .8fr;
-      gap: 16px;
-      align-items:start;
-    }
-    .footTitle{
-      font-weight:1000;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      font-size: 12px;
-      color:#fff;
-      margin:0 0 10px 0;
-    }
-    .footText{
-      margin:0;
-      color: rgba(255,255,255,0.72);
-      line-height:1.7;
-      font-size: 13.5px;
-    }
-    .footLinks{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .footLinks a{
-      text-decoration:none;
-      color: rgba(255,255,255,0.72);
-      font-weight: 900;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 11px;
-      transition: color .18s ease;
-    }
-    .footLinks a:hover{ color:#fff; }
-
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
       .carCards{ grid-template-columns: repeat(4, minmax(0,1fr)); }
@@ -847,7 +801,6 @@
       .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .modalBody{ grid-template-columns: 1fr; }
       .mImg{ min-height: 240px; }
-      .footGrid{ grid-template-columns: 1fr; }
       .brandStripInner{ padding: 22px 18px; }
     }
     @media (max-width: 560px){
@@ -1132,21 +1085,22 @@
   <script>
     const DATA = {
       cars: [
-        // DÔLEŽITÉ: sem si daj normálne “hero/preview” fotky áut (1 fotka na model)
-        // napr. assets/cars/e36.jpg, assets/cars/e46.jpg, ...
-        { id:"",    label:"Všetky autá", image:"assets/cars/all.jpg" },
+        // ✅ Všetky MAIN fotky sú priamo v /assets/ (podľa tvojich názvov súborov)
+        // POZOR: na hostingu rozlišuje veľké/malé písmená -> E36-main.webp musí byť presne takto.
 
-        { id:"e36", label:"BMW E36", image:"assets/cars/e36.jpg" },
-        { id:"e46", label:"BMW E46", image:"assets/cars/e46.jpg" },
-        { id:"e90", label:"BMW E90", image:"assets/cars/e90.jpg" },
-        { id:"e92", label:"BMW E92", image:"assets/cars/e92.jpg" },
-        { id:"f30", label:"BMW F30", image:"assets/cars/f30.jpg" },
-        { id:"f80", label:"BMW F80", image:"assets/cars/f80.jpg" },
-        { id:"g8x", label:"BMW G80/82/83", image:"assets/cars/g8x.jpg" },
-        { id:"evox", label:"Mitsubishi Evo X", image:"assets/cars/evox.jpg" },
-        { id:"cam5", label:"Camaro Gen5", image:"assets/cars/cam5.jpg" },
-        { id:"cam6", label:"Camaro Gen6", image:"assets/cars/cam6.jpg" },
-        { id:"gt4", label:"Porsche GT4", image:"assets/cars/gt4.jpg" }
+        { id:"",    label:"Všetky autá",         image:"assets/E36-main.webp" },
+
+        { id:"e36", label:"BMW E36",            image:"assets/E36-main.webp" },
+        { id:"e46", label:"BMW E46",            image:"assets/e46-main.webp" },
+        { id:"e90", label:"BMW E90",            image:"assets/e90-main.webp" },
+        { id:"e92", label:"BMW E92",            image:"assets/e92-main.webp" },
+        { id:"f30", label:"BMW F30",            image:"assets/f30-main.webp" },
+        { id:"f80", label:"BMW F80",            image:"assets/f80-main.webp" },
+        { id:"g8x", label:"BMW G80/82/83",      image:"assets/g80-main.webp" },
+        { id:"evox",label:"Mitsubishi Evo X",   image:"assets/evox-main.jpg" },
+        { id:"cam5",label:"Camaro Gen5",        image:"assets/gen5-main.webp" },
+        { id:"cam6",label:"Camaro Gen6",        image:"assets/gen6-main.webp" },
+        { id:"gt4", label:"Porsche GT4",        image:"assets/gt4-main.webp" }
       ],
       products: [
         {
@@ -1227,7 +1181,7 @@
       ]
     };
 
-    let activeCarId = "";      // "" = všetky
+    let activeCarId = "";
     let activeProduct = null;
 
     const $ = (s, el=document) => el.querySelector(s);
@@ -1253,13 +1207,11 @@
       return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
     }
 
-    // ========== CARS (PHOTO GRID) ==========
     function buildCars(){
       const host = $("#carCards");
       host.innerHTML = "";
 
       DATA.cars.forEach(c => {
-        // preskočíme "Všetky autá" v dátach? NIE – chceme ho ako prvú kartu
         const card = document.createElement("div");
         card.className = "carCard" + ((c.id || "") === activeCarId ? " active" : "");
         card.tabIndex = 0;
@@ -1299,8 +1251,6 @@
       activeCarId = id || "";
       updateCarActive();
       renderAll();
-
-      // jemný “UX”: po kliknutí na auto posuň užívateľa k produktom (ale bez hysterického skákania)
       document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
@@ -1311,7 +1261,6 @@
       });
     }
 
-    // ========== FILTER OPTIONS ==========
     function buildFilterOptions(){
       const cat = $("#cat");
       const mat = $("#mat");
@@ -1429,7 +1378,6 @@
       updateCarActive();
     }
 
-    // ========== PRODUCT MODAL ==========
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const mImg = $("#mImg");
@@ -1501,7 +1449,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
     closeProductModal.addEventListener("click", () => closeModal(productModal));
     productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
-    // ========== GALLERY MODAL ==========
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
     const gFull = $("#gFull");
@@ -1519,7 +1466,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
     closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
     galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
-    // ========== ORDER MODAL ==========
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1548,7 +1494,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
       openOrderModal();
     });
 
-    // ========== FILTER EVENTS ==========
     ["q","cat","mat","type"].forEach(id => {
       $("#" + id).addEventListener("input", renderAll);
       $("#" + id).addEventListener("change", renderAll);
