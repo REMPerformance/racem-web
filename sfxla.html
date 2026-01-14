@@ -355,13 +355,15 @@
       max-width: 980px;
     }
 
-    /* ===== GALLERY ===== */
+    /* ===== ABOUT LAYOUT ===== */
     .grid2{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
       gap: 16px;
       align-items:start;
     }
+
+    /* ===== GALLERY ===== */
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -402,58 +404,91 @@
       backdrop-filter: blur(10px);
     }
 
-    /* ===== CAR PICKER (CHIPS) ===== */
-    .carGrid{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
+    /* ===== “NORMAL” PRODUCT SECTION (NO EXTRA CONTAINERS) ===== */
+    .sectionHead{
+      display:flex; flex-wrap:wrap; gap:14px;
+      align-items:flex-end; justify-content:space-between;
+      margin-bottom: 12px;
+    }
+    .sectionHead .left{
+      display:flex; flex-direction:column; gap:8px;
+      max-width: 980px;
+    }
+    .divider{
+      height:1px; width:100%;
+      background: rgba(255,255,255,0.08);
+      margin: 18px 0;
+    }
+
+    /* Cars grid with photos and label UNDER the photo */
+    .carCards{
+      display:grid;
+      grid-template-columns: repeat(6, minmax(0,1fr));
+      gap: 14px;
       margin-top: 12px;
     }
-    .carBtn{
+    .carCard{
       border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.70));
-      border-radius: 999px;
-      padding: 12px 14px;
+      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.72));
+      border-radius: 18px;
+      overflow:hidden;
       cursor:pointer;
-      text-align:left;
+      box-shadow: 0 14px 44px rgba(0,0,0,0.42);
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
-      box-shadow: 0 14px 44px rgba(0,0,0,0.35);
+      display:flex;
+      flex-direction:column;
+      min-height: 210px;
+    }
+    .carCard:hover{
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 18px 62px rgba(0,0,0,0.62);
+      filter: brightness(1.03);
+    }
+    .carCard.active{
+      border-color: rgba(179,31,36,0.60);
+      box-shadow: 0 18px 70px rgba(0,0,0,0.70);
+    }
+    .carMedia{
+      height: 140px;
+      background: rgba(255,255,255,0.03);
       position:relative;
       overflow:hidden;
-      min-height: 46px;
     }
-    .carBtn::after{
-      content:"";
-      position:absolute; inset:-80px;
-      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.14), transparent 60%);
-      transform: rotate(14deg);
-      opacity:.9;
-      pointer-events:none;
+    .carMedia img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      filter: contrast(1.02) saturate(1.02);
     }
-    .carBtn:hover{
-      transform: translateY(-3px);
-      border-color: rgba(179,31,36,0.40);
-      filter: brightness(1.03);
-      box-shadow: 0 18px 62px rgba(0,0,0,0.55);
+    .carLabel{
+      padding: 12px 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
-    .carBtn.active{
-      border-color: rgba(179,31,36,0.55);
-      box-shadow: 0 18px 70px rgba(0,0,0,0.65);
-    }
-    .carName{
-      position:relative; z-index:1;
-      font-weight: 1000;
-      letter-spacing:.12em;
-      text-transform: uppercase;
+    .carLabel b{
       font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: .14em;
+      text-transform: uppercase;
       color:#fff;
-      line-height:1.1;
+      line-height:1.2;
+    }
+    .carLabel span{
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      font-weight: 900;
       white-space:nowrap;
     }
 
-    /* ===== FILTER BAR ===== */
+    /* Filters (kept) */
     .filterBar{
-      margin-top: 14px;
+      margin-top: 16px;
       display:flex;
       gap: 10px;
       flex-wrap:wrap;
@@ -799,6 +834,7 @@
 
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .carCards{ grid-template-columns: repeat(4, minmax(0,1fr)); }
     }
     @media (max-width: 980px){
       .wrap{ padding:0 18px; }
@@ -808,6 +844,7 @@
       .grid2{ grid-template-columns: 1fr; }
       .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .modalBody{ grid-template-columns: 1fr; }
       .mImg{ min-height: 240px; }
       .footGrid{ grid-template-columns: 1fr; }
@@ -817,6 +854,7 @@
       section{ padding: 56px 0; }
       .gallery{ grid-template-columns: 1fr; }
       .productGrid{ grid-template-columns: 1fr; }
+      .carCards{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
       .in,.sel{ min-width: 160px; }
     }
@@ -843,12 +881,12 @@
 
       <nav class="nav-links" aria-label="Menu">
         <a href="index.html">Domov</a>
-        <a href="#ponuka">Autá</a>
-        <a href="#ponuka">Ponuka</a>
+        <a href="#auta">Autá</a>
+        <a href="#produkty">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
 
-      <a class="btn secondary" href="#ponuka">Vybrať diely →</a>
+      <a class="btn secondary" href="#auta">Vybrať diely →</a>
     </div>
   </div>
 
@@ -862,12 +900,13 @@
           <div class="pill"><span class="dot"></span>autorizovaný predaj • fitment check • objednávka cez RACEM</div>
           <div class="heroTitle">Streetfighter LA</div>
           <p class="heroText">
-            Vyber si model auta, filtruj diely, zvoľ materiál (ak je dostupný) a pošli objednávku – odpovieme ti s termínom a dopravou.
+            Vyber si model auta (fotky), potom sa ti pod tým zobrazia kompatibilné diely.
+            Následne filtruj podľa názvu, kategórie, materiálu alebo typu a pošli objednávku.
           </p>
         </div>
 
         <div class="heroActions">
-          <a class="btn" href="#ponuka">Vybrať auto</a>
+          <a class="btn" href="#auta">Vybrať auto</a>
           <a class="btn secondary" href="#oZnacke">O značke</a>
         </div>
       </div>
@@ -930,47 +969,56 @@
     </div>
   </section>
 
-  <!-- ONE SECTION: CARS + FILTERS + PRODUCTS (ALL TOGETHER) -->
-  <section id="ponuka">
+  <!-- NORMAL PRODUCT SECTION: CAR PHOTOS (TOP) -> PRODUCTS (UNDER) -->
+  <section id="auta">
     <div class="wrap">
-      <div class="panel">
-        <div class="pill"><span class="dot"></span>výber auta + filtre + diely</div>
-        <h2 id="productsTitleTop">Vyber si auto</h2>
-        <p style="margin-bottom:10px;">
-          Klikni na model → hneď uvidíš kompatibilné diely. Potom ich môžeš filtrovať podľa názvu, kategórie, materiálu alebo typu.
-        </p>
-
-        <!-- CAR CHIPS -->
-        <div class="carGrid" id="carGrid"></div>
-
-        <!-- FILTERS -->
-        <div class="filterBar">
-          <div class="filtersLeft">
-            <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
-            <select class="sel" id="cat">
-              <option value="">Kategória: všetko</option>
-            </select>
-            <select class="sel" id="mat">
-              <option value="">Materiál: všetko</option>
-            </select>
-            <select class="sel" id="type">
-              <option value="">Variant: všetko</option>
-              <option value="Full Kit">Full kit</option>
-              <option value="Single Part">Single part</option>
-            </select>
-          </div>
-
-          <div class="miniStat" id="stat">0 dielov</div>
+      <div class="sectionHead">
+        <div class="left">
+          <div class="pill"><span class="dot"></span>autá</div>
+          <h2>Vyber si model (klikni na fotku)</h2>
+          <p style="margin:0;">
+            Pod každou fotkou je označenie. Klikneš → a produkty sa ti zobrazia hneď pod tým.
+          </p>
         </div>
-
-        <!-- PRODUCTS -->
-        <h2 id="productsTitle" style="margin-top:22px;">Diely pre: všetky autá</h2>
-        <p style="margin-top:-6px;">
-          Klikni na diel → otvorí sa detail, vyberieš variant (materiál/typ) a odošleš objednávku.
-        </p>
-
-        <div class="productGrid" id="productGrid"></div>
+        <a class="btn secondary" href="#produkty">Skok na produkty →</a>
       </div>
+
+      <div class="carCards" id="carCards"></div>
+
+      <div class="divider"></div>
+
+      <div id="produkty" class="sectionHead" style="margin-bottom:10px;">
+        <div class="left">
+          <div class="pill"><span class="dot"></span>ponuka dielov</div>
+          <h2 id="productsTitle">Diely pre: všetky autá</h2>
+          <p style="margin:0;">
+            Filtruj, otvor detail a pošli objednávku. Fitment (rok/facelift) dopíš do poznámky.
+          </p>
+        </div>
+        <div class="miniStat" id="stat">0 dielov</div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="filterBar">
+        <div class="filtersLeft">
+          <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
+          <select class="sel" id="cat">
+            <option value="">Kategória: všetko</option>
+          </select>
+          <select class="sel" id="mat">
+            <option value="">Materiál: všetko</option>
+          </select>
+          <select class="sel" id="type">
+            <option value="">Variant: všetko</option>
+            <option value="Full Kit">Full kit</option>
+            <option value="Single Part">Single part</option>
+          </select>
+          <button class="btn secondary" id="showAll" type="button">Všetky autá</button>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="productGrid" id="productGrid"></div>
     </div>
   </section>
 
@@ -1084,17 +1132,21 @@
   <script>
     const DATA = {
       cars: [
-        { id:"e36", label:"BMW E36" },
-        { id:"e46", label:"BMW E46" },
-        { id:"e90", label:"BMW E90" },
-        { id:"e92", label:"BMW E92" },
-        { id:"f30", label:"BMW F30" },
-        { id:"f80", label:"BMW F80" },
-        { id:"g8x", label:"BMW G80/82/83" },
-        { id:"evox", label:"Mitsubishi Evo X" },
-        { id:"cam5", label:"Camaro Gen5" },
-        { id:"cam6", label:"Camaro Gen6" },
-        { id:"gt4", label:"Porsche GT4" }
+        // DÔLEŽITÉ: sem si daj normálne “hero/preview” fotky áut (1 fotka na model)
+        // napr. assets/cars/e36.jpg, assets/cars/e46.jpg, ...
+        { id:"",    label:"Všetky autá", image:"assets/cars/all.jpg" },
+
+        { id:"e36", label:"BMW E36", image:"assets/cars/e36.jpg" },
+        { id:"e46", label:"BMW E46", image:"assets/cars/e46.jpg" },
+        { id:"e90", label:"BMW E90", image:"assets/cars/e90.jpg" },
+        { id:"e92", label:"BMW E92", image:"assets/cars/e92.jpg" },
+        { id:"f30", label:"BMW F30", image:"assets/cars/f30.jpg" },
+        { id:"f80", label:"BMW F80", image:"assets/cars/f80.jpg" },
+        { id:"g8x", label:"BMW G80/82/83", image:"assets/cars/g8x.jpg" },
+        { id:"evox", label:"Mitsubishi Evo X", image:"assets/cars/evox.jpg" },
+        { id:"cam5", label:"Camaro Gen5", image:"assets/cars/cam5.jpg" },
+        { id:"cam6", label:"Camaro Gen6", image:"assets/cars/cam6.jpg" },
+        { id:"gt4", label:"Porsche GT4", image:"assets/cars/gt4.jpg" }
       ],
       products: [
         {
@@ -1175,7 +1227,7 @@
       ]
     };
 
-    let activeCarId = "";
+    let activeCarId = "";      // "" = všetky
     let activeProduct = null;
 
     const $ = (s, el=document) => el.querySelector(s);
@@ -1201,36 +1253,65 @@
       return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
     }
 
+    // ========== CARS (PHOTO GRID) ==========
     function buildCars(){
-      const carGrid = $("#carGrid");
-      carGrid.innerHTML = "";
+      const host = $("#carCards");
+      host.innerHTML = "";
 
-      const addBtn = (label, id="") => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "carBtn" + (activeCarId === id ? " active" : "");
-        if (id) b.dataset.car = id;
-        b.innerHTML = `<div class="carName">${escapeHtml(label)}</div>`;
-        b.addEventListener("click", () => {
-          activeCarId = id;
-          updateCarActive();
-          renderAll();
+      DATA.cars.forEach(c => {
+        // preskočíme "Všetky autá" v dátach? NIE – chceme ho ako prvú kartu
+        const card = document.createElement("div");
+        card.className = "carCard" + ((c.id || "") === activeCarId ? " active" : "");
+        card.tabIndex = 0;
+        card.setAttribute("role","button");
+        card.dataset.car = (c.id || "");
+
+        const isAll = (c.id || "") === "";
+        const count = isAll
+          ? DATA.products.length
+          : DATA.products.filter(p => p.carId === c.id).length;
+
+        card.innerHTML = `
+          <div class="carMedia">
+            <img src="${escapeHtml(c.image || "assets/placeholder.jpg")}" alt="${escapeHtml(c.label)}">
+          </div>
+          <div class="carLabel">
+            <b>${escapeHtml(c.label)}</b>
+            <span>${count} ks</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => selectCar(c.id || ""));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            selectCar(c.id || "");
+          }
         });
-        carGrid.appendChild(b);
-      };
 
-      addBtn("Všetky", "");
-      DATA.cars.forEach(c => addBtn(c.label, c.id));
+        host.appendChild(card);
+      });
+
+      updateCarActive();
+    }
+
+    function selectCar(id){
+      activeCarId = id || "";
+      updateCarActive();
+      renderAll();
+
+      // jemný “UX”: po kliknutí na auto posuň užívateľa k produktom (ale bez hysterického skákania)
+      document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
     function updateCarActive(){
-      $$(".carBtn").forEach(btn => {
-        const car = btn.dataset.car || "";
-        btn.classList.toggle("active", car === activeCarId);
-        if (!btn.dataset.car) btn.classList.toggle("active", activeCarId === "");
+      $$(".carCard").forEach(c => {
+        const id = c.dataset.car || "";
+        c.classList.toggle("active", id === activeCarId);
       });
     }
 
+    // ========== FILTER OPTIONS ==========
     function buildFilterOptions(){
       const cat = $("#cat");
       const mat = $("#mat");
@@ -1293,11 +1374,13 @@
 
       grid.innerHTML = "";
       if (!items.length){
-        grid.innerHTML = `<div class="panel" style="grid-column:1/-1; padding:18px;">
-          <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-          <h2 style="margin:12px 0 8px; font-size:28px;">Skús zmeniť filtre</h2>
-          <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky”.</p>
-        </div>`;
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>nič sme nenašli</div>
+            <h2 style="margin:12px 0 8px; font-size:28px;">Skús zmeniť filtre</h2>
+            <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
+          </div>
+        `;
         return;
       }
 
@@ -1343,8 +1426,10 @@
 
     function renderAll(){
       renderProducts();
+      updateCarActive();
     }
 
+    // ========== PRODUCT MODAL ==========
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const mImg = $("#mImg");
@@ -1416,6 +1501,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
     closeProductModal.addEventListener("click", () => closeModal(productModal));
     productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
+    // ========== GALLERY MODAL ==========
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
     const gFull = $("#gFull");
@@ -1433,6 +1519,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
     closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
     galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
+    // ========== ORDER MODAL ==========
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1461,9 +1548,16 @@ Poznámka (dopíš rok/facelift/verziu):`;
       openOrderModal();
     });
 
+    // ========== FILTER EVENTS ==========
     ["q","cat","mat","type"].forEach(id => {
       $("#" + id).addEventListener("input", renderAll);
       $("#" + id).addEventListener("change", renderAll);
+    });
+
+    $("#showAll").addEventListener("click", () => {
+      activeCarId = "";
+      updateCarActive();
+      renderAll();
     });
 
     window.addEventListener("keydown", (e) => {
