@@ -320,37 +320,8 @@
       color: rgba(0,0,0,0.70);
       max-width: 720px;
     }
-    .sfxlaBadges{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .bwBadge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border:1px solid rgba(0,0,0,0.12);
-      background: rgba(0,0,0,0.03);
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 11px;
-    }
-    .bwDot{
-      width:8px; height:8px; border-radius:999px;
-      background: #111;
-    }
 
-    /* ===== GALLERY ===== */
-    .grid2{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-      align-items:start;
-    }
+    /* ===== PANELS / TYPO ===== */
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
@@ -384,6 +355,13 @@
       max-width: 980px;
     }
 
+    /* ===== GALLERY ===== */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      align-items:start;
+    }
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -424,12 +402,12 @@
       backdrop-filter: blur(10px);
     }
 
-    /* ===== CAR PICKER ===== */
+    /* ===== CAR PICKER (CHIPS) ===== */
     .carGrid{
       display:flex;
       flex-wrap:wrap;
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 12px;
     }
     .carBtn{
       border:1px solid rgba(255,255,255,0.10);
@@ -475,7 +453,7 @@
 
     /* ===== FILTER BAR ===== */
     .filterBar{
-      margin-top: 18px;
+      margin-top: 14px;
       display:flex;
       gap: 10px;
       flex-wrap:wrap;
@@ -711,11 +689,6 @@
       font-size: 13.5px;
       line-height:1.6;
     }
-    .mRow{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center;
-      margin-top: 4px;
-    }
     .mLabel{
       font-size: 11px;
       letter-spacing:.14em;
@@ -724,7 +697,7 @@
       font-weight: 1000;
     }
     .mSelect{
-      flex:1;
+      width:100%;
       min-width: 220px;
       border:1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.25);
@@ -733,9 +706,10 @@
       padding: 12px 12px;
       outline:none;
       font-weight: 900;
+      margin-top: 8px;
     }
     .mPrice{
-      margin-top: 2px;
+      margin-top: 10px;
       font-weight: 1000;
       letter-spacing:.12em;
       text-transform: uppercase;
@@ -779,12 +753,6 @@
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
     }
     textarea{ min-height: 120px; resize: vertical; }
-    .note{
-      color: rgba(255,255,255,0.65);
-      font-size: 12px;
-      line-height:1.6;
-      margin-top: 8px;
-    }
 
     /* ===== FOOTER ===== */
     footer{
@@ -828,16 +796,7 @@
       transition: color .18s ease;
     }
     .footLinks a:hover{ color:#fff; }
-    .copy{
-      margin-top: 18px;
-      color: rgba(255,255,255,0.45);
-      font-size: 12px;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
     }
@@ -859,9 +818,8 @@
       .gallery{ grid-template-columns: 1fr; }
       .productGrid{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
+      .in,.sel{ min-width: 160px; }
     }
-
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
@@ -885,7 +843,7 @@
 
       <nav class="nav-links" aria-label="Menu">
         <a href="index.html">Domov</a>
-        <a href="#auta">Autá</a>
+        <a href="#ponuka">Autá</a>
         <a href="#ponuka">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
@@ -904,13 +862,12 @@
           <div class="pill"><span class="dot"></span>autorizovaný predaj • fitment check • objednávka cez RACEM</div>
           <div class="heroTitle">Streetfighter LA</div>
           <p class="heroText">
-            Brutálne široké kity, ostré línie a čistý streetfighter podpis. Vyber si model auta, filtruj diely,
-            zvoľ materiál (ak je dostupný) a pošli objednávku – odpovieme ti s termínom a dopravou.
+            Vyber si model auta, filtruj diely, zvoľ materiál (ak je dostupný) a pošli objednávku – odpovieme ti s termínom a dopravou.
           </p>
         </div>
 
         <div class="heroActions">
-          <a class="btn" href="#auta">Vybrať auto</a>
+          <a class="btn" href="#ponuka">Vybrať auto</a>
           <a class="btn secondary" href="#oZnacke">O značke</a>
         </div>
       </div>
@@ -927,12 +884,6 @@
           <span>Origin: USA • Widebody / aero • Vyber model a diely nižšie.</span>
         </div>
       </div>
-
-      <div class="sfxlaBadges">
-        <div class="bwBadge"><span class="bwDot"></span>USA</div>
-        <div class="bwBadge"><span class="bwDot"></span>Widebody</div>
-        <div class="bwBadge"><span class="bwDot"></span>Aero</div>
-      </div>
     </div>
   </div>
 
@@ -948,13 +899,8 @@
             Väčšina kitov nie je 100% “plug & play” – fitment si vyžaduje rozumnú montáž, doladenie a často aj úpravy.
             Preto ti pred objednávkou overíme kompatibilitu (model/rok/facelift/verzia nárazníkov).
           </p>
-          <p style="color:rgba(255,255,255,0.72);">
-            <b>RACEM</b> ti dá “realitu bez omáčky”: čo sedí, čo treba upraviť, aký materiál dáva zmysel a aký bude termín dodania.
-          </p>
-
-          <div class="pill" style="margin-top:14px;"><span class="dot"></span>rýchly postup</div>
-          <p style="margin-bottom:0;">
-            1) Vyber auto → 2) Filter → 3) Klik na diel → 4) vyber materiál/variant → 5) poslať objednávku (formulár)
+          <p style="color:rgba(255,255,255,0.72); margin-bottom:0;">
+            <b>RACEM</b> ti povie narovinu: čo sedí, čo treba upraviť, aký materiál dáva zmysel a aký bude termín dodania.
           </p>
         </div>
 
@@ -979,26 +925,26 @@
               <div class="gCap">Aero</div>
             </div>
           </div>
-
-          <p class="note" style="margin-bottom:0;">
-            Tip: môžeš mať fotky aj po zložkách (e36/e46/...) – neskôr to vieme prepínať podľa modelu.
-          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CARS -->
-  <section id="auta">
+  <!-- ONE SECTION: CARS + FILTERS + PRODUCTS (ALL TOGETHER) -->
+  <section id="ponuka">
     <div class="wrap">
       <div class="panel">
-        <div class="pill"><span class="dot"></span>vyber auto</div>
-        <h2>Vyber si auto</h2>
-        <p>Klikni na model. Pod tým sa zobrazia kompatibilné diely (filtre fungujú stále).</p>
+        <div class="pill"><span class="dot"></span>výber auta + filtre + diely</div>
+        <h2 id="productsTitleTop">Vyber si auto</h2>
+        <p style="margin-bottom:10px;">
+          Klikni na model → hneď uvidíš kompatibilné diely. Potom ich môžeš filtrovať podľa názvu, kategórie, materiálu alebo typu.
+        </p>
 
+        <!-- CAR CHIPS -->
         <div class="carGrid" id="carGrid"></div>
 
-        <div class="filterBar" style="margin-top:18px;">
+        <!-- FILTERS -->
+        <div class="filterBar">
           <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
             <select class="sel" id="cat">
@@ -1016,17 +962,10 @@
 
           <div class="miniStat" id="stat">0 dielov</div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- PRODUCTS -->
-  <section id="ponuka">
-    <div class="wrap">
-      <div class="panel">
-        <div class="pill"><span class="dot"></span>ponuka</div>
-        <h2 id="productsTitle">Diely pre: všetky autá</h2>
-        <p>
+        <!-- PRODUCTS -->
+        <h2 id="productsTitle" style="margin-top:22px;">Diely pre: všetky autá</h2>
+        <p style="margin-top:-6px;">
           Klikni na diel → otvorí sa detail, vyberieš variant (materiál/typ) a odošleš objednávku.
         </p>
 
@@ -1035,7 +974,7 @@
     </div>
   </section>
 
-  <!-- CONTACT ANCHOR -->
+  <!-- CONTACT -->
   <section id="kontakt">
     <div class="wrap">
       <div class="panel">
@@ -1045,48 +984,9 @@
           Ak chceš poslať dopyt bez výberu konkrétneho dielu, klikni na tlačidlo a vyplň formulár.
         </p>
         <button class="btn" id="openGeneralForm" type="button">Otvoriť formulár</button>
-        <p class="note" style="margin-top:12px; margin-bottom:0;">
-          Formulár ide priamo cez Formspree: <b>https://formspree.io/f/xnjjqkpd</b>
-        </p>
       </div>
     </div>
   </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="wrap">
-      <div class="footGrid">
-        <div>
-          <div class="footTitle">RACEM</div>
-          <p class="footText">
-            Autorizovaný predaj bodykitov a aero. Overenie kompatibility (fitment), reálne termíny dodania,
-            a férová komunikácia bez výmyslov.
-          </p>
-          <div class="copy">© <span id="year"></span> RACEM • Beat them all</div>
-        </div>
-
-        <div>
-          <div class="footTitle">Odkazy</div>
-          <div class="footLinks">
-            <a href="index.html">Domov</a>
-            <a href="vop.html">VOP</a>
-            <a href="#auta">Autá</a>
-            <a href="#ponuka">Ponuka</a>
-          </div>
-        </div>
-
-        <div>
-          <div class="footTitle">Kontakt</div>
-          <p class="footText" style="margin-bottom:10px;">
-            Máš otázku na kompatibilitu, materiál alebo montáž? Napíš nám.
-          </p>
-          <div class="footLinks">
-            <a href="#kontakt" id="footerOpenForm">Odoslať dopyt</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <!-- PRODUCT DETAIL MODAL -->
   <div class="modal" id="productModal" aria-hidden="true">
@@ -1105,21 +1005,15 @@
           <h3 class="mTitle" id="mTitle">—</h3>
           <div class="mMeta" id="mMeta">—</div>
 
-          <div class="mRow">
-            <div style="flex:1; min-width:260px;">
-              <div class="mLabel">Variant / Materiál</div>
-              <select class="mSelect" id="mVariant"></select>
-              <div class="mPrice" id="mPrice">—</div>
-            </div>
+          <div>
+            <div class="mLabel">Variant / Materiál</div>
+            <select class="mSelect" id="mVariant"></select>
+            <div class="mPrice" id="mPrice">—</div>
           </div>
 
           <div class="mActions">
             <a class="btn secondary" id="mLink" href="#" target="_blank" rel="noreferrer">Origin link</a>
             <button class="btn" id="mOrder" type="button">Poslať objednávku</button>
-          </div>
-
-          <div class="note" id="mNote">
-            Poznámka bude predvyplnená (produkt + auto + variant).
           </div>
         </div>
       </div>
@@ -1175,9 +1069,6 @@
             <div class="full">
               <label for="message">Poznámka (predvyplnené)</label>
               <textarea id="message" name="message" required></textarea>
-              <div class="note">
-                Tip: dopíš rok, facelift a verziu nárazníkov. Fitment overíme pred potvrdením.
-              </div>
             </div>
           </div>
 
@@ -1191,8 +1082,6 @@
   </div>
 
   <script>
-    // ====== DATA ======
-    // Dôležité: id v cars = carId v products
     const DATA = {
       cars: [
         { id:"e36", label:"BMW E36" },
@@ -1286,14 +1175,20 @@
       ]
     };
 
-    // ====== STATE ======
     let activeCarId = "";
     let activeProduct = null;
 
-    // ====== HELPERS ======
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
 
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
     function fmtUSD(n){
       if (typeof n !== "number") return "—";
       return "$" + n.toLocaleString("en-US");
@@ -1305,16 +1200,7 @@
       const max = Math.max(...prices);
       return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
     }
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
 
-    // ====== BUILD CARS (YOUR REQUEST) ======
     function buildCars(){
       const carGrid = $("#carGrid");
       carGrid.innerHTML = "";
@@ -1329,7 +1215,6 @@
           activeCarId = id;
           updateCarActive();
           renderAll();
-          document.getElementById("ponuka").scrollIntoView({behavior:"smooth"});
         });
         carGrid.appendChild(b);
       };
@@ -1346,7 +1231,6 @@
       });
     }
 
-    // ====== FILTER OPTIONS ======
     function buildFilterOptions(){
       const cat = $("#cat");
       const mat = $("#mat");
@@ -1365,7 +1249,6 @@
         Array.from(mats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
     }
 
-    // ====== FILTERING ======
     function getFilteredProducts(){
       const q = ($("#q").value || "").trim().toLowerCase();
       const cat = $("#cat").value || "";
@@ -1389,11 +1272,11 @@
           });
           if (!ok) return false;
         }
+
         return true;
       });
     }
 
-    // ====== RENDER PRODUCTS ======
     function renderProducts(){
       const grid = $("#productGrid");
       const title = $("#productsTitle");
@@ -1462,7 +1345,6 @@
       renderProducts();
     }
 
-    // ====== PRODUCT MODAL ======
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const mImg = $("#mImg");
@@ -1526,10 +1408,14 @@ Poznámka (dopíš rok/facelift/verziu):`;
 
     mVariant.addEventListener("change", updateVariantPrice);
 
+    function closeModal(modal){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
     closeProductModal.addEventListener("click", () => closeModal(productModal));
     productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
-    // ====== GALLERY MODAL ======
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
     const gFull = $("#gFull");
@@ -1547,7 +1433,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
     closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
     galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
-    // ====== ORDER MODAL ======
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1575,27 +1460,19 @@ Poznámka (dopíš rok/facelift/verziu):`;
       $("#car").value = "";
       openOrderModal();
     });
-    $("#footerOpenForm").addEventListener("click", (e) => { e.preventDefault(); $("#openGeneralForm").click(); });
 
-    // ====== FILTER EVENTS ======
     ["q","cat","mat","type"].forEach(id => {
       $("#" + id).addEventListener("input", renderAll);
       $("#" + id).addEventListener("change", renderAll);
     });
 
-    // ====== UTIL ======
-    function closeModal(modal){
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden","true");
-    }
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape"){
         [orderModal, productModal, galleryModal].forEach(m => m.classList.contains("show") && closeModal(m));
       }
     });
 
-    // ====== INIT ======
-    $("#year").textContent = new Date().getFullYear();
+    // INIT
     buildFilterOptions();
     buildCars();
     renderAll();
