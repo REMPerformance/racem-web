@@ -28,6 +28,10 @@
 
       --bw:#ffffff;
       --bwText:#0a0a0a;
+
+      --green:#16c784;
+      --orange:#f59e0b;
+      --danger:#ef4444;
     }
 
     *{box-sizing:border-box}
@@ -378,7 +382,7 @@
       padding: 8px 10px;
       border-radius: 999px;
       background: rgba(0,0,0,0.45);
-      border:1px solid rgba(255,255l,255,0.12);
+      border:1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.88);
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 14px;
@@ -536,7 +540,9 @@
       position:absolute; left:10px; right:10px; top:10px;
       display:flex; justify-content:space-between; gap:10px;
       z-index:2;
+      align-items:flex-start;
     }
+
     .tag{
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
@@ -548,8 +554,59 @@
       color:#fff;
       border:1px solid rgba(255,255,255,0.14);
       background: rgba(0,0,0,0.45);
+      white-space:nowrap;
     }
     .tag .tDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
+
+    /* ✅ STATUS PILL */
+    .statusPill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.45);
+      white-space:nowrap;
+      margin-left:auto;
+    }
+    .statusPill .sDot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#fff;
+      box-shadow: 0 0 14px rgba(255,255,255,0.25);
+    }
+    .status-in_stock{
+      border-color: rgba(22,199,132,0.40);
+      background: rgba(22,199,132,0.15);
+    }
+    .status-in_stock .sDot{
+      background: var(--green);
+      box-shadow: 0 0 16px rgba(22,199,132,0.65);
+    }
+    .status-made_to_order{
+      border-color: rgba(245,158,11,0.45);
+      background: rgba(245,158,11,0.14);
+    }
+    .status-made_to_order .sDot{
+      background: var(--orange);
+      box-shadow: 0 0 16px rgba(245,158,11,0.60);
+    }
+    .status-out_of_stock{
+      border-color: rgba(239,68,68,0.45);
+      background: rgba(239,68,68,0.12);
+    }
+    .status-out_of_stock .sDot{
+      background: var(--danger);
+      box-shadow: 0 0 16px rgba(239,68,68,0.60);
+    }
+
     .pBody{
       padding: 14px 14px 16px;
       display:flex;
@@ -693,11 +750,42 @@
       color:#fff;
       line-height:1;
     }
+
+    /* meta blok */
     .mMeta{
       color: rgba(255,255,255,0.75);
       font-size: 13.5px;
       line-height:1.6;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
     }
+    .mMetaLine{
+      opacity:.95;
+    }
+    .mStatus{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 12.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.45);
+      white-space:nowrap;
+    }
+    .mStatus .sDot{ width:8px;height:8px;border-radius:999px;background:#fff; }
+    .mStatus.in_stock{ border-color: rgba(22,199,132,0.40); background: rgba(22,199,132,0.15); }
+    .mStatus.in_stock .sDot{ background: var(--green); box-shadow: 0 0 16px rgba(22,199,132,0.65); }
+    .mStatus.made_to_order{ border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.14); }
+    .mStatus.made_to_order .sDot{ background: var(--orange); box-shadow: 0 0 16px rgba(245,158,11,0.60); }
+    .mStatus.out_of_stock{ border-color: rgba(239,68,68,0.45); background: rgba(239,68,68,0.12); }
+    .mStatus.out_of_stock .sDot{ background: var(--danger); box-shadow: 0 0 16px rgba(239,68,68,0.60); }
 
     /* ✅ POPIS "POD SEBOU" */
     .mDesc{
@@ -735,6 +823,13 @@
       text-transform: uppercase;
       font-size: 16px;
       color: rgba(255,255,255,0.92);
+      line-height:1.5;
+    }
+    .mSmall{
+      margin-top: 4px;
+      color: rgba(255,255,255,0.72);
+      font-size: 13px;
+      line-height:1.6;
     }
     .mActions{
       margin-top:auto;
@@ -871,7 +966,6 @@
         <div class="chip"><span class="cDot"></span>3D SCAN / CAD</div>
         <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
         <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
-        <div class="chip"><span class="cDot"></span>MADE TO ORDER</div>
         <div class="chip"><span class="cDot"></span>SR/ČR/EÚ</div>
       </div>
     </div>
@@ -981,8 +1075,11 @@
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
 
-          <!-- meta: auto + kategória + dostupnosť -->
-          <div class="mMeta" id="mMeta">—</div>
+          <!-- meta: auto + kategória + status -->
+          <div class="mMeta" id="mMeta">
+            <span class="mMetaLine" id="mMetaLine">—</span>
+            <span class="mStatus made_to_order" id="mStatus"><span class="sDot"></span>NA OBJEDNÁVKU</span>
+          </div>
 
           <!-- ✅ description pod sebou -->
           <div class="mDesc" id="mDesc"></div>
@@ -991,10 +1088,12 @@
             <div class="mLabel">Variant / Materiál</div>
             <select class="mSelect" id="mVariant"></select>
             <div class="mPrice" id="mPrice">—</div>
+            <div class="mSmall" id="mShip">—</div>
+            <div class="mSmall" id="mDelivery">—</div>
+            <div class="mSmall" id="mTotal">—</div>
           </div>
 
           <div class="mActions">
-            <a class="btn secondary" id="mLink" href="#" target="_blank" rel="noreferrer">Origin link</a>
             <button class="btn" id="mOrder" type="button">Poslať objednávku</button>
           </div>
         </div>
@@ -1114,16 +1213,37 @@
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
-    function fmtUSD(n){
-      if (typeof n !== "number") return "—";
-      return "$" + n.toLocaleString("en-US");
+
+    function fmtEUR(n){
+      if (typeof n !== "number" || Number.isNaN(n)) return "—";
+      return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
     }
-    function minPrice(prod){
-      const prices = (prod.variants || []).map(v => v.priceUSD).filter(x => typeof x === "number");
-      if (!prices.length) return "price on request";
+
+    function getStockStatus(p){
+      // primárne nové pole stockStatus
+      const s = (p.stockStatus || "").trim();
+      if (s) return s;
+
+      // fallback: availability
+      const a = (p.availability || "").trim();
+      if (a === "in_stock") return "in_stock";
+      if (a === "made_to_order") return "made_to_order";
+      if (a === "out_of_stock") return "out_of_stock";
+      return "made_to_order";
+    }
+
+    function stockLabel(status){
+      if (status === "in_stock") return "SKLADOM";
+      if (status === "out_of_stock") return "VYPREDANÉ";
+      return "NA OBJEDNÁVKU";
+    }
+
+    function minPriceEUR(prod){
+      const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
+      if (!prices.length) return "cena na dopyt";
       const min = Math.min(...prices);
       const max = Math.max(...prices);
-      return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
+      return min === max ? fmtEUR(min) : `${fmtEUR(min)} – ${fmtEUR(max)}`;
     }
 
     function setSafeImage(imgEl, url, noImgEl){
@@ -1139,7 +1259,6 @@
 
     async function loadProducts(){
       try{
-        // ✅ root JSON (vedľa HTML v main roote)
         const res = await fetch("sfxla-products.json", { cache: "no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
 
@@ -1148,14 +1267,16 @@
 
         DATA.products = list.map(p => {
           const images = Array.isArray(p.images) ? p.images : [];
-          const image = p.image || images[0] || ""; // môže byť prázdne => placeholder
+          const image = p.image || images[0] || "";
           return {
             ...p,
             image,
             images,
             variants: Array.isArray(p.variants) ? p.variants : [],
             short: p.short || p.subtitle || "",
-            description: p.description || ""
+            description: p.description || "",
+            delivery: p.delivery || "Upresníme po objednávke",
+            shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : 0
           };
         });
 
@@ -1321,6 +1442,8 @@
 
       items.forEach(p => {
         const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
+        const status = getStockStatus(p);
+        const statusText = stockLabel(status);
 
         const card = document.createElement("div");
         card.className = "pCard";
@@ -1336,6 +1459,7 @@
             <div class="pTopRow">
               <div class="tag"><span class="tDot"></span>${escapeHtml(car)}</div>
               <div class="tag" style="border-color:rgba(255,255,255,0.18);">${escapeHtml(p.category || "Part")}</div>
+              <div class="statusPill status-${escapeHtml(status)}"><span class="sDot"></span>${escapeHtml(statusText)}</div>
             </div>
           </div>
 
@@ -1344,7 +1468,7 @@
             <p class="pDesc">${escapeHtml(p.short || "")}</p>
 
             <div class="pBottom">
-              <div class="price">${escapeHtml(minPrice(p))}</div>
+              <div class="price">${escapeHtml(minPriceEUR(p))}</div>
               <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
             </div>
           </div>
@@ -1375,11 +1499,14 @@
     const mImg = $("#mImg");
     const mNoImg = $("#mNoImg");
     const mTitle = $("#mTitle");
-    const mMeta = $("#mMeta");
-    const mDesc = $("#mDesc");          // ✅ NEW
+    const mMetaLine = $("#mMetaLine");
+    const mStatus = $("#mStatus");
+    const mDesc = $("#mDesc");
     const mVariant = $("#mVariant");
     const mPrice = $("#mPrice");
-    const mLink = $("#mLink");
+    const mShip = $("#mShip");
+    const mDelivery = $("#mDelivery");
+    const mTotal = $("#mTotal");
     const mOrder = $("#mOrder");
 
     function openProduct(p){
@@ -1388,16 +1515,17 @@
       if (mTitle) mTitle.textContent = p.title || "—";
 
       const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
-      const availability = p.availability ? ` • ${p.availability}` : "";
       const maxq = (typeof p.maxQtyPerOrder === "number") ? ` • max ${p.maxQtyPerOrder} ks` : "";
-
-      if (mMeta){
-        mMeta.innerHTML = `
-          <div><b>${escapeHtml(car)}</b> • ${escapeHtml(p.category || "Part")}${escapeHtml(availability)}${escapeHtml(maxq)}</div>
-        `;
+      if (mMetaLine){
+        mMetaLine.textContent = `${car} • ${p.category || "Part"}${maxq}`;
       }
 
-      // ✅ POPIS POD SEBOU (riadky z JSON cez \n)
+      const status = getStockStatus(p);
+      if (mStatus){
+        mStatus.className = "mStatus " + status;
+        mStatus.innerHTML = `<span class="sDot"></span>${escapeHtml(stockLabel(status))}`;
+      }
+
       if (mDesc){
         mDesc.textContent = p.description || p.short || "";
       }
@@ -1417,13 +1545,12 @@
         if (!vars.length){
           const opt = document.createElement("option");
           opt.value = "0";
-          opt.textContent = "Variant: price on request";
+          opt.textContent = "Variant: cena na dopyt";
           mVariant.appendChild(opt);
         }
         mVariant.value = "0";
       }
 
-      if (mLink) mLink.href = p.url || "#";
       updateVariantPrice();
 
       if (productModal){
@@ -1434,25 +1561,42 @@
 
     function updateVariantPrice(){
       if (!activeProduct) return;
+
       const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
       const idx = Number(mVariant?.value || 0);
       const v = vars[idx];
 
-      if (!v){
-        if (mPrice) mPrice.textContent = "Cena: price on request";
-      }else{
-        if (mPrice) mPrice.textContent = `Cena: ${fmtUSD(v.priceUSD)} • ${v.material || ""} • ${v.type || ""}`.replaceAll("  "," ").trim();
+      const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
+      const delivery = activeProduct.delivery || "Upresníme po objednávke";
+      const status = getStockStatus(activeProduct);
+
+      const basePrice = (v && typeof v.priceEUR === "number") ? v.priceEUR : null;
+      const total = (basePrice !== null) ? (basePrice + ship) : null;
+
+      if (!v || basePrice === null){
+        if (mPrice) mPrice.textContent = `Cena: cena na dopyt`;
+      } else {
+        const tail = `${v.material || ""} • ${v.type || ""}`.trim();
+        if (mPrice) mPrice.textContent = `Cena: ${fmtEUR(basePrice)}${tail ? " • " + tail : ""}`;
       }
+
+      if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
+      if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+      if (mTotal) mTotal.textContent = `Spolu: ${total !== null ? fmtEUR(total) : "upresníme"}`;
 
       const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
 
-      const note = `OBJEDNÁVKA – Streetfighter LA
+      const note =
+`OBJEDNÁVKA – Streetfighter LA
 Auto: ${car}
 Diel: ${activeProduct.title || "—"}
 Variant: ${v?.name || "—"} | Materiál: ${v?.material || "—"} | Typ: ${v?.type || "—"}
-Dostupnosť: ${activeProduct.availability || "—"}
+Dostupnosť: ${stockLabel(status)} (${status})
 Max ks / objednávka: ${typeof activeProduct.maxQtyPerOrder === "number" ? activeProduct.maxQtyPerOrder : "—"}
-Link: ${activeProduct.url || "—"}
+Cena: ${basePrice !== null ? fmtEUR(basePrice) : "cena na dopyt"}
+Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}
+Dodanie: ${delivery}
+Spolu: ${total !== null ? fmtEUR(total) : "upresníme"}
 
 Poznámka (dopíš rok/facelift/verziu):`;
 
@@ -1521,7 +1665,8 @@ Poznámka (dopíš rok/facelift/verziu):`;
         const msg = $("#message");
         const car = $("#car");
         if (msg){
-          msg.value = `DOPYT – Streetfighter LA
+          msg.value =
+`DOPYT – Streetfighter LA
 
 Auto:
 Diel:
