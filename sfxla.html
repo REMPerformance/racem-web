@@ -15,7 +15,6 @@
   <link rel="canonical" href="https://racem.sk/streetfighter-la.html" />
 
   <style>
-    /* ✅ FONT like streetfighterla.com vibe (condensed / sporty) */
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
 
     :root{
@@ -42,7 +41,6 @@
     }
     a{color:inherit}
 
-    /* ===== BACKGROUND FX ===== */
     .bg{
       position:fixed; inset:0; z-index:-6; pointer-events:none;
       background:
@@ -80,7 +78,6 @@
     .wrap{ width:100%; padding:0 6vw; }
     section{ padding:100px 0; position:relative; }
 
-    /* ===== TOPBAR ===== */
     .topbar{
       position:sticky; top:0; z-index:100;
       background: rgba(10,10,10,0.62);
@@ -191,7 +188,6 @@
       background: rgba(255,255,255,0.09);
     }
 
-    /* ===== HERO ===== */
     .hero{
       padding: 0;
       border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -253,7 +249,6 @@
     }
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
 
-    /* ===== STRIP ===== */
     .brandStrip{
       background: var(--bw);
       color: var(--bwText);
@@ -311,7 +306,6 @@
       flex: 0 0 auto;
     }
 
-    /* ===== PANELS ===== */
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
@@ -353,7 +347,6 @@
       align-items:start;
     }
 
-    /* ===== GALLERY ===== */
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -393,7 +386,6 @@
       text-transform: uppercase;
     }
 
-    /* ===== CARS (UNIFORM) ===== */
     .carCards{
       display:grid;
       grid-template-columns: repeat(6, minmax(0,1fr));
@@ -420,7 +412,6 @@
       border-color: rgba(179,31,36,0.65);
       box-shadow: 0 18px 70px rgba(0,0,0,0.70);
     }
-
     .carMedia{
       position:relative;
       height: 220px;
@@ -469,7 +460,6 @@
       margin: 18px 0;
     }
 
-    /* ===== FILTERS ===== */
     .filterBar{
       margin-top: 16px;
       display:flex;
@@ -506,7 +496,6 @@
       text-transform: uppercase;
     }
 
-    /* ===== PRODUCTS ===== */
     .productGrid{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -621,7 +610,6 @@
       border-color: rgba(179,31,36,0.35);
     }
 
-    /* ===== MODALS ===== */
     .modal{
       position:fixed; inset:0; z-index:999;
       display:none;
@@ -685,6 +673,7 @@
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.02);
       min-height: 320px;
+      position:relative;
     }
     .mImg img{ width:100%; height:100%; object-fit: cover; display:block; }
     .mInfo{
@@ -728,6 +717,7 @@
       outline:none;
       font-weight: 900;
       margin-top: 8px;
+      font-family: Arial, sans-serif;
     }
     .mPrice{
       margin-top: 10px;
@@ -744,7 +734,6 @@
       flex-wrap:wrap;
     }
 
-    /* ===== ORDER FORM ===== */
     .formGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -775,6 +764,20 @@
       font-family: Arial, sans-serif;
     }
     textarea{ min-height: 120px; resize: vertical; }
+
+    .noImg{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.85));
+      color: rgba(255,255,255,0.72);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.22em;
+      text-transform: uppercase;
+      font-size: 14px;
+      pointer-events:none;
+    }
 
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
@@ -815,7 +818,6 @@
   <div class="bg"></div>
   <div class="noise"></div>
 
-  <!-- TOPBAR -->
   <div class="topbar" id="top">
     <div class="nav">
       <a href="index.html" class="brand-mini" aria-label="RACEM">
@@ -836,7 +838,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <section class="hero" aria-label="Streetfighter LA hero">
     <div class="heroMedia">
       <div class="heroBg"></div>
@@ -848,11 +849,10 @@
     </div>
   </section>
 
-  <!-- STRIP -->
   <div class="brandStrip" aria-label="SFXLA brand strip">
     <div class="brandStripInner">
       <div class="sfxlaLogoRow">
-        <img src="assets/sfxla-logo.png" alt="Streetfighter LA logo (black)">
+        <img src="assets/sfxla-logo.png" alt="Streetfighter LA logo (black)" onerror="this.style.display='none'">
         <div class="sfxlaMeta">
           <span>Pôvod: USA</span>
         </div>
@@ -868,7 +868,6 @@
     </div>
   </div>
 
-  <!-- ABOUT + GALLERY -->
   <section id="oZnacke">
     <div class="wrap">
       <div class="grid2">
@@ -888,15 +887,15 @@
 
           <div class="gallery" id="gallery">
             <div class="gItem" data-full="assets/sfxla-gallery/1.jpg" title="Open">
-              <img src="assets/sfxla-gallery/1.jpg" alt="SFXLA gallery 1">
+              <img src="assets/sfxla-gallery/1.jpg" alt="SFXLA gallery 1" onerror="this.closest('.gItem').style.display='none'">
               <div class="gCap">SFXLA</div>
             </div>
             <div class="gItem" data-full="assets/sfxla-gallery/2.jpg" title="Open">
-              <img src="assets/sfxla-gallery/2.jpg" alt="SFXLA gallery 2">
+              <img src="assets/sfxla-gallery/2.jpg" alt="SFXLA gallery 2" onerror="this.closest('.gItem').style.display='none'">
               <div class="gCap">Wide</div>
             </div>
             <div class="gItem" data-full="assets/sfxla-gallery/3.jpg" title="Open">
-              <img src="assets/sfxla-gallery/3.jpg" alt="SFXLA gallery 3">
+              <img src="assets/sfxla-gallery/3.jpg" alt="SFXLA gallery 3" onerror="this.closest('.gItem').style.display='none'">
               <div class="gCap">Aero</div>
             </div>
           </div>
@@ -905,7 +904,6 @@
     </div>
   </section>
 
-  <!-- CARS + PRODUCTS -->
   <section id="auta">
     <div class="wrap">
       <div class="panel">
@@ -916,7 +914,6 @@
 
         <div class="divider"></div>
 
-        <!-- ✅ FIX: added productsTitle so JS doesn't crash -->
         <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
           <div class="miniStat" id="productsTitle">Diely pre: všetky autá</div>
           <div class="miniStat" id="stat">0 dielov</div>
@@ -945,7 +942,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="kontakt">
     <div class="wrap">
       <div class="panel">
@@ -959,7 +955,6 @@
     </div>
   </section>
 
-  <!-- PRODUCT DETAIL MODAL -->
   <div class="modal" id="productModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
       <div class="modalHead">
@@ -970,6 +965,7 @@
       <div class="modalBody">
         <div class="mImg">
           <img id="mImg" src="" alt="Product image">
+          <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
         </div>
 
         <div class="mInfo">
@@ -991,7 +987,6 @@
     </div>
   </div>
 
-  <!-- GALLERY MODAL -->
   <div class="modal" id="galleryModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
@@ -1001,12 +996,12 @@
       <div style="padding:14px;">
         <div class="mImg" style="min-height:420px;">
           <img id="gFull" src="" alt="Gallery image">
+          <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ORDER FORM MODAL -->
   <div class="modal" id="orderModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Order form">
       <div class="modalHead">
@@ -1053,7 +1048,24 @@
   </div>
 
   <script>
-    // ✅ cars stay inline; products will be loaded from ROOT JSON: sfxla-products.json
+    const PLACEHOLDER_DATA_URI =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0' stop-color='#111'/>
+              <stop offset='1' stop-color='#050505'/>
+            </linearGradient>
+          </defs>
+          <rect width='1200' height='800' fill='url(#g)'/>
+          <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+            fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
+            NO IMAGE
+          </text>
+        </svg>
+      `);
+
     const DATA = {
       cars: [
         { id:"e36", label:"BMW E36",          image:"assets/E36-main.webp" },
@@ -1078,19 +1090,17 @@
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
 
     function escapeHtml(str){
-      return String(str)
+      return String(str ?? "")
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
-
     function fmtUSD(n){
       if (typeof n !== "number") return "—";
       return "$" + n.toLocaleString("en-US");
     }
-
     function minPrice(prod){
       const prices = (prod.variants || []).map(v => v.priceUSD).filter(x => typeof x === "number");
       if (!prices.length) return "price on request";
@@ -1099,34 +1109,47 @@
       return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
     }
 
+    function setSafeImage(imgEl, url, noImgEl){
+      if (!imgEl) return;
+      if (noImgEl) noImgEl.style.display = "none";
+      imgEl.onerror = () => {
+        imgEl.onerror = null;
+        imgEl.src = PLACEHOLDER_DATA_URI;
+        if (noImgEl) noImgEl.style.display = "grid";
+      };
+      imgEl.src = url || PLACEHOLDER_DATA_URI;
+    }
+
     async function loadProducts(){
       try{
-        const res = await fetch("sfxla-products.json", { cache: "no-store" });
+        const res = await fetch("/sfxla-products.json", { cache: "no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
 
         const json = await res.json();
         const list = Array.isArray(json.products) ? json.products : [];
 
-        // normalize fields so the UI always works
         DATA.products = list.map(p => {
           const images = Array.isArray(p.images) ? p.images : [];
-          const image = p.image || images[0] || "assets/placeholder.jpg";
+          const image = p.image || images[0] || "";
           return {
             ...p,
             image,
-            images: images.length ? images : [image],
-            variants: Array.isArray(p.variants) ? p.variants : []
+            images,
+            variants: Array.isArray(p.variants) ? p.variants : [],
+            short: p.short || p.subtitle || "",
+            description: p.description || ""
           };
         });
 
       }catch(err){
-        console.error("Failed to load sfxla-products.json:", err);
+        console.error("Failed to load /sfxla-products.json:", err);
         DATA.products = [];
       }
     }
 
     function buildCars(){
       const host = $("#carCards");
+      if (!host) return;
       host.innerHTML = "";
 
       const allCard = document.createElement("div");
@@ -1155,7 +1178,7 @@
 
         card.innerHTML = `
           <div class="carMedia">
-            <img src="${escapeHtml(c.image || "assets/placeholder.jpg")}" alt="${escapeHtml(c.label)}">
+            <img src="${escapeHtml(c.image || "")}" alt="${escapeHtml(c.label)}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">
             <div class="carNameOverlay"><b>${escapeHtml(c.label)}</b></div>
           </div>
         `;
@@ -1191,6 +1214,8 @@
     function buildFilterOptions(){
       const cat = $("#cat");
       const mat = $("#mat");
+      if (!cat || !mat) return;
+
       const cats = new Set();
       const mats = new Set();
 
@@ -1207,10 +1232,10 @@
     }
 
     function getFilteredProducts(){
-      const q = ($("#q").value || "").trim().toLowerCase();
-      const cat = $("#cat").value || "";
-      const mat = $("#mat").value || "";
-      const type = $("#type").value || "";
+      const q = ($("#q")?.value || "").trim().toLowerCase();
+      const cat = $("#cat")?.value || "";
+      const mat = $("#mat")?.value || "";
+      const type = $("#type")?.value || "";
 
       return DATA.products.filter(p => {
         if (activeCarId && p.carId !== activeCarId) return false;
@@ -1236,29 +1261,40 @@
 
     function renderProducts(){
       const grid = $("#productGrid");
-      const title = $("#productsTitle");
-      const stat = $("#stat");
+      const titleEl = $("#productsTitle");
+      const statEl = $("#stat");
+      if (!grid) return;
 
       const carLabel = activeCarId
         ? (DATA.cars.find(c=>c.id===activeCarId)?.label || activeCarId)
         : "všetky autá";
 
-      title.textContent = `Diely pre: ${carLabel}`;
+      if (titleEl) titleEl.textContent = `Diely pre: ${carLabel}`;
 
       const items = getFilteredProducts();
-      stat.textContent = `${items.length} dielov`;
+      if (statEl) statEl.textContent = `${items.length} dielov`;
 
       grid.innerHTML = "";
-      if (!items.length){
-        const msg = DATA.products.length
-          ? `Skús zmeniť filtre (materiál/kategória) alebo vyber “Všetky autá”.`
-          : `Produkty sa nenačítali. Skontroluj, či je v root súbor "sfxla-products.json" a či má správny JSON formát.`;
 
+      if (!DATA.products.length){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
+            <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
+            <p style="margin:0;">
+              Uisti sa, že súbor <b>/sfxla-products.json</b> existuje v roote a je validný JSON.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!items.length){
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
             <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">${escapeHtml(msg)}</p>
+            <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
           </div>
         `;
         return;
@@ -1266,15 +1302,18 @@
 
       items.forEach(p => {
         const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
+
         const card = document.createElement("div");
         card.className = "pCard";
         card.tabIndex = 0;
         card.setAttribute("role","button");
-        card.setAttribute("aria-label", "Open " + p.title);
+        card.setAttribute("aria-label", "Open " + (p.title || "product"));
+
+        const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
 
         card.innerHTML = `
           <div class="pMedia">
-            <img src="${escapeHtml(p.image || "assets/placeholder.jpg")}" alt="${escapeHtml(p.title)}">
+            <img alt="${escapeHtml(p.title)}">
             <div class="pTopRow">
               <div class="tag"><span class="tDot"></span>${escapeHtml(car)}</div>
               <div class="tag" style="border-color:rgba(255,255,255,0.18);">${escapeHtml(p.category || "Part")}</div>
@@ -1282,7 +1321,7 @@
           </div>
 
           <div class="pBody">
-            <div class="pName">${escapeHtml(p.title)}</div>
+            <div class="pName">${escapeHtml(p.title || "")}</div>
             <p class="pDesc">${escapeHtml(p.short || "")}</p>
 
             <div class="pBottom">
@@ -1291,6 +1330,9 @@
             </div>
           </div>
         `;
+
+        const imgEl = card.querySelector(".pMedia img");
+        setSafeImage(imgEl, imgSrc, null);
 
         card.addEventListener("click", () => openProduct(p));
         card.addEventListener("keydown", (e) => {
@@ -1312,6 +1354,7 @@
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const mImg = $("#mImg");
+    const mNoImg = $("#mNoImg");
     const mTitle = $("#mTitle");
     const mMeta = $("#mMeta");
     const mVariant = $("#mVariant");
@@ -1322,80 +1365,115 @@
     function openProduct(p){
       activeProduct = p;
 
-      mImg.src = p.image || "assets/placeholder.jpg";
-      mTitle.textContent = p.title;
+      if (mTitle) mTitle.textContent = p.title || "—";
 
       const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
-      mMeta.innerHTML = `
-        <div><b>${escapeHtml(car)}</b> • ${escapeHtml(p.category || "Part")}</div>
-        <div style="margin-top:6px; color:rgba(255,255,255,0.78);">${escapeHtml(p.short || "")}</div>
-      `;
+      const availability = p.availability ? ` • ${p.availability}` : "";
+      const maxq = (typeof p.maxQtyPerOrder === "number") ? ` • max ${p.maxQtyPerOrder} ks` : "";
 
-      mVariant.innerHTML = "";
-      (p.variants || []).forEach((v, i) => {
-        const opt = document.createElement("option");
-        opt.value = String(i);
-        opt.textContent = `${v.name || "Variant"} • ${v.material || "Material"} • ${v.type || ""}`.trim();
-        mVariant.appendChild(opt);
-      });
+      if (mMeta){
+        mMeta.innerHTML = `
+          <div><b>${escapeHtml(car)}</b> • ${escapeHtml(p.category || "Part")}${escapeHtml(availability)}${escapeHtml(maxq)}</div>
+          <div style="margin-top:6px; color:rgba(255,255,255,0.78);">
+            ${escapeHtml(p.description || p.short || "")}
+          </div>
+        `;
+      }
 
-      mLink.href = p.url || "#";
-      mVariant.value = "0";
+      const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
+      setSafeImage(mImg, imgSrc, mNoImg);
+
+      if (mVariant){
+        mVariant.innerHTML = "";
+        const vars = Array.isArray(p.variants) ? p.variants : [];
+        vars.forEach((v, i) => {
+          const opt = document.createElement("option");
+          opt.value = String(i);
+          opt.textContent = `${v.name || "Variant"} • ${v.material || "Material"} • ${v.type || ""}`.trim();
+          mVariant.appendChild(opt);
+        });
+        if (!vars.length){
+          const opt = document.createElement("option");
+          opt.value = "0";
+          opt.textContent = "Variant: price on request";
+          mVariant.appendChild(opt);
+        }
+        mVariant.value = "0";
+      }
+
+      if (mLink) mLink.href = p.url || "#";
       updateVariantPrice();
 
-      productModal.classList.add("show");
-      productModal.setAttribute("aria-hidden","false");
+      if (productModal){
+        productModal.classList.add("show");
+        productModal.setAttribute("aria-hidden","false");
+      }
     }
 
     function updateVariantPrice(){
       if (!activeProduct) return;
-      const idx = Number(mVariant.value || 0);
-      const v = (activeProduct.variants || [])[idx];
+      const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+      const idx = Number(mVariant?.value || 0);
+      const v = vars[idx];
+
       if (!v){
-        mPrice.textContent = "Price on request";
-        return;
+        if (mPrice) mPrice.textContent = "Cena: price on request";
+      }else{
+        if (mPrice) mPrice.textContent = `Cena: ${fmtUSD(v.priceUSD)} • ${v.material || ""} • ${v.type || ""}`.replaceAll("  "," ").trim();
       }
-      mPrice.textContent = `Cena: ${fmtUSD(v.priceUSD)} • ${v.material || ""} • ${v.type || ""}`.replaceAll("  ", " ").trim();
 
       const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
       const note = `OBJEDNÁVKA – Streetfighter LA
 Auto: ${car}
-Diel: ${activeProduct.title}
-Variant: ${v.name || "—"} | Materiál: ${v.material || "—"} | Typ: ${v.type || "—"}
+Diel: ${activeProduct.title || "—"}
+Variant: ${v?.name || "—"} | Materiál: ${v?.material || "—"} | Typ: ${v?.type || "—"}
+Dostupnosť: ${activeProduct.availability || "—"}
+Max ks / objednávka: ${typeof activeProduct.maxQtyPerOrder === "number" ? activeProduct.maxQtyPerOrder : "—"}
 Link: ${activeProduct.url || "—"}
 
 Poznámka (dopíš rok/facelift/verziu):`;
 
-      $("#message").value = note;
-      $("#car").value = car;
+      const msg = $("#message");
+      const carInput = $("#car");
+      if (msg) msg.value = note;
+      if (carInput) carInput.value = car;
     }
 
-    mVariant.addEventListener("change", updateVariantPrice);
+    if (mVariant) mVariant.addEventListener("change", updateVariantPrice);
 
     function closeModal(modal){
+      if (!modal) return;
       modal.classList.remove("show");
       modal.setAttribute("aria-hidden","true");
     }
 
-    closeProductModal.addEventListener("click", () => closeModal(productModal));
-    productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
+    if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
+    if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
     const gFull = $("#gFull");
+    const gNoImg = $("#gNoImg");
 
-    $("#gallery").addEventListener("click", (e) => {
-      const item = e.target.closest(".gItem");
-      if (!item) return;
-      const full = item.getAttribute("data-full") || "";
-      if (!full) return;
-      gFull.src = full;
-      galleryModal.classList.add("show");
-      galleryModal.setAttribute("aria-hidden","false");
-    });
+    const galleryEl = $("#gallery");
+    if (galleryEl){
+      galleryEl.addEventListener("click", (e) => {
+        const item = e.target.closest(".gItem");
+        if (!item) return;
+        const full = item.getAttribute("data-full") || "";
+        if (!full) return;
 
-    closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
-    galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
+        setSafeImage(gFull, full, gNoImg);
+
+        if (galleryModal){
+          galleryModal.classList.add("show");
+          galleryModal.setAttribute("aria-hidden","false");
+        }
+      });
+    }
+
+    if (closeGalleryModal) closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
+    if (galleryModal) galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
@@ -1403,51 +1481,64 @@ Poznámka (dopíš rok/facelift/verziu):`;
 
     function openOrderModal(){
       closeModal(productModal);
+      if (!orderModal) return;
       orderModal.classList.add("show");
       orderModal.setAttribute("aria-hidden","false");
-      setTimeout(()=> $("#name").focus(), 50);
+      setTimeout(()=> $("#name")?.focus(), 50);
     }
 
-    mOrder.addEventListener("click", openOrderModal);
-    closeOrderModal.addEventListener("click", () => closeModal(orderModal));
-    cancelSend.addEventListener("click", () => closeModal(orderModal));
-    orderModal.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
+    if (mOrder) mOrder.addEventListener("click", openOrderModal);
+    if (closeOrderModal) closeOrderModal.addEventListener("click", () => closeModal(orderModal));
+    if (cancelSend) cancelSend.addEventListener("click", () => closeModal(orderModal));
+    if (orderModal) orderModal.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
 
-    $("#openGeneralForm").addEventListener("click", () => {
-      $("#message").value = `DOPYT – Streetfighter LA
+    const openGeneralForm = $("#openGeneralForm");
+    if (openGeneralForm){
+      openGeneralForm.addEventListener("click", () => {
+        const msg = $("#message");
+        const car = $("#car");
+        if (msg){
+          msg.value = `DOPYT – Streetfighter LA
 
 Auto:
 Diel:
 Variant / Materiál:
 
 Poznámka (dopíš rok/facelift/verziu):`;
-      $("#car").value = "";
-      openOrderModal();
-    });
+        }
+        if (car) car.value = "";
+        openOrderModal();
+      });
+    }
 
     ["q","cat","mat","type"].forEach(id => {
-      $("#" + id).addEventListener("input", renderAll);
-      $("#" + id).addEventListener("change", renderAll);
+      const el = $("#" + id);
+      if (!el) return;
+      el.addEventListener("input", renderAll);
+      el.addEventListener("change", renderAll);
     });
 
-    $("#showAll").addEventListener("click", () => {
-      activeCarId = "";
-      updateCarActive();
-      renderAll();
-    });
+    const showAllBtn = $("#showAll");
+    if (showAllBtn){
+      showAllBtn.addEventListener("click", () => {
+        activeCarId = "";
+        updateCarActive();
+        renderAll();
+      });
+    }
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape"){
-        [orderModal, productModal, galleryModal].forEach(m => m.classList.contains("show") && closeModal(m));
+        [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
       }
     });
 
-    // ✅ INIT (load JSON first)
     (async () => {
       await loadProducts();
       buildFilterOptions();
       buildCars();
       renderAll();
+      console.log("SFXLA products loaded:", DATA.products.length);
     })();
   </script>
 </body>
