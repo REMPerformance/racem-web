@@ -252,22 +252,6 @@
       width: fit-content;
     }
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
-    .heroTitle{
-      margin: 14px 0 10px;
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: clamp(46px, 6.6vw, 92px);
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      line-height: 0.9;
-      text-shadow: 0 20px 60px rgba(0,0,0,0.85);
-    }
-    .heroText{
-      margin:0;
-      color: rgba(255,255,255,0.78);
-      line-height:1.7;
-      font-size: 16px;
-      max-width: 980px;
-    }
 
     /* ===== STRIP ===== */
     .brandStrip{
@@ -293,24 +277,6 @@
       height: 46px; width:auto; display:block; object-fit:contain;
       filter: none;
     }
-    .sfxlaMeta{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-    }
-    .sfxlaMeta b{
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 18px;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-    }
-    .sfxlaMeta span{
-      font-size: 12px;
-      color: rgba(0,0,0,0.70);
-      max-width: 720px;
-    }
-
-    /* ✅ NEW: fill empty space on the right */
     .facts{
       display:flex;
       flex-wrap:wrap;
@@ -464,8 +430,7 @@
     .carMedia::after{
       content:"";
       position:absolute; inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
+      background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
       pointer-events:none;
     }
     .carMedia img{
@@ -493,10 +458,6 @@
       letter-spacing:.22em;
       text-transform: uppercase;
       color:#fff;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: none;
       text-shadow: 0 18px 40px rgba(0,0,0,0.90);
       display:inline-block;
     }
@@ -832,7 +793,7 @@
       .mImg{ min-height: 240px; }
       .brandStripInner{ padding: 22px 18px; }
       .carMedia{ height: 200px; }
-      .facts{ justify-content:flex-start; } /* ✅ nicer on mobile */
+      .facts{ justify-content:flex-start; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
@@ -879,7 +840,6 @@
   <section class="hero" aria-label="Streetfighter LA hero">
     <div class="heroMedia">
       <div class="heroBg"></div>
-
       <div class="heroInner">
         <div class="heroActions">
           <a class="btn" href="#auta">Vybrať model</a>
@@ -898,7 +858,6 @@
         </div>
       </div>
 
-      <!-- ✅ RIGHT SIDE CHIPS (fills the empty white space) -->
       <div class="facts" aria-label="SFXLA facts">
         <div class="chip"><span class="cDot"></span>3D SCAN / CAD</div>
         <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
@@ -921,7 +880,6 @@
             aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá. Spája high-tech inžinierstvo (3D skenovanie, CAD) s funkčným štýlom
             pre použitie na cestách a okruhoch. Je obľúbená u značiek ako BMW a Camaro.
           </p>
-          <p style="color:rgba(255,255,255,0.72); margin-bottom:0;"></p>
         </div>
 
         <div class="panel">
@@ -950,7 +908,6 @@
   <!-- CARS + PRODUCTS -->
   <section id="auta">
     <div class="wrap">
-
       <div class="panel">
         <div class="pill"><span class="dot"></span>Ponuka</div>
         <h2>Naša ponuka:</h2>
@@ -959,8 +916,9 @@
 
         <div class="divider"></div>
 
+        <!-- ✅ FIX: added productsTitle so JS doesn't crash -->
         <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
-        
+          <div class="miniStat" id="productsTitle">Diely pre: všetky autá</div>
           <div class="miniStat" id="stat">0 dielov</div>
         </div>
 
@@ -1095,6 +1053,7 @@
   </div>
 
   <script>
+    // ✅ cars stay inline; products will be loaded from ROOT JSON: sfxla-products.json
     const DATA = {
       cars: [
         { id:"e36", label:"BMW E36",          image:"assets/E36-main.webp" },
@@ -1109,83 +1068,7 @@
         { id:"cam6",label:"Camaro Gen6",      image:"assets/gen6-main.webp" },
         { id:"gt4", label:"Porsche GT4",      image:"assets/gt4-main.webp" }
       ],
-      products: [
-        {
-          id:"p1",
-          carId:"e36",
-          category:"Wide Body Kit",
-          title:"BMW E36 Wide Body Kit",
-          short:"Kompletný widebody kit",
-          image:"assets/products/e36-widebody.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"FRP / Plastic", material:"FRP", type:"Full Kit", priceUSD:1895 },
-            { name:"Carbon", material:"Carbon", type:"Full Kit", priceUSD:2295 }
-          ]
-        },
-        {
-          id:"p2",
-          carId:"e36",
-          category:"Rear Spoiler",
-          title:"BMW E36 Rear Spoiler",
-          short:"Zadný spoiler",
-          image:"assets/products/e36-spoiler.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"FRP / Plastic", material:"FRP", type:"Single Part", priceUSD:325 }
-          ]
-        },
-        {
-          id:"p3",
-          carId:"e36",
-          category:"Front Lip",
-          title:"BMW E36 Front Lip",
-          short:"Predná lipa",
-          image:"assets/products/e36-lip.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"FRP / Plastic", material:"FRP", type:"Single Part", priceUSD:90 }
-          ]
-        },
-        {
-          id:"p4",
-          carId:"e46",
-          category:"Wide Body Kit",
-          title:"BMW E46 Wide Body Kit",
-          short:"Široký kit pre E46",
-          image:"assets/products/e46-widebody.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"FRP / Plastic", material:"FRP", type:"Full Kit", priceUSD:2650 }
-          ]
-        },
-        {
-          id:"p5",
-          carId:"e90",
-          category:"Wide Body Kit",
-          title:"BMW E90 Wide Body Kit",
-          short:"Široký kit pre E90",
-          image:"assets/products/e90-widebody.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"FRP / Plastic", material:"FRP", type:"Full Kit", priceUSD:4445 }
-          ]
-        },
-        {
-          id:"p6",
-          carId:"e92",
-          category:"Wide Body Kit",
-          title:"BMW E92 Wide Body Kit",
-          short:"Viac variantov podľa setupu",
-          image:"assets/products/e92-widebody.jpg",
-          url:"https://streetfighterla.com/",
-          variants:[
-            { name:"Variant A (FRP)", material:"FRP", type:"Full Kit", priceUSD:1630 },
-            { name:"Variant B (FRP)", material:"FRP", type:"Full Kit", priceUSD:2495 },
-            { name:"Carbon", material:"Carbon", type:"Full Kit", priceUSD:4120 }
-          ]
-        }
-      ]
+      products: []
     };
 
     let activeCarId = "";
@@ -1202,16 +1085,44 @@
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
+
     function fmtUSD(n){
       if (typeof n !== "number") return "—";
       return "$" + n.toLocaleString("en-US");
     }
+
     function minPrice(prod){
       const prices = (prod.variants || []).map(v => v.priceUSD).filter(x => typeof x === "number");
       if (!prices.length) return "price on request";
       const min = Math.min(...prices);
       const max = Math.max(...prices);
       return min === max ? fmtUSD(min) : `${fmtUSD(min)} – ${fmtUSD(max)}`;
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch("sfxla-products.json", { cache: "no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+
+        const json = await res.json();
+        const list = Array.isArray(json.products) ? json.products : [];
+
+        // normalize fields so the UI always works
+        DATA.products = list.map(p => {
+          const images = Array.isArray(p.images) ? p.images : [];
+          const image = p.image || images[0] || "assets/placeholder.jpg";
+          return {
+            ...p,
+            image,
+            images: images.length ? images : [image],
+            variants: Array.isArray(p.variants) ? p.variants : []
+          };
+        });
+
+      }catch(err){
+        console.error("Failed to load sfxla-products.json:", err);
+        DATA.products = [];
+      }
     }
 
     function buildCars(){
@@ -1339,11 +1250,15 @@
 
       grid.innerHTML = "";
       if (!items.length){
+        const msg = DATA.products.length
+          ? `Skús zmeniť filtre (materiál/kategória) alebo vyber “Všetky autá”.`
+          : `Produkty sa nenačítali. Skontroluj, či je v root súbor "sfxla-products.json" a či má správny JSON formát.`;
+
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
             <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
+            <p style="margin:0;">${escapeHtml(msg)}</p>
           </div>
         `;
         return;
@@ -1527,10 +1442,13 @@ Poznámka (dopíš rok/facelift/verziu):`;
       }
     });
 
-    // INIT
-    buildFilterOptions();
-    buildCars();
-    renderAll();
+    // ✅ INIT (load JSON first)
+    (async () => {
+      await loadProducts();
+      buildFilterOptions();
+      buildCars();
+      renderAll();
+    })();
   </script>
 </body>
 </html>
