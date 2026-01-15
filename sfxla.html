@@ -15,8 +15,8 @@
   <link rel="canonical" href="https://racem.sk/streetfighter-la.html" />
 
   <style>
-    /* ✅ SPORT FONT */
-    @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&display=swap');
+    /* ✅ SPORT FONT (motorsport vibe) */
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
     :root{
       --red:#b31f24;
@@ -106,9 +106,8 @@
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
     .brand-title{
-      font-family: "Teko", system-ui, sans-serif;
-      font-weight: 700;
-      letter-spacing:.18em;
+      font-family: "Bebas Neue", system-ui, sans-serif;
+      letter-spacing:.14em;
       text-transform: uppercase;
       font-size: 14px;
       color: rgba(255,255,255,0.78);
@@ -134,9 +133,8 @@
       position:relative;
       color: rgba(255,255,255,0.76);
       text-decoration:none;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 16px;
-      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .18em;
       white-space: nowrap;
@@ -216,9 +214,9 @@
       background: rgba(20,20,20,0.55);
       border-radius:999px;
       color: rgba(255,255,255,0.78);
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 16px;
-      letter-spacing:.14em;
+      letter-spacing:.16em;
       text-transform:uppercase;
       width: fit-content;
       backdrop-filter: blur(10px);
@@ -226,12 +224,11 @@
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
     .heroTitle{
       margin: 14px 0 10px;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: clamp(44px, 6.4vw, 86px);
-      letter-spacing: .10em;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      font-weight: 700;
-      line-height: 0.95;
+      line-height: 0.92;
       text-shadow: 0 20px 60px rgba(0,0,0,0.85);
     }
     .heroText{
@@ -256,10 +253,9 @@
       background: rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.14);
       color:#fff;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing: .16em;
+      letter-spacing: .18em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
       box-shadow: 0 18px 60px rgba(0,0,0,0.55);
@@ -311,14 +307,14 @@
       display:flex;
       flex-direction:column;
       line-height:1.2;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       letter-spacing:.14em;
       text-transform: uppercase;
     }
     .sfxlaMeta b{ font-size: 18px; }
     .sfxlaMeta span{
-      font-size: 16px;
-      letter-spacing:.10em;
+      font-size: 14px;
+      letter-spacing:.08em;
       text-transform:none;
       color: rgba(0,0,0,0.70);
       max-width: 720px;
@@ -346,11 +342,11 @@
 
     h2{
       margin: 12px 0 12px 0;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       text-transform: uppercase;
       letter-spacing: .14em;
       font-size: clamp(34px, 4.8vw, 54px);
-      line-height: 0.95;
+      line-height: 0.92;
     }
     p{
       margin:0 0 14px 0;
@@ -401,10 +397,9 @@
       background: rgba(0,0,0,0.45);
       border:1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.88);
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing:.14em;
+      letter-spacing:.16em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
     }
@@ -442,7 +437,6 @@
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
       display:flex;
       flex-direction:column;
-      min-height: 210px;
       position:relative;
     }
     .carCard:hover{
@@ -455,85 +449,52 @@
       border-color: rgba(179,31,36,0.60);
       box-shadow: 0 18px 70px rgba(0,0,0,0.70);
     }
+
+    /* ✅ “kvalitne” zobrazovanie: neorezávame na silu */
     .carMedia{
-      height: 170px;
-      background: rgba(255,255,255,0.03);
       position:relative;
-      overflow:hidden;
-    }
-    .carMedia::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.12), rgba(0,0,0,0));
-      pointer-events:none;
+      padding: 12px;
+      background: rgba(0,0,0,0.25);
+      display:grid;
+      place-items:center;
     }
     .carMedia img{
-      width:100%; height:100%;
-      object-fit: cover;
+      width:100%;
+      height:auto;              /* nech ide prirodzene */
+      max-height: 230px;        /* a zároveň držíme layout pekný */
+      object-fit: contain;      /* ✅ neorezáva, drží origin */
       display:block;
-      transform: scale(1.02);
-      filter: contrast(1.05) saturate(1.05);
+      image-rendering: auto;
+      filter: contrast(1.06) saturate(1.06);
+      transform: translateZ(0);
     }
 
-    /* ✅ NAME DIRECTLY ON IMAGE */
+    /* ✅ NÁZOV V STREDE “JEMNE HORE” */
     .carNameOverlay{
       position:absolute;
-      left:12px;
-      bottom:10px;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
+      left:50%;
+      top:38%;
+      transform: translate(-50%, -50%);
       z-index:2;
+      text-align:center;
+      pointer-events:none;
+      width: 92%;
     }
     .carNameOverlay b{
-      font-family:"Teko", system-ui, sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing:.16em;
+      font-family:"Bebas Neue", system-ui, sans-serif;
+      font-size: 34px;
+      letter-spacing:.20em;
       text-transform: uppercase;
       color:#fff;
-      text-shadow: 0 14px 44px rgba(0,0,0,0.75);
-      line-height:0.95;
-    }
-    .carNameOverlay span{
-      font-family:"Teko", system-ui, sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      width: fit-content;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.42);
+      line-height: 0.92;
+      padding: 10px 14px 8px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.38);
       border:1px solid rgba(255,255,255,0.14);
       backdrop-filter: blur(10px);
-    }
-    .carNameOverlay span i{
-      width:7px;height:7px;border-radius:99px;
-      background: var(--red);
+      text-shadow: 0 22px 60px rgba(0,0,0,0.85);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
       display:inline-block;
-      box-shadow: 0 0 14px rgba(179,31,36,0.7);
-    }
-
-    .carLabelRow{
-      padding: 12px 12px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .carLabelRow .small{
-      font-family:"Teko", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
-      font-weight: 700;
-      white-space:nowrap;
     }
 
     /* ===== FILTERS ===== */
@@ -562,15 +523,15 @@
       font-weight: 800;
       letter-spacing:.04em;
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      font-family: Arial, sans-serif;
     }
     .in::placeholder{ color: rgba(255,255,255,0.50); }
     .miniStat{
       color: rgba(255,255,255,0.70);
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 16px;
       letter-spacing:.18em;
       text-transform: uppercase;
-      font-weight: 700;
     }
 
     /* ===== PRODUCTS ===== */
@@ -620,11 +581,10 @@
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
       border-radius: 999px;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 14px;
       letter-spacing: .16em;
       text-transform: uppercase;
-      font-weight: 700;
       color:#fff;
       border:1px solid rgba(255,255,255,0.14);
       background: rgba(0,0,0,0.45);
@@ -640,13 +600,12 @@
     }
     .pName{
       margin:0;
-      font-family:"Teko", system-ui, sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: .16em;
+      font-family:"Bebas Neue", system-ui, sans-serif;
+      font-size: 20px;
+      letter-spacing: .18em;
       text-transform: uppercase;
       color:#fff;
-      line-height: 1.0;
+      line-height: 0.95;
     }
     .pDesc{
       margin:0;
@@ -663,9 +622,8 @@
       margin-top: 4px;
     }
     .price{
-      font-family:"Teko", system-ui, sans-serif;
-      font-weight: 700;
-      letter-spacing:.16em;
+      font-family:"Bebas Neue", system-ui, sans-serif;
+      letter-spacing:.18em;
       text-transform: uppercase;
       font-size: 16px;
       color: rgba(255,255,255,0.90);
@@ -674,12 +632,11 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 14px;
       letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
-      font-weight: 700;
     }
     .openHint .arr{
       width: 34px; height: 34px; border-radius: 14px;
@@ -723,11 +680,10 @@
       background: rgba(0,0,0,0.35);
     }
     .modalHead b{
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       letter-spacing:.18em;
       text-transform: uppercase;
       font-size: 16px;
-      font-weight: 700;
     }
     .xBtn{
       border:none;
@@ -771,9 +727,8 @@
     }
     .mTitle{
       margin:0;
-      font-family:"Teko", system-ui, sans-serif;
-      font-weight:700;
-      letter-spacing:.16em;
+      font-family:"Bebas Neue", system-ui, sans-serif;
+      letter-spacing:.18em;
       text-transform: uppercase;
       font-size: 20px;
       color:#fff;
@@ -785,12 +740,11 @@
       line-height:1.6;
     }
     .mLabel{
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 14px;
       letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
-      font-weight: 700;
     }
     .mSelect{
       width:100%;
@@ -806,9 +760,8 @@
     }
     .mPrice{
       margin-top: 10px;
-      font-family:"Teko", system-ui, sans-serif;
-      font-weight: 700;
-      letter-spacing:.16em;
+      font-family:"Bebas Neue", system-ui, sans-serif;
+      letter-spacing:.18em;
       text-transform: uppercase;
       font-size: 16px;
       color: rgba(255,255,255,0.92);
@@ -830,12 +783,11 @@
     .formGrid .full{ grid-column: 1 / -1; }
     label{
       display:block;
-      font-family:"Teko", system-ui, sans-serif;
+      font-family:"Bebas Neue", system-ui, sans-serif;
       font-size: 14px;
       letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.68);
-      font-weight: 700;
       margin-bottom: 6px;
     }
     input, textarea{
@@ -877,6 +829,7 @@
       .carCards{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
       .in,.sel{ min-width: 160px; }
+      .carNameOverlay b{ font-size: 30px; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -920,8 +873,7 @@
           <div class="pill"><span class="dot"></span>autorizovaný predaj • fitment check • objednávka cez RACEM</div>
           <div class="heroTitle">Streetfighter LA</div>
           <p class="heroText">
-            Vyber si model auta (fotky), potom sa ti pod tým zobrazia kompatibilné diely.
-            Následne filtruj podľa názvu, kategórie, materiálu alebo typu a pošli objednávku.
+            Vyber si model auta → zobrazia sa kompatibilné diely. Potom filtruj a pošli objednávku.
           </p>
         </div>
 
@@ -995,10 +947,8 @@
       <div class="sectionHead">
         <div class="left">
           <div class="pill"><span class="dot"></span>autá</div>
-          <h2>Vyber si model (klikni na fotku)</h2>
-          <p style="margin:0;">
-            Názov modelu je priamo na obrázku. Klikneš → a produkty sa ti zobrazia pod tým.
-          </p>
+          <h2>Vyber si model</h2>
+          <p style="margin:0;">Klikneš na fotku → produkty sa ti zobrazia pod tým.</p>
         </div>
         <a class="btn secondary" href="#produkty">Skok na produkty →</a>
       </div>
@@ -1011,9 +961,7 @@
         <div class="left">
           <div class="pill"><span class="dot"></span>ponuka dielov</div>
           <h2 id="productsTitle">Diely pre: všetky autá</h2>
-          <p style="margin:0;">
-            Filtruj, otvor detail a pošli objednávku. Fitment (rok/facelift) dopíš do poznámky.
-          </p>
+          <p style="margin:0;">Otvor detail a pošli objednávku.</p>
         </div>
         <div class="miniStat" id="stat">0 dielov</div>
       </div>
@@ -1021,12 +969,8 @@
       <div class="filterBar">
         <div class="filtersLeft">
           <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
-          <select class="sel" id="cat">
-            <option value="">Kategória: všetko</option>
-          </select>
-          <select class="sel" id="mat">
-            <option value="">Materiál: všetko</option>
-          </select>
+          <select class="sel" id="cat"><option value="">Kategória: všetko</option></select>
+          <select class="sel" id="mat"><option value="">Materiál: všetko</option></select>
           <select class="sel" id="type">
             <option value="">Variant: všetko</option>
             <option value="Full Kit">Full kit</option>
@@ -1150,14 +1094,11 @@
   <script>
     const DATA = {
       cars: [
-        // ✅ F30 je tu a bude sa renderovať ako karta
-        { id:"",    label:"Všetky autá",        image:"assets/E36-main.webp" },
-
         { id:"e36", label:"BMW E36",           image:"assets/E36-main.webp" },
         { id:"e46", label:"BMW E46",           image:"assets/e46-main.webp" },
         { id:"e90", label:"BMW E90",           image:"assets/e90-main.webp" },
         { id:"e92", label:"BMW E92",           image:"assets/e92-main.webp" },
-        { id:"f30", label:"BMW F30",           image:"assets/f30-main.webp" },   // ✅
+        { id:"f30", label:"BMW F30",           image:"assets/f30-main.webp" },   // ✅ pridané
         { id:"f80", label:"BMW F80",           image:"assets/f80-main.webp" },
         { id:"g8x", label:"BMW G80/82/83",     image:"assets/g80-main.webp" },
         { id:"evox",label:"Mitsubishi Evo X",  image:"assets/evox-main.jpg" },
@@ -1274,37 +1215,43 @@
       const host = $("#carCards");
       host.innerHTML = "";
 
+      // prvá karta = "Všetky autá"
+      const allCard = document.createElement("div");
+      allCard.className = "carCard" + (activeCarId === "" ? " active" : "");
+      allCard.tabIndex = 0;
+      allCard.setAttribute("role","button");
+      allCard.dataset.car = "";
+      allCard.innerHTML = `
+        <div class="carMedia">
+          <img src="assets/E36-main.webp" alt="Všetky autá">
+          <div class="carNameOverlay"><b>VŠETKY AUTÁ</b></div>
+        </div>
+      `;
+      allCard.addEventListener("click", () => selectCar(""));
+      allCard.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); selectCar(""); }
+      });
+      host.appendChild(allCard);
+
       DATA.cars.forEach(c => {
         const card = document.createElement("div");
-        card.className = "carCard" + ((c.id || "") === activeCarId ? " active" : "");
+        card.className = "carCard" + (c.id === activeCarId ? " active" : "");
         card.tabIndex = 0;
         card.setAttribute("role","button");
-        card.dataset.car = (c.id || "");
-
-        const isAll = (c.id || "") === "";
-        const count = isAll
-          ? DATA.products.length
-          : DATA.products.filter(p => p.carId === c.id).length;
+        card.dataset.car = c.id;
 
         card.innerHTML = `
           <div class="carMedia">
             <img src="${escapeHtml(c.image || "assets/placeholder.jpg")}" alt="${escapeHtml(c.label)}">
-            <div class="carNameOverlay">
-              <b>${escapeHtml(c.label)}</b>
-              <span><i></i>${count} ks</span>
-            </div>
-          </div>
-          <div class="carLabelRow">
-            <div class="small">Klikni pre výber</div>
-            <div class="small">${isAll ? "ALL" : escapeHtml((c.id||"").toUpperCase())}</div>
+            <div class="carNameOverlay"><b>${escapeHtml(c.label)}</b></div>
           </div>
         `;
 
-        card.addEventListener("click", () => selectCar(c.id || ""));
+        card.addEventListener("click", () => selectCar(c.id));
         card.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
             e.preventDefault();
-            selectCar(c.id || "");
+            selectCar(c.id);
           }
         });
 
@@ -1393,7 +1340,7 @@
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-            <h2 style="margin:12px 0 8px; font-size:44px;">Skús zmeniť filtre</h2>
+            <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
             <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
           </div>
         `;
