@@ -14,20 +14,26 @@
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://racem.sk/streetfighter-la.html" />
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  <!-- Sporty condensed vibe (closest to SFXLA look without guessing their exact theme font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 
+  <style>
     :root{
       --red:#b31f24;
       --bg:#0b0b0b;
       --panel:#141414;
+      --panel2:#101010;
       --text:#ffffff;
       --muted:#cfcfcf;
+      --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
       --shadow: 0 22px 70px rgba(0,0,0,0.55);
 
       --bw:#ffffff;
       --bwText:#0a0a0a;
+      --sport:'Oswald', Arial, sans-serif;
     }
 
     *{box-sizing:border-box}
@@ -41,7 +47,7 @@
     }
     a{color:inherit}
 
-    /* ===== BACKGROUND FX ===== */
+    /* ===== BACKGROUND FX (RACEM) ===== */
     .bg{
       position:fixed; inset:0; z-index:-6; pointer-events:none;
       background:
@@ -82,9 +88,9 @@
     /* ===== TOPBAR ===== */
     .topbar{
       position:sticky; top:0; z-index:100;
+      backdrop-filter: blur(12px);
       background: rgba(10,10,10,0.62);
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      backdrop-filter: blur(12px);
     }
     .nav{
       width:100%;
@@ -107,40 +113,44 @@
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
     .brand-title{
-      font-family: "Bebas Neue", system-ui, sans-serif;
+      font-weight: 1000;
+      letter-spacing:.18em;
       text-transform: uppercase;
-      letter-spacing:.16em;
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
       display:flex;
       flex-direction:column;
-      line-height:1.0;
-      color: rgba(255,255,255,0.82);
+      line-height:1.1;
       margin-top:2px;
     }
     .brand-title b{
+      font-size: 14px;
       color:#fff;
-      font-size: 18px;
-      letter-spacing:.18em;
+      letter-spacing:.14em;
     }
+
     .nav-links{
       display:flex;
       align-items:center;
-      gap: 26px;
+      gap: 28px;
       flex-wrap:wrap;
       justify-content:center;
     }
     .nav-links a{
       position:relative;
-      text-decoration:none;
       color: rgba(255,255,255,0.76);
-      font-family: "Bebas Neue", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing:.18em;
+      text-decoration:none;
+      font-size: 12px;
+      font-weight: 1000;
       text-transform: uppercase;
+      letter-spacing: .16em;
+      white-space: nowrap;
       padding: 6px 0;
-      transition: color .2s ease, transform .2s ease;
+      transition: color .25s ease, text-shadow .25s ease, transform .25s ease;
     }
     .nav-links a:hover{
       color:#fff;
+      text-shadow: 0 0 14px rgba(179,31,36,0.25);
       transform: translateY(-1px);
     }
     .nav-links a::after{
@@ -151,44 +161,11 @@
       width:0;
       height:2px;
       background: var(--red);
-      transform: translateX(-50%);
-      transition: width .28s ease;
       box-shadow: 0 0 10px rgba(179,31,36,.75), 0 0 22px rgba(179,31,36,.35);
+      transform: translateX(-50%);
+      transition: width .32s ease;
     }
-    .nav-links a:hover::after{ width: 120%; }
-
-    .btn{
-      border:none;
-      cursor:pointer;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.14);
-      color:#fff;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-    .btn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.42);
-      background: rgba(179,31,36,0.18);
-    }
-    .btn.secondary{
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.06);
-    }
-    .btn.secondary:hover{
-      border-color: rgba(255,255,255,0.32);
-      background: rgba(255,255,255,0.09);
-    }
+    .nav-links a:hover::after{ width: 125%; }
 
     /* ===== HERO ===== */
     .hero{
@@ -237,6 +214,7 @@
       gap:22px;
       flex-wrap:wrap;
     }
+    .heroLeft{max-width: 980px;}
     .pill{
       display:inline-flex; gap:10px; align-items:center;
       padding:8px 12px;
@@ -244,20 +222,20 @@
       background: rgba(20,20,20,0.55);
       border-radius:999px;
       color: rgba(255,255,255,0.78);
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing:.16em;
+      font-size:12px;
+      letter-spacing:.12em;
       text-transform:uppercase;
       width: fit-content;
+      backdrop-filter: blur(10px);
     }
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
     .heroTitle{
       margin: 14px 0 10px;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: clamp(46px, 6.6vw, 92px);
-      letter-spacing: .18em;
+      font-size: clamp(34px, 5.6vw, 72px);
+      letter-spacing: .08em;
       text-transform: uppercase;
-      line-height: 0.9;
+      font-weight: 1000;
+      line-height: 1.02;
       text-shadow: 0 20px 60px rgba(0,0,0,0.85);
     }
     .heroText{
@@ -267,8 +245,48 @@
       font-size: 16px;
       max-width: 980px;
     }
+    .heroActions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.42);
+      background: rgba(179,31,36,0.18);
+    }
+    .btn.secondary{
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+    }
+    .btn.secondary:hover{
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.09);
+    }
 
-    /* ===== STRIP ===== */
+    /* ===== SFXLA BLACK/WHITE STRIP ===== */
     .brandStrip{
       background: var(--bw);
       color: var(--bwText);
@@ -295,11 +313,10 @@
     .sfxlaMeta{
       display:flex;
       flex-direction:column;
-      line-height:1.1;
+      line-height:1.2;
     }
     .sfxlaMeta b{
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 18px;
+      font-size: 12px;
       letter-spacing:.18em;
       text-transform: uppercase;
     }
@@ -309,7 +326,7 @@
       max-width: 720px;
     }
 
-    /* ===== PANELS ===== */
+    /* ===== PANELS / TYPO ===== */
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
@@ -330,28 +347,26 @@
 
     h2{
       margin: 12px 0 12px 0;
-      font-family:"Bebas Neue", system-ui, sans-serif;
       text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: clamp(34px, 4.8vw, 56px);
-      line-height:0.92;
+      letter-spacing: 1px;
+      font-size: clamp(26px, 4.3vw, 40px);
+      line-height:1.06;
     }
     p{
       margin:0 0 14px 0;
-      color: rgba(255,255,255,0.78);
+      color: var(--muted);
       line-height:1.75;
       font-size:15.5px;
       max-width: 980px;
     }
 
+    /* ===== GALLERY ===== */
     .grid2{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
       gap: 16px;
       align-items:start;
     }
-
-    /* ===== GALLERY ===== */
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -385,96 +400,82 @@
       background: rgba(0,0,0,0.45);
       border:1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.88);
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.18em;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing:.12em;
       text-transform: uppercase;
+      backdrop-filter: blur(10px);
     }
 
-    /* ===== CARS (UNIFORM) ===== */
-    .carCards{
+    /* ===== CAR PICKER (IMAGE TILES) ===== */
+    .carGrid{
       display:grid;
-      grid-template-columns: repeat(6, minmax(0,1fr));
-      gap: 14px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
       margin-top: 12px;
     }
-    .carCard{
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.72));
-      border-radius: 18px;
+    .carTile{
+      position:relative;
+      border-radius: 16px;
       overflow:hidden;
       cursor:pointer;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
       box-shadow: 0 14px 44px rgba(0,0,0,0.42);
       transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
-      position:relative;
+      aspect-ratio: 16 / 10; /* UNIFIED SIZE */
+      user-select:none;
     }
-    .carCard:hover{
-      transform: translateY(-6px);
-      border-color: rgba(179,31,36,0.45);
+    .carTile:hover{
+      transform: translateY(-5px);
+      border-color: rgba(179,31,36,0.40);
       box-shadow: 0 18px 62px rgba(0,0,0,0.62);
       filter: brightness(1.03);
     }
-    .carCard.active{
-      border-color: rgba(179,31,36,0.65);
+    .carTile.active{
+      border-color: rgba(179,31,36,0.55);
       box-shadow: 0 18px 70px rgba(0,0,0,0.70);
     }
-
-    .carMedia{
-      position:relative;
-      height: 220px;                 /* ✅ jednotná výška */
-      background: #060606;
-      overflow:hidden;
-    }
-    .carMedia::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
-      pointer-events:none;
-    }
-    .carMedia img{
+    .carTile img{
       width:100%;
       height:100%;
-      object-fit: cover;             /* ✅ všetko rovnaké */
+      object-fit: cover; /* keep quality, crop naturally */
       display:block;
       transform: scale(1.02);
-      filter: contrast(1.06) saturate(1.06);
+      filter: contrast(1.05) saturate(1.05);
     }
-
-    .carNameOverlay{
+    .carTile::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.55));
+      pointer-events:none;
+    }
+    .carLabel{
       position:absolute;
       left:50%;
-      top:18%;                        /* ✅ jemne hore */
-      transform: translateX(-50%);
-      z-index:3;
-      pointer-events:none;
-      width: 92%;
+      top:46%;              /* center but slightly up */
+      transform: translate(-50%, -50%);
       text-align:center;
-    }
-    .carNameOverlay b{
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 30px;
-      letter-spacing:.22em;
+      font-family: var(--sport);
       text-transform: uppercase;
-      color:#fff;
-      padding: 6px 14px 5px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.55);   /* ✅ bez blur */
-      border:1px solid rgba(255,255,255,0.14);
-      text-shadow: 0 18px 40px rgba(0,0,0,0.90);
-      display:inline-block;
+      letter-spacing: .10em;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+      /* NO BLUR/BOX UNDER TEXT */
+      text-shadow:
+        0 2px 10px rgba(0,0,0,0.85),
+        0 12px 40px rgba(0,0,0,0.55);
+      padding: 0;
+      margin: 0;
+      width: 90%;
+      line-height: 1.05;
+      pointer-events:none;
     }
 
-    .divider{
-      height:1px;
-      width:100%;
-      background: rgba(255,255,255,0.08);
-      margin: 18px 0;
-    }
-
-    /* ===== FILTERS ===== */
+    /* ===== FILTER BAR ===== */
     .filterBar{
-      margin-top: 16px;
+      margin-top: 14px;
       display:flex;
       gap: 10px;
       flex-wrap:wrap;
@@ -498,18 +499,17 @@
       font-weight: 800;
       letter-spacing:.04em;
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-      font-family: Arial, sans-serif;
     }
     .in::placeholder{ color: rgba(255,255,255,0.50); }
     .miniStat{
       color: rgba(255,255,255,0.70);
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing:.20em;
+      font-size: 12px;
+      letter-spacing:.10em;
       text-transform: uppercase;
+      font-weight: 900;
     }
 
-    /* ===== PRODUCTS ===== */
+    /* ===== PRODUCT GRID ===== */
     .productGrid{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -556,13 +556,14 @@
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
       border-radius: 999px;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing: .18em;
+      font-size: 10px;
+      letter-spacing: .12em;
       text-transform: uppercase;
+      font-weight: 1000;
       color:#fff;
       border:1px solid rgba(255,255,255,0.14);
       background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
     }
     .tag .tDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
     .pBody{
@@ -574,12 +575,11 @@
     }
     .pName{
       margin:0;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 20px;
-      letter-spacing: .18em;
+      font-size: 13px;
+      font-weight: 1000;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color:#fff;
-      line-height: 0.95;
     }
     .pDesc{
       margin:0;
@@ -596,19 +596,18 @@
       margin-top: 4px;
     }
     .price{
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      letter-spacing:.18em;
+      font-weight: 1000;
+      letter-spacing:.10em;
       text-transform: uppercase;
-      font-size: 16px;
+      font-size: 12px;
       color: rgba(255,255,255,0.90);
     }
     .openHint{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.18em;
+      font-size: 11px;
+      letter-spacing:.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
     }
@@ -654,10 +653,9 @@
       background: rgba(0,0,0,0.35);
     }
     .modalHead b{
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      letter-spacing:.18em;
+      letter-spacing:.14em;
       text-transform: uppercase;
-      font-size: 16px;
+      font-size: 12px;
     }
     .xBtn{
       border:none;
@@ -701,12 +699,12 @@
     }
     .mTitle{
       margin:0;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      letter-spacing:.18em;
+      font-weight:1000;
+      letter-spacing:.12em;
       text-transform: uppercase;
-      font-size: 20px;
+      font-size: 14px;
       color:#fff;
-      line-height:1;
+      line-height:1.2;
     }
     .mMeta{
       color: rgba(255,255,255,0.75);
@@ -714,11 +712,11 @@
       line-height:1.6;
     }
     .mLabel{
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.18em;
+      font-size: 11px;
+      letter-spacing:.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
+      font-weight: 1000;
     }
     .mSelect{
       width:100%;
@@ -734,10 +732,10 @@
     }
     .mPrice{
       margin-top: 10px;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      letter-spacing:.18em;
+      font-weight: 1000;
+      letter-spacing:.12em;
       text-transform: uppercase;
-      font-size: 16px;
+      font-size: 12px;
       color: rgba(255,255,255,0.92);
     }
     .mActions{
@@ -747,7 +745,7 @@
       flex-wrap:wrap;
     }
 
-    /* ===== ORDER FORM ===== */
+    /* ===== ORDER FORM MODAL ===== */
     .formGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -757,11 +755,11 @@
     .formGrid .full{ grid-column: 1 / -1; }
     label{
       display:block;
-      font-family:"Bebas Neue", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.18em;
+      font-size: 11px;
+      letter-spacing:.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.68);
+      font-weight: 1000;
       margin-bottom: 6px;
     }
     input, textarea{
@@ -775,13 +773,12 @@
       font-weight: 800;
       letter-spacing:.02em;
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-      font-family: Arial, sans-serif;
     }
     textarea{ min-height: 120px; resize: vertical; }
 
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .carCards{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .carGrid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     @media (max-width: 980px){
       .wrap{ padding:0 18px; }
@@ -791,21 +788,20 @@
       .grid2{ grid-template-columns: 1fr; }
       .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .modalBody{ grid-template-columns: 1fr; }
       .mImg{ min-height: 240px; }
       .brandStripInner{ padding: 22px 18px; }
-      .carMedia{ height: 200px; }
+      .carGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .carLabel{ font-size: 17px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
       .gallery{ grid-template-columns: 1fr; }
       .productGrid{ grid-template-columns: 1fr; }
-      .carCards{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
       .in,.sel{ min-width: 160px; }
-      .carMedia{ height: 210px; }
-      .carNameOverlay b{ font-size: 28px; }
+      .carGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .carLabel{ font-size: 16px; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -830,12 +826,11 @@
 
       <nav class="nav-links" aria-label="Menu">
         <a href="index.html">Domov</a>
-        <a href="#auta">Autá</a>
-        <a href="#produkty">Ponuka</a>
+        <a href="#ponuka">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
 
-      <a class="btn secondary" href="#auta">Vybrať diely →</a>
+      <a class="btn secondary" href="#ponuka">Vybrať diely →</a>
     </div>
   </div>
 
@@ -849,19 +844,19 @@
           <div class="pill"><span class="dot"></span>autorizovaný predaj • fitment check • objednávka cez RACEM</div>
           <div class="heroTitle">Streetfighter LA</div>
           <p class="heroText">
-            Vyber si model auta → hneď uvidíš kompatibilné diely. Potom filtruj a pošli objednávku.
+            Vyber si model auta, filtruj diely, zvoľ materiál (ak je dostupný) a pošli objednávku – odpovieme ti s termínom a dopravou.
           </p>
         </div>
 
         <div class="heroActions">
-          <a class="btn" href="#auta">Vybrať auto</a>
+          <a class="btn" href="#ponuka">Vybrať auto</a>
           <a class="btn secondary" href="#oZnacke">O značke</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- STRIP -->
+  <!-- SFXLA BLACK/WHITE STRIP -->
   <div class="brandStrip" aria-label="SFXLA brand strip">
     <div class="brandStripInner">
       <div class="sfxlaLogoRow">
@@ -917,28 +912,16 @@
     </div>
   </section>
 
-  <!-- CARS + PRODUCTS -->
-  <section id="auta">
+  <!-- ONE SECTION: CARS + FILTERS + PRODUCTS -->
+  <section id="ponuka">
     <div class="wrap">
-
       <div class="panel">
-        <div class="pill"><span class="dot"></span>autá</div>
-        <h2>Vyber si model</h2>
-        <p style="margin:0;">Klikneš na fotku → produkty sa ti zobrazia hneď pod tým.</p>
+        <h2 id="productsTitleTop">Ponuka</h2>
 
-        <div class="carCards" id="carCards"></div>
+        <!-- CARS (IMAGE TILES) -->
+        <div class="carGrid" id="carGrid"></div>
 
-        <div class="divider"></div>
-
-        <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
-          <div>
-            <div class="pill"><span class="dot"></span>ponuka</div>
-            <h2 id="productsTitle" style="margin-bottom:6px;">Diely pre: všetky autá</h2>
-            <p style="margin:0;">Otvor detail a pošli objednávku.</p>
-          </div>
-          <div class="miniStat" id="stat">0 dielov</div>
-        </div>
-
+        <!-- FILTERS -->
         <div class="filterBar">
           <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
@@ -953,10 +936,13 @@
               <option value="Full Kit">Full kit</option>
               <option value="Single Part">Single part</option>
             </select>
-            <button class="btn secondary" id="showAll" type="button">Všetky autá</button>
           </div>
+
+          <div class="miniStat" id="stat">0 dielov</div>
         </div>
 
+        <!-- PRODUCTS -->
+        <h2 id="productsTitle" style="margin-top:22px;">Diely pre: všetky autá</h2>
         <div class="productGrid" id="productGrid"></div>
       </div>
     </div>
@@ -1072,17 +1058,17 @@
   <script>
     const DATA = {
       cars: [
-        { id:"e36", label:"BMW E36",          image:"assets/E36-main.webp" },
-        { id:"e46", label:"BMW E46",          image:"assets/e46-main.webp" },
-        { id:"e90", label:"BMW E90",          image:"assets/e90-main.webp" },
-        { id:"e92", label:"BMW E92",          image:"assets/e92-main.webp" },
-        { id:"f30", label:"BMW F30",          image:"assets/F30-main.webp" },  // ✅ presne ako máš súbor
-        { id:"f80", label:"BMW F80",          image:"assets/f80-main.webp" },
-        { id:"g8x", label:"BMW G80/82/83",    image:"assets/g80-main.webp" },
-        { id:"evox",label:"Mitsubishi Evo X", image:"assets/evox-main.jpg" },
-        { id:"cam5",label:"Camaro Gen5",      image:"assets/gen5-main.webp" },
-        { id:"cam6",label:"Camaro Gen6",      image:"assets/gen6-main.webp" },
-        { id:"gt4", label:"Porsche GT4",      image:"assets/gt4-main.webp" }
+        { id:"e36", label:"BMW E36", main:"assets/e36-main.webp" },
+        { id:"e46", label:"BMW E46", main:"assets/e46-main.webp" },
+        { id:"e90", label:"BMW E90", main:"assets/e90-main.webp" },
+        { id:"e92", label:"BMW E92", main:"assets/e92-main.webp" },
+        { id:"f30", label:"BMW F30", main:"assets/f30-main.webp" },  // ✅ added
+        { id:"f80", label:"BMW F80", main:"assets/f80-main.webp" },
+        { id:"g8x", label:"BMW G80/82/83", main:"assets/g8x-main.webp" },
+        { id:"evox", label:"EVO X", main:"assets/evox-main.webp" },
+        { id:"cam5", label:"Camaro Gen5", main:"assets/cam5-main.webp" },
+        { id:"cam6", label:"Camaro Gen6", main:"assets/cam6-main.webp" },
+        { id:"gt4", label:"Porsche GT4", main:"assets/gt4-main.webp" }
       ],
       products: [
         {
@@ -1190,66 +1176,48 @@
     }
 
     function buildCars(){
-      const host = $("#carCards");
-      host.innerHTML = "";
+      const carGrid = $("#carGrid");
+      carGrid.innerHTML = "";
 
-      // "Všetky autá" karta (použije E36 obrázok ako placeholder)
-      const allCard = document.createElement("div");
-      allCard.className = "carCard" + (activeCarId === "" ? " active" : "");
-      allCard.tabIndex = 0;
-      allCard.setAttribute("role","button");
-      allCard.dataset.car = "";
-      allCard.innerHTML = `
-        <div class="carMedia">
-          <img src="assets/E36-main.webp" alt="Všetky autá">
-          <div class="carNameOverlay"><b>VŠETKY</b></div>
-        </div>
-      `;
-      allCard.addEventListener("click", () => selectCar(""));
-      allCard.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); selectCar(""); }
-      });
-      host.appendChild(allCard);
+      const addTile = (car) => {
+        const b = document.createElement("div");
+        b.className = "carTile" + (activeCarId === car.id ? " active" : "");
+        b.tabIndex = 0;
+        b.setAttribute("role","button");
+        b.setAttribute("aria-label", "Select " + car.label);
+        b.dataset.car = car.id;
 
-      DATA.cars.forEach(c => {
-        const card = document.createElement("div");
-        card.className = "carCard" + (c.id === activeCarId ? " active" : "");
-        card.tabIndex = 0;
-        card.setAttribute("role","button");
-        card.dataset.car = c.id;
-
-        card.innerHTML = `
-          <div class="carMedia">
-            <img src="${escapeHtml(c.image || "assets/placeholder.jpg")}" alt="${escapeHtml(c.label)}">
-            <div class="carNameOverlay"><b>${escapeHtml(c.label)}</b></div>
-          </div>
+        const imgSrc = car.main || "assets/placeholder.jpg";
+        b.innerHTML = `
+          <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(car.label)}">
+          <div class="carLabel">${escapeHtml(car.label)}</div>
         `;
 
-        card.addEventListener("click", () => selectCar(c.id));
-        card.addEventListener("keydown", (e) => {
+        const click = () => {
+          activeCarId = car.id;
+          updateCarActive();
+          renderAll();
+        };
+
+        b.addEventListener("click", click);
+        b.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
             e.preventDefault();
-            selectCar(c.id);
+            click();
           }
         });
 
-        host.appendChild(card);
-      });
+        carGrid.appendChild(b);
+      };
 
-      updateCarActive();
-    }
-
-    function selectCar(id){
-      activeCarId = id || "";
-      updateCarActive();
-      renderAll();
-      document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
+      // build all car tiles
+      DATA.cars.forEach(addTile);
     }
 
     function updateCarActive(){
-      $$(".carCard").forEach(c => {
-        const id = c.dataset.car || "";
-        c.classList.toggle("active", id === activeCarId);
+      $$(".carTile").forEach(tile => {
+        const car = tile.dataset.car || "";
+        tile.classList.toggle("active", car === activeCarId);
       });
     }
 
@@ -1315,13 +1283,11 @@
 
       grid.innerHTML = "";
       if (!items.length){
-        grid.innerHTML = `
-          <div class="panel" style="grid-column:1/-1; padding:18px;">
-            <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-            <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
-          </div>
-        `;
+        grid.innerHTML = `<div class="panel" style="grid-column:1/-1; padding:18px;">
+          <div class="pill"><span class="dot"></span>nič sme nenašli</div>
+          <h2 style="margin:12px 0 8px; font-size:28px;">Skús zmeniť filtre</h2>
+          <p style="margin:0;">Zmeň materiál / kategóriu alebo zvoľ iné auto.</p>
+        </div>`;
         return;
       }
 
@@ -1367,7 +1333,6 @@
 
     function renderAll(){
       renderProducts();
-      updateCarActive();
     }
 
     const productModal = $("#productModal");
@@ -1489,12 +1454,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
     ["q","cat","mat","type"].forEach(id => {
       $("#" + id).addEventListener("input", renderAll);
       $("#" + id).addEventListener("change", renderAll);
-    });
-
-    $("#showAll").addEventListener("click", () => {
-      activeCarId = "";
-      updateCarActive();
-      renderAll();
     });
 
     window.addEventListener("keydown", (e) => {
