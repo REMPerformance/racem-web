@@ -310,6 +310,41 @@
       max-width: 720px;
     }
 
+    /* ✅ NEW: fill empty space on the right */
+    .facts{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-left:auto;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,0.14);
+      background: rgba(255,255,255,0.96);
+      color: rgba(0,0,0,0.86);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 12px;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      line-height:1;
+      white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    }
+    .chip .cDot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background: var(--red);
+      box-shadow: 0 0 14px rgba(179,31,36,.35);
+      flex: 0 0 auto;
+    }
+
     /* ===== PANELS ===== */
     .panel{
       background: rgba(20,20,20,0.75);
@@ -445,8 +480,8 @@
     .carNameOverlay{
       position:absolute;
       left:50%;
-      top:50%;                         /* ✅ CENTER (was 18%) */
-      transform: translate(-50%,-50%); /* ✅ center both axes */
+      top:50%;
+      transform: translate(-50%,-50%);
       z-index:3;
       pointer-events:none;
       width: 92%;
@@ -458,10 +493,10 @@
       letter-spacing:.22em;
       text-transform: uppercase;
       color:#fff;
-      padding: 0;                      /* ✅ no black box spacing */
+      padding: 0;
       border-radius: 0;
-      background: transparent;         /* ✅ remove black under text */
-      border: none;                    /* ✅ remove border */
+      background: transparent;
+      border: none;
       text-shadow: 0 18px 40px rgba(0,0,0,0.90);
       display:inline-block;
     }
@@ -797,6 +832,7 @@
       .mImg{ min-height: 240px; }
       .brandStripInner{ padding: 22px 18px; }
       .carMedia{ height: 200px; }
+      .facts{ justify-content:flex-start; } /* ✅ nicer on mobile */
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
@@ -845,7 +881,6 @@
       <div class="heroBg"></div>
 
       <div class="heroInner">
-
         <div class="heroActions">
           <a class="btn" href="#auta">Vybrať model</a>
         </div>
@@ -859,8 +894,17 @@
       <div class="sfxlaLogoRow">
         <img src="assets/sfxla-logo.png" alt="Streetfighter LA logo (black)">
         <div class="sfxlaMeta">
-          <span>Pôvod: USA </span>
+          <span>Pôvod: USA</span>
         </div>
+      </div>
+
+      <!-- ✅ RIGHT SIDE CHIPS (fills the empty white space) -->
+      <div class="facts" aria-label="SFXLA facts">
+        <div class="chip"><span class="cDot"></span>3D SCAN / CAD</div>
+        <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
+        <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
+        <div class="chip"><span class="cDot"></span>MADE TO ORDER</div>
+        <div class="chip"><span class="cDot"></span>SR/ČR/EÚ</div>
       </div>
     </div>
   </div>
@@ -873,12 +917,11 @@
           <div class="pill"><span class="dot"></span>Výrobca</div>
           <h2>Streetfighter LA</h2>
           <p>
-            StreetFighter LA (SFLA) je prominentná kalifornská spoločnosť zameraná na automobilové technológie a dizajn, známa výrobou agresívnych širokých karosérií, 
-            aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá. Spája high-tech inžinierstvo (3D skenovanie, CAD) s funkčným štýlom 
-            pre použitie na cestách a okruhoch. Je obľúbená u značiek ako BMW a Camaro. 
+            StreetFighter LA (SFLA) je prominentná kalifornská spoločnosť zameraná na automobilové technológie a dizajn, známa výrobou agresívnych širokých karosérií,
+            aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá. Spája high-tech inžinierstvo (3D skenovanie, CAD) s funkčným štýlom
+            pre použitie na cestách a okruhoch. Je obľúbená u značiek ako BMW a Camaro.
           </p>
-          <p style="color:rgba(255,255,255,0.72); margin-bottom:0;">
-          </p>
+          <p style="color:rgba(255,255,255,0.72); margin-bottom:0;"></p>
         </div>
 
         <div class="panel">
