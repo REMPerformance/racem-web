@@ -15,18 +15,16 @@
   <link rel="canonical" href="https://racem.sk/streetfighter-la.html" />
 
   <style>
+    /* ✅ SPORT FONT */
+    @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&display=swap');
+
     :root{
       --red:#b31f24;
       --bg:#0b0b0b;
-      --panel:#141414;
-      --panel2:#101010;
       --text:#ffffff;
       --muted:#cfcfcf;
-      --muted2:#9b9b9b;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 22px 70px rgba(0,0,0,0.55);
 
-      /* SFXLA vibe */
       --bw:#ffffff;
       --bwText:#0a0a0a;
     }
@@ -42,7 +40,7 @@
     }
     a{color:inherit}
 
-    /* ===== BACKGROUND FX (RACEM) ===== */
+    /* ===== BACKGROUND FX ===== */
     .bg{
       position:fixed; inset:0; z-index:-6; pointer-events:none;
       background:
@@ -108,20 +106,21 @@
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
     .brand-title{
-      font-weight: 1000;
+      font-family: "Teko", system-ui, sans-serif;
+      font-weight: 700;
       letter-spacing:.18em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 14px;
       color: rgba(255,255,255,0.78);
       display:flex;
       flex-direction:column;
-      line-height:1.1;
+      line-height:1.05;
       margin-top:2px;
     }
     .brand-title b{
-      font-size: 14px;
+      font-size: 18px;
       color:#fff;
-      letter-spacing:.14em;
+      letter-spacing:.16em;
     }
 
     .nav-links{
@@ -135,10 +134,11 @@
       position:relative;
       color: rgba(255,255,255,0.76);
       text-decoration:none;
-      font-size: 12px;
-      font-weight: 1000;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .16em;
+      letter-spacing: .18em;
       white-space: nowrap;
       padding: 6px 0;
       transition: color .25s ease, text-shadow .25s ease, transform .25s ease;
@@ -209,16 +209,16 @@
       gap:22px;
       flex-wrap:wrap;
     }
-    .heroLeft{max-width: 980px;}
     .pill{
       display:inline-flex; gap:10px; align-items:center;
       padding:8px 12px;
-      border:1px solid rgba(255,255,255,0.08);
+      border:1px solid var(--line);
       background: rgba(20,20,20,0.55);
       border-radius:999px;
       color: rgba(255,255,255,0.78);
-      font-size:12px;
-      letter-spacing:.12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.14em;
       text-transform:uppercase;
       width: fit-content;
       backdrop-filter: blur(10px);
@@ -226,11 +226,12 @@
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
     .heroTitle{
       margin: 14px 0 10px;
-      font-size: clamp(34px, 5.6vw, 72px);
-      letter-spacing: .08em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: clamp(44px, 6.4vw, 86px);
+      letter-spacing: .10em;
       text-transform: uppercase;
-      font-weight: 1000;
-      line-height: 1.02;
+      font-weight: 700;
+      line-height: 0.95;
       text-shadow: 0 20px 60px rgba(0,0,0,0.85);
     }
     .heroText{
@@ -255,9 +256,10 @@
       background: rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.14);
       color:#fff;
-      font-size: 12px;
-      font-weight: 1000;
-      letter-spacing: .12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .16em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
       box-shadow: 0 18px 60px rgba(0,0,0,0.55);
@@ -281,7 +283,7 @@
       background: rgba(255,255,255,0.09);
     }
 
-    /* ===== SFXLA BLACK/WHITE BRAND STRIP ===== */
+    /* ===== STRIP ===== */
     .brandStrip{
       background: var(--bw);
       color: var(--bwText);
@@ -309,19 +311,21 @@
       display:flex;
       flex-direction:column;
       line-height:1.2;
-    }
-    .sfxlaMeta b{
-      font-size: 12px;
-      letter-spacing:.18em;
+      font-family:"Teko", system-ui, sans-serif;
+      letter-spacing:.14em;
       text-transform: uppercase;
     }
+    .sfxlaMeta b{ font-size: 18px; }
     .sfxlaMeta span{
-      font-size: 12px;
+      font-size: 16px;
+      letter-spacing:.10em;
+      text-transform:none;
       color: rgba(0,0,0,0.70);
       max-width: 720px;
+      font-family: Arial, sans-serif;
     }
 
-    /* ===== PANELS / TYPO ===== */
+    /* ===== PANELS ===== */
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
@@ -342,10 +346,11 @@
 
     h2{
       margin: 12px 0 12px 0;
+      font-family:"Teko", system-ui, sans-serif;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: clamp(26px, 4.3vw, 40px);
-      line-height:1.06;
+      letter-spacing: .14em;
+      font-size: clamp(34px, 4.8vw, 54px);
+      line-height: 0.95;
     }
     p{
       margin:0 0 14px 0;
@@ -355,7 +360,6 @@
       max-width: 980px;
     }
 
-    /* ===== ABOUT LAYOUT ===== */
     .grid2{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -397,14 +401,15 @@
       background: rgba(0,0,0,0.45);
       border:1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.88);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing:.12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing:.14em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
     }
 
-    /* ===== NORMAL PRODUCT SECTION ===== */
+    /* ===== SECTION HEAD / DIVIDER ===== */
     .sectionHead{
       display:flex; flex-wrap:wrap; gap:14px;
       align-items:flex-end; justify-content:space-between;
@@ -420,6 +425,7 @@
       margin: 18px 0;
     }
 
+    /* ===== CAR CARDS (photos) ===== */
     .carCards{
       display:grid;
       grid-template-columns: repeat(6, minmax(0,1fr));
@@ -437,6 +443,7 @@
       display:flex;
       flex-direction:column;
       min-height: 210px;
+      position:relative;
     }
     .carCard:hover{
       transform: translateY(-6px);
@@ -449,42 +456,87 @@
       box-shadow: 0 18px 70px rgba(0,0,0,0.70);
     }
     .carMedia{
-      height: 140px;
+      height: 170px;
       background: rgba(255,255,255,0.03);
       position:relative;
       overflow:hidden;
+    }
+    .carMedia::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.12), rgba(0,0,0,0));
+      pointer-events:none;
     }
     .carMedia img{
       width:100%; height:100%;
       object-fit: cover;
       display:block;
       transform: scale(1.02);
-      filter: contrast(1.02) saturate(1.02);
+      filter: contrast(1.05) saturate(1.05);
     }
-    .carLabel{
+
+    /* ✅ NAME DIRECTLY ON IMAGE */
+    .carNameOverlay{
+      position:absolute;
+      left:12px;
+      bottom:10px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      z-index:2;
+    }
+    .carNameOverlay b{
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      color:#fff;
+      text-shadow: 0 14px 44px rgba(0,0,0,0.75);
+      line-height:0.95;
+    }
+    .carNameOverlay span{
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.42);
+      border:1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+    }
+    .carNameOverlay span i{
+      width:7px;height:7px;border-radius:99px;
+      background: var(--red);
+      display:inline-block;
+      box-shadow: 0 0 14px rgba(179,31,36,0.7);
+    }
+
+    .carLabelRow{
       padding: 12px 12px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
     }
-    .carLabel b{
-      font-size: 12px;
-      font-weight: 1000;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color:#fff;
-      line-height:1.2;
-    }
-    .carLabel span{
-      font-size: 11px;
-      letter-spacing: .14em;
+    .carLabelRow .small{
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing: .18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.65);
-      font-weight: 900;
+      font-weight: 700;
       white-space:nowrap;
     }
 
+    /* ===== FILTERS ===== */
     .filterBar{
       margin-top: 16px;
       display:flex;
@@ -514,12 +566,14 @@
     .in::placeholder{ color: rgba(255,255,255,0.50); }
     .miniStat{
       color: rgba(255,255,255,0.70);
-      font-size: 12px;
-      letter-spacing:.10em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.18em;
       text-transform: uppercase;
-      font-weight: 900;
+      font-weight: 700;
     }
 
+    /* ===== PRODUCTS ===== */
     .productGrid{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -566,10 +620,11 @@
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
       border-radius: 999px;
-      font-size: 10px;
-      letter-spacing: .12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      font-weight: 1000;
+      font-weight: 700;
       color:#fff;
       border:1px solid rgba(255,255,255,0.14);
       background: rgba(0,0,0,0.45);
@@ -585,11 +640,13 @@
     }
     .pName{
       margin:0;
-      font-size: 13px;
-      font-weight: 1000;
-      letter-spacing: .14em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .16em;
       text-transform: uppercase;
       color:#fff;
+      line-height: 1.0;
     }
     .pDesc{
       margin:0;
@@ -606,20 +663,23 @@
       margin-top: 4px;
     }
     .price{
-      font-weight: 1000;
-      letter-spacing:.10em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing:.16em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 16px;
       color: rgba(255,255,255,0.90);
     }
     .openHint{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      font-size: 11px;
-      letter-spacing:.14em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
+      font-weight: 700;
     }
     .openHint .arr{
       width: 34px; height: 34px; border-radius: 14px;
@@ -663,9 +723,11 @@
       background: rgba(0,0,0,0.35);
     }
     .modalHead b{
-      letter-spacing:.14em;
+      font-family:"Teko", system-ui, sans-serif;
+      letter-spacing:.18em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 16px;
+      font-weight: 700;
     }
     .xBtn{
       border:none;
@@ -709,12 +771,13 @@
     }
     .mTitle{
       margin:0;
-      font-weight:1000;
-      letter-spacing:.12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-weight:700;
+      letter-spacing:.16em;
       text-transform: uppercase;
-      font-size: 14px;
+      font-size: 20px;
       color:#fff;
-      line-height:1.2;
+      line-height:1;
     }
     .mMeta{
       color: rgba(255,255,255,0.75);
@@ -722,11 +785,12 @@
       line-height:1.6;
     }
     .mLabel{
-      font-size: 11px;
-      letter-spacing:.14em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.70);
-      font-weight: 1000;
+      font-weight: 700;
     }
     .mSelect{
       width:100%;
@@ -742,10 +806,11 @@
     }
     .mPrice{
       margin-top: 10px;
-      font-weight: 1000;
-      letter-spacing:.12em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing:.16em;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 16px;
       color: rgba(255,255,255,0.92);
     }
     .mActions{
@@ -755,7 +820,7 @@
       flex-wrap:wrap;
     }
 
-    /* ===== ORDER FORM MODAL ===== */
+    /* ===== ORDER FORM ===== */
     .formGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -765,11 +830,12 @@
     .formGrid .full{ grid-column: 1 / -1; }
     label{
       display:block;
-      font-size: 11px;
-      letter-spacing:.14em;
+      font-family:"Teko", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.68);
-      font-weight: 1000;
+      font-weight: 700;
       margin-bottom: 6px;
     }
     input, textarea{
@@ -783,6 +849,7 @@
       font-weight: 800;
       letter-spacing:.02em;
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      font-family: Arial, sans-serif;
     }
     textarea{ min-height: 120px; resize: vertical; }
 
@@ -866,7 +933,7 @@
     </div>
   </section>
 
-  <!-- SFXLA BLACK/WHITE STRIP -->
+  <!-- STRIP -->
   <div class="brandStrip" aria-label="SFXLA brand strip">
     <div class="brandStripInner">
       <div class="sfxlaLogoRow">
@@ -922,7 +989,7 @@
     </div>
   </section>
 
-  <!-- NORMAL PRODUCT SECTION: CAR PHOTOS (TOP) -> PRODUCTS (UNDER) -->
+  <!-- PRODUCTS -->
   <section id="auta">
     <div class="wrap">
       <div class="sectionHead">
@@ -930,7 +997,7 @@
           <div class="pill"><span class="dot"></span>autá</div>
           <h2>Vyber si model (klikni na fotku)</h2>
           <p style="margin:0;">
-            Pod každou fotkou je označenie. Klikneš → a produkty sa ti zobrazia hneď pod tým.
+            Názov modelu je priamo na obrázku. Klikneš → a produkty sa ti zobrazia pod tým.
           </p>
         </div>
         <a class="btn secondary" href="#produkty">Skok na produkty →</a>
@@ -951,7 +1018,6 @@
         <div class="miniStat" id="stat">0 dielov</div>
       </div>
 
-      <!-- FILTERS -->
       <div class="filterBar">
         <div class="filtersLeft">
           <input class="in" id="q" type="text" placeholder="Hľadať (napr. lip, spoiler, widebody)..." />
@@ -970,7 +1036,6 @@
         </div>
       </div>
 
-      <!-- PRODUCTS -->
       <div class="productGrid" id="productGrid"></div>
     </div>
   </section>
@@ -1085,22 +1150,20 @@
   <script>
     const DATA = {
       cars: [
-        // ✅ Všetky MAIN fotky sú priamo v /assets/ (podľa tvojich názvov súborov)
-        // POZOR: na hostingu rozlišuje veľké/malé písmená -> E36-main.webp musí byť presne takto.
+        // ✅ F30 je tu a bude sa renderovať ako karta
+        { id:"",    label:"Všetky autá",        image:"assets/E36-main.webp" },
 
-        { id:"",    label:"Všetky autá",         image:"assets/E36-main.webp" },
-
-        { id:"e36", label:"BMW E36",            image:"assets/E36-main.webp" },
-        { id:"e46", label:"BMW E46",            image:"assets/e46-main.webp" },
-        { id:"e90", label:"BMW E90",            image:"assets/e90-main.webp" },
-        { id:"e92", label:"BMW E92",            image:"assets/e92-main.webp" },
-        { id:"f30", label:"BMW F30",            image:"assets/f30-main.webp" },
-        { id:"f80", label:"BMW F80",            image:"assets/f80-main.webp" },
-        { id:"g8x", label:"BMW G80/82/83",      image:"assets/g80-main.webp" },
-        { id:"evox",label:"Mitsubishi Evo X",   image:"assets/evox-main.jpg" },
-        { id:"cam5",label:"Camaro Gen5",        image:"assets/gen5-main.webp" },
-        { id:"cam6",label:"Camaro Gen6",        image:"assets/gen6-main.webp" },
-        { id:"gt4", label:"Porsche GT4",        image:"assets/gt4-main.webp" }
+        { id:"e36", label:"BMW E36",           image:"assets/E36-main.webp" },
+        { id:"e46", label:"BMW E46",           image:"assets/e46-main.webp" },
+        { id:"e90", label:"BMW E90",           image:"assets/e90-main.webp" },
+        { id:"e92", label:"BMW E92",           image:"assets/e92-main.webp" },
+        { id:"f30", label:"BMW F30",           image:"assets/f30-main.webp" },   // ✅
+        { id:"f80", label:"BMW F80",           image:"assets/f80-main.webp" },
+        { id:"g8x", label:"BMW G80/82/83",     image:"assets/g80-main.webp" },
+        { id:"evox",label:"Mitsubishi Evo X",  image:"assets/evox-main.jpg" },
+        { id:"cam5",label:"Camaro Gen5",       image:"assets/gen5-main.webp" },
+        { id:"cam6",label:"Camaro Gen6",       image:"assets/gen6-main.webp" },
+        { id:"gt4", label:"Porsche GT4",       image:"assets/gt4-main.webp" }
       ],
       products: [
         {
@@ -1226,10 +1289,14 @@
         card.innerHTML = `
           <div class="carMedia">
             <img src="${escapeHtml(c.image || "assets/placeholder.jpg")}" alt="${escapeHtml(c.label)}">
+            <div class="carNameOverlay">
+              <b>${escapeHtml(c.label)}</b>
+              <span><i></i>${count} ks</span>
+            </div>
           </div>
-          <div class="carLabel">
-            <b>${escapeHtml(c.label)}</b>
-            <span>${count} ks</span>
+          <div class="carLabelRow">
+            <div class="small">Klikni pre výber</div>
+            <div class="small">${isAll ? "ALL" : escapeHtml((c.id||"").toUpperCase())}</div>
           </div>
         `;
 
@@ -1326,7 +1393,7 @@
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-            <h2 style="margin:12px 0 8px; font-size:28px;">Skús zmeniť filtre</h2>
+            <h2 style="margin:12px 0 8px; font-size:44px;">Skús zmeniť filtre</h2>
             <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
           </div>
         `;
