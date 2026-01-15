@@ -378,7 +378,7 @@
       padding: 8px 10px;
       border-radius: 999px;
       background: rgba(0,0,0,0.45);
-      border:1px solid rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255l,255,0.12);
       color: rgba(255,255,255,0.88);
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 14px;
@@ -432,7 +432,6 @@
       transform: scale(1.02);
       filter: contrast(1.06) saturate(1.06);
     }
-
     .carNameOverlay{
       position:absolute;
       left:50%;
@@ -699,6 +698,16 @@
       font-size: 13.5px;
       line-height:1.6;
     }
+
+    /* ✅ POPIS "POD SEBOU" */
+    .mDesc{
+      white-space: pre-line;
+      color: rgba(255,255,255,0.86);
+      font-size: 14px;
+      line-height: 1.7;
+      padding-top: 2px;
+    }
+
     .mLabel{
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 14px;
@@ -955,6 +964,7 @@
     </div>
   </section>
 
+  <!-- PRODUCT DETAIL MODAL -->
   <div class="modal" id="productModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
       <div class="modalHead">
@@ -970,9 +980,14 @@
 
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
+
+          <!-- meta: auto + kategória + dostupnosť -->
           <div class="mMeta" id="mMeta">—</div>
 
-          <div>
+          <!-- ✅ description pod sebou -->
+          <div class="mDesc" id="mDesc"></div>
+
+          <div style="margin-top:6px;">
             <div class="mLabel">Variant / Materiál</div>
             <select class="mSelect" id="mVariant"></select>
             <div class="mPrice" id="mPrice">—</div>
@@ -987,6 +1002,7 @@
     </div>
   </div>
 
+  <!-- GALLERY MODAL -->
   <div class="modal" id="galleryModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
@@ -1002,6 +1018,7 @@
     </div>
   </div>
 
+  <!-- ORDER FORM MODAL -->
   <div class="modal" id="orderModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Order form">
       <div class="modalHead">
@@ -1122,7 +1139,8 @@
 
     async function loadProducts(){
       try{
-        const res = await fetch("/sfxla-products.json", { cache: "no-store" });
+        // ✅ root JSON (vedľa HTML v main roote)
+        const res = await fetch("sfxla-products.json", { cache: "no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
 
         const json = await res.json();
@@ -1130,7 +1148,7 @@
 
         DATA.products = list.map(p => {
           const images = Array.isArray(p.images) ? p.images : [];
-          const image = p.image || images[0] || "";
+          const image = p.image || images[0] || ""; // môže byť prázdne => placeholder
           return {
             ...p,
             image,
@@ -1142,7 +1160,7 @@
         });
 
       }catch(err){
-        console.error("Failed to load /sfxla-products.json:", err);
+        console.error("Failed to load sfxla-products.json:", err);
         DATA.products = [];
       }
     }
@@ -1282,7 +1300,8 @@
             <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
             <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
             <p style="margin:0;">
-              Uisti sa, že súbor <b>/sfxla-products.json</b> existuje v roote a je validný JSON.
+              Uisti sa, že súbor <b>sfxla-products.json</b> je v roote (vedľa tohto HTML) a je validný JSON.
+              <br>Tip: ak testuješ cez <b>file://</b> (dvojklik), fetch často nefunguje — musí to bežať cez GitHub Pages.
             </p>
           </div>
         `;
@@ -1357,6 +1376,7 @@
     const mNoImg = $("#mNoImg");
     const mTitle = $("#mTitle");
     const mMeta = $("#mMeta");
+    const mDesc = $("#mDesc");          // ✅ NEW
     const mVariant = $("#mVariant");
     const mPrice = $("#mPrice");
     const mLink = $("#mLink");
@@ -1374,10 +1394,12 @@
       if (mMeta){
         mMeta.innerHTML = `
           <div><b>${escapeHtml(car)}</b> • ${escapeHtml(p.category || "Part")}${escapeHtml(availability)}${escapeHtml(maxq)}</div>
-          <div style="margin-top:6px; color:rgba(255,255,255,0.78);">
-            ${escapeHtml(p.description || p.short || "")}
-          </div>
         `;
+      }
+
+      // ✅ POPIS POD SEBOU (riadky z JSON cez \n)
+      if (mDesc){
+        mDesc.textContent = p.description || p.short || "";
       }
 
       const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
@@ -1423,6 +1445,7 @@
       }
 
       const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
+
       const note = `OBJEDNÁVKA – Streetfighter LA
 Auto: ${car}
 Diel: ${activeProduct.title || "—"}
