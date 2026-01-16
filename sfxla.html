@@ -186,7 +186,6 @@
       background: rgba(255,255,255,0.09);
     }
 
-    /* ✅ VÝRAZNÝ OBJEDNAŤ */
     .btn.cta{
       background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
       border-color: rgba(255,255,255,0.16);
@@ -360,13 +359,202 @@
       align-items:start;
     }
 
-    .gallery{
+    /* ===== NEW: CAR GALLERY (autoplay + click + thumbs + fullscreen) ===== */
+    .carGalleryWrap{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .galleryHero{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      border-radius: 18px;
+      overflow:hidden;
+      position:relative;
+      min-height: 340px;
+      box-shadow: 0 18px 70px rgba(0,0,0,0.50);
+      isolation:isolate;
+    }
+    .galleryHero::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.18), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.70));
+      pointer-events:none;
+      z-index:2;
+    }
+    .galleryHero img{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      transform: scale(1.02);
+      filter: contrast(1.06) saturate(1.06);
+      opacity:0;
+      transition: opacity .35s ease;
+    }
+    .galleryHero img.show{ opacity:1; }
+
+    .gTop{
+      position:absolute; left:14px; right:14px; top:14px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap: 12px;
+      z-index:3;
+      pointer-events:none;
+    }
+    .gBadge{
+      pointer-events:auto;
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.42);
+      backdrop-filter: blur(10px);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      color:#fff;
+      font-size: 13px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      max-width: 70%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .gBadge .gDot{
+      width:10px;height:10px;border-radius:999px;background: var(--red);
+      box-shadow: 0 0 18px rgba(179,31,36,0.65);
+      flex:0 0 auto;
+    }
+
+    .gControls{
+      pointer-events:auto;
+      display:flex; gap:10px; align-items:center; justify-content:flex-end;
+    }
+    .gBtn{
+      width: 44px; height: 44px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.42);
+      color:#fff;
+      cursor:pointer;
+      font-weight:900;
+      font-size: 18px;
+      display:grid;
+      place-items:center;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      backdrop-filter: blur(10px);
+    }
+    .gBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.18);
+    }
+
+    .gBottom{
+      position:absolute; left:14px; right:14px; bottom:14px;
+      z-index:3;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .gMeta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      pointer-events:none;
+    }
+    .gSmall{
+      pointer-events:none;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      font-size: 12px;
+    }
+    .gProgress{
+      width: min(360px, 100%);
+      height: 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      overflow:hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      pointer-events:none;
+    }
+    .gProgress > i{
+      display:block;
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(179,31,36,0.95), rgba(255,255,255,0.18));
+      box-shadow: 0 0 20px rgba(179,31,36,0.40);
+    }
+
+    .thumbRow{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .thumbRow::-webkit-scrollbar{ height: 8px; }
+    .thumbRow::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
+
+    .thumb{
+      flex: 0 0 auto;
+      width: 120px;
+      height: 78px;
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      scroll-snap-align: start;
+      cursor:pointer;
+      position:relative;
+      transition: transform .18s ease, border-color .18s ease, filter .18s ease;
+    }
+    .thumb:hover{
+      transform: translateY(-3px);
+      border-color: rgba(179,31,36,0.35);
+      filter: brightness(1.05);
+    }
+    .thumb.active{
+      border-color: rgba(179,31,36,0.65);
+      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
+    }
+    .thumb img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.04);
+    }
+    .thumb::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.28));
+      pointer-events:none;
+    }
+    .gEmpty{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      border-radius: 18px;
+      padding: 16px;
+      color: rgba(255,255,255,0.78);
+      line-height:1.7;
+    }
+
+    /* old small gallery (brand) */
+    .galleryOld{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 12px;
       margin-top: 14px;
     }
-    .gItem{
+    .gItemOld{
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.02);
       border-radius: 16px;
@@ -376,12 +564,12 @@
       cursor:pointer;
       transition: transform .18s ease, border-color .18s ease, filter .18s ease;
     }
-    .gItem:hover{
+    .gItemOld:hover{
       transform: translateY(-4px);
       border-color: rgba(179,31,36,0.35);
       filter: brightness(1.04);
     }
-    .gItem img{
+    .gItemOld img{
       width:100%; height:100%;
       object-fit: cover;
       display:block;
@@ -685,7 +873,6 @@
       gap: 14px;
     }
 
-    /* IMAGE + RIBBON */
     .mImg{
       border-radius: 16px;
       overflow:hidden;
@@ -697,7 +884,6 @@
     }
     .mImg img{ width:100%; height:100%; object-fit: cover; display:block; }
 
-    /* ✅ ZÁLOŽKA vpravo hore */
     .ribbon{
       position:absolute;
       top:14px;
@@ -770,7 +956,6 @@
       line-height:1.1;
     }
 
-    /* ✅ POPIS "POD SEBOU" */
     .mDesc{
       white-space: pre-line;
       color: rgba(255,255,255,0.86);
@@ -781,7 +966,6 @@
       padding-top: 12px;
     }
 
-    /* ✅ VARIANT CHIPS */
     .mLabel{
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 13px;
@@ -820,7 +1004,6 @@
       box-shadow: 0 18px 50px rgba(179,31,36,0.10);
     }
 
-    /* ✅ CENA BLOK */
     .priceBlock{
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 12px;
@@ -911,7 +1094,7 @@
       .nav{ padding: 14px 18px; }
       .heroInner{ padding: 0 18px 30px; }
       .grid2{ grid-template-columns: 1fr; }
-      .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .galleryOld{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .modalBody{ grid-template-columns: 1fr; }
@@ -919,10 +1102,12 @@
       .brandStripInner{ padding: 22px 18px; }
       .carMedia{ height: 200px; }
       .facts{ justify-content:flex-start; }
+      .thumb{ width: 110px; height: 74px; }
+      .galleryHero{ min-height: 300px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
-      .gallery{ grid-template-columns: 1fr; }
+      .galleryOld{ grid-template-columns: 1fr; }
       .productGrid{ grid-template-columns: 1fr; }
       .carCards{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
@@ -930,6 +1115,9 @@
       .carMedia{ height: 210px; }
       .carNameOverlay b{ font-size: 28px; }
       .priceBig{ font-size: 30px; }
+      .thumb{ width: 102px; height: 70px; }
+      .gProgress{ width: 100%; }
+      .galleryHero{ min-height: 280px; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -965,9 +1153,7 @@
     <div class="heroMedia">
       <div class="heroBg"></div>
       <div class="heroInner">
-        <div class="heroActions">
-          <a class="btn" href="#auta">Vybrať model</a>
-        </div>
+        <div class="heroActions"></div>
       </div>
     </div>
   </section>
@@ -975,17 +1161,16 @@
   <div class="brandStrip" aria-label="SFXLA brand strip">
     <div class="brandStripInner">
       <div class="sfxlaLogoRow">
-        <img src="assets/sfxla-logo.png" alt="Streetfighter LA logo (black)" onerror="this.style.display='none'">
+        <img src="assets/SFXLA-logo.png" alt="Streetfighter LA logo (black)" onerror="this.style.display='none'">
         <div class="sfxlaMeta">
           <span>Pôvod: USA</span>
         </div>
       </div>
 
       <div class="facts" aria-label="SFXLA facts">
-        <div class="chip"><span class="cDot"></span>3D SCAN / CAD</div>
+        <div class="chip"><span class="cDot"></span>USA</div>
         <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
         <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
-        <div class="chip"><span class="cDot"></span>SR/ČR/EÚ</div>
       </div>
     </div>
   </div>
@@ -997,26 +1182,29 @@
           <div class="pill"><span class="dot"></span>Výrobca</div>
           <h2>Streetfighter LA</h2>
           <p>
-            StreetFighter LA (SFLA) je prominentná kalifornská spoločnosť zameraná na automobilové technológie a dizajn, známa výrobou agresívnych širokých karosérií,
-            aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá.
+            SSFXLA (Street Fighter LA) je americká značka extrémnych widebody a aero kitov z Los Angeles, známa surovým street-style dizajnom,
+            agresívnymi líniami a výraznou vizuálnou identitou. Ich bodykity sú určené pre show builds a upravené vozidlá, ktoré majú zaujať na prvý pohľad a vymaniť sa z OEM stereotypu.
           </p>
         </div>
 
         <div class="panel">
-          <div class="pill"><span class="dot"></span>galéria</div>
-          Galéria výrobcu
+          <div class="pill"><span class="dot"></span>Showreel</div>
+          <p style="margin:8px 0 10px;">
+            Toto je rýchla „značková“ galéria. Hlavná galéria je nižšie — podľa auta, s autoplay + thumbnails.
+          </p>
 
-          <div class="gallery" id="gallery">
-            <div class="gItem" data-full="assets/sfxla-gallery/1.jpg" title="Open">
-              <img src="assets/sfxla-gallery/1.jpg" alt="SFXLA gallery 1" onerror="this.closest('.gItem').style.display='none'">
+          <!-- nechávam tvoje 3 fotky ako showreel, môžeš zmeniť -->
+          <div class="galleryOld" id="brandGallery">
+            <div class="gItemOld" data-full="assets/sfxla-gallery/1.jpg" title="Open">
+              <img src="assets/sfxla-gallery/1.jpg" alt="SFXLA gallery 1" onerror="this.closest('.gItemOld').style.display='none'">
               <div class="gCap">SFXLA</div>
             </div>
-            <div class="gItem" data-full="assets/sfxla-gallery/2.jpg" title="Open">
-              <img src="assets/sfxla-gallery/2.jpg" alt="SFXLA gallery 2" onerror="this.closest('.gItem').style.display='none'">
+            <div class="gItemOld" data-full="assets/sfxla-gallery/2.jpg" title="Open">
+              <img src="assets/sfxla-gallery/2.jpg" alt="SFXLA gallery 2" onerror="this.closest('.gItemOld').style.display='none'">
               <div class="gCap">Wide</div>
             </div>
-            <div class="gItem" data-full="assets/sfxla-gallery/3.jpg" title="Open">
-              <img src="assets/sfxla-gallery/3.jpg" alt="SFXLA gallery 3" onerror="this.closest('.gItem').style.display='none'">
+            <div class="gItemOld" data-full="assets/sfxla-gallery/3.jpg" title="Open">
+              <img src="assets/sfxla-gallery/3.jpg" alt="SFXLA gallery 3" onerror="this.closest('.gItemOld').style.display='none'">
               <div class="gCap">Aero</div>
             </div>
           </div>
@@ -1032,6 +1220,18 @@
         <h2>Naša ponuka:</h2>
 
         <div class="carCards" id="carCards"></div>
+
+        <!-- ✅ NOVÁ GALÉRIA POD VÝBEROM AUTA -->
+        <div class="divider"></div>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
+          <div class="miniStat" id="galleryTitle">Galéria: vyber auto</div>
+          <div class="miniStat" id="galleryStat">0 fotiek</div>
+        </div>
+
+        <div class="carGalleryWrap" id="carGalleryWrap">
+          <!-- sem sa renderuje carousel -->
+        </div>
 
         <div class="divider"></div>
 
@@ -1092,7 +1292,6 @@
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
 
-          <!-- ✅ description pod sebou -->
           <div class="mDesc" id="mDesc"></div>
 
           <div>
@@ -1114,17 +1313,24 @@
     </div>
   </div>
 
-  <!-- GALLERY MODAL -->
+  <!-- GALLERY MODAL (reused for showreel + car gallery fullscreen) -->
   <div class="modal" id="galleryModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
-        <b>Galéria</b>
+        <b id="gModalTitle">Galéria</b>
         <button class="xBtn" id="closeGalleryModal" type="button" aria-label="Close">×</button>
       </div>
+
       <div style="padding:14px;">
         <div class="mImg" style="min-height:420px;">
           <img id="gFull" src="" alt="Gallery image">
           <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
+        </div>
+
+        <!-- mini ovládanie v modale (pre car gallery slideshow) -->
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+          <button class="btn secondary" id="gPrev" type="button">←</button>
+          <button class="btn secondary" id="gNext" type="button">→</button>
         </div>
       </div>
     </div>
@@ -1209,12 +1415,85 @@
         { id:"cam6",label:"Camaro Gen6",      image:"assets/gen6-main.webp" },
         { id:"gt4", label:"Porsche GT4",      image:"assets/gt4-main.webp" }
       ],
+
+      /* ✅ TU SI DÁŠ SVOJE FOTKY (assets priamo)
+         - pre každé auto daj cca 15 obrázkov
+         - názvy sú len príklad, kľudne zmeň na svoje (len nech sedia cesty)
+      */
+      galleries: {
+        e36: [
+          "assets/e36-01.webp","assets/e36-02.webp","assets/e36-03.webp","assets/e36-04.webp","assets/e36-05.webp",
+          "assets/e36-06.webp","assets/e36-07.webp","assets/e36-08.webp","assets/e36-09.webp","assets/e36-10.webp",
+          "assets/e36-11.webp","assets/e36-12.webp","assets/e36-13.webp","assets/e36-14.webp","assets/e36-15.webp"
+        ],
+        e46: [
+          "assets/e46-01.webp","assets/e46-02.webp","assets/e46-03.webp","assets/e46-04.webp","assets/e46-05.webp",
+          "assets/e46-06.webp","assets/e46-07.webp","assets/e46-08.webp","assets/e46-09.webp","assets/e46-10.webp",
+          "assets/e46-11.webp","assets/e46-12.webp","assets/e46-13.webp","assets/e46-14.webp","assets/e46-15.webp"
+        ],
+        e90: [
+          "assets/e90-01.webp","assets/e90-02.webp","assets/e90-03.webp","assets/e90-04.webp","assets/e90-05.webp",
+          "assets/e90-06.webp","assets/e90-07.webp","assets/e90-08.webp","assets/e90-09.webp","assets/e90-10.webp",
+          "assets/e90-11.webp","assets/e90-12.webp","assets/e90-13.webp","assets/e90-14.webp","assets/e90-15.webp"
+        ],
+        e92: [
+          "assets/e92-01.webp","assets/e92-02.webp","assets/e92-03.webp","assets/e92-04.webp","assets/e92-05.webp",
+          "assets/e92-06.webp","assets/e92-07.webp","assets/e92-08.webp","assets/e92-09.webp","assets/e92-10.webp",
+          "assets/e92-11.webp","assets/e92-12.webp","assets/e92-13.webp","assets/e92-14.webp","assets/e92-15.webp"
+        ],
+        f30: [
+          "assets/f30-01.webp","assets/f30-02.webp","assets/f30-03.webp","assets/f30-04.webp","assets/f30-05.webp",
+          "assets/f30-06.webp","assets/f30-07.webp","assets/f30-08.webp","assets/f30-09.webp","assets/f30-10.webp",
+          "assets/f30-11.webp","assets/f30-12.webp","assets/f30-13.webp","assets/f30-14.webp","assets/f30-15.webp"
+        ],
+        f80: [
+          "assets/f80-01.webp","assets/f80-02.webp","assets/f80-03.webp","assets/f80-04.webp","assets/f80-05.webp",
+          "assets/f80-06.webp","assets/f80-07.webp","assets/f80-08.webp","assets/f80-09.webp","assets/f80-10.webp",
+          "assets/f80-11.webp","assets/f80-12.webp","assets/f80-13.webp","assets/f80-14.webp","assets/f80-15.webp"
+        ],
+        g8x: [
+          "assets/g8x-01.webp","assets/g8x-02.webp","assets/g8x-03.webp","assets/g8x-04.webp","assets/g8x-05.webp",
+          "assets/g8x-06.webp","assets/g8x-07.webp","assets/g8x-08.webp","assets/g8x-09.webp","assets/g8x-10.webp",
+          "assets/g8x-11.webp","assets/g8x-12.webp","assets/g8x-13.webp","assets/g8x-14.webp","assets/g8x-15.webp"
+        ],
+        evox: [
+          "assets/evox-01.webp","assets/evox-02.webp","assets/evox-03.webp","assets/evox-04.webp","assets/evox-05.webp",
+          "assets/evox-06.webp","assets/evox-07.webp","assets/evox-08.webp","assets/evox-09.webp","assets/evox-10.webp",
+          "assets/evox-11.webp","assets/evox-12.webp","assets/evox-13.webp","assets/evox-14.webp","assets/evox-15.webp"
+        ],
+        cam5: [
+          "assets/cam5-01.webp","assets/cam5-02.webp","assets/cam5-03.webp","assets/cam5-04.webp","assets/cam5-05.webp",
+          "assets/cam5-06.webp","assets/cam5-07.webp","assets/cam5-08.webp","assets/cam5-09.webp","assets/cam5-10.webp",
+          "assets/cam5-11.webp","assets/cam5-12.webp","assets/cam5-13.webp","assets/cam5-14.webp","assets/cam5-15.webp"
+        ],
+        cam6: [
+          "assets/cam6-01.webp","assets/cam6-02.webp","assets/cam6-03.webp","assets/cam6-04.webp","assets/cam6-05.webp",
+          "assets/cam6-06.webp","assets/cam6-07.webp","assets/cam6-08.webp","assets/cam6-09.webp","assets/cam6-10.webp",
+          "assets/cam6-11.webp","assets/cam6-12.webp","assets/cam6-13.webp","assets/cam6-14.webp","assets/cam6-15.webp"
+        ],
+        gt4: [
+          "assets/gt4-01.webp","assets/gt4-02.webp","assets/gt4-03.webp","assets/gt4-04.webp","assets/gt4-05.webp",
+          "assets/gt4-06.webp","assets/gt4-07.webp","assets/gt4-08.webp","assets/gt4-09.webp","assets/gt4-10.webp",
+          "assets/gt4-11.webp","assets/gt4-12.webp","assets/gt4-13.webp","assets/gt4-14.webp","assets/gt4-15.webp"
+        ]
+      },
+
       products: []
     };
 
     let activeCarId = "";
     let activeProduct = null;
     let activeVariantIndex = 0;
+
+    // gallery state
+    const galleryState = {
+      carId: "",
+      index: 0,
+      timer: null,
+      intervalMs: 4200,
+      isPaused: false,
+      modalMode: false
+    };
 
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1349,6 +1628,11 @@
       activeCarId = id || "";
       updateCarActive();
       renderAll();
+
+      // ✅ galéria: ak je "VŠETKY", dáme default prvé auto aby galéria vždy „žila“
+      const galleryCar = activeCarId || (DATA.cars[0]?.id || "");
+      renderCarGallery(galleryCar);
+
       document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
@@ -1500,7 +1784,206 @@
       updateCarActive();
     }
 
-    // Modal elements
+    /* ===========================
+       ✅ CAR GALLERY (AUTOPLAY)
+       =========================== */
+    function getGalleryImagesForCar(carId){
+      const list = DATA.galleries?.[carId];
+      return Array.isArray(list) ? list.filter(Boolean) : [];
+    }
+
+    function stopGalleryAutoplay(){
+      if (galleryState.timer){
+        clearInterval(galleryState.timer);
+        galleryState.timer = null;
+      }
+    }
+
+    function startGalleryAutoplay(){
+      stopGalleryAutoplay();
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      galleryState.timer = setInterval(() => {
+        if (galleryState.isPaused) return;
+        // keď je otvorený order alebo product modal, nech to neruší
+        if ($("#orderModal")?.classList.contains("show")) return;
+        if ($("#productModal")?.classList.contains("show")) return;
+
+        galleryNext();
+      }, galleryState.intervalMs);
+    }
+
+    function clampIndex(i, len){
+      if (!len) return 0;
+      return (i % len + len) % len;
+    }
+
+    function galleryGoTo(index){
+      const carId = galleryState.carId;
+      const imgs = getGalleryImagesForCar(carId);
+      const len = imgs.length;
+      if (!len) return;
+
+      galleryState.index = clampIndex(index, len);
+
+      // main hero images
+      const heroImgs = $$("#carGalleryWrap .galleryHero img");
+      heroImgs.forEach((im, idx) => im.classList.toggle("show", idx === galleryState.index));
+
+      // thumbs active
+      $$("#carGalleryWrap .thumb").forEach((t, idx) => t.classList.toggle("active", idx === galleryState.index));
+
+      // stats
+      const stat = $("#galleryStat");
+      if (stat) stat.textContent = `${galleryState.index + 1} / ${len}`;
+
+      // progress reset (animate via JS)
+      const bar = $("#carGalleryProgress");
+      if (bar){
+        bar.style.width = "0%";
+        // reflow
+        bar.getBoundingClientRect();
+        bar.style.transition = `width ${galleryState.intervalMs}ms linear`;
+        bar.style.width = "100%";
+      }
+
+      // keep active thumb visible (smooth)
+      const activeThumb = $$("#carGalleryWrap .thumb")[galleryState.index];
+      activeThumb?.scrollIntoView({ behavior:"smooth", block:"nearest", inline:"center" });
+
+      // modal image sync if opened from gallery
+      if ($("#galleryModal")?.classList.contains("show") && galleryState.modalMode){
+        const gFull = $("#gFull");
+        const gNoImg = $("#gNoImg");
+        setSafeImage(gFull, imgs[galleryState.index], gNoImg);
+        $("#gModalTitle").textContent = `Galéria — ${DATA.cars.find(c=>c.id===carId)?.label || carId} (${galleryState.index + 1}/${len})`;
+      }
+    }
+
+    function galleryPrev(){ galleryGoTo(galleryState.index - 1); }
+    function galleryNext(){ galleryGoTo(galleryState.index + 1); }
+
+    function openGalleryFullscreen(){
+      const carId = galleryState.carId;
+      const imgs = getGalleryImagesForCar(carId);
+      if (!imgs.length) return;
+
+      galleryState.modalMode = true;
+      const galleryModal = $("#galleryModal");
+      const gFull = $("#gFull");
+      const gNoImg = $("#gNoImg");
+
+      setSafeImage(gFull, imgs[galleryState.index], gNoImg);
+
+      $("#gModalTitle").textContent = `Galéria — ${DATA.cars.find(c=>c.id===carId)?.label || carId} (${galleryState.index + 1}/${imgs.length})`;
+
+      galleryModal?.classList.add("show");
+      galleryModal?.setAttribute("aria-hidden","false");
+    }
+
+    function renderCarGallery(carId){
+      const wrap = $("#carGalleryWrap");
+      const title = $("#galleryTitle");
+      const stat = $("#galleryStat");
+      if (!wrap) return;
+
+      const carLabel = DATA.cars.find(c=>c.id===carId)?.label || carId || "—";
+      const imgs = getGalleryImagesForCar(carId);
+
+      galleryState.carId = carId;
+      galleryState.index = 0;
+      galleryState.modalMode = false;
+
+      if (title) title.textContent = `Galéria: ${carLabel}`;
+      if (stat) stat.textContent = imgs.length ? `1 / ${imgs.length}` : "0 fotiek";
+
+      wrap.innerHTML = "";
+
+      if (!imgs.length){
+        wrap.innerHTML = `
+          <div class="gEmpty">
+            <div class="pill"><span class="dot"></span>galéria nie je nastavená</div>
+            <p style="margin:10px 0 0;">
+              Daj fotky pre <b>${escapeHtml(carLabel)}</b> do <b>assets/</b> a doplň ich názvy v <b>DATA.galleries</b>.
+              <br>Potom sa tu rozbehne autoplay slider + thumbnails.
+            </p>
+          </div>
+        `;
+        stopGalleryAutoplay();
+        return;
+      }
+
+      // hero
+      const hero = document.createElement("div");
+      hero.className = "galleryHero";
+      hero.innerHTML = `
+        <div class="gTop">
+          <div class="gBadge" title="${escapeHtml(carLabel)}"><span class="gDot"></span>${escapeHtml(carLabel)}</div>
+          <div class="gControls">
+            <button class="gBtn" id="gPrevBtn" type="button" aria-label="Prev">←</button>
+            <button class="gBtn" id="gNextBtn" type="button" aria-label="Next">→</button>
+            <button class="gBtn" id="gFsBtn" type="button" aria-label="Fullscreen">⤢</button>
+          </div>
+        </div>
+
+        <div class="gBottom">
+          <div class="gMeta">
+            <div class="gSmall">AUTOPLAY • KLIKNI NA THUMBNAIL</div>
+          </div>
+
+          <div class="gProgress" aria-label="Progress">
+            <i id="carGalleryProgress"></i>
+          </div>
+        </div>
+      `;
+
+      // images layered
+      imgs.forEach((src, idx) => {
+        const im = document.createElement("img");
+        im.alt = `${carLabel} ${idx + 1}`;
+        im.className = idx === 0 ? "show" : "";
+        im.loading = idx === 0 ? "eager" : "lazy";
+        im.decoding = "async";
+        im.addEventListener("click", openGalleryFullscreen);
+        setSafeImage(im, src, null);
+        hero.appendChild(im);
+      });
+
+      // pause on hover
+      hero.addEventListener("mouseenter", () => { galleryState.isPaused = true; });
+      hero.addEventListener("mouseleave", () => { galleryState.isPaused = false; });
+
+      wrap.appendChild(hero);
+
+      // thumbs row
+      const thumbRow = document.createElement("div");
+      thumbRow.className = "thumbRow";
+      imgs.forEach((src, idx) => {
+        const t = document.createElement("div");
+        t.className = "thumb" + (idx === 0 ? " active" : "");
+        t.title = `${carLabel} ${idx + 1}`;
+        t.innerHTML = `<img alt="Thumb ${idx + 1}" loading="lazy" decoding="async">`;
+        const img = t.querySelector("img");
+        setSafeImage(img, src, null);
+        t.addEventListener("click", () => galleryGoTo(idx));
+        thumbRow.appendChild(t);
+      });
+      wrap.appendChild(thumbRow);
+
+      // buttons
+      $("#gPrevBtn")?.addEventListener("click", galleryPrev);
+      $("#gNextBtn")?.addEventListener("click", galleryNext);
+      $("#gFsBtn")?.addEventListener("click", openGalleryFullscreen);
+
+      // kick autoplay + progress
+      startGalleryAutoplay();
+      // okamžite spusti progress animáciu
+      galleryGoTo(0);
+    }
+
+    /* ===========================
+       ✅ PRODUCT MODAL
+       =========================== */
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const modalTitle = $("#modalTitle");
@@ -1537,7 +2020,6 @@
       setSafeImage(mImg, imgSrc, mNoImg);
 
       buildVariantChips();
-
       updateVariantPrice();
 
       if (productModal){
@@ -1603,7 +2085,6 @@
       if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
       if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
 
-      // Note to form
       const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
       const status = getStockStatus(activeProduct);
 
@@ -1634,31 +2115,42 @@ Poznámka (dopíš rok/facelift/verziu):`;
     if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
     if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
+    /* ===========================
+       ✅ GALLERY MODAL (showreel + car gallery fullscreen)
+       =========================== */
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
     const gFull = $("#gFull");
     const gNoImg = $("#gNoImg");
 
-    const galleryEl = $("#gallery");
-    if (galleryEl){
-      galleryEl.addEventListener("click", (e) => {
-        const item = e.target.closest(".gItem");
+    // showreel gallery click
+    const brandGallery = $("#brandGallery");
+    if (brandGallery){
+      brandGallery.addEventListener("click", (e) => {
+        const item = e.target.closest(".gItemOld");
         if (!item) return;
         const full = item.getAttribute("data-full") || "";
         if (!full) return;
 
+        galleryState.modalMode = false; // showreel (single image)
+        $("#gModalTitle").textContent = "Galéria";
         setSafeImage(gFull, full, gNoImg);
 
-        if (galleryModal){
-          galleryModal.classList.add("show");
-          galleryModal.setAttribute("aria-hidden","false");
-        }
+        galleryModal?.classList.add("show");
+        galleryModal?.setAttribute("aria-hidden","false");
       });
     }
 
     if (closeGalleryModal) closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
     if (galleryModal) galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
+    // modal prev/next only if modalMode = true
+    $("#gPrev")?.addEventListener("click", () => { if (galleryState.modalMode) galleryPrev(); });
+    $("#gNext")?.addEventListener("click", () => { if (galleryState.modalMode) galleryNext(); });
+
+    /* ===========================
+       ✅ ORDER MODAL
+       =========================== */
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1709,6 +2201,9 @@ Poznámka (dopíš rok/facelift/verziu):`;
         activeCarId = "";
         updateCarActive();
         renderAll();
+
+        // nech galéria beží ďalej (default prvé auto)
+        renderCarGallery(DATA.cars[0]?.id || "");
       });
     }
 
@@ -1716,6 +2211,17 @@ Poznámka (dopíš rok/facelift/verziu):`;
       if (e.key === "Escape"){
         [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
       }
+      // šípky pre car gallery fullscreen (keď je modalMode)
+      if (galleryModal?.classList.contains("show") && galleryState.modalMode){
+        if (e.key === "ArrowLeft") galleryPrev();
+        if (e.key === "ArrowRight") galleryNext();
+      }
+    });
+
+    // stop autoplay when tab hidden
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopGalleryAutoplay();
+      else startGalleryAutoplay();
     });
 
     (async () => {
@@ -1723,6 +2229,10 @@ Poznámka (dopíš rok/facelift/verziu):`;
       buildFilterOptions();
       buildCars();
       renderAll();
+
+      // ✅ init galérie (default prvé auto)
+      renderCarGallery(DATA.cars[0]?.id || "");
+
       console.log("SFXLA products loaded:", DATA.products.length);
     })();
   </script>
