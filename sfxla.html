@@ -23,9 +23,6 @@
       --text:#ffffff;
       --line: rgba(255,255,255,0.08);
 
-      --bw:#ffffff;
-      --bwText:#0a0a0a;
-
       --green:#16c784;
       --orange:#f59e0b;
       --danger:#ef4444;
@@ -186,6 +183,7 @@
       background: rgba(255,255,255,0.09);
     }
 
+    /* ✅ VÝRAZNÝ OBJEDNAŤ */
     .btn.cta{
       background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
       border-color: rgba(255,255,255,0.16);
@@ -261,114 +259,41 @@
     }
     .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
 
-    /* ✅ THIN BRAND STRIP */
-    .brandStrip{
-      background: var(--bw);
-      color: var(--bwText);
-      border-top: 1px solid rgba(0,0,0,0.08);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+    /* ✅ PÔVOD pill (nahrádza "VÝROBCA") */
+    .originPill{
+      border-color: rgba(255,255,255,0.16);
+      background:
+        radial-gradient(circle at 25% 50%, rgba(179,31,36,0.16), transparent 60%),
+        rgba(20,20,20,0.55);
+      color: rgba(255,255,255,0.88);
+      letter-spacing:.18em;
     }
-    .brandStripInner{
-      padding: 10px 6vw;          /* 🔥 tenké */
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 14px;
-      flex-wrap:wrap;
-    }
+    .originPill b{ color:#fff; }
 
-    .sfxlaLogoRow{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-height: 34px;
-    }
-    .sfxlaLogoRow img{
-      height: 70px;               /* 🔥 logo v bielom */
-      width:auto;
-      display:block;
-      object-fit:contain;
-      filter:none;
-    }
-
-    /* ✅ "PÔVOD: USA" vpravo, USA vo farbách vlajky */
-    .originBadge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(0,0,0,0.14);
-      background: rgba(255,255,255,0.96);
-      color: rgba(0,0,0,0.86);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 12px;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      line-height:1;
-      white-space:nowrap;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
-    }
-    .originLabel{
-      color: rgba(0,0,0,0.70);
-    }
-    .usaText{
-      font-weight: 800;
-      background: linear-gradient(90deg, #1f4aa8 0%, #ffffff 50%, #b31f24 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      /* aby biela časť nezmizla na bielom podklade */
-      text-shadow:
-        0 0 0.6px rgba(0,0,0,0.65),
-        0 0 1.2px rgba(0,0,0,0.35);
-      letter-spacing:.20em;
-    }
-    .flagBar{
-      width:18px; height:10px; border-radius:3px;
-      border:1px solid rgba(0,0,0,0.18);
+    /* Real USA flag (small, clean) */
+    .usaFlag{
+      width:22px;
+      height:14px;
+      position:relative;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:3px;
       overflow:hidden;
-      display:flex;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          #b22234 0 2px,
+          #ffffff 2px 4px
+        );
       flex: 0 0 auto;
     }
-    .flagBar i{ display:block; flex:1; }
-    .flagBar i:nth-child(1){ background:#1f4aa8; }
-    .flagBar i:nth-child(2){ background:#ffffff; }
-    .flagBar i:nth-child(3){ background:#b31f24; }
-
-    .facts{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-end;
-      margin-left:auto;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(0,0,0,0.14);
-      background: rgba(255,255,255,0.96);
-      color: rgba(0,0,0,0.86);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 12px;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      line-height:1;
-      white-space:nowrap;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
-    }
-    .chip .cDot{
-      width:7px;
-      height:7px;
-      border-radius:999px;
-      background: var(--red);
-      box-shadow: 0 0 14px rgba(179,31,36,.35);
-      flex: 0 0 auto;
+    .usaFlag::before{
+      content:"";
+      position:absolute;
+      top:0; left:0;
+      width:40%;
+      height:54%;
+      background:#3c3b6e;
     }
 
     .panel{
@@ -412,115 +337,42 @@
       align-items:start;
     }
 
-    .bigGalleryCta{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: 18px 18px;
-      border-radius: 18px;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,0.14);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.22), transparent 55%),
-        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.20));
-      box-shadow: 0 18px 70px rgba(0,0,0,0.55);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease, filter .18s ease;
-    }
-    .bigGalleryCta:hover{
-      transform: translateY(-3px);
-      border-color: rgba(179,31,36,0.45);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.32), transparent 60%),
-        linear-gradient(180deg, rgba(179,31,36,0.18), rgba(0,0,0,0.18));
-      filter: brightness(1.03);
-    }
-    .bigGalleryCta .left{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .bigGalleryCta .kicker{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.20em;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: rgba(255,255,255,0.70);
-    }
-    .bigGalleryCta .title{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size: 22px;
-      color:#fff;
-      line-height:1.05;
-    }
-    .bigGalleryCta .sub{
-      color: rgba(255,255,255,0.72);
-      font-size: 13.5px;
-      line-height:1.55;
-    }
-    .bigGalleryCta .arrow{
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
+    .gallery{
       display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.35);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 20px;
-      letter-spacing:.18em;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.40);
-      flex:0 0 auto;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 14px;
     }
-    @media (max-width: 560px){
-      .bigGalleryCta{ padding: 16px 14px; }
-      .bigGalleryCta .title{ font-size: 20px; }
-      .bigGalleryCta .arrow{ width: 48px; height: 48px; border-radius: 16px; }
+    .gItem{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      overflow:hidden;
+      position:relative;
+      aspect-ratio: 4/3;
+      cursor:pointer;
+      transition: transform .18s ease, border-color .18s ease, filter .18s ease;
     }
-
-    .divider{
-      height:1px;
-      width:100%;
-      background: rgba(255,255,255,0.08);
-      margin: 18px 0;
+    .gItem:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.35);
+      filter: brightness(1.04);
     }
-
-    .filterBar{
-      margin-top: 16px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
+    .gItem img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
     }
-    .filtersLeft{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .in, .sel{
+    .gCap{
+      position:absolute; left:10px; bottom:10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.45);
       border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      color:#fff;
-      border-radius: 14px;
-      padding: 12px 12px;
-      outline:none;
-      min-width: 180px;
-      font-weight: 800;
-      letter-spacing:.04em;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-      font-family: Arial, sans-serif;
-    }
-    .in::placeholder{ color: rgba(255,255,255,0.50); }
-    .miniStat{
-      color: rgba(255,255,255,0.70);
+      color: rgba(255,255,255,0.88);
       font-family:"Oswald", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing:.20em;
+      font-size: 14px;
+      letter-spacing:.18em;
       text-transform: uppercase;
     }
 
@@ -588,6 +440,110 @@
       color:#fff;
       text-shadow: 0 18px 40px rgba(0,0,0,0.90);
       display:inline-block;
+    }
+
+    /* Big gallery CTA */
+    .bigGalleryCta{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 18px 18px;
+      border-radius: 18px;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.14);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.22), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.20));
+      box-shadow: 0 18px 70px rgba(0,0,0,0.55);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, filter .18s ease;
+    }
+    .bigGalleryCta:hover{
+      transform: translateY(-3px);
+      border-color: rgba(179,31,36,0.45);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.32), transparent 60%),
+        linear-gradient(180deg, rgba(179,31,36,0.18), rgba(0,0,0,0.18));
+      filter: brightness(1.03);
+    }
+    .bigGalleryCta .left{ display:flex; flex-direction:column; gap:6px; }
+    .bigGalleryCta .kicker{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: rgba(255,255,255,0.70);
+    }
+    .bigGalleryCta .title{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      font-size: 22px;
+      color:#fff;
+      line-height:1.05;
+    }
+    .bigGalleryCta .sub{
+      color: rgba(255,255,255,0.72);
+      font-size: 13.5px;
+      line-height:1.55;
+    }
+    .bigGalleryCta .arrow{
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 20px;
+      letter-spacing:.18em;
+      box-shadow:0 18px 50px rgba(0,0,0,0.40);
+      flex:0 0 auto;
+    }
+
+    .divider{
+      height:1px;
+      width:100%;
+      background: rgba(255,255,255,0.08);
+      margin: 18px 0;
+    }
+
+    .filterBar{
+      margin-top: 16px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .filtersLeft{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .in, .sel{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color:#fff;
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      min-width: 180px;
+      font-weight: 800;
+      letter-spacing:.04em;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      font-family: Arial, sans-serif;
+    }
+    .in::placeholder{ color: rgba(255,255,255,0.50); }
+    .miniStat{
+      color: rgba(255,255,255,0.70);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.20em;
+      text-transform: uppercase;
     }
 
     .productGrid{
@@ -767,6 +723,7 @@
       gap: 14px;
     }
 
+    /* IMAGE + RIBBON */
     .mImg{
       border-radius: 16px;
       overflow:hidden;
@@ -778,6 +735,7 @@
     }
     .mImg img{ width:100%; height:100%; object-fit: cover; display:block; }
 
+    /* ✅ ZÁLOŽKA vpravo hore */
     .ribbon{
       position:absolute;
       top:14px;
@@ -805,6 +763,7 @@
       bottom:-10px;
       width: 0; height: 0;
       border-left: 10px solid transparent;
+      border-right: 0 solid transparent;
       border-top: 10px solid rgba(0,0,0,0.50);
       filter: drop-shadow(0 12px 16px rgba(0,0,0,0.45));
     }
@@ -849,6 +808,7 @@
       line-height:1.1;
     }
 
+    /* ✅ POPIS "POD SEBOU" */
     .mDesc{
       white-space: pre-line;
       color: rgba(255,255,255,0.86);
@@ -858,6 +818,7 @@
       padding-top: 12px;
     }
 
+    /* ✅ VARIANT CHIPS */
     .mLabel{
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 13px;
@@ -896,6 +857,7 @@
       box-shadow: 0 18px 50px rgba(179,31,36,0.10);
     }
 
+    /* ✅ CENA BLOK */
     .priceBlock{
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 12px;
@@ -986,16 +948,16 @@
       .nav{ padding: 14px 18px; }
       .heroInner{ padding: 0 18px 30px; }
       .grid2{ grid-template-columns: 1fr; }
+      .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       .modalBody{ grid-template-columns: 1fr; }
       .mImg{ min-height: 240px; }
-      .brandStripInner{ padding: 10px 18px; } /* thin aj na mobile */
-      .facts{ justify-content:flex-start; }
-      .sfxlaLogoRow img{ height: 26px; }
+      .carMedia{ height: 200px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
+      .gallery{ grid-template-columns: 1fr; }
       .productGrid{ grid-template-columns: 1fr; }
       .carCards{ grid-template-columns: 1fr; }
       .formGrid{ grid-template-columns: 1fr; }
@@ -1003,131 +965,13 @@
       .carMedia{ height: 210px; }
       .carNameOverlay b{ font-size: 28px; }
       .priceBig{ font-size: 30px; }
+      .bigGalleryCta{ padding: 16px 14px; }
+      .bigGalleryCta .title{ font-size: 20px; }
+      .bigGalleryCta .arrow{ width: 48px; height: 48px; border-radius: 16px; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
-    /* ===== BRAND STRIP (override) ===== */
-.brandStrip{
-  background:#fff;
-  border-top:1px solid rgba(0,0,0,.08);
-  border-bottom:1px solid rgba(0,0,0,.08);
-  position:relative;
-  overflow:visible;
-}
-
-.brandStripInner{
-  position:relative;
-  height:56px;                 /* tenký pás */
-  padding:0 6vw;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-}
-
-/* OBROVSKÉ LOGO */
-.sfxlaLogoRow{
-  position:absolute;
-  left:6vw;
-  top:50%;
-  transform:translateY(-50%);
-  pointer-events:none;
-}
-
-.sfxlaLogoRow img{
-  height:160px;
-  width:auto;
-  display:block;
-  object-fit:contain;
-  filter:none;
-}
-
-/* RIGHT SIDE */
-.facts{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-/* USA badge */
-.originBadge{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.15);
-  background:#fff;
-  font-family:"Oswald", system-ui, sans-serif;
-  font-size:12px;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-.originLabel{ color:#444; }
-
-/* Real USA flag */
-.usaFlag{
-  width:22px;
-  height:14px;
-  position:relative;
-  border:1px solid rgba(0,0,0,.25);
-  box-shadow:0 4px 10px rgba(0,0,0,.15);
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      #b22234 0 2px,
-      #ffffff 2px 4px
-    );
-}
-
-.usaFlag::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:40%;
-  height:54%;
-  background:#3c3b6e;
-}
-
-/* chips (necháme tvoje, len bezpečne) */
-.chip{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.15);
-  background:#fff;
-  color:rgba(0,0,0,.86);
-  font-family:"Oswald", system-ui, sans-serif;
-  font-size:12px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  line-height:1;
-  white-space:nowrap;
-  box-shadow:0 10px 22px rgba(0,0,0,.06);
-}
-
-.chip .cDot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#b31f24;
-  box-shadow:0 0 10px rgba(179,31,36,.6);
-}
-
-/* mobile */
-@media(max-width:900px){
-  .sfxlaLogoRow img{ height:120px; }
-}
-@media(max-width:600px){
-  .brandStripInner{ height:48px; }
-  .sfxlaLogoRow img{ height:90px; }
-}
-
   </style>
 </head>
 
@@ -1164,42 +1008,23 @@
     </div>
   </section>
 
-  <!-- ✅ THIN STRIP -->
- <div class="brandStrip" aria-label="SFXLA brand strip">
-  <div class="brandStripInner">
-
-    <!-- OBROVSKÉ LOGO -->
-    <div class="sfxlaLogoRow">
-      <img src="assets/SFXLA-logo.png" alt="Streetfighter LA">
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="facts" aria-label="SFXLA facts">
-
-      <div class="originBadge">
-        <div class="usaFlag"></div>
-        <span class="originLabel">PÔVOD:</span>
-        <strong>USA</strong>
-      </div>
-
-      <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
-      <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
-
-    </div>
-  </div>
-</div>
-
+  <!-- ✅ biely pás úplne preč -->
 
   <section id="oZnacke">
     <div class="wrap">
       <div class="grid2">
         <div class="panel">
-          <div class="pill"><span class="dot"></span>Výrobca</div>
+          <!-- ✅ namiesto pillu "VÝROBCA" -->
+          <div class="pill originPill">
+            <span class="usaFlag" aria-hidden="true"></span>
+            <span>PÔVOD:</span>
+            <b>USA</b>
+          </div>
+
           <h2>Streetfighter LA</h2>
           <p>
-            Streetfighter LA je americká značka extrémnych widebody a aero kitov z Los Angeles, známa surovým street-style dizajnom,
-            agresívnymi líniami a výraznou vizuálnou identitou. Ich bodykity sú určené pre show builds a upravené vozidlá,
-            ktoré majú zaujať na prvý pohľad a vymaniť sa z OEM stereotypu.
+            SSFXLA (Street Fighter LA) je americká značka extrémnych widebody a aero kitov z Los Angeles, známa surovým street-style dizajnom,
+            agresívnymi líniami a výraznou vizuálnou identitou. Ich bodykity sú určené pre show builds a upravené vozidlá, ktoré majú zaujať na prvý pohľad a vymaniť sa z OEM stereotypu.
           </p>
         </div>
 
@@ -1212,7 +1037,23 @@
             </div>
             <div class="arrow">→</div>
           </a>
+
+          <div class="gallery" id="gallery">
+            <div class="gItem" data-full="assets/sfxla-gallery/1.jpg" title="Open">
+              <img src="assets/sfxla-gallery/1.jpg" alt="SFXLA gallery 1" onerror="this.closest('.gItem').style.display='none'">
+              <div class="gCap">SFXLA</div>
+            </div>
+            <div class="gItem" data-full="assets/sfxla-gallery/2.jpg" title="Open">
+              <img src="assets/sfxla-gallery/2.jpg" alt="SFXLA gallery 2" onerror="this.closest('.gItem').style.display='none'">
+              <div class="gCap">Wide</div>
+            </div>
+            <div class="gItem" data-full="assets/sfxla-gallery/3.jpg" title="Open">
+              <img src="assets/sfxla-gallery/3.jpg" alt="SFXLA gallery 3" onerror="this.closest('.gItem').style.display='none'">
+              <div class="gCap">Aero</div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -1283,6 +1124,7 @@
 
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
+
           <div class="mDesc" id="mDesc"></div>
 
           <div>
@@ -1299,6 +1141,22 @@
           <div class="mActions">
             <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY MODAL -->
+  <div class="modal" id="galleryModal" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
+      <div class="modalHead">
+        <b>Galéria</b>
+        <button class="xBtn" id="closeGalleryModal" type="button" aria-label="Close">×</button>
+      </div>
+      <div style="padding:14px;">
+        <div class="mImg" style="min-height:420px;">
+          <img id="gFull" src="" alt="Gallery image">
+          <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
         </div>
       </div>
     </div>
@@ -1321,7 +1179,7 @@
           <div class="formGrid">
             <div>
               <label for="name">Meno a priezvisko</label>
-              <input id="name" name="name" type="text" required placeholder="Napr. Lukáš Tonkovič">
+              <input id="name" name="name" type="text" required placeholder="Např. Lukáš Tonkovič">
             </div>
             <div>
               <label for="phone">Telefón</label>
@@ -1674,6 +1532,7 @@
       updateCarActive();
     }
 
+    // Modal elements
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const modalTitle = $("#modalTitle");
@@ -1805,6 +1664,31 @@ Poznámka (dopíš rok/facelift/verziu):`;
     if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
     if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
+    const galleryModal = $("#galleryModal");
+    const closeGalleryModal = $("#closeGalleryModal");
+    const gFull = $("#gFull");
+    const gNoImg = $("#gNoImg");
+
+    const galleryEl = $("#gallery");
+    if (galleryEl){
+      galleryEl.addEventListener("click", (e) => {
+        const item = e.target.closest(".gItem");
+        if (!item) return;
+        const full = item.getAttribute("data-full") || "";
+        if (!full) return;
+
+        setSafeImage(gFull, full, gNoImg);
+
+        if (galleryModal){
+          galleryModal.classList.add("show");
+          galleryModal.setAttribute("aria-hidden","false");
+        }
+      });
+    }
+
+    if (closeGalleryModal) closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
+    if (galleryModal) galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
+
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1860,7 +1744,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape"){
-        [orderModal, productModal].forEach(m => m?.classList.contains("show") && closeModal(m));
+        [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
       }
     });
 
