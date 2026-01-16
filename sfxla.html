@@ -20,11 +20,8 @@
     :root{
       --red:#b31f24;
       --bg:#0b0b0b;
-      --panel:#141414;
       --text:#ffffff;
-      --muted:#cfcfcf;
       --line: rgba(255,255,255,0.08);
-      --shadow: 0 22px 70px rgba(0,0,0,0.55);
 
       --bw:#ffffff;
       --bwText:#0a0a0a;
@@ -141,10 +138,7 @@
       padding: 6px 0;
       transition: color .2s ease, transform .2s ease;
     }
-    .nav-links a:hover{
-      color:#fff;
-      transform: translateY(-1px);
-    }
+    .nav-links a:hover{ color:#fff; transform: translateY(-1px); }
     .nav-links a::after{
       content:"";
       position:absolute;
@@ -190,6 +184,20 @@
     .btn.secondary:hover{
       border-color: rgba(255,255,255,0.32);
       background: rgba(255,255,255,0.09);
+    }
+
+    /* ✅ VÝRAZNÝ OBJEDNAŤ */
+    .btn.cta{
+      background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 18px 70px rgba(179,31,36,0.25), 0 18px 70px rgba(0,0,0,0.55);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+    .btn.cta:hover{
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(199,45,50,0.98), rgba(140,20,24,0.94));
     }
 
     .hero{
@@ -238,6 +246,7 @@
       gap:22px;
       flex-wrap:wrap;
     }
+
     .pill{
       display:inline-flex; gap:10px; align-items:center;
       padding:8px 12px;
@@ -558,55 +567,6 @@
     }
     .tag .tDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
 
-    /* ✅ STATUS PILL */
-    .statusPill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.45);
-      white-space:nowrap;
-      margin-left:auto;
-    }
-    .statusPill .sDot{
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:#fff;
-      box-shadow: 0 0 14px rgba(255,255,255,0.25);
-    }
-    .status-in_stock{
-      border-color: rgba(22,199,132,0.40);
-      background: rgba(22,199,132,0.15);
-    }
-    .status-in_stock .sDot{
-      background: var(--green);
-      box-shadow: 0 0 16px rgba(22,199,132,0.65);
-    }
-    .status-made_to_order{
-      border-color: rgba(245,158,11,0.45);
-      background: rgba(245,158,11,0.14);
-    }
-    .status-made_to_order .sDot{
-      background: var(--orange);
-      box-shadow: 0 0 16px rgba(245,158,11,0.60);
-    }
-    .status-out_of_stock{
-      border-color: rgba(239,68,68,0.45);
-      background: rgba(239,68,68,0.12);
-    }
-    .status-out_of_stock .sDot{
-      background: var(--danger);
-      box-shadow: 0 0 16px rgba(239,68,68,0.60);
-    }
-
     .pBody{
       padding: 14px 14px 16px;
       display:flex;
@@ -666,6 +626,7 @@
       border-color: rgba(179,31,36,0.35);
     }
 
+    /* MODALS */
     .modal{
       position:fixed; inset:0; z-index:999;
       display:none;
@@ -723,6 +684,8 @@
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
+
+    /* IMAGE + RIBBON */
     .mImg{
       border-radius: 16px;
       overflow:hidden;
@@ -730,8 +693,63 @@
       background: rgba(255,255,255,0.02);
       min-height: 320px;
       position:relative;
+      isolation:isolate;
     }
     .mImg img{ width:100%; height:100%; object-fit: cover; display:block; }
+
+    /* ✅ ZÁLOŽKA vpravo hore */
+    .ribbon{
+      position:absolute;
+      top:14px;
+      right:14px;
+      z-index:5;
+      padding: 10px 12px;
+      border-radius: 14px 14px 14px 14px;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.50);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .ribbon::after{
+      content:"";
+      position:absolute;
+      right:10px;
+      bottom:-10px;
+      width: 0; height: 0;
+      border-left: 10px solid transparent;
+      border-right: 0 solid transparent;
+      border-top: 10px solid rgba(0,0,0,0.50);
+      filter: drop-shadow(0 12px 16px rgba(0,0,0,0.45));
+    }
+    .rDot{
+      width:10px;height:10px;border-radius:999px;background:#fff;
+      box-shadow: 0 0 18px rgba(255,255,255,0.25);
+      flex:0 0 auto;
+    }
+    .ribbon.in_stock{
+      border-color: rgba(22,199,132,0.45);
+      background: rgba(22,199,132,0.22);
+    }
+    .ribbon.in_stock .rDot{ background: var(--green); box-shadow:0 0 18px rgba(22,199,132,0.7); }
+    .ribbon.made_to_order{
+      border-color: rgba(245,158,11,0.55);
+      background: rgba(245,158,11,0.20);
+    }
+    .ribbon.made_to_order .rDot{ background: var(--orange); box-shadow:0 0 18px rgba(245,158,11,0.65); }
+    .ribbon.out_of_stock{
+      border-color: rgba(239,68,68,0.55);
+      background: rgba(239,68,68,0.18);
+    }
+    .ribbon.out_of_stock .rDot{ background: var(--danger); box-shadow:0 0 18px rgba(239,68,68,0.65); }
+
     .mInfo{
       border-radius: 16px;
       border:1px solid rgba(255,255,255,0.10);
@@ -739,8 +757,9 @@
       padding: 14px;
       display:flex;
       flex-direction:column;
-      gap: 10px;
+      gap: 12px;
     }
+
     .mTitle{
       margin:0;
       font-family:"Oswald", system-ui, sans-serif;
@@ -748,94 +767,93 @@
       text-transform: uppercase;
       font-size: 20px;
       color:#fff;
-      line-height:1;
+      line-height:1.1;
     }
-
-    /* meta blok */
-    .mMeta{
-      color: rgba(255,255,255,0.75);
-      font-size: 13.5px;
-      line-height:1.6;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .mMetaLine{
-      opacity:.95;
-    }
-    .mStatus{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 12.5px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.45);
-      white-space:nowrap;
-    }
-    .mStatus .sDot{ width:8px;height:8px;border-radius:999px;background:#fff; }
-    .mStatus.in_stock{ border-color: rgba(22,199,132,0.40); background: rgba(22,199,132,0.15); }
-    .mStatus.in_stock .sDot{ background: var(--green); box-shadow: 0 0 16px rgba(22,199,132,0.65); }
-    .mStatus.made_to_order{ border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.14); }
-    .mStatus.made_to_order .sDot{ background: var(--orange); box-shadow: 0 0 16px rgba(245,158,11,0.60); }
-    .mStatus.out_of_stock{ border-color: rgba(239,68,68,0.45); background: rgba(239,68,68,0.12); }
-    .mStatus.out_of_stock .sDot{ background: var(--danger); box-shadow: 0 0 16px rgba(239,68,68,0.60); }
 
     /* ✅ POPIS "POD SEBOU" */
     .mDesc{
       white-space: pre-line;
       color: rgba(255,255,255,0.86);
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.75;
       padding-top: 2px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 12px;
     }
 
+    /* ✅ VARIANT CHIPS */
     .mLabel{
       font-family:"Oswald", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.70);
-    }
-    .mSelect{
-      width:100%;
-      min-width: 220px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      color:#fff;
-      border-radius: 14px;
-      padding: 12px 12px;
-      outline:none;
-      font-weight: 900;
-      margin-top: 8px;
-      font-family: Arial, sans-serif;
-    }
-    .mPrice{
-      margin-top: 10px;
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size: 16px;
-      color: rgba(255,255,255,0.92);
-      line-height:1.5;
-    }
-    .mSmall{
-      margin-top: 4px;
-      color: rgba(255,255,255,0.72);
       font-size: 13px;
-      line-height:1.6;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 8px;
     }
+    .variantList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .vChip{
+      cursor:pointer;
+      user-select:none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.22);
+      color: rgba(255,255,255,0.88);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .vChip:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.18);
+    }
+    .vChip.active{
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(179,31,36,0.30);
+      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
+    }
+
+    /* ✅ CENA BLOK */
+    .priceBlock{
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .priceBig{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      font-size: 34px;
+      line-height: 1;
+      color:#fff;
+    }
+    .priceBig small{
+      font-size: 14px;
+      color: rgba(255,255,255,0.60);
+      letter-spacing:.22em;
+    }
+    .priceSub{
+      color: rgba(255,255,255,0.74);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
     .mActions{
       margin-top:auto;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
+      justify-content:flex-end;
+      padding-top: 10px;
     }
 
     .formGrid{
@@ -911,6 +929,7 @@
       .in,.sel{ min-width: 160px; }
       .carMedia{ height: 210px; }
       .carNameOverlay b{ font-size: 28px; }
+      .priceBig{ font-size: 30px; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -979,8 +998,7 @@
           <h2>Streetfighter LA</h2>
           <p>
             StreetFighter LA (SFLA) je prominentná kalifornská spoločnosť zameraná na automobilové technológie a dizajn, známa výrobou agresívnych širokých karosérií,
-            aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá. Spája high-tech inžinierstvo (3D skenovanie, CAD) s funkčným štýlom
-            pre použitie na cestách a okruhoch. Je obľúbená u značiek ako BMW a Camaro.
+            aerodynamických dielov a zákazkových konštrukcií automobilov pre výkonné vozidlá.
           </p>
         </div>
 
@@ -1050,9 +1068,7 @@
       <div class="panel">
         <div class="pill"><span class="dot"></span>kontakt</div>
         <h2>Objednávka / dopyt</h2>
-        <p>
-          Ak chceš poslať dopyt bez výberu konkrétneho dielu, klikni na tlačidlo a vyplň formulár.
-        </p>
+        <p>Ak chceš poslať dopyt bez výberu konkrétneho dielu, klikni na tlačidlo a vyplň formulár.</p>
         <button class="btn" id="openGeneralForm" type="button">Otvoriť formulár</button>
       </div>
     </div>
@@ -1062,12 +1078,13 @@
   <div class="modal" id="productModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
       <div class="modalHead">
-        <b>Detail dielu</b>
+        <b id="modalTitle">Streetfighter LA</b>
         <button class="xBtn" id="closeProductModal" type="button" aria-label="Close">×</button>
       </div>
 
       <div class="modalBody">
         <div class="mImg">
+          <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
           <img id="mImg" src="" alt="Product image">
           <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
         </div>
@@ -1075,26 +1092,22 @@
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
 
-          <!-- meta: auto + kategória + status -->
-          <div class="mMeta" id="mMeta">
-            <span class="mMetaLine" id="mMetaLine">—</span>
-            <span class="mStatus made_to_order" id="mStatus"><span class="sDot"></span>NA OBJEDNÁVKU</span>
-          </div>
-
           <!-- ✅ description pod sebou -->
           <div class="mDesc" id="mDesc"></div>
 
-          <div style="margin-top:6px;">
-            <div class="mLabel">Variant / Materiál</div>
-            <select class="mSelect" id="mVariant"></select>
-            <div class="mPrice" id="mPrice">—</div>
-            <div class="mSmall" id="mShip">—</div>
-            <div class="mSmall" id="mDelivery">—</div>
-            <div class="mSmall" id="mTotal">—</div>
+          <div>
+            <div class="mLabel">Variant / materiál</div>
+            <div class="variantList" id="mVariantList"></div>
+          </div>
+
+          <div class="priceBlock">
+            <div class="priceBig" id="mPriceBig">—</div>
+            <div class="priceSub" id="mShip">—</div>
+            <div class="priceSub" id="mDelivery">—</div>
           </div>
 
           <div class="mActions">
-            <button class="btn" id="mOrder" type="button">Poslať objednávku</button>
+            <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
           </div>
         </div>
       </div>
@@ -1201,6 +1214,7 @@
 
     let activeCarId = "";
     let activeProduct = null;
+    let activeVariantIndex = 0;
 
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1220,18 +1234,13 @@
     }
 
     function getStockStatus(p){
-      // primárne nové pole stockStatus
       const s = (p.stockStatus || "").trim();
       if (s) return s;
-
-      // fallback: availability
       const a = (p.availability || "").trim();
       if (a === "in_stock") return "in_stock";
-      if (a === "made_to_order") return "made_to_order";
       if (a === "out_of_stock") return "out_of_stock";
       return "made_to_order";
     }
-
     function stockLabel(status){
       if (status === "in_stock") return "SKLADOM";
       if (status === "out_of_stock") return "VYPREDANÉ";
@@ -1442,8 +1451,6 @@
 
       items.forEach(p => {
         const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
-        const status = getStockStatus(p);
-        const statusText = stockLabel(status);
 
         const card = document.createElement("div");
         card.className = "pCard";
@@ -1459,7 +1466,6 @@
             <div class="pTopRow">
               <div class="tag"><span class="tDot"></span>${escapeHtml(car)}</div>
               <div class="tag" style="border-color:rgba(255,255,255,0.18);">${escapeHtml(p.category || "Part")}</div>
-              <div class="statusPill status-${escapeHtml(status)}"><span class="sDot"></span>${escapeHtml(statusText)}</div>
             </div>
           </div>
 
@@ -1494,36 +1500,33 @@
       updateCarActive();
     }
 
+    // Modal elements
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
+    const modalTitle = $("#modalTitle");
+    const mRibbon = $("#mRibbon");
     const mImg = $("#mImg");
     const mNoImg = $("#mNoImg");
     const mTitle = $("#mTitle");
-    const mMetaLine = $("#mMetaLine");
-    const mStatus = $("#mStatus");
     const mDesc = $("#mDesc");
-    const mVariant = $("#mVariant");
-    const mPrice = $("#mPrice");
+    const mVariantList = $("#mVariantList");
+    const mPriceBig = $("#mPriceBig");
     const mShip = $("#mShip");
     const mDelivery = $("#mDelivery");
-    const mTotal = $("#mTotal");
     const mOrder = $("#mOrder");
 
     function openProduct(p){
       activeProduct = p;
+      activeVariantIndex = 0;
 
-      if (mTitle) mTitle.textContent = p.title || "—";
-
-      const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
-      const maxq = (typeof p.maxQtyPerOrder === "number") ? ` • max ${p.maxQtyPerOrder} ks` : "";
-      if (mMetaLine){
-        mMetaLine.textContent = `${car} • ${p.category || "Part"}${maxq}`;
-      }
+      const title = p.title || "—";
+      if (modalTitle) modalTitle.textContent = `Streetfighter LA — ${title}`;
+      if (mTitle) mTitle.textContent = title;
 
       const status = getStockStatus(p);
-      if (mStatus){
-        mStatus.className = "mStatus " + status;
-        mStatus.innerHTML = `<span class="sDot"></span>${escapeHtml(stockLabel(status))}`;
+      if (mRibbon){
+        mRibbon.className = `ribbon ${status}`;
+        mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
       }
 
       if (mDesc){
@@ -1533,23 +1536,7 @@
       const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
       setSafeImage(mImg, imgSrc, mNoImg);
 
-      if (mVariant){
-        mVariant.innerHTML = "";
-        const vars = Array.isArray(p.variants) ? p.variants : [];
-        vars.forEach((v, i) => {
-          const opt = document.createElement("option");
-          opt.value = String(i);
-          opt.textContent = `${v.name || "Variant"} • ${v.material || "Material"} • ${v.type || ""}`.trim();
-          mVariant.appendChild(opt);
-        });
-        if (!vars.length){
-          const opt = document.createElement("option");
-          opt.value = "0";
-          opt.textContent = "Variant: cena na dopyt";
-          mVariant.appendChild(opt);
-        }
-        mVariant.value = "0";
-      }
+      buildVariantChips();
 
       updateVariantPrice();
 
@@ -1559,44 +1546,76 @@
       }
     }
 
+    function buildVariantChips(){
+      if (!mVariantList) return;
+      mVariantList.innerHTML = "";
+
+      const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+
+      if (!vars.length){
+        const chip = document.createElement("div");
+        chip.className = "vChip active";
+        chip.textContent = "CENA NA DOPYT";
+        chip.addEventListener("click", () => {
+          activeVariantIndex = 0;
+          setActiveChip(0);
+          updateVariantPrice();
+        });
+        mVariantList.appendChild(chip);
+        return;
+      }
+
+      vars.forEach((v, i) => {
+        const chip = document.createElement("div");
+        chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+        const label = `${v.name || "Variant"} • ${v.material || "Material"}${v.type ? " • " + v.type : ""}`;
+        chip.textContent = label.toUpperCase();
+        chip.addEventListener("click", () => {
+          activeVariantIndex = i;
+          setActiveChip(i);
+          updateVariantPrice();
+        });
+        mVariantList.appendChild(chip);
+      });
+    }
+
+    function setActiveChip(index){
+      $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
+    }
+
     function updateVariantPrice(){
       if (!activeProduct) return;
 
       const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-      const idx = Number(mVariant?.value || 0);
-      const v = vars[idx];
+      const v = vars[activeVariantIndex];
 
       const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
       const delivery = activeProduct.delivery || "Upresníme po objednávke";
-      const status = getStockStatus(activeProduct);
 
-      const basePrice = (v && typeof v.priceEUR === "number") ? v.priceEUR : null;
-      const total = (basePrice !== null) ? (basePrice + ship) : null;
+      const base = (v && typeof v.priceEUR === "number") ? v.priceEUR : null;
 
-      if (!v || basePrice === null){
-        if (mPrice) mPrice.textContent = `Cena: cena na dopyt`;
-      } else {
-        const tail = `${v.material || ""} • ${v.type || ""}`.trim();
-        if (mPrice) mPrice.textContent = `Cena: ${fmtEUR(basePrice)}${tail ? " • " + tail : ""}`;
+      if (mPriceBig){
+        mPriceBig.innerHTML = base !== null
+          ? `<small>CENA</small><br>${fmtEUR(base)}`
+          : `<small>CENA</small><br>UPRESNÍME`;
       }
 
       if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
       if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
-      if (mTotal) mTotal.textContent = `Spolu: ${total !== null ? fmtEUR(total) : "upresníme"}`;
 
+      // Note to form
       const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
+      const status = getStockStatus(activeProduct);
 
       const note =
 `OBJEDNÁVKA – Streetfighter LA
 Auto: ${car}
 Diel: ${activeProduct.title || "—"}
 Variant: ${v?.name || "—"} | Materiál: ${v?.material || "—"} | Typ: ${v?.type || "—"}
-Dostupnosť: ${stockLabel(status)} (${status})
-Max ks / objednávka: ${typeof activeProduct.maxQtyPerOrder === "number" ? activeProduct.maxQtyPerOrder : "—"}
-Cena: ${basePrice !== null ? fmtEUR(basePrice) : "cena na dopyt"}
+Dostupnosť: ${stockLabel(status)}
+Cena: ${base !== null ? fmtEUR(base) : "upresníme"}
 Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}
 Dodanie: ${delivery}
-Spolu: ${total !== null ? fmtEUR(total) : "upresníme"}
 
 Poznámka (dopíš rok/facelift/verziu):`;
 
@@ -1605,8 +1624,6 @@ Poznámka (dopíš rok/facelift/verziu):`;
       if (msg) msg.value = note;
       if (carInput) carInput.value = car;
     }
-
-    if (mVariant) mVariant.addEventListener("change", updateVariantPrice);
 
     function closeModal(modal){
       if (!modal) return;
