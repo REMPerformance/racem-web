@@ -537,6 +537,64 @@
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
       font-family: Arial, sans-serif;
     }
+    /* ===== Dark selects (dropdown menu fix) ===== */
+:root { color-scheme: dark; } /* pomôže natívnym UI prvkom prejsť do dark */
+
+.sel{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+
+  background: rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.92);
+
+  padding-right: 44px;            /* miesto pre šípku */
+  cursor:pointer;
+
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.sel:hover{
+  transform: translateY(-1px);
+  border-color: rgba(179,31,36,0.35);
+  background: rgba(179,31,36,0.12);
+}
+
+.sel:focus{
+  outline:none;
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 0 0 4px rgba(179,31,36,0.18), 0 18px 60px rgba(0,0,0,0.55);
+}
+
+/* šípka (bez obrázka) */
+.sel{
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.75) 50%),
+    linear-gradient(135deg, rgba(255,255,255,0.75) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* samotné položky v rozbalenom menu (funguje v Chrome/Edge lepšie než vo všetkých browseroch) */
+.sel option{
+  background:#0b0b0b;
+  color:#fff;
+}
+
+/* zvolená / hover položka - nie všade sa dá, ale keď sa dá, vyzerá to super */
+.sel option:checked{
+  background: rgba(179,31,36,0.55);
+}
+    .in:focus{
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 0 0 4px rgba(179,31,36,0.18), 0 18px 60px rgba(0,0,0,0.55);
+}
+
+
     .in::placeholder{ color: rgba(255,255,255,0.50); }
     .miniStat{
       color: rgba(255,255,255,0.70);
@@ -984,18 +1042,14 @@
       <a href="index.html" class="brand-mini" aria-label="RACEM">
         <img src="assets/rmgroup.png" alt="RACEM logo">
         <div class="brand-title">
-          <b>Streetfighter LA</b>
         </div>
       </a>
 
       <nav class="nav-links" aria-label="Menu">
         <a href="index.html">Domov</a>
-        <a href="#auta">Autá</a>
-        <a href="#produkty">Ponuka</a>
+        <a href="#auta">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
-
-      <a class="btn secondary" href="#auta">Vybrať diely →</a>
     </div>
   </div>
 
