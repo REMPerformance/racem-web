@@ -1007,6 +1007,127 @@
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
+    /* ===== BRAND STRIP (override) ===== */
+.brandStrip{
+  background:#fff;
+  border-top:1px solid rgba(0,0,0,.08);
+  border-bottom:1px solid rgba(0,0,0,.08);
+  position:relative;
+  overflow:visible;
+}
+
+.brandStripInner{
+  position:relative;
+  height:56px;                 /* tenký pás */
+  padding:0 6vw;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+}
+
+/* OBROVSKÉ LOGO */
+.sfxlaLogoRow{
+  position:absolute;
+  left:6vw;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+
+.sfxlaLogoRow img{
+  height:160px;
+  width:auto;
+  display:block;
+  object-fit:contain;
+  filter:none;
+}
+
+/* RIGHT SIDE */
+.facts{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* USA badge */
+.originBadge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.15);
+  background:#fff;
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.originLabel{ color:#444; }
+
+/* Real USA flag */
+.usaFlag{
+  width:22px;
+  height:14px;
+  position:relative;
+  border:1px solid rgba(0,0,0,.25);
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #b22234 0 2px,
+      #ffffff 2px 4px
+    );
+}
+
+.usaFlag::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:40%;
+  height:54%;
+  background:#3c3b6e;
+}
+
+/* chips (necháme tvoje, len bezpečne) */
+.chip{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.15);
+  background:#fff;
+  color:rgba(0,0,0,.86);
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  line-height:1;
+  white-space:nowrap;
+  box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+
+.chip .cDot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#b31f24;
+  box-shadow:0 0 10px rgba(179,31,36,.6);
+}
+
+/* mobile */
+@media(max-width:900px){
+  .sfxlaLogoRow img{ height:120px; }
+}
+@media(max-width:600px){
+  .brandStripInner{ height:48px; }
+  .sfxlaLogoRow img{ height:90px; }
+}
+
   </style>
 </head>
 
@@ -1044,25 +1165,30 @@
   </section>
 
   <!-- ✅ THIN STRIP -->
-  <div class="brandStrip" aria-label="SFXLA brand strip">
-    <div class="brandStripInner">
-      <div class="sfxlaLogoRow">
-        <img src="assets/SFXLA-logo.png" alt="Streetfighter LA logo (black)" onerror="this.style.display='none'">
+ <div class="brandStrip" aria-label="SFXLA brand strip">
+  <div class="brandStripInner">
+
+    <!-- OBROVSKÉ LOGO -->
+    <div class="sfxlaLogoRow">
+      <img src="assets/SFXLA-logo.png" alt="Streetfighter LA">
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="facts" aria-label="SFXLA facts">
+
+      <div class="originBadge">
+        <div class="usaFlag"></div>
+        <span class="originLabel">PÔVOD:</span>
+        <strong>USA</strong>
       </div>
 
-      <div class="facts" aria-label="SFXLA facts">
-        <!-- ✅ PÔVOD: USA vpravo namiesto chipu USA -->
-        <div class="originBadge" title="Pôvod: USA">
-          <span class="flagBar" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="originLabel">PÔVOD:</span>
-          <span class="usaText">USA</span>
-        </div>
+      <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
+      <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
 
-        <div class="chip"><span class="cDot"></span>WIDEBODY & AERO</div>
-        <div class="chip"><span class="cDot"></span>FRP / CARBON</div>
-      </div>
     </div>
   </div>
+</div>
+
 
   <section id="oZnacke">
     <div class="wrap">
