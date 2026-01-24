@@ -376,32 +376,114 @@
       box-shadow: 0 18px 44px rgba(179,31,36,0.26);
     }
 
-    .heroCard{
-      background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.65));
-      border: 1px solid rgba(255,255,255,0.08);
+    /* ✅ HERO RIGHT PANEL (PREMIUM) */
+    .heroPanel{
+      width:min(460px, 100%);
+      margin-left:auto;
+      padding:16px;
       border-radius:18px;
-      padding:22px;
-      box-shadow: var(--shadow);
+
+      background:
+        radial-gradient(120% 140% at 10% 0%, rgba(179,31,36,.22), rgba(0,0,0,0) 55%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+
       position:relative;
       overflow:hidden;
     }
-    .heroCard::before{
+    .heroPanel::before{
       content:"";
       position:absolute;
-      inset:-60px;
-      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.20), transparent 55%);
+      inset:-70px;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 55%);
       transform: rotate(12deg);
+      opacity:.85;
+      pointer-events:none;
     }
-    .heroCard > *{position:relative}
-    .statRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-    .stat{
-      background: rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.06);
+    .heroPanel > *{ position:relative; z-index:1; }
+
+    .hpTitle{
+      font-weight:1000;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:11px;
+      color:rgba(255,255,255,.70);
+      margin:4px 4px 12px;
+    }
+    .hpItem{
+      display:flex;
+      align-items:center;
+      gap:12px;
+
+      text-decoration:none;
+      padding:14px 14px;
       border-radius:14px;
-      padding:14px;
+
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+      position:relative;
+      overflow:hidden;
     }
-    .stat b{display:block;font-size:18px;color:#fff;margin-bottom:6px}
-    .stat span{font-size:12px;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px}
+    .hpItem + .hpItem{ margin-top:10px; }
+
+    .hpItem::before{
+      content:"";
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width:3px;
+      background: linear-gradient(180deg, var(--red), rgba(179,31,36,0));
+      opacity:.95;
+    }
+
+    .hpHead{
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.14em;
+      color:#fff;
+      text-transform:uppercase;
+      line-height:1.1;
+    }
+    .hpSub{
+      margin-top:4px;
+      font-size:12.5px;
+      color:rgba(255,255,255,.68);
+      line-height:1.35;
+    }
+
+    .hpArrow{
+      margin-left:auto;
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color:#fff;
+      opacity:.78;
+      transition: transform .18s ease, opacity .18s ease, border-color .18s ease, background .18s ease;
+      flex:0 0 auto;
+    }
+
+    .hpItem:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(0,0,0,.26);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    .hpItem:hover .hpArrow{
+      opacity:1;
+      transform: translateX(3px);
+      border-color: rgba(179,31,36,.35);
+      background: rgba(179,31,36,.10);
+    }
+    .hpItem:hover .hpSub{ color: rgba(255,255,255,.80); }
 
     /* ====== BLOCKS ====== */
     .split{ display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:start; }
@@ -1048,9 +1130,8 @@
       .ctaRow{ gap: 10px; }
       .btn{ width: 100%; justify-content: center; padding: 14px 18px; font-size: 13px; }
 
-      .heroCard{ padding: 18px; }
-      .statRow{ grid-template-columns: 1fr; gap: 10px; }
-      .stat b{ font-size: 16px; }
+      .heroPanel{ width:100%; margin-left:0; }
+      .hpArrow{ width:34px; height:34px; }
 
       .nav-centered{
         max-width: 100%;
@@ -1208,7 +1289,6 @@
       .hero-dash{ font-size: 18px !important; }
 
       .panel{ padding: 16px !important; border-radius: 16px !important; }
-      .heroCard{ padding: 16px !important; border-radius: 16px !important; }
 
       .pill{
         font-size: 10px !important;
@@ -1224,9 +1304,6 @@
         border-radius: 12px !important;
       }
       .ctaRow .btn:only-child{ width: 100% !important; }
-
-      .stat{ padding: 12px !important; border-radius: 14px !important; }
-      .stat b{ font-size: 15px !important; }
 
       .nav-centered{ padding: 10px 0 !important; gap: 10px !important; }
       .brand-mini img{ height: 42px !important; }
@@ -1254,7 +1331,6 @@
       section{ padding: 64px 0 !important; }
       .hero{ padding: 56px 0 48px !important; }
       .panel{ padding: 20px !important; }
-      .heroCard{ padding: 18px !important; }
     }
 
     /* ====== BODYKIT BRANDS STRIP (INDEX) ====== */
@@ -1355,9 +1431,21 @@
 
     /* ====== BRAND TILE WITH NAME (FIXED) ====== */
     .brand-link{
-      display:block;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       text-decoration:none;
       color:inherit;
+    }
+    .brand-name{
+      text-align:center;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 1000;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.2;
+      padding: 0 6px;
     }
 
     .brand-tile{
@@ -1411,26 +1499,6 @@
       opacity:.95;
     }
 
-    .brand-name{
-      font-size: 10.5px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-weight: 1000;
-      color: rgba(255,255,255,0.88);
-      line-height: 1.2;
-      padding: 0 6px;
-    }
-
-    .brand-link{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.brand-name{
-  text-align:center;
-}
-
     /* “coming soon” tile */
     .brand-tile.is-empty{
       cursor: default;
@@ -1465,38 +1533,6 @@
       .brand-name{ font-size: 10px; }
       .brand-logo{ height:58%; }
     }
-    .heroServices{
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-  margin-top:24px;
-}
-
-.serviceItem{
-  padding-left:14px;
-  border-left:3px solid var(--red,#b31f24);
-  transition:all .25s ease;
-}
-
-.serviceItem h4{
-  margin:0;
-  font-size:15px;
-  letter-spacing:1.2px;
-  font-weight:700;
-}
-
-.serviceItem span{
-  display:block;
-  margin-top:4px;
-  font-size:13px;
-  color:#b5b5b5;
-}
-
-.serviceItem:hover{
-  transform:translateX(6px);
-  border-left-color:#ff2a2a;
-}
-
   </style>
 </head>
 
@@ -1546,28 +1582,44 @@
         </div>
       </div>
 
-      <div class="heroServices">
-  <div class="serviceItem">
-    <h4>AUTODIELY</h4>
-    <span>Katalóg overených značiek</span>
-  </div>
+      <!-- ✅ RIGHT HERO PANEL -->
+      <div class="heroPanel reveal" aria-label="RACEM služby">
+        <div class="hpTitle">Služby</div>
 
-  <div class="serviceItem">
-    <h4>BODYKITS & AERO</h4>
-    <span>Streetfighter • Drift • OEM+</span>
-  </div>
+        <a class="hpItem" href="katalog.html">
+          <div style="min-width:0">
+            <div class="hpHead">AUTODIELY</div>
+            <div class="hpSub">Katalóg overených značiek</div>
+          </div>
+          <span class="hpArrow">→</span>
+        </a>
 
-  <div class="serviceItem">
-    <h4>MOBILNÝ AUTOSERVIS</h4>
-    <span>Prídeme za tebou</span>
-  </div>
+        <a class="hpItem" href="#bodykity">
+          <div style="min-width:0">
+            <div class="hpHead">BODYKITS &amp; AERO</div>
+            <div class="hpSub">Streetfighter • Drift • OEM+</div>
+          </div>
+          <span class="hpArrow">→</span>
+        </a>
 
-  <div class="serviceItem">
-    <h4>SPONZORING</h4>
-    <span>Podporujeme skutočný motorsport</span>
-  </div>
-</div>
+        <a class="hpItem" href="mobilny-autoservis.html">
+          <div style="min-width:0">
+            <div class="hpHead">MOBILNÝ AUTOSERVIS</div>
+            <div class="hpSub">Prídeme za tebou</div>
+          </div>
+          <span class="hpArrow">→</span>
+        </a>
 
+        <a class="hpItem" href="#kto-sme">
+          <div style="min-width:0">
+            <div class="hpHead">SPONZORING</div>
+            <div class="hpSub">Podporujeme skutočný motorsport</div>
+          </div>
+          <span class="hpArrow">→</span>
+        </a>
+      </div>
+
+    </div><!-- ✅ FIX: chýbalo uzatvorenie hero-grid -->
   </section>
 
   <!-- BODYKITY / ZNAČKY (INDEX) -->
@@ -1595,15 +1647,15 @@
 
         <div class="brands-wrap">
           <div class="brand-grid" aria-label="Značky body kitov">
-           <!-- StreetFighter LA -->
-<a class="brand-link" href="distribucia-kitov.html#streetfighter-la" title="StreetFighter LA (SFXLA)">
-  <div class="brand-tile">
-    <div class="brand-inner">
-      <img class="brand-logo" src="assets/SFXLA_small.avif" alt="StreetFighter LA logo" loading="lazy" decoding="async">
-    </div>
-  </div>
-  <div class="brand-name">StreetFighter LA</div>
-</a>
+            <!-- StreetFighter LA -->
+            <a class="brand-link" href="distribucia-kitov.html#streetfighter-la" title="StreetFighter LA (SFXLA)">
+              <div class="brand-tile">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/SFXLA_small.avif" alt="StreetFighter LA logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">StreetFighter LA</div>
+            </a>
 
             <!-- coming soon -->
             <div class="brand-tile is-empty" aria-hidden="true"><span>coming soon</span></div>
@@ -1785,7 +1837,7 @@
 
           <div class="service-pills">
             <span class="mini-chip"><span class="mini-dot"></span> servis u vás</span>
-            <span class="mini-chip"><span class="mini-dot"></span> obhliadky áut</span>
+            <span class="mini-chip"><span class="mini-dot"></span> obhliadky áút</span>
             <span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
             <span class="mini-chip"><span class="mini-dot"></span> pomoc na ceste</span>
           </div>
@@ -2415,34 +2467,29 @@
     function hideCookie(){ cookieBar?.classList.remove("show"); }
 
     // ===== GA4 (RACEM) =====
-const GA_ID = "G-059W7F7HZZ"; // tvoje Measurement ID
+    const GA_ID = "G-059W7F7HZZ"; // tvoje Measurement ID
 
-function loadGA4(){
-  // aby sa to nenačítalo 2x
-  if (window.__ga4_loaded) return;
-  window.__ga4_loaded = true;
+    function loadGA4(){
+      if (window.__ga4_loaded) return;
+      window.__ga4_loaded = true;
 
-  // vloží gtag.js
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-  document.head.appendChild(s);
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      document.head.appendChild(s);
 
-  // inicializácia gtag
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  window.gtag = gtag;
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
 
-  gtag("js", new Date());
-  gtag("config", GA_ID, {
-    anonymize_ip: true
-  });
-}
+      gtag("js", new Date());
+      gtag("config", GA_ID, { anonymize_ip: true });
+    }
 
-function runAnalyticsIfAllowed(){
-  if(getConsent() !== "accepted") return;
-  loadGA4();
-}
+    function runAnalyticsIfAllowed(){
+      if(getConsent() !== "accepted") return;
+      loadGA4();
+    }
 
     (function initCookieBar(){
       const c = getConsent();
