@@ -1507,18 +1507,69 @@
       margin-bottom:12px;
     }
     .globeWrap{
-      position:relative;
-      width:100%;
-      aspect-ratio: 1 / 1;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.10);
-      background:
-        radial-gradient(120% 120% at 20% 0%, rgba(179,31,36,.22), rgba(0,0,0,0) 55%),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-    }
+  position:relative;
+  width:100%;
+  max-width: 320px;              /* ✅ menší globus */
+  margin-left:auto;              /* vpravo v paneli */
+  aspect-ratio: 1 / 1;
+  border-radius:18px;
+  border:1px solid rgba(179,31,36,0.22);
+
+  /* hacker hologram vibe */
+  background:
+    radial-gradient(70% 70% at 50% 50%, rgba(179,31,36,.18), transparent 60%),
+    radial-gradient(120% 120% at 50% 120%, rgba(179,31,36,.10), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+
+  box-shadow:
+    0 0 0 1px rgba(179,31,36,.08) inset,
+    0 18px 60px rgba(0,0,0,.65),
+    0 0 55px rgba(179,31,36,.18);
+
+  overflow:hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* scanlines overlay */
+.globeWrap::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.06) 0px,
+      rgba(255,255,255,0.06) 1px,
+      transparent 2px,
+      transparent 7px
+    );
+  opacity: .10;
+  pointer-events:none;
+  mix-blend-mode: screen;
+}
+
+/* jemný “noise” */
+.globeWrap::before{
+  content:"";
+  position:absolute; inset:-20%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+  opacity:.06;
+  pointer-events:none;
+  animation: globeNoise 9s steps(8) infinite;
+  mix-blend-mode: screen;
+}
+@keyframes globeNoise{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-2%,1%)}
+  50%{transform:translate(2%,-2%)}
+  75%{transform:translate(-1%,-2%)}
+  100%{transform:translate(0,0)}
+}
+
+/* mobil ešte menší */
+@media (max-width:980px){
+  .globeWrap{ max-width: 280px; margin: 0 auto; }
+}
+
     #racemGlobe{ width:100%; height:100%; display:block; }
 
     /* Tooltip bublinka */
@@ -2584,250 +2635,275 @@
 
   <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
   <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
-    // ===== CONFIG =====
-    const LOCATIONS = [
-      { name: "Piešťany", lat: 48.5948, lon: 17.8250 },
-      { name: "Los Angeles", lat: 34.0522, lon: -118.2437 },
-      { name: "Tokyo", lat: 35.6762, lon: 139.6503 },
-      { name: "Frankfurt", lat: 50.1109, lon: 8.6821 },
-    ];
+  const LOCATIONS = [
+    { name: "Piešťany", lat: 48.5948, lon: 17.8250 },
+    { name: "Los Angeles", lat: 34.0522, lon: -118.2437 },
+    { name: "Tokyo", lat: 35.6762, lon: 139.6503 },
+    { name: "Frankfurt", lat: 50.1109, lon: 8.6821 },
+  ];
 
-    const canvas = document.getElementById("racemGlobe");
-    if (!canvas) {
-      console.warn("racemGlobe canvas not found");
-    } else {
-      const scene = new THREE.Scene();
+  const canvas = document.getElementById("racemGlobe");
+  if (!canvas) {
+    console.warn("racemGlobe canvas not found");
+  } else {
+    const scene = new THREE.Scene();
 
-      const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: true
-      });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-      camera.position.set(0, 0, 3.2);
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    camera.position.set(0, 0, 3.0);
 
-      const ambient = new THREE.AmbientLight(0xffffff, 0.55);
-      scene.add(ambient);
+    // svetlá – jemné, nech to je “hologram”
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    const dir = new THREE.DirectionalLight(0xffffff, 0.45);
+    dir.position.set(2, 1.5, 3);
+    scene.add(dir);
 
-      const dir = new THREE.DirectionalLight(0xffffff, 0.85);
-      dir.position.set(3, 2, 4);
-      scene.add(dir);
+    const group = new THREE.Group();
+    scene.add(group);
 
-      const globeGroup = new THREE.Group();
-      scene.add(globeGroup);
+    // ===== HACKER HOLOGRAM GLOBE =====
+    const R = 0.78; // ✅ menší globus
 
-      function createProceduralMapTexture(size = 1024) {
-        const c = document.createElement("canvas");
-        c.width = size;
-        c.height = size / 2;
-        const ctx = c.getContext("2d");
+    // “core” priesvitná guľa
+    const coreGeo = new THREE.SphereGeometry(R, 72, 72);
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: 0xb31f24,
+      transparent: true,
+      opacity: 0.12,
+      roughness: 0.9,
+      metalness: 0.05,
+      emissive: new THREE.Color(0xb31f24),
+      emissiveIntensity: 0.22
+    });
+    const core = new THREE.Mesh(coreGeo, coreMat);
+    group.add(core);
 
-        ctx.fillStyle = "#08090b";
-        ctx.fillRect(0, 0, c.width, c.height);
+    // wireframe shell
+    const wireGeo = new THREE.SphereGeometry(R * 1.002, 42, 42);
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: 0xb31f24,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.18
+    });
+    const wire = new THREE.Mesh(wireGeo, wireMat);
+    group.add(wire);
 
-        ctx.globalAlpha = 0.06;
-        ctx.strokeStyle = "#ffffff";
-        for (let i = 1; i < 10; i++) {
-          const y = (c.height / 10) * i;
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(c.width, y);
-          ctx.stroke();
-        }
-        ctx.globalAlpha = 1;
+    // “lat/lon rings” – hacker grid vibe
+    const rings = new THREE.Group();
+    group.add(rings);
 
-        ctx.fillStyle = "#1f2328";
-        function blob(x, y, rX, rY, rot) {
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate(rot);
-          ctx.scale(rX, rY);
-          ctx.beginPath();
-          ctx.arc(0, 0, 1, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.restore();
-          ctx.fill();
-        }
-
-        blob(c.width * 0.23, c.height * 0.35, 140, 90, -0.2);
-        blob(c.width * 0.28, c.height * 0.55, 90, 120, 0.2);
-        blob(c.width * 0.52, c.height * 0.35, 90, 60, 0.1);
-        blob(c.width * 0.55, c.height * 0.58, 120, 130, -0.1);
-        blob(c.width * 0.70, c.height * 0.36, 170, 90, 0.12);
-        blob(c.width * 0.80, c.height * 0.74, 80, 55, 0.05);
-
-        ctx.globalCompositeOperation = "source-in";
-        const grd = ctx.createRadialGradient(c.width/2, c.height/2, c.height*0.1, c.width/2, c.height/2, c.width*0.55);
-        grd.addColorStop(0, "rgba(255,255,255,0.98)");
-        grd.addColorStop(1, "rgba(255,255,255,0.85)");
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, c.width, c.height);
-
-        ctx.globalCompositeOperation = "source-over";
-        ctx.globalAlpha = 0.12;
-        ctx.fillStyle = "#b31f24";
-        for (let i = 0; i < 18; i++) {
-          blob(Math.random()*c.width, Math.random()*c.height, 40+Math.random()*80, 25+Math.random()*70, Math.random());
-        }
-        ctx.globalAlpha = 1;
-
-        const tex = new THREE.CanvasTexture(c);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.anisotropy = 8;
-        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        return tex;
-      }
-
-      const earthMap = createProceduralMapTexture(1200);
-
-      const earthGeo = new THREE.SphereGeometry(1, 64, 64);
-      const earthMat = new THREE.MeshStandardMaterial({
-        map: earthMap,
-        roughness: 0.95,
-        metalness: 0.05,
-        color: new THREE.Color(0xffffff),
-        emissive: new THREE.Color(0x000000),
-        emissiveIntensity: 0.0
-      });
-      const earth = new THREE.Mesh(earthGeo, earthMat);
-      globeGroup.add(earth);
-
-      const atmoGeo = new THREE.SphereGeometry(1.03, 64, 64);
-      const atmoMat = new THREE.MeshBasicMaterial({
+    function makeRing(radius, tilt, opacity){
+      const g = new THREE.RingGeometry(radius*0.999, radius*1.001, 128);
+      const m = new THREE.MeshBasicMaterial({
         color: 0xb31f24,
         transparent: true,
-        opacity: 0.08
+        opacity,
+        side: THREE.DoubleSide
       });
-      const atmo = new THREE.Mesh(atmoGeo, atmoMat);
-      globeGroup.add(atmo);
+      const r = new THREE.Mesh(g, m);
+      r.rotation.x = tilt.x;
+      r.rotation.y = tilt.y;
+      r.rotation.z = tilt.z;
+      return r;
+    }
 
-      const pins = [];
-      const pinGeo = new THREE.SphereGeometry(0.02, 18, 18);
+    // ekvátor + pár “orbit” kruhov
+    rings.add(makeRing(R*1.03, {x: Math.PI/2, y:0, z:0}, 0.10));
+    rings.add(makeRing(R*1.05, {x: Math.PI/2, y:0.6, z:0.2}, 0.07));
+    rings.add(makeRing(R*1.06, {x: Math.PI/2, y:1.2, z:-0.15}, 0.06));
 
-      function latLonToVec3(lat, lon, radius = 1.01) {
-        const phi = (90 - lat) * (Math.PI / 180);
-        const theta = (lon + 180) * (Math.PI / 180);
-        const x = -(radius * Math.sin(phi) * Math.cos(theta));
-        const z = (radius * Math.sin(phi) * Math.sin(theta));
-        const y = (radius * Math.cos(phi));
-        return new THREE.Vector3(x, y, z);
-      }
+    // atmosféra halo
+    const haloGeo = new THREE.SphereGeometry(R * 1.12, 64, 64);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color: 0xb31f24,
+      transparent: true,
+      opacity: 0.08
+    });
+    const halo = new THREE.Mesh(haloGeo, haloMat);
+    group.add(halo);
 
-      for (const loc of LOCATIONS) {
-        const pinMat = new THREE.MeshBasicMaterial({ color: 0xb31f24 });
-        const pin = new THREE.Mesh(pinGeo, pinMat);
-        pin.position.copy(latLonToVec3(loc.lat, loc.lon, 1.02));
-        pin.userData = loc;
-
-        const glowGeo = new THREE.SphereGeometry(0.035, 18, 18);
-        const glowMat = new THREE.MeshBasicMaterial({
-          color: 0xb31f24,
-          transparent: true,
-          opacity: 0.22
-        });
-        const glow = new THREE.Mesh(glowGeo, glowMat);
-        glow.position.copy(pin.position);
-        pin.add(glow);
-
-        globeGroup.add(pin);
-        pins.push(pin);
-      }
-
-      // ===== TOOLTIP (HTML overlay) =====
-      const tip = document.getElementById("globeTip");
-      const gtSub = document.getElementById("gtSub");
-      const gtTitle = document.getElementById("gtTitle");
-
-      if (gtTitle) gtTitle.textContent = "RACEM";
-
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-
-      function setTooltipVisible(v) {
-        if (!tip) return;
-        tip.classList.toggle("show", v);
-        tip.setAttribute("aria-hidden", v ? "false" : "true");
-      }
-
-      function projectToScreen(obj3D) {
-        const v = obj3D.getWorldPosition(new THREE.Vector3()).clone();
-        v.project(camera);
-        const rect = canvas.getBoundingClientRect();
-        return {
-          x: ((v.x + 1) / 2) * rect.width,
-          y: ((-v.y + 1) / 2) * rect.height
-        };
-      }
-
-      function onMouseMove(ev) {
-        const rect = canvas.getBoundingClientRect();
-        const x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
-        const y = -(((ev.clientY - rect.top) / rect.height) * 2 - 1);
-        mouse.set(x, y);
-
-        raycaster.setFromCamera(mouse, camera);
-        const hits = raycaster.intersectObjects(pins, true);
-
-        if (hits.length) {
-          let target = hits[0].object;
-          while (target && !target.userData?.name && target.parent) target = target.parent;
-
-          if (target?.userData?.name) {
-            if (gtSub) gtSub.textContent = target.userData.name;
-
-            const p = projectToScreen(target);
-            tip.style.left = p.x + "px";
-            tip.style.top = p.y + "px";
-            setTooltipVisible(true);
-
-            canvas.style.cursor = "pointer";
-            return;
-          }
+    // ===== SCAN SWEEP (shader plane inside sphere) =====
+    // jednoduchý “sweep” pásik cez guľu (fake, ale vyzerá hacker)
+    const sweepGeo = new THREE.SphereGeometry(R * 1.01, 64, 64);
+    const sweepMat = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      uniforms: {
+        uTime: { value: 0 }
+      },
+      vertexShader: `
+        varying vec3 vPos;
+        void main(){
+          vPos = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
+      `,
+      fragmentShader: `
+        varying vec3 vPos;
+        uniform float uTime;
 
-        setTooltipVisible(false);
-        canvas.style.cursor = "";
+        void main(){
+          // vertical sweep
+          float y = normalize(vPos).y; // -1..1
+          float sweep = sin((y * 8.0) + uTime * 1.6) * 0.5 + 0.5;
+
+          // thin bright band
+          float band = smoothstep(0.52, 0.58, sweep) * smoothstep(0.82, 0.70, sweep);
+
+          // subtle flicker noise
+          float n = fract(sin(dot(vPos.xy, vec2(12.9898,78.233))) * 43758.5453);
+          float flicker = 0.06 + n * 0.06;
+
+          float alpha = band * (0.18 + flicker);
+          gl_FragColor = vec4(0.694, 0.122, 0.141, alpha); // #b31f24 approx
+        }
+      `
+    });
+    const sweep = new THREE.Mesh(sweepGeo, sweepMat);
+    group.add(sweep);
+
+    // ===== PINS =====
+    const pins = [];
+    const pinGeo = new THREE.SphereGeometry(0.02, 18, 18);
+
+    function latLonToVec3(lat, lon, radius = R * 1.02) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      const x = -(radius * Math.sin(phi) * Math.cos(theta));
+      const z = (radius * Math.sin(phi) * Math.sin(theta));
+      const y = (radius * Math.cos(phi));
+      return new THREE.Vector3(x, y, z);
+    }
+
+    for (const loc of LOCATIONS) {
+      const mat = new THREE.MeshBasicMaterial({ color: 0xb31f24 });
+      const pin = new THREE.Mesh(pinGeo, mat);
+      pin.position.copy(latLonToVec3(loc.lat, loc.lon, R * 1.03));
+      pin.userData = loc;
+
+      // glow
+      const glowGeo = new THREE.SphereGeometry(0.045, 18, 18);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: 0xb31f24,
+        transparent: true,
+        opacity: 0.22
+      });
+      const glow = new THREE.Mesh(glowGeo, glowMat);
+      pin.add(glow);
+
+      group.add(pin);
+      pins.push(pin);
+    }
+
+    // ===== TOOLTIP =====
+    const tip = document.getElementById("globeTip");
+    const gtSub = document.getElementById("gtSub");
+    const gtTitle = document.getElementById("gtTitle");
+    if (gtTitle) gtTitle.textContent = "RACEM";
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function setTip(v){
+      if(!tip) return;
+      tip.classList.toggle("show", v);
+      tip.setAttribute("aria-hidden", v ? "false" : "true");
+    }
+
+    function projectToScreen(obj3D){
+      const v = obj3D.getWorldPosition(new THREE.Vector3()).clone();
+      v.project(camera);
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: ((v.x + 1) / 2) * rect.width,
+        y: ((-v.y + 1) / 2) * rect.height
+      };
+    }
+
+    function onMouseMove(ev){
+      const rect = canvas.getBoundingClientRect();
+      const x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -(((ev.clientY - rect.top) / rect.height) * 2 - 1);
+      mouse.set(x, y);
+
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(pins, true);
+
+      if(hits.length){
+        let target = hits[0].object;
+        while (target && !target.userData?.name && target.parent) target = target.parent;
+
+        if(target?.userData?.name){
+          if(gtSub) gtSub.textContent = target.userData.name;
+
+          const p = projectToScreen(target);
+          tip.style.left = p.x + "px";
+          tip.style.top  = p.y + "px";
+          setTip(true);
+          canvas.style.cursor = "pointer";
+          return;
+        }
       }
 
-      canvas.addEventListener("mousemove", onMouseMove, { passive: true });
-      canvas.addEventListener("mouseleave", () => {
-        setTooltipVisible(false);
-        canvas.style.cursor = "";
-      }, { passive: true });
+      setTip(false);
+      canvas.style.cursor = "";
+    }
 
-      function resize() {
-        const rect = canvas.getBoundingClientRect();
-        const w = Math.max(1, rect.width);
-        const h = Math.max(1, rect.height);
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
+    canvas.addEventListener("mousemove", onMouseMove, { passive: true });
+    canvas.addEventListener("mouseleave", () => { setTip(false); canvas.style.cursor=""; }, { passive: true });
 
-      const ro = new ResizeObserver(resize);
-      ro.observe(canvas);
-      resize();
+    // ===== SIZE / RESIZE =====
+    function resize(){
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(1, rect.width);
+      const h = Math.max(1, rect.height);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    resize();
 
-      let t0 = performance.now();
-      function animate(t) {
-        const dt = (t - t0) / 1000;
-        t0 = t;
+    // ===== ANIM =====
+    let t0 = performance.now();
+    function animate(t){
+      const dt = (t - t0) / 1000;
+      t0 = t;
 
-        globeGroup.rotation.y += dt * 0.18;
+      // pomalá rotácia – “scanner”
+      group.rotation.y += dt * 0.22;
 
-        const pulse = 0.08 + Math.sin(t * 0.0012) * 0.02;
-        atmo.material.opacity = pulse;
+      // pulz halo + piny
+      const pulse = 0.07 + Math.sin(t * 0.002) * 0.03;
+      halo.material.opacity = pulse;
 
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
+      // scan sweep shader
+      sweepMat.uniforms.uTime.value = t * 0.001;
+
+      // ring drift
+      rings.rotation.z += dt * 0.06;
+      rings.rotation.y -= dt * 0.04;
+
+      // pin glow pulse
+      const g = 0.18 + Math.sin(t * 0.003) * 0.06;
+      pins.forEach(p => {
+        const glow = p.children[0];
+        if (glow && glow.material) glow.material.opacity = g;
+      });
+
+      renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
-  </script>
+    requestAnimationFrame(animate);
+  }
+</script>
+
 
 </body>
 </html>
