@@ -1520,7 +1520,7 @@
 
   /* posun vpravo a hore */
   margin-left: auto;
-  transform: translate(10vw, -5vh) scale(1.15);
+  transform: translate(8vw, -2vh) scale(1.15);
   transform-origin: center;
 
   border: 0 !important;
@@ -1681,6 +1681,35 @@
 #racemGlobe{ pointer-events: auto; }
 .globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
 
+    #globePins{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+/* ===== GLOBE BADGE ICON ===== */
+.globeBadge{
+  position:absolute;
+  left:16px;
+  top:16px;
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,0.14);
+  background: radial-gradient(circle at 30% 25%, rgba(179,31,36,0.22), rgba(0,0,0,0.55));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.65);
+  z-index:6;
+  transform: translateZ(0);
+}
+.globeBadge svg{
+  width:24px;
+  height:24px;
+  color: rgba(255,255,255,0.92);
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));
+}
+
   </style>
 </head>
 
@@ -1766,6 +1795,18 @@
 <div class="heroPanel reveal globePanel" aria-label="RACEM globe">
   <div class="globeWrap globeWrap--big">
     <canvas id="racemGlobe"></canvas>
+    <canvas id="globePins"></canvas>
+
+<div class="globeBadge" aria-hidden="true" title="RACEM • Global sourcing">
+  <svg viewBox="0 0 24 24" fill="none">
+    <path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20Z" stroke="currentColor" stroke-width="1.8" opacity=".9"/>
+    <path d="M2.7 12h18.6" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+    <path d="M12 2c2.9 2.6 4.4 6.2 4.4 10S14.9 19.4 12 22" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+    <path d="M12 2C9.1 4.6 7.6 8.2 7.6 12S9.1 19.4 12 22" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+    <path d="M16.9 7.4c-1.3.7-3 .9-4.9.9s-3.6-.2-4.9-.9" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+    <path d="M16.9 16.6c-1.3-.7-3-.9-4.9-.9s-3.6.2-4.9.9" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+  </svg>
+</div>
 
     <!-- tooltip -->
     <div class="globeTip" id="globeTip" aria-hidden="true">
@@ -2668,23 +2709,24 @@
   </script>
 
   <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
- <script type="module">
+<script type="module">
   import createGlobe from "https://cdn.skypack.dev/cobe";
 
   const LOCATIONS = [
-    { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
+    { name: "Piešťany",    lat: 48.5948, lon: 17.8250,  detail: "RACEM Group" },
     { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
-    { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
-    { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
+    { name: "Tokyo",       lat: 35.6762, lon: 139.6503,  detail: "JP • VeilSide" },
+    { name: "Frankfurt",   lat: 50.1109, lon: 8.6821,    detail: "DE • CSR Automotive" },
   ];
 
   const canvas = document.getElementById("racemGlobe");
+  const pinsCanvas = document.getElementById("globePins");
   const tip = document.getElementById("globeTip");
   const gtSub = document.getElementById("gtSub");
   const gtTitle = document.getElementById("gtTitle");
 
-  if (!canvas) {
-    console.warn("Canvas #racemGlobe not found");
+  if (!canvas || !pinsCanvas) {
+    console.warn("Globe canvas not found");
   }
 
   let phi = 0;
@@ -2698,21 +2740,29 @@
     const b = n & 255;
     return [r/255, g/255, b/255];
   }
-
   const RACEM_RED = rgb("#b31f24");
 
-  function sizeCanvas() {
+  function sizeBothCanvases() {
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // ak má canvas 0x0 (napr. pred layoutom), nedávaj 0
+
     const w = Math.max(2, Math.floor(rect.width * dpr));
     const h = Math.max(2, Math.floor(rect.height * dpr));
+
     canvas.width = w;
     canvas.height = h;
+
+    pinsCanvas.width = w;
+    pinsCanvas.height = h;
+
+    // aby mouse coords sedeli (clientWidth/Height)
+    pinsCanvas.style.width = rect.width + "px";
+    pinsCanvas.style.height = rect.height + "px";
+
     return { w, h, dpr };
   }
 
-  // ===== hover projekcia (good enough) =====
+  // ===== 3D -> 2D projekcia (good enough) =====
   function latLonToXYZ(lat, lon){
     const la = (lat * Math.PI) / 180;
     const lo = (lon * Math.PI) / 180;
@@ -2723,25 +2773,27 @@
     };
   }
 
-  function projectToCanvas(lat, lon, phiVal, thetaVal){
+  function projectToCanvas(lat, lon, phiVal, thetaVal, cw, ch){
     const v = latLonToXYZ(lat, lon);
 
-    // rotácia okolo Y (phi)
+    // rotate around Y (phi)
     const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
     const x1 = v.x * cosP - v.z * sinP;
     const z1 = v.x * sinP + v.z * cosP;
 
-    // rotácia okolo X (theta)
+    // rotate around X (theta)
     const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
     const y2 = v.y * cosT - z1 * sinT;
     const z2 = v.y * sinT + z1 * cosT;
 
-    // zadná strana
+    // back side
     if (z2 < 0) return null;
 
-    const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
-    const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
-    return { cx, cy };
+    const cx = (x1 * 0.5 + 0.5) * cw;
+    const cy = (-y2 * 0.5 + 0.5) * ch;
+
+    // z2 použijeme na “depth” (scale/opacity)
+    return { cx, cy, depth: z2 };
   }
 
   function setTip(x, y, loc){
@@ -2771,9 +2823,55 @@
     canvas.style.cursor = "";
   }
 
+  // ===== draw pins (2D overlay canvas) =====
+  const pctx = pinsCanvas.getContext("2d");
+
+  function drawPins(time, cw, ch, dpr){
+    if (!pctx) return;
+    pctx.clearRect(0,0,cw,ch);
+
+    // čas v sekundách pre pulz
+    const t = time / 1000;
+
+    for (const loc of LOCATIONS){
+      const p = projectToCanvas(loc.lat, loc.lon, phi, THETA, cw, ch);
+      if (!p) continue;
+
+      const { cx, cy, depth } = p;
+
+      // scale podľa toho ako je “vpredu”
+      const s = (0.65 + depth * 0.55);
+      const baseR = 5.2 * dpr * s;
+
+      // pulz
+      const pulse = (Math.sin(t * 2.2) + 1) * 0.5; // 0..1
+      const ringR = baseR + (10 * dpr * s * pulse);
+      const ringA = 0.28 * (1 - pulse);
+
+      // ring
+      pctx.beginPath();
+      pctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+      pctx.strokeStyle = `rgba(179,31,36,${ringA})`;
+      pctx.lineWidth = 2.0 * dpr;
+      pctx.stroke();
+
+      // core dot
+      pctx.beginPath();
+      pctx.arc(cx, cy, baseR, 0, Math.PI * 2);
+      pctx.fillStyle = "rgba(179,31,36,0.95)";
+      pctx.fill();
+
+      // white inner
+      pctx.beginPath();
+      pctx.arc(cx, cy, Math.max(2.2*dpr, baseR*0.45), 0, Math.PI * 2);
+      pctx.fillStyle = "rgba(255,255,255,0.90)";
+      pctx.fill();
+    }
+  }
+
   // ===== init globe =====
-  const init = () => {
-    const { w, h, dpr } = sizeCanvas();
+  function init(){
+    const { w, h, dpr } = sizeBothCanvases();
 
     const globe = createGlobe(canvas, {
       devicePixelRatio: dpr,
@@ -2793,32 +2891,35 @@
       glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
       markerColor: [0.95, 0.32, 0.34],
 
-      markers: LOCATIONS.map(l => ({
-        location: [l.lat, l.lon],
-        size: 0.085,
-      })),
-
       onRender: (state) => {
         state.phi = phi;
         phi += 0.0032;
+
+        // piny overlay (time je z performance.now())
+        drawPins(performance.now(), w, h, dpr);
       }
     });
 
-    // hover events
+    // hover events (počítame v CSS pixeloch, nie DPR)
     canvas.addEventListener("mousemove", (e) => {
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
 
+      // canvas vnútorný rozmer (DPR) -> prepočítajme na DPR, aby sedelo s drawPins projekciou
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const mxD = mx * dpr;
+      const myD = my * dpr;
+
       let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
       const currentPhi = phi;
 
       for (let i = 0; i < LOCATIONS.length; i++){
-        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
+        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA, canvas.width, canvas.height);
         if (!p) continue;
 
-        const dx = mx - p.cx;
-        const dy = my - p.cy;
+        const dx = mxD - p.cx;
+        const dy = myD - p.cy;
         const d = Math.hypot(dx, dy);
 
         if (d < best.dist){
@@ -2826,9 +2927,10 @@
         }
       }
 
-      const HIT = 16;
+      const HIT = 18 * dpr;
       if (best.idx !== -1 && best.dist <= HIT){
-        setTip(best.x, best.y, LOCATIONS[best.idx]);
+        // tip chce pozíciu v CSS pixeloch
+        setTip(best.x / dpr, best.y / dpr, LOCATIONS[best.idx]);
       } else {
         hideTip();
       }
@@ -2838,15 +2940,17 @@
 
     // resize observer
     const ro = new ResizeObserver(() => {
-      const { w, h, dpr } = sizeCanvas();
+      const { w, h, dpr } = sizeBothCanvases();
       globe.resize({ width: w, height: h, devicePixelRatio: dpr });
+      drawPins(performance.now(), w, h, dpr);
     });
     ro.observe(canvas);
-  };
+  }
 
-  // počkaj, kým sa DOM/layout ustáli (aby canvas nemal 0x0)
+  // počkaj na layout
   requestAnimationFrame(() => requestAnimationFrame(init));
 </script>
+
 
 
 
