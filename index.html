@@ -1652,19 +1652,20 @@
     /* väčší globus + menej "pill" look */
 .globeWrap--big{
   width: 100%;
-  max-width: 460px;     /* desktop veľkosť panelu */
-  margin-left: auto;    /* nech je pekne vpravo */
+  max-width: 460px;
+  margin-left: auto;
   aspect-ratio: 1 / 1;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background:
-    radial-gradient(120% 120% at 25% 15%, rgba(179,31,36,.12), transparent 55%),
-    radial-gradient(80% 80% at 80% 85%, rgba(255,255,255,.05), transparent 60%),
-    linear-gradient(180deg, rgba(12,12,12,.65), rgba(0,0,0,.28));
-  box-shadow: 0 22px 70px rgba(0,0,0,.65);
-  overflow:hidden;
-  position:relative;
+
+  /* ✅ odstránené "kocky" */
+  border: none;
+  background: transparent;
+  box-shadow: none;
+
+  overflow: visible;     /* aby tooltip nebol orezaný */
+  position: relative;
+  border-radius: 0;      /* nech to nepôsobí ako karta */
 }
+
 
 /* canvas nech reálne sedí */
 #racemGlobe{
@@ -1679,7 +1680,7 @@
   inset:0;
   pointer-events:none;
   mix-blend-mode: screen;
-  opacity:.35;
+  opacity:.0;
   background:
     repeating-linear-gradient(
       0deg,
@@ -2695,12 +2696,13 @@
  <script type="module">
   import createGlobe from "https://cdn.skypack.dev/cobe"; /* COBE cez CDN */ 
 
-  const LOCATIONS = [
-    { name: "Piešťany",     lat: 48.5948, lon: 17.8250 },
-    { name: "Los Angeles",  lat: 34.0522, lon: -118.2437 },
-    { name: "Tokyo",        lat: 35.6762, lon: 139.6503 },
-    { name: "Frankfurt",    lat: 50.1109, lon: 8.6821 },
-  ];
+ const LOCATIONS = [
+  { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
+  { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
+  { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
+  { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
+];
+
 
   const canvas = document.getElementById("racemGlobe");
   const tip = document.getElementById("globeTip");
@@ -2742,13 +2744,14 @@
     theta: 0.22,
 
     // ✅ hacker-ish: tmavý základ, jemná červená, nie "celé červené"
-    dark: 1,
-    diffuse: 1.25,
+    dark: 0,
+    diffuse: 2.25,
     scale: 1.08,           // trochu väčší "fill"
     mapSamples: 22000,
-    mapBrightness: 1.35,   // menšia = menej "svieti"
-    baseColor: [0.06, 0.06, 0.07],     // tmavý “terminal”
-    glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
+    mapBrightness: 2.35,   // menšia = menej "svieti"
+    baseColor: [0.12, 0.14, 0.18],     // tmavý “terminal”
+    glowColor: [0.55, 0.10, 0.12],
+    markerColor: [1.0, 0.35, 0.35],
 
     // farba bodiek (nie full red, skôr neon)
     markerColor: [0.95, 0.32, 0.34],
@@ -2763,36 +2766,39 @@
     },
 
     // COBE má built-in pointer hit test:
-    onPointerMove: (pointerIntersects) => {
-      hovered = pointerIntersects ? pointerIntersects.marker : null;
+    onPointerMove: (hit) => {
+  const marker = hit && hit.marker ? hit.marker : null;
+  const idx = marker
+    ? (typeof marker.index === "number" ? marker.index : marker)
+    : null;
 
-      if (!tip) return;
+  if (!tip) return;
 
-      if (hovered) {
-        const idx = hovered.index ?? hovered; // podľa verzie
-        const loc = LOCATIONS[idx] || null;
-        if (loc && gtSub) gtSub.textContent = loc.name;
-        if (gtTitle) gtTitle.textContent = "RACEM";
+  if (idx !== null && LOCATIONS[idx]) {
+    const loc = LOCATIONS[idx];
 
-        tip.classList.add("show");
-        tip.setAttribute("aria-hidden", "false");
+    if (gtTitle) gtTitle.textContent = loc.name.toUpperCase();
+    if (gtSub) gtSub.textContent = loc.detail || "";
 
-        // tip prilepíme k myši cez CSS vars (jednoduché)
-        // (COBE dáva pointer coords v canvas priestore)
-      } else {
-        tip.classList.remove("show");
-        tip.setAttribute("aria-hidden", "true");
-      }
-    },
+    tip.classList.add("show");
+    tip.setAttribute("aria-hidden", "false");
+
+    canvas.style.cursor = "pointer";
+  } else {
+    tip.classList.remove("show");
+    tip.setAttribute("aria-hidden", "true");
+
+    canvas.style.cursor = "";
+  }
+},
   });
 
   // tooltip pozícia podľa myši (jednoduché a funguje)
-  canvas.addEventListener("mousemove", (e) => {
-    if (!tip || !tip.classList.contains("show")) return;
-    const r = canvas.getBoundingClientRect();
-    tip.style.left = (e.clientX - r.left) + "px";
-    tip.style.top  = (e.clientY - r.top) + "px";
-  }, { passive: true });
+  canvas.addEventListener("mouseleave", () => {
+  tip?.classList.remove("show");
+  tip?.setAttribute("aria-hidden", "true");
+  canvas.style.cursor = "";
+}, { passive: true });
 
   // resize
   const ro = new ResizeObserver(() => {
