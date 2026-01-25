@@ -1635,22 +1635,8 @@
     @media (max-width:980px){
       .heroPanel{ width:100%; }
     }
-    /* väčší globus + menej "pill" look */
-.globeWrap--big{
-  width: 100%;
-  max-width: 460px;
-  margin-left: auto;
-  aspect-ratio: 1 / 1;
-
-  /* ✅ odstránené "kocky" */
-  border: none;
-  background: transparent;
-  box-shadow: none;
-
-  overflow: visible;     /* aby tooltip nebol orezaný */
-  position: relative;
-  border-radius: 0;      /* nech to nepôsobí ako karta */
-}
+  
+.heroPanel.globePanel{ overflow: visible !important; }
 
 
 /* canvas nech reálne sedí */
@@ -2683,63 +2669,28 @@
 
   <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
  <script type="module">
-  import createGlobe from "https://cdn.skypack.dev/cobe"; /* COBE cez CDN */ 
+  import createGlobe from "https://cdn.skypack.dev/cobe";
 
- const LOCATIONS = [
-  { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
-  { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
-  { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
-  { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
-];
-
+  const LOCATIONS = [
+    { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
+    { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
+    { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
+    { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
+  ];
 
   const canvas = document.getElementById("racemGlobe");
   const tip = document.getElementById("globeTip");
   const gtSub = document.getElementById("gtSub");
   const gtTitle = document.getElementById("gtTitle");
 
+  if (!canvas) {
+    console.warn("Canvas #racemGlobe not found");
+  }
+
   let phi = 0;
-  let hovered = null;
-
-   // ✅ helper: lat/lon -> približná 2D pozícia na canvase (pre hover)
-function latLonToXYZ(lat, lon){
-  const la = (lat * Math.PI) / 180;
-  const lo = (lon * Math.PI) / 180;
-
-  // jednotková guľa
-  const x = Math.cos(la) * Math.sin(lo);
-  const y = Math.sin(la);
-  const z = Math.cos(la) * Math.cos(lo);
-  return { x, y, z };
-}
-
-// jednoduchá projekcia: berieme rotáciu phi/theta podobne ako globe
-function projectToCanvas(lat, lon, phiVal, thetaVal){
-  const v = latLonToXYZ(lat, lon);
-
-  // rotácia okolo Y (phi)
-  const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
-  let x1 = v.x * cosP - v.z * sinP;
-  let z1 = v.x * sinP + v.z * cosP;
-
-  // rotácia okolo X (theta)
-  const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
-  let y2 = v.y * cosT - z1 * sinT;
-  let z2 = v.y * sinT + z1 * cosT;
-
-  // ak je bod "na zadnej strane", nehoverujeme
-  if (z2 < 0) return null;
-
-  // NDC -> canvas
-  // (toto je “good enough” pre hover threshold)
-  const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
-  const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
-  return { cx, cy };
-}
-
+  const THETA = 0.22;
 
   function rgb(hex){
-    // "#b31f24" -> [0..1,0..1,0..1]
     const h = hex.replace("#","").trim();
     const n = parseInt(h, 16);
     const r = (n >> 16) & 255;
@@ -2752,127 +2703,151 @@ function projectToCanvas(lat, lon, phiVal, thetaVal){
 
   function sizeCanvas() {
     const rect = canvas.getBoundingClientRect();
-    // COBE chce aj "width/height" atribúty (reálne pixely)
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(rect.width * dpr);
-    canvas.height = Math.floor(rect.height * dpr);
-    return { w: canvas.width, h: canvas.height, dpr };
+    // ak má canvas 0x0 (napr. pred layoutom), nedávaj 0
+    const w = Math.max(2, Math.floor(rect.width * dpr));
+    const h = Math.max(2, Math.floor(rect.height * dpr));
+    canvas.width = w;
+    canvas.height = h;
+    return { w, h, dpr };
   }
 
-  const { w, h, dpr } = sizeCanvas();
-
-  const globe = createGlobe(canvas, {
-    devicePixelRatio: dpr,
-    width: w,
-    height: h,
-
-    phi: 0,
-    theta: 0.22,
-
-    // ✅ hacker-ish: tmavý základ, jemná červená, nie "celé červené"
-    dark: 0,
-diffuse: 1.25,
-scale: 1.08,
-mapSamples: 22000,
-mapBrightness: 1.35,
-baseColor: [0.06, 0.06, 0.07],
-glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
-markerColor: [0.95, 0.32, 0.34],
-
-    // farba bodiek (nie full red, skôr neon)
-    markerColor: [0.95, 0.32, 0.34],
-    markers: LOCATIONS.map(l => ({
-      location: [l.lat, l.lon],
-      size: 0.06,
-    })),
-
-    onRender: (state) => {
-      state.phi = phi;
-      phi += 0.006;        // pomalšie, elegantnejšie
-    },
-
-    const THETA = 0.22; // držíme rovnaké ako v createGlobe
-
-function setTip(x, y, loc){
-  if (!tip) return;
-
-  // pozícia tooltipu v rámci globeWrap (nie celej stránky)
-  const wrap = canvas.parentElement; // globeWrap
-  const rWrap = wrap.getBoundingClientRect();
-  const rCan = canvas.getBoundingClientRect();
-
-  const relX = (rCan.left - rWrap.left) + x;
-  const relY = (rCan.top - rWrap.top) + y;
-
-  tip.style.left = relX + "px";
-  tip.style.top  = relY + "px";
-
-  if (gtTitle) gtTitle.textContent = loc.name.toUpperCase();
-  if (gtSub) gtSub.textContent = loc.detail || loc.name;
-
-  tip.classList.add("show");
-  tip.setAttribute("aria-hidden", "false");
-  canvas.style.cursor = "pointer";
-}
-
-function hideTip(){
-  tip?.classList.remove("show");
-  tip?.setAttribute("aria-hidden", "true");
-  canvas.style.cursor = "";
-}
-
-canvas.addEventListener("mousemove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-
-  // najbližší marker
-  let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
-
-  // phi, ktorý reálne beží (globus sa točí)
-  const currentPhi = phi;
-
-  for (let i = 0; i < LOCATIONS.length; i++){
-    const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
-    if (!p) continue;
-
-    const dx = mx - p.cx;
-    const dy = my - p.cy;
-    const d = Math.hypot(dx, dy);
-
-    if (d < best.dist){
-      best = { idx: i, dist: d, x: p.cx, y: p.cy };
-    }
+  // ===== hover projekcia (good enough) =====
+  function latLonToXYZ(lat, lon){
+    const la = (lat * Math.PI) / 180;
+    const lo = (lon * Math.PI) / 180;
+    return {
+      x: Math.cos(la) * Math.sin(lo),
+      y: Math.sin(la),
+      z: Math.cos(la) * Math.cos(lo),
+    };
   }
 
-  // threshold v px – prispôsob podľa chuti
-  const HIT = 16;
+  function projectToCanvas(lat, lon, phiVal, thetaVal){
+    const v = latLonToXYZ(lat, lon);
 
-  if (best.idx !== -1 && best.dist <= HIT){
-    setTip(best.x, best.y, LOCATIONS[best.idx]);
-  } else {
-    hideTip();
+    // rotácia okolo Y (phi)
+    const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
+    const x1 = v.x * cosP - v.z * sinP;
+    const z1 = v.x * sinP + v.z * cosP;
+
+    // rotácia okolo X (theta)
+    const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
+    const y2 = v.y * cosT - z1 * sinT;
+    const z2 = v.y * sinT + z1 * cosT;
+
+    // zadná strana
+    if (z2 < 0) return null;
+
+    const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
+    const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
+    return { cx, cy };
   }
-}, { passive: true });
 
-canvas.addEventListener("mouseleave", hideTip, { passive: true });
+  function setTip(x, y, loc){
+    if (!tip) return;
 
-  });
+    const wrap = canvas.parentElement; // .globeWrap
+    const rWrap = wrap.getBoundingClientRect();
+    const rCan = canvas.getBoundingClientRect();
 
-  // tooltip pozícia podľa myši (jednoduché a funguje)
-  canvas.addEventListener("mouseleave", () => {
-  tip?.classList.remove("show");
-  tip?.setAttribute("aria-hidden", "true");
-  canvas.style.cursor = "";
-}, { passive: true });
+    const relX = (rCan.left - rWrap.left) + x;
+    const relY = (rCan.top - rWrap.top) + y;
 
-  // resize
-  const ro = new ResizeObserver(() => {
+    tip.style.left = relX + "px";
+    tip.style.top  = relY + "px";
+
+    if (gtTitle) gtTitle.textContent = (loc.name || "RACEM").toUpperCase();
+    if (gtSub) gtSub.textContent = loc.detail || loc.name || "";
+
+    tip.classList.add("show");
+    tip.setAttribute("aria-hidden", "false");
+    canvas.style.cursor = "pointer";
+  }
+
+  function hideTip(){
+    tip?.classList.remove("show");
+    tip?.setAttribute("aria-hidden", "true");
+    canvas.style.cursor = "";
+  }
+
+  // ===== init globe =====
+  const init = () => {
     const { w, h, dpr } = sizeCanvas();
-    globe.resize({ width: w, height: h, devicePixelRatio: dpr });
-  });
-  ro.observe(canvas);
+
+    const globe = createGlobe(canvas, {
+      devicePixelRatio: dpr,
+      width: w,
+      height: h,
+
+      phi: 0,
+      theta: THETA,
+
+      dark: 0,
+      diffuse: 1.25,
+      scale: 1.08,
+      mapSamples: 22000,
+      mapBrightness: 1.35,
+
+      baseColor: [0.06, 0.06, 0.07],
+      glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
+      markerColor: [0.95, 0.32, 0.34],
+
+      markers: LOCATIONS.map(l => ({
+        location: [l.lat, l.lon],
+        size: 0.06,
+      })),
+
+      onRender: (state) => {
+        state.phi = phi;
+        phi += 0.006;
+      }
+    });
+
+    // hover events
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
+      const currentPhi = phi;
+
+      for (let i = 0; i < LOCATIONS.length; i++){
+        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
+        if (!p) continue;
+
+        const dx = mx - p.cx;
+        const dy = my - p.cy;
+        const d = Math.hypot(dx, dy);
+
+        if (d < best.dist){
+          best = { idx: i, dist: d, x: p.cx, y: p.cy };
+        }
+      }
+
+      const HIT = 16;
+      if (best.idx !== -1 && best.dist <= HIT){
+        setTip(best.x, best.y, LOCATIONS[best.idx]);
+      } else {
+        hideTip();
+      }
+    }, { passive: true });
+
+    canvas.addEventListener("mouseleave", hideTip, { passive: true });
+
+    // resize observer
+    const ro = new ResizeObserver(() => {
+      const { w, h, dpr } = sizeCanvas();
+      globe.resize({ width: w, height: h, devicePixelRatio: dpr });
+    });
+    ro.observe(canvas);
+  };
+
+  // počkaj, kým sa DOM/layout ustáli (aby canvas nemal 0x0)
+  requestAnimationFrame(() => requestAnimationFrame(init));
 </script>
+
 
 
 
