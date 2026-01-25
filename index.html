@@ -1505,22 +1505,25 @@
       margin-bottom:12px;
     }
     
-    /* ✅ GLOBE WRAP – úplne bez kocky / bez glass efektu */
+   /* ===== GLOBE – FIX (nezmizne mimo obraz) ===== */
 .globeWrap{
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
+  overflow: visible !important;
 }
 
-/* ✅ BIG ZOOMED GLOBE – nech ide mimo obrazovky (vpravo hore) */
+/* veľký globus, ale kontrolovane – bez “uleti mimo” */
 .globeWrap--big{
-  width: min(760px, 70vw);     /* veľké */
-  max-width: none;
-  aspect-ratio: 1/1;
+  width: min(720px, 64vw);
+  max-width: 720px;
 
-  /* posun vpravo a hore */
-  margin-left: auto;
-  transform: translate(8vw, -2vh) scale(1.15);
+  /* kľúč: už žiadne margin-left:auto + brutálny translate */
+  margin: 0;
+  justify-self: end;
+
+  /* jemný posun */
+  transform: translate(2vw, -2vh) scale(1.10);
   transform-origin: center;
 
   border: 0 !important;
@@ -1528,164 +1531,32 @@
   box-shadow: none !important;
   backdrop-filter: none !important;
   border-radius: 0 !important;
-
-  overflow: visible !important; /* tooltip nech neoreže */
   position: relative;
 }
 
-/* na menších obrazovkách to skroť */
+/* na menších obrazovkách normálne centrovanie */
 @media (max-width: 980px){
   .globeWrap--big{
-    width: min(560px, 92vw);
-    transform: translate(0, 0) scale(1.0);
+    width: min(520px, 92vw);
+    max-width: 520px;
+    transform: none;
     margin: 0 auto;
+    justify-self: center;
   }
 }
 
-/* ✅ úplne vypni pseudo overlaye, ktoré robili sivý závoj */
-.globeWrap--big::before,
-.globeWrap--big::after{
-  content: none !important;
-  display: none !important;
-}
-
-
-
-/* mobil ešte menší */
-@media (max-width:980px){
-  .globeWrap{ max-width: 280px; margin: 0 auto; }
-}
-
-    #racemGlobe{ width:100%; height:100%; display:block; }
-
-    /* Tooltip bublinka */
-    .globeTip{
-      position:absolute;
-      left:0; top:0;
-      transform: translate(-50%, -115%);
-      min-width: 180px;
-      max-width: 240px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.7);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .12s ease, transform .12s ease;
-      z-index:5;
-    }
-    .globeTip.show{
-      opacity:1;
-      transform: translate(-50%, -125%);
-    }
-    .gtTop{ display:flex; align-items:center; gap:10px; }
-    .gtLogo{
-      width:30px; height:30px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-    }
-    .gtTitle{
-      font-weight:1000;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size: 11px;
-      color:#fff;
-    }
-    .gtSub{
-      margin-top:6px;
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.75);
-      letter-spacing:.06em;
-    }
-    .globeTip::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-8px;
-      width:14px;
-      height:14px;
-      background: rgba(0,0,0,0.72);
-      border-right:1px solid rgba(255,255,255,0.14);
-      border-bottom:1px solid rgba(255,255,255,0.14);
-      transform: translateX(-50%) rotate(45deg);
-      backdrop-filter: blur(10px);
-    }
-
-    .globeLegend{
-      margin-top:12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.18);
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .legendItem{ display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,255,255,0.75); letter-spacing:.06em; }
-    .legendDot{
-      width:10px;height:10px;border-radius:999px;background: var(--red);
-      box-shadow:0 0 14px rgba(179,31,36,.55);
-    }
-
-    /* mobile */
-    @media (max-width:980px){
-      .heroPanel{ width:100%; }
-    }
-  
-.heroPanel.globePanel{ overflow: visible !important; }
-
-
-/* canvas nech reálne sedí */
-#racemGlobe{
+/* canvasy vždy na 100% plochy wrapu */
+#racemGlobe,
+#globePins{
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  display:block;
+  display: block;
 }
 
-/* hacker overlay: scanlines + jemný "CRT" shimmer */
-.globeOverlay{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  mix-blend-mode: screen;
-  opacity:.0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.00) 0px,
-      rgba(255,255,255,0.00) 8px,
-      rgba(255,255,255,0.06) 9px
-    ),
-    radial-gradient(circle at 50% 45%, rgba(179,31,36,0.10), transparent 60%);
-  animation: globeScan 6s linear infinite;
-}
+#globePins{ pointer-events:none; }
 
-@keyframes globeScan{
-  0%{ transform: translateY(-8px); opacity:.30; }
-  50%{ transform: translateY(8px); opacity:.40; }
-  100%{ transform: translateY(-8px); opacity:.30; }
-}
-
-/* tooltip nech nie je obrovský */
-.globeTip{
-  min-width: 160px;
-  max-width: 220px;
-  background: rgba(0,0,0,.72);
-  border: 1px solid rgba(255,255,255,0.14);
-}
-    
-#racemGlobe{ pointer-events: auto; }
-.globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
-
-    #globePins{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
 /* ===== GLOBE BADGE ICON ===== */
 .globeBadge{
   position:absolute;
@@ -2710,7 +2581,7 @@
 
   <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
 <script type="module">
-  import createGlobe from "https://cdn.skypack.dev/cobe";
+  import createGlobe from "https://esm.sh/cobe@0.6.3";
 
   const LOCATIONS = [
     { name: "Piešťany",    lat: 48.5948, lon: 17.8250,  detail: "RACEM Group" },
@@ -2732,16 +2603,6 @@
   let phi = 0;
   const THETA = 0.22;
 
-  function rgb(hex){
-    const h = hex.replace("#","").trim();
-    const n = parseInt(h, 16);
-    const r = (n >> 16) & 255;
-    const g = (n >> 8) & 255;
-    const b = n & 255;
-    return [r/255, g/255, b/255];
-  }
-  const RACEM_RED = rgb("#b31f24");
-
   function sizeBothCanvases() {
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2755,14 +2616,9 @@
     pinsCanvas.width = w;
     pinsCanvas.height = h;
 
-    // aby mouse coords sedeli (clientWidth/Height)
-    pinsCanvas.style.width = rect.width + "px";
-    pinsCanvas.style.height = rect.height + "px";
-
     return { w, h, dpr };
   }
 
-  // ===== 3D -> 2D projekcia (good enough) =====
   function latLonToXYZ(lat, lon){
     const la = (lat * Math.PI) / 180;
     const lo = (lon * Math.PI) / 180;
@@ -2776,38 +2632,26 @@
   function projectToCanvas(lat, lon, phiVal, thetaVal, cw, ch){
     const v = latLonToXYZ(lat, lon);
 
-    // rotate around Y (phi)
     const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
     const x1 = v.x * cosP - v.z * sinP;
     const z1 = v.x * sinP + v.z * cosP;
 
-    // rotate around X (theta)
     const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
     const y2 = v.y * cosT - z1 * sinT;
     const z2 = v.y * sinT + z1 * cosT;
 
-    // back side
     if (z2 < 0) return null;
 
     const cx = (x1 * 0.5 + 0.5) * cw;
     const cy = (-y2 * 0.5 + 0.5) * ch;
 
-    // z2 použijeme na “depth” (scale/opacity)
     return { cx, cy, depth: z2 };
   }
 
   function setTip(x, y, loc){
     if (!tip) return;
-
-    const wrap = canvas.parentElement; // .globeWrap
-    const rWrap = wrap.getBoundingClientRect();
-    const rCan = canvas.getBoundingClientRect();
-
-    const relX = (rCan.left - rWrap.left) + x;
-    const relY = (rCan.top - rWrap.top) + y;
-
-    tip.style.left = relX + "px";
-    tip.style.top  = relY + "px";
+    tip.style.left = x + "px";
+    tip.style.top  = y + "px";
 
     if (gtTitle) gtTitle.textContent = (loc.name || "RACEM").toUpperCase();
     if (gtSub) gtSub.textContent = loc.detail || loc.name || "";
@@ -2823,14 +2667,12 @@
     canvas.style.cursor = "";
   }
 
-  // ===== draw pins (2D overlay canvas) =====
   const pctx = pinsCanvas.getContext("2d");
 
   function drawPins(time, cw, ch, dpr){
     if (!pctx) return;
     pctx.clearRect(0,0,cw,ch);
 
-    // čas v sekundách pre pulz
     const t = time / 1000;
 
     for (const loc of LOCATIONS){
@@ -2839,29 +2681,24 @@
 
       const { cx, cy, depth } = p;
 
-      // scale podľa toho ako je “vpredu”
       const s = (0.65 + depth * 0.55);
       const baseR = 5.2 * dpr * s;
 
-      // pulz
-      const pulse = (Math.sin(t * 2.2) + 1) * 0.5; // 0..1
+      const pulse = (Math.sin(t * 2.2) + 1) * 0.5;
       const ringR = baseR + (10 * dpr * s * pulse);
       const ringA = 0.28 * (1 - pulse);
 
-      // ring
       pctx.beginPath();
       pctx.arc(cx, cy, ringR, 0, Math.PI * 2);
       pctx.strokeStyle = `rgba(179,31,36,${ringA})`;
       pctx.lineWidth = 2.0 * dpr;
       pctx.stroke();
 
-      // core dot
       pctx.beginPath();
       pctx.arc(cx, cy, baseR, 0, Math.PI * 2);
       pctx.fillStyle = "rgba(179,31,36,0.95)";
       pctx.fill();
 
-      // white inner
       pctx.beginPath();
       pctx.arc(cx, cy, Math.max(2.2*dpr, baseR*0.45), 0, Math.PI * 2);
       pctx.fillStyle = "rgba(255,255,255,0.90)";
@@ -2869,15 +2706,20 @@
     }
   }
 
-  // ===== init globe =====
   function init(){
+    // počkaj, kým canvas má reálny rozmer (inak 0x0 a globus “zmizne”)
+    const r = canvas.getBoundingClientRect();
+    if (r.width < 10 || r.height < 10) {
+      requestAnimationFrame(init);
+      return;
+    }
+
     const { w, h, dpr } = sizeBothCanvases();
 
     const globe = createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: w,
       height: h,
-
       phi: 0,
       theta: THETA,
 
@@ -2888,28 +2730,23 @@
       mapBrightness: 1.35,
 
       baseColor: [0.06, 0.06, 0.07],
-      glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
-      markerColor: [0.95, 0.32, 0.34],
+      glowColor: [179/255, 31/255, 36/255],
 
       onRender: (state) => {
         state.phi = phi;
         phi += 0.0032;
-
-        // piny overlay (time je z performance.now())
         drawPins(performance.now(), w, h, dpr);
       }
     });
 
-    // hover events (počítame v CSS pixeloch, nie DPR)
     canvas.addEventListener("mousemove", (e) => {
       const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
+      const mx = (e.clientX - rect.left);
+      const my = (e.clientY - rect.top);
 
-      // canvas vnútorný rozmer (DPR) -> prepočítajme na DPR, aby sedelo s drawPins projekciou
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const mxD = mx * dpr;
-      const myD = my * dpr;
+      const dprNow = Math.min(window.devicePixelRatio || 1, 2);
+      const mxD = mx * dprNow;
+      const myD = my * dprNow;
 
       let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
       const currentPhi = phi;
@@ -2922,23 +2759,19 @@
         const dy = myD - p.cy;
         const d = Math.hypot(dx, dy);
 
-        if (d < best.dist){
-          best = { idx: i, dist: d, x: p.cx, y: p.cy };
-        }
+        if (d < best.dist) best = { idx: i, dist: d, x: p.cx, y: p.cy };
       }
 
-      const HIT = 18 * dpr;
+      const HIT = 18 * dprNow;
       if (best.idx !== -1 && best.dist <= HIT){
-        // tip chce pozíciu v CSS pixeloch
-        setTip(best.x / dpr, best.y / dpr, LOCATIONS[best.idx]);
+        setTip(best.x / dprNow, best.y / dprNow, LOCATIONS[best.idx]);
       } else {
         hideTip();
       }
-    }, { passive: true });
+    }, { passive:true });
 
-    canvas.addEventListener("mouseleave", hideTip, { passive: true });
+    canvas.addEventListener("mouseleave", hideTip, { passive:true });
 
-    // resize observer
     const ro = new ResizeObserver(() => {
       const { w, h, dpr } = sizeBothCanvases();
       globe.resize({ width: w, height: h, devicePixelRatio: dpr });
@@ -2947,14 +2780,8 @@
     ro.observe(canvas);
   }
 
-  // počkaj na layout
-  requestAnimationFrame(() => requestAnimationFrame(init));
+  requestAnimationFrame(init);
 </script>
-
-
-
-
-
 </body>
 </html>
 
