@@ -1677,6 +1677,49 @@
   background: rgba(0,0,0,.72);
   border: 1px solid rgba(255,255,255,0.14);
 }
+
+  /* ✅ zdvihne len "RACEM – BEAT THEM ALL" */
+.hero-title{
+  position: relative;
+  transform: translateY(-10px); /* skús -8 až -16 */
+}
+
+/* ✅ HERO SERVICES vedľa seba (responsive grid) */
+.heroServices{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.hsItem{
+  height: 100%;
+}
+
+/* tablet */
+@media (max-width: 980px){
+  .heroServices{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* mobil */
+@media (max-width: 560px){
+  .heroServices{
+    grid-template-columns: 1fr;
+  }
+}
+/* ✅ kompaktnejší look */
+.hsItem{
+  padding: 10px 10px;
+}
+.hsBar{
+  height: 34px;
+}
+.hsSub{
+  font-size: 12.5px;
+}
+
     
 #racemGlobe{ pointer-events: auto; }
 .globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
