@@ -1512,17 +1512,34 @@
   aspect-ratio: 1 / 1;
 }
 
-/* verzia “big” – žiadny panel, žiadne pozadie, žiadne pseudo overlaye */
+/* ✅ BIG ZOOMED GLOBE – nech ide mimo obrazovky (vpravo hore) */
 .globeWrap--big{
-  max-width: 460px;
+  width: min(760px, 70vw);     /* veľké */
+  max-width: none;
+  aspect-ratio: 1/1;
+
+  /* posun vpravo a hore */
   margin-left: auto;
+  transform: translate(18vw, -10vh) scale(1.15);
+  transform-origin: center;
 
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
   border-radius: 0 !important;
-  overflow: visible !important;
+
+  overflow: visible !important; /* tooltip nech neoreže */
+  position: relative;
+}
+
+/* na menších obrazovkách to skroť */
+@media (max-width: 980px){
+  .globeWrap--big{
+    width: min(560px, 92vw);
+    transform: translate(0, 0) scale(1.0);
+    margin: 0 auto;
+  }
 }
 
 /* ✅ úplne vypni pseudo overlaye, ktoré robili sivý závoj */
@@ -1674,6 +1691,9 @@
   background: rgba(0,0,0,.72);
   border: 1px solid rgba(255,255,255,0.14);
 }
+    
+#racemGlobe{ pointer-events: auto; }
+.globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
 
   </style>
 </head>
@@ -2681,6 +2701,43 @@
   let phi = 0;
   let hovered = null;
 
+   // ✅ helper: lat/lon -> približná 2D pozícia na canvase (pre hover)
+function latLonToXYZ(lat, lon){
+  const la = (lat * Math.PI) / 180;
+  const lo = (lon * Math.PI) / 180;
+
+  // jednotková guľa
+  const x = Math.cos(la) * Math.sin(lo);
+  const y = Math.sin(la);
+  const z = Math.cos(la) * Math.cos(lo);
+  return { x, y, z };
+}
+
+// jednoduchá projekcia: berieme rotáciu phi/theta podobne ako globe
+function projectToCanvas(lat, lon, phiVal, thetaVal){
+  const v = latLonToXYZ(lat, lon);
+
+  // rotácia okolo Y (phi)
+  const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
+  let x1 = v.x * cosP - v.z * sinP;
+  let z1 = v.x * sinP + v.z * cosP;
+
+  // rotácia okolo X (theta)
+  const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
+  let y2 = v.y * cosT - z1 * sinT;
+  let z2 = v.y * sinT + z1 * cosT;
+
+  // ak je bod "na zadnej strane", nehoverujeme
+  if (z2 < 0) return null;
+
+  // NDC -> canvas
+  // (toto je “good enough” pre hover threshold)
+  const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
+  const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
+  return { cx, cy };
+}
+
+
   function rgb(hex){
     // "#b31f24" -> [0..1,0..1,0..1]
     const h = hex.replace("#","").trim();
@@ -2734,32 +2791,72 @@ markerColor: [0.95, 0.32, 0.34],
       phi += 0.006;        // pomalšie, elegantnejšie
     },
 
-    // COBE má built-in pointer hit test:
-    onPointerMove: (hit) => {
-  const marker = hit && hit.marker ? hit.marker : null;
-  const idx = marker
-    ? (typeof marker.index === "number" ? marker.index : marker)
-    : null;
+    const THETA = 0.22; // držíme rovnaké ako v createGlobe
 
+function setTip(x, y, loc){
   if (!tip) return;
 
-  if (idx !== null && LOCATIONS[idx]) {
-    const loc = LOCATIONS[idx];
+  // pozícia tooltipu v rámci globeWrap (nie celej stránky)
+  const wrap = canvas.parentElement; // globeWrap
+  const rWrap = wrap.getBoundingClientRect();
+  const rCan = canvas.getBoundingClientRect();
 
-    if (gtTitle) gtTitle.textContent = loc.name.toUpperCase();
-    if (gtSub) gtSub.textContent = loc.detail || "";
+  const relX = (rCan.left - rWrap.left) + x;
+  const relY = (rCan.top - rWrap.top) + y;
 
-    tip.classList.add("show");
-    tip.setAttribute("aria-hidden", "false");
+  tip.style.left = relX + "px";
+  tip.style.top  = relY + "px";
 
-    canvas.style.cursor = "pointer";
-  } else {
-    tip.classList.remove("show");
-    tip.setAttribute("aria-hidden", "true");
+  if (gtTitle) gtTitle.textContent = loc.name.toUpperCase();
+  if (gtSub) gtSub.textContent = loc.detail || loc.name;
 
-    canvas.style.cursor = "";
+  tip.classList.add("show");
+  tip.setAttribute("aria-hidden", "false");
+  canvas.style.cursor = "pointer";
+}
+
+function hideTip(){
+  tip?.classList.remove("show");
+  tip?.setAttribute("aria-hidden", "true");
+  canvas.style.cursor = "";
+}
+
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  // najbližší marker
+  let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
+
+  // phi, ktorý reálne beží (globus sa točí)
+  const currentPhi = phi;
+
+  for (let i = 0; i < LOCATIONS.length; i++){
+    const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
+    if (!p) continue;
+
+    const dx = mx - p.cx;
+    const dy = my - p.cy;
+    const d = Math.hypot(dx, dy);
+
+    if (d < best.dist){
+      best = { idx: i, dist: d, x: p.cx, y: p.cy };
+    }
   }
-},
+
+  // threshold v px – prispôsob podľa chuti
+  const HIT = 16;
+
+  if (best.idx !== -1 && best.dist <= HIT){
+    setTip(best.x, best.y, LOCATIONS[best.idx]);
+  } else {
+    hideTip();
+  }
+}, { passive: true });
+
+canvas.addEventListener("mouseleave", hideTip, { passive: true });
+
   });
 
   // tooltip pozícia podľa myši (jednoduché a funguje)
