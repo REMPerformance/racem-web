@@ -1504,64 +1504,35 @@
       color: rgba(255,255,255,0.85);
       margin-bottom:12px;
     }
-    .globeWrap{
-  position:relative;
-  width:100%;
-  max-width: 320px;              /* ✅ menší globus */
-  margin-left:auto;              /* vpravo v paneli */
+    
+    /* ✅ GLOBE WRAP – úplne bez kocky / bez glass efektu */
+.globeWrap{
+  position: relative;
+  width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius:18px;
-  border:1px solid rgba(179,31,36,0.22);
-
-  /* hacker hologram vibe */
-  background:
-    radial-gradient(70% 70% at 50% 50%, rgba(179,31,36,.18), transparent 60%),
-    radial-gradient(120% 120% at 50% 120%, rgba(179,31,36,.10), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-
-  box-shadow:
-    0 0 0 1px rgba(179,31,36,.08) inset,
-    0 18px 60px rgba(0,0,0,.65),
-    0 0 55px rgba(179,31,36,.18);
-
-  overflow:hidden;
-  backdrop-filter: blur(10px);
 }
 
-/* scanlines overlay */
-.globeWrap::after{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.06) 1px,
-      transparent 2px,
-      transparent 7px
-    );
-  opacity: .10;
-  pointer-events:none;
-  mix-blend-mode: screen;
+/* verzia “big” – žiadny panel, žiadne pozadie, žiadne pseudo overlaye */
+.globeWrap--big{
+  max-width: 460px;
+  margin-left: auto;
+
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
 }
 
-/* jemný “noise” */
-.globeWrap::before{
-  content:"";
-  position:absolute; inset:-20%;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
-  opacity:.06;
-  pointer-events:none;
-  animation: globeNoise 9s steps(8) infinite;
-  mix-blend-mode: screen;
+/* ✅ úplne vypni pseudo overlaye, ktoré robili sivý závoj */
+.globeWrap--big::before,
+.globeWrap--big::after{
+  content: none !important;
+  display: none !important;
 }
-@keyframes globeNoise{
-  0%{transform:translate(0,0)}
-  25%{transform:translate(-2%,1%)}
-  50%{transform:translate(2%,-2%)}
-  75%{transform:translate(-1%,-2%)}
-  100%{transform:translate(0,0)}
-}
+
+
 
 /* mobil ešte menší */
 @media (max-width:980px){
@@ -2742,14 +2713,14 @@
     theta: 0.22,
 
     // ✅ hacker-ish: tmavý základ, jemná červená, nie "celé červené"
-    dark: 0,
-    diffuse: 2.25,
-    scale: 1.08,           // trochu väčší "fill"
-    mapSamples: 22000,
-    mapBrightness: .35,   // menšia = menej "svieti"
-    baseColor: [0.03, 0.03, 0.035],     // tmavý “terminal”
-    glowColor: [0.55, 0.10, 0.12],
-    markerColor: [1.0, 0.35, 0.35],
+    dark: 1,
+diffuse: 1.25,
+scale: 1.08,
+mapSamples: 22000,
+mapBrightness: 1.35,
+baseColor: [0.06, 0.06, 0.07],
+glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
+markerColor: [0.95, 0.32, 0.34],
 
     // farba bodiek (nie full red, skôr neon)
     markerColor: [0.95, 0.32, 0.34],
