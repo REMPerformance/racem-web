@@ -1645,6 +1645,28 @@
       return min === max ? fmtEUR(min) : `${fmtEUR(min)} – ${fmtEUR(max)}`;
     }
 
+    function variantSummary(p){
+  const vars = Array.isArray(p.variants) ? p.variants : [];
+  if (!vars.length) return "Bez variantov";
+
+  const names = vars.map(v => v.name || v.type || "Variant").filter(Boolean);
+  const uniqueNames = Array.from(new Set(names));
+
+  // 1 variant -> zobraz názov; viac -> počet
+  if (uniqueNames.length === 1) return `Variant: ${uniqueNames[0]}`;
+  return `Variantov: ${uniqueNames.length}`;
+}
+
+function shipSummary(p){
+  const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
+  return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
+}
+
+function deliverySummary(p){
+  return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
+}
+
+
     function setSafeImage(imgEl, url, noImgEl){
       if (!imgEl) return;
       if (noImgEl) noImgEl.style.display = "none";
@@ -1844,20 +1866,33 @@
         const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
 
         card.innerHTML = `
-          <div class="pMedia">
-            <img alt="${escapeHtml(p.title)}">
-          </div>
+  <div class="pMedia">
+    <img alt="${escapeHtml(p.title)}">
+  </div>
 
-          <div class="pBody">
-            <div class="pName">${escapeHtml(p.title || "")}</div>
-            <p class="pDesc">${escapeHtml(p.short || "")}</p>
+  <div class="pBody">
+    <div class="pName">${escapeHtml(p.title || "")}</div>
+    <p class="pDesc">${escapeHtml(p.short || "")}</p>
 
-            <div class="pBottom">
-              <div class="price">${escapeHtml(minPriceEUR(p))}</div>
-              <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
-            </div>
-          </div>
-        `;
+    <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(variantSummary(p))}
+      </div>
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(shipSummary(p))}
+      </div>
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(deliverySummary(p))}
+      </div>
+    </div>
+
+    <div class="pBottom">
+      <div class="price">${escapeHtml(minPriceEUR(p))}</div>
+      <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
+    </div>
+  </div>
+`;
+
 
         const imgEl = card.querySelector(".pMedia img");
         setSafeImage(imgEl, imgSrc, null);
