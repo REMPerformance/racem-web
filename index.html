@@ -2901,70 +2901,59 @@
     };
   }
 
-  const GLOBE_SCALE = 1.08; // MUSÍ sedieť s createGlobe(scale: 1.08)
+  function projectToCanvas(lat, lon, phiVal, thetaVal){
+    const v = latLonToXYZ(lat, lon);
 
-function projectToCanvas(lat, lon, phiVal, thetaVal){
-  const v = latLonToXYZ(lat, lon);
+    // rotácia okolo Y (phi)
+    const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
+    const x1 = v.x * cosP - v.z * sinP;
+    const z1 = v.x * sinP + v.z * cosP;
 
-  // rotácia okolo Y (phi)
-  const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
-  const x1 = v.x * cosP - v.z * sinP;
-  const z1 = v.x * sinP + v.z * cosP;
+    // rotácia okolo X (theta)
+    const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
+    const y2 = v.y * cosT - z1 * sinT;
+    const z2 = v.y * sinT + z1 * cosT;
 
-  // rotácia okolo X (theta)
-  const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
-  const y2 = v.y * cosT - z1 * sinT;
-  const z2 = v.y * sinT + z1 * cosT;
+    // zadná strana
+    if (z2 < 0) return null;
 
-  // zadná strana
-  if (z2 <= 0) return null;
-
-  // ✅ zohľadni cobe scale
-  const k = 0.5 * GLOBE_SCALE;
-
-  const cx = (x1 * k + 0.5) * canvas.clientWidth;
-  const cy = (-y2 * k + 0.5) * canvas.clientHeight;
-
-  return { cx, cy, z: z2 };
-}
-
-  function clamp01(x){ return Math.max(0, Math.min(1, x)); }
-
-function renderMarkersOverlay(phiForOverlay){
-  if (!markersLayer) return;
-
-  if (!markersLayer.dataset.ready){
-    markersLayer.innerHTML = LOCATIONS.map((l, i) => `
-      <div class="gm" data-i="${i}">
-        <span class="gmDot"></span>
-        <span class="gmBubble">${l.name}</span>
-      </div>
-    `).join("");
-    markersLayer.dataset.ready = "1";
+    const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
+    const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
+    return { cx, cy };
   }
 
-  const nodes = markersLayer.querySelectorAll(".gm");
+  function renderMarkersOverlay(){
+    if (!markersLayer) return;
 
-  nodes.forEach(node => {
-    const i = Number(node.dataset.i);
-    const loc = LOCATIONS[i];
-
-    const p = projectToCanvas(loc.lat, loc.lon, phiForOverlay, THETA);
-    if (!p){
-      node.style.display = "none";
-      return;
+    // vyrob HTML len raz
+    if (!markersLayer.dataset.ready){
+      markersLayer.innerHTML = LOCATIONS.map((l, i) => `
+        <div class="gm" data-i="${i}">
+          <span class="gmDot"></span>
+          <span class="gmBubble">${l.name}</span>
+        </div>
+      `).join("");
+      markersLayer.dataset.ready = "1";
     }
 
-    node.style.display = "flex";
-    node.style.left = p.cx + "px";
-    node.style.top  = p.cy + "px";
+    const nodes = markersLayer.querySelectorAll(".gm");
+    const currentPhi = phi;
 
-    // ✅ jemný fade pri horizonte (žiadne “cvak” miznutie)
-    const fade = clamp01((p.z - 0.08) / 0.25);
-    node.style.opacity = fade.toFixed(3);
-  });
-}
+    nodes.forEach(node => {
+      const i = Number(node.dataset.i);
+      const loc = LOCATIONS[i];
 
+      const p = projectToCanvas(loc.lat, loc.lon, currentPhi, THETA);
+      if (!p){
+        node.style.display = "none";
+        return;
+      }
+
+      node.style.display = "flex";
+      node.style.left = p.cx + "px";
+      node.style.top  = p.cy + "px";
+    });
+  }
 
   function setTip(x, y, loc){
     if (!tip) return;
@@ -3019,19 +3008,11 @@ function renderMarkersOverlay(phiForOverlay){
         size: 0.085,
       })),
 
-      let lastPhi = 0;
-
-onRender: (state) => {
-  lastPhi = phi;
-  state.phi = lastPhi;
-
-  // ✅ overlay kresli s TÝM ISTÝM phi
-  renderMarkersOverlay(lastPhi);
-
-  // až potom posuň rotáciu
-  phi += 0.0032;
-}
-
+      onRender: (state) => {
+        state.phi = phi;
+        phi += 0.0032;
+        renderMarkersOverlay();
+      }
     });
 
     canvas.addEventListener("mousemove", (e) => {
