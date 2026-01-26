@@ -882,6 +882,23 @@
   align-items:center;
   justify-content:center;
 }
+.zoomHint{
+  position:absolute;
+  right:14px;
+  bottom:14px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  color:#fff;
+  background: rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  pointer-events:none;
+  opacity:.85;
+}
 
 
 .mImg img{
@@ -890,6 +907,7 @@
   object-fit: contain;       /* celý viditeľný */
   object-position:center;
   display:block;
+    cursor: zoom-in;
 
   padding: 8px;              /* ⬅️ MENŠÍ RÁM */
   max-height: 100%;
@@ -1441,6 +1459,8 @@
 
           <div class="mDesc" id="mDesc"></div>
 
+          <div class="zoomHint">klikni pre zväčšenie</div>
+
           <div>
             <div class="mLabel">Variant / materiál</div>
             <div class="variantList" id="mVariantList"></div>
@@ -1557,6 +1577,25 @@
       ],
       products: []
     };
+
+    // 🔍 CLICK TO EXPAND – product image fullscreen
+if (mImg){
+  mImg.addEventListener("click", () => {
+    if (!activeProduct) return;
+
+    const imgs = getProductImages(activeProduct);
+    if (!imgs.length) return;
+
+    const src = imgs[activeImgIndex] || imgs[0];
+    setSafeImage(gFull, src, gNoImg);
+
+    if (galleryModal){
+      galleryModal.classList.add("show");
+      galleryModal.setAttribute("aria-hidden","false");
+    }
+  });
+}
+
 
     let activeCarId = "";
     let activeProduct = null;
