@@ -1584,18 +1584,21 @@
     }
 
     function buildFilterOptions(){
-      const cat = $("#cat");
-      if (!cat || !mat) return;
+  const cat = $("#cat");
+  if (!cat) return;
 
-      const cats = new Set();
+  const cats = new Set();
+  DATA.products.forEach(p => {
+    if (p.category) cats.add(p.category);
+  });
 
-      DATA.products.forEach(p => {
-        if (p.category) cats.add(p.category);
-      });
+  cat.innerHTML =
+    `<option value="">Kategória: všetko</option>` +
+    Array.from(cats).sort().map(x =>
+      `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`
+    ).join("");
+}
 
-      cat.innerHTML = `<option value="">Kategória: všetko</option>` +
-        Array.from(cats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-    }
 
     function getFilteredProducts(){
       const q = ($("#q")?.value || "").trim().toLowerCase();
@@ -1657,7 +1660,7 @@
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
             <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">Zruš materiál / kategóriu alebo vyber “Všetky autá”.</p>
+            <p style="margin:0;">Skús zmeniť kategóriu, variant alebo vyber “Všetky autá”.</p>
           </div>
         `;
         return;
