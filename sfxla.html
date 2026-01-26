@@ -2004,7 +2004,7 @@ updateVariantPrice();
       }
     }
 
- function buildVariantChips(){
+function buildVariantChips(){
   if (!mVariantList) return;
 
   const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
@@ -2046,35 +2046,6 @@ updateVariantPrice();
     mVariantList.appendChild(chip);
   });
 }
-
-  // keď varianty existujú
-  vars.forEach((v, i) => {
-    const chip = document.createElement("div");
-    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-
-    const name = (v.name || v.type || "Variant").toUpperCase();
-   const matRaw = (v.material || "").trim();
-const typ  = (v.type || "").toUpperCase();
-
-chip.innerHTML = `
-  <span class="vMain">${escapeHtml(name)}</span>
-  <span class="vMeta">
-    ${matRaw ? `<span class="badge">${escapeHtml(matRaw.toUpperCase())}</span>` : ``}
-    ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
-  </span>
-`;
-
-
-    chip.addEventListener("click", () => {
-      activeVariantIndex = i;
-      setActiveChip(i);
-      updateVariantPrice();
-    });
-
-    mVariantList.appendChild(chip);
-  });
-}
-
 
     function setActiveChip(index){
       $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
