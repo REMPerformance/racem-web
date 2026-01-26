@@ -1811,9 +1811,7 @@
 .gm{
   position:absolute;
   transform: translate(-50%, -50%);
-  display:flex;
-  align-items:center;
-  gap:10px;
+  pointer-events:none;
 }
 
 /* pulzujúca bodka */
@@ -1845,6 +1843,9 @@
 
 /* bublina */
 .gmBubble{
+  position: relative;
+  left: 14px;      /* posun doprava od bodky */
+  top: -10px;      /* jemne hore */
   padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.14);
@@ -2938,11 +2939,10 @@
     // vyrob HTML len raz
     if (!markersLayer.dataset.ready){
       markersLayer.innerHTML = LOCATIONS.map((l, i) => `
-        <div class="gm" data-i="${i}">
-          <span class="gmDot"></span>
-          <span class="gmBubble">${l.name}</span>
-        </div>
-      `).join("");
+  <div class="gm" data-i="${i}">
+    <span class="gmBubble">${l.name}</span>
+  </div>
+`).join("");
       markersLayer.dataset.ready = "1";
     }
 
@@ -3014,7 +3014,7 @@
       markerColor: [0.95, 0.32, 0.34],
 
       // ✅ vypnuté cobe markery (aby neboli “duchy”)
-      // markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: 0.085 })),
+     markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: 0.085 })),
 
       onRender: (state) => {
         phi += 0.0032;
