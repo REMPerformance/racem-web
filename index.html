@@ -1691,6 +1691,45 @@
     
 #racemGlobe{ pointer-events: auto; }
 .globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
+/* ===== GLOBE LEGEND – RACEM GROUP BRAND ===== */
+.globeLegend--brand{
+  position: relative;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+/* logo ako watermark */
+.globeLegendLogo{
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 75%;
+  max-width: 260px;
+  opacity: 0.5; /* 👈 50 % */
+  filter: grayscale(100%) contrast(1.1);
+  pointer-events: none;
+}
+
+/* text nad logom */
+.globeLegendText{
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+.globeLegendText b{
+  color: #fff;
+  font-weight: 900;
+}
 
   </style>
 </head>
@@ -1791,10 +1830,21 @@
     <div class="globeOverlay" aria-hidden="true"></div>
   </div>
 
-  <div class="globeLegend" style="margin-top:14px;">
-    <div class="legendItem"><span class="legendDot"></span> </div>
-    <div class="legendItem muted2">Piešťany • Los Angeles • Tokyo • Frankfurt</div>
+  <div class="globeLegend globeLegend--brand">
+  <img
+    src="https://racem.sk/assets/rmgroup.png"
+    alt="RACEM Group"
+    class="globeLegendLogo"
+  />
+
+  <div class="globeLegendText">
+    <div><b>Bratislava</b> — HQ</div>
+    <div><b>Japan</b> — VeilSide</div>
+    <div><b>Germany</b> — CSR Automotive</div>
+    <div><b>USA</b> — Streetfighter LA</div>
   </div>
+</div>
+
 </div>
 
 
