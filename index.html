@@ -2866,7 +2866,7 @@
 <script type="module">
   import createGlobe from "https://cdn.skypack.dev/cobe";
 
-  const GLOBE_SCALE = 1.08; // musí sedieť s createGlobe scale
+  const GLOBE_SCALE = 1.08;
 
   const LOCATIONS = [
     { name: "Piešťany",    lat: 48.5948, lon: 17.8250,   detail: "RACEM Group" },
@@ -2879,14 +2879,18 @@
   const tip = document.getElementById("globeTip");
   const gtSub = document.getElementById("gtSub");
   const gtTitle = document.getElementById("gtTitle");
-  const markersLayer = document.getElementById("globeMarkers");
 
-  if (!canvas) {
-    console.warn("Canvas #racemGlobe not found");
-    throw new Error("Missing #racemGlobe");
-  }
+  if (!canvas) throw new Error("Missing #racemGlobe");
 
+  // ✅ anim state
   let phi = 0;
+  let t = 0;
+
+  // pulz parametre
+  const BASE = 0.085;
+  const AMP  = 0.035;
+  const SPEED = 0.075;
+
   const THETA = 0.22;
 
   function rgb(hex){
@@ -2932,49 +2936,16 @@
     const y2 = v.y * cosT - z1 * sinT;
     const z2 = v.y * sinT + z1 * cosT;
 
-    // zadná strana (ak by to bolo opačne, otočíme na z2 > 0)
+    // zadná strana
     if (z2 < 0) return null;
 
     const W = canvas.clientWidth;
     const H = canvas.clientHeight;
 
-    // ✅ SCALE fix – musí sedieť s createGlobe scale
     const cx = (x1 * 0.5 * GLOBE_SCALE + 0.5) * W;
     const cy = (-y2 * 0.5 * GLOBE_SCALE + 0.5) * H;
 
     return { cx, cy };
-  }
-
-  function renderMarkersOverlay(){
-    if (!markersLayer) return;
-
-    // vyrob HTML len raz
-    if (!markersLayer.dataset.ready){
-      markersLayer.innerHTML = LOCATIONS.map((l, i) => `
-  <div class="gm" data-i="${i}">
-    <span class="gmBubble">${l.name}</span>
-  </div>
-`).join("");
-      markersLayer.dataset.ready = "1";
-    }
-
-    const nodes = markersLayer.querySelectorAll(".gm");
-    const currentPhi = phi;
-
-    nodes.forEach(node => {
-      const i = Number(node.dataset.i);
-      const loc = LOCATIONS[i];
-
-      const p = projectToCanvas(loc.lat, loc.lon, currentPhi, THETA);
-      if (!p){
-        node.style.display = "none";
-        return;
-      }
-
-      node.style.display = "flex";
-      node.style.left = p.cx + "px";
-      node.style.top  = p.cy + "px";
-    });
   }
 
   function setTip(x, y, loc){
@@ -3025,32 +2996,20 @@
       glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
       markerColor: [0.95, 0.32, 0.34],
 
-      // ✅ vypnuté cobe markery (aby neboli “duchy”)
-     markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: 0.085 })),
+      // ✅ pulzujúce bodky priamo v COBe
+      markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: BASE })),
 
-      let phi = 0;
-let t = 0;
+      onRender: (state) => {
+        phi += 0.0032;
+        t += SPEED;
 
-const BASE = 0.085;    // základná veľkosť bodky
-const AMP  = 0.035;    // amplitúda pulzu
-const SPEED = 0.075;   // rýchlosť pulzu
+        state.phi = phi;
 
-onRender: (state) => {
-  phi += 0.0032;
-  t += SPEED;
-
-  state.phi = phi;
-
-  // pulz pre každú bodku s malým fázovým posunom
-  state.markers = LOCATIONS.map((l, i) => {
-    const wave = (Math.sin(t + i * 0.9) + 1) / 2; // 0..1
-    const size = BASE + AMP * wave;
-    return { location: [l.lat, l.lon], size };
-  });
-
-  // ak chceš nechať renderMarkersOverlay (už ti je zbytočný), môžeš ho zmazať
-  // renderMarkersOverlay();
-}
+        state.markers = LOCATIONS.map((l, i) => {
+          const wave = (Math.sin(t + i * 0.9) + 1) / 2; // 0..1
+          return { location: [l.lat, l.lon], size: BASE + AMP * wave };
+        });
+      }
     });
 
     canvas.addEventListener("mousemove", (e) => {
@@ -3059,27 +3018,21 @@ onRender: (state) => {
       const my = e.clientY - rect.top;
 
       let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
-      const currentPhi = phi;
 
       for (let i = 0; i < LOCATIONS.length; i++){
-        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
+        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, phi, THETA);
         if (!p) continue;
 
         const dx = mx - p.cx;
         const dy = my - p.cy;
         const d = Math.hypot(dx, dy);
 
-        if (d < best.dist){
-          best = { idx: i, dist: d, x: p.cx, y: p.cy };
-        }
+        if (d < best.dist) best = { idx: i, dist: d, x: p.cx, y: p.cy };
       }
 
       const HIT = 18;
-      if (best.idx !== -1 && best.dist <= HIT){
-        setTip(best.x, best.y, LOCATIONS[best.idx]);
-      } else {
-        hideTip();
-      }
+      if (best.idx !== -1 && best.dist <= HIT) setTip(best.x, best.y, LOCATIONS[best.idx]);
+      else hideTip();
     }, { passive: true });
 
     canvas.addEventListener("mouseleave", hideTip, { passive: true });
@@ -3087,13 +3040,13 @@ onRender: (state) => {
     const ro = new ResizeObserver(() => {
       const { w, h, dpr } = sizeCanvas();
       globe.resize({ width: w, height: h, devicePixelRatio: dpr });
-      renderMarkersOverlay();
     });
     ro.observe(canvas);
   };
 
   requestAnimationFrame(() => requestAnimationFrame(init));
 </script>
+
 
 
 </body>
