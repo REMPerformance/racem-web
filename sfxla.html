@@ -1578,24 +1578,6 @@
       products: []
     };
 
-    // 🔍 CLICK TO EXPAND – product image fullscreen
-if (mImg){
-  mImg.addEventListener("click", () => {
-    if (!activeProduct) return;
-
-    const imgs = getProductImages(activeProduct);
-    if (!imgs.length) return;
-
-    const src = imgs[activeImgIndex] || imgs[0];
-    setSafeImage(gFull, src, gNoImg);
-
-    if (galleryModal){
-      galleryModal.classList.add("show");
-      galleryModal.setAttribute("aria-hidden","false");
-    }
-  });
-}
-
 
     let activeCarId = "";
     let activeProduct = null;
@@ -1902,6 +1884,24 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
   if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
 });
+
+    // 🔍 CLICK TO EXPAND – product image fullscreen
+if (mImg){
+  mImg.addEventListener("click", () => {
+    if (!activeProduct) return;
+
+    const imgs = getProductImages(activeProduct);
+    if (!imgs.length) return;
+
+    const src = imgs[activeImgIndex] || imgs[0];
+    setSafeImage(gFull, src, gNoImg);
+
+    if (galleryModal){
+      galleryModal.classList.add("show");
+      galleryModal.setAttribute("aria-hidden","false");
+    }
+  });
+}
 
 
 function getProductImages(p){
