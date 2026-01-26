@@ -2853,6 +2853,8 @@
 <script type="module">
   import createGlobe from "https://cdn.skypack.dev/cobe";
 
+  const GLOBE_SCALE = 1.08; // musí sedieť s createGlobe scale
+
   const LOCATIONS = [
     { name: "Piešťany",    lat: 48.5948, lon: 17.8250,   detail: "RACEM Group" },
     { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
@@ -2866,7 +2868,10 @@
   const gtTitle = document.getElementById("gtTitle");
   const markersLayer = document.getElementById("globeMarkers");
 
-  if (!canvas) console.warn("Canvas #racemGlobe not found");
+  if (!canvas) {
+    console.warn("Canvas #racemGlobe not found");
+    throw new Error("Missing #racemGlobe");
+  }
 
   let phi = 0;
   const THETA = 0.22;
@@ -2914,11 +2919,16 @@
     const y2 = v.y * cosT - z1 * sinT;
     const z2 = v.y * sinT + z1 * cosT;
 
-    // zadná strana
+    // zadná strana (ak by to bolo opačne, otočíme na z2 > 0)
     if (z2 < 0) return null;
 
-    const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
-    const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
+    const W = canvas.clientWidth;
+    const H = canvas.clientHeight;
+
+    // ✅ SCALE fix – musí sedieť s createGlobe scale
+    const cx = (x1 * 0.5 * GLOBE_SCALE + 0.5) * W;
+    const cy = (-y2 * 0.5 * GLOBE_SCALE + 0.5) * H;
+
     return { cx, cy };
   }
 
@@ -2995,7 +3005,7 @@
 
       dark: 0,
       diffuse: 1.25,
-      scale: 1.08,
+      scale: GLOBE_SCALE,
       mapSamples: 22000,
       mapBrightness: 1.35,
 
@@ -3003,14 +3013,12 @@
       glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
       markerColor: [0.95, 0.32, 0.34],
 
-      markers: LOCATIONS.map(l => ({
-        location: [l.lat, l.lon],
-        size: 0.085,
-      })),
+      // ✅ vypnuté cobe markery (aby neboli “duchy”)
+      // markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: 0.085 })),
 
       onRender: (state) => {
-        state.phi = phi;
         phi += 0.0032;
+        state.phi = phi;
         renderMarkersOverlay();
       }
     });
@@ -3036,7 +3044,7 @@
         }
       }
 
-      const HIT = 16;
+      const HIT = 18;
       if (best.idx !== -1 && best.dist <= HIT){
         setTip(best.x, best.y, LOCATIONS[best.idx]);
       } else {
@@ -3056,6 +3064,7 @@
 
   requestAnimationFrame(() => requestAnimationFrame(init));
 </script>
+
 
 </body>
 </html>
