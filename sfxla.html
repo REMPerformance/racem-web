@@ -1478,7 +1478,7 @@
           <div class="mDesc" id="mDesc"></div>
 
           <div id="mVariantWrap" style="display:none;">
-  <div class="mLabel">Variant / materiál</div>
+<div class="mLabel">Variant</div>
   <div class="variantList" id="mVariantList"></div>
 </div>
 
@@ -1650,15 +1650,15 @@
 
     function variantSummary(p){
   const vars = Array.isArray(p.variants) ? p.variants : [];
-  if (!vars.length) return "Bez variantov";
+  if (!vars.length) return "Bez variantu";
 
-  const names = vars.map(v => v.name || v.type || "Variant").filter(Boolean);
-  const uniqueNames = Array.from(new Set(names));
+  const names = vars.map(v => v.name || "Variant").filter(Boolean);
+  const unique = Array.from(new Set(names));
 
-  // 1 variant -> zobraz názov; viac -> počet
-  if (uniqueNames.length === 1) return `Variant: ${uniqueNames[0]}`;
-  return `Variantov: ${uniqueNames.length}`;
+  if (unique.length === 1) return `Variant: ${unique[0]}`;
+  return `Variantov: ${unique.length}`;
 }
+
 
 function shipSummary(p){
   const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
@@ -2189,7 +2189,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
 
 Auto:
 Diel:
-Variant / Materiál:
+Variant:
 
 Poznámka (dopíš rok/facelift/verziu):`;
         }
