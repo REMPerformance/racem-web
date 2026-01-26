@@ -403,25 +403,32 @@
       box-shadow: 0 18px 70px rgba(0,0,0,0.70);
     }
     .carMedia{
-      position:relative;
-      height: 220px;
-      background: #060606;
-      overflow:hidden;
-    }
-    .carMedia::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.55));
-      pointer-events:none;
-    }
-    .carMedia img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.02);
-      filter: contrast(1.06) saturate(1.06);
-    }
+  position:relative;
+  height: 220px;
+  overflow:hidden;
+  background: transparent;           /* ✅ preč s čiernym */
+}
+
+.carMedia::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.45)); /* jemný overlay OK */
+  pointer-events:none;
+}
+
+.carMedia img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit: cover;                 /* ✅ vždy presne */
+  object-position:center;
+  display:block;
+  transform:none;
+  filter:none;
+}
+
     .carNameOverlay{
       position:absolute;
       left:50%;
@@ -611,49 +618,45 @@
       margin-top: 16px;
     }
     .pCard{
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.72));
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: 0 14px 44px rgba(0,0,0,0.42);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
-      cursor:pointer;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      min-height: 310px;
-    }
-    .pCard:hover{
-      transform: translateY(-6px);
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 18px 62px rgba(0,0,0,0.62);
-      filter: brightness(1.03);
-    }
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(179,31,36,0.10), transparent 55%),
+    linear-gradient(180deg, rgba(16,16,16,0.92), rgba(8,8,8,0.78));
+  border-radius: 18px;
+  overflow:hidden;
+  box-shadow: 0 16px 54px rgba(0,0,0,0.55);
+}
+
+.pCard:hover{
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.70);
+}
+
+.tag{
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+}
+
     .pMedia{
-      position:relative;
-      height: 170px;
-      background: rgba(255,255,255,0.03);
-      overflow:hidden;
-    }
-   .pMedia{
   position:relative;
   height: 170px;
-  background: rgba(0,0,0,0.35);              /* aby to vyzeralo čisté */
   overflow:hidden;
-  display:flex;                               /* centrovanie */
-  align-items:center;
-  justify-content:center;
+  background: transparent;           /* ✅ preč s čiernym */
 }
 
 .pMedia img{
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
-  object-fit: contain;                        /* ✅ už neoreže */
+  object-fit: cover;                 /* ✅ vždy full */
+  object-position:center;
   display:block;
-  transform: none;                            /* ✅ žiadne zoomovanie */
-  filter: contrast(1.02) saturate(1.02);
-  padding: 10px;                              /* ✅ nech sa nedotýka okrajov */
+  transform:none;
+  filter:none;                       /* ✅ preč s “tmavením” */
 }
+
 
     .pTopRow{
       position:absolute; left:10px; right:10px; top:10px;
@@ -797,24 +800,16 @@
 
     /* IMAGE + RIBBON */
     .mImg{
-      border-radius: 16px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.02);
-      min-height: 320px;
-      position:relative;
-      isolation:isolate;
-    }
-    .mImg{
   border-radius: 16px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.35);              /* čisté pozadie */
-  min-height: 320px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(179,31,36,0.16), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+  min-height: 420px;
   position:relative;
   isolation:isolate;
-
-  display:flex;                               /* centrovanie */
+  display:flex;
   align-items:center;
   justify-content:center;
 }
@@ -822,9 +817,10 @@
 .mImg img{
   width:100%;
   height:100%;
-  object-fit: contain;                        /* ✅ celý obrázok */
+  object-fit: contain;      /* ✅ detail = celý obrázok */
+  object-position:center;
   display:block;
-  padding: 14px;                              /* ✅ “gallery” look */
+  padding: 18px;            /* jemný “gallery frame” */
 }
 
 
@@ -926,29 +922,56 @@
       gap:10px;
     }
     .vChip{
-      cursor:pointer;
-      user-select:none;
-      border-radius: 999px;
-      padding: 10px 12px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.22);
-      color: rgba(255,255,255,0.88);
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.16em;
-      text-transform: uppercase;
-      font-size: 12px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .vChip:hover{
-      transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.18);
-    }
-    .vChip.active{
-      border-color: rgba(255,255,255,0.22);
-      background: rgba(179,31,36,0.30);
-      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
-    }
+  cursor:pointer;
+  user-select:none;
+  border-radius: 16px;
+  padding: 10px 12px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.92);
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1.15;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.vChip:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.45);
+  background: rgba(179,31,36,0.12);
+}
+
+.vChip.active{
+  border-color: rgba(179,31,36,0.65);
+  background: rgba(179,31,36,0.22);
+  box-shadow: 0 18px 50px rgba(179,31,36,0.10);
+}
+
+.vChip .vMain{
+  font-weight: 800;
+}
+
+.vChip .vMeta{
+  margin-left:auto;
+  display:flex;
+  gap:8px;
+  opacity:.9;
+}
+
+.vChip .badge{
+  padding: 6px 8px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.25);
+  font-size: 11px;
+  letter-spacing:.12em;
+}
+
 
     /* ✅ CENA BLOK */
     .priceBlock{
@@ -1065,6 +1088,79 @@
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
+    .imgNav{
+  position:absolute;
+  top:50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.55);
+  color:#fff;
+  font-size: 26px;
+  font-weight: 900;
+  cursor:pointer;
+  z-index:6;
+  display:grid;
+  place-items:center;
+  backdrop-filter: blur(10px);
+  transition: transform .15s ease, border-color .15s ease, background .15s ease, opacity .15s ease;
+  opacity:.88;
+}
+.imgNav:hover{
+  transform: translateY(-50%) scale(1.04);
+  border-color: rgba(179,31,36,0.45);
+  background: rgba(179,31,36,0.22);
+}
+.imgNav.prev{ left: 14px; }
+.imgNav.next{ right: 14px; }
+
+.thumbRow{
+  position:absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.10);
+  z-index:6;
+  backdrop-filter: blur(10px);
+}
+.thumbRow::-webkit-scrollbar{ height: 8px; }
+.thumbRow::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.12); border-radius: 999px; }
+
+.thumb{
+  width: 78px;
+  height: 56px;
+  border-radius: 12px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  cursor:pointer;
+  flex: 0 0 auto;
+  transition: transform .15s ease, border-color .15s ease, filter .15s ease;
+}
+.thumb:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.35);
+  filter: brightness(1.05);
+}
+.thumb.active{
+  border-color: rgba(179,31,36,0.65);
+  box-shadow: 0 14px 40px rgba(179,31,36,0.12);
+}
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
   </style>
 </head>
 
@@ -1206,10 +1302,17 @@
 
       <div class="modalBody">
         <div class="mImg">
-          <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
-          <img id="mImg" src="" alt="Product image">
-          <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
-        </div>
+  <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
+
+  <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
+  <button class="imgNav next" id="mNext" type="button" aria-label="Ďalší">›</button>
+
+  <img id="mImg" src="" alt="Product image">
+  <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
+
+  <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
+</div>
+
 
         <div class="mInfo">
           <h3 class="mTitle" id="mTitle">—</h3>
@@ -1336,6 +1439,8 @@
     let activeCarId = "";
     let activeProduct = null;
     let activeVariantIndex = 0;
+    let activeImgIndex = 0;
+
 
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1635,6 +1740,66 @@
     const mShip = $("#mShip");
     const mDelivery = $("#mDelivery");
     const mOrder = $("#mOrder");
+    const mPrev = $("#mPrev");
+    const mNext = $("#mNext");
+    const mThumbs = $("#mThumbs");
+
+    if (mPrev) mPrev.addEventListener("click", () => setModalImage(activeImgIndex - 1));
+if (mNext) mNext.addEventListener("click", () => setModalImage(activeImgIndex + 1));
+
+window.addEventListener("keydown", (e) => {
+  if (!productModal?.classList.contains("show")) return;
+  if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
+  if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
+});
+
+
+function getProductImages(p){
+  const arr = []
+    .concat(p?.image ? [p.image] : [])
+    .concat(Array.isArray(p?.images) ? p.images : []);
+  // unikátne + bez prázdnych
+  return Array.from(new Set(arr.filter(Boolean)));
+}
+
+function setModalImage(index){
+  if (!activeProduct) return;
+  const imgs = getProductImages(activeProduct);
+  if (!imgs.length){
+    setSafeImage(mImg, "", mNoImg);
+    if (mThumbs) mThumbs.innerHTML = "";
+    return;
+  }
+
+  activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+  setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
+
+  if (mThumbs){
+    $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
+  }
+  // ak thumbs ešte neexistujú (napr. prvé otvorenie), vytvor ich
+if (mThumbs && !mThumbs.children.length) buildThumbs();
+}
+
+function buildThumbs(){
+  if (!mThumbs || !activeProduct) return;
+  const imgs = getProductImages(activeProduct);
+
+  // keď je 0/1 obrázok, thumbnails netreba
+  if (imgs.length <= 1){
+    mThumbs.innerHTML = "";
+    return;
+  }
+
+  mThumbs.innerHTML = "";
+  imgs.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "thumb" + (i === activeImgIndex ? " active" : "");
+    d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
+    d.addEventListener("click", () => setModalImage(i));
+    mThumbs.appendChild(d);
+  });
+}
 
     function openProduct(p){
       activeProduct = p;
@@ -1654,11 +1819,12 @@
         mDesc.textContent = p.description || p.short || "";
       }
 
-      const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
-      setSafeImage(mImg, imgSrc, mNoImg);
+      activeImgIndex = 0;                  // ✅ reset image index
+setModalImage(0);                    // ✅ nastav prvý obrázok
+buildThumbs();                       // ✅ sprav thumbnails
 
-      buildVariantChips();
-      updateVariantPrice();
+buildVariantChips();
+updateVariantPrice();
 
       if (productModal){
         productModal.classList.add("show");
@@ -1666,24 +1832,51 @@
       }
     }
 
-    function buildVariantChips(){
-      if (!mVariantList) return;
-      mVariantList.innerHTML = "";
+   function buildVariantChips(){
+  if (!mVariantList) return;
+  mVariantList.innerHTML = "";
 
-      const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
-      if (!vars.length){
-        const chip = document.createElement("div");
-        chip.className = "vChip active";
-        chip.textContent = "CENA NA DOPYT";
-        chip.addEventListener("click", () => {
-          activeVariantIndex = 0;
-          setActiveChip(0);
-          updateVariantPrice();
-        });
-        mVariantList.appendChild(chip);
-        return;
-      }
+  if (!vars.length){
+    const chip = document.createElement("div");
+    chip.className = "vChip active";
+    chip.innerHTML = `<span class="vMain">CENA NA DOPYT</span>`;
+    chip.addEventListener("click", () => {
+      activeVariantIndex = 0;
+      setActiveChip(0);
+      updateVariantPrice();
+    });
+    mVariantList.appendChild(chip);
+    return;
+  }
+
+  vars.forEach((v, i) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+
+    const name = (v.name || v.type || "Variant").toUpperCase();
+    const mat  = (v.material || "Material").toUpperCase();
+    const typ  = (v.type || "").toUpperCase();
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(name)}</span>
+      <span class="vMeta">
+        <span class="badge">${escapeHtml(mat)}</span>
+        ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
+      </span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = i;
+      setActiveChip(i);
+      updateVariantPrice();
+    });
+
+    mVariantList.appendChild(chip);
+  });
+}
+
 
       vars.forEach((v, i) => {
         const chip = document.createElement("div");
