@@ -1423,11 +1423,7 @@
             <select class="sel" id="cat">
               <option value="">Kategória: všetko</option>
             </select>
-            <select class="sel" id="type">
-              <option value="">Variant: všetko</option>
-              <option value="Full Kit">Full kit</option>
-              <option value="Single Part">Single part</option>
-            </select>
+          
             <button class="btn secondary" id="showAll" type="button">Všetky autá</button>
           </div>
         </div>
@@ -1638,12 +1634,19 @@
     }
 
     function minPriceEUR(prod){
-      const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
-      if (!prices.length) return "cena na dopyt";
-      const min = Math.min(...prices);
-      const max = Math.max(...prices);
-      return min === max ? fmtEUR(min) : `${fmtEUR(min)} – ${fmtEUR(max)}`;
-    }
+  // 1) ak má produkt priamo priceEUR
+  if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
+
+  // 2) inak z variantov
+  const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
+  if (!prices.length) return "cena na dopyt";
+
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+
+  // keď má viac variantov, ukáž "od"
+  return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+}
 
     function variantSummary(p){
   const vars = Array.isArray(p.variants) ? p.variants : [];
@@ -1791,7 +1794,6 @@ function deliverySummary(p){
     function getFilteredProducts(){
       const q = ($("#q")?.value || "").trim().toLowerCase();
       const cat = $("#cat")?.value || "";
-      const type = $("#type")?.value || "";
 
       return DATA.products.filter(p => {
         if (activeCarId && p.carId !== activeCarId) return false;
@@ -1801,13 +1803,6 @@ function deliverySummary(p){
           const blob = `${p.title} ${p.short} ${p.category}`.toLowerCase();
           if (!blob.includes(q)) return false;
         }
-
-        if (type){
-  const ok = (p.variants || []).some(v => v.type === type);
-  if (!ok) return false;
-}
-
-
         return true;
       });
     }
@@ -2044,15 +2039,14 @@ function buildVariantChips(){
 
   const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
-  // ✅ AK NIE SÚ VARIANTY -> schovaj celý blok
+  // Ak produkt nemá variants, ale má priceEUR -> schovaj variant blok
   if (!vars.length){
-    mVariantList.innerHTML = "";
     if (mVariantWrap) mVariantWrap.style.display = "none";
+    mVariantList.innerHTML = "";
     activeVariantIndex = 0;
     return;
   }
 
-  // ✅ AK SÚ VARIANTY -> ukáž blok a renderuj chips
   if (mVariantWrap) mVariantWrap.style.display = "block";
   mVariantList.innerHTML = "";
 
@@ -2060,15 +2054,13 @@ function buildVariantChips(){
     const chip = document.createElement("div");
     chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
 
-    const name = (v.name || v.type || "Variant").toUpperCase();
-    const matRaw = (v.material || "").trim();
-    const typ = (v.type || "").toUpperCase();
+    const name = (v.name || `Variant ${i+1}`).toUpperCase();
+    const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
 
     chip.innerHTML = `
       <span class="vMain">${escapeHtml(name)}</span>
       <span class="vMeta">
-        ${matRaw ? `<span class="badge">${escapeHtml(matRaw.toUpperCase())}</span>` : ``}
-        ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
+        <span class="badge">${escapeHtml(price)}</span>
       </span>
     `;
 
@@ -2082,38 +2074,45 @@ function buildVariantChips(){
   });
 }
 
+
     function setActiveChip(index){
       $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
     }
 
-    function updateVariantPrice(){
-      if (!activeProduct) return;
+   function updateVariantPrice(){
+  if (!activeProduct) return;
 
-      const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-      const v = vars[activeVariantIndex];
+  const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+  const v = vars[activeVariantIndex];
 
-      const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
-      const delivery = activeProduct.delivery || "Upresníme po objednávke";
+  const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
+  const delivery = activeProduct.delivery || "Upresníme po objednávke";
 
-      const base = (v && typeof v.priceEUR === "number") ? v.priceEUR : null;
+  // cena: buď z variantu, alebo z product.priceEUR
+  const base =
+    (v && typeof v.priceEUR === "number") ? v.priceEUR :
+    (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
+    null;
 
-      if (mPriceBig){
-        mPriceBig.innerHTML = base !== null
-          ? `<small>CENA</small><br>${fmtEUR(base)}`
-          : `<small>CENA</small><br>UPRESNÍME`;
-      }
+  const variantName = vars.length ? (v?.name || "—") : "—";
 
-      if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
-      if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+  if (mPriceBig){
+    mPriceBig.innerHTML = base !== null
+      ? `<small>CENA</small><br>${fmtEUR(base)}`
+      : `<small>CENA</small><br>UPRESNÍME`;
+  }
 
-      const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
-      const status = getStockStatus(activeProduct);
+  if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
+  if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
 
-      const note =
+  const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
+  const status = getStockStatus(activeProduct);
+
+  const note =
 `OBJEDNÁVKA – Streetfighter LA
 Auto: ${car}
 Diel: ${activeProduct.title || "—"}
-Variant: ${v?.name || "—"} | Materiál: ${v?.material || "—"} | Typ: ${v?.type || "—"}
+Variant: ${variantName}
 Dostupnosť: ${stockLabel(status)}
 Cena: ${base !== null ? fmtEUR(base) : "upresníme"}
 Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}
@@ -2121,11 +2120,12 @@ Dodanie: ${delivery}
 
 Poznámka (dopíš rok/facelift/verziu):`;
 
-      const msg = $("#message");
-      const carInput = $("#car");
-      if (msg) msg.value = note;
-      if (carInput) carInput.value = car;
-    }
+  const msg = $("#message");
+  const carInput = $("#car");
+  if (msg) msg.value = note;
+  if (carInput) carInput.value = car;
+}
+
 
     function closeModal(modal){
       if (!modal) return;
@@ -2198,7 +2198,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
       });
     }
 
-    ["q","cat","type"].forEach(id => {
+    ["q","cat"].forEach(id => {
       const el = $("#" + id);
       if (!el) return;
       el.addEventListener("input", renderAll);
