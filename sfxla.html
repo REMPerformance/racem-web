@@ -2004,7 +2004,7 @@ updateVariantPrice();
       }
     }
 
-  function buildVariantChips(){
+ function buildVariantChips(){
   if (!mVariantList) return;
 
   const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
@@ -2027,7 +2027,7 @@ updateVariantPrice();
 
     const name = (v.name || v.type || "Variant").toUpperCase();
     const matRaw = (v.material || "").trim();
-    const typ  = (v.type || "").toUpperCase();
+    const typ = (v.type || "").toUpperCase();
 
     chip.innerHTML = `
       <span class="vMain">${escapeHtml(name)}</span>
@@ -2046,7 +2046,6 @@ updateVariantPrice();
     mVariantList.appendChild(chip);
   });
 }
-
 
   // keď varianty existujú
   vars.forEach((v, i) => {
