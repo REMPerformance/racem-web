@@ -1481,10 +1481,11 @@
 
           <div class="mDesc" id="mDesc"></div>
 
-          <div>
-            <div class="mLabel">Variant / materiál</div>
-            <div class="variantList" id="mVariantList"></div>
-          </div>
+          <div id="mVariantWrap" style="display:none;">
+  <div class="mLabel">Variant / materiál</div>
+  <div class="variantList" id="mVariantList"></div>
+</div>
+
 
           <div class="priceBlock">
             <div class="priceBig" id="mPriceBig">—</div>
@@ -1889,6 +1890,7 @@
     const mDesc = $("#mDesc");
     const mVariantList = $("#mVariantList");
     const mPriceBig = $("#mPriceBig");
+    const mVariantWrap = $("#mVariantWrap");
     const mShip = $("#mShip");
     const mDelivery = $("#mDelivery");
     const mOrder = $("#mOrder");
@@ -2002,25 +2004,49 @@ updateVariantPrice();
       }
     }
 
-   function buildVariantChips(){
+  function buildVariantChips(){
   if (!mVariantList) return;
-  mVariantList.innerHTML = "";
 
   const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
-  // keď produkt nemá varianty
+  // ✅ AK NIE SÚ VARIANTY -> schovaj celý blok
   if (!vars.length){
-    const chip = document.createElement("div");
-    chip.className = "vChip active";
-    chip.innerHTML = `<span class="vMain">CENA NA DOPYT</span>`;
-    chip.addEventListener("click", () => {
-      activeVariantIndex = 0;
-      setActiveChip(0);
-      updateVariantPrice();
-    });
-    mVariantList.appendChild(chip);
+    mVariantList.innerHTML = "";
+    if (mVariantWrap) mVariantWrap.style.display = "none";
+    activeVariantIndex = 0;
     return;
   }
+
+  // ✅ AK SÚ VARIANTY -> ukáž blok a renderuj chips
+  if (mVariantWrap) mVariantWrap.style.display = "block";
+  mVariantList.innerHTML = "";
+
+  vars.forEach((v, i) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+
+    const name = (v.name || v.type || "Variant").toUpperCase();
+    const matRaw = (v.material || "").trim();
+    const typ  = (v.type || "").toUpperCase();
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(name)}</span>
+      <span class="vMeta">
+        ${matRaw ? `<span class="badge">${escapeHtml(matRaw.toUpperCase())}</span>` : ``}
+        ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
+      </span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = i;
+      setActiveChip(i);
+      updateVariantPrice();
+    });
+
+    mVariantList.appendChild(chip);
+  });
+}
+
 
   // keď varianty existujú
   vars.forEach((v, i) => {
