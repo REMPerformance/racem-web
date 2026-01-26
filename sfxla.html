@@ -1265,9 +1265,6 @@
             <select class="sel" id="cat">
               <option value="">Kategória: všetko</option>
             </select>
-            <select class="sel" id="mat">
-              <option value="">Materiál: všetko</option>
-            </select>
             <select class="sel" id="type">
               <option value="">Variant: všetko</option>
               <option value="Full Kit">Full kit</option>
@@ -1588,28 +1585,21 @@
 
     function buildFilterOptions(){
       const cat = $("#cat");
-      const mat = $("#mat");
       if (!cat || !mat) return;
 
       const cats = new Set();
-      const mats = new Set();
 
       DATA.products.forEach(p => {
         if (p.category) cats.add(p.category);
-        (p.variants || []).forEach(v => { if (v.material) mats.add(v.material); });
       });
 
       cat.innerHTML = `<option value="">Kategória: všetko</option>` +
         Array.from(cats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-
-      mat.innerHTML = `<option value="">Materiál: všetko</option>` +
-        Array.from(mats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
     }
 
     function getFilteredProducts(){
       const q = ($("#q")?.value || "").trim().toLowerCase();
       const cat = $("#cat")?.value || "";
-      const mat = $("#mat")?.value || "";
       const type = $("#type")?.value || "";
 
       return DATA.products.filter(p => {
@@ -1621,14 +1611,11 @@
           if (!blob.includes(q)) return false;
         }
 
-        if (mat || type){
-          const ok = (p.variants || []).some(v => {
-            if (mat && v.material !== mat) return false;
-            if (type && v.type !== type) return false;
-            return true;
-          });
-          if (!ok) return false;
-        }
+        if (type){
+  const ok = (p.variants || []).some(v => v.type === type);
+  if (!ok) return false;
+}
+
 
         return true;
       });
@@ -1690,10 +1677,6 @@
         card.innerHTML = `
           <div class="pMedia">
             <img alt="${escapeHtml(p.title)}">
-            <div class="pTopRow">
-              <div class="tag"><span class="tDot"></span>${escapeHtml(car)}</div>
-              <div class="tag" style="border-color:rgba(255,255,255,0.18);">${escapeHtml(p.category || "Part")}</div>
-            </div>
           </div>
 
           <div class="pBody">
@@ -1997,7 +1980,7 @@ Poznámka (dopíš rok/facelift/verziu):`;
       });
     }
 
-    ["q","cat","mat","type"].forEach(id => {
+    ["q","cat","type"].forEach(id => {
       const el = $("#" + id);
       if (!el) return;
       el.addEventListener("input", renderAll);
