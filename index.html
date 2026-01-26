@@ -1730,173 +1730,6 @@
   color: #fff;
   font-weight: 900;
 }
-/* ===== GLOBE LEGEND – RACE TICKER BOARD ===== */
-.globeLegend--ticker{
-  position: relative;
-  margin-top: 18px;
-  padding: 16px 16px 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background:
-    radial-gradient(540px 140px at 78% 110%, rgba(179,31,36,0.26), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.18));
-  overflow: hidden;
-}
-
-/* LOGO veľké, farebné, watermark */
-.globeLegendLogo{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -55%);
-  width: min(420px, 92%);
-  opacity: 0.55;              /* viditeľné ale neruší */
-  filter: none;               /* ✅ žiadne čiernobiele */
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Header ako “timing board” */
-.globeLegendHeader{
-  position: relative;
-  z-index: 2;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(8px);
-}
-
-.glhDot{
-  width:10px;height:10px;border-radius:999px;
-  background: var(--red);
-  box-shadow: 0 0 18px rgba(179,31,36,0.65);
-}
-
-.glhTitle{
-  font-weight: 1000;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-size: 11px;
-  color: rgba(255,255,255,0.92);
-}
-
-.glhHint{
-  margin-left:auto;
-  font-weight: 1000;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-size: 10px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(179,31,36,0.45);
-  background: rgba(179,31,36,0.14);
-  color: #fff;
-}
-
-/* ticker okno */
-.globeTicker{
-  position: relative;
-  z-index: 2;
-  margin-top: 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.34);
-  overflow: hidden;
-}
-
-/* scanline feel */
-.globeTicker::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.28;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.00) 0px,
-      rgba(255,255,255,0.00) 10px,
-      rgba(255,255,255,0.06) 11px
-    );
-}
-
-/* track sa pohybuje */
-.globeTickerTrack{
-  display:flex;
-  gap: 14px;
-  padding: 10px 10px;
-  width: max-content;
-  animation: globeMarquee 18s linear infinite;
-  will-change: transform;
-}
-
-/* pauza na hover (profi) */
-.globeTicker:hover .globeTickerTrack{
-  animation-play-state: paused;
-}
-
-/* jeden “riadok” je mini tabuľka */
-.globeTickerRow{
-  display:grid;
-  grid-template-columns: 46px 120px 150px 170px;
-  align-items:center;
-  gap:10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-}
-
-.glCell{
-  font-size: 11px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.82);
-  white-space: nowrap;
-}
-
-/* “code” ako v pretekoch */
-.glCell--code{
-  text-align:center;
-  font-weight: 1100;
-  color:#fff;
-  padding: 8px 0;
-  border-radius: 10px;
-  border: 1px solid rgba(179,31,36,0.55);
-  background: rgba(179,31,36,0.14);
-  box-shadow: 0 0 18px rgba(179,31,36,0.18);
-}
-
-.glCell--place{
-  color:#fff;
-  font-weight: 1000;
-}
-
-.glCell--team{
-  color: rgba(255,255,255,0.90);
-  font-weight: 900;
-}
-
-/* animácia sprava doľava */
-@keyframes globeMarquee{
-  0%{ transform: translateX(18%); }
-  100%{ transform: translateX(-52%); }
-}
-
-/* mobil: nech to netlačí */
-@media (max-width: 980px){
-  .globeLegendLogo{ width: min(360px, 92%); opacity: 0.5; }
-  .globeTickerRow{ grid-template-columns: 44px 110px 130px 160px; }
-}
-@media (max-width: 560px){
-  .globeTickerTrack{ animation-duration: 22s; }
-  .globeTickerRow{ grid-template-columns: 42px 100px 120px 150px; }
-}
 
   </style>
 </head>
@@ -1997,86 +1830,19 @@
     <div class="globeOverlay" aria-hidden="true"></div>
   </div>
 
-  <div class="globeLegend globeLegend--ticker" aria-label="RACEM Group locations">
-  <!-- veľké logo ako watermark -->
+  <div class="globeLegend globeLegend--brand">
   <img
     src="https://racem.sk/assets/rmgroup.png"
     alt="RACEM Group"
     class="globeLegendLogo"
-    loading="lazy"
-    decoding="async"
   />
 
-  <!-- “race board” header -->
-  <div class="globeLegendHeader">
-    <span class="glhDot" aria-hidden="true"></span>
-    <span class="glhTitle">RACEM GROUP NETWORK</span>
-    <span class="glhHint">LIVE</span>
+  <div class="globeLegendText">
+    <div><b>Bratislava</b> — HQ</div>
+    <div><b>Japan</b> — VeilSide</div>
+    <div><b>Germany</b> — CSR Automotive</div>
+    <div><b>USA</b> — Streetfighter LA</div>
   </div>
-
-  <!-- ticker (scroll right -> left) -->
-  <div class="globeTicker" role="marquee" aria-hidden="false">
-    <div class="globeTickerTrack">
-      <div class="globeTickerRow">
-        <span class="glCell glCell--code">HQ</span>
-        <span class="glCell glCell--country">SLOVAKIA</span>
-        <span class="glCell glCell--place">Bratislava</span>
-        <span class="glCell glCell--team">HQ</span>
-      </div>
-
-      <div class="globeTickerRow">
-        <span class="glCell glCell--code">JP</span>
-        <span class="glCell glCell--country">JAPAN</span>
-        <span class="glCell glCell--place">Tokyo</span>
-        <span class="glCell glCell--team">VeilSide</span>
-      </div>
-
-      <div class="globeTickerRow">
-        <span class="glCell glCell--code">DE</span>
-        <span class="glCell glCell--country">GERMANY</span>
-        <span class="glCell glCell--place">Frankfurt</span>
-        <span class="glCell glCell--team">CSR Automotive</span>
-      </div>
-
-      <div class="globeTickerRow">
-        <span class="glCell glCell--code">US</span>
-        <span class="glCell glCell--country">USA</span>
-        <span class="glCell glCell--place">Los Angeles</span>
-        <span class="glCell glCell--team">Streetfighter LA</span>
-      </div>
-
-      <!-- DUPLIKÁT pre plynulý loop (nech sa to netrhá) -->
-      <div class="globeTickerRow" aria-hidden="true">
-        <span class="glCell glCell--code">HQ</span>
-        <span class="glCell glCell--country">SLOVAKIA</span>
-        <span class="glCell glCell--place">Bratislava</span>
-        <span class="glCell glCell--team">HQ</span>
-      </div>
-
-      <div class="globeTickerRow" aria-hidden="true">
-        <span class="glCell glCell--code">JP</span>
-        <span class="glCell glCell--country">JAPAN</span>
-        <span class="glCell glCell--place">Tokyo</span>
-        <span class="glCell glCell--team">VeilSide</span>
-      </div>
-
-      <div class="globeTickerRow" aria-hidden="true">
-        <span class="glCell glCell--code">DE</span>
-        <span class="glCell glCell--country">GERMANY</span>
-        <span class="glCell glCell--place">Frankfurt</span>
-        <span class="glCell glCell--team">CSR Automotive</span>
-      </div>
-
-      <div class="globeTickerRow" aria-hidden="true">
-        <span class="glCell glCell--code">US</span>
-        <span class="glCell glCell--country">USA</span>
-        <span class="glCell glCell--place">Los Angeles</span>
-        <span class="glCell glCell--team">Streetfighter LA</span>
-      </div>
-    </div>
-  </div>
-</div>
-
 </div>
 
 </div>
