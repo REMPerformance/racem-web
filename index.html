@@ -2882,14 +2882,13 @@
 
   if (!canvas) throw new Error("Missing #racemGlobe");
 
-  // ✅ anim state
-  let phi = 0;
-  let t = 0;
 
-  // pulz parametre
-  const BASE = 0.085;
-  const AMP  = 0.035;
-  const SPEED = 0.075;
+   // ✅ anim state (otáčanie glóbusu necháme)
+  let phi = 0;
+
+  // ✅ pevná veľkosť bodov (bez pulzu)
+  const MARKER_SIZE = 0.095;
+
 
   const THETA = 0.22;
 
@@ -2996,20 +2995,17 @@
       glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
       markerColor: [0.95, 0.32, 0.34],
 
-      // ✅ pulzujúce bodky priamo v COBe
-      markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: BASE })),
+           // ✅ pevné bodky (bez animácie)
+      markers: LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: MARKER_SIZE })),
 
       onRender: (state) => {
-        phi += 0.0032;
-        t += SPEED;
-
+        phi += 0.0032;      // glóbus sa môže točiť
         state.phi = phi;
 
-        state.markers = LOCATIONS.map((l, i) => {
-          const wave = (Math.sin(t + i * 0.9) + 1) / 2; // 0..1
-          return { location: [l.lat, l.lon], size: BASE + AMP * wave };
-        });
+        // držíme marker size fixne (žiadny pulz)
+        state.markers = LOCATIONS.map(l => ({ location: [l.lat, l.lon], size: MARKER_SIZE }));
       }
+
     });
 
     canvas.addEventListener("mousemove", (e) => {
