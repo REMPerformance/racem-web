@@ -1832,12 +1832,13 @@ updateVariantPrice();
       }
     }
 
-   function buildVariantChips(){
+   ffunction buildVariantChips(){
   if (!mVariantList) return;
   mVariantList.innerHTML = "";
 
   const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
+  // keď produkt nemá varianty
   if (!vars.length){
     const chip = document.createElement("div");
     chip.className = "vChip active";
@@ -1851,6 +1852,7 @@ updateVariantPrice();
     return;
   }
 
+  // keď varianty existujú
   vars.forEach((v, i) => {
     const chip = document.createElement("div");
     chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
@@ -1877,20 +1879,6 @@ updateVariantPrice();
   });
 }
 
-
-      vars.forEach((v, i) => {
-        const chip = document.createElement("div");
-        chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-        const label = `${v.name || "Variant"} • ${v.material || "Material"}${v.type ? " • " + v.type : ""}`;
-        chip.textContent = label.toUpperCase();
-        chip.addEventListener("click", () => {
-          activeVariantIndex = i;
-          setActiveChip(i);
-          updateVariantPrice();
-        });
-        mVariantList.appendChild(chip);
-      });
-    }
 
     function setActiveChip(index){
       $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
