@@ -884,21 +884,24 @@
 }
 .zoomHint{
   position:absolute;
-  right:14px;
-  bottom:14px;
-  padding: 8px 10px;
+  top:14px;
+  left:50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
   border-radius: 999px;
   font-family:"Oswald", system-ui, sans-serif;
   font-size: 12px;
-  letter-spacing:.18em;
+  letter-spacing:.22em;
   text-transform: uppercase;
   color:#fff;
   background: rgba(0,0,0,0.55);
   border:1px solid rgba(255,255,255,0.14);
   backdrop-filter: blur(10px);
   pointer-events:none;
-  opacity:.85;
+  opacity:.88;
+  z-index:7;
 }
+
 
 
 .mImg img{
@@ -978,6 +981,14 @@
       gap: 12px;
     }
 
+    .mInfoTop{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  margin-bottom: 6px;
+}
+
+    
     .mTitle{
       margin:0;
       font-family:"Oswald", system-ui, sans-serif;
@@ -1304,6 +1315,10 @@
   .pCard::before{ display:none; }
   .pCard:hover{ border-color: rgba(179,31,36,0.65); }
 }
+.mInfoTop .ribbon{
+  position: static;
+}
+.ribbon::after{ display:none; }
 
   </style>
 </head>
@@ -1443,12 +1458,14 @@
 
       <div class="modalBody">
         <div class="mImg">
-  <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
 
   <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
   <button class="imgNav next" id="mNext" type="button" aria-label="Ďalší">›</button>
 
-  <img id="mImg" src="" alt="Product image">
+
+          <div class="zoomHint" id="zoomHint">KLIKNI PRE ZVÄČŠENIE</div>
+<img id="mImg" src="" alt="Product image">
+
   <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
 
   <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
@@ -1457,9 +1474,12 @@
 
         <div class="mInfo">
 
-          <div class="mDesc" id="mDesc"></div>
+          <div class="mInfoTop">
+  <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
+</div>
 
-          <div class="zoomHint">klikni pre zväčšenie</div>
+
+          <div class="mDesc" id="mDesc"></div>
 
           <div>
             <div class="mLabel">Variant / materiál</div>
@@ -2008,16 +2028,17 @@ updateVariantPrice();
     chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
 
     const name = (v.name || v.type || "Variant").toUpperCase();
-    const mat  = (v.material || "Material").toUpperCase();
-    const typ  = (v.type || "").toUpperCase();
+   const matRaw = (v.material || "").trim();
+const typ  = (v.type || "").toUpperCase();
 
-    chip.innerHTML = `
-      <span class="vMain">${escapeHtml(name)}</span>
-      <span class="vMeta">
-        <span class="badge">${escapeHtml(mat)}</span>
-        ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
-      </span>
-    `;
+chip.innerHTML = `
+  <span class="vMain">${escapeHtml(name)}</span>
+  <span class="vMeta">
+    ${matRaw ? `<span class="badge">${escapeHtml(matRaw.toUpperCase())}</span>` : ``}
+    ${typ ? `<span class="badge">${escapeHtml(typ)}</span>` : ``}
+  </span>
+`;
+
 
     chip.addEventListener("click", () => {
       activeVariantIndex = i;
