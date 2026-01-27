@@ -499,26 +499,39 @@
 }
 
 /* “shine sweep” */
+/* “glass highlight” – statický šikmý lesk */
 .bigGalleryCta::before{
   content:"";
   position:absolute;
-  top:-40%;
-  left:-35%;
-  width: 55%;
-  height: 180%;
-  transform: rotate(18deg);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.10),
-    rgba(255,255,255,0.18),
-    rgba(255,255,255,0.08),
-    transparent
-  );
-  opacity: 0;
-  transition: opacity .25s ease, transform .55s ease;
+  inset:-2px;
+  border-radius: inherit;
   z-index:0;
   pointer-events:none;
+
+  /* šikmý “sklenený” odlesk */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.00) 0%,
+      rgba(255,255,255,0.04) 18%,
+      rgba(255,255,255,0.14) 34%,
+      rgba(255,255,255,0.06) 52%,
+      rgba(255,255,255,0.00) 70%
+    );
+
+  /* posun tak, aby to vyzeralo ako reálny odlesk */
+  transform: translateX(-14%) translateY(-6%) rotate(0.001deg);
+  opacity: .85;
+
+  /* žiadna animácia */
+  transition: opacity .2s ease, filter .2s ease;
+  filter: blur(0.2px);
+}
+
+/* hover = len trošku viac “polished” */
+.bigGalleryCta:hover::before{
+  opacity: 1;
+  filter: blur(0.0px);
 }
 
 /* red glow layer */
@@ -543,10 +556,6 @@
     inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
-.bigGalleryCta:hover::before{
-  opacity: 1;
-  transform: translateX(120%) rotate(18deg);
-}
 
 .bigGalleryCta:hover::after{
   opacity: 1;
