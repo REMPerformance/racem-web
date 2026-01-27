@@ -388,6 +388,53 @@
       box-shadow: 0 18px 44px rgba(179,31,36,0.26);
     }
 
+    /* ===== HERO CTA – čitateľnejšie, výraznejšie ===== */
+.ctaRow--hero{
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.ctaRow--hero .btn{
+  padding: 16px 22px;       /* ✅ väčšie */
+  font-size: 14px;          /* ✅ čitateľnejšie */
+  letter-spacing: .08em;    /* ✅ menej "rozstrieľané" */
+  border-radius: 14px;
+}
+
+.ctaRow--hero .btnPrimary{
+  box-shadow: 0 22px 60px rgba(179,31,36,0.22);
+}
+
+.ctaRow--hero .btnGhost{
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.ctaRow--hero .btnGhost:hover{
+  border-color: rgba(179,31,36,0.35);
+  background: rgba(255,255,255,0.06);
+}
+
+.ctaHint{
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.72);
+  max-width: 720px;
+}
+
+/* mobil */
+@media (max-width: 980px){
+  .ctaRow--hero .btn{
+    font-size: 13px;
+    padding: 14px 18px;
+    letter-spacing: .07em;
+  }
+  .ctaHint{ font-size: 13px; }
+}
+
+
     .heroCard{
       background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.65));
       border: 1px solid rgba(255,255,255,0.08);
@@ -1833,10 +1880,14 @@
           </div>
         </div>
 
-        <div class="ctaRow">
-          <a class="btn btnPrimary" href="#kontakt">Kontakt</a>
-          <a class="btn btnGhost" href="katalog.html">Katalóg dielov</a>
-        </div>
+        <div class="ctaRow ctaRow--hero">
+  <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
+  <a class="btn btnGhost btnArrow" href="katalog.html">Katalóg dielov <span class="arr">→</span></a>
+</div>
+
+<div class="ctaHint">
+  Napíš nám čo riešiš – kompatibilitu a dostupnosť preveríme za teba.
+</div>
       </div>
 
      <!-- RIGHT (GLOBE PANEL) -->
