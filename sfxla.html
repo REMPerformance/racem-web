@@ -1701,6 +1701,139 @@ input[readonly]:focus{
   border-color: rgba(255,255,255,0.12);
 }
 
+    /* ===========================
+   ORDER FORM – facelift
+   =========================== */
+
+.orderIntro{
+  margin: 0 0 14px 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(179,31,36,0.18), transparent 60%),
+    rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.82);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.orderDivider{
+  height:1px;
+  width:100%;
+  background: rgba(255,255,255,0.10);
+  margin: 12px 0 14px;
+}
+
+.orderSummary{
+  grid-column: 1 / -1;
+  padding: 14px;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(179,31,36,0.16), transparent 60%),
+    linear-gradient(180deg, rgba(18,18,18,0.92), rgba(10,10,10,0.85));
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+}
+
+.orderSummaryHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 10px;
+}
+
+.orderSummaryHead b{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.22em;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: rgba(255,255,255,0.88);
+}
+
+.orderSummaryHead .mini{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.20em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255,255,255,0.60);
+}
+
+.orderSummaryGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 560px){
+  .orderSummaryGrid{ grid-template-columns: 1fr; }
+}
+
+.roField input[readonly]{
+  background: rgba(0,0,0,0.30);
+  border:1px solid rgba(255,255,255,0.12);
+  opacity: 1;
+}
+
+.roField label{
+  color: rgba(255,255,255,0.60);
+  font-size: 12px;
+  letter-spacing:.22em;
+}
+
+.consent{
+  grid-column: 1 / -1;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+}
+
+.consent input[type="checkbox"]{
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--red);
+}
+
+.consentText{
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.78);
+}
+
+.formActions{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.btnSend{
+  background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
+  border-color: rgba(255,255,255,0.16);
+  box-shadow: 0 18px 70px rgba(179,31,36,0.22), 0 18px 70px rgba(0,0,0,0.55);
+  padding: 14px 18px;
+  border-radius: 16px;
+}
+
+.btnSend:hover{
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(255,255,255,0.22);
+  background: linear-gradient(180deg, rgba(199,45,50,0.98), rgba(140,20,24,0.94));
+}
+
+.btnSend:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none !important;
+  filter:none;
+}
+
   </style>
 </head>
 
@@ -1946,95 +2079,117 @@ input[readonly]:focus{
 </div>
 
   <!-- ORDER FORM MODAL -->
-  <div class="modal" id="orderModal" aria-hidden="true">
-    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Order form">
-      <div class="modalHead">
-        <b>Objednávka / dopyt</b>
-        <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
+<div class="modal" id="orderModal" aria-hidden="true">
+  <div class="modalCard" role="dialog" aria-modal="true" aria-label="Objednávkový formulár">
+    <div class="modalHead">
+      <b>Objednávkový formulár</b>
+      <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
+    </div>
+
+    <div style="padding:14px;">
+
+      <div class="orderIntro">
+        Toto je <b>nezáväzná objednávka</b>. Pre dokončenie objednávky ťa bude kontaktovať <b>TEAM RACEM</b>
+        cez poskytnuté osobné údaje (telefonicky alebo e-mailom).
       </div>
 
-      <div style="padding:14px;">
+      <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
+        <!-- skrytý “order blob” aby prišlo všetko pekne v emaili -->
+        <input type="hidden" id="orderBlob" name="order_blob" value="">
 
-       <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
-  <!-- skrytý “order blob” aby prišlo aj keď niekto vymaže textarea -->
-  <input type="hidden" id="orderBlob" name="order_blob" value="">
+        <div class="formGrid">
+          <div>
+            <label for="name">Meno</label>
+            <input id="name" name="name" type="text" required placeholder="Meno">
+          </div>
 
-  <div class="formGrid">
-    <div>
-      <label for="name">Meno</label>
-      <input id="name" name="name" type="text" required placeholder="Meno">
+          <div>
+            <label for="phone">Telefón</label>
+            <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
+          </div>
+
+          <div>
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" required placeholder="racem@...">
+          </div>
+
+          <div>
+            <label for="address">Adresa doručenia</label>
+            <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
+          </div>
+
+          <div class="full">
+            <label for="car">Vozidlo (pre overenie kompatibility)</label>
+            <input id="car" name="car" type="text" placeholder="Napr. BMW E46 323i 1998">
+          </div>
+
+          <div class="full">
+            <label for="customer_note">Poznámka zákazníka</label>
+            <textarea id="customer_note" name="customer_note" placeholder="Napíš čo je dôležité (rok, facelift, verzia, detail želania)..."></textarea>
+          </div>
+
+          <div class="orderDivider full"></div>
+
+          <!-- ✅ SUMÁR objednávky (readonly) -->
+          <div class="orderSummary">
+            <div class="orderSummaryHead">
+              <b>Sumár objednávky</b>
+              <div class="mini">automaticky vyplnené</div>
+            </div>
+
+            <div class="orderSummaryGrid">
+              <div class="roField">
+                <label>Výrobca</label>
+                <input id="o_manufacturer" name="manufacturer" readonly>
+              </div>
+
+              <div class="roField">
+                <label>Diel</label>
+                <input id="o_product" name="product" readonly>
+              </div>
+
+              <div class="roField">
+                <label>Variant</label>
+                <input id="o_variant" name="variant" readonly>
+              </div>
+
+              <div class="roField">
+                <label>Cena</label>
+                <input id="o_price" name="price" readonly>
+              </div>
+
+              <div class="roField">
+                <label>Doprava</label>
+                <input id="o_shipping" name="shipping" readonly>
+              </div>
+
+              <div class="roField">
+                <label>Dodanie</label>
+                <input id="o_delivery" name="delivery" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- ✅ Povinný checkbox -->
+          <div class="consent">
+            <input id="consent" name="consent" type="checkbox" required>
+            <div class="consentText">
+              Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
+              <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
+            </div>
+          </div>
+        </div>
+
+        <div class="formActions">
+          <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
+          <button class="btn btnSend" id="sendBtn" type="submit" disabled>Odoslať</button>
+        </div>
+      </form>
+
     </div>
-
-    <div>
-      <label for="phone">Telefón</label>
-      <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
-    </div>
-
-    <div>
-      <label for="email">E-mail</label>
-      <input id="email" name="email" type="email" required placeholder="racem@...">
-    </div>
-
-    <div>
-      <label for="address">Adresa doručenia</label>
-      <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
-    </div>
-
-    <div class="full">
-      <label for="car">Vozidlo (pre overenie kompatibility)</label>
-      <input id="car" name="car" type="text" placeholder="Napr. BMW e46 323i 1998">
-    </div>
-
-    <div class="full">
-      <label for="customer_note">Poznámka zákazníka</label>
-      <textarea id="customer_note" name="customer_note" placeholder="Poznámka"></textarea>
-    </div>
-
-  <div class="full">
-  <label>Objednávka</label>
-</div>
-
-<div>
-  <label>Výrobca</label>
-  <input id="o_manufacturer" name="manufacturer" readonly>
-</div>
-
-<div>
-  <label>Diel</label>
-  <input id="o_product" name="product" readonly>
-</div>
-
-<div>
-  <label>Variant</label>
-  <input id="o_variant" name="variant" readonly>
-</div>
-
-<div>
-  <label>Cena</label>
-  <input id="o_price" name="price" readonly>
-</div>
-
-<div>
-  <label>Doprava</label>
-  <input id="o_shipping" name="shipping" readonly>
-</div>
-
-<div>
-  <label>Dodanie</label>
-  <input id="o_delivery" name="delivery" readonly>
-</div>
-
   </div>
+</div>
 
-  <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-    <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
-    <button class="btn" type="submit">Odoslať</button>
-  </div>
-</form>
-
-      </div>
-    </div>
-  </div>
 
 
   <footer style="border-top:1px solid rgba(255,255,255,0.08); padding:40px 0;">
@@ -2669,20 +2824,51 @@ if (customerNote){
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
+    const orderForm = $("#orderForm");
+const consent = $("#consent");
+const sendBtn = $("#sendBtn");
+
 
    function openOrderModal(){
   closeModal(productModal);
   if (!orderModal) return;
 
-  // reset customer note pri každom otvorení
   const cn = $("#customer_note");
   if (cn) cn.value = "";
+
+  if (consent) consent.checked = false;
+  if (sendBtn) sendBtn.disabled = true;
+
+  buildOrderBlob();
 
   orderModal.classList.add("show");
   orderModal.setAttribute("aria-hidden","false");
   setTimeout(()=> $("#name")?.focus(), 50);
 }
+if (consent && sendBtn){
+  consent.addEventListener("change", () => {
+    sendBtn.disabled = !consent.checked;
+  });
+}
 
+if (orderForm){
+  orderForm.addEventListener("submit", (e) => {
+    // poistka: required checkbox + disabled button (aj keby niekto hackol)
+    if (consent && !consent.checked){
+      e.preventDefault();
+      consent.focus();
+      return;
+    }
+    buildOrderBlob(); // posledné prepočítanie pred odoslaním
+  });
+}
+
+// keď niekto píše poznámku/auto, nech sa blob udržiava
+$("#customer_note")?.addEventListener("input", buildOrderBlob);
+$("#car")?.addEventListener("input", buildOrderBlob);
+
+
+  
 
     if (mOrder) mOrder.addEventListener("click", openOrderModal);
     if (closeOrderModal) closeOrderModal.addEventListener("click", () => closeModal(orderModal));
@@ -2738,15 +2924,22 @@ Poznámka (dopíš rok/facelift/verziu):`;
       console.log("SFXLA products loaded:", DATA.products.length);
     })();
 
-    /* hidden blob – pre Formspree email */
-if (blob){
-  blob.value =
-`Výrobca: ${manufacturer}
-Diel: ${activeProduct.title || "—"}
-Variant: ${variantName}
-Cena: ${base !== null ? fmtEUR(base) : "UPRESNÍME"}
-Doprava: ${ship ? fmtEUR(ship) : "PODĽA DOHODY"}
-Dodanie: ${delivery}`;
+
+    function buildOrderBlob(){
+  const lines = [
+    `Výrobca: ${$("#o_manufacturer")?.value || "—"}`,
+    `Diel: ${$("#o_product")?.value || "—"}`,
+    `Variant: ${$("#o_variant")?.value || "—"}`,
+    `Cena: ${$("#o_price")?.value || "—"}`,
+    `Doprava: ${$("#o_shipping")?.value || "—"}`,
+    `Dodanie: ${$("#o_delivery")?.value || "—"}`,
+    ``,
+    `Vozidlo: ${$("#car")?.value || ""}`,
+    `Poznámka: ${$("#customer_note")?.value || ""}`
+  ].join("\n");
+
+  const blob = $("#orderBlob");
+  if (blob) blob.value = lines;
 }
 
     /* ===========================
