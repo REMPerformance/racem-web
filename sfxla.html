@@ -305,6 +305,19 @@
       position:relative;
       overflow:hidden;
     }
+    /* Panel OFF – nech ostane iba CTA button */
+.panel.panelClear{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.panel.panelClear::after{
+  display:none !important;
+}
+
     .panel::after{
       content:"";
       position:absolute; left:-60px; top:-60px;
@@ -1672,7 +1685,7 @@
           </p>
         </div>
 
-        <div class="panel">
+        <div class="panel panelClear">
           <button class="bigGalleryCta" id="openMegaGallery" type="button">
   <div class="label">OTVORIŤ GALÉRIU</div>
   <div class="arrow">→</div>
