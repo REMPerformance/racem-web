@@ -1624,24 +1624,31 @@
   position: relative;
 }
 
-    /* ===== RACEM GROUP watermark za zemegulou ===== */
+  /* ===== RACEM GROUP watermark (MUSÍ byť NAD canvasom) ===== */
 .globeBrandWatermark{
   position:absolute;
   left:50%;
   top:50%;
   transform: translate(-50%, -50%) scale(1.05);
+
   width: 86%;
   max-width: 560px;
-  opacity: 0.18;               /* jemné, aby nekradlo pozornosť */
+
+  opacity: 0.14;                 /* jemné */
   filter: grayscale(100%) contrast(1.15);
+  mix-blend-mode: screen;         /* aby to pekne presvitalo cez tmavé */
   pointer-events:none;
-  z-index: 0;                  /* za canvasom */
+
+  z-index: 2;                     /* ✅ NAD canvasom */
 }
 
-/* canvas musí byť NAD watermarkom */
+/* canvas pod watermarkom */
 #racemGlobe{
   position: relative;
   z-index: 1;
+  width:100%;
+  height:100%;
+  display:block;
 }
 
 /* tooltip vždy navrchu */
@@ -1976,11 +1983,6 @@
           </div>
         </div>
 
-        <div class="heroCtaBox">
-  <div class="heroCtaTop">
-    <div class="heroCtaTitle">Rýchlo vybavíme dopyt</div>
-    <div class="heroCtaSub">Napíš čo riešiš — kompatibilitu a dostupnosť overí náš tím.</div>
-  </div>
 
   <div class="heroCtaBtns">
     <a class="btn btnPrimary btnArrow" href="#kontakt">Nezáväzný dopyt <span class="arr">→</span></a>
