@@ -1947,35 +1947,53 @@
           Vyplň údaje. <b>Poznámka</b> je už predvyplnená podľa dielu/variantu.
         </p>
 
-        <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
-          <div class="formGrid">
-            <div>
-              <label for="name">Meno a priezvisko</label>
-              <input id="name" name="name" type="text" required placeholder="Např. Lukáš Tonkovič">
-            </div>
-            <div>
-              <label for="phone">Telefón</label>
-              <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
-            </div>
-            <div>
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" required placeholder="racem@...">
-            </div>
-            <div>
-              <label for="car">Auto (voliteľné)</label>
-              <input id="car" name="car" type="text" placeholder="BMW E46, rok, facelift...">
-            </div>
-            <div class="full">
-              <label for="message">Poznámka (predvyplnené)</label>
-              <textarea id="message" name="message" required></textarea>
-            </div>
-          </div>
+       <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
+  <!-- skrytý “order blob” aby prišlo aj keď niekto vymaže textarea -->
+  <input type="hidden" id="orderBlob" name="order_blob" value="">
 
-          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-            <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
-            <button class="btn" type="submit">Odoslať</button>
-          </div>
-        </form>
+  <div class="formGrid">
+    <div>
+      <label for="name">Meno a priezvisko</label>
+      <input id="name" name="name" type="text" required placeholder="Napr. Lukáš Tonkovič">
+    </div>
+
+    <div>
+      <label for="phone">Telefón</label>
+      <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
+    </div>
+
+    <div>
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required placeholder="racem@...">
+    </div>
+
+    <div>
+      <label for="address">Adresa doručenia</label>
+      <input id="address" name="address" type="text" required placeholder="Ulica, číslo, mesto, PSČ, krajina">
+    </div>
+
+    <div class="full">
+      <label for="car">Vozidlo (overenie kompatibility)</label>
+      <input id="car" name="car" type="text" placeholder="BMW E46 330i, 2004, facelift/preface, karoséria...">
+    </div>
+
+    <div class="full">
+      <label for="customer_note">Poznámka zákazníka</label>
+      <textarea id="customer_note" name="customer_note" placeholder="Napíš čokoľvek dôležité: rok, verziu, M-paket, požiadavky, montáž..."></textarea>
+    </div>
+
+    <div class="full">
+      <label for="message">Nezáväzná objednávka</label>
+      <textarea id="message" name="message" required readonly></textarea>
+    </div>
+  </div>
+
+  <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+    <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
+    <button class="btn" type="submit">Odoslať</button>
+  </div>
+</form>
+
       </div>
     </div>
   </div>
@@ -2547,23 +2565,39 @@ function buildVariantChips(){
   const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
   const status = getStockStatus(activeProduct);
 
-  const note =
-`OBJEDNÁVKA – Streetfighter LA
-Auto: ${car}
+  const manufacturer = "Streetfighter LA";
+const note =
+`OBJEDNÁVKA – ${manufacturer}
 Diel: ${activeProduct.title || "—"}
 Variant: ${variantName}
-Dostupnosť: ${stockLabel(status)}
-Cena: ${base !== null ? fmtEUR(base) : "upresníme"}
-Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}
+Cena: ${base !== null ? fmtEUR(base) : "UPRESNÍME"}
+Doprava: ${ship ? fmtEUR(ship) : "PODĽA DOHODY"}
 Dodanie: ${delivery}
 
-Poznámka (dopíš rok/facelift/verziu):`;
+Vozidlo (overenie kompatibility): ${car}
+
+Poznámka zákazníka: (dopíš vyššie do poľa “Poznámka zákazníka”)`;
+
 
   const msg = $("#message");
-  const carInput = $("#car");
-  if (msg) msg.value = note;
-  if (carInput) carInput.value = car;
+const carInput = $("#car");
+const blob = $("#orderBlob");
+const customerNote = $("#customer_note");
+
+if (msg) msg.value = note;
+if (carInput) carInput.value = car;
+
+// hidden poistka: vždy pošli aj komplet order text
+if (blob) blob.value = note;
+
+// keď zákazník píše poznámku, udrž “order blob” aktuálny
+if (customerNote){
+  customerNote.oninput = () => {
+    const extra = `\n\n---\nPOZNÁMKA ZÁKAZNÍKA:\n${customerNote.value || ""}`;
+    if (blob) blob.value = note + extra;
+  };
 }
+
 
 
     function closeModal(modal){
@@ -2604,13 +2638,19 @@ Poznámka (dopíš rok/facelift/verziu):`;
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
 
-    function openOrderModal(){
-      closeModal(productModal);
-      if (!orderModal) return;
-      orderModal.classList.add("show");
-      orderModal.setAttribute("aria-hidden","false");
-      setTimeout(()=> $("#name")?.focus(), 50);
-    }
+   function openOrderModal(){
+  closeModal(productModal);
+  if (!orderModal) return;
+
+  // reset customer note pri každom otvorení
+  const cn = $("#customer_note");
+  if (cn) cn.value = "";
+
+  orderModal.classList.add("show");
+  orderModal.setAttribute("aria-hidden","false");
+  setTimeout(()=> $("#name")?.focus(), 50);
+}
+
 
     if (mOrder) mOrder.addEventListener("click", openOrderModal);
     if (closeOrderModal) closeOrderModal.addEventListener("click", () => closeModal(orderModal));
