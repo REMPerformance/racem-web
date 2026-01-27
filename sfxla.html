@@ -481,8 +481,10 @@
   /* “glass + depth” */
   border: 1px solid rgba(255,255,255,0.14);
   background:
-    radial-gradient(circle at 20% 15%, rgba(179,31,36,0.22), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.35));
+  linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
   box-shadow:
     0 18px 70px rgba(0,0,0,0.55),
     inset 0 1px 0 rgba(255,255,255,0.10);
@@ -503,30 +505,25 @@
 .bigGalleryCta::before{
   content:"";
   position:absolute;
-  inset:-2px;
+  inset:-1px;
   border-radius: inherit;
-  z-index:0;
   pointer-events:none;
+  z-index:0;
 
-  /* šikmý “sklenený” odlesk */
+  /* REAL glass highlight */
   background:
     linear-gradient(
-      135deg,
-      rgba(255,255,255,0.00) 0%,
-      rgba(255,255,255,0.04) 18%,
-      rgba(255,255,255,0.14) 34%,
-      rgba(255,255,255,0.06) 52%,
-      rgba(255,255,255,0.00) 70%
+      120deg,
+      rgba(255,255,255,0.00) 20%,
+      rgba(255,255,255,0.18) 35%,
+      rgba(255,255,255,0.08) 45%,
+      rgba(255,255,255,0.00) 60%
     );
 
-  /* posun tak, aby to vyzeralo ako reálny odlesk */
-  transform: translateX(-14%) translateY(-6%) rotate(0.001deg);
-  opacity: .85;
-
-  /* žiadna animácia */
-  transition: opacity .2s ease, filter .2s ease;
-  filter: blur(0.2px);
+  opacity: .9;
+  mix-blend-mode: screen;
 }
+
 
 /* hover = len trošku viac “polished” */
 .bigGalleryCta:hover::before{
@@ -535,31 +532,16 @@
 }
 
 /* red glow layer */
-.bigGalleryCta::after{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background: radial-gradient(circle at 25% 50%, rgba(179,31,36,0.28), transparent 60%);
-  opacity:.0;
-  transition: opacity .25s ease;
-  z-index:0;
-  pointer-events:none;
-}
 
 .bigGalleryCta:hover{
-  transform: translateY(-3px);
   border-color: rgba(179,31,36,0.55);
-  filter: brightness(1.03);
   box-shadow:
     0 22px 84px rgba(0,0,0,0.70),
-    0 0 28px rgba(179,31,36,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.12);
+    0 0 22px rgba(179,31,36,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 
-.bigGalleryCta:hover::after{
-  opacity: 1;
-}
 
 .bigGalleryCta:active{
   transform: translateY(-1px) scale(0.995);
