@@ -449,66 +449,152 @@
       display:inline-block;
     }
 
-    /* Big gallery CTA */
-    .bigGalleryCta{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: 18px 18px;
-      border-radius: 18px;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,0.14);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.22), transparent 55%),
-        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.20));
-      box-shadow: 0 18px 70px rgba(0,0,0,0.55);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease, filter .18s ease;
-    }
-    .bigGalleryCta:hover{
-      transform: translateY(-3px);
-      border-color: rgba(179,31,36,0.45);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.32), transparent 60%),
-        linear-gradient(180deg, rgba(179,31,36,0.18), rgba(0,0,0,0.18));
-      filter: brightness(1.03);
-    }
-    .bigGalleryCta .left{ display:flex; flex-direction:column; gap:6px; }
-    .bigGalleryCta .kicker{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.20em;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: rgba(255,255,255,0.70);
-    }
-    .bigGalleryCta .title{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size: 22px;
-      color:#fff;
-      line-height:1.05;
-    }
-    .bigGalleryCta .sub{
-      color: rgba(255,255,255,0.72);
-      font-size: 13.5px;
-      line-height:1.55;
-    }
-    .bigGalleryCta .arrow{
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.35);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 20px;
-      letter-spacing:.18em;
-      box-shadow:0 18px 50px rgba(0,0,0,0.40);
-      flex:0 0 auto;
-    }
+    /* ===========================
+   UIverse-style CTA (RACEM)
+   =========================== */
+
+.bigGalleryCta{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  padding: 18px 18px;
+  border-radius: 20px;
+  text-decoration:none;
+  cursor:pointer;
+
+  /* “glass + depth” */
+  border: 1px solid rgba(255,255,255,0.14);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(179,31,36,0.22), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.35));
+  box-shadow:
+    0 18px 70px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    filter .18s ease,
+    box-shadow .18s ease;
+}
+
+/* “shine sweep” */
+.bigGalleryCta::before{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-35%;
+  width: 55%;
+  height: 180%;
+  transform: rotate(18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.08),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity .25s ease, transform .55s ease;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* red glow layer */
+.bigGalleryCta::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(circle at 25% 50%, rgba(179,31,36,0.28), transparent 60%);
+  opacity:.0;
+  transition: opacity .25s ease;
+  z-index:0;
+  pointer-events:none;
+}
+
+.bigGalleryCta:hover{
+  transform: translateY(-3px);
+  border-color: rgba(179,31,36,0.55);
+  filter: brightness(1.03);
+  box-shadow:
+    0 22px 84px rgba(0,0,0,0.70),
+    0 0 28px rgba(179,31,36,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.bigGalleryCta:hover::before{
+  opacity: 1;
+  transform: translateX(120%) rotate(18deg);
+}
+
+.bigGalleryCta:hover::after{
+  opacity: 1;
+}
+
+.bigGalleryCta:active{
+  transform: translateY(-1px) scale(0.995);
+}
+
+/* text */
+.bigGalleryCta .label{
+  position:relative;
+  z-index:1;
+
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.22em;
+  text-transform: uppercase;
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height:1.05;
+  color:#fff;
+
+  /* subtle “engraved” */
+  text-shadow: 0 18px 40px rgba(0,0,0,0.80);
+}
+
+/* arrow capsule */
+.bigGalleryCta .arrow{
+  position:relative;
+  z-index:1;
+
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.40);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size: 22px;
+  color:#fff;
+
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.bigGalleryCta:hover .arrow{
+  transform: translateX(4px);
+  border-color: rgba(179,31,36,0.55);
+  background: rgba(179,31,36,0.18);
+}
+
+/* mobile tweaks */
+@media (max-width: 560px){
+  .bigGalleryCta{ padding: 16px 14px; border-radius: 18px; }
+  .bigGalleryCta .arrow{ width: 50px; height: 50px; border-radius: 16px; }
+}
 
     .divider{
       height:1px;
@@ -1588,13 +1674,10 @@
 
         <div class="panel">
           <button class="bigGalleryCta" id="openMegaGallery" type="button">
-            <div class="left">
-              <div class="kicker">STREETFIGHTER LA</div>
-              <div class="title">OTVORIŤ GALÉRIU</div>
-              <div class="sub">Buildy, detaily, widebody. Klikni a pozri všetko na jednej stránke.</div>
-            </div>
-            <div class="arrow">→</div>
-          </button>
+  <div class="label">OTVORIŤ GALÉRIU</div>
+  <div class="arrow">→</div>
+</button>
+
 
           <div class="gallery" id="gallery">
             <div class="gItem" data-full="assets/sfxla-gallery/1.jpg" title="Open">
