@@ -1689,6 +1689,17 @@
   from{ background-position:0% 0%; }
   to{ background-position:200% 0%; }
 }
+input[readonly]{
+  opacity: .85;
+  cursor: default;
+  background: rgba(255,255,255,0.04);
+}
+
+input[readonly]:focus{
+  outline: none;
+  box-shadow: none;
+  border-color: rgba(255,255,255,0.12);
+}
 
   </style>
 </head>
@@ -1943,9 +1954,6 @@
       </div>
 
       <div style="padding:14px;">
-        <p style="margin:0 0 10px; color:rgba(255,255,255,0.78); line-height:1.6;">
-          Vyplň údaje. <b>Poznámka</b> je už predvyplnená podľa dielu/variantu.
-        </p>
 
        <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
   <!-- skrytý “order blob” aby prišlo aj keď niekto vymaže textarea -->
@@ -1953,8 +1961,8 @@
 
   <div class="formGrid">
     <div>
-      <label for="name">Meno a priezvisko</label>
-      <input id="name" name="name" type="text" required placeholder="Napr. Lukáš Tonkovič">
+      <label for="name">Meno</label>
+      <input id="name" name="name" type="text" required placeholder="Meno">
     </div>
 
     <div>
@@ -1969,23 +1977,53 @@
 
     <div>
       <label for="address">Adresa doručenia</label>
-      <input id="address" name="address" type="text" required placeholder="Ulica, číslo, mesto, PSČ, krajina">
+      <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
     </div>
 
     <div class="full">
-      <label for="car">Vozidlo (overenie kompatibility)</label>
-      <input id="car" name="car" type="text" placeholder="BMW E46 330i, 2004, facelift/preface, karoséria...">
+      <label for="car">Vozidlo (pre overenie kompatibility)</label>
+      <input id="car" name="car" type="text" placeholder="Napr. BMW e46 323i 1998">
     </div>
 
     <div class="full">
       <label for="customer_note">Poznámka zákazníka</label>
-      <textarea id="customer_note" name="customer_note" placeholder="Napíš čokoľvek dôležité: rok, verziu, M-paket, požiadavky, montáž..."></textarea>
+      <textarea id="customer_note" name="customer_note" placeholder="Poznámka"></textarea>
     </div>
 
-    <div class="full">
-      <label for="message">Nezáväzná objednávka</label>
-      <textarea id="message" name="message" required readonly></textarea>
-    </div>
+  <div class="full">
+  <label>Objednávka</label>
+</div>
+
+<div>
+  <label>Výrobca</label>
+  <input id="o_manufacturer" name="manufacturer" readonly>
+</div>
+
+<div>
+  <label>Diel</label>
+  <input id="o_product" name="product" readonly>
+</div>
+
+<div>
+  <label>Variant</label>
+  <input id="o_variant" name="variant" readonly>
+</div>
+
+<div>
+  <label>Cena</label>
+  <input id="o_price" name="price" readonly>
+</div>
+
+<div>
+  <label>Doprava</label>
+  <input id="o_shipping" name="shipping" readonly>
+</div>
+
+<div>
+  <label>Dodanie</label>
+  <input id="o_delivery" name="delivery" readonly>
+</div>
+
   </div>
 
   <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
@@ -2565,38 +2603,32 @@ function buildVariantChips(){
   const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
   const status = getStockStatus(activeProduct);
 
-  const manufacturer = "Streetfighter LA";
-const note =
-`OBJEDNÁVKA – ${manufacturer}
-Diel: ${activeProduct.title || "—"}
-Variant: ${variantName}
-Cena: ${base !== null ? fmtEUR(base) : "UPRESNÍME"}
-Doprava: ${ship ? fmtEUR(ship) : "PODĽA DOHODY"}
-Dodanie: ${delivery}
+const manufacturer = "Streetfighter LA";
 
-Vozidlo (overenie kompatibility): ${car}
-
-Poznámka zákazníka: (dopíš vyššie do poľa “Poznámka zákazníka”)`;
+$("#o_manufacturer").value = manufacturer;
+$("#o_product").value = activeProduct.title || "—";
+$("#o_variant").value = variantName;
+$("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
+$("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
+$("#o_delivery").value = delivery;
 
 
   const msg = $("#message");
+  const blob = $("#orderBlob");
 const carInput = $("#car");
-const blob = $("#orderBlob");
 const customerNote = $("#customer_note");
 
-if (msg) msg.value = note;
 if (carInput) carInput.value = car;
 
-// hidden poistka: vždy pošli aj komplet order text
-if (blob) blob.value = note;
 
 // keď zákazník píše poznámku, udrž “order blob” aktuálny
 if (customerNote){
   customerNote.oninput = () => {
-    const extra = `\n\n---\nPOZNÁMKA ZÁKAZNÍKA:\n${customerNote.value || ""}`;
-    if (blob) blob.value = note + extra;
+    if (!blob) return;
+    blob.value += `\n\nPOZNÁMKA ZÁKAZNÍKA:\n${customerNote.value || ""}`;
   };
 }
+
 
 }
 
@@ -2660,7 +2692,6 @@ if (customerNote){
     const openGeneralForm = $("#openGeneralForm");
     if (openGeneralForm){
       openGeneralForm.addEventListener("click", () => {
-        const msg = $("#message");
         const car = $("#car");
         if (msg){
           msg.value =
@@ -2706,6 +2737,17 @@ Poznámka (dopíš rok/facelift/verziu):`;
       renderAll();
       console.log("SFXLA products loaded:", DATA.products.length);
     })();
+
+    /* hidden blob – pre Formspree email */
+if (blob){
+  blob.value =
+`Výrobca: ${manufacturer}
+Diel: ${activeProduct.title || "—"}
+Variant: ${variantName}
+Cena: ${base !== null ? fmtEUR(base) : "UPRESNÍME"}
+Doprava: ${ship ? fmtEUR(ship) : "PODĽA DOHODY"}
+Dodanie: ${delivery}`;
+}
 
     /* ===========================
    MEGA GALLERY (8 áut) LOGIC
