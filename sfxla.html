@@ -1632,6 +1632,63 @@
     /* aby fullscreen fotka bola vždy NAD mega galériou */
 #megaGalleryModal{ z-index: 1100; }
 #galleryModal{ z-index: 1200; }
+/* ===============================
+   PRODUCT CARD = CTA BUTTON STYLE
+   (identické ako "Otvoriť galériu")
+   =============================== */
+
+/* reset všetkého fancy */
+.pCard{
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color .25s ease;
+}
+
+/* ZRUŠ všetky staré efekty */
+.pCard::before,
+.pCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* animovaný outline – rovnaký trik ako CTA */
+.pCard::before{
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(179,31,36,.9),
+      transparent 70%
+    );
+  opacity:0;
+  transition: opacity .25s ease;
+}
+
+/* hover = len rozsvietený okraj */
+.pCard:hover{
+  border-color: rgba(179,31,36,.55);
+}
+
+.pCard:hover::before{
+  opacity:1;
+  animation: ctaSweep 1.2s linear infinite;
+}
+
+/* žiadny pohyb, žiadny zoom */
+.pCard *{
+  transform:none !important;
+  transition:none !important;
+}
+
+/* rovnaká animácia ako CTA */
+@keyframes ctaSweep{
+  from{ background-position:0% 0%; }
+  to{ background-position:200% 0%; }
+}
 
   </style>
 </head>
