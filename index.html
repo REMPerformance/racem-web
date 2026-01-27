@@ -1910,6 +1910,27 @@
   .heroCtaBox{ padding: 14px; }
   .heroCtaSub{ font-size: 13px; }
 }
+/* ===== RACEM GROUP BG LOGO (NEROZHADZUJE LAYOUT) ===== */
+.rmgroup-bg{
+  position: fixed;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  width: min(1200px, 92vw);
+  height: auto;
+
+  opacity: 0.14;              /* ak chceš silnejšie: 0.18 */
+  pointer-events: none;
+  user-select: none;
+
+  z-index: -3;                /* pod obsahom, nad grid/noise */
+  mix-blend-mode: normal;     /* nech ostane vo farbe */
+  filter: saturate(1.1) contrast(1.05);
+}
+
+/* poradie vrstiev */
+.bg{ z-index: -6; }
+.noise{ z-index: -5; }
 
   </style>
 </head>
@@ -1917,6 +1938,8 @@
   <body id="top">
   <div class="bg"></div>
   <div class="noise"></div>
+    <img class="rmgroup-bg" src="assets/rmgroup.png" alt="" aria-hidden="true">
+
 
   <div class="topbar">
     <div class="wrap nav nav-centered">
@@ -1985,7 +2008,7 @@
 
 
   <div class="heroCtaBtns">
-    <a class="btn btnPrimary btnArrow" href="#kontakt">Nezáväzný dopyt <span class="arr">→</span></a>
+    <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
     <a class="btn btnGhost btnArrow" href="katalog.html">Katalóg dielov <span class="arr">→</span></a>
     <a class="btn btnGhost btnArrow" href="#bodykity">Bodykity <span class="arr">→</span></a>
   </div>
@@ -1997,7 +2020,7 @@
 <div class="heroPanel reveal globePanel" aria-label="RACEM globe">
   <div class="globeWrap globeWrap--big">
     <canvas id="racemGlobe"></canvas>
-     <img class="globeBrandWatermark" src="assets/rmgroup.png" alt="" aria-hidden="true">
+     
 
     <!-- tooltip -->
     <div class="globeTip" id="globeTip" aria-hidden="true">
