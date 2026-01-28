@@ -338,7 +338,11 @@
     }
 
     /* ====== HERO ====== */
-    .hero{padding:40px 0 80px}
+    .hero{
+  padding:40px 0 80px;
+  position: relative;         /* ✅ kotva pre absolute globus */
+  overflow: visible;          /* ✅ nech môže ísť mimo */
+}
     .hero-grid{
   display:grid;
   grid-template-columns: 1.15fr .85fr;
@@ -346,13 +350,26 @@
   align-items:center; 
 }
 
-    .heroPanel.globePanel{
-  position: relative;
-  display:flex;
-  justify-content:flex-end;
-  align-items:flex-start;
-  padding:0;
+    /* ===== FORCE GLOBE TO TOP-RIGHT OF VIEWPORT AREA ===== */
+.heroPanel.globePanel{
+  position: absolute !important;
+  top: -70px !important;        /* hore */
+  right: -260px !important;     /* mimo stránky doprava */
+  width: 980px !important;
+  height: 980px !important;
+
+  display:block !important;
+  padding:0 !important;
+  margin:0 !important;
+
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+
+  overflow: visible !important;
+  z-index: 6 !important;        /* nad pozadím */
 }
+
 
     .headline{
   display:flex;
@@ -1609,27 +1626,17 @@
 .globeWrap{
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
 }
+
 
 /* ✅ BIG ZOOMED GLOBE – nech ide mimo obrazovky (vpravo hore) */
 .globeWrap--big{
-  position: relative;
-
-  width: 820px;              /* 🔥 VEĽKÝ */
-  height: 820px;
-
-  margin: 0;                 /* ❌ žiadne auto centrovanie */
-
-  transform: translate(14vw, -12vh) scale(1.25); /* 🔥 VPRAVO + HORE + ZOOM */
-  transform-origin: top right;
-
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-
-  overflow: visible !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
 }
+
 
 
   /* ===== RACEM GROUP watermark (MUSÍ byť NAD canvasom) ===== */
@@ -1941,6 +1948,18 @@
 .bg{ z-index: -6; }
 .noise{ z-index: -5; }
 
+
+    @media (max-width: 980px){
+  .heroPanel.globePanel{
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 520px !important;
+    height: 520px !important;
+    margin: 0 auto !important;
+  }
+  .headline{ padding-right: 0 !important; }
+}
   </style>
 </head>
 
