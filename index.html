@@ -1932,21 +1932,29 @@
 /* ===== RACEM GROUP BG LOGO (NEROZHADZUJE LAYOUT) ===== */
 .rmgroup-bg{
   position: fixed;
-  left: 50%;
-  top: 60%;
+  left: 72%;                 /* 👉 viac doprava */
+  top: 78%;                  /* 🔽 viac dole (pod zemeguľu vibe) */
   transform: translate(-50%, -50%);
-  width: min(1200px, 92vw);
+
+  width: min(780px, 62vw);   /* 🔽 menšie */
   height: auto;
 
-  opacity: 0.14;              /* ak chceš silnejšie: 0.18 */
+  opacity: 0.12;
   pointer-events: none;
   user-select: none;
 
-  z-index: -3;                /* pod obsahom, nad grid/noise */
-  mix-blend-mode: normal;     /* nech ostane vo farbe */
+  z-index: -3;               /* stále pod obsahom */
+  mix-blend-mode: normal;
   filter: saturate(1.1) contrast(1.05);
 }
-
+@media (max-width: 980px){
+  .rmgroup-bg{
+    left: 62%;
+    top: 72%;
+    width: min(520px, 86vw);
+    opacity: 0.10;
+  }
+}
 /* poradie vrstiev */
 .bg{ z-index: -6; }
 .noise{ z-index: -5; }
