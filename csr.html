@@ -272,7 +272,10 @@
     // const IMAGE_BASE = "https://cdn.racem.sk";
 
     // 2) Odkiaľ berieme produkty:
-    const DATA_URL = "csr-products.json"; // bude v rovnakom priečinku ako csr.html
+    const DATA_URLS = [
+  "data/csr-products.part1.json",
+  "data/csr-products.part2.json"
+];
 
     // 3) Preferované názvy súborov (čo sa bude skúšať ako hlavný obrázok)
     const MAIN_IMAGE_CANDIDATES = (code) => ([
@@ -329,16 +332,21 @@
       return `${IMAGE_BASE}/csr/${encodeURIComponent(code)}/${encodeURIComponent(filename)}`;
     }
 
-    async function loadProducts(){
-      const res = await fetch(DATA_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`Nepodarilo sa načítať ${DATA_URL} (${res.status})`);
-      const json = await res.json();
-      // očakávame: { products: [...] }
-      PRODUCTS = Array.isArray(json.products) ? json.products : [];
-      els.countPill.textContent = PRODUCTS.length.toString();
-      buildCategoryOptions(PRODUCTS);
-      applyFilters();
-    }
+   async function loadProducts(){
+  const parts = await Promise.all(
+    DATA_URLS.map(async (u) => {
+      const res = await fetch(u, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Nepodarilo sa načítať ${u} (${res.status})`);
+      return res.json();
+    })
+  );
+
+  PRODUCTS = parts.flatMap(p => Array.isArray(p.products) ? p.products : []);
+  els.countPill.textContent = PRODUCTS.length.toString();
+  buildCategoryOptions(PRODUCTS);
+  applyFilters();
+}
+
 
     function buildCategoryOptions(items){
       const cats = Array.from(new Set(items.map(p => p.category).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
