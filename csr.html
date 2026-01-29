@@ -243,23 +243,85 @@
       justify-content:flex-end;
     }
 
-    /* Footer */
-    footer{
-      border-top:1px solid rgba(255,255,255,0.08);
-      padding:40px 0;
+    /* ===== Filter UI ===== */
+    .filters{
+      margin-top: 10px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .sel{
+      appearance:none;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(15,15,15,0.72);
+      color: rgba(255,255,255,0.86);
+      padding: 11px 14px;
+      border-radius: 14px;
+      font-family: "Oswald", system-ui, sans-serif;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-size: 14px;
+      outline:none;
+      min-width: 240px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .sel:hover{ transform: translateY(-1px); border-color: rgba(179,31,36,0.55); }
+    .sel:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .hint{
+      color: rgba(255,255,255,0.58);
+      font-size: 13px;
+      line-height:1.6;
+      max-width: 780px;
+      margin-top: 10px;
     }
 
+    /* Demo results (len aby si videl filter funguje) */
+    .results{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    .card{
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(20,20,20,0.55);
+      border-radius:16px;
+      padding:14px;
+    }
+    .card b{
+      display:block;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    .card span{ color: rgba(255,255,255,0.72); font-size: 14px; }
     @media (max-width: 980px){
       .wrap{ padding:0 18px; }
       section{ padding: 76px 0; }
       .nav{ padding: 14px 18px; }
       .heroInner{ padding: 0 18px 30px; }
+      .results{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sel{ min-width: 200px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
+      .results{ grid-template-columns: 1fr; }
+      .sel{ width: 100%; min-width: unset; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation:none !important; transition:none !important; }
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding:40px 0;
     }
   </style>
 </head>
@@ -293,6 +355,22 @@
           Toto je čistý základ bez značiek, produktov, galérií a modálov.
           Sem si doplníš vlastný obsah.
         </p>
+
+        <!-- ✅ FILTER UI (značka + model) -->
+        <div class="filters" aria-label="Filter áut">
+          <select class="sel" id="make">
+            <option value="">Značka: všetko</option>
+          </select>
+
+          <select class="sel" id="model" disabled>
+            <option value="">Model: všetko</option>
+          </select>
+        </div>
+
+        <div class="hint">
+          Modely sa plnia dynamicky podľa toho, čo je v produktoch. Keď mi pošleš Excel,
+          spravíme to 1:1 podľa reálnych modelov v tabuľke.
+        </div>
       </div>
     </div>
   </section>
@@ -303,6 +381,9 @@
         <div class="pill"><span class="dot"></span>Sekcia 1</div>
         <h2>Obsah</h2>
         <p>Sem si vlož text / karty / čokoľvek.</p>
+
+        <!-- Demo výsledky len aby si videl filter funguje -->
+        <div class="results" id="results"></div>
       </div>
     </div>
   </section>
@@ -342,7 +423,173 @@
   </footer>
 
   <script>
-    // Blank JS – sem si doplníš vlastnú logiku
+    /* =========================
+       1) ZNAČKY (presne ako na obrázku)
+    ========================= */
+    const MAKES = [
+      "ALFA ROMEO","ASTON MARTIN","AUDI","BENTLEY","BMW","BYD",
+      "CADILLAC","CHEVROLET","CITROEN","CUPRA","DACIA","DAIHATSU",
+      "DFSK","DODGE","FERRARI","FIAT","FORD","GENESIS",
+      "GWM ORA","HONDA","HUSQVARNA","HYUNDAI","INFINITI","JAGUAR",
+      "JEEP","KIA","LAMBORGHINI","LANCIA","LAND ROVER","LUCID",
+      "LYNK & CO","MASERATI","MAZDA","MERCEDES BENZ","MG","MINI",
+      "MITSUBISHI","NIO","NISSAN","OPEL","PEUGEOT","POLESTAR",
+      "PORSCHE","RENAULT","SAAB","SEAT","SKODA","SMART",
+      "SUBARU","SUZUKI","TESLA","TOYOTA","VOLVO","VW"
+    ];
+
+    /* =========================
+       2) DEMO DATA – len aby si videl funkciu filtra hneď
+       Nahradíš to tvojím JSON/Excel importom.
+    ========================= */
+    const DATA = {
+      products: [
+        { id:"p1", title:"Predná lipa", manufacturer:"BMW", model:"E46" },
+        { id:"p2", title:"Difúzor", manufacturer:"BMW", models:["E90","E92"] },
+        { id:"p3", title:"Prahy", manufacturer:"AUDI", model:"A4 B8" },
+        { id:"p4", title:"Splitter", manufacturer:"SKODA", model:"Octavia 3" },
+        { id:"p5", title:"Lipa", manufacturer:"VW", model:"Golf 7" }
+      ]
+    };
+
+    /* =========================
+       3) HELPERS
+    ========================= */
+    function norm(s){ return String(s ?? "").trim(); }
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // (Voliteľné) Núdzovka: keď nemáš v produktoch manufacturer/model,
+    // tak vieš skúsiť vytiahnuť "BMW E46" z title. Toto nepoužívaj ako finále.
+    function applyCarTagFromTitle(p){
+      if (p.manufacturer && (p.model || (Array.isArray(p.models) && p.models.length))) return p;
+
+      const t = norm(p.title);
+      if(!t) return p;
+
+      // jednoduché: nájdi značku podľa listu
+      const upper = t.toUpperCase();
+      const make = MAKES.find(m => upper.includes(m));
+      if(!make) return p;
+
+      // model: zober zvyšok za značkou (hrubo)
+      const idx = upper.indexOf(make);
+      let rest = t.slice(idx + make.length).trim();
+      rest = rest.replace(/^[-–—:]+/,"").trim();
+      if(rest.length > 0){
+        p.manufacturer = make;
+        p.model = rest.slice(0, 22); // limit, aby sa to nerozbilo úplne
+      }
+      return p;
+    }
+
+    /* =========================
+       4) BUILD ZNAČKA -> MODELY (len tie čo reálne existujú v DATA.products)
+    ========================= */
+    function buildMakeModelOptions(){
+      const makeSel = document.querySelector("#make");
+      const modelSel = document.querySelector("#model");
+      if(!makeSel || !modelSel) return;
+
+      const map = new Map();
+
+      (DATA.products || []).forEach(pp => {
+        const p = applyCarTagFromTitle({ ...pp });
+
+        const make = norm(p.manufacturer);
+        if(!make) return;
+
+        const models =
+          Array.isArray(p.models) ? p.models :
+          (p.model ? [p.model] : []);
+
+        if(!map.has(make)) map.set(make, new Set());
+        models.map(norm).filter(Boolean).forEach(m => map.get(make).add(m));
+      });
+
+      // značky z obrázka, ale len tie ktoré majú aspoň 1 produkt (inak by to bolo plné prázdnych volieb)
+      const availableMakes = MAKES.filter(m => map.has(m)).sort((a,b)=>a.localeCompare(b,"sk"));
+
+      makeSel.innerHTML =
+        `<option value="">Značka: všetko</option>` +
+        availableMakes.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+
+      modelSel.innerHTML = `<option value="">Model: všetko</option>`;
+      modelSel.disabled = true;
+
+      makeSel.onchange = () => {
+        const make = makeSel.value;
+        modelSel.innerHTML = `<option value="">Model: všetko</option>`;
+
+        if(!make){
+          modelSel.disabled = true;
+          renderAll();
+          return;
+        }
+
+        const models = Array.from(map.get(make) || []).sort((a,b)=>a.localeCompare(b,"sk"));
+        modelSel.innerHTML += models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+        modelSel.disabled = false;
+
+        renderAll();
+      };
+
+      modelSel.onchange = () => renderAll();
+    }
+
+    /* =========================
+       5) FILTER PRODUCTS (značka + model)
+    ========================= */
+    function getFilteredProducts(){
+      const make = document.querySelector("#make")?.value || "";
+      const model = document.querySelector("#model")?.value || "";
+
+      return (DATA.products || []).map(p=>applyCarTagFromTitle({ ...p })).filter(p => {
+        if (make && norm(p.manufacturer) !== make) return false;
+
+        if (model){
+          const models = Array.isArray(p.models) ? p.models : (p.model ? [p.model] : []);
+          if (!models.map(norm).includes(model)) return false;
+        }
+        return true;
+      });
+    }
+
+    /* =========================
+       6) RENDER (demo výpis)
+    ========================= */
+    function renderAll(){
+      const box = document.querySelector("#results");
+      if(!box) return;
+
+      const items = getFilteredProducts();
+      if(!items.length){
+        box.innerHTML = `<div class="card"><b>Žiadne výsledky</b><span>Pre tento filter nemáš produkty.</span></div>`;
+        return;
+      }
+
+      box.innerHTML = items.map(p => {
+        const make = escapeHtml(p.manufacturer || "—");
+        const model = escapeHtml(p.model || (Array.isArray(p.models) ? p.models.join(", ") : "—"));
+        return `
+          <div class="card">
+            <b>${escapeHtml(p.title || "Produkt")}</b>
+            <span>${make} • ${model}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // INIT
+    buildMakeModelOptions();
+    renderAll();
   </script>
 </body>
 </html>
