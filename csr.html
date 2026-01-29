@@ -488,6 +488,25 @@ select:disabled{
       white-space:nowrap;
     }
 
+    /* chip pre platform/chassis kódy (E46, B5, W204...) */
+.codeChip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(179,31,36,0.28);
+  background: rgba(179,31,36,0.10);
+  color: rgba(255,255,255,0.88);
+  font-size: 12px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  font-family:"Oswald", system-ui, sans-serif;
+  white-space:nowrap;
+  box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset;
+}
+
+
     .title{
       font-family:"Oswald", system-ui, sans-serif;
       text-transform: uppercase;
@@ -511,12 +530,13 @@ select:disabled{
       color: rgba(255,255,255,0.72);
       font-size: 13px;
     }
-    .meta span{
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      padding: 6px 10px;
-      border-radius: 999px;
-    }
+   /* default chip iba pre "obyčajné" span-y v meta (modelBase) */
+.meta > span:not(.priceChip):not(.codeChip){
+  border:1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
 
     .stock{
       margin-top:10px;
@@ -1080,22 +1100,82 @@ select:disabled{
       .replaceAll("'","&#039;");
   }
 
-  function getFitments(p){
-    if (Array.isArray(p.fitments) && p.fitments.length) return p.fitments;
+   function isChassisCode(tok){
+  const t = normKey(tok);
 
-    const mk = norm(p.carMake || p.make || "");
-    const md = norm(p.carModel || p.model || "");
-    if (mk) return [{ make: mk, model: md }];
+  // BMW chassis: E46, E36, F10, G20...
+  if (/^[EFG]\d{2,3}$/.test(t)) return true;
 
-    return [{ make: "UNIVERZÁLNE", model: "" }];
+  // Mercedes chassis: W204, W205...
+  if (/^W\d{3}$/.test(t)) return true;
+
+  // Platform kódy typu B5, B6, 8P, 8V, 6R atď. (jedno/dvojpísmeno + číslo)
+  if (/^[A-Z]{1,2}\d{1,2}$/.test(t) && t !== "A4" && t !== "A3" && t !== "A6") return true;
+
+  // Špeciálne: ZB014, FM005, FA005... (ty si riešil, že toto nechceš v modeli)
+  if (/^[A-Z]{2}\d{3}$/.test(t)) return true;
+
+  return false;
+}
+
+function parseModelParts(modelStr){
+  const raw = norm(modelStr);
+  if (!raw) return { base: "", code: "" };
+
+  // rozbi na tokeny
+  const tokens = raw.split(/[\s,\/\-]+/).filter(Boolean);
+
+  // ak je to rovno chassis (BMW E46/E36...) -> base = E46, code = ""
+  if (tokens.length === 1 && isChassisCode(tokens[0])) {
+    return { base: tokens[0], code: "" };
   }
+
+  const base = tokens[0]; // filter chce len toto (A4, Passat, Golf, C63...)
+  const codes = tokens.slice(1).filter(isChassisCode);
+
+  return { base, code: codes.join(" ") };
+}
+
+
+ function getFitments(p){
+  // 1) preferuj fitments
+  if (Array.isArray(p.fitments) && p.fitments.length){
+    return p.fitments.map(f => {
+      const mk = norm(f.make || f.carMake || f.vyrobca || "");
+      const mdRaw = norm(f.model || f.carModel || f.modelRaw || "");
+      const parts = parseModelParts(mdRaw);
+      return {
+        make: mk || "UNIVERZÁLNE",
+        modelBase: parts.base || mdRaw || "",
+        modelCode: parts.code || "",
+        modelRaw: mdRaw || parts.base || ""
+      };
+    });
+  }
+
+  // 2) fallback carMake / carModel
+  const mk = norm(p.carMake || p.make || "");
+  const mdRaw = norm(p.carModel || p.model || "");
+  if (mk){
+    const parts = parseModelParts(mdRaw);
+    return [{
+      make: mk,
+      modelBase: parts.base || mdRaw || "",
+      modelCode: parts.code || "",
+      modelRaw: mdRaw || parts.base || ""
+    }];
+  }
+
+  return [{ make: "UNIVERZÁLNE", modelBase: "", modelCode: "", modelRaw: "" }];
+}
+
 
   function buildIndex(products){
     INDEX = new Map();
     for (const p of products){
       for (const f of getFitments(p)){
         const make = normKey(f.make || "UNIVERZÁLNE");
-        const model = norm(f.model || "");
+        const model = norm(f.modelBase || f.model || "");
         if (!INDEX.has(make)) INDEX.set(make, new Set());
         INDEX.get(make).add(model);
       }
@@ -1115,8 +1195,8 @@ select:disabled{
   if (!make){
     els.model.disabled = true;
     els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
+    if (els.modelLabel) els.modelLabel.firstChild.nodeValue = "Model ";
     if (els.modelHint) els.modelHint.textContent = "(najprv vyber značku)";
-    if (els.modelLabel) els.modelLabel.innerHTML = `Model <span class="hint" id="modelHint">(najprv vyber značku)</span>`;
     return;
   }
 
@@ -1130,8 +1210,10 @@ select:disabled{
     models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
 
   // label + hint
-  if (els.modelLabel) els.modelLabel.textContent = `Model pre ${make}`;
+  if (els.modelLabel) els.modelLabel.firstChild.nodeValue = `Model pre ${make} `;
+  if (els.modelHint) els.modelHint.textContent = "(klikni a vyber)";
 }
+
 
 
   function renderBrandGrid(activeMake){
@@ -1171,7 +1253,7 @@ setTimeout(() => {
     if (model){
       const okModel = fits.some(f =>
         normKey(f.make || "UNIVERZÁLNE") === make &&
-        norm(f.model || "") === model
+        norm(f.modelBase || f.model || "") === model
       );
       if (!okModel) return false;
     }
@@ -1220,9 +1302,12 @@ setTimeout(() => {
       const sku = escapeHtml(skuRaw);
       const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
 
-      const f0 = getFitments(p)[0] || { make: "UNIVERZÁLNE", model: "" };
-      const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
-      const model = escapeHtml(norm(f0.model || "—"));
+      const f0 = getFitments(p)[0] || { make: "UNIVERZÁLNE", modelBase: "", modelCode: "" };
+const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
+
+const modelBase = escapeHtml(norm(f0.modelBase || "—"));
+const modelCode = escapeHtml(norm(f0.modelCode || ""));
+
 
       const priceNum = (p.price != null && !Number.isNaN(Number(p.price))) ? Number(p.price) : null;
       const currency = escapeHtml(p.currency || "EUR");
@@ -1275,9 +1360,11 @@ setTimeout(() => {
           <div class="title">${name}</div>
 
           <div class="meta">
-            <span>${model}</span>
-            ${price ? `<span class="priceChip"><small>Cena</small> <strong>${escapeHtml(price)}</strong></span>` : ``}
-          </div>
+  <span>${modelBase}</span>
+  ${modelCode ? `<span class="codeChip">${modelCode}</span>` : ``}
+  ${price ? `<span class="priceChip"><small>Cena</small> <strong>${escapeHtml(price)}</strong></span>` : ``}
+</div>
+
 
           <div class="stock">
             <span class="badge ${stockClass}">${stockLabel}</span>
@@ -1408,8 +1495,10 @@ setTimeout(() => {
           <div class="fitList" aria-label="Vozidlá">
             ${fits.map(f => {
               const mk = normKey(f.make || "UNIVERZÁLNE");
-              const md = norm(f.model || "");
-              return `<span>${escapeHtml(mk)}${md ? " • " + escapeHtml(md) : ""}</span>`;
+              const base = norm(f.modelBase || f.model || "");
+const code = norm(f.modelCode || "");
+return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ? " • " + escapeHtml(code) : ""}</span>`;
+
             }).join("")}
           </div>
         </div>
