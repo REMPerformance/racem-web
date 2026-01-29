@@ -16,28 +16,34 @@
     *{box-sizing:border-box}
     body{
       margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(900px 500px at 20% -10%, rgba(179,31,36,.18), transparent 60%),
-                  radial-gradient(700px 400px at 90% 0%, rgba(255,209,102,.10), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(900px 500px at 20% -10%, rgba(179,31,36,.18), transparent 60%),
+        radial-gradient(700px 400px at 90% 0%, rgba(255,209,102,.10), transparent 55%),
+        var(--bg);
       color:var(--text);
     }
     a{color:inherit}
     .wrap{max-width:1200px;margin:0 auto;padding:22px}
+
     .topbar{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       padding:14px 16px; border:1px solid var(--line); background:rgba(16,20,26,.72);
       border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter: blur(10px);
       position:sticky; top:12px; z-index:20;
     }
-    .brand{display:flex; gap:12px; align-items:center}
+    .brand{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px; border-radius:999px; background:rgba(179,31,36,.12);
       border:1px solid rgba(179,31,36,.35);
-      color:var(--text); font-weight:700; letter-spacing:.3px;
+      color:var(--text); font-weight:800; letter-spacing:.3px;
     }
-    .pill small{color:var(--muted); font-weight:600}
-    .controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .pill small{color:var(--muted); font-weight:700}
+    .pill.gray{background:rgba(255,255,255,.05);border-color:var(--line); font-weight:800}
+
+    .controls{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end
+    }
     .input, .select{
       background:rgba(15,19,24,.9);
       border:1px solid var(--line);
@@ -51,18 +57,38 @@
     .btn{
       border:1px solid rgba(179,31,36,.45);
       background:linear-gradient(180deg, rgba(179,31,36,.95), rgba(141,16,20,.95));
-      color:white; font-weight:800;
+      color:white; font-weight:900;
       padding:10px 14px; border-radius:12px;
       cursor:pointer;
       box-shadow: 0 10px 26px rgba(179,31,36,.22);
+      transition: transform .12s ease, filter .12s ease;
     }
+    .btn:hover{transform: translateY(-1px); filter:brightness(1.05)}
     .btn.secondary{
       background:rgba(15,19,24,.9);
       border:1px solid var(--line);
       color:var(--text);
       box-shadow:none;
     }
-    .meta{margin:18px 2px 14px; color:var(--muted); display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(15,19,24,.75);
+      color:var(--muted); font-weight:800;
+      user-select:none;
+    }
+    .chip input{accent-color: var(--red)}
+    .meta{
+      margin:18px 2px 14px;
+      color:var(--muted);
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .meta .left, .meta .right{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .small{font-size:.9rem;color:var(--muted)}
+
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -89,12 +115,12 @@
     }
     .thumb img{width:100%; height:100%; object-fit:cover; display:block}
     .content{padding:12px 14px; display:flex; flex-direction:column; gap:8px; flex:1}
-    .title{font-weight:900; letter-spacing:.2px; line-height:1.2}
+    .title{font-weight:950; letter-spacing:.2px; line-height:1.2}
     .sub{color:var(--muted); font-size:.92rem; line-height:1.2}
     .row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:auto}
-    .price{font-weight:900}
+    .price{font-weight:950}
     .badge{
-      font-size:.78rem; font-weight:800;
+      font-size:.78rem; font-weight:900;
       border-radius:999px; padding:6px 10px;
       border:1px solid var(--line);
       color:var(--muted);
@@ -105,6 +131,10 @@
     .badge.warn{border-color: rgba(255,209,102,.35); color: #fff1c2; background:rgba(255,209,102,.08)}
     .badge.no{border-color: rgba(179,31,36,.35); color: #ffd1d4; background:rgba(179,31,36,.08)}
     .footerNote{margin:18px 2px 0; color:var(--muted); font-size:.9rem}
+
+    /* Load more */
+    .loadWrap{margin:16px 0; display:flex; justify-content:center}
+    .loadInfo{margin-top:8px; text-align:center; color:var(--muted); font-size:.9rem}
 
     /* Modal */
     .overlay{
@@ -175,7 +205,6 @@
       white-space: pre-wrap;
     }
     .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:auto}
-    .small{font-size:.9rem;color:var(--muted)}
 
     @media (max-width: 1100px){
       .card{grid-column: span 4}
@@ -200,31 +229,68 @@
     <div class="topbar">
       <div class="brand">
         <div class="pill">RACEM <small>CSR katalóg</small></div>
-        <div class="pill" style="background:rgba(255,255,255,.05);border-color:var(--line)">
-          <span id="countPill">0</span> <small>produktov</small>
-        </div>
+        <div class="pill gray"><span id="countPill">0</span> <small>produktov</small></div>
+        <div class="pill gray"><span id="resultPill">0</span> <small>výsledkov</small></div>
+        <div class="pill gray"><span id="shownPill">0</span> <small>zobrazené</small></div>
       </div>
+
       <div class="controls">
         <input id="q" class="input" placeholder="Hľadať (kód, názov, kategória)..." />
+
         <select id="cat" class="select">
           <option value="">Všetky kategórie</option>
         </select>
+
         <select id="stock" class="select">
           <option value="">Sklad (všetko)</option>
           <option value="in">Skladom</option>
           <option value="out">Nedostupné</option>
           <option value="unknown">Neznáme</option>
         </select>
+
+        <select id="sort" class="select">
+          <option value="relevance">Zoradiť: relevancia</option>
+          <option value="price_asc">Cena ↑</option>
+          <option value="price_desc">Cena ↓</option>
+          <option value="title_asc">Názov A→Z</option>
+          <option value="title_desc">Názov Z→A</option>
+        </select>
+
+        <label class="chip" title="Zobraziť len produkty, ktoré majú aspoň 1 obrázok v JSON">
+          <input type="checkbox" id="onlyImgs" />
+          Len s obrázkami
+        </label>
+
+        <label class="chip" title="Zobraziť len produkty s vyplnenou cenou">
+          <input type="checkbox" id="onlyPrice" />
+          Len s cenou
+        </label>
+
         <button id="reload" class="btn secondary" title="Znovu načítať dáta">Reload</button>
       </div>
     </div>
 
     <div class="meta">
-      <div>Zdroj obrázkov: <span class="pill" style="padding:6px 10px;background:rgba(255,255,255,.05);border-color:var(--line)"><span id="imgBaseLabel"></span></span></div>
-      <div class="small">Tip: neskôr len zmeníš IMAGE_BASE na <b>https://cdn.racem.sk</b></div>
+      <div class="left">
+        <div>Zdroj obrázkov:
+          <span class="pill gray" style="padding:6px 10px">
+            <span id="imgBaseLabel"></span>
+          </span>
+        </div>
+        <div class="small">Tip: neskôr len zmeníš IMAGE_BASE na <b>https://cdn.racem.sk</b></div>
+      </div>
+      <div class="right small">
+        Render je po stránkach, aby to nezabilo browser (ako katalóg, nie spam list).
+      </div>
     </div>
 
     <div id="grid" class="grid"></div>
+
+    <div class="loadWrap">
+      <button id="loadMore" class="btn secondary" style="min-width:220px; display:none;">Načítať ďalšie</button>
+    </div>
+    <div class="loadInfo" id="loadInfo"></div>
+
     <div class="footerNote">
       Toto je prezentačný katalóg pre CSR. Objednávku/dopyt napojíme v ďalšom kroku (formulár / email / CRM).
     </div>
@@ -265,35 +331,51 @@
   </div>
 
   <script>
-    // 1) SEM si nastavíš base URL obrázkov:
-    // Teraz máš r2.dev:
+    // ============================================================
+    // TUNING
+    // ============================================================
+    const PAGE_SIZE = 80;
     const IMAGE_BASE = "https://pub-00566da7f565476b9f37d09cb0e1917f.r2.dev";
-    // Neskôr vymeníš za:
+    // neskôr:
     // const IMAGE_BASE = "https://cdn.racem.sk";
 
-    // 2) Odkiaľ berieme produkty:
+    // JSONy v repozitári (podľa tvojich screenshotov sú v root)
     const DATA_URLS = [
-  "./csr-products.part1.json",
-  "./csr-products.part2.json"
-];
+      "./csr-products.part1.json",
+      "./csr-products.part2.json"
+    ];
 
-
-    // 3) Preferované názvy súborov (čo sa bude skúšať ako hlavný obrázok)
+    // Preferované názvy, keď v JSON images chýbajú
     const MAIN_IMAGE_CANDIDATES = (code) => ([
       `${code}.jpg`,
       `${code}_V2.jpg`,
       `${code}_V3.jpg`,
+      `${code}_frontal.jpg`,
+      `${code}_front.jpg`,
       `${code}.png`
     ]);
 
+    // ============================================================
+    // ELS
+    // ============================================================
     const els = {
       grid: document.getElementById("grid"),
       q: document.getElementById("q"),
       cat: document.getElementById("cat"),
       stock: document.getElementById("stock"),
+      sort: document.getElementById("sort"),
+      onlyImgs: document.getElementById("onlyImgs"),
+      onlyPrice: document.getElementById("onlyPrice"),
       reload: document.getElementById("reload"),
+
       countPill: document.getElementById("countPill"),
+      resultPill: document.getElementById("resultPill"),
+      shownPill: document.getElementById("shownPill"),
+
       imgBaseLabel: document.getElementById("imgBaseLabel"),
+      loadMore: document.getElementById("loadMore"),
+      loadInfo: document.getElementById("loadInfo"),
+
       overlay: document.getElementById("overlay"),
       close: document.getElementById("close"),
       mTitle: document.getElementById("mTitle"),
@@ -314,9 +396,16 @@
 
     let PRODUCTS = [];
     let FILTERED = [];
+    let visibleCount = PAGE_SIZE;
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    }
 
     function stockBadge(stock){
-      // stock môže byť: "in" | "out" | "unknown" alebo číslo
       if (stock === "in" || (typeof stock === "number" && stock > 0)) return {cls:"ok", txt:"Skladom"};
       if (stock === "out" || (typeof stock === "number" && stock <= 0)) return {cls:"no", txt:"Nedostupné"};
       return {cls:"warn", txt:"Neznáme"};
@@ -333,93 +422,8 @@
       return `${IMAGE_BASE}/csr/${encodeURIComponent(code)}/${encodeURIComponent(filename)}`;
     }
 
-   async function loadProducts(){
-  const parts = await Promise.all(
-    DATA_URLS.map(async (u) => {
-      const res = await fetch(u, { cache: "no-store" });
-      if (!res.ok) throw new Error(`Nepodarilo sa načítať ${u} (${res.status})`);
-      return res.json();
-    })
-  );
-
-  PRODUCTS = parts.flatMap(p => Array.isArray(p.products) ? p.products : []);
-  els.countPill.textContent = PRODUCTS.length.toString();
-  buildCategoryOptions(PRODUCTS);
-  applyFilters();
-}
-
-
-    function buildCategoryOptions(items){
-      const cats = Array.from(new Set(items.map(p => p.category).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
-      els.cat.innerHTML = `<option value="">Všetky kategórie</option>` + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-    }
-
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-
-    function applyFilters(){
-      const q = els.q.value.trim().toLowerCase();
-      const cat = els.cat.value;
-      const stock = els.stock.value; // in/out/unknown
-      FILTERED = PRODUCTS.filter(p => {
-        if (cat && p.category !== cat) return false;
-
-        if (stock){
-          const b = stockBadge(p.stock);
-          if (stock === "in" && b.txt !== "Skladom") return false;
-          if (stock === "out" && b.txt !== "Nedostupné") return false;
-          if (stock === "unknown" && b.txt !== "Neznáme") return false;
-        }
-
-        if (!q) return true;
-        const hay = `${p.code||""} ${p.title||""} ${p.category||""} ${p.short||""} ${p.sku||""}`.toLowerCase();
-        return hay.includes(q);
-      });
-
-      renderGrid(FILTERED);
-    }
-
-    function renderGrid(items){
-      els.grid.innerHTML = items.map(p => cardHtml(p)).join("");
-      els.grid.querySelectorAll("[data-open]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const code = btn.getAttribute("data-open");
-          const prod = PRODUCTS.find(x => x.code === code);
-          if (prod) openModal(prod);
-        });
-      });
-    }
-
-    function cardHtml(p){
-      const badge = stockBadge(p.stock);
-      const title = p.title || p.code || "Produkt";
-      const sub = p.short || p.category || "";
-      const price = formatPrice(p.priceEUR);
-
-      // skúsime hlavný obrázok “na slepo” (prvý kandidát)
-      const main = imgUrl(p.code, MAIN_IMAGE_CANDIDATES(p.code)[0]);
-
-      return `
-        <div class="card" data-open="${escapeHtml(p.code)}">
-          <div class="thumb">
-            <img src="${main}" alt="${escapeHtml(title)}"
-                 onerror="this.onerror=null; this.src='${placeholderSvg(title)}'; this.style.background='transparent'; this.style.objectFit='contain';" />
-          </div>
-          <div class="content">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="sub">${escapeHtml(sub)}</div>
-            <div class="row">
-              <div class="price">${escapeHtml(price)}</div>
-              <span class="badge ${badge.cls}">${badge.txt}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
     function placeholderSvg(text){
-      const t = encodeURIComponent(text.slice(0,24));
+      const t = encodeURIComponent(String(text || "No image").slice(0,24));
       return `data:image/svg+xml;charset=utf-8,` + encodeURIComponent(`
         <svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
           <defs>
@@ -435,6 +439,166 @@
       `);
     }
 
+    function hasImages(p){
+      return Array.isArray(p.images) && p.images.length > 0;
+    }
+
+    function hasPrice(p){
+      const v = p.priceEUR;
+      return v !== null && v !== undefined && v !== "" && Number.isFinite(Number(v));
+    }
+
+    // ============================================================
+    // LOAD DATA
+    // ============================================================
+    async function loadProducts(){
+      const parts = await Promise.all(
+        DATA_URLS.map(async (u) => {
+          const res = await fetch(u, { cache: "no-store" });
+          if (!res.ok) throw new Error(`Nepodarilo sa načítať ${u} (${res.status})`);
+          return res.json();
+        })
+      );
+
+      PRODUCTS = parts.flatMap(p => Array.isArray(p.products) ? p.products : []);
+      els.countPill.textContent = PRODUCTS.length.toString();
+
+      buildCategoryOptions(PRODUCTS);
+      applyFilters();
+    }
+
+    function buildCategoryOptions(items){
+      const cats = Array.from(new Set(items.map(p => p.category).filter(Boolean)))
+        .sort((a,b)=>String(a).localeCompare(String(b), "sk"));
+      els.cat.innerHTML =
+        `<option value="">Všetky kategórie</option>` +
+        cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+    }
+
+    // ============================================================
+    // FILTER + SORT + PAGING
+    // ============================================================
+    function applyFilters(){
+      const q = els.q.value.trim().toLowerCase();
+      const cat = els.cat.value;
+      const stock = els.stock.value;
+      const onlyImgs = els.onlyImgs.checked;
+      const onlyPrice = els.onlyPrice.checked;
+
+      FILTERED = PRODUCTS.filter(p => {
+        if (cat && p.category !== cat) return false;
+
+        if (stock){
+          const b = stockBadge(p.stock);
+          if (stock === "in" && b.txt !== "Skladom") return false;
+          if (stock === "out" && b.txt !== "Nedostupné") return false;
+          if (stock === "unknown" && b.txt !== "Neznáme") return false;
+        }
+
+        if (onlyImgs && !hasImages(p)) return false;
+        if (onlyPrice && !hasPrice(p)) return false;
+
+        if (!q) return true;
+        const hay = `${p.code||""} ${p.title||""} ${p.category||""} ${p.short||""} ${p.sku||""}`.toLowerCase();
+        return hay.includes(q);
+      });
+
+      FILTERED = sortItems(FILTERED, els.sort.value, els.q.value.trim());
+
+      visibleCount = PAGE_SIZE;
+      els.resultPill.textContent = FILTERED.length.toString();
+      renderGrid(FILTERED);
+    }
+
+    function sortItems(items, mode, query){
+      const arr = [...items];
+
+      // ak je query, "relevance" = necháme pôvodné poradie (typicky CSR export)
+      if (mode === "relevance") return arr;
+
+      if (mode === "price_asc"){
+        return arr.sort((a,b)=> Number(a.priceEUR||Infinity) - Number(b.priceEUR||Infinity));
+      }
+      if (mode === "price_desc"){
+        return arr.sort((a,b)=> Number(b.priceEUR||-Infinity) - Number(a.priceEUR||-Infinity));
+      }
+      if (mode === "title_asc"){
+        return arr.sort((a,b)=> String(a.title||a.code||"").localeCompare(String(b.title||b.code||""), "sk"));
+      }
+      if (mode === "title_desc"){
+        return arr.sort((a,b)=> String(b.title||b.code||"").localeCompare(String(a.title||a.code||""), "sk"));
+      }
+      return arr;
+    }
+
+    function renderGrid(items){
+      const slice = items.slice(0, visibleCount);
+      els.shownPill.textContent = slice.length.toString();
+
+      // info
+      if (items.length === 0){
+        els.grid.innerHTML = `
+          <div class="card" style="grid-column: span 12; cursor:default; min-height:auto">
+            <div class="content">
+              <div class="title">Žiadne výsledky</div>
+              <div class="sub">Skús zmeniť filter alebo vyhľadávanie.</div>
+            </div>
+          </div>
+        `;
+      } else {
+        els.grid.innerHTML = slice.map(p => cardHtml(p)).join("");
+        els.grid.querySelectorAll("[data-open]").forEach(card => {
+          card.addEventListener("click", () => {
+            const code = card.getAttribute("data-open");
+            const prod = PRODUCTS.find(x => x.code === code);
+            if (prod) openModal(prod);
+          });
+        });
+      }
+
+      // Load more
+      if (items.length > visibleCount){
+        els.loadMore.style.display = "inline-flex";
+        const remaining = items.length - visibleCount;
+        els.loadMore.textContent = `Načítať ďalšie (${Math.min(PAGE_SIZE, remaining)})`;
+        els.loadInfo.textContent = `Zobrazené ${slice.length} z ${items.length}`;
+      } else {
+        els.loadMore.style.display = "none";
+        els.loadInfo.textContent = items.length ? `Zobrazené ${slice.length} z ${items.length}` : "";
+      }
+    }
+
+    function cardHtml(p){
+      const badge = stockBadge(p.stock);
+      const title = p.title || p.code || "Produkt";
+      const sub = p.short || p.category || "";
+      const price = formatPrice(p.priceEUR);
+
+      // hlavný obrázok: preferuj JSON images[0], inak candidates
+      const first = (Array.isArray(p.images) && p.images.length) ? p.images[0] : MAIN_IMAGE_CANDIDATES(p.code)[0];
+      const main = imgUrl(p.code, first);
+
+      return `
+        <div class="card" data-open="${escapeHtml(p.code)}">
+          <div class="thumb">
+            <img src="${main}" alt="${escapeHtml(title)}"
+              onerror="this.onerror=null; this.src='${placeholderSvg(title)}'; this.style.background='transparent'; this.style.objectFit='contain';" />
+          </div>
+          <div class="content">
+            <div class="title">${escapeHtml(title)}</div>
+            <div class="sub">${escapeHtml(sub)}</div>
+            <div class="row">
+              <div class="price">${escapeHtml(price)}</div>
+              <span class="badge ${badge.cls}">${badge.txt}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================
+    // MODAL
+    // ============================================================
     function openModal(p){
       const badge = stockBadge(p.stock);
 
@@ -449,17 +613,12 @@
       els.mBadge.className = `badge ${badge.cls}`;
       els.mBadge.textContent = badge.txt;
 
-      // Zoznam obrázkov: ak JSON dá images[], použijeme, inak len kandidáti
-      const imgs = Array.isArray(p.images) && p.images.length
-        ? p.images
-        : MAIN_IMAGE_CANDIDATES(p.code);
-
+      // obrázky: preferuj JSON images, inak candidates
+      const imgs = (Array.isArray(p.images) && p.images.length) ? p.images : MAIN_IMAGE_CANDIDATES(p.code);
       const urls = imgs.map(fn => imgUrl(p.code, fn));
 
-      // nastav main ako prvý
       setMain(urls[0], els.mTitle.textContent);
 
-      // thumbs
       els.mThumbs.innerHTML = urls.map((u,i)=>`
         <div class="t" data-i="${i}">
           <img src="${u}" alt=""
@@ -486,7 +645,7 @@
         }
       };
 
-      // ask (dočasne mailto)
+      // ask (mailto)
       els.mAsk.onclick = () => {
         const subject = encodeURIComponent(`Dopyt CSR: ${p.code} – ${p.title || ""}`);
         const body = encodeURIComponent(
@@ -514,6 +673,9 @@
       document.body.style.overflow = "";
     }
 
+    // ============================================================
+    // EVENTS
+    // ============================================================
     els.close.addEventListener("click", closeModal);
     els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closeModal(); });
     window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
@@ -521,10 +683,19 @@
     els.q.addEventListener("input", applyFilters);
     els.cat.addEventListener("change", applyFilters);
     els.stock.addEventListener("change", applyFilters);
+    els.sort.addEventListener("change", applyFilters);
+    els.onlyImgs.addEventListener("change", applyFilters);
+    els.onlyPrice.addEventListener("change", applyFilters);
+
     els.reload.addEventListener("click", async ()=> {
       els.reload.textContent = "Reload…";
       try { await loadProducts(); }
       finally { els.reload.textContent = "Reload"; }
+    });
+
+    els.loadMore.addEventListener("click", () => {
+      visibleCount += PAGE_SIZE;
+      renderGrid(FILTERED);
     });
 
     // Deep-link: ?code=AI007
@@ -536,18 +707,22 @@
       if (p) openModal(p);
     }
 
+    // ============================================================
+    // INIT
+    // ============================================================
     (async function init(){
       try{
         await loadProducts();
         maybeOpenFromQuery();
       }catch(err){
         els.grid.innerHTML = `
-          <div class="card" style="grid-column: span 12; cursor:default">
+          <div class="card" style="grid-column: span 12; cursor:default; min-height:auto">
             <div class="content">
-              <div class="title">Chýbajú dáta</div>
-              <div class="sub">Neviem načítať JSON súbory: <b>${DATA_URLS.join(", ")}</b></div>
+              <div class="title">Chýbajú dáta / JSON sa nenačítal</div>
+              <div class="sub">Skontroluj, že súbory existujú v repozitári:</div>
+              <div class="sub"><b>${escapeHtml(DATA_URLS.join(", "))}</b></div>
               <div class="sub" style="color:#ffd1d4">${escapeHtml(err.message || String(err))}</div>
-              <div class="sub">Rýchly fix: vytvor súbor <b>csr-products.json</b> (nižšie máš šablónu).</div>
+              <div class="sub">Tip: otvor DevTools → Network a pozri, či fetch dostáva 200.</div>
             </div>
           </div>
         `;
