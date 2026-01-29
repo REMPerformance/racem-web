@@ -15,23 +15,34 @@
   <link rel="canonical" href="https://racem.sk/blank.html" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
     :root{
       --red:#b31f24;
       --bg:#0b0b0b;
       --text:#ffffff;
+
       --line: rgba(255,255,255,0.08);
+      --line2: rgba(255,255,255,0.12);
+
+      --cardBg: rgba(10,10,10,0.72);
+      --cardBgHover: rgba(14,14,14,0.82);
+      --cardBorder: rgba(255,255,255,0.10);
+
+      --soft: rgba(255,255,255,0.06);
+      --soft2: rgba(255,255,255,0.04);
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
     }
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
     body{
       margin:0;
-      font-family: Arial, sans-serif;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x:hidden;
+      letter-spacing: 0.01em;
     }
     a{ color:inherit; }
 
@@ -243,175 +254,174 @@
       justify-content:flex-end;
     }
 
-   /* ====== CAR FILTER UI (RACEM v2) ====== */
-.filterBar{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  align-items:flex-end;
-  justify-content:space-between;
-  margin-top: 18px;
-  padding: 16px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,0.10);
-  background: linear-gradient(180deg, rgba(18,18,18,0.72), rgba(10,10,10,0.52));
-  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
-}
+    /* ====== CAR FILTER UI (RACEM v2) ====== */
+    .filterBar{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      margin-top: 18px;
+      padding: 16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(18,18,18,0.72), rgba(10,10,10,0.52));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+    }
 
-.filterLeft{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  align-items:flex-end;
-  flex: 1 1 560px;
-  min-width: 260px;
-}
+    .filterLeft{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      flex: 1 1 560px;
+      min-width: 260px;
+    }
 
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-width: 200px;
-  flex: 1 1 220px;
-}
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width: 200px;
+      flex: 1 1 220px;
+    }
 
-.label{
-  font-size: 12px;
-  letter-spacing:.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.62);
-  font-family:"Oswald", system-ui, sans-serif;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+    .label{
+      font-size: 12px;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.62);
+      font-family:"Oswald", system-ui, sans-serif;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
 
-.label .hint{
-  font-size: 11px;
-  letter-spacing:.10em;
-  opacity:.65;
-  text-transform:none;
-}
+    .label .hint{
+      font-size: 11px;
+      letter-spacing:.10em;
+      opacity:.65;
+      text-transform:none;
+    }
 
-/* inputs */
-select, input{
-  width:100%;
-  padding: 12px 12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,0.12);
-  background: rgba(8,8,8,0.70);
-  color:#fff;
-  outline:none;
-  transition: border .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
+    /* inputs */
+    select, input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(8,8,8,0.70);
+      color:#fff;
+      outline:none;
+      transition: border .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
+      font-family: "Inter", system-ui, sans-serif;
+    }
 
-select:hover, input:hover{
-  border-color: rgba(255,255,255,0.22);
-  background: rgba(10,10,10,0.78);
-}
+    select:hover, input:hover{
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(10,10,10,0.78);
+    }
 
-select:focus, input:focus{
-  border-color: rgba(179,31,36,0.55);
-  box-shadow: 0 0 0 4px rgba(179,31,36,0.14);
-}
+    select:focus, input:focus{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow: 0 0 0 4px rgba(179,31,36,0.14);
+    }
 
-/* disabled model select – jemne "zamknuté" */
-select:disabled{
-  opacity: .55;
-  cursor: not-allowed;
-  filter: grayscale(0.15);
-}
+    select:disabled{
+      opacity: .55;
+      cursor: not-allowed;
+      filter: grayscale(0.15);
+    }
 
-/* buttons */
-.btn{
-  padding: 12px 14px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.86);
-  cursor:pointer;
-  font-family:"Oswald", system-ui, sans-serif;
-  letter-spacing:.14em;
-  text-transform: uppercase;
-  transition: transform .18s ease, border .18s ease, background .18s ease, box-shadow .18s ease;
-  white-space:nowrap;
-  height: 46px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  border-color: rgba(179,31,36,0.40);
-  background: rgba(179,31,36,0.10);
-  box-shadow: 0 10px 26px rgba(179,31,36,0.12);
-}
-.btn:active{ transform: translateY(0px) scale(0.99); }
+    /* buttons */
+    .btn{
+      padding: 12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.86);
+      cursor:pointer;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      transition: transform .18s ease, border .18s ease, background .18s ease, box-shadow .18s ease;
+      white-space:nowrap;
+      height: 46px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.40);
+      background: rgba(179,31,36,0.10);
+      box-shadow: 0 10px 26px rgba(179,31,36,0.12);
+    }
+    .btn:active{ transform: translateY(0px) scale(0.99); }
 
-/* stats */
-.stats{
-  flex: 0 0 auto;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  justify-content:flex-end;
-  color: rgba(255,255,255,0.70);
-  font-size: 13px;
-  white-space:nowrap;
-}
+    /* stats */
+    .stats{
+      flex: 0 0 auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-end;
+      color: rgba(255,255,255,0.70);
+      font-size: 13px;
+      white-space:nowrap;
+    }
 
-/* ====== BRAND GRID (tmavý, RACEM highlight) ====== */
-.brandGrid{
-  display:grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
+    /* ====== BRAND GRID ====== */
+    .brandGrid{
+      display:grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
 
-.brandBtn{
-  width:100%;
-  border-radius: 14px;
-  padding: 14px 12px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(12,12,12,0.65);
-  color: rgba(255,255,255,0.86);
-  font-family:"Oswald", system-ui, sans-serif;
-  letter-spacing:.12em;
-  text-transform: uppercase;
-  font-weight: 700;
-  cursor:pointer;
-  transition: transform .18s ease, box-shadow .18s ease, border .18s ease, background .18s ease, color .18s ease;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
-  position:relative;
-  overflow:hidden;
-}
+    .brandBtn{
+      width:100%;
+      border-radius: 14px;
+      padding: 14px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(12,12,12,0.65);
+      color: rgba(255,255,255,0.86);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor:pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border .18s ease, background .18s ease, color .18s ease;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.32);
+      position:relative;
+      overflow:hidden;
+    }
 
-.brandBtn::after{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background: radial-gradient(circle at 25% 20%, rgba(179,31,36,0.22), transparent 45%);
-  opacity:0;
-  transition: opacity .18s ease;
-  pointer-events:none;
-}
+    .brandBtn::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(circle at 25% 20%, rgba(179,31,36,0.22), transparent 45%);
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
 
-.brandBtn:hover{
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.18);
-  background: rgba(16,16,16,0.78);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.45);
-}
-.brandBtn:hover::after{ opacity:1; }
+    .brandBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(16,16,16,0.78);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+    }
+    .brandBtn:hover::after{ opacity:1; }
 
-.brandBtn.active{
-  border-color: rgba(179,31,36,0.55);
-  background: rgba(179,31,36,0.10);
-  box-shadow: 0 18px 46px rgba(179,31,36,0.15);
-  color:#fff;
-}
-.brandBtn.active::after{ opacity:1; }
-
+    .brandBtn.active{
+      border-color: rgba(179,31,36,0.55);
+      background: rgba(179,31,36,0.10);
+      box-shadow: 0 18px 46px rgba(179,31,36,0.15);
+      color:#fff;
+    }
+    .brandBtn.active::after{ opacity:1; }
 
     /* ====== PRODUCT LIST (5 per row) ====== */
     .cards{
@@ -425,27 +435,42 @@ select:disabled{
     @media (max-width: 720px){ .cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 480px){ .cards{ grid-template-columns: 1fr; } }
 
+    /* ====== CARD (RACEM v3) ====== */
     .card{
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(14,14,14,0.60);
+      border-radius:18px;
+      border:1px solid var(--cardBorder);
+      background: linear-gradient(180deg, rgba(12,12,12,0.72), rgba(8,8,8,0.58));
       padding: 14px;
       overflow:hidden;
       position:relative;
       cursor:pointer;
-      transition: transform .16s ease, border .16s ease, background .16s ease;
+      transition: transform .16s ease, border .16s ease, background .16s ease, box-shadow .16s ease;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.35);
     }
+    .card::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(179,31,36,0.20), transparent 45%),
+        radial-gradient(circle at 85% 78%, rgba(255,255,255,0.06), transparent 50%);
+      opacity:.65;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+
     .card:hover{
       transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.35);
-      background: rgba(18,18,18,0.72);
+      border-color: rgba(179,31,36,0.36);
+      background: linear-gradient(180deg, rgba(16,16,16,0.82), rgba(10,10,10,0.68));
+      box-shadow: 0 18px 54px rgba(0,0,0,0.52);
     }
     .card:active{ transform: translateY(0px) scale(0.99); }
 
     .thumb{
+      position:relative;
       width:100%;
       aspect-ratio: 16/10;
-      border-radius:14px;
+      border-radius:16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.03);
@@ -456,56 +481,107 @@ select:disabled{
       height:100%;
       object-fit:cover;
       display:block;
-      transform: scale(1.02);
-      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.03);
+      filter: saturate(1.06) contrast(1.06);
     }
 
-    .cardTop{
+    .thumbNav{
+      position:absolute;
+      inset:auto 10px 10px 10px;
+      display:flex;
+      gap:6px;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .dotBtn{
+      width:7px; height:7px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.28);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
+    }
+    .dotBtn.on{
+      background: rgba(179,31,36,0.95);
+      box-shadow: 0 0 16px rgba(179,31,36,0.6);
+    }
+    .thumbArrows{
+      position:absolute;
+      top:10px; left:10px; right:10px;
       display:flex;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
+      pointer-events:none;
+    }
+    .thumbArrow{
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.40);
+      display:grid;
+      place-items:center;
+      color:#fff;
+      opacity:.0;
+      transform: translateY(-2px);
+      transition: opacity .18s ease, transform .18s ease, border .18s ease, background .18s ease;
+      pointer-events:auto;
+    }
+    .card:hover .thumbArrow{
+      opacity:.95;
+      transform: translateY(0px);
+    }
+    .thumbArrow:hover{
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.14);
+    }
+
+    .cardHeadRow{
+      display:flex;
       align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:2px;
       margin-bottom:10px;
     }
-    .tag{
+
+    .miniStack{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+
+    .pillMini{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding: 6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.78);
-      font-size: 12px;
-      letter-spacing:.10em;
+      color: rgba(255,255,255,0.86);
+      font-size: 11.5px;
+      letter-spacing: .10em;
       text-transform: uppercase;
       font-family:"Oswald", system-ui, sans-serif;
       white-space:nowrap;
     }
-    .sku{
-      color: rgba(255,255,255,0.55);
-      font-size: 12px;
-      white-space:nowrap;
+    .pillMini .dotSm{
+      width:6px;height:6px;border-radius:50%;
+      background: var(--red);
+      box-shadow: 0 0 14px rgba(179,31,36,.65);
     }
 
-    /* chip pre platform/chassis kódy (E46, B5, W204...) */
-.codeChip{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(179,31,36,0.28);
-  background: rgba(179,31,36,0.10);
-  color: rgba(255,255,255,0.88);
-  font-size: 12px;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  font-family:"Oswald", system-ui, sans-serif;
-  white-space:nowrap;
-  box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset;
-}
+    /* SKU pill (kód) - nech ostane “pill” */
+    .skuPill{
+      border-color: rgba(179,31,36,0.30);
+      background: rgba(179,31,36,0.10);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset;
+    }
 
+    /* Vehicle pill (make/model) */
+    .vehPill{
+      border-color: rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.22);
+    }
 
     .title{
       font-family:"Oswald", system-ui, sans-serif;
@@ -514,7 +590,7 @@ select:disabled{
       line-height:1.05;
       margin: 4px 0 10px 0;
       font-size: 15px;
-      color: rgba(255,255,255,0.90);
+      color: rgba(255,255,255,0.92);
       display:-webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -522,45 +598,86 @@ select:disabled{
       min-height: 38px;
     }
 
-    .meta{
+    .metaRow{
       display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 10px;
-      color: rgba(255,255,255,0.72);
-      font-size: 13px;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-top: 8px;
     }
-   /* default chip iba pre "obyčajné" span-y v meta (modelBase) */
-.meta > span:not(.priceChip):not(.codeChip){
-  border:1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
-  padding: 6px 10px;
-  border-radius: 999px;
-}
 
-    .stock{
-      margin-top:10px;
+    /* Price highlight - krajšie */
+    .priceBlock{
+      flex: 0 0 auto;
       display:flex;
+      align-items:baseline;
       gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(179,31,36,0.38);
+      background: linear-gradient(180deg, rgba(179,31,36,0.16), rgba(179,31,36,0.08));
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset, 0 14px 34px rgba(179,31,36,0.08);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      white-space:nowrap;
     }
+    .priceBlock small{
+      font-size: 11px;
+      opacity:.75;
+      letter-spacing: .14em;
+    }
+    .priceBlock strong{
+      font-size: 18px;
+      letter-spacing: .02em;
+    }
+
+    /* Stock - vždy na objednávku */
     .badge{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:6px 10px;
+      padding:7px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.80);
-      font-size: 12px;
+      color: rgba(255,255,255,0.86);
+      font-size: 11.5px;
       letter-spacing:.10em;
       text-transform: uppercase;
       font-family:"Oswald", system-ui, sans-serif;
+      white-space:nowrap;
     }
-    .badge.ok{ border-color: rgba(46,204,113,0.35); box-shadow: 0 0 0 3px rgba(46,204,113,0.10) inset; }
-    .badge.no{ border-color: rgba(231,76,60,0.35); box-shadow: 0 0 0 3px rgba(231,76,60,0.10) inset; }
+    .badge.order{
+      border-color: rgba(179,31,36,0.44);
+      background: rgba(179,31,36,0.10);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.10) inset;
+    }
+    .badge.order .clock{
+      width:16px; height:16px; border-radius:50%;
+      border:2px solid rgba(255,255,255,0.65);
+      position:relative;
+      opacity:.9;
+    }
+    .badge.order .clock::after{
+      content:"";
+      position:absolute;
+      left:50%; top:50%;
+      width:6px; height:2px;
+      background: rgba(255,255,255,0.70);
+      transform-origin:left center;
+      transform: translate(-1px,-1px) rotate(0deg);
+      border-radius:2px;
+    }
+    .badge.order .clock::before{
+      content:"";
+      position:absolute;
+      left:50%; top:50%;
+      width:2px; height:6px;
+      background: rgba(255,255,255,0.70);
+      transform: translate(-1px,-5px);
+      border-radius:2px;
+    }
 
     .empty{
       margin-top: 18px;
@@ -602,20 +719,20 @@ select:disabled{
 
     .modalOverlay{
       position:absolute; inset:0;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.70);
+      backdrop-filter: blur(12px);
     }
 
     .modalBox{
       position:absolute;
       left:50%; top:50%;
       transform: translate(-50%, -50%);
-      width: min(980px, calc(100vw - 26px));
-      max-height: min(84vh, 860px);
-      border-radius: 18px;
+      width: min(1020px, calc(100vw - 26px));
+      max-height: min(86vh, 900px);
+      border-radius: 20px;
       border:1px solid rgba(255,255,255,0.12);
-      background: rgba(10,10,10,0.92);
-      box-shadow: 0 30px 120px rgba(0,0,0,0.65);
+      background: rgba(8,8,8,0.92);
+      box-shadow: 0 34px 140px rgba(0,0,0,0.72);
       overflow:hidden;
     }
 
@@ -626,7 +743,7 @@ select:disabled{
       gap:12px;
       padding: 14px 16px;
       border-bottom:1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
     }
     .modalTitle{
       font-family:"Oswald", system-ui, sans-serif;
@@ -636,10 +753,10 @@ select:disabled{
       font-size: 16px;
     }
     .modalClose{
-      width:40px; height:40px;
-      border-radius:12px;
+      width:44px; height:44px;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.06);
       color:#fff;
       cursor:pointer;
     }
@@ -651,7 +768,7 @@ select:disabled{
     .modalBody{
       padding: 16px;
       overflow:auto;
-      max-height: calc(min(84vh, 860px) - 70px);
+      max-height: calc(min(86vh, 900px) - 70px);
     }
 
     .mGrid{
@@ -662,48 +779,137 @@ select:disabled{
     @media (max-width: 820px){
       .mGrid{ grid-template-columns: 1fr; }
     }
-    .mImg{
-      border-radius:16px;
+
+    .mGallery{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .mStage{
+      position:relative;
+      border-radius:18px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.03);
       aspect-ratio: 16/10;
     }
-    .mImg img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    .mInfo{
+    .mStage img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      cursor: zoom-in;
+    }
+    .mNavBtn{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width:46px; height:46px;
       border-radius:16px;
       border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.42);
+      color:#fff;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+    }
+    .mNavBtn:hover{
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.14);
+    }
+    .mPrev{ left:10px; }
+    .mNext{ right:10px; }
+
+    .mThumbs{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:4px;
+    }
+    .mThumb{
+      flex: 0 0 auto;
+      width:78px; height:56px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.03);
+      cursor:pointer;
+      opacity:.78;
+    }
+    .mThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .mThumb.active{
+      opacity:1;
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.12) inset;
+    }
+
+    .mInfo{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
       padding: 14px;
     }
+
     .mRow{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin-top: 10px;
+      margin-top: 6px;
     }
-    .mRow .pillx{
+
+    .pillx{
       display:inline-flex;
       gap:8px;
       align-items:center;
-      padding: 6px 10px;
+      padding: 8px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(0,0,0,0.20);
-      color: rgba(255,255,255,0.80);
-      font-size: 12px;
+      color: rgba(255,255,255,0.86);
+      font-size: 11.5px;
       letter-spacing:.10em;
       text-transform: uppercase;
       font-family:"Oswald", system-ui, sans-serif;
+      white-space:nowrap;
     }
+    .pillx.red{
+      border-color: rgba(179,31,36,0.40);
+      background: rgba(179,31,36,0.12);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.10) inset;
+    }
+
     .mDesc{
       margin-top: 12px;
-      color: rgba(255,255,255,0.78);
-      line-height: 1.7;
-      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.75;
+      font-size: 14.5px;
       white-space: pre-wrap;
+      font-family: "Inter", system-ui, sans-serif;
     }
+
+    .descBox{
+      margin-top: 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.22);
+      padding: 12px;
+    }
+    .descLabel{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,0.70);
+      font-size: 12px;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .descLabel .bar{
+      width:14px; height:2px;
+      background: var(--red);
+      box-shadow: 0 0 16px rgba(179,31,36,0.45);
+    }
+
     .fitList{
       margin-top: 12px;
       display:flex;
@@ -713,216 +919,100 @@ select:disabled{
     .fitList span{
       border:1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-radius: 999px;
       font-size: 12px;
-      color: rgba(255,255,255,0.78);
+      color: rgba(255,255,255,0.82);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.10em;
+      text-transform:uppercase;
     }
 
-    /* ====== CARD: price + stock polish ====== */
-.priceChip{
-  display:inline-flex;
-  align-items:baseline;
-  gap:8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border:1px solid rgba(179,31,36,0.35);
-  background: rgba(179,31,36,0.14);
-  box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset;
-  font-family:"Oswald", system-ui, sans-serif;
-  letter-spacing:.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.92);
-}
-.priceChip strong{
-  font-size: 18px;
-  letter-spacing:.02em;
-}
-.priceChip small{
-  font-size: 12px;
-  opacity:.75;
-}
+    /* CTA button inside modal */
+    .ctaRow{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .orderBtn{
+      border: 1px solid rgba(179,31,36,0.48);
+      background: linear-gradient(180deg, rgba(179,31,36,0.26), rgba(179,31,36,0.14));
+      color: #fff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      cursor:pointer;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow: 0 18px 44px rgba(179,31,36,0.12);
+      transition: transform .16s ease, background .16s ease, border .16s ease, box-shadow .16s ease;
+    }
+    .orderBtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.62);
+      background: linear-gradient(180deg, rgba(179,31,36,0.32), rgba(179,31,36,0.16));
+      box-shadow: 0 22px 54px rgba(179,31,36,0.16);
+    }
+    .orderBtn:active{ transform: translateY(0px) scale(0.99); }
+    .orderBtn .bolt{
+      width:16px;height:16px;border-radius:4px;
+      background: rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.18);
+      display:grid; place-items:center;
+      font-size: 12px;
+      line-height: 1;
+    }
 
-/* Stock badges a “qty” */
-.badge.ok{
-  border-color: rgba(46,204,113,0.45);
-  background: rgba(46,204,113,0.08);
-  box-shadow: 0 0 0 3px rgba(46,204,113,0.10) inset;
-}
-.badge.no{
-  border-color: rgba(231,76,60,0.45);
-  background: rgba(231,76,60,0.08);
-  box-shadow: 0 0 0 3px rgba(231,76,60,0.10) inset;
-}
-.qtyNote{
-  font-size: 12px;
-  color: rgba(255,255,255,0.62);
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-  padding: 6px 10px;
-  border-radius: 999px;
-}
-
-/* ====== CARD MINI GALLERY ====== */
-.thumb{
-  position:relative;
-}
-.thumbNav{
-  position:absolute;
-  inset:auto 10px 10px 10px;
-  display:flex;
-  gap:6px;
-  justify-content:center;
-  pointer-events:none;
-}
-.dotBtn{
-  width:7px; height:7px;
-  border-radius:999px;
-  background: rgba(255,255,255,0.28);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
-}
-.dotBtn.on{
-  background: rgba(179,31,36,0.95);
-  box-shadow: 0 0 16px rgba(179,31,36,0.6);
-}
-.thumbArrows{
-  position:absolute;
-  top:10px; left:10px; right:10px;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  pointer-events:none;
-}
-.thumbArrow{
-  width:34px; height:34px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.35);
-  display:grid;
-  place-items:center;
-  color:#fff;
-  opacity:.0;
-  transform: translateY(-2px);
-  transition: opacity .18s ease, transform .18s ease, border .18s ease, background .18s ease;
-  pointer-events:auto;
-}
-.card:hover .thumbArrow{
-  opacity:.95;
-  transform: translateY(0px);
-}
-.thumbArrow:hover{
-  border-color: rgba(179,31,36,0.45);
-  background: rgba(179,31,36,0.14);
-}
-
-/* ====== MODAL GALLERY ====== */
-.mGallery{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.mStage{
-  position:relative;
-  border-radius:16px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-  aspect-ratio: 16/10;
-}
-.mStage img{
-  width:100%; height:100%;
-  object-fit:cover;
-  display:block;
-  cursor: zoom-in;
-}
-.mNavBtn{
-  position:absolute;
-  top:50%;
-  transform: translateY(-50%);
-  width:44px; height:44px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.40);
-  color:#fff;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
-}
-.mNavBtn:hover{
-  border-color: rgba(179,31,36,0.45);
-  background: rgba(179,31,36,0.14);
-}
-.mPrev{ left:10px; }
-.mNext{ right:10px; }
-
-.mThumbs{
-  display:flex;
-  gap:8px;
-  overflow:auto;
-  padding-bottom:4px;
-}
-.mThumb{
-  flex: 0 0 auto;
-  width:72px; height:52px;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.03);
-  cursor:pointer;
-  opacity:.78;
-}
-.mThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-.mThumb.active{
-  opacity:1;
-  border-color: rgba(179,31,36,0.45);
-  box-shadow: 0 0 0 3px rgba(179,31,36,0.12) inset;
-}
-
-/* ====== LIGHTBOX (FULLSCREEN ZOOM) ====== */
-.lightbox{
-  position:fixed; inset:0; z-index:10000;
-  display:none;
-}
-.lightbox.open{ display:block; }
-.lightboxOverlay{
-  position:absolute; inset:0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(10px);
-}
-.lightboxImg{
-  position:absolute; left:50%; top:50%;
-  transform: translate(-50%,-50%);
-  width: min(1200px, calc(100vw - 26px));
-  height: min(86vh, 900px);
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.12);
-  background: rgba(10,10,10,0.92);
-  box-shadow: 0 30px 120px rgba(0,0,0,0.7);
-  display:grid;
-  place-items:center;
-}
-.lightboxImg img{
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  cursor: zoom-out;
-}
-.lightboxClose{
-  position:absolute;
-  right:18px; top:18px;
-  width:44px; height:44px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.06);
-  color:#fff;
-  cursor:pointer;
-}
-.lightboxClose:hover{
-  border-color: rgba(179,31,36,0.45);
-  background: rgba(179,31,36,0.14);
-}
-
+    /* ====== LIGHTBOX ====== */
+    .lightbox{
+      position:fixed; inset:0; z-index:10000;
+      display:none;
+    }
+    .lightbox.open{ display:block; }
+    .lightboxOverlay{
+      position:absolute; inset:0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+    }
+    .lightboxImg{
+      position:absolute; left:50%; top:50%;
+      transform: translate(-50%,-50%);
+      width: min(1200px, calc(100vw - 26px));
+      height: min(86vh, 900px);
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(10,10,10,0.92);
+      box-shadow: 0 30px 120px rgba(0,0,0,0.7);
+      display:grid;
+      place-items:center;
+    }
+    .lightboxImg img{
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      cursor: zoom-out;
+    }
+    .lightboxClose{
+      position:absolute;
+      right:18px; top:18px;
+      width:44px; height:44px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      cursor:pointer;
+    }
+    .lightboxClose:hover{
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.14);
+    }
   </style>
 </head>
 
@@ -1053,7 +1143,7 @@ select:disabled{
     </div>
   </div>
 
-    <!-- LIGHTBOX (zoom) -->
+  <!-- LIGHTBOX (zoom) -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lightboxOverlay" data-lb-close="1"></div>
     <div class="lightboxImg" role="dialog" aria-modal="true" aria-label="Zväčšený obrázok">
@@ -1062,23 +1152,21 @@ select:disabled{
     </div>
   </div>
 
-
- <script>
+<script>
   const PRODUCTS_URL = "./products.json"; // v root (main)
 
   const els = {
-  q: document.getElementById("q"),
-  make: document.getElementById("make"),
-  model: document.getElementById("model"),
-  reset: document.getElementById("reset"),
-  statText: document.getElementById("statText"),
-  grid: document.getElementById("brandGrid"),
-  cards: document.getElementById("cards"),
-  empty: document.getElementById("empty"),
-  modelLabel: document.getElementById("modelLabel"),
-  modelHint: document.getElementById("modelHint"),
-};
-
+    q: document.getElementById("q"),
+    make: document.getElementById("make"),
+    model: document.getElementById("model"),
+    reset: document.getElementById("reset"),
+    statText: document.getElementById("statText"),
+    grid: document.getElementById("brandGrid"),
+    cards: document.getElementById("cards"),
+    empty: document.getElementById("empty"),
+    modelLabel: document.getElementById("modelLabel"),
+    modelHint: document.getElementById("modelHint"),
+  };
 
   const modal = document.getElementById("modal");
   const mBody = document.getElementById("mBody");
@@ -1100,75 +1188,56 @@ select:disabled{
       .replaceAll("'","&#039;");
   }
 
-   function isChassisCode(tok){
-  const t = normKey(tok);
-
-  // BMW chassis: E46, E36, F10, G20...
-  if (/^[EFG]\d{2,3}$/.test(t)) return true;
-
-  // Mercedes chassis: W204, W205...
-  if (/^W\d{3}$/.test(t)) return true;
-
-  // Platform kódy typu B5, B6, 8P, 8V, 6R atď. (jedno/dvojpísmeno + číslo)
-  if (/^[A-Z]{1,2}\d{1,2}$/.test(t) && t !== "A4" && t !== "A3" && t !== "A6") return true;
-
-  // Špeciálne: ZB014, FM005, FA005... (ty si riešil, že toto nechceš v modeli)
-  if (/^[A-Z]{2}\d{3}$/.test(t)) return true;
-
-  return false;
-}
-
-function parseModelParts(modelStr){
-  const raw = norm(modelStr);
-  if (!raw) return { base: "", code: "" };
-
-  // rozbi na tokeny
-  const tokens = raw.split(/[\s,\/\-]+/).filter(Boolean);
-
-  // ak je to rovno chassis (BMW E46/E36...) -> base = E46, code = ""
-  if (tokens.length === 1 && isChassisCode(tokens[0])) {
-    return { base: tokens[0], code: "" };
+  function isChassisCode(tok){
+    const t = normKey(tok);
+    if (/^[EFG]\d{2,3}$/.test(t)) return true;
+    if (/^W\d{3}$/.test(t)) return true;
+    if (/^[A-Z]{1,2}\d{1,2}$/.test(t) && t !== "A4" && t !== "A3" && t !== "A6") return true;
+    if (/^[A-Z]{2}\d{3}$/.test(t)) return true;
+    return false;
   }
 
-  const base = tokens[0]; // filter chce len toto (A4, Passat, Golf, C63...)
-  const codes = tokens.slice(1).filter(isChassisCode);
+  function parseModelParts(modelStr){
+    const raw = norm(modelStr);
+    if (!raw) return { base: "", code: "" };
+    const tokens = raw.split(/[\s,\/\-]+/).filter(Boolean);
+    if (tokens.length === 1 && isChassisCode(tokens[0])) {
+      return { base: tokens[0], code: "" };
+    }
+    const base = tokens[0];
+    const codes = tokens.slice(1).filter(isChassisCode);
+    return { base, code: codes.join(" ") };
+  }
 
-  return { base, code: codes.join(" ") };
-}
+  function getFitments(p){
+    if (Array.isArray(p.fitments) && p.fitments.length){
+      return p.fitments.map(f => {
+        const mk = norm(f.make || f.carMake || f.vyrobca || "");
+        const mdRaw = norm(f.model || f.carModel || f.modelRaw || "");
+        const parts = parseModelParts(mdRaw);
+        return {
+          make: mk || "UNIVERZÁLNE",
+          modelBase: parts.base || mdRaw || "",
+          modelCode: parts.code || "",
+          modelRaw: mdRaw || parts.base || ""
+        };
+      });
+    }
 
-
- function getFitments(p){
-  // 1) preferuj fitments
-  if (Array.isArray(p.fitments) && p.fitments.length){
-    return p.fitments.map(f => {
-      const mk = norm(f.make || f.carMake || f.vyrobca || "");
-      const mdRaw = norm(f.model || f.carModel || f.modelRaw || "");
+    const mk = norm(p.carMake || p.make || "");
+    const mdRaw = norm(p.carModel || p.model || "");
+    if (mk){
       const parts = parseModelParts(mdRaw);
-      return {
-        make: mk || "UNIVERZÁLNE",
+      return [{
+        make: mk,
         modelBase: parts.base || mdRaw || "",
         modelCode: parts.code || "",
         modelRaw: mdRaw || parts.base || ""
-      };
-    });
+      }];
+    }
+
+    return [{ make: "UNIVERZÁLNE", modelBase: "", modelCode: "", modelRaw: "" }];
   }
-
-  // 2) fallback carMake / carModel
-  const mk = norm(p.carMake || p.make || "");
-  const mdRaw = norm(p.carModel || p.model || "");
-  if (mk){
-    const parts = parseModelParts(mdRaw);
-    return [{
-      make: mk,
-      modelBase: parts.base || mdRaw || "",
-      modelCode: parts.code || "",
-      modelRaw: mdRaw || parts.base || ""
-    }];
-  }
-
-  return [{ make: "UNIVERZÁLNE", modelBase: "", modelCode: "", modelRaw: "" }];
-}
-
 
   function buildIndex(products){
     INDEX = new Map();
@@ -1189,32 +1258,29 @@ function parseModelParts(modelStr){
       makes.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
   }
 
- function fillModelSelect(selectedMake){
-  const make = normKey(selectedMake);
+  function fillModelSelect(selectedMake){
+    const make = normKey(selectedMake);
 
-  if (!make){
-    els.model.disabled = true;
-    els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
-    if (els.modelLabel) els.modelLabel.firstChild.nodeValue = "Model ";
-    if (els.modelHint) els.modelHint.textContent = "(najprv vyber značku)";
-    return;
+    if (!make){
+      els.model.disabled = true;
+      els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
+      if (els.modelLabel) els.modelLabel.firstChild.nodeValue = "Model ";
+      if (els.modelHint) els.modelHint.textContent = "(najprv vyber značku)";
+      return;
+    }
+
+    const models = Array.from(INDEX.get(make) || [])
+      .filter(m => m !== undefined)
+      .sort((a,b) => a.localeCompare(b, "sk"));
+
+    els.model.disabled = false;
+    els.model.innerHTML =
+      `<option value="">Vyber model…</option>` +
+      models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
+
+    if (els.modelLabel) els.modelLabel.firstChild.nodeValue = `Model pre ${make} `;
+    if (els.modelHint) els.modelHint.textContent = "(klikni a vyber)";
   }
-
-  const models = Array.from(INDEX.get(make) || [])
-    .filter(m => m !== undefined)
-    .sort((a,b) => a.localeCompare(b, "sk"));
-
-  els.model.disabled = false;
-  els.model.innerHTML =
-    `<option value="">Vyber model…</option>` +
-    models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
-
-  // label + hint
-  if (els.modelLabel) els.modelLabel.firstChild.nodeValue = `Model pre ${make} `;
-  if (els.modelHint) els.modelHint.textContent = "(klikni a vyber)";
-}
-
-
 
   function renderBrandGrid(activeMake){
     const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
@@ -1227,18 +1293,15 @@ function parseModelParts(modelStr){
       btn.addEventListener("click", () => {
         const mk = btn.getAttribute("data-make") || "";
         els.make.value = mk;
-fillModelSelect(mk);
-els.model.value = "";
-applyFilters();
+        fillModelSelect(mk);
+        els.model.value = "";
+        applyFilters();
 
-// UX: posuň a rovno otvor model select
-document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
-setTimeout(() => {
-  els.model.focus();
-  // "pseudo-open" – funguje v niektorých browseroch, inde len focus (stále ok)
-  try { els.model.click(); } catch(e) {}
-}, 220);
-
+        document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
+        setTimeout(() => {
+          els.model.focus();
+          try { els.model.click(); } catch(e) {}
+        }, 220);
       });
     });
   }
@@ -1291,6 +1354,14 @@ setTimeout(() => {
     els.statText.textContent = label;
   }
 
+  function formatPrice(priceNum, currency="EUR"){
+    if (priceNum == null || Number.isNaN(Number(priceNum))) return null;
+    const n = Number(priceNum);
+    // SK formát 1 234,56
+    const nice = n.toLocaleString("sk-SK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return { nice, currency };
+  }
+
   function renderCards(list){
     els.cards.innerHTML = "";
     els.empty.style.display = list.length ? "none" : "block";
@@ -1303,29 +1374,15 @@ setTimeout(() => {
       const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
 
       const f0 = getFitments(p)[0] || { make: "UNIVERZÁLNE", modelBase: "", modelCode: "" };
-const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
+      const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
+      const modelBase = escapeHtml(norm(f0.modelBase || "—"));
+      const modelCode = escapeHtml(norm(f0.modelCode || ""));
 
-const modelBase = escapeHtml(norm(f0.modelBase || "—"));
-const modelCode = escapeHtml(norm(f0.modelCode || ""));
-
-
-      const priceNum = (p.price != null && !Number.isNaN(Number(p.price))) ? Number(p.price) : null;
-      const currency = escapeHtml(p.currency || "EUR");
-      const price = priceNum != null ? `${priceNum.toFixed(2)} ${currency}` : null;
+      const priceObj = formatPrice(p.price, p.currency || "EUR");
 
       const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
       const img0 = imgs.length ? imgs[0] : "";
       const imgSafe = escapeHtml(img0);
-
-      let stockLabel = "Neznáme";
-      let stockClass = "";
-      let qtyText = "";
-      if (p.stockQty === 0) { stockLabel = "Vypredané"; stockClass = "no"; }
-      if (typeof p.stockQty === "number" && p.stockQty > 0) {
-        stockLabel = "Skladom";
-        stockClass = "ok";
-        qtyText = `Skladom: ${p.stockQty} ks`;
-      }
 
       const id = escapeHtml(p.id ?? p.sku ?? p.articleNumber ?? skuRaw);
 
@@ -1345,30 +1402,31 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
           <div class="thumb">
             ${arrows}
             <img src="${imgSafe}" alt="${name}" loading="lazy"
-                onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
+                 onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
             ${dots}
           </div>
 
-          <div class="cardTop">
-            <div class="tag">
-              <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
-              ${make}
+          <div class="cardHeadRow">
+            <div class="miniStack">
+              <span class="pillMini vehPill"><span class="dotSm"></span>${make}</span>
+              ${modelBase ? `<span class="pillMini vehPill">${modelBase}${modelCode ? " • " + modelCode : ""}</span>` : ``}
             </div>
-            <div class="sku">${sku}</div>
+
+            <div class="miniStack" style="justify-content:flex-end">
+              <span class="pillMini skuPill">Kód: ${sku || "—"}</span>
+            </div>
           </div>
 
           <div class="title">${name}</div>
 
-          <div class="meta">
-  <span>${modelBase}</span>
-  ${modelCode ? `<span class="codeChip">${modelCode}</span>` : ``}
-  ${price ? `<span class="priceChip"><small>Cena</small> <strong>${escapeHtml(price)}</strong></span>` : ``}
-</div>
+          <div class="metaRow">
+            <span class="badge order"><span class="clock"></span>Na objednávku</span>
 
-
-          <div class="stock">
-            <span class="badge ${stockClass}">${stockLabel}</span>
-            ${qtyText ? `<span class="qtyNote">${escapeHtml(qtyText)}</span>` : ``}
+            ${
+              priceObj
+                ? `<span class="priceBlock"><small>Cena</small><strong>${escapeHtml(priceObj.nice)} ${escapeHtml(priceObj.currency)}</strong></span>`
+                : `<span class="priceBlock"><small>Cena</small><strong>Na dopyt</strong></span>`
+            }
           </div>
         </div>
       `;
@@ -1388,7 +1446,6 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
 
       const setIndex = (i) => {
         if (!imgs.length) return;
-        const current = Number(card.getAttribute("data-imgindex") || 0);
         const next = (i + imgs.length) % imgs.length;
         card.setAttribute("data-imgindex", String(next));
         if (imgEl) imgEl.src = imgs[next];
@@ -1418,7 +1475,6 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
         });
       }
 
-      // otvor detail (nech ostane)
       card.addEventListener("click", () => openProduct(id));
       card.addEventListener("keydown", (e) => {
         if(e.key === "Enter" || e.key === " ") {
@@ -1427,6 +1483,39 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
         }
       });
     });
+  }
+
+  function buildOrderMailto({name, sku, price, fits}){
+    const to = "info@remperformance.sk";
+    const subject = `Nezáväzná objednávka – ${sku || name || "produkt"}`;
+
+    const fitLine = (fits || []).slice(0, 6).map(f => {
+      const mk = normKey(f.make || "UNIVERZÁLNE");
+      const base = norm(f.modelBase || f.model || "");
+      const code = norm(f.modelCode || "");
+      return `${mk}${base ? " • " + base : ""}${code ? " • " + code : ""}`;
+    }).join(", ");
+
+    const body = [
+      "Dobrý deň,",
+      "",
+      "mám záujem o nezáväznú objednávku/dopyt na tento produkt:",
+      `• Názov: ${name || "—"}`,
+      `• Kód: ${sku || "—"}`,
+      `• Cena: ${price || "Na dopyt"}`,
+      `• Vozidlo: ${fitLine || "UNIVERZÁLNE"}`,
+      "",
+      "Prosím o potvrdenie kompatibility (VIN / špecifikácia) a dostupnosti.",
+      "",
+      "Meno a priezvisko:",
+      "Telefón:",
+      "E-mail:",
+      "Poznámka (VIN / rok / motorizácia):",
+      ""
+    ].join("\n");
+
+    const href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return href;
   }
 
   function openProduct(id){
@@ -1440,18 +1529,8 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
     const sku = norm(p.sku || p.articleNumber || "");
     const desc = norm(p.description || p.popis || "");
 
-    const priceNum = (p.price != null && !Number.isNaN(Number(p.price))) ? Number(p.price) : null;
-    const price = priceNum != null ? `${priceNum.toFixed(2)} ${p.currency || "EUR"}` : "Cena na dopyt";
-
-    let stockLabel = "Neznáme";
-    let stockClass = "";
-    let qtyText = "";
-    if (p.stockQty === 0) { stockLabel = "Vypredané"; stockClass = "no"; }
-    if (typeof p.stockQty === "number" && p.stockQty > 0) {
-      stockLabel = "Skladom";
-      stockClass = "ok";
-      qtyText = `Skladom: ${p.stockQty} ks`;
-    }
+    const priceObj = formatPrice(p.price, p.currency || "EUR");
+    const price = priceObj ? `${priceObj.nice} ${priceObj.currency}` : "Cena na dopyt";
 
     const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
     const fits = getFitments(p);
@@ -1482,29 +1561,44 @@ const modelCode = escapeHtml(norm(f0.modelCode || ""));
 
         <div class="mInfo">
           <div class="mRow">
-            <span class="pillx">Kód: ${escapeHtml(sku || "—")}</span>
-            <span class="pillx" style="border-color: rgba(179,31,36,0.35); background: rgba(179,31,36,0.12);">
-              Cena: <b style="font-size:16px">${escapeHtml(price)}</b>
-            </span>
-            <span class="pillx badge ${stockClass}">${escapeHtml(stockLabel)}</span>
-            ${qtyText ? `<span class="pillx" style="opacity:.85">${escapeHtml(qtyText)}</span>` : ``}
+            <span class="pillx red">Kód: ${escapeHtml(sku || "—")}</span>
+            <span class="pillx red">Cena: <b style="font-size:16px; letter-spacing:.02em">${escapeHtml(price)}</b></span>
+            <span class="pillx red">Status: <b>Na objednávku</b></span>
           </div>
 
-          <div class="mDesc">${escapeHtml(desc || "Bez popisu.")}</div>
+          <div class="descBox">
+            <div class="descLabel"><span class="bar"></span>Popis produktu</div>
+            <div class="mDesc">${escapeHtml(desc || "Bez popisu.")}</div>
+            <div class="mDesc" style="opacity:.78; margin-top:10px;">
+              Poznámka: Pred potvrdením objednávky overíme kompatibilitu podľa VIN alebo špecifikácie vozidla.
+            </div>
+          </div>
 
-          <div class="fitList" aria-label="Vozidlá">
-            ${fits.map(f => {
-              const mk = normKey(f.make || "UNIVERZÁLNE");
-              const base = norm(f.modelBase || f.model || "");
-const code = norm(f.modelCode || "");
-return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ? " • " + escapeHtml(code) : ""}</span>`;
+          <div class="descBox" style="margin-top:12px;">
+            <div class="descLabel"><span class="bar"></span>Vhodné pre</div>
+            <div class="fitList" aria-label="Vozidlá">
+              ${fits.map(f => {
+                const mk = normKey(f.make || "UNIVERZÁLNE");
+                const base = norm(f.modelBase || f.model || "");
+                const code = norm(f.modelCode || "");
+                return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ? " • " + escapeHtml(code) : ""}</span>`;
+              }).join("")}
+            </div>
+          </div>
 
-            }).join("")}
+          <div class="ctaRow">
+            <button class="orderBtn" id="mOrderBtn" type="button">
+              <span class="bolt">⚡</span> Nezáväzne objednať
+            </button>
+            <span style="color:rgba(255,255,255,0.62); font-size:13px;">
+              otvorí e-mail s predvyplneným dopytom
+            </span>
           </div>
         </div>
       </div>
     `;
 
+    // gallery controls
     let mi = 0;
     const mMainImg = document.getElementById("mMainImg");
     const mPrev = document.getElementById("mPrev");
@@ -1524,6 +1618,16 @@ return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ?
 
     if (mMainImg){
       mMainImg.addEventListener("click", () => openLightbox(imgs[mi], name));
+    }
+
+    // order button -> mailto
+    const mOrderBtn = document.getElementById("mOrderBtn");
+    if (mOrderBtn){
+      mOrderBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = buildOrderMailto({ name, sku, price, fits });
+        window.location.href = href;
+      });
     }
 
     // modal keyboard (left/right)
@@ -1564,7 +1668,7 @@ return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ?
     if(e.target && e.target.dataset && e.target.dataset.lbClose) closeLightbox();
   });
 
-  // ===== MODAL CLOSE (MUSÍ BYŤ TU, NIE NA KONCI PO init()) =====
+  // ===== MODAL CLOSE =====
   function closeModal(){
     closeLightbox();
     modal.classList.remove("open");
@@ -1595,7 +1699,6 @@ return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ?
       const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.products) ? raw.products : []);
 
       PRODUCTS = (Array.isArray(arr) ? arr : []).map(p => {
-        // normalizuj images na array
         let images = p.images ?? p.imageLinks ?? p.image_urls ?? p.bilder ?? [];
         if (typeof images === "string") images = [images];
         if (!Array.isArray(images)) images = [];
@@ -1610,6 +1713,7 @@ return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ?
           price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
           currency: p.currency ?? "EUR",
           images,
+          // sklad ignorujeme -> všetko "na objednávku" podľa zadania
           stockQty: p.stockQty ?? p.qty ?? p.stock ?? p.bestand ?? null,
           fitments: Array.isArray(p.fitments) ? p.fitments : null
         };
@@ -1620,18 +1724,18 @@ return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ?
       fillModelSelect("");
       renderBrandGrid("");
 
-     els.make.addEventListener("change", () => {
-  fillModelSelect(els.make.value);
-  els.model.value = "";
-  applyFilters();
+      els.make.addEventListener("change", () => {
+        fillModelSelect(els.make.value);
+        els.model.value = "";
+        applyFilters();
 
-  if (els.make.value){
-    setTimeout(() => {
-      els.model.focus();
-      try { els.model.click(); } catch(e) {}
-    }, 120);
-  }
-});
+        if (els.make.value){
+          setTimeout(() => {
+            els.model.focus();
+            try { els.model.click(); } catch(e) {}
+          }, 120);
+        }
+      });
 
       els.model.addEventListener("change", () => applyFilters());
       els.q.addEventListener("input", () => applyFilters());
