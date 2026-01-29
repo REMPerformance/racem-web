@@ -455,6 +455,48 @@
     @media (prefers-reduced-motion: reduce){
       *{ animation:none !important; transition:none !important; }
     }
+
+    .thumb{
+  width:100%;
+  aspect-ratio: 16/10;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  margin-bottom:12px;
+}
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transform: scale(1.02);
+  filter: saturate(1.05) contrast(1.05);
+}
+.stock{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.80);
+  font-size: 12px;
+  letter-spacing:.10em;
+  text-transform: uppercase;
+  font-family:"Oswald", system-ui, sans-serif;
+}
+.badge.ok{ border-color: rgba(46,204,113,0.35); box-shadow: 0 0 0 3px rgba(46,204,113,0.10) inset; }
+.badge.no{ border-color: rgba(231,76,60,0.35); box-shadow: 0 0 0 3px rgba(231,76,60,0.10) inset; }
+
   </style>
 </head>
 
@@ -710,41 +752,53 @@
     const slice = list.slice(0, 90);
 
     els.cards.innerHTML = slice.map(p => {
-      const sku = escapeHtml(norm(p.sku || ""));
-      const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
+  const sku = escapeHtml(norm(p.sku || p.articleNumber || ""));
+  const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
+  const make = escapeHtml(normKey(p.carMake || "UNIVERZÁLNE"));
+  const model = escapeHtml(norm(p.carModel || "Univerzálne"));
 
-      const fits = getFitments(p);
-      const first = fits[0] || { make: "UNIVERZÁLNE", model: "" };
-      const make = escapeHtml(normKey(first.make || "UNIVERZÁLNE"));
-      const model = escapeHtml(norm(first.model || "Univerzálne"));
+  const price = (p.price != null && !Number.isNaN(Number(p.price)))
+    ? `${Number(p.price).toFixed(2)} ${escapeHtml(p.currency || "EUR")}`
+    : null;
 
-      const price = (p.priceEUR != null && !Number.isNaN(Number(p.priceEUR)))
-        ? `${Number(p.priceEUR).toFixed(2)} EUR`
-        : null;
+  const img = Array.isArray(p.images) && p.images.length ? p.images[0] : "";
+  const imgSafe = escapeHtml(img);
 
-      const stockBadge = (p.inStock === true) ? "Skladom" : (p.inStock === false ? "Nie je skladom" : "Sklad neznámy");
+  // sklad – keď nemáš qty, aspoň zobraz "Neznáme"
+  let stockLabel = "Neznáme";
+  let stockClass = "";
+  if (p.stockQty === 0) { stockLabel = "Nie je skladom"; stockClass = "no"; }
+  if (typeof p.stockQty === "number" && p.stockQty > 0) { stockLabel = "Skladom"; stockClass = "ok"; }
 
-      return `
-        <div class="card">
-          <div class="cardTop">
-            <div class="tag">
-              <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
-              ${make}
-            </div>
-            <div class="sku">${sku}</div>
-          </div>
+  return `
+    <div class="card">
+      <div class="thumb">
+        <img src="${imgSafe}" alt="${name}" loading="lazy"
+             onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
+      </div>
 
-          <div class="title">${name}</div>
-
-          <div class="meta">
-            <span>${model}</span>
-            ${price ? `<span>${price}</span>` : ``}
-            <span>${escapeHtml(stockBadge)}</span>
-          </div>
+      <div class="cardTop">
+        <div class="tag">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
+          ${make}
         </div>
-      `;
-    }).join("");
-  }
+        <div class="sku">${sku}</div>
+      </div>
+
+      <div class="title">${name}</div>
+
+      <div class="meta">
+        <span>${model}</span>
+        ${price ? `<span>${price}</span>` : ``}
+      </div>
+
+      <div class="stock">
+        <span class="badge ${stockClass}">${stockLabel}</span>
+      </div>
+    </div>
+  `;
+}).join("");
+
 
   function escapeHtml(str){
     return (str ?? "").toString()
@@ -765,16 +819,19 @@
       const raw = await r.json();
       const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.products) ? raw.products : []);
 
-      PRODUCTS = arr.map(p => ({
-        ...p,
-        sku: p.sku ?? "",
-        name: p.name ?? p.title ?? "",
-        priceEUR: p.priceEUR ?? p.price ?? p.price_eur ?? null,
-        inStock: (p.inStock ?? p.stock ?? null),
-        fitments: Array.isArray(p.fitments) ? p.fitments : null,
-        carMake: p.carMake ?? p.make ?? "",
-        carModel: p.carModel ?? p.model ?? "",
-      }));
+     PRODUCTS = (Array.isArray(PRODUCTS) ? PRODUCTS : []).map(p => ({
+  ...p,
+  sku: p.sku ?? p.SKU ?? p.Artikelnummer ?? p.articleNumber ?? "",
+  name: p.name ?? p.Name ?? p.title ?? p.nazov ?? "",
+  description: p.description ?? p.popis ?? "",
+  carMake: p.carMake ?? p.make ?? p.car_make ?? "",
+  carModel: p.carModel ?? p.model ?? p.car_model ?? "",
+  price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
+  currency: p.currency ?? "EUR",
+  images: p.images ?? p.imageLinks ?? p.image_urls ?? p.bilder ?? [],
+  stockQty: p.stockQty ?? p.qty ?? p.stock ?? p.bestand ?? null
+}));
+
 
       buildIndex(PRODUCTS);
       fillMakeSelect();
