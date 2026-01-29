@@ -1,215 +1,348 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RACEM | CSR katalóg</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-<style>
-/* ==== RACEM THEME ==== */
-:root{
-  --bg:#0b0d10; --panel:#10141a; --panel2:#0f1318;
-  --text:#e8eef7; --muted:#9aa6b2; --line:#202834;
-  --red:#b31f24;
-  --radius:18px;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,Segoe UI,Roboto,Arial;
-  background:radial-gradient(900px 500px at 20% -10%, rgba(179,31,36,.18), transparent 60%),var(--bg);
-  color:var(--text);
-}
-.wrap{max-width:1200px;margin:auto;padding:22px}
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-/* ==== TOP BAR ==== */
-.topbar{
-  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  background:rgba(16,20,26,.8);
-}
-.pill{
-  padding:8px 12px;border-radius:999px;
-  border:1px solid rgba(179,31,36,.45);
-  background:rgba(179,31,36,.15);
-  font-weight:900;
-}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
-.select,.input{
-  background:#0f1318;border:1px solid var(--line);
-  color:var(--text);
-  border-radius:12px;
-  padding:10px 12px;
-}
-.btn{
-  background:var(--red);
-  color:#fff;
-  font-weight:900;
-  border:none;
-  padding:10px 14px;
-  border-radius:12px;
-  cursor:pointer;
-}
+  <title>RACEM | Blank</title>
+  <meta name="description" content="RACEM – blank šablóna stránky." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://racem.sk/blank.html" />
 
-/* ==== GRID ==== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  gap:14px;
-  margin-top:18px;
-}
-.card{
-  grid-column:span 3;
-  background:rgba(16,20,26,.8);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  overflow:hidden;
-  cursor:pointer;
-}
-.thumb{
-  aspect-ratio:4/3;
-  background:#111;
-}
-.thumb img{width:100%;height:100%;object-fit:cover}
-.content{padding:12px}
-.title{font-weight:900}
-.sub{color:var(--muted);font-size:.9rem}
-.price{margin-top:8px;font-weight:900;color:#fff}
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
 
-/* ==== RESPONSIVE ==== */
-@media(max-width:900px){.card{grid-column:span 6}}
-@media(max-width:520px){.card{grid-column:span 12}}
-</style>
+    :root{
+      --red:#b31f24;
+      --bg:#0b0b0b;
+      --text:#ffffff;
+      --line: rgba(255,255,255,0.08);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x:hidden;
+    }
+    a{ color:inherit; }
+
+    /* Background visuals */
+    .bg{
+      position:fixed; inset:0; z-index:-6; pointer-events:none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(179,31,36,0.22), transparent 45%),
+        radial-gradient(circle at 88% 72%, rgba(179,31,36,0.12), transparent 46%),
+        radial-gradient(circle at 55% 55%, rgba(255,255,255,0.03), transparent 60%);
+      transform: translateZ(0);
+    }
+    .bg::after{
+      content:""; position:absolute; inset:0; opacity:.55;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 44px);
+      animation: gridMove 24s linear infinite;
+    }
+    @keyframes gridMove{
+      from{ background-position:0 0, 0 0; }
+      to{ background-position:600px 0, 0 600px; }
+    }
+
+    .noise{
+      position:fixed; inset:-20%; z-index:-5; pointer-events:none;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+      animation: noiseMove 10s steps(10) infinite;
+    }
+    @keyframes noiseMove{
+      0%{transform:translate(0,0)}
+      20%{transform:translate(-3%,2%)}
+      40%{transform:translate(4%,-2%)}
+      60%{transform:translate(-2%,-4%)}
+      80%{transform:translate(3%,3%)}
+      100%{transform:translate(0,0)}
+    }
+
+    .wrap{ width:100%; padding:0 6vw; }
+    section{ padding:100px 0; position:relative; }
+
+    /* Topbar / nav */
+    .topbar{
+      position:sticky; top:0; z-index:100;
+      background: rgba(10,10,10,0.62);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+    }
+    .nav{
+      width:100%;
+      padding: 14px 6vw;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .brand-mini{
+      display:flex; align-items:center; text-decoration:none;
+      gap:12px;
+    }
+    .brand-mini img{
+      height:64px; width:auto; display:block; object-fit:contain;
+      transition: transform .35s ease, filter .35s ease;
+    }
+    .brand-mini:hover img{
+      transform: scale(1.06);
+      filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
+    }
+    .brand-title{
+      font-family: "Oswald", system-ui, sans-serif;
+      text-transform: uppercase;
+      letter-spacing:.16em;
+      display:flex;
+      flex-direction:column;
+      line-height:1.0;
+      color: rgba(255,255,255,0.82);
+      margin-top:2px;
+    }
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:26px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .nav-links a{
+      position:relative;
+      text-decoration:none;
+      color: rgba(255,255,255,0.76);
+      font-family: "Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      padding: 6px 0;
+      transition: color .2s ease, transform .2s ease;
+    }
+    .nav-links a:hover{ color:#fff; transform: translateY(-1px); }
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-10px;
+      width:0;
+      height:2px;
+      background: var(--red);
+      transform: translateX(-50%);
+      transition: width .28s ease;
+      box-shadow: 0 0 10px rgba(179,31,36,.75), 0 0 22px rgba(179,31,36,.35);
+    }
+    .nav-links a:hover::after{ width: 120%; }
+
+    /* Generic UI blocks */
+    .panel{
+      background: rgba(20,20,20,0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:26px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute; left:-60px; top:-60px;
+      width:160px; height:160px;
+      background: radial-gradient(circle, rgba(179,31,36,0.18), transparent 60%);
+      opacity:.95;
+    }
+    .panel > *{ position:relative; z-index:1; }
+
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: rgba(20,20,20,0.55);
+      border-radius:999px;
+      color: rgba(255,255,255,0.78);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      width: fit-content;
+    }
+    .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
+
+    h1,h2{
+      margin: 12px 0 12px 0;
+      font-family:"Oswald", system-ui, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      line-height:0.92;
+    }
+    h1{ font-size: clamp(34px, 4.8vw, 62px); }
+    h2{ font-size: clamp(28px, 4.2vw, 52px); }
+
+    p{
+      margin:0 0 14px 0;
+      color: rgba(255,255,255,0.78);
+      line-height:1.75;
+      font-size:15.5px;
+      max-width: 980px;
+    }
+
+    /* Hero (blank) */
+    .hero{
+      padding: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background:#050505;
+    }
+    .heroMedia{
+      position:relative;
+      min-height: min(60vh, 640px);
+      overflow:hidden;
+      display:grid;
+      place-items:end;
+    }
+    .heroMedia::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.22), transparent 55%),
+        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.08), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.78));
+      z-index:2;
+      pointer-events:none;
+    }
+    .heroMedia::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0;
+      height: 160px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(11,11,11,1));
+      z-index:2;
+      pointer-events:none;
+    }
+    .heroBg{
+      position:absolute; inset:0;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04), transparent 55%);
+      z-index:1;
+    }
+    .heroInner{
+      position:relative; z-index:3;
+      width:100%;
+      padding: 0 6vw 44px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:flex-end;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding:40px 0;
+    }
+
+    @media (max-width: 980px){
+      .wrap{ padding:0 18px; }
+      section{ padding: 76px 0; }
+      .nav{ padding: 14px 18px; }
+      .heroInner{ padding: 0 18px 30px; }
+    }
+    @media (max-width: 560px){
+      section{ padding: 56px 0; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; transition:none !important; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="bg"></div>
+  <div class="noise"></div>
 
-<div class="topbar">
-  <div class="pill">RACEM <small>CSR katalóg</small></div>
+  <div class="topbar" id="top">
+    <div class="nav">
+      <a href="index.html" class="brand-mini" aria-label="RACEM">
+        <img src="assets/rmgroup.png" alt="RACEM logo">
+        <div class="brand-title"></div>
+      </a>
 
-  <div class="controls">
-    <input id="q" class="input" placeholder="Hľadať názov / kód">
-
-    <select id="make" class="select">
-      <option value="">Všetci výrobcovia</option>
-    </select>
-
-    <select id="model" class="select" disabled>
-      <option value="">Všetky modely</option>
-    </select>
-
-    <button id="reset" class="btn">Reset</button>
+      <nav class="nav-links" aria-label="Menu">
+        <a href="#sekcia1">Sekcia 1</a>
+        <a href="#sekcia2">Sekcia 2</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
   </div>
-</div>
 
-<div id="grid" class="grid"></div>
-
-</div>
-
-<script>
-/* ==== CONFIG ==== */
-const DATA_URLS = [
-  "./csr-products-SK.part1.json",
-  "./csr-products-SK.part2.json"
-];
-const IMAGE_BASE = "https://pub-00566da7f565476b9f37d09cb0e1917f.r2.dev";
-
-/* ==== STATE ==== */
-let PRODUCTS = [];
-let FILTERED = [];
-
-/* ==== ELEMENTS ==== */
-const els = {
-  grid: document.getElementById("grid"),
-  q: document.getElementById("q"),
-  make: document.getElementById("make"),
-  model: document.getElementById("model"),
-  reset: document.getElementById("reset")
-};
-
-/* ==== LOAD ==== */
-async function loadProducts(){
-  const parts = await Promise.all(DATA_URLS.map(u=>fetch(u).then(r=>r.json())));
-  PRODUCTS = parts.flatMap(p=>p.products);
-  buildMakeFilter();
-  applyFilters();
-}
-
-/* ==== FILTER BUILD ==== */
-function buildMakeFilter(){
-  const makes = [...new Set(PRODUCTS.map(p=>p.make))].sort();
-  els.make.innerHTML = `<option value="">Všetci výrobcovia</option>` +
-    makes.map(m=>`<option value="${m}">${m}</option>`).join("");
-}
-
-/* ==== MODEL FILTER ==== */
-function buildModelFilter(make){
-  const models = [...new Set(
-    PRODUCTS.filter(p=>p.make===make).map(p=>p.model)
-  )].sort();
-
-  els.model.innerHTML =
-    `<option value="">Všetky modely</option>` +
-    models.map(m=>`<option value="${m}">${m}</option>`).join("");
-
-  els.model.disabled = false;
-}
-
-/* ==== APPLY FILTER ==== */
-function applyFilters(){
-  const q = els.q.value.toLowerCase();
-  const make = els.make.value;
-  const model = els.model.value;
-
-  FILTERED = PRODUCTS.filter(p=>{
-    if (make && p.make!==make) return false;
-    if (model && p.model!==model) return false;
-    if (q && !(`${p.title} ${p.code}`.toLowerCase().includes(q))) return false;
-    return true;
-  });
-
-  render();
-}
-
-/* ==== RENDER ==== */
-function render(){
-  els.grid.innerHTML = FILTERED.map(p=>`
-    <div class="card">
-      <div class="thumb">
-        <img src="${IMAGE_BASE}/csr/${p.code}/${p.images?.[0]||""}"
-             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22480%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2310141a%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22%239aa6b2%22 text-anchor=%22middle%22>No image</text></svg>'">
-      </div>
-      <div class="content">
-        <div class="title">${p.title}</div>
-        <div class="sub">${p.make} ${p.model}</div>
-        <div class="price">${Number(p.priceEUR).toLocaleString("sk-SK",{style:"currency",currency:"EUR"})}</div>
+  <section class="hero" aria-label="Hero">
+    <div class="heroMedia">
+      <div class="heroBg"></div>
+      <div class="heroInner">
+        <div class="pill"><span class="dot"></span>Blank šablóna</div>
+        <h1>Nadpis stránky</h1>
+        <p>
+          Toto je čistý základ bez značiek, produktov, galérií a modálov.
+          Sem si doplníš vlastný obsah.
+        </p>
       </div>
     </div>
-  `).join("");
-}
+  </section>
 
-/* ==== EVENTS ==== */
-els.make.addEventListener("change",()=>{
-  els.model.value="";
-  els.model.disabled=true;
-  if (els.make.value) buildModelFilter(els.make.value);
-  applyFilters();
-});
-els.model.addEventListener("change",applyFilters);
-els.q.addEventListener("input",applyFilters);
-els.reset.addEventListener("click",()=>{
-  els.q.value="";
-  els.make.value="";
-  els.model.value="";
-  els.model.disabled=true;
-  applyFilters();
-});
+  <section id="sekcia1">
+    <div class="wrap">
+      <div class="panel">
+        <div class="pill"><span class="dot"></span>Sekcia 1</div>
+        <h2>Obsah</h2>
+        <p>Sem si vlož text / karty / čokoľvek.</p>
+      </div>
+    </div>
+  </section>
 
-/* ==== INIT ==== */
-loadProducts();
-</script>
+  <section id="sekcia2">
+    <div class="wrap">
+      <div class="panel">
+        <div class="pill"><span class="dot"></span>Sekcia 2</div>
+        <h2>Ďalší obsah</h2>
+        <p>Sem si vlož ďalší obsah.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="panel">
+        <div class="pill"><span class="dot"></span>Kontakt</div>
+        <h2>Kontakt</h2>
+        <p>Sem dáš e-mail, telefón, formulár, mapu…</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center;">
+      <div style="color:rgba(255,255,255,0.55); font-size:14px;">
+        © 2026 RACEM / REM Performance
+      </div>
+
+      <div style="display:flex; gap:18px; flex-wrap:wrap;">
+        <a href="vop.html">VOP</a>
+        <a href="ochrana-osobnych-udajov.html">Ochrana osobných údajov</a>
+        <a href="kontakt.html">Kontakt</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Blank JS – sem si doplníš vlastnú logiku
+  </script>
 </body>
 </html>
