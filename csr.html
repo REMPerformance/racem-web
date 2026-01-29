@@ -9,44 +9,37 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <title>RACEM | Produkty</title>
-  <meta name="description" content="RACEM – filtre podľa značky a modelu, katalóg produktov." />
+  <title>RACEM | CSR Automotive</title>
+  <meta name="description" content="CSR Automotive – produkty, filtre podľa značky a modelu, rýchla nezáväzná objednávka cez RACEM." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://racem.sk/blank.html" />
+  <link rel="canonical" href="https://racem.sk/csr-automotive.html" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
 
     :root{
       --red:#b31f24;
       --bg:#0b0b0b;
       --text:#ffffff;
-
       --line: rgba(255,255,255,0.08);
-      --line2: rgba(255,255,255,0.12);
 
-      --cardBg: rgba(10,10,10,0.72);
-      --cardBgHover: rgba(14,14,14,0.82);
-      --cardBorder: rgba(255,255,255,0.10);
-
-      --soft: rgba(255,255,255,0.06);
-      --soft2: rgba(255,255,255,0.04);
-      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --green:#16c784;
+      --orange:#f59e0b;
+      --danger:#ef4444;
+      color-scheme: dark;
     }
 
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x:hidden;
-      letter-spacing: 0.01em;
     }
-    a{ color:inherit; }
+    a{color:inherit}
 
-    /* Background visuals */
     .bg{
       position:fixed; inset:0; z-index:-6; pointer-events:none;
       background:
@@ -66,7 +59,6 @@
       from{ background-position:0 0, 0 0; }
       to{ background-position:600px 0, 0 600px; }
     }
-
     .noise{
       position:fixed; inset:-20%; z-index:-5; pointer-events:none;
       opacity:.08;
@@ -85,7 +77,6 @@
     .wrap{ width:100%; padding:0 6vw; }
     section{ padding:100px 0; position:relative; }
 
-    /* Topbar / nav */
     .topbar{
       position:sticky; top:0; z-index:100;
       background: rgba(10,10,10,0.62);
@@ -98,11 +89,11 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:18px;
+      gap: 18px;
     }
     .brand-mini{
       display:flex; align-items:center; text-decoration:none;
-      gap:12px;
+      gap: 12px;
     }
     .brand-mini img{
       height:64px; width:auto; display:block; object-fit:contain;
@@ -122,10 +113,15 @@
       color: rgba(255,255,255,0.82);
       margin-top:2px;
     }
+    .brand-title b{
+      color:#fff;
+      font-size: 18px;
+      letter-spacing:.18em;
+    }
     .nav-links{
       display:flex;
       align-items:center;
-      gap:26px;
+      gap: 26px;
       flex-wrap:wrap;
       justify-content:center;
     }
@@ -155,7 +151,138 @@
     }
     .nav-links a:hover::after{ width: 120%; }
 
-    /* Generic UI blocks */
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.42);
+      background: rgba(179,31,36,0.18);
+    }
+    .btn.secondary{
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+    }
+    .btn.secondary:hover{
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.09);
+    }
+    .btn.cta{
+      background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 18px 70px rgba(179,31,36,0.25), 0 18px 70px rgba(0,0,0,0.55);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+    .btn.cta:hover{
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(199,45,50,0.98), rgba(140,20,24,0.94));
+    }
+
+    .hero{
+      padding: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background:#050505;
+    }
+    .heroMedia{
+      position:relative;
+      min-height: min(70vh, 720px);
+      overflow:hidden;
+      display:grid;
+      place-items:end;
+    }
+    .heroMedia::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.28), transparent 55%),
+        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.08), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.78));
+      z-index:2;
+      pointer-events:none;
+    }
+    .heroMedia::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0;
+      height: 160px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(11,11,11,1));
+      z-index:2;
+      pointer-events:none;
+    }
+
+    /* ✅ UPRAV: CSR hero pozadie */
+    .heroBg{
+      position:absolute; inset:0;
+      background: url("assets/csr-hero.webp") center/cover no-repeat;
+      transform: scale(1.02);
+      filter: contrast(1.05) saturate(1.05);
+    }
+    .heroInner{
+      position:relative; z-index:3;
+      width:100%;
+      padding: 0 6vw 44px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: rgba(20,20,20,0.55);
+      border-radius:999px;
+      color: rgba(255,255,255,0.78);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      width: fit-content;
+    }
+    .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
+
+    .originPill{
+      border-color: rgba(255,255,255,0.16);
+      background:
+        radial-gradient(circle at 25% 50%, rgba(179,31,36,0.16), transparent 60%),
+        rgba(20,20,20,0.55);
+      color: rgba(255,255,255,0.88);
+      letter-spacing:.18em;
+    }
+    .originPill b{ color:#fff; }
+
+    /* minimalist flag placeholder (ak nechceš vlajku, vyhoď span úplne) */
+    .flag{
+      width:22px;
+      height:14px;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:3px;
+      overflow:hidden;
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      background:
+        linear-gradient(90deg, #000 0 33%, #dd0000 33% 66%, #ffce00 66% 100%);
+      flex: 0 0 auto;
+    }
+
     .panel{
       background: rgba(20,20,20,0.75);
       border: 1px solid rgba(255,255,255,0.08);
@@ -174,31 +301,14 @@
     }
     .panel > *{ position:relative; z-index:1; }
 
-    .pill{
-      display:inline-flex; gap:10px; align-items:center;
-      padding:8px 12px;
-      border:1px solid var(--line);
-      background: rgba(20,20,20,0.55);
-      border-radius:999px;
-      color: rgba(255,255,255,0.78);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 16px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      width: fit-content;
-    }
-    .dot{ width:7px;height:7px;border-radius:50%; background: var(--red); box-shadow: 0 0 18px rgba(179,31,36,.7); }
-
-    h1,h2{
+    h2{
       margin: 12px 0 12px 0;
       font-family:"Oswald", system-ui, sans-serif;
       text-transform: uppercase;
       letter-spacing: .18em;
+      font-size: clamp(34px, 4.8vw, 56px);
       line-height:0.92;
     }
-    h1{ font-size: clamp(34px, 4.8vw, 62px); }
-    h2{ font-size: clamp(28px, 4.2vw, 52px); }
-
     p{
       margin:0 0 14px 0;
       color: rgba(255,255,255,0.78);
@@ -207,811 +317,744 @@
       max-width: 980px;
     }
 
-    /* Hero */
-    .hero{
-      padding: 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      background:#050505;
-    }
-    .heroMedia{
-      position:relative;
-      min-height: min(60vh, 640px);
-      overflow:hidden;
+    .grid2{
       display:grid;
-      place-items:end;
-    }
-    .heroMedia::before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.22), transparent 55%),
-        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.08), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.78));
-      z-index:2;
-      pointer-events:none;
-    }
-    .heroMedia::after{
-      content:"";
-      position:absolute; left:0; right:0; bottom:0;
-      height: 160px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(11,11,11,1));
-      z-index:2;
-      pointer-events:none;
-    }
-    .heroBg{
-      position:absolute; inset:0;
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04), transparent 55%);
-      z-index:1;
-    }
-    .heroInner{
-      position:relative; z-index:3;
-      width:100%;
-      padding: 0 6vw 44px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      align-items:flex-start;
-      justify-content:flex-end;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      align-items:start;
     }
 
-    /* ====== CAR FILTER UI (RACEM v2) ====== */
+    .divider{
+      height:1px;
+      width:100%;
+      background: rgba(255,255,255,0.08);
+      margin: 18px 0;
+    }
+
     .filterBar{
+      margin-top: 16px;
       display:flex;
-      gap:14px;
+      gap: 10px;
       flex-wrap:wrap;
-      align-items:flex-end;
+      align-items:center;
       justify-content:space-between;
-      margin-top: 18px;
-      padding: 16px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(18,18,18,0.72), rgba(10,10,10,0.52));
-      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
     }
-
-    .filterLeft{
+    .filtersLeft{
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
-      align-items:flex-end;
-      flex: 1 1 560px;
-      min-width: 260px;
+      align-items:center;
+    }
+    .in, .sel{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color:#fff;
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      min-width: 180px;
+      font-weight: 800;
+      letter-spacing:.04em;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      font-family: Arial, sans-serif;
+    }
+    .in:focus, .sel:focus{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow: 0 0 0 4px rgba(179,31,36,0.18), 0 18px 60px rgba(0,0,0,0.55);
+    }
+    .in::placeholder{ color: rgba(255,255,255,0.50); }
+
+    .sel{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      background: rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.92);
+      padding-right: 44px;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.75) 50%),
+        linear-gradient(135deg, rgba(255,255,255,0.75) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 12px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+    .sel:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,0.35);
+      background: rgba(179,31,36,0.12);
+    }
+    .sel option{ background:#0b0b0b; color:#fff; }
+    .sel option:checked{ background: rgba(179,31,36,0.55); }
+
+    .miniStat{
+      color: rgba(255,255,255,0.70);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 16px;
+      letter-spacing:.20em;
+      text-transform: uppercase;
     }
 
-    .field{
+    /* ✅ 5 vedľa seba (ako chceš) */
+    .productGrid{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .pCard{
+      position: relative;
+      cursor: pointer;
+      border-radius: 18px;
+      overflow: hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(circle at 20% 15%, rgba(179,31,36,0.10), transparent 55%),
+        linear-gradient(180deg, rgba(16,16,16,0.92), rgba(8,8,8,0.78));
+      box-shadow: 0 16px 54px rgba(0,0,0,0.55);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .pCard:hover{
+      border-color: rgba(179,31,36,0.55);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.70);
+      transform: translateY(-3px);
+    }
+    .pCard:active{ transform: translateY(-1px) scale(0.99); }
+
+    .pMedia{
+      position:relative;
+      height: 220px;
+      overflow:hidden;
+      background: transparent;
+    }
+    .pMedia img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      object-position:center;
+      display:block;
+      transform:none;
+      filter:none;
+      pointer-events:none;
+    }
+    .pBody{
+      padding: 14px 14px 16px;
       display:flex;
       flex-direction:column;
-      gap:8px;
-      min-width: 200px;
-      flex: 1 1 220px;
+      gap: 10px;
+      flex:1;
     }
-
-    .label{
-      font-size: 12px;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.62);
+    .pName{
+      margin:0;
       font-family:"Oswald", system-ui, sans-serif;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .label .hint{
-      font-size: 11px;
-      letter-spacing:.10em;
-      opacity:.65;
-      text-transform:none;
-    }
-
-    /* inputs */
-    select, input{
-      width:100%;
-      padding: 12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(8,8,8,0.70);
+      font-size: 18px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
       color:#fff;
-      outline:none;
-      transition: border .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
-      font-family: "Inter", system-ui, sans-serif;
+      line-height: 1.0;
     }
-
-    select:hover, input:hover{
-      border-color: rgba(255,255,255,0.22);
-      background: rgba(10,10,10,0.78);
+    .pDesc{
+      margin:0;
+      font-size: 13.5px;
+      line-height:1.6;
+      color: rgba(255,255,255,0.72);
+      flex:1;
     }
-
-    select:focus, input:focus{
-      border-color: rgba(179,31,36,0.55);
-      box-shadow: 0 0 0 4px rgba(179,31,36,0.14);
+    .pBottom{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 12px;
+      margin-top: 4px;
     }
-
-    select:disabled{
-      opacity: .55;
-      cursor: not-allowed;
-      filter: grayscale(0.15);
-    }
-
-    /* buttons */
-    .btn{
-      padding: 12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.86);
-      cursor:pointer;
+    .price{
       font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.14em;
+      letter-spacing:.18em;
       text-transform: uppercase;
-      transition: transform .18s ease, border .18s ease, background .18s ease, box-shadow .18s ease;
-      white-space:nowrap;
-      height: 46px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.90);
+    }
+    .openHint{
       display:inline-flex;
       align-items:center;
       gap:10px;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.70);
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.40);
-      background: rgba(179,31,36,0.10);
-      box-shadow: 0 10px 26px rgba(179,31,36,0.12);
+    .openHint .arr{
+      width: 34px; height: 34px; border-radius: 14px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      transition: transform .18s ease, border-color .18s ease;
     }
-    .btn:active{ transform: translateY(0px) scale(0.99); }
+    .pCard:hover .openHint .arr{
+      transform: translateX(3px);
+      border-color: rgba(179,31,36,0.35);
+    }
 
-    /* stats */
-    .stats{
-      flex: 0 0 auto;
+    /* MODALS */
+    .modal{
+      position:fixed; inset:0; z-index:999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      background: rgba(0,0,0,0.62);
+      backdrop-filter: blur(10px);
+    }
+    .modal.show{ display:flex; }
+    .modalCard{
+      width: min(980px, 100%);
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(12,12,12,0.92);
+      box-shadow: 0 22px 80px rgba(0,0,0,0.70);
+      overflow:hidden;
+      position:relative;
+
+      max-height: 92vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .modalHead{
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:10px;
-      justify-content:flex-end;
-      color: rgba(255,255,255,0.70);
-      font-size: 13px;
-      white-space:nowrap;
+      padding: 14px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.35);
+      flex: 0 0 auto;
     }
-
-    /* ====== BRAND GRID ====== */
-    .brandGrid{
-      display:grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .brandBtn{
-      width:100%;
-      border-radius: 14px;
-      padding: 14px 12px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(12,12,12,0.65);
-      color: rgba(255,255,255,0.86);
+    .modalHead b{
       font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.12em;
+      letter-spacing:.18em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-size: 16px;
+    }
+    .xBtn{
+      border:none;
       cursor:pointer;
-      transition: transform .18s ease, box-shadow .18s ease, border .18s ease, background .18s ease, color .18s ease;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.32);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .brandBtn::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: radial-gradient(circle at 25% 20%, rgba(179,31,36,0.22), transparent 45%);
-      opacity:0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-
-    .brandBtn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(16,16,16,0.78);
-      box-shadow: 0 16px 36px rgba(0,0,0,0.45);
-    }
-    .brandBtn:hover::after{ opacity:1; }
-
-    .brandBtn.active{
-      border-color: rgba(179,31,36,0.55);
-      background: rgba(179,31,36,0.10);
-      box-shadow: 0 18px 46px rgba(179,31,36,0.15);
+      width: 42px; height: 42px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
       color:#fff;
+      font-size: 18px;
+      font-weight: 900;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
     }
-    .brandBtn.active::after{ opacity:1; }
-
-    /* ====== PRODUCT LIST (5 per row) ====== */
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 22px;
-    }
-    @media (max-width: 1200px){ .cards{ grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-    @media (max-width: 980px){ .cards{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @media (max-width: 720px){ .cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 480px){ .cards{ grid-template-columns: 1fr; } }
-
-    /* ====== CARD (RACEM v3) ====== */
-    .card{
-      border-radius:18px;
-      border:1px solid var(--cardBorder);
-      background: linear-gradient(180deg, rgba(12,12,12,0.72), rgba(8,8,8,0.58));
-      padding: 14px;
-      overflow:hidden;
-      position:relative;
-      cursor:pointer;
-      transition: transform .16s ease, border .16s ease, background .16s ease, box-shadow .16s ease;
-      box-shadow: 0 12px 34px rgba(0,0,0,0.35);
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background:
-        radial-gradient(circle at 18% 18%, rgba(179,31,36,0.20), transparent 45%),
-        radial-gradient(circle at 85% 78%, rgba(255,255,255,0.06), transparent 50%);
-      opacity:.65;
-      pointer-events:none;
-    }
-    .card > *{ position:relative; z-index:1; }
-
-    .card:hover{
+    .xBtn:hover{
       transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.36);
-      background: linear-gradient(180deg, rgba(16,16,16,0.82), rgba(10,10,10,0.68));
-      box-shadow: 0 18px 54px rgba(0,0,0,0.52);
+      border-color: rgba(179,31,36,0.35);
+      background: rgba(179,31,36,0.16);
     }
-    .card:active{ transform: translateY(0px) scale(0.99); }
+    .modalBody{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1 1 auto;
+      overflow: hidden;
+      align-items: stretch;
+    }
 
-    .thumb{
-      position:relative;
-      width:100%;
-      aspect-ratio: 16/10;
-      border-radius:16px;
+    .mImg{
+      border-radius: 18px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      margin-bottom:12px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(179,31,36,0.20), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+      min-height: 520px;
+      position:relative;
+      isolation:isolate;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .zoomHint{
+      position:absolute;
+      top:14px;
+      left:50%;
+      transform: translateX(-50%);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 12px;
+      letter-spacing:.22em;
+      text-transform: uppercase;
+      color:#fff;
+      background: rgba(0,0,0,0.55);
+      border:1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+      pointer-events:none;
+      opacity:.88;
+      z-index:7;
+    }
+    .mImg img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      object-position:center;
+      display:block;
+      cursor: zoom-in;
+      padding: 8px;
+      max-height: 100%;
+    }
+    .imgNav{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.55);
+      color:#fff;
+      font-size: 26px;
+      font-weight: 900;
+      cursor:pointer;
+      z-index:6;
+      display:grid;
+      place-items:center;
+      backdrop-filter: blur(10px);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease, opacity .15s ease;
+      opacity:.88;
+    }
+    .imgNav:hover{
+      transform: translateY(-50%) scale(1.04);
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.22);
+    }
+    .imgNav.prev{ left: 14px; }
+    .imgNav.next{ right: 14px; }
+
+    .thumbRow{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding: 8px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.10);
+      z-index:6;
+      backdrop-filter: blur(10px);
+    }
+    .thumbRow::-webkit-scrollbar{ height: 8px; }
+    .thumbRow::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.12); border-radius: 999px; }
+    .thumb{
+      width: 78px;
+      height: 56px;
+      border-radius: 12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      cursor:pointer;
+      flex: 0 0 auto;
+      transition: transform .15s ease, border-color .15s ease, filter .15s ease;
+    }
+    .thumb:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.35);
+      filter: brightness(1.05);
+    }
+    .thumb.active{
+      border-color: rgba(179,31,36,0.65);
+      box-shadow: 0 14px 40px rgba(179,31,36,0.12);
     }
     .thumb img{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit: cover;
       display:block;
-      transform: scale(1.03);
-      filter: saturate(1.06) contrast(1.06);
     }
 
-    .thumbNav{
+    .noImg{
       position:absolute;
-      inset:auto 10px 10px 10px;
-      display:flex;
-      gap:6px;
-      justify-content:center;
-      pointer-events:none;
-    }
-    .dotBtn{
-      width:7px; height:7px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.28);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
-    }
-    .dotBtn.on{
-      background: rgba(179,31,36,0.95);
-      box-shadow: 0 0 16px rgba(179,31,36,0.6);
-    }
-    .thumbArrows{
-      position:absolute;
-      top:10px; left:10px; right:10px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      pointer-events:none;
-    }
-    .thumbArrow{
-      width:34px; height:34px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.40);
+      inset:0;
       display:grid;
       place-items:center;
-      color:#fff;
-      opacity:.0;
-      transform: translateY(-2px);
-      transition: opacity .18s ease, transform .18s ease, border .18s ease, background .18s ease;
-      pointer-events:auto;
-    }
-    .card:hover .thumbArrow{
-      opacity:.95;
-      transform: translateY(0px);
-    }
-    .thumbArrow:hover{
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.14);
+      background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.85));
+      color: rgba(255,255,255,0.72);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.22em;
+      text-transform: uppercase;
+      font-size: 14px;
+      pointer-events:none;
     }
 
-    .cardHeadRow{
+    .mInfo{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      padding: 14px;
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:2px;
-      margin-bottom:10px;
+      flex-direction:column;
+      gap: 12px;
+      height: 100%;
+      max-height: 100%;
+      overflow: auto;
+      padding-right: 10px;
+    }
+    .mInfo::-webkit-scrollbar{ width: 10px; }
+    .mInfo::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.10);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0.35);
+    }
+    .mInfo::-webkit-scrollbar-thumb:hover{
+      background: rgba(179,31,36,0.35);
     }
 
-    .miniStack{
+    .mInfoTop{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      margin-bottom: 6px;
+    }
+
+    .ribbon{
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.50);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      position: static;
+    }
+    .rDot{
+      width:10px;height:10px;border-radius:999px;background:#fff;
+      box-shadow: 0 0 18px rgba(255,255,255,0.25);
+      flex:0 0 auto;
+    }
+    .ribbon.in_stock{
+      border-color: rgba(22,199,132,0.45);
+      background: rgba(22,199,132,0.22);
+    }
+    .ribbon.in_stock .rDot{ background: var(--green); box-shadow:0 0 18px rgba(22,199,132,0.7); }
+    .ribbon.made_to_order{
+      border-color: rgba(245,158,11,0.55);
+      background: rgba(245,158,11,0.20);
+    }
+    .ribbon.made_to_order .rDot{ background: var(--orange); box-shadow:0 0 18px rgba(245,158,11,0.65); }
+    .ribbon.out_of_stock{
+      border-color: rgba(239,68,68,0.55);
+      background: rgba(239,68,68,0.18);
+    }
+    .ribbon.out_of_stock .rDot{ background: var(--danger); box-shadow:0 0 18px rgba(239,68,68,0.65); }
+
+    .mDesc{
+      white-space: pre-line;
+      color: rgba(255,255,255,0.82);
+      font-size: 15px;
+      line-height: 1.9;
+      letter-spacing: .02em;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 14px;
+    }
+
+    .mLabel{
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 8px;
+    }
+    .variantList{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
+      gap:10px;
     }
-
-    .pillMini{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.10);
+    .vChip{
+      cursor:pointer;
+      user-select:none;
+      border-radius: 16px;
+      padding: 10px 12px;
+      border:1px solid rgba(255,255,255,0.14);
       background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.86);
-      font-size: 11.5px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      font-family:"Oswald", system-ui, sans-serif;
-      white-space:nowrap;
-    }
-    .pillMini .dotSm{
-      width:6px;height:6px;border-radius:50%;
-      background: var(--red);
-      box-shadow: 0 0 14px rgba(179,31,36,.65);
-    }
-
-    /* SKU pill (kód) - nech ostane “pill” */
-    .skuPill{
-      border-color: rgba(179,31,36,0.30);
-      background: rgba(179,31,36,0.10);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset;
-    }
-
-    /* Vehicle pill (make/model) */
-    .vehPill{
-      border-color: rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.22);
-    }
-
-    .title{
-      font-family:"Oswald", system-ui, sans-serif;
-      text-transform: uppercase;
-      letter-spacing:.10em;
-      line-height:1.05;
-      margin: 4px 0 10px 0;
-      font-size: 15px;
       color: rgba(255,255,255,0.92);
-      display:-webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
-      min-height: 38px;
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      line-height: 1.15;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .vChip:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.12);
+    }
+    .vChip.active{
+      border-color: rgba(179,31,36,0.65);
+      background: rgba(179,31,36,0.22);
+      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
+      transform: scale(1.03);
+    }
+    .vChip .vMain{ font-weight: 800; }
+    .vChip .vMeta{ margin-left:auto; display:flex; gap:8px; opacity:.9; }
+    .vChip .badge{
+      padding: 6px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+      font-size: 11px;
+      letter-spacing:.12em;
     }
 
-    .metaRow{
+    .priceBlock{
+      margin-top: 6px;
+      padding: 16px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,0.18), transparent 60%),
+        linear-gradient(180deg, rgba(20,20,20,0.85), rgba(10,10,10,0.85));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
       display:flex;
-      align-items:flex-end;
+      flex-direction:column;
+      gap:8px;
+    }
+    .priceBig{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.22em;
+      text-transform: uppercase;
+      font-size: 38px;
+      line-height: 1;
+      color:#fff;
+    }
+    .priceBig small{
+      display:block;
+      font-size: 12px;
+      letter-spacing:.32em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
+    }
+    .priceSub{
+      font-size: 13.5px;
+      letter-spacing:.12em;
+      color: rgba(255,255,255,0.78);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .priceSub::before{
+      content:"•";
+      color: var(--red);
+      font-size: 18px;
+      line-height: 0;
+    }
+
+    .mActions{
+      margin-top:auto;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      padding-top: 10px;
+    }
+
+    /* ORDER FORM facelift (rovnaké ako tvoje) */
+    .orderIntro{
+      margin: 0 0 14px 0;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,0.18), transparent 60%),
+        rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .orderDivider{
+      height:1px;
+      width:100%;
+      background: rgba(255,255,255,0.10);
+      margin: 12px 0 14px;
+    }
+    .formGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .formGrid .full{ grid-column: 1 / -1; }
+    label{
+      display:block;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 6px;
+    }
+    input, textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color:#fff;
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      font-weight: 800;
+      letter-spacing:.02em;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      font-family: Arial, sans-serif;
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+
+    .orderSummary{
+      grid-column: 1 / -1;
+      padding: 14px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,0.16), transparent 60%),
+        linear-gradient(180deg, rgba(18,18,18,0.92), rgba(10,10,10,0.85));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+    }
+    .orderSummaryHead{
+      display:flex;
+      align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+    .orderSummaryHead b{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.22em;
+      text-transform: uppercase;
+      font-size: 14px;
+      color: rgba(255,255,255,0.88);
+    }
+    .orderSummaryHead .mini{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: rgba(255,255,255,0.60);
+    }
+    .orderSummaryGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .roField input[readonly]{
+      background: rgba(0,0,0,0.30);
+      border:1px solid rgba(255,255,255,0.12);
+      opacity: 1;
+      cursor: default;
+    }
+    .roField label{
+      color: rgba(255,255,255,0.60);
+      font-size: 12px;
+      letter-spacing:.22em;
     }
 
-    /* Price highlight - krajšie */
-    .priceBlock{
-      flex: 0 0 auto;
+    .consent{
+      grid-column: 1 / -1;
       display:flex;
-      align-items:baseline;
-      gap:10px;
-      padding: 10px 12px;
+      gap:12px;
+      align-items:flex-start;
+      padding: 12px 14px;
       border-radius: 16px;
-      border: 1px solid rgba(179,31,36,0.38);
-      background: linear-gradient(180deg, rgba(179,31,36,0.16), rgba(179,31,36,0.08));
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.08) inset, 0 14px 34px rgba(179,31,36,0.08);
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      white-space:nowrap;
-    }
-    .priceBlock small{
-      font-size: 11px;
-      opacity:.75;
-      letter-spacing: .14em;
-    }
-    .priceBlock strong{
-      font-size: 18px;
-      letter-spacing: .02em;
-    }
-
-    /* Stock - vždy na objednávku */
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 10px;
-      border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.86);
-      font-size: 11.5px;
-      letter-spacing:.10em;
-      text-transform: uppercase;
-      font-family:"Oswald", system-ui, sans-serif;
-      white-space:nowrap;
-    }
-    .badge.order{
-      border-color: rgba(179,31,36,0.44);
-      background: rgba(179,31,36,0.10);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.10) inset;
-    }
-    .badge.order .clock{
-      width:16px; height:16px; border-radius:50%;
-      border:2px solid rgba(255,255,255,0.65);
-      position:relative;
-      opacity:.9;
-    }
-    .badge.order .clock::after{
-      content:"";
-      position:absolute;
-      left:50%; top:50%;
-      width:6px; height:2px;
-      background: rgba(255,255,255,0.70);
-      transform-origin:left center;
-      transform: translate(-1px,-1px) rotate(0deg);
-      border-radius:2px;
-    }
-    .badge.order .clock::before{
-      content:"";
-      position:absolute;
-      left:50%; top:50%;
-      width:2px; height:6px;
-      background: rgba(255,255,255,0.70);
-      transform: translate(-1px,-5px);
-      border-radius:2px;
-    }
-
-    .empty{
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 14px;
-      border:1px dashed rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.70);
       background: rgba(255,255,255,0.03);
     }
-
-    /* Footer */
-    footer{
-      border-top:1px solid rgba(255,255,255,0.08);
-      padding:40px 0;
+    .consent input[type="checkbox"]{
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--red);
+    }
+    .consentText{
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.78);
+    }
+    .formActions{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btnSend{
+      background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 18px 70px rgba(179,31,36,0.22), 0 18px 70px rgba(0,0,0,0.55);
+      padding: 14px 18px;
+      border-radius: 16px;
+    }
+    .btnSend:hover{
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(199,45,50,0.98), rgba(140,20,24,0.94));
+    }
+    .btnSend:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none !important;
+      filter:none;
     }
 
+    /* responsive */
+    @media (max-width: 1400px){
+      .productGrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
+    @media (max-width: 1200px){
+      .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
     @media (max-width: 980px){
       .wrap{ padding:0 18px; }
       section{ padding: 76px 0; }
       .nav{ padding: 14px 18px; }
       .heroInner{ padding: 0 18px 30px; }
-      .brandGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid2{ grid-template-columns: 1fr; }
+      .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .modalBody{ grid-template-columns: 1fr; overflow:auto; }
+      .mInfo{ overflow: visible; height:auto; padding-right:0; }
+      .mImg{ min-height: 240px; }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
-      .brandGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .field{ min-width: 100%; }
+      .productGrid{ grid-template-columns: 1fr; }
+      .formGrid{ grid-template-columns: 1fr; }
+      .orderSummaryGrid{ grid-template-columns: 1fr; }
+      .in,.sel{ min-width: 160px; }
+      .priceBig{ font-size: 30px; }
     }
     @media (prefers-reduced-motion: reduce){
-      *{ animation:none !important; transition:none !important; }
-    }
-
-    /* ====== MODAL ====== */
-    .modal{
-      position:fixed; inset:0; z-index:9999;
-      display:none;
-    }
-    .modal.open{ display:block; }
-
-    .modalOverlay{
-      position:absolute; inset:0;
-      background: rgba(0,0,0,0.70);
-      backdrop-filter: blur(12px);
-    }
-
-    .modalBox{
-      position:absolute;
-      left:50%; top:50%;
-      transform: translate(-50%, -50%);
-      width: min(1020px, calc(100vw - 26px));
-      max-height: min(86vh, 900px);
-      border-radius: 20px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(8,8,8,0.92);
-      box-shadow: 0 34px 140px rgba(0,0,0,0.72);
-      overflow:hidden;
-    }
-
-    .modalHead{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 14px 16px;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    }
-    .modalTitle{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.92);
-      font-size: 16px;
-    }
-    .modalClose{
-      width:44px; height:44px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.06);
-      color:#fff;
-      cursor:pointer;
-    }
-    .modalClose:hover{
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.12);
-    }
-
-    .modalBody{
-      padding: 16px;
-      overflow:auto;
-      max-height: calc(min(86vh, 900px) - 70px);
-    }
-
-    .mGrid{
-      display:grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 820px){
-      .mGrid{ grid-template-columns: 1fr; }
-    }
-
-    .mGallery{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .mStage{
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      aspect-ratio: 16/10;
-    }
-    .mStage img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-      cursor: zoom-in;
-    }
-    .mNavBtn{
-      position:absolute;
-      top:50%;
-      transform: translateY(-50%);
-      width:46px; height:46px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.42);
-      color:#fff;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-    }
-    .mNavBtn:hover{
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.14);
-    }
-    .mPrev{ left:10px; }
-    .mNext{ right:10px; }
-
-    .mThumbs{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding-bottom:4px;
-    }
-    .mThumb{
-      flex: 0 0 auto;
-      width:78px; height:56px;
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      cursor:pointer;
-      opacity:.78;
-    }
-    .mThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .mThumb.active{
-      opacity:1;
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.12) inset;
-    }
-
-    .mInfo{
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      padding: 14px;
-    }
-
-    .mRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 6px;
-    }
-
-    .pillx{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding: 8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.20);
-      color: rgba(255,255,255,0.86);
-      font-size: 11.5px;
-      letter-spacing:.10em;
-      text-transform: uppercase;
-      font-family:"Oswald", system-ui, sans-serif;
-      white-space:nowrap;
-    }
-    .pillx.red{
-      border-color: rgba(179,31,36,0.40);
-      background: rgba(179,31,36,0.12);
-      box-shadow: 0 0 0 3px rgba(179,31,36,0.10) inset;
-    }
-
-    .mDesc{
-      margin-top: 12px;
-      color: rgba(255,255,255,0.82);
-      line-height: 1.75;
-      font-size: 14.5px;
-      white-space: pre-wrap;
-      font-family: "Inter", system-ui, sans-serif;
-    }
-
-    .descBox{
-      margin-top: 12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.22);
-      padding: 12px;
-    }
-    .descLabel{
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color: rgba(255,255,255,0.70);
-      font-size: 12px;
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .descLabel .bar{
-      width:14px; height:2px;
-      background: var(--red);
-      box-shadow: 0 0 16px rgba(179,31,36,0.45);
-    }
-
-    .fitList{
-      margin-top: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .fitList span{
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04);
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.82);
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-
-    /* CTA button inside modal */
-    .ctaRow{
-      margin-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-start;
-    }
-    .orderBtn{
-      border: 1px solid rgba(179,31,36,0.48);
-      background: linear-gradient(180deg, rgba(179,31,36,0.26), rgba(179,31,36,0.14));
-      color: #fff;
-      border-radius: 16px;
-      padding: 12px 14px;
-      cursor:pointer;
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      box-shadow: 0 18px 44px rgba(179,31,36,0.12);
-      transition: transform .16s ease, background .16s ease, border .16s ease, box-shadow .16s ease;
-    }
-    .orderBtn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.62);
-      background: linear-gradient(180deg, rgba(179,31,36,0.32), rgba(179,31,36,0.16));
-      box-shadow: 0 22px 54px rgba(179,31,36,0.16);
-    }
-    .orderBtn:active{ transform: translateY(0px) scale(0.99); }
-    .orderBtn .bolt{
-      width:16px;height:16px;border-radius:4px;
-      background: rgba(255,255,255,0.12);
-      border:1px solid rgba(255,255,255,0.18);
-      display:grid; place-items:center;
-      font-size: 12px;
-      line-height: 1;
-    }
-
-    /* ====== LIGHTBOX ====== */
-    .lightbox{
-      position:fixed; inset:0; z-index:10000;
-      display:none;
-    }
-    .lightbox.open{ display:block; }
-    .lightboxOverlay{
-      position:absolute; inset:0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-    }
-    .lightboxImg{
-      position:absolute; left:50%; top:50%;
-      transform: translate(-50%,-50%);
-      width: min(1200px, calc(100vw - 26px));
-      height: min(86vh, 900px);
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(10,10,10,0.92);
-      box-shadow: 0 30px 120px rgba(0,0,0,0.7);
-      display:grid;
-      place-items:center;
-    }
-    .lightboxImg img{
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      cursor: zoom-out;
-    }
-    .lightboxClose{
-      position:absolute;
-      right:18px; top:18px;
-      width:44px; height:44px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.06);
-      color:#fff;
-      cursor:pointer;
-    }
-    .lightboxClose:hover{
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.14);
+      *{ animation: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -1023,104 +1066,266 @@
   <div class="topbar" id="top">
     <div class="nav">
       <a href="index.html" class="brand-mini" aria-label="RACEM">
+        <!-- ✅ UPRAV: tvoje logo -->
         <img src="assets/rmgroup.png" alt="RACEM logo">
         <div class="brand-title"></div>
       </a>
 
       <nav class="nav-links" aria-label="Menu">
-        <a href="#sekcia1">Produkty</a>
-        <a href="#sekcia2">Sekcia 2</a>
+        <a href="index.html">Domov</a>
+        <a href="#produktySekcia">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
     </div>
   </div>
 
-  <section class="hero" aria-label="Hero">
+  <section class="hero" aria-label="CSR hero">
     <div class="heroMedia">
       <div class="heroBg"></div>
-      <div class="heroInner">
-        <div class="pill"><span class="dot"></span>Filtrovanie podľa auta</div>
-        <h1>Značka & model</h1>
-        <p>
-          Vyber značku a model – ukážem len diely, ktoré k tomu patria.
-          Ak produkt nemá fitment, spadne do „UNIVERZÁLNE“.
-        </p>
-      </div>
+      <div class="heroInner"></div>
     </div>
   </section>
 
-  <section id="sekcia1">
+  <section id="oZnacke">
     <div class="wrap">
-      <div class="panel">
-        <div class="pill"><span class="dot"></span>Produkty</div>
-        <h2>Vyber auto</h2>
-        <p>Filter sa plní automaticky z <b>fitments</b> (alebo z carMake/carModel).</p>
-
-        <div class="filterBar" role="region" aria-label="Filtre">
-          <div class="filterLeft">
-            <div class="field">
-              <div class="label">Hľadať (názov / kód)</div>
-              <input id="q" type="text" placeholder="napr. splitter, FSK119, difúzor..." autocomplete="off">
-            </div>
-
-            <div class="field">
-              <div class="label">Značka</div>
-              <select id="make">
-                <option value="">Načítavam…</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <div class="label" id="modelLabel">Model <span class="hint" id="modelHint">(najprv vyber značku)</span></div>
-              <select id="model" disabled>
-                <option value="">Najprv vyber značku</option>
-              </select>
-            </div>
-
-            <button class="btn" id="reset" type="button">Reset</button>
+      <div class="grid2">
+        <div class="panel">
+          <div class="pill originPill">
+            <span class="flag" aria-hidden="true"></span>
+            <span>PÔVOD:</span>
+            <!-- ✅ uprav podľa seba -->
+            <b>EÚ</b>
           </div>
 
-          <div class="stats">
-            <span id="statText">Načítavam produkty…</span>
-          </div>
+          <h2>CSR Automotive</h2>
+          <p>
+            CSR Automotive je známy výrobca aero a karosárskych dielov. Na RACEM stránke si vieš filtrovať produkty podľa
+            značky auta, modelu, kategórie a rýchlo poslať nezáväznú objednávku – kompatibilitu ti následne overí TEAM RACEM.
+          </p>
         </div>
 
-        <div class="brandGrid" id="brandGrid" aria-label="Značky"></div>
-
-        <div class="cards" id="cards" aria-label="Zoznam produktov"></div>
-        <div class="empty" id="empty" style="display:none;">
-          Nič sa nenašlo pre tento filter. Skús zmeniť model alebo vymaž hľadanie.
+        <div class="panel">
+          <div class="pill"><span class="dot"></span>Tip</div>
+          <p style="margin:10px 0 0">
+            Ak máš v JSONe pri produktoch polia pre auto (napr. <b>make</b>/<b>model</b> alebo <b>manufacturer</b>/<b>carModel</b>),
+            filtre sa naplnia automaticky.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="sekcia2">
+  <section id="produktySekcia">
     <div class="wrap">
       <div class="panel">
-        <div class="pill"><span class="dot"></span>Sekcia 2</div>
-        <h2>Ďalší obsah</h2>
-        <p>Sem si vlož ďalší obsah.</p>
+        <div class="pill"><span class="dot"></span>Ponuka</div>
+        <h2>Produkty CSR</h2>
+
+        <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
+          <div class="miniStat" id="productsTitle">Filtre: všetko</div>
+          <div class="miniStat" id="stat">0 produktov</div>
+        </div>
+
+        <div class="filterBar">
+          <div class="filtersLeft">
+            <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
+
+            <!-- ✅ NOVÉ: auto make + model -->
+            <select class="sel" id="make">
+              <option value="">Výrobca auta: všetko</option>
+            </select>
+
+            <select class="sel" id="model" disabled>
+              <option value="">Model: všetko</option>
+            </select>
+
+            <select class="sel" id="cat">
+              <option value="">Kategória: všetko</option>
+            </select>
+
+            <button class="btn secondary" id="resetFilters" type="button">Reset filtrov</button>
+          </div>
+        </div>
+
+        <div class="productGrid" id="productGrid"></div>
       </div>
     </div>
   </section>
 
-  <section id="kontakt">
-    <div class="wrap">
-      <div class="panel">
-        <div class="pill"><span class="dot"></span>Kontakt</div>
-        <h2>Kontakt</h2>
-        <p>Sem dáš e-mail, telefón, formulár, mapu…</p>
+  <!-- PRODUCT DETAIL MODAL -->
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
+      <div class="modalHead">
+        <b id="modalTitle">CSR Automotive</b>
+        <button class="xBtn" id="closeProductModal" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="mImg">
+          <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
+          <button class="imgNav next" id="mNext" type="button" aria-label="Ďalší">›</button>
+
+          <div class="zoomHint" id="zoomHint">KLIKNI PRE ZVÄČŠENIE</div>
+          <img id="mImg" src="" alt="Product image">
+          <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
+          <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
+        </div>
+
+        <div class="mInfo">
+          <div class="mInfoTop">
+            <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
+          </div>
+
+          <div class="mDesc" id="mDesc"></div>
+
+          <div id="mVariantWrap" style="display:none;">
+            <div class="mLabel">Variant</div>
+            <div class="variantList" id="mVariantList"></div>
+          </div>
+
+          <div class="priceBlock">
+            <div class="priceBig" id="mPriceBig">—</div>
+            <div class="priceSub" id="mShip">—</div>
+            <div class="priceSub" id="mDelivery">—</div>
+          </div>
+
+          <div class="mActions">
+            <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <footer>
+  <!-- GALLERY MODAL (fullscreen obrázok) -->
+  <div class="modal" id="galleryModal" aria-hidden="true" style="z-index:1200;">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
+      <div class="modalHead">
+        <b>Galéria</b>
+        <button class="xBtn" id="closeGalleryModal" type="button" aria-label="Close">×</button>
+      </div>
+      <div style="padding:14px;">
+        <div class="mImg" style="min-height:420px;">
+          <img id="gFull" src="" alt="Gallery image">
+          <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER FORM MODAL -->
+  <div class="modal" id="orderModal" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Objednávkový formulár">
+      <div class="modalHead">
+        <b>Objednávkový formulár</b>
+        <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div style="padding:14px;">
+        <div class="orderIntro">
+          Toto je <b>nezáväzná objednávka</b>. Pre dokončenie objednávky ťa bude kontaktovať <b>TEAM RACEM</b>
+          cez poskytnuté osobné údaje (telefonicky alebo e-mailom).
+        </div>
+
+        <!-- ✅ sem si nechaj svoj Formspree endpoint -->
+        <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
+          <input type="hidden" id="orderBlob" name="order_blob" value="">
+
+          <div class="formGrid">
+            <div>
+              <label for="name">Meno</label>
+              <input id="name" name="name" type="text" required placeholder="Meno">
+            </div>
+
+            <div>
+              <label for="phone">Telefón</label>
+              <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
+            </div>
+
+            <div>
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" required placeholder="racem@...">
+            </div>
+
+            <div>
+              <label for="address">Adresa doručenia</label>
+              <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
+            </div>
+
+            <div class="full">
+              <label for="car">Vozidlo (pre overenie kompatibility)</label>
+              <input id="car" name="car" type="text" placeholder="Napr. Alfa Romeo 147 1.9 JTD 2006">
+            </div>
+
+            <div class="full">
+              <label for="customer_note">Poznámka zákazníka</label>
+              <textarea id="customer_note" name="customer_note" placeholder="Napíš čo je dôležité (rok, facelift, verzia, detail želania)..."></textarea>
+            </div>
+
+            <div class="orderDivider full"></div>
+
+            <div class="orderSummary">
+              <div class="orderSummaryHead">
+                <b>Sumár objednávky</b>
+                <div class="mini">automaticky vyplnené</div>
+              </div>
+
+              <div class="orderSummaryGrid">
+                <div class="roField">
+                  <label>Výrobca</label>
+                  <input id="o_manufacturer" name="manufacturer" readonly>
+                </div>
+
+                <div class="roField">
+                  <label>Diel</label>
+                  <input id="o_product" name="product" readonly>
+                </div>
+
+                <div class="roField">
+                  <label>Variant</label>
+                  <input id="o_variant" name="variant" readonly>
+                </div>
+
+                <div class="roField">
+                  <label>Cena</label>
+                  <input id="o_price" name="price" readonly>
+                </div>
+
+                <div class="roField">
+                  <label>Doprava</label>
+                  <input id="o_shipping" name="shipping" readonly>
+                </div>
+
+                <div class="roField">
+                  <label>Dodanie</label>
+                  <input id="o_delivery" name="delivery" readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="consent">
+              <input id="consent" name="consent" type="checkbox" required>
+              <div class="consentText">
+                Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
+                <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
+              </div>
+            </div>
+          </div>
+
+          <div class="formActions">
+            <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
+            <button class="btn btnSend" id="sendBtn" type="submit" disabled>Odoslať</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer id="kontakt" style="border-top:1px solid rgba(255,255,255,0.08); padding:40px 0;">
     <div class="wrap" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center;">
       <div style="color:rgba(255,255,255,0.55); font-size:14px;">
         © 2026 RACEM / REM Performance
       </div>
-
       <div style="display:flex; gap:18px; flex-wrap:wrap;">
         <a href="vop.html">VOP</a>
         <a href="ochrana-osobnych-udajov.html">Ochrana osobných údajov</a>
@@ -1129,635 +1334,603 @@
     </div>
   </footer>
 
-  <!-- MODAL -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modalOverlay" data-close="1"></div>
+  <script>
+    const PLACEHOLDER_DATA_URI =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0' stop-color='#111'/>
+              <stop offset='1' stop-color='#050505'/>
+            </linearGradient>
+          </defs>
+          <rect width='1200' height='800' fill='url(#g)'/>
+          <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+            fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
+            NO IMAGE
+          </text>
+        </svg>
+      `);
 
-    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Detail produktu">
-      <div class="modalHead">
-        <div class="modalTitle" id="mTitle">Produkt</div>
-        <button class="modalClose" id="mClose" type="button" aria-label="Zavrieť">✕</button>
-      </div>
+    const BRAND_NAME = "CSR Automotive";
+    const JSON_FILE = "csr-products.json"; // ✅ vedľa html
 
-      <div class="modalBody" id="mBody"></div>
-    </div>
-  </div>
+    const DATA = { products: [] };
 
-  <!-- LIGHTBOX (zoom) -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <div class="lightboxOverlay" data-lb-close="1"></div>
-    <div class="lightboxImg" role="dialog" aria-modal="true" aria-label="Zväčšený obrázok">
-      <button class="lightboxClose" id="lbClose" type="button" aria-label="Zavrieť">✕</button>
-      <img id="lbImg" src="" alt="">
-    </div>
-  </div>
+    let activeProduct = null;
+    let activeVariantIndex = 0;
+    let activeImgIndex = 0;
 
-<script>
-  const PRODUCTS_URL = "./products.json"; // v root (main)
+    const $ = (s, el=document) => el.querySelector(s);
+    const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
 
-  const els = {
-    q: document.getElementById("q"),
-    make: document.getElementById("make"),
-    model: document.getElementById("model"),
-    reset: document.getElementById("reset"),
-    statText: document.getElementById("statText"),
-    grid: document.getElementById("brandGrid"),
-    cards: document.getElementById("cards"),
-    empty: document.getElementById("empty"),
-    modelLabel: document.getElementById("modelLabel"),
-    modelHint: document.getElementById("modelHint"),
-  };
-
-  const modal = document.getElementById("modal");
-  const mBody = document.getElementById("mBody");
-  const mTitle = document.getElementById("mTitle");
-  const mClose = document.getElementById("mClose");
-
-  let PRODUCTS = [];
-  let INDEX = new Map(); // MAKE -> Set(models)
-
-  const norm = (s) => (s ?? "").toString().trim();
-  const normKey = (s) => norm(s).toUpperCase();
-
-  function escapeHtml(str){
-    return (str ?? "").toString()
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  function isChassisCode(tok){
-    const t = normKey(tok);
-    if (/^[EFG]\d{2,3}$/.test(t)) return true;
-    if (/^W\d{3}$/.test(t)) return true;
-    if (/^[A-Z]{1,2}\d{1,2}$/.test(t) && t !== "A4" && t !== "A3" && t !== "A6") return true;
-    if (/^[A-Z]{2}\d{3}$/.test(t)) return true;
-    return false;
-  }
-
-  function parseModelParts(modelStr){
-    const raw = norm(modelStr);
-    if (!raw) return { base: "", code: "" };
-    const tokens = raw.split(/[\s,\/\-]+/).filter(Boolean);
-    if (tokens.length === 1 && isChassisCode(tokens[0])) {
-      return { base: tokens[0], code: "" };
-    }
-    const base = tokens[0];
-    const codes = tokens.slice(1).filter(isChassisCode);
-    return { base, code: codes.join(" ") };
-  }
-
-  function getFitments(p){
-    if (Array.isArray(p.fitments) && p.fitments.length){
-      return p.fitments.map(f => {
-        const mk = norm(f.make || f.carMake || f.vyrobca || "");
-        const mdRaw = norm(f.model || f.carModel || f.modelRaw || "");
-        const parts = parseModelParts(mdRaw);
-        return {
-          make: mk || "UNIVERZÁLNE",
-          modelBase: parts.base || mdRaw || "",
-          modelCode: parts.code || "",
-          modelRaw: mdRaw || parts.base || ""
-        };
-      });
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    const mk = norm(p.carMake || p.make || "");
-    const mdRaw = norm(p.carModel || p.model || "");
-    if (mk){
-      const parts = parseModelParts(mdRaw);
-      return [{
-        make: mk,
-        modelBase: parts.base || mdRaw || "",
-        modelCode: parts.code || "",
-        modelRaw: mdRaw || parts.base || ""
-      }];
+    function fmtEUR(n){
+      if (typeof n !== "number" || Number.isNaN(n)) return "—";
+      return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
     }
 
-    return [{ make: "UNIVERZÁLNE", modelBase: "", modelCode: "", modelRaw: "" }];
-  }
-
-  function buildIndex(products){
-    INDEX = new Map();
-    for (const p of products){
-      for (const f of getFitments(p)){
-        const make = normKey(f.make || "UNIVERZÁLNE");
-        const model = norm(f.modelBase || f.model || "");
-        if (!INDEX.has(make)) INDEX.set(make, new Set());
-        INDEX.get(make).add(model);
-      }
+    function getStockStatus(p){
+      const s = (p.stockStatus || "").trim();
+      if (s) return s;
+      const a = (p.availability || "").trim();
+      if (a === "in_stock") return "in_stock";
+      if (a === "out_of_stock") return "out_of_stock";
+      return "made_to_order";
     }
-  }
-
-  function fillMakeSelect(){
-    const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
-    els.make.innerHTML =
-      `<option value="">Všetky značky</option>` +
-      makes.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
-  }
-
-  function fillModelSelect(selectedMake){
-    const make = normKey(selectedMake);
-
-    if (!make){
-      els.model.disabled = true;
-      els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
-      if (els.modelLabel) els.modelLabel.firstChild.nodeValue = "Model ";
-      if (els.modelHint) els.modelHint.textContent = "(najprv vyber značku)";
-      return;
+    function stockLabel(status){
+      if (status === "in_stock") return "SKLADOM";
+      if (status === "out_of_stock") return "VYPREDANÉ";
+      return "NA OBJEDNÁVKU";
     }
 
-    const models = Array.from(INDEX.get(make) || [])
-      .filter(m => m !== undefined)
-      .sort((a,b) => a.localeCompare(b, "sk"));
-
-    els.model.disabled = false;
-    els.model.innerHTML =
-      `<option value="">Vyber model…</option>` +
-      models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
-
-    if (els.modelLabel) els.modelLabel.firstChild.nodeValue = `Model pre ${make} `;
-    if (els.modelHint) els.modelHint.textContent = "(klikni a vyber)";
-  }
-
-  function renderBrandGrid(activeMake){
-    const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
-    els.grid.innerHTML = makes.map(m => {
-      const isActive = normKey(activeMake) === m;
-      return `<button class="brandBtn ${isActive ? "active" : ""}" data-make="${escapeHtml(m)}" type="button">${escapeHtml(m)}</button>`;
-    }).join("");
-
-    els.grid.querySelectorAll(".brandBtn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const mk = btn.getAttribute("data-make") || "";
-        els.make.value = mk;
-        fillModelSelect(mk);
-        els.model.value = "";
-        applyFilters();
-
-        document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
-        setTimeout(() => {
-          els.model.focus();
-          try { els.model.click(); } catch(e) {}
-        }, 220);
-      });
-    });
-  }
-
-  function productMatchesMakeModel(p, make, model){
-    const fits = getFitments(p);
-
-    if (make){
-      const okMake = fits.some(f => normKey(f.make || "UNIVERZÁLNE") === make);
-      if (!okMake) return false;
-    }
-    if (model){
-      const okModel = fits.some(f =>
-        normKey(f.make || "UNIVERZÁLNE") === make &&
-        norm(f.modelBase || f.model || "") === model
-      );
-      if (!okModel) return false;
-    }
-    return true;
-  }
-
-  function applyFilters(){
-    const q = normKey(els.q.value);
-    const make = normKey(els.make.value);
-    const model = norm(els.model.value);
-
-    renderBrandGrid(make);
-
-    let filtered = PRODUCTS;
-
-    if (make || model){
-      filtered = filtered.filter(p => productMatchesMakeModel(p, make, model));
-    }
-
-    if (q){
-      filtered = filtered.filter(p => {
-        const hay = normKey((p.name || "") + " " + (p.sku || "") + " " + (p.articleNumber || ""));
-        return hay.includes(q);
-      });
-    }
-
-    renderCards(filtered);
-
-    const total = PRODUCTS.length;
-    const shown = filtered.length;
-
-    let label = `${shown} / ${total} položiek`;
-    if (make) label += ` • ${make}`;
-    if (model) label += ` • ${model}`;
-    els.statText.textContent = label;
-  }
-
-  function formatPrice(priceNum, currency="EUR"){
-    if (priceNum == null || Number.isNaN(Number(priceNum))) return null;
-    const n = Number(priceNum);
-    // SK formát 1 234,56
-    const nice = n.toLocaleString("sk-SK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return { nice, currency };
-  }
-
-  function renderCards(list){
-    els.cards.innerHTML = "";
-    els.empty.style.display = list.length ? "none" : "block";
-
-    const slice = list.slice(0, 90);
-
-    els.cards.innerHTML = slice.map((p) => {
-      const skuRaw = norm(p.sku || p.articleNumber || "");
-      const sku = escapeHtml(skuRaw);
-      const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
-
-      const f0 = getFitments(p)[0] || { make: "UNIVERZÁLNE", modelBase: "", modelCode: "" };
-      const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
-      const modelBase = escapeHtml(norm(f0.modelBase || "—"));
-      const modelCode = escapeHtml(norm(f0.modelCode || ""));
-
-      const priceObj = formatPrice(p.price, p.currency || "EUR");
-
-      const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
-      const img0 = imgs.length ? imgs[0] : "";
-      const imgSafe = escapeHtml(img0);
-
-      const id = escapeHtml(p.id ?? p.sku ?? p.articleNumber ?? skuRaw);
-
-      const dots = imgs.length > 1
-        ? `<div class="thumbNav">${imgs.slice(0,8).map((_,i)=>`<span class="dotBtn ${i===0?"on":""}" data-dot="${i}"></span>`).join("")}</div>`
-        : "";
-
-      const arrows = imgs.length > 1
-        ? `<div class="thumbArrows">
-            <button class="thumbArrow" data-prev="1" type="button" aria-label="Predošlá fotka">‹</button>
-            <button class="thumbArrow" data-next="1" type="button" aria-label="Ďalšia fotka">›</button>
-          </div>`
-        : "";
-
-      return `
-        <div class="card" data-id="${id}" data-imgindex="0" role="button" tabindex="0">
-          <div class="thumb">
-            ${arrows}
-            <img src="${imgSafe}" alt="${name}" loading="lazy"
-                 onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
-            ${dots}
-          </div>
-
-          <div class="cardHeadRow">
-            <div class="miniStack">
-              <span class="pillMini vehPill"><span class="dotSm"></span>${make}</span>
-              ${modelBase ? `<span class="pillMini vehPill">${modelBase}${modelCode ? " • " + modelCode : ""}</span>` : ``}
-            </div>
-
-            <div class="miniStack" style="justify-content:flex-end">
-              <span class="pillMini skuPill">Kód: ${sku || "—"}</span>
-            </div>
-          </div>
-
-          <div class="title">${name}</div>
-
-          <div class="metaRow">
-            <span class="badge order"><span class="clock"></span>Na objednávku</span>
-
-            ${
-              priceObj
-                ? `<span class="priceBlock"><small>Cena</small><strong>${escapeHtml(priceObj.nice)} ${escapeHtml(priceObj.currency)}</strong></span>`
-                : `<span class="priceBlock"><small>Cena</small><strong>Na dopyt</strong></span>`
-            }
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    // bindy
-    els.cards.querySelectorAll(".card").forEach(card => {
-      const id = card.getAttribute("data-id");
-
-      const p =
-        PRODUCTS.find(x => String(x.id ?? x.sku ?? x.articleNumber) === String(id)) ||
-        PRODUCTS.find(x => String(x.sku ?? x.articleNumber) === String(id));
-
-      const imgs = Array.isArray(p?.images) ? p.images.filter(Boolean) : [];
-      const imgEl = card.querySelector(".thumb img");
-      const dotEls = card.querySelectorAll(".dotBtn");
-
-      const setIndex = (i) => {
-        if (!imgs.length) return;
-        const next = (i + imgs.length) % imgs.length;
-        card.setAttribute("data-imgindex", String(next));
-        if (imgEl) imgEl.src = imgs[next];
-        dotEls.forEach(d => d.classList.toggle("on", Number(d.dataset.dot) === next));
+    function setSafeImage(imgEl, url, noImgEl){
+      if (!imgEl) return;
+      if (noImgEl) noImgEl.style.display = "none";
+      imgEl.onerror = () => {
+        imgEl.onerror = null;
+        imgEl.src = PLACEHOLDER_DATA_URI;
+        if (noImgEl) noImgEl.style.display = "grid";
       };
+      imgEl.src = url || PLACEHOLDER_DATA_URI;
+    }
 
-      const prevBtn = card.querySelector("[data-prev]");
-      const nextBtn = card.querySelector("[data-next]");
+    // --- AUTO MAKE/MODEL normalizácia (vezme hocijaké tvoje názvy polí) ---
+    function getMake(p){
+      return (p.make || p.manufacturer || p.carMake || p.brand || p.vehicleMake || "").toString().trim();
+    }
+    function getModel(p){
+      return (p.model || p.carModel || p.vehicleModel || p.series || p.platform || "").toString().trim();
+    }
 
-      if (prevBtn) prevBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const cur = Number(card.getAttribute("data-imgindex") || 0);
-        setIndex(cur - 1);
-      });
+    function minPriceEUR(prod){
+      if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
+      const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
+      if (!prices.length) return "cena na dopyt";
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+    }
 
-      if (nextBtn) nextBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const cur = Number(card.getAttribute("data-imgindex") || 0);
-        setIndex(cur + 1);
-      });
+    function variantSummary(p){
+      const vars = Array.isArray(p.variants) ? p.variants : [];
+      if (!vars.length) return "Bez variantu";
+      const names = vars.map(v => v.name || "Variant").filter(Boolean);
+      const unique = Array.from(new Set(names));
+      if (unique.length === 1) return `Variant: ${unique[0]}`;
+      return `Variantov: ${unique.length}`;
+    }
+    function shipSummary(p){
+      const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
+      return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
+    }
+    function deliverySummary(p){
+      return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
+    }
 
-      if (imgEl && imgs.length > 1){
-        imgEl.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const cur = Number(card.getAttribute("data-imgindex") || 0);
-          setIndex(cur + 1);
+    function getProductImages(p){
+      const arr = []
+        .concat(p?.image ? [p.image] : [])
+        .concat(Array.isArray(p?.images) ? p.images : []);
+      return Array.from(new Set(arr.filter(Boolean)));
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch(JSON_FILE, { cache: "no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+
+        const json = await res.json();
+        const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+
+        DATA.products = list.map(p => {
+          const images = Array.isArray(p.images) ? p.images : [];
+          const image = p.image || images[0] || "";
+          return {
+            ...p,
+            image,
+            images,
+            variants: Array.isArray(p.variants) ? p.variants : [],
+            short: p.short || p.subtitle || "",
+            description: p.description || "",
+            delivery: p.delivery || "Upresníme po objednávke",
+            shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
+          };
         });
+
+      }catch(err){
+        console.error("Failed to load csr-products.json:", err);
+        DATA.products = [];
+      }
+    }
+
+    function buildFilterOptions(){
+      const catSel = $("#cat");
+      const makeSel = $("#make");
+      const modelSel = $("#model");
+
+      // categories
+      const cats = new Set();
+      DATA.products.forEach(p => p.category && cats.add(p.category));
+      if (catSel){
+        catSel.innerHTML =
+          `<option value="">Kategória: všetko</option>` +
+          Array.from(cats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
       }
 
-      card.addEventListener("click", () => openProduct(id));
-      card.addEventListener("keydown", (e) => {
-        if(e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openProduct(id);
-        }
+      // makes
+      const makes = new Set();
+      DATA.products.forEach(p => {
+        const m = getMake(p);
+        if (m) makes.add(m);
       });
+      if (makeSel){
+        makeSel.innerHTML =
+          `<option value="">Výrobca auta: všetko</option>` +
+          Array.from(makes).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+      }
+
+      // model list depends on make
+      if (modelSel){
+        modelSel.innerHTML = `<option value="">Model: všetko</option>`;
+        modelSel.disabled = true;
+      }
+    }
+
+    function refreshModels(){
+      const make = $("#make")?.value || "";
+      const modelSel = $("#model");
+      if (!modelSel) return;
+
+      const models = new Set();
+      DATA.products.forEach(p => {
+        const pm = getMake(p);
+        const mdl = getModel(p);
+        if (!mdl) return;
+        if (!make || pm === make) models.add(mdl);
+      });
+
+      modelSel.innerHTML =
+        `<option value="">Model: všetko</option>` +
+        Array.from(models).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+
+      modelSel.disabled = !models.size;
+      if (modelSel.disabled) modelSel.value = "";
+    }
+
+    function getFilteredProducts(){
+      const q = ($("#q")?.value || "").trim().toLowerCase();
+      const cat = $("#cat")?.value || "";
+      const make = $("#make")?.value || "";
+      const model = $("#model")?.value || "";
+
+      return DATA.products.filter(p => {
+        if (cat && p.category !== cat) return false;
+
+        const pmake = getMake(p);
+        const pmodel = getModel(p);
+
+        if (make && pmake !== make) return false;
+        if (model && pmodel !== model) return false;
+
+        if (q){
+          const blob = `${p.title} ${p.short} ${p.category} ${pmake} ${pmodel}`.toLowerCase();
+          if (!blob.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderProducts(){
+      const grid = $("#productGrid");
+      const titleEl = $("#productsTitle");
+      const statEl = $("#stat");
+      if (!grid) return;
+
+      const make = $("#make")?.value || "";
+      const model = $("#model")?.value || "";
+      const cat = $("#cat")?.value || "";
+
+      const titleParts = [];
+      if (make) titleParts.push(make);
+      if (model) titleParts.push(model);
+      if (cat) titleParts.push(cat);
+
+      if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: všetko";
+
+      const items = getFilteredProducts();
+      if (statEl) statEl.textContent = `${items.length} produktov`;
+
+      grid.innerHTML = "";
+
+      if (!DATA.products.length){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
+            <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
+            <p style="margin:0;">
+              Uisti sa, že súbor <b>${escapeHtml(JSON_FILE)}</b> je vedľa tohto HTML a je validný JSON.
+              <br>Ak testuješ cez <b>file://</b>, fetch často nefunguje — spúšťaj cez GitHub Pages / lokálny server.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!items.length){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>nič sme nenašli</div>
+            <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
+            <p style="margin:0;">Skús zmeniť značku, model, kategóriu alebo vymazať vyhľadávanie.</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "pCard";
+        card.tabIndex = 0;
+        card.setAttribute("role","button");
+
+        const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
+
+        const mk = getMake(p);
+        const md = getModel(p);
+
+        const carLine = (mk || md)
+          ? `${mk || ""}${(mk && md) ? " " : ""}${md || ""}`.trim()
+          : "";
+
+        card.innerHTML = `
+          <div class="pMedia"><img alt="${escapeHtml(p.title)}"></div>
+          <div class="pBody">
+            <div class="pName">${escapeHtml(p.title || "")}</div>
+            <p class="pDesc">${escapeHtml(p.short || carLine || "")}</p>
+
+            <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+              ${carLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Auto: ${escapeHtml(carLine)}</div>` : ""}
+              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
+              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
+              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(deliverySummary(p))}</div>
+            </div>
+
+            <div class="pBottom">
+              <div class="price">${escapeHtml(minPriceEUR(p))}</div>
+              <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
+            </div>
+          </div>
+        `;
+
+        const imgEl = card.querySelector(".pMedia img");
+        setSafeImage(imgEl, imgSrc, null);
+
+        card.addEventListener("click", () => openProduct(p));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            openProduct(p);
+          }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Modal refs
+    const productModal = $("#productModal");
+    const closeProductModal = $("#closeProductModal");
+    const modalTitle = $("#modalTitle");
+    const mRibbon = $("#mRibbon");
+    const mImg = $("#mImg");
+    const mNoImg = $("#mNoImg");
+    const mDesc = $("#mDesc");
+    const mVariantList = $("#mVariantList");
+    const mVariantWrap = $("#mVariantWrap");
+    const mPriceBig = $("#mPriceBig");
+    const mShip = $("#mShip");
+    const mDelivery = $("#mDelivery");
+    const mOrder = $("#mOrder");
+    const mPrev = $("#mPrev");
+    const mNext = $("#mNext");
+    const mThumbs = $("#mThumbs");
+
+    const galleryModal = $("#galleryModal");
+    const closeGalleryModal = $("#closeGalleryModal");
+    const gFull = $("#gFull");
+    const gNoImg = $("#gNoImg");
+
+    function closeModal(modal){
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    function setModalImage(index){
+      if (!activeProduct) return;
+      const imgs = getProductImages(activeProduct);
+      if (!imgs.length){
+        setSafeImage(mImg, "", mNoImg);
+        if (mThumbs) mThumbs.innerHTML = "";
+        return;
+      }
+      activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+      setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
+
+      if (mThumbs){
+        $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
+      }
+      if (mThumbs && !mThumbs.children.length) buildThumbs();
+    }
+
+    function buildThumbs(){
+      if (!mThumbs || !activeProduct) return;
+      const imgs = getProductImages(activeProduct);
+      if (imgs.length <= 1){ mThumbs.innerHTML = ""; return; }
+
+      mThumbs.innerHTML = "";
+      imgs.forEach((src, i) => {
+        const d = document.createElement("div");
+        d.className = "thumb" + (i === activeImgIndex ? " active" : "");
+        d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
+        d.addEventListener("click", () => setModalImage(i));
+        mThumbs.appendChild(d);
+      });
+    }
+
+    function buildVariantChips(){
+      if (!mVariantList) return;
+      const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+
+      if (!vars.length){
+        if (mVariantWrap) mVariantWrap.style.display = "none";
+        mVariantList.innerHTML = "";
+        activeVariantIndex = 0;
+        return;
+      }
+
+      if (mVariantWrap) mVariantWrap.style.display = "block";
+      mVariantList.innerHTML = "";
+
+      vars.forEach((v, i) => {
+        const chip = document.createElement("div");
+        chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+        const name = (v.name || `Variant ${i+1}`).toUpperCase();
+        const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
+
+        chip.innerHTML = `
+          <span class="vMain">${escapeHtml(name)}</span>
+          <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+        `;
+        chip.addEventListener("click", () => {
+          activeVariantIndex = i;
+          $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
+          updateVariantPrice();
+        });
+
+        mVariantList.appendChild(chip);
+      });
+    }
+
+    function updateVariantPrice(){
+      if (!activeProduct) return;
+
+      const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+      const v = vars[activeVariantIndex];
+
+      const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
+      const delivery = activeProduct.delivery || "Upresníme po objednávke";
+
+      const base =
+        (v && typeof v.priceEUR === "number") ? v.priceEUR :
+        (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
+        null;
+
+      const variantName = vars.length ? (v?.name || "—") : "—";
+
+      if (mPriceBig){
+        mPriceBig.innerHTML = base !== null
+          ? `<small>CENA</small><br>${fmtEUR(base)}`
+          : `<small>CENA</small><br>UPRESNÍME`;
+      }
+      if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
+      if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+
+      // order summary
+      $("#o_manufacturer").value = BRAND_NAME;
+      $("#o_product").value = activeProduct.title || "—";
+      $("#o_variant").value = variantName;
+      $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
+      $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
+      $("#o_delivery").value = delivery;
+
+      // auto fill
+      const mk = getMake(activeProduct);
+      const md = getModel(activeProduct);
+      const carLine = (mk || md) ? `${mk || ""}${(mk && md) ? " " : ""}${md || ""}`.trim() : "";
+      if ($("#car")) $("#car").value = carLine;
+    }
+
+    function openProduct(p){
+      activeProduct = p;
+      activeVariantIndex = 0;
+
+      const title = p.title || "—";
+      if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${title}`;
+
+      const status = getStockStatus(p);
+      if (mRibbon){
+        mRibbon.className = `ribbon ${status}`;
+        mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
+      }
+
+      if (mDesc) mDesc.textContent = p.description || p.short || "";
+
+      activeImgIndex = 0;
+      setModalImage(0);
+      buildThumbs();
+
+      buildVariantChips();
+      updateVariantPrice();
+
+      if (productModal){
+        productModal.classList.add("show");
+        productModal.setAttribute("aria-hidden","false");
+      }
+    }
+
+    // click image -> fullscreen
+    if (mImg){
+      mImg.addEventListener("click", () => {
+        if (!activeProduct) return;
+        const imgs = getProductImages(activeProduct);
+        if (!imgs.length) return;
+        const src = imgs[activeImgIndex] || imgs[0];
+        setSafeImage(gFull, src, gNoImg);
+        galleryModal?.classList.add("show");
+        galleryModal?.setAttribute("aria-hidden","false");
+      });
+    }
+
+    // nav buttons + keyboard
+    mPrev?.addEventListener("click", () => setModalImage(activeImgIndex - 1));
+    mNext?.addEventListener("click", () => setModalImage(activeImgIndex + 1));
+
+    window.addEventListener("keydown", (e) => {
+      if (productModal?.classList.contains("show")){
+        if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
+        if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
+      }
+      if (e.key === "Escape"){
+        [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
+      }
     });
-  }
 
-  function buildOrderMailto({name, sku, price, fits}){
-    const to = "info@remperformance.sk";
-    const subject = `Nezáväzná objednávka – ${sku || name || "produkt"}`;
+    closeProductModal?.addEventListener("click", () => closeModal(productModal));
+    productModal?.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
-    const fitLine = (fits || []).slice(0, 6).map(f => {
-      const mk = normKey(f.make || "UNIVERZÁLNE");
-      const base = norm(f.modelBase || f.model || "");
-      const code = norm(f.modelCode || "");
-      return `${mk}${base ? " • " + base : ""}${code ? " • " + code : ""}`;
-    }).join(", ");
+    closeGalleryModal?.addEventListener("click", () => closeModal(galleryModal));
+    galleryModal?.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
-    const body = [
-      "Dobrý deň,",
-      "",
-      "mám záujem o nezáväznú objednávku/dopyt na tento produkt:",
-      `• Názov: ${name || "—"}`,
-      `• Kód: ${sku || "—"}`,
-      `• Cena: ${price || "Na dopyt"}`,
-      `• Vozidlo: ${fitLine || "UNIVERZÁLNE"}`,
-      "",
-      "Prosím o potvrdenie kompatibility (VIN / špecifikácia) a dostupnosti.",
-      "",
-      "Meno a priezvisko:",
-      "Telefón:",
-      "E-mail:",
-      "Poznámka (VIN / rok / motorizácia):",
-      ""
-    ].join("\n");
+    // ORDER MODAL
+    const orderModal = $("#orderModal");
+    const closeOrderModal = $("#closeOrderModal");
+    const cancelSend = $("#cancelSend");
+    const orderForm = $("#orderForm");
+    const consent = $("#consent");
+    const sendBtn = $("#sendBtn");
 
-    const href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    return href;
-  }
+    function buildOrderBlob(){
+      const lines = [
+        `Výrobca: ${$("#o_manufacturer")?.value || "—"}`,
+        `Diel: ${$("#o_product")?.value || "—"}`,
+        `Variant: ${$("#o_variant")?.value || "—"}`,
+        `Cena: ${$("#o_price")?.value || "—"}`,
+        `Doprava: ${$("#o_shipping")?.value || "—"}`,
+        `Dodanie: ${$("#o_delivery")?.value || "—"}`,
+        ``,
+        `Vozidlo: ${$("#car")?.value || ""}`,
+        `Poznámka: ${$("#customer_note")?.value || ""}`
+      ].join("\n");
 
-  function openProduct(id){
-    const p =
-      PRODUCTS.find(x => String(x.id ?? x.sku ?? x.articleNumber) === String(id)) ||
-      PRODUCTS.find(x => String(x.sku ?? x.articleNumber) === String(id));
-
-    if(!p) return;
-
-    const name = norm(p.name || p.title || "Bez názvu");
-    const sku = norm(p.sku || p.articleNumber || "");
-    const desc = norm(p.description || p.popis || "");
-
-    const priceObj = formatPrice(p.price, p.currency || "EUR");
-    const price = priceObj ? `${priceObj.nice} ${priceObj.currency}` : "Cena na dopyt";
-
-    const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
-    const fits = getFitments(p);
-
-    mTitle.textContent = name;
-
-    const thumbsHtml = imgs.length
-      ? `<div class="mThumbs" aria-label="Fotky produktu">
-          ${imgs.map((src,i)=>`
-            <button class="mThumb ${i===0?"active":""}" type="button" data-mi="${i}" aria-label="Fotka ${i+1}">
-              <img src="${escapeHtml(src)}" alt="${escapeHtml(name)}">
-            </button>
-          `).join("")}
-        </div>`
-      : "";
-
-    mBody.innerHTML = `
-      <div class="mGrid">
-        <div class="mGallery">
-          <div class="mStage">
-            ${imgs.length ? `<img id="mMainImg" src="${escapeHtml(imgs[0])}" alt="${escapeHtml(name)}">`
-              : `<div style="padding:18px;color:rgba(255,255,255,0.6)">Bez fotiek</div>`}
-            ${imgs.length > 1 ? `<button class="mNavBtn mPrev" id="mPrev" type="button" aria-label="Predošlá">‹</button>` : ``}
-            ${imgs.length > 1 ? `<button class="mNavBtn mNext" id="mNext" type="button" aria-label="Ďalšia">›</button>` : ``}
-          </div>
-          ${thumbsHtml}
-        </div>
-
-        <div class="mInfo">
-          <div class="mRow">
-            <span class="pillx red">Kód: ${escapeHtml(sku || "—")}</span>
-            <span class="pillx red">Cena: <b style="font-size:16px; letter-spacing:.02em">${escapeHtml(price)}</b></span>
-            <span class="pillx red">Status: <b>Na objednávku</b></span>
-          </div>
-
-          <div class="descBox">
-            <div class="descLabel"><span class="bar"></span>Popis produktu</div>
-            <div class="mDesc">${escapeHtml(desc || "Bez popisu.")}</div>
-            <div class="mDesc" style="opacity:.78; margin-top:10px;">
-              Poznámka: Pred potvrdením objednávky overíme kompatibilitu podľa VIN alebo špecifikácie vozidla.
-            </div>
-          </div>
-
-          <div class="descBox" style="margin-top:12px;">
-            <div class="descLabel"><span class="bar"></span>Vhodné pre</div>
-            <div class="fitList" aria-label="Vozidlá">
-              ${fits.map(f => {
-                const mk = normKey(f.make || "UNIVERZÁLNE");
-                const base = norm(f.modelBase || f.model || "");
-                const code = norm(f.modelCode || "");
-                return `<span>${escapeHtml(mk)}${base ? " • " + escapeHtml(base) : ""}${code ? " • " + escapeHtml(code) : ""}</span>`;
-              }).join("")}
-            </div>
-          </div>
-
-          <div class="ctaRow">
-            <button class="orderBtn" id="mOrderBtn" type="button">
-              <span class="bolt">⚡</span> Nezáväzne objednať
-            </button>
-            <span style="color:rgba(255,255,255,0.62); font-size:13px;">
-              otvorí e-mail s predvyplneným dopytom
-            </span>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // gallery controls
-    let mi = 0;
-    const mMainImg = document.getElementById("mMainImg");
-    const mPrev = document.getElementById("mPrev");
-    const mNext = document.getElementById("mNext");
-    const mThumbs = mBody.querySelectorAll(".mThumb");
-
-    const setMi = (i) => {
-      if (!imgs.length || !mMainImg) return;
-      mi = (i + imgs.length) % imgs.length;
-      mMainImg.src = imgs[mi];
-      mThumbs.forEach(t => t.classList.toggle("active", Number(t.dataset.mi) === mi));
-    };
-
-    if (mPrev) mPrev.addEventListener("click", () => setMi(mi - 1));
-    if (mNext) mNext.addEventListener("click", () => setMi(mi + 1));
-    mThumbs.forEach(t => t.addEventListener("click", () => setMi(Number(t.dataset.mi))));
-
-    if (mMainImg){
-      mMainImg.addEventListener("click", () => openLightbox(imgs[mi], name));
+      const blob = $("#orderBlob");
+      if (blob) blob.value = lines;
     }
 
-    // order button -> mailto
-    const mOrderBtn = document.getElementById("mOrderBtn");
-    if (mOrderBtn){
-      mOrderBtn.addEventListener("click", (e) => {
+    function openOrderModal(){
+      closeModal(productModal);
+      if (!orderModal) return;
+
+      $("#customer_note") && ($("#customer_note").value = "");
+      if (consent) consent.checked = false;
+      if (sendBtn) sendBtn.disabled = true;
+
+      buildOrderBlob();
+      orderModal.classList.add("show");
+      orderModal.setAttribute("aria-hidden","false");
+      setTimeout(()=> $("#name")?.focus(), 50);
+    }
+
+    if (mOrder) mOrder.addEventListener("click", openOrderModal);
+    closeOrderModal?.addEventListener("click", () => closeModal(orderModal));
+    cancelSend?.addEventListener("click", () => closeModal(orderModal));
+    orderModal?.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
+
+    if (consent && sendBtn){
+      consent.addEventListener("change", () => { sendBtn.disabled = !consent.checked; });
+    }
+
+    orderForm?.addEventListener("submit", (e) => {
+      if (consent && !consent.checked){
         e.preventDefault();
-        const href = buildOrderMailto({ name, sku, price, fits });
-        window.location.href = href;
-      });
-    }
+        consent.focus();
+        return;
+      }
+      buildOrderBlob();
+    });
 
-    // modal keyboard (left/right)
-    window.__modalKeyHandler && window.removeEventListener("keydown", window.__modalKeyHandler);
-    window.__modalKeyHandler = (e) => {
-      if (!modal.classList.contains("open")) return;
-      if (e.key === "ArrowLeft" && imgs.length > 1) setMi(mi - 1);
-      if (e.key === "ArrowRight" && imgs.length > 1) setMi(mi + 1);
-    };
-    window.addEventListener("keydown", window.__modalKeyHandler);
+    $("#customer_note")?.addEventListener("input", buildOrderBlob);
+    $("#car")?.addEventListener("input", buildOrderBlob);
 
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
+    // Filters
+    ["q","cat","model"].forEach(id => {
+      const el = $("#" + id);
+      if (!el) return;
+      el.addEventListener("input", renderProducts);
+      el.addEventListener("change", renderProducts);
+    });
 
-  // ===== LIGHTBOX =====
-  const lightbox = document.getElementById("lightbox");
-  const lbClose = document.getElementById("lbClose");
-  const lbImg = document.getElementById("lbImg");
+    $("#make")?.addEventListener("change", () => {
+      refreshModels();
+      renderProducts();
+    });
 
-  function openLightbox(src, alt){
-    if (!src) return;
-    lbImg.src = src;
-    lbImg.alt = alt || "Obrázok";
-    lightbox.classList.add("open");
-    lightbox.setAttribute("aria-hidden","false");
-  }
+    $("#resetFilters")?.addEventListener("click", () => {
+      $("#q").value = "";
+      $("#cat").value = "";
+      $("#make").value = "";
+      $("#model").value = "";
+      $("#model").disabled = true;
+      renderProducts();
+    });
 
-  function closeLightbox(){
-    lightbox.classList.remove("open");
-    lightbox.setAttribute("aria-hidden","true");
-    lbImg.src = "";
-  }
-
-  lbClose.addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", (e) => {
-    if(e.target && e.target.dataset && e.target.dataset.lbClose) closeLightbox();
-  });
-
-  // ===== MODAL CLOSE =====
-  function closeModal(){
-    closeLightbox();
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  mClose.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => {
-    if(e.target && e.target.dataset && e.target.dataset.close) closeModal();
-  });
-
-  window.addEventListener("keydown", (e) => {
-    if(e.key === "Escape"){
-      if (lightbox.classList.contains("open")) closeLightbox();
-      else if (modal.classList.contains("open")) closeModal();
-    }
-  });
-
-  async function init(){
-    try{
-      els.statText.textContent = "Načítavam produkty…";
-
-      const r = await fetch(PRODUCTS_URL, { cache: "no-store" });
-      if(!r.ok) throw new Error("Fetch failed: " + r.status);
-
-      const raw = await r.json();
-      const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.products) ? raw.products : []);
-
-      PRODUCTS = (Array.isArray(arr) ? arr : []).map(p => {
-        let images = p.images ?? p.imageLinks ?? p.image_urls ?? p.bilder ?? [];
-        if (typeof images === "string") images = [images];
-        if (!Array.isArray(images)) images = [];
-        images = images.filter(Boolean);
-
-        return {
-          ...p,
-          id: p.id ?? p.sku ?? p.articleNumber ?? null,
-          sku: p.sku ?? p.SKU ?? p.Artikelnummer ?? p.articleNumber ?? "",
-          name: p.name ?? p.Name ?? p.title ?? p.nazov ?? "",
-          description: p.description ?? p.popis ?? "",
-          price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
-          currency: p.currency ?? "EUR",
-          images,
-          // sklad ignorujeme -> všetko "na objednávku" podľa zadania
-          stockQty: p.stockQty ?? p.qty ?? p.stock ?? p.bestand ?? null,
-          fitments: Array.isArray(p.fitments) ? p.fitments : null
-        };
-      });
-
-      buildIndex(PRODUCTS);
-      fillMakeSelect();
-      fillModelSelect("");
-      renderBrandGrid("");
-
-      els.make.addEventListener("change", () => {
-        fillModelSelect(els.make.value);
-        els.model.value = "";
-        applyFilters();
-
-        if (els.make.value){
-          setTimeout(() => {
-            els.model.focus();
-            try { els.model.click(); } catch(e) {}
-          }, 120);
-        }
-      });
-
-      els.model.addEventListener("change", () => applyFilters());
-      els.q.addEventListener("input", () => applyFilters());
-      els.reset.addEventListener("click", () => {
-        els.q.value = "";
-        els.make.value = "";
-        fillModelSelect("");
-        els.model.value = "";
-        applyFilters();
-      });
-
-      applyFilters();
-    }catch(err){
-      console.error(err);
-      els.statText.textContent = "Nepodarilo sa načítať produkty. Skontroluj products.json v root.";
-      els.empty.style.display = "block";
-      els.empty.textContent = "Nepodarilo sa načítať produkty. Skontroluj cestu: ./products.json (root).";
-    }
-  }
-
-  init();
-</script>
-
+    (async () => {
+      await loadProducts();
+      buildFilterOptions();
+      refreshModels();
+      renderProducts();
+      console.log("CSR products loaded:", DATA.products.length);
+    })();
+  </script>
 </body>
 </html>
