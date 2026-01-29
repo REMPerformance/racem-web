@@ -273,9 +273,10 @@
 
     // 2) Odkiaľ berieme produkty:
     const DATA_URLS = [
-  "data/csr-products.part1.json",
-  "data/csr-products.part2.json"
+  "./csr-products.part1.json",
+  "./csr-products.part2.json"
 ];
+
 
     // 3) Preferované názvy súborov (čo sa bude skúšať ako hlavný obrázok)
     const MAIN_IMAGE_CANDIDATES = (code) => ([
@@ -544,7 +545,7 @@
           <div class="card" style="grid-column: span 12; cursor:default">
             <div class="content">
               <div class="title">Chýbajú dáta</div>
-              <div class="sub">Neviem načítať <b>${DATA_URL}</b>. Skontroluj, že existuje v repozitári vedľa csr.html.</div>
+              <div class="sub">Neviem načítať JSON súbory: <b>${DATA_URLS.join(", ")}</b></div>
               <div class="sub" style="color:#ffd1d4">${escapeHtml(err.message || String(err))}</div>
               <div class="sub">Rýchly fix: vytvor súbor <b>csr-products.json</b> (nižšie máš šablónu).</div>
             </div>
