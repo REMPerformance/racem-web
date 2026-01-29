@@ -243,120 +243,175 @@
       justify-content:flex-end;
     }
 
-    /* ====== CAR FILTER UI ====== */
-    .filterBar{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:flex-end;
-      justify-content:space-between;
-      margin-top: 18px;
-      padding: 16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(12,12,12,0.45);
-    }
-    .filterLeft{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:flex-end;
-      flex: 1 1 560px;
-      min-width: 260px;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width: 200px;
-      flex: 1 1 220px;
-    }
-    .label{
-      font-size: 12px;
-      letter-spacing:.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.62);
-      font-family:"Oswald", system-ui, sans-serif;
-    }
-    select, input{
-      width:100%;
-      padding: 12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(10,10,10,0.65);
-      color:#fff;
-      outline:none;
-      transition: border .2s ease, transform .2s ease;
-    }
-    select:focus, input:focus{
-      border-color: rgba(179,31,36,0.55);
-      box-shadow: 0 0 0 4px rgba(179,31,36,0.15);
-    }
-    .btn{
-      padding: 12px 14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(20,20,20,0.55);
-      color: rgba(255,255,255,0.86);
-      cursor:pointer;
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      transition: transform .18s ease, border .18s ease, background .18s ease;
-      white-space:nowrap;
-      height: 44px;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.12);
-    }
-    .btn:active{ transform: translateY(0px) scale(0.99); }
+   /* ====== CAR FILTER UI (RACEM v2) ====== */
+.filterBar{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(18,18,18,0.72), rgba(10,10,10,0.52));
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+}
 
-    .stats{
-      flex: 0 0 auto;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      justify-content:flex-end;
-      color: rgba(255,255,255,0.70);
-      font-size: 13px;
-      white-space:nowrap;
-    }
+.filterLeft{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  flex: 1 1 560px;
+  min-width: 260px;
+}
 
-    /* ====== BRAND GRID ====== */
-    .brandGrid{
-      display:grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 22px;
-    }
-    .brandBtn{
-      width:100%;
-      border-radius: 10px;
-      padding: 16px 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: #ffffff;
-      color: #b31f24;
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.10em;
-      text-transform: uppercase;
-      font-weight: 700;
-      cursor:pointer;
-      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.20);
-    }
-    .brandBtn:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.35);
-    }
-    .brandBtn.active{
-      outline: 3px solid rgba(179,31,36,0.35);
-      box-shadow: 0 16px 38px rgba(179,31,36,0.20);
-    }
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width: 200px;
+  flex: 1 1 220px;
+}
+
+.label{
+  font-size: 12px;
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+  font-family:"Oswald", system-ui, sans-serif;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.label .hint{
+  font-size: 11px;
+  letter-spacing:.10em;
+  opacity:.65;
+  text-transform:none;
+}
+
+/* inputs */
+select, input{
+  width:100%;
+  padding: 12px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(8,8,8,0.70);
+  color:#fff;
+  outline:none;
+  transition: border .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+select:hover, input:hover{
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(10,10,10,0.78);
+}
+
+select:focus, input:focus{
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 0 0 4px rgba(179,31,36,0.14);
+}
+
+/* disabled model select – jemne "zamknuté" */
+select:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}
+
+/* buttons */
+.btn{
+  padding: 12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.86);
+  cursor:pointer;
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  transition: transform .18s ease, border .18s ease, background .18s ease, box-shadow .18s ease;
+  white-space:nowrap;
+  height: 46px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(179,31,36,0.40);
+  background: rgba(179,31,36,0.10);
+  box-shadow: 0 10px 26px rgba(179,31,36,0.12);
+}
+.btn:active{ transform: translateY(0px) scale(0.99); }
+
+/* stats */
+.stats{
+  flex: 0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  justify-content:flex-end;
+  color: rgba(255,255,255,0.70);
+  font-size: 13px;
+  white-space:nowrap;
+}
+
+/* ====== BRAND GRID (tmavý, RACEM highlight) ====== */
+.brandGrid{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.brandBtn{
+  width:100%;
+  border-radius: 14px;
+  padding: 14px 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(12,12,12,0.65);
+  color: rgba(255,255,255,0.86);
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor:pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border .18s ease, background .18s ease, color .18s ease;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
+  position:relative;
+  overflow:hidden;
+}
+
+.brandBtn::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(circle at 25% 20%, rgba(179,31,36,0.22), transparent 45%);
+  opacity:0;
+  transition: opacity .18s ease;
+  pointer-events:none;
+}
+
+.brandBtn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(16,16,16,0.78);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+}
+.brandBtn:hover::after{ opacity:1; }
+
+.brandBtn.active{
+  border-color: rgba(179,31,36,0.55);
+  background: rgba(179,31,36,0.10);
+  box-shadow: 0 18px 46px rgba(179,31,36,0.15);
+  color:#fff;
+}
+.brandBtn.active::after{ opacity:1; }
+
 
     /* ====== PRODUCT LIST (5 per row) ====== */
     .cards{
@@ -906,7 +961,7 @@
             </div>
 
             <div class="field">
-              <div class="label">Model</div>
+              <div class="label" id="modelLabel">Model <span class="hint" id="modelHint">(najprv vyber značku)</span></div>
               <select id="model" disabled>
                 <option value="">Najprv vyber značku</option>
               </select>
@@ -992,15 +1047,18 @@
   const PRODUCTS_URL = "./products.json"; // v root (main)
 
   const els = {
-    q: document.getElementById("q"),
-    make: document.getElementById("make"),
-    model: document.getElementById("model"),
-    reset: document.getElementById("reset"),
-    statText: document.getElementById("statText"),
-    grid: document.getElementById("brandGrid"),
-    cards: document.getElementById("cards"),
-    empty: document.getElementById("empty"),
-  };
+  q: document.getElementById("q"),
+  make: document.getElementById("make"),
+  model: document.getElementById("model"),
+  reset: document.getElementById("reset"),
+  statText: document.getElementById("statText"),
+  grid: document.getElementById("brandGrid"),
+  cards: document.getElementById("cards"),
+  empty: document.getElementById("empty"),
+  modelLabel: document.getElementById("modelLabel"),
+  modelHint: document.getElementById("modelHint"),
+};
+
 
   const modal = document.getElementById("modal");
   const mBody = document.getElementById("mBody");
@@ -1051,23 +1109,30 @@
       makes.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
   }
 
-  function fillModelSelect(selectedMake){
-    const make = normKey(selectedMake);
-    if (!make){
-      els.model.disabled = true;
-      els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
-      return;
-    }
+ function fillModelSelect(selectedMake){
+  const make = normKey(selectedMake);
 
-    const models = Array.from(INDEX.get(make) || [])
-      .filter(m => m !== undefined)
-      .sort((a,b) => a.localeCompare(b, "sk"));
-
-    els.model.disabled = false;
-    els.model.innerHTML =
-      `<option value="">Všetky modely</option>` +
-      models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
+  if (!make){
+    els.model.disabled = true;
+    els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
+    if (els.modelHint) els.modelHint.textContent = "(najprv vyber značku)";
+    if (els.modelLabel) els.modelLabel.innerHTML = `Model <span class="hint" id="modelHint">(najprv vyber značku)</span>`;
+    return;
   }
+
+  const models = Array.from(INDEX.get(make) || [])
+    .filter(m => m !== undefined)
+    .sort((a,b) => a.localeCompare(b, "sk"));
+
+  els.model.disabled = false;
+  els.model.innerHTML =
+    `<option value="">Vyber model…</option>` +
+    models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
+
+  // label + hint
+  if (els.modelLabel) els.modelLabel.textContent = `Model pre ${make}`;
+}
+
 
   function renderBrandGrid(activeMake){
     const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
@@ -1080,10 +1145,18 @@
       btn.addEventListener("click", () => {
         const mk = btn.getAttribute("data-make") || "";
         els.make.value = mk;
-        fillModelSelect(mk);
-        els.model.value = "";
-        applyFilters();
-        document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
+fillModelSelect(mk);
+els.model.value = "";
+applyFilters();
+
+// UX: posuň a rovno otvor model select
+document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
+setTimeout(() => {
+  els.model.focus();
+  // "pseudo-open" – funguje v niektorých browseroch, inde len focus (stále ok)
+  try { els.model.click(); } catch(e) {}
+}, 220);
+
       });
     });
   }
@@ -1458,11 +1531,19 @@
       fillModelSelect("");
       renderBrandGrid("");
 
-      els.make.addEventListener("change", () => {
-        fillModelSelect(els.make.value);
-        els.model.value = "";
-        applyFilters();
-      });
+     els.make.addEventListener("change", () => {
+  fillModelSelect(els.make.value);
+  els.model.value = "";
+  applyFilters();
+
+  if (els.make.value){
+    setTimeout(() => {
+      els.model.focus();
+      try { els.model.click(); } catch(e) {}
+    }, 120);
+  }
+});
+
       els.model.addEventListener("change", () => applyFilters());
       els.q.addEventListener("input", () => applyFilters());
       els.reset.addEventListener("click", () => {
