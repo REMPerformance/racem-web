@@ -571,213 +571,242 @@
     </div>
   </footer>
 
-  <script>
-    /**
-     * OČAKÁVANÝ FORMÁT PRODUKTU (min):
-     * {
-     *   "sku": "CSR-FSK119",
-     *   "name": "Predný splitter pre BMW E46 3er ...",
-     *   "carMake": "BMW",
-     *   "carModel": "E46 3er",
-     *   "price": 199.90,          // voliteľné
-     *   "currency": "EUR"         // voliteľné
-     * }
-     */
+ <script>
+  const PRODUCTS_URL = "products.json";
 
-    const PRODUCTS_URL = "products.json";
+  const els = {
+    q: document.getElementById("q"),
+    make: document.getElementById("make"),
+    model: document.getElementById("model"),
+    reset: document.getElementById("reset"),
+    statText: document.getElementById("statText"),
+    grid: document.getElementById("brandGrid"),
+    cards: document.getElementById("cards"),
+    empty: document.getElementById("empty"),
+  };
 
-    const els = {
-      q: document.getElementById("q"),
-      make: document.getElementById("make"),
-      model: document.getElementById("model"),
-      reset: document.getElementById("reset"),
-      statText: document.getElementById("statText"),
-      grid: document.getElementById("brandGrid"),
-      cards: document.getElementById("cards"),
-      empty: document.getElementById("empty"),
-    };
+  let PRODUCTS = [];
+  let INDEX = new Map(); // MAKE -> Set(models)
 
-    let PRODUCTS = [];
-    let INDEX = new Map(); // make -> Set(models)
+  const norm = (s) => (s ?? "").toString().trim();
+  const normKey = (s) => norm(s).toUpperCase();
 
-    const norm = (s) => (s ?? "").toString().trim();
-    const normKey = (s) => norm(s).toUpperCase();
+  function getFitments(p){
+    // podporíme viac formátov
+    if (Array.isArray(p.fitments) && p.fitments.length) return p.fitments;
+    const mk = norm(p.carMake || p.make || "");
+    const md = norm(p.carModel || p.model || "");
+    if (mk) return [{ make: mk, model: md }];
+    return [{ make: "UNIVERZÁLNE", model: "" }];
+  }
 
-    function buildIndex(products){
-      INDEX = new Map();
-      for(const p of products){
-        const make = normKey(p.carMake || "UNIVERZÁLNE");
-        const model = norm(p.carModel || "Univerzálne");
-        if(!INDEX.has(make)) INDEX.set(make, new Set());
+  function buildIndex(products){
+    INDEX = new Map();
+    for (const p of products){
+      for (const f of getFitments(p)){
+        const make = normKey(f.make || "UNIVERZÁLNE");
+        const model = norm(f.model || "");
+        if (!INDEX.has(make)) INDEX.set(make, new Set());
         INDEX.get(make).add(model);
       }
     }
+  }
 
-    function fillMakeSelect(){
-      const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
-      els.make.innerHTML = `<option value="">Všetky značky</option>` + makes.map(m => {
-        return `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`;
-      }).join("");
+  function fillMakeSelect(){
+    const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
+    els.make.innerHTML =
+      `<option value="">Všetky značky</option>` +
+      makes.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  }
+
+  function fillModelSelect(selectedMake){
+    const make = normKey(selectedMake);
+    if (!make){
+      els.model.disabled = true;
+      els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
+      return;
+    }
+    const models = Array.from(INDEX.get(make) || [])
+      .filter(m => m !== undefined)
+      .sort((a,b) => a.localeCompare(b, "sk"));
+
+    els.model.disabled = false;
+    els.model.innerHTML =
+      `<option value="">Všetky modely</option>` +
+      models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m || "—")}</option>`).join("");
+  }
+
+  function renderBrandGrid(activeMake){
+    const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
+    els.grid.innerHTML = makes.map(m => {
+      const isActive = normKey(activeMake) === m;
+      return `<button class="brandBtn ${isActive ? "active" : ""}" data-make="${escapeHtml(m)}" type="button">${escapeHtml(m)}</button>`;
+    }).join("");
+
+    els.grid.querySelectorAll(".brandBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mk = btn.getAttribute("data-make") || "";
+        els.make.value = mk;
+        fillModelSelect(mk);
+        els.model.value = "";
+        applyFilters(true);
+        document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+  }
+
+  function productMatchesMakeModel(p, make, model){
+    const fits = getFitments(p);
+
+    if (make){
+      const okMake = fits.some(f => normKey(f.make || "UNIVERZÁLNE") === make);
+      if (!okMake) return false;
+    }
+    if (model){
+      const okModel = fits.some(f =>
+        normKey(f.make || "UNIVERZÁLNE") === make &&
+        norm(f.model || "") === model
+      );
+      if (!okModel) return false;
+    }
+    return true;
+  }
+
+  function applyFilters(){
+    const q = normKey(els.q.value);
+    const make = normKey(els.make.value);
+    const model = norm(els.model.value);
+
+    renderBrandGrid(make);
+
+    let filtered = PRODUCTS;
+
+    if (make || model){
+      filtered = filtered.filter(p => productMatchesMakeModel(p, make, model));
     }
 
-    function fillModelSelect(selectedMake){
-      const make = normKey(selectedMake);
-      if(!make){
-        els.model.disabled = true;
-        els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
-        return;
-      }
-      const models = Array.from(INDEX.get(make) || []).sort((a,b) => a.localeCompare(b, "sk"));
-      els.model.disabled = false;
-      els.model.innerHTML = `<option value="">Všetky modely</option>` + models.map(m => {
-        return `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`;
-      }).join("");
-    }
-
-    function renderBrandGrid(activeMake){
-      const makes = Array.from(INDEX.keys()).sort((a,b) => a.localeCompare(b, "sk"));
-      els.grid.innerHTML = makes.map(m => {
-        const isActive = normKey(activeMake) === m;
-        return `<button class="brandBtn ${isActive ? "active" : ""}" data-make="${escapeHtml(m)}" type="button">${escapeHtml(m)}</button>`;
-      }).join("");
-
-      els.grid.querySelectorAll(".brandBtn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const mk = btn.getAttribute("data-make") || "";
-          els.make.value = mk;
-          fillModelSelect(mk);
-          els.model.value = "";
-          applyFilters(true);
-          // scroll jemne na produkty
-          document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
-        });
+    if (q){
+      filtered = filtered.filter(p => {
+        const hay = normKey((p.name || "") + " " + (p.sku || "") + " " + (p.articleNumber || ""));
+        return hay.includes(q);
       });
     }
 
-    function applyFilters(fromGrid=false){
-      const q = normKey(els.q.value);
-      const make = normKey(els.make.value);
-      const model = norm(els.model.value);
+    renderCards(filtered);
 
-      // update grid active state
-      renderBrandGrid(make);
+    const total = PRODUCTS.length;
+    const shown = filtered.length;
 
-      let filtered = PRODUCTS;
+    let label = `${shown} / ${total} položiek`;
+    if (make) label += ` • ${make}`;
+    if (model) label += ` • ${model}`;
+    els.statText.textContent = label;
+  }
 
-      if(make){
-        filtered = filtered.filter(p => normKey(p.carMake || "UNIVERZÁLNE") === make);
-      }
-      if(model){
-        filtered = filtered.filter(p => norm(p.carModel || "Univerzálne") === model);
-      }
-      if(q){
-        filtered = filtered.filter(p => {
-          const hay = normKey((p.name || "") + " " + (p.sku || ""));
-          return hay.includes(q);
-        });
-      }
+  function renderCards(list){
+    els.cards.innerHTML = "";
+    els.empty.style.display = list.length ? "none" : "block";
 
-      renderCards(filtered);
-      const total = PRODUCTS.length;
-      const shown = filtered.length;
+    const slice = list.slice(0, 90);
 
-      let label = `${shown} / ${total} položiek`;
-      if(make) label += ` • ${make}`;
-      if(model) label += ` • ${model}`;
-      els.statText.textContent = label;
-    }
+    els.cards.innerHTML = slice.map(p => {
+      const sku = escapeHtml(norm(p.sku || ""));
+      const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
 
-    function renderCards(list){
-      els.cards.innerHTML = "";
-      els.empty.style.display = list.length ? "none" : "block";
+      const fits = getFitments(p);
+      const first = fits[0] || { make: "UNIVERZÁLNE", model: "" };
+      const make = escapeHtml(normKey(first.make || "UNIVERZÁLNE"));
+      const model = escapeHtml(norm(first.model || "Univerzálne"));
 
-      // (ak bude veľa produktov, limitni render a neskôr dorobíme stránkovanie)
-      const slice = list.slice(0, 90);
+      const price = (p.priceEUR != null && !Number.isNaN(Number(p.priceEUR)))
+        ? `${Number(p.priceEUR).toFixed(2)} EUR`
+        : null;
 
-      els.cards.innerHTML = slice.map(p => {
-        const sku = escapeHtml(norm(p.sku || p.articleNumber || ""));
-        const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
-        const make = escapeHtml(normKey(p.carMake || "UNIVERZÁLNE"));
-        const model = escapeHtml(norm(p.carModel || "Univerzálne"));
+      const stockBadge = (p.inStock === true) ? "Skladom" : (p.inStock === false ? "Nie je skladom" : "Sklad neznámy");
 
-        const price = (p.price != null && !Number.isNaN(Number(p.price)))
-          ? `${Number(p.price).toFixed(2)} ${escapeHtml(p.currency || "EUR")}`
-          : null;
-
-        return `
-          <div class="card">
-            <div class="cardTop">
-              <div class="tag"><span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>${make}</div>
-              <div class="sku">${sku}</div>
+      return `
+        <div class="card">
+          <div class="cardTop">
+            <div class="tag">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
+              ${make}
             </div>
-            <div class="title">${name}</div>
-            <div class="meta">
-              <span>${model}</span>
-              ${price ? `<span>${price}</span>` : ``}
-            </div>
+            <div class="sku">${sku}</div>
           </div>
-        `;
-      }).join("");
-    }
 
-    function escapeHtml(str){
-      return (str ?? "").toString()
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
+          <div class="title">${name}</div>
 
-    async function init(){
-      try{
-        els.statText.textContent = "Načítavam produkty…";
-        const r = await fetch(PRODUCTS_URL, { cache: "no-store" });
-        if(!r.ok) throw new Error("Fetch failed: " + r.status);
-        PRODUCTS = await r.json();
+          <div class="meta">
+            <span>${model}</span>
+            ${price ? `<span>${price}</span>` : ``}
+            <span>${escapeHtml(stockBadge)}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
 
-        // normalizácia po načítaní (aby sa ti nerozbilo keď niekto dá iné kľúče)
-        PRODUCTS = (Array.isArray(PRODUCTS) ? PRODUCTS : []).map(p => ({
-          ...p,
-          sku: p.sku ?? p.SKU ?? p.Artikelnummer ?? p.articleNumber ?? "",
-          name: p.name ?? p.Name ?? p.title ?? "",
-          carMake: p.carMake ?? p.make ?? p.car_make ?? "",
-          carModel: p.carModel ?? p.model ?? p.car_model ?? "",
-          price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
-          currency: p.currency ?? "EUR",
-        }));
+  function escapeHtml(str){
+    return (str ?? "").toString()
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
 
-        buildIndex(PRODUCTS);
-        fillMakeSelect();
-        fillModelSelect("");
-        renderBrandGrid("");
+  async function init(){
+    try{
+      els.statText.textContent = "Načítavam produkty…";
 
-        // events
-        els.make.addEventListener("change", () => {
-          fillModelSelect(els.make.value);
-          els.model.value = "";
-          applyFilters();
-        });
-        els.model.addEventListener("change", () => applyFilters());
-        els.q.addEventListener("input", () => applyFilters());
-        els.reset.addEventListener("click", () => {
-          els.q.value = "";
-          els.make.value = "";
-          fillModelSelect("");
-          els.model.value = "";
-          applyFilters();
-        });
+      const r = await fetch(PRODUCTS_URL, { cache: "no-store" });
+      if(!r.ok) throw new Error("Fetch failed: " + r.status);
 
+      const raw = await r.json();
+      const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.products) ? raw.products : []);
+
+      PRODUCTS = arr.map(p => ({
+        ...p,
+        sku: p.sku ?? "",
+        name: p.name ?? p.title ?? "",
+        priceEUR: p.priceEUR ?? p.price ?? p.price_eur ?? null,
+        inStock: (p.inStock ?? p.stock ?? null),
+        fitments: Array.isArray(p.fitments) ? p.fitments : null,
+        carMake: p.carMake ?? p.make ?? "",
+        carModel: p.carModel ?? p.model ?? "",
+      }));
+
+      buildIndex(PRODUCTS);
+      fillMakeSelect();
+      fillModelSelect("");
+      renderBrandGrid("");
+
+      els.make.addEventListener("change", () => {
+        fillModelSelect(els.make.value);
+        els.model.value = "";
         applyFilters();
-      }catch(err){
-        console.error(err);
-        els.statText.textContent = "Nepodarilo sa načítať produkty. Skontroluj data/products.json";
-        els.empty.style.display = "block";
-        els.empty.textContent = "Nepodarilo sa načítať produkty. Skontroluj cestu: data/products.json";
-      }
-    }
+      });
+      els.model.addEventListener("change", () => applyFilters());
+      els.q.addEventListener("input", () => applyFilters());
+      els.reset.addEventListener("click", () => {
+        els.q.value = "";
+        els.make.value = "";
+        fillModelSelect("");
+        els.model.value = "";
+        applyFilters();
+      });
 
-    init();
-  </script>
+      applyFilters();
+    }catch(err){
+      console.error(err);
+      els.statText.textContent = "Nepodarilo sa načítať produkty. Skontroluj products.json v root.";
+      els.empty.style.display = "block";
+      els.empty.textContent = "Nepodarilo sa načítať produkty. Skontroluj cestu: products.json (root).";
+    }
+  }
+
+  init();
+</script>
+
 </body>
 </html>
