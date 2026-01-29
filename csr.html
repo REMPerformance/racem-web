@@ -613,8 +613,8 @@
     </div>
   </footer>
 
- <script>
-  const PRODUCTS_URL = "products.json";
+<script>
+  const PRODUCTS_URL = "./products.json"; // v root (main)
 
   const els = {
     q: document.getElementById("q"),
@@ -633,12 +633,22 @@
   const norm = (s) => (s ?? "").toString().trim();
   const normKey = (s) => norm(s).toUpperCase();
 
+  function escapeHtml(str){
+    return (str ?? "").toString()
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
   function getFitments(p){
-    // podporíme viac formátov
     if (Array.isArray(p.fitments) && p.fitments.length) return p.fitments;
+
     const mk = norm(p.carMake || p.make || "");
     const md = norm(p.carModel || p.model || "");
     if (mk) return [{ make: mk, model: md }];
+
     return [{ make: "UNIVERZÁLNE", model: "" }];
   }
 
@@ -668,6 +678,7 @@
       els.model.innerHTML = `<option value="">Najprv vyber značku</option>`;
       return;
     }
+
     const models = Array.from(INDEX.get(make) || [])
       .filter(m => m !== undefined)
       .sort((a,b) => a.localeCompare(b, "sk"));
@@ -691,7 +702,7 @@
         els.make.value = mk;
         fillModelSelect(mk);
         els.model.value = "";
-        applyFilters(true);
+        applyFilters();
         document.getElementById("sekcia1").scrollIntoView({behavior:"smooth", block:"start"});
       });
     });
@@ -752,62 +763,55 @@
     const slice = list.slice(0, 90);
 
     els.cards.innerHTML = slice.map(p => {
-  const sku = escapeHtml(norm(p.sku || p.articleNumber || ""));
-  const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
-  const make = escapeHtml(normKey(p.carMake || "UNIVERZÁLNE"));
-  const model = escapeHtml(norm(p.carModel || "Univerzálne"));
+      const sku = escapeHtml(norm(p.sku || p.articleNumber || ""));
+      const name = escapeHtml(norm(p.name || p.title || "Bez názvu"));
 
-  const price = (p.price != null && !Number.isNaN(Number(p.price)))
-    ? `${Number(p.price).toFixed(2)} ${escapeHtml(p.currency || "EUR")}`
-    : null;
+      // ber z fitments (lebo jeden produkt môže mať viac áut)
+      const f0 = getFitments(p)[0] || { make: "UNIVERZÁLNE", model: "" };
+      const make = escapeHtml(normKey(f0.make || "UNIVERZÁLNE"));
+      const model = escapeHtml(norm(f0.model || "—"));
 
-  const img = Array.isArray(p.images) && p.images.length ? p.images[0] : "";
-  const imgSafe = escapeHtml(img);
+      const price = (p.price != null && !Number.isNaN(Number(p.price)))
+        ? `${Number(p.price).toFixed(2)} ${escapeHtml(p.currency || "EUR")}`
+        : null;
 
-  // sklad – keď nemáš qty, aspoň zobraz "Neznáme"
-  let stockLabel = "Neznáme";
-  let stockClass = "";
-  if (p.stockQty === 0) { stockLabel = "Nie je skladom"; stockClass = "no"; }
-  if (typeof p.stockQty === "number" && p.stockQty > 0) { stockLabel = "Skladom"; stockClass = "ok"; }
+      const img = Array.isArray(p.images) && p.images.length ? p.images[0] : "";
+      const imgSafe = escapeHtml(img);
 
-  return `
-    <div class="card">
-      <div class="thumb">
-        <img src="${imgSafe}" alt="${name}" loading="lazy"
-             onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
-      </div>
+      let stockLabel = "Neznáme";
+      let stockClass = "";
+      if (p.stockQty === 0) { stockLabel = "Nie je skladom"; stockClass = "no"; }
+      if (typeof p.stockQty === "number" && p.stockQty > 0) { stockLabel = "Skladom"; stockClass = "ok"; }
 
-      <div class="cardTop">
-        <div class="tag">
-          <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
-          ${make}
+      return `
+        <div class="card">
+          <div class="thumb">
+            <img src="${imgSafe}" alt="${name}" loading="lazy"
+                 onerror="this.style.display='none'; this.parentElement.style.opacity='0.35';">
+          </div>
+
+          <div class="cardTop">
+            <div class="tag">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 14px rgba(179,31,36,.6)"></span>
+              ${make}
+            </div>
+            <div class="sku">${sku}</div>
+          </div>
+
+          <div class="title">${name}</div>
+
+          <div class="meta">
+            <span>${model}</span>
+            ${price ? `<span>${price}</span>` : ``}
+          </div>
+
+          <div class="stock">
+            <span class="badge ${stockClass}">${stockLabel}</span>
+          </div>
         </div>
-        <div class="sku">${sku}</div>
-      </div>
-
-      <div class="title">${name}</div>
-
-      <div class="meta">
-        <span>${model}</span>
-        ${price ? `<span>${price}</span>` : ``}
-      </div>
-
-      <div class="stock">
-        <span class="badge ${stockClass}">${stockLabel}</span>
-      </div>
-    </div>
-  `;
-}).join("");
-
-
-  function escapeHtml(str){
-    return (str ?? "").toString()
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
+      `;
+    }).join("");
+  } // ✅ dôležité: tu musí byť koniec renderCards()
 
   async function init(){
     try{
@@ -819,19 +823,17 @@
       const raw = await r.json();
       const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.products) ? raw.products : []);
 
-     PRODUCTS = (Array.isArray(PRODUCTS) ? PRODUCTS : []).map(p => ({
-  ...p,
-  sku: p.sku ?? p.SKU ?? p.Artikelnummer ?? p.articleNumber ?? "",
-  name: p.name ?? p.Name ?? p.title ?? p.nazov ?? "",
-  description: p.description ?? p.popis ?? "",
-  carMake: p.carMake ?? p.make ?? p.car_make ?? "",
-  carModel: p.carModel ?? p.model ?? p.car_model ?? "",
-  price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
-  currency: p.currency ?? "EUR",
-  images: p.images ?? p.imageLinks ?? p.image_urls ?? p.bilder ?? [],
-  stockQty: p.stockQty ?? p.qty ?? p.stock ?? p.bestand ?? null
-}));
-
+      // ✅ mapuj arr, nie PRODUCTS
+      PRODUCTS = (Array.isArray(arr) ? arr : []).map(p => ({
+        ...p,
+        sku: p.sku ?? p.SKU ?? p.Artikelnummer ?? p.articleNumber ?? "",
+        name: p.name ?? p.Name ?? p.title ?? p.nazov ?? "",
+        description: p.description ?? p.popis ?? "",
+        price: p.price ?? p.Price ?? p.preis ?? p.priceEUR ?? null,
+        currency: p.currency ?? "EUR",
+        images: p.images ?? p.imageLinks ?? p.image_urls ?? p.bilder ?? [],
+        stockQty: p.stockQty ?? p.qty ?? p.stock ?? p.bestand ?? null
+      }));
 
       buildIndex(PRODUCTS);
       fillMakeSelect();
@@ -858,7 +860,7 @@
       console.error(err);
       els.statText.textContent = "Nepodarilo sa načítať produkty. Skontroluj products.json v root.";
       els.empty.style.display = "block";
-      els.empty.textContent = "Nepodarilo sa načítať produkty. Skontroluj cestu: products.json (root).";
+      els.empty.textContent = "Nepodarilo sa načítať produkty. Skontroluj cestu: ./products.json (root).";
     }
   }
 
