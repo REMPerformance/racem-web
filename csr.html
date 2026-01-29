@@ -1,733 +1,215 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RACEM | CSR katalóg</title>
-  <meta name="description" content="CSR produkty – nárazníky, prahy, lipy, difúzory, doplnky. Prehľad, vyhľadávanie, detail, obrázky cez CDN." />
-  <style>
-    :root{
-      --bg:#0b0d10; --panel:#10141a; --panel2:#0f1318;
-      --text:#e8eef7; --muted:#9aa6b2; --line:#202834;
-      --red:#b31f24; --green:#35d07f; --yellow:#ffd166;
-      --shadow: 0 16px 50px rgba(0,0,0,.45);
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background:
-        radial-gradient(900px 500px at 20% -10%, rgba(179,31,36,.18), transparent 60%),
-        radial-gradient(700px 400px at 90% 0%, rgba(255,209,102,.10), transparent 55%),
-        var(--bg);
-      color:var(--text);
-    }
-    a{color:inherit}
-    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RACEM | CSR katalóg</title>
 
-    .topbar{
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      padding:14px 16px; border:1px solid var(--line); background:rgba(16,20,26,.72);
-      border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter: blur(10px);
-      position:sticky; top:12px; z-index:20;
-    }
-    .brand{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px; background:rgba(179,31,36,.12);
-      border:1px solid rgba(179,31,36,.35);
-      color:var(--text); font-weight:800; letter-spacing:.3px;
-    }
-    .pill small{color:var(--muted); font-weight:700}
-    .pill.gray{background:rgba(255,255,255,.05);border-color:var(--line); font-weight:800}
+<style>
+/* ==== RACEM THEME ==== */
+:root{
+  --bg:#0b0d10; --panel:#10141a; --panel2:#0f1318;
+  --text:#e8eef7; --muted:#9aa6b2; --line:#202834;
+  --red:#b31f24;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:radial-gradient(900px 500px at 20% -10%, rgba(179,31,36,.18), transparent 60%),var(--bg);
+  color:var(--text);
+}
+.wrap{max-width:1200px;margin:auto;padding:22px}
 
-    .controls{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end
-    }
-    .input, .select{
-      background:rgba(15,19,24,.9);
-      border:1px solid var(--line);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      outline:none;
-      min-width:220px;
-    }
-    .select{min-width:190px}
-    .btn{
-      border:1px solid rgba(179,31,36,.45);
-      background:linear-gradient(180deg, rgba(179,31,36,.95), rgba(141,16,20,.95));
-      color:white; font-weight:900;
-      padding:10px 14px; border-radius:12px;
-      cursor:pointer;
-      box-shadow: 0 10px 26px rgba(179,31,36,.22);
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .btn:hover{transform: translateY(-1px); filter:brightness(1.05)}
-    .btn.secondary{
-      background:rgba(15,19,24,.9);
-      border:1px solid var(--line);
-      color:var(--text);
-      box-shadow:none;
-    }
+/* ==== TOP BAR ==== */
+.topbar{
+  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:rgba(16,20,26,.8);
+}
+.pill{
+  padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(179,31,36,.45);
+  background:rgba(179,31,36,.15);
+  font-weight:900;
+}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
+.select,.input{
+  background:#0f1318;border:1px solid var(--line);
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 12px;
+}
+.btn{
+  background:var(--red);
+  color:#fff;
+  font-weight:900;
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
 
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(15,19,24,.75);
-      color:var(--muted); font-weight:800;
-      user-select:none;
-    }
-    .chip input{accent-color: var(--red)}
-    .meta{
-      margin:18px 2px 14px;
-      color:var(--muted);
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      align-items:center;
-    }
-    .meta .left, .meta .right{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .small{font-size:.9rem;color:var(--muted)}
+/* ==== GRID ==== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+.card{
+  grid-column:span 3;
+  background:rgba(16,20,26,.8);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  cursor:pointer;
+}
+.thumb{
+  aspect-ratio:4/3;
+  background:#111;
+}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.content{padding:12px}
+.title{font-weight:900}
+.sub{color:var(--muted);font-size:.9rem}
+.price{margin-top:8px;font-weight:900;color:#fff}
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:14px;
-    }
-    .card{
-      grid-column: span 3;
-      border:1px solid var(--line);
-      background:rgba(16,20,26,.72);
-      border-radius:var(--radius);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      transition: transform .18s ease, border-color .18s ease;
-      cursor:pointer;
-      min-height: 340px;
-      display:flex; flex-direction:column;
-    }
-    .card:hover{transform: translateY(-4px); border-color: rgba(179,31,36,.45)}
-    .thumb{
-      aspect-ratio: 4 / 3;
-      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      display:flex; align-items:center; justify-content:center;
-      border-bottom:1px solid var(--line);
-    }
-    .thumb img{width:100%; height:100%; object-fit:cover; display:block}
-    .content{padding:12px 14px; display:flex; flex-direction:column; gap:8px; flex:1}
-    .title{font-weight:950; letter-spacing:.2px; line-height:1.2}
-    .sub{color:var(--muted); font-size:.92rem; line-height:1.2}
-    .row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:auto}
-    .price{font-weight:950}
-    .badge{
-      font-size:.78rem; font-weight:900;
-      border-radius:999px; padding:6px 10px;
-      border:1px solid var(--line);
-      color:var(--muted);
-      background:rgba(15,19,24,.9);
-      white-space:nowrap;
-    }
-    .badge.ok{border-color: rgba(53,208,127,.35); color: #c6ffe2; background:rgba(53,208,127,.08)}
-    .badge.warn{border-color: rgba(255,209,102,.35); color: #fff1c2; background:rgba(255,209,102,.08)}
-    .badge.no{border-color: rgba(179,31,36,.35); color: #ffd1d4; background:rgba(179,31,36,.08)}
-    .footerNote{margin:18px 2px 0; color:var(--muted); font-size:.9rem}
-
-    /* Load more */
-    .loadWrap{margin:16px 0; display:flex; justify-content:center}
-    .loadInfo{margin-top:8px; text-align:center; color:var(--muted); font-size:.9rem}
-
-    /* Modal */
-    .overlay{
-      position:fixed; inset:0; background: rgba(0,0,0,.72);
-      display:none; align-items:center; justify-content:center;
-      padding:18px; z-index:100;
-    }
-    .overlay.open{display:flex}
-    .modal{
-      width:min(980px, 100%);
-      border-radius: 22px;
-      border:1px solid var(--line);
-      background: rgba(12,14,18,.92);
-      box-shadow: 0 24px 80px rgba(0,0,0,.55);
-      overflow:hidden;
-    }
-    .modalHead{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      background: rgba(16,20,26,.6);
-    }
-    .modalHead .left{display:flex; flex-direction:column; gap:4px}
-    .modalHead .left .h{font-weight:950; letter-spacing:.2px}
-    .modalHead .left .k{color:var(--muted); font-size:.92rem}
-    .modalBody{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:0;
-    }
-    .gallery{
-      border-right:1px solid var(--line);
-      padding:14px;
-    }
-    .mainImg{
-      aspect-ratio: 4/3;
-      border-radius: 18px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-    }
-    .mainImg img{width:100%;height:100%;object-fit:contain;background:white}
-    .thumbs{
-      margin-top:10px;
-      display:flex; gap:10px; overflow:auto; padding-bottom:6px;
-    }
-    .t{
-      width:110px; height:80px; flex:0 0 auto;
-      border-radius: 14px; overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      cursor:pointer;
-    }
-    .t img{width:100%;height:100%;object-fit:cover;display:block;background:white}
-    .info{
-      padding:14px 16px;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .kv{display:flex; justify-content:space-between; gap:10px; color:var(--muted)}
-    .kv b{color:var(--text)}
-    .desc{
-      color:var(--text);
-      line-height:1.5;
-      border:1px solid var(--line);
-      background: rgba(16,20,26,.45);
-      border-radius: 16px;
-      padding:12px 12px;
-      white-space: pre-wrap;
-    }
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:auto}
-
-    @media (max-width: 1100px){
-      .card{grid-column: span 4}
-    }
-    @media (max-width: 780px){
-      .card{grid-column: span 6}
-      .input{min-width: 180px}
-      .modalBody{grid-template-columns: 1fr}
-      .gallery{border-right:none;border-bottom:1px solid var(--line)}
-    }
-    @media (max-width: 520px){
-      .card{grid-column: span 12}
-      .input,.select{min-width: 100%}
-      .controls{width:100%}
-      .topbar{flex-direction:column; align-items:stretch}
-      .controls{justify-content:stretch}
-    }
-  </style>
+/* ==== RESPONSIVE ==== */
+@media(max-width:900px){.card{grid-column:span 6}}
+@media(max-width:520px){.card{grid-column:span 12}}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="pill">RACEM <small>CSR katalóg</small></div>
-        <div class="pill gray"><span id="countPill">0</span> <small>produktov</small></div>
-        <div class="pill gray"><span id="resultPill">0</span> <small>výsledkov</small></div>
-        <div class="pill gray"><span id="shownPill">0</span> <small>zobrazené</small></div>
-      </div>
+<div class="wrap">
 
-      <div class="controls">
-        <input id="q" class="input" placeholder="Hľadať (kód, názov, kategória)..." />
+<div class="topbar">
+  <div class="pill">RACEM <small>CSR katalóg</small></div>
 
-        <select id="cat" class="select">
-          <option value="">Všetky kategórie</option>
-        </select>
+  <div class="controls">
+    <input id="q" class="input" placeholder="Hľadať názov / kód">
 
-        <select id="stock" class="select">
-          <option value="">Sklad (všetko)</option>
-          <option value="in">Skladom</option>
-          <option value="out">Nedostupné</option>
-          <option value="unknown">Neznáme</option>
-        </select>
+    <select id="make" class="select">
+      <option value="">Všetci výrobcovia</option>
+    </select>
 
-        <select id="sort" class="select">
-          <option value="relevance">Zoradiť: relevancia</option>
-          <option value="price_asc">Cena ↑</option>
-          <option value="price_desc">Cena ↓</option>
-          <option value="title_asc">Názov A→Z</option>
-          <option value="title_desc">Názov Z→A</option>
-        </select>
+    <select id="model" class="select" disabled>
+      <option value="">Všetky modely</option>
+    </select>
 
-        <label class="chip" title="Zobraziť len produkty, ktoré majú aspoň 1 obrázok v JSON">
-          <input type="checkbox" id="onlyImgs" />
-          Len s obrázkami
-        </label>
-
-        <label class="chip" title="Zobraziť len produkty s vyplnenou cenou">
-          <input type="checkbox" id="onlyPrice" />
-          Len s cenou
-        </label>
-
-        <button id="reload" class="btn secondary" title="Znovu načítať dáta">Reload</button>
-      </div>
-    </div>
-
-    <div class="meta">
-      <div class="left">
-        <div>Zdroj obrázkov:
-          <span class="pill gray" style="padding:6px 10px">
-            <span id="imgBaseLabel"></span>
-          </span>
-        </div>
-        <div class="small">Tip: neskôr len zmeníš IMAGE_BASE na <b>https://cdn.racem.sk</b></div>
-      </div>
-      <div class="right small">
-        Render je po stránkach, aby to nezabilo browser (ako katalóg, nie spam list).
-      </div>
-    </div>
-
-    <div id="grid" class="grid"></div>
-
-    <div class="loadWrap">
-      <button id="loadMore" class="btn secondary" style="min-width:220px; display:none;">Načítať ďalšie</button>
-    </div>
-    <div class="loadInfo" id="loadInfo"></div>
-
-    <div class="footerNote">
-      Toto je prezentačný katalóg pre CSR. Objednávku/dopyt napojíme v ďalšom kroku (formulár / email / CRM).
-    </div>
+    <button id="reset" class="btn">Reset</button>
   </div>
+</div>
 
-  <!-- Modal -->
-  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="modalHead">
-        <div class="left">
-          <div class="h" id="mTitle">Produkt</div>
-          <div class="k" id="mCode">Kód</div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <span id="mBadge" class="badge">—</span>
-          <button id="close" class="btn secondary">Zavrieť</button>
-        </div>
+<div id="grid" class="grid"></div>
+
+</div>
+
+<script>
+/* ==== CONFIG ==== */
+const DATA_URLS = [
+  "./csr-products-SK.part1.json",
+  "./csr-products-SK.part2.json"
+];
+const IMAGE_BASE = "https://pub-00566da7f565476b9f37d09cb0e1917f.r2.dev";
+
+/* ==== STATE ==== */
+let PRODUCTS = [];
+let FILTERED = [];
+
+/* ==== ELEMENTS ==== */
+const els = {
+  grid: document.getElementById("grid"),
+  q: document.getElementById("q"),
+  make: document.getElementById("make"),
+  model: document.getElementById("model"),
+  reset: document.getElementById("reset")
+};
+
+/* ==== LOAD ==== */
+async function loadProducts(){
+  const parts = await Promise.all(DATA_URLS.map(u=>fetch(u).then(r=>r.json())));
+  PRODUCTS = parts.flatMap(p=>p.products);
+  buildMakeFilter();
+  applyFilters();
+}
+
+/* ==== FILTER BUILD ==== */
+function buildMakeFilter(){
+  const makes = [...new Set(PRODUCTS.map(p=>p.make))].sort();
+  els.make.innerHTML = `<option value="">Všetci výrobcovia</option>` +
+    makes.map(m=>`<option value="${m}">${m}</option>`).join("");
+}
+
+/* ==== MODEL FILTER ==== */
+function buildModelFilter(make){
+  const models = [...new Set(
+    PRODUCTS.filter(p=>p.make===make).map(p=>p.model)
+  )].sort();
+
+  els.model.innerHTML =
+    `<option value="">Všetky modely</option>` +
+    models.map(m=>`<option value="${m}">${m}</option>`).join("");
+
+  els.model.disabled = false;
+}
+
+/* ==== APPLY FILTER ==== */
+function applyFilters(){
+  const q = els.q.value.toLowerCase();
+  const make = els.make.value;
+  const model = els.model.value;
+
+  FILTERED = PRODUCTS.filter(p=>{
+    if (make && p.make!==make) return false;
+    if (model && p.model!==model) return false;
+    if (q && !(`${p.title} ${p.code}`.toLowerCase().includes(q))) return false;
+    return true;
+  });
+
+  render();
+}
+
+/* ==== RENDER ==== */
+function render(){
+  els.grid.innerHTML = FILTERED.map(p=>`
+    <div class="card">
+      <div class="thumb">
+        <img src="${IMAGE_BASE}/csr/${p.code}/${p.images?.[0]||""}"
+             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22480%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2310141a%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22%239aa6b2%22 text-anchor=%22middle%22>No image</text></svg>'">
       </div>
-      <div class="modalBody">
-        <div class="gallery">
-          <div class="mainImg"><img id="mMainImg" alt="" /></div>
-          <div id="mThumbs" class="thumbs"></div>
-        </div>
-        <div class="info">
-          <div class="kv"><span>Kategória</span><b id="mCat">—</b></div>
-          <div class="kv"><span>Cena</span><b id="mPrice">—</b></div>
-          <div class="kv"><span>Sklad</span><b id="mStock">—</b></div>
-          <div class="kv"><span>Kód (SKU)</span><b id="mSku">—</b></div>
-          <div class="desc" id="mDesc">—</div>
-          <div class="ctaRow">
-            <button id="mCopy" class="btn secondary">Skopírovať link</button>
-            <button id="mAsk" class="btn">Chcem dopyt</button>
-          </div>
-          <div class="small">Dopyt zatiaľ len otvorí email. Neskôr napojíme RACEM formulár.</div>
-        </div>
+      <div class="content">
+        <div class="title">${p.title}</div>
+        <div class="sub">${p.make} ${p.model}</div>
+        <div class="price">${Number(p.priceEUR).toLocaleString("sk-SK",{style:"currency",currency:"EUR"})}</div>
       </div>
     </div>
-  </div>
+  `).join("");
+}
 
-  <script>
-    // ============================================================
-    // TUNING
-    // ============================================================
-    const PAGE_SIZE = 80;
-    const IMAGE_BASE = "https://pub-00566da7f565476b9f37d09cb0e1917f.r2.dev";
-    // neskôr:
-    // const IMAGE_BASE = "https://cdn.racem.sk";
+/* ==== EVENTS ==== */
+els.make.addEventListener("change",()=>{
+  els.model.value="";
+  els.model.disabled=true;
+  if (els.make.value) buildModelFilter(els.make.value);
+  applyFilters();
+});
+els.model.addEventListener("change",applyFilters);
+els.q.addEventListener("input",applyFilters);
+els.reset.addEventListener("click",()=>{
+  els.q.value="";
+  els.make.value="";
+  els.model.value="";
+  els.model.disabled=true;
+  applyFilters();
+});
 
-    // JSONy v repozitári (podľa tvojich screenshotov sú v root)
-    const DATA_URLS = [
-      "./csr-products-SK.part1.json",
-      "./csr-products-SK.part2.json"
-    ];
-
-    // Preferované názvy, keď v JSON images chýbajú
-    const MAIN_IMAGE_CANDIDATES = (code) => ([
-      `${code}.jpg`,
-      `${code}_V2.jpg`,
-      `${code}_V3.jpg`,
-      `${code}_frontal.jpg`,
-      `${code}_front.jpg`,
-      `${code}.png`
-    ]);
-
-    // ============================================================
-    // ELS
-    // ============================================================
-    const els = {
-      grid: document.getElementById("grid"),
-      q: document.getElementById("q"),
-      cat: document.getElementById("cat"),
-      stock: document.getElementById("stock"),
-      sort: document.getElementById("sort"),
-      onlyImgs: document.getElementById("onlyImgs"),
-      onlyPrice: document.getElementById("onlyPrice"),
-      reload: document.getElementById("reload"),
-
-      countPill: document.getElementById("countPill"),
-      resultPill: document.getElementById("resultPill"),
-      shownPill: document.getElementById("shownPill"),
-
-      imgBaseLabel: document.getElementById("imgBaseLabel"),
-      loadMore: document.getElementById("loadMore"),
-      loadInfo: document.getElementById("loadInfo"),
-
-      overlay: document.getElementById("overlay"),
-      close: document.getElementById("close"),
-      mTitle: document.getElementById("mTitle"),
-      mCode: document.getElementById("mCode"),
-      mBadge: document.getElementById("mBadge"),
-      mMainImg: document.getElementById("mMainImg"),
-      mThumbs: document.getElementById("mThumbs"),
-      mCat: document.getElementById("mCat"),
-      mPrice: document.getElementById("mPrice"),
-      mStock: document.getElementById("mStock"),
-      mSku: document.getElementById("mSku"),
-      mDesc: document.getElementById("mDesc"),
-      mCopy: document.getElementById("mCopy"),
-      mAsk: document.getElementById("mAsk"),
-    };
-
-    els.imgBaseLabel.textContent = IMAGE_BASE;
-
-    let PRODUCTS = [];
-    let FILTERED = [];
-    let visibleCount = PAGE_SIZE;
-
-    // ============================================================
-    // HELPERS
-    // ============================================================
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
-
-    function stockBadge(stock){
-      if (stock === "in" || (typeof stock === "number" && stock > 0)) return {cls:"ok", txt:"Skladom"};
-      if (stock === "out" || (typeof stock === "number" && stock <= 0)) return {cls:"no", txt:"Nedostupné"};
-      return {cls:"warn", txt:"Neznáme"};
-    }
-
-    function formatPrice(p){
-      if (p === null || p === undefined || p === "") return "—";
-      const n = Number(p);
-      if (Number.isFinite(n)) return n.toLocaleString("sk-SK", {style:"currency", currency:"EUR"});
-      return String(p);
-    }
-
-    function imgUrl(code, filename){
-      return `${IMAGE_BASE}/csr/${encodeURIComponent(code)}/${encodeURIComponent(filename)}`;
-    }
-
-    function placeholderSvg(text){
-      const t = encodeURIComponent(String(text || "No image").slice(0,24));
-      return `data:image/svg+xml;charset=utf-8,` + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#10141a"/>
-              <stop offset="1" stop-color="#0b0d10"/>
-            </linearGradient>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#g)"/>
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-                fill="#9aa6b2" font-family="Arial" font-size="18">No image: ${t}</text>
-        </svg>
-      `);
-    }
-
-    function hasImages(p){
-      return Array.isArray(p.images) && p.images.length > 0;
-    }
-
-    function hasPrice(p){
-      const v = p.priceEUR;
-      return v !== null && v !== undefined && v !== "" && Number.isFinite(Number(v));
-    }
-
-    // ============================================================
-    // LOAD DATA
-    // ============================================================
-    async function loadProducts(){
-      const parts = await Promise.all(
-        DATA_URLS.map(async (u) => {
-          const res = await fetch(u, { cache: "no-store" });
-          if (!res.ok) throw new Error(`Nepodarilo sa načítať ${u} (${res.status})`);
-          return res.json();
-        })
-      );
-
-      PRODUCTS = parts.flatMap(p => Array.isArray(p.products) ? p.products : []);
-      els.countPill.textContent = PRODUCTS.length.toString();
-
-      buildCategoryOptions(PRODUCTS);
-      applyFilters();
-    }
-
-    function buildCategoryOptions(items){
-      const cats = Array.from(new Set(items.map(p => p.category).filter(Boolean)))
-        .sort((a,b)=>String(a).localeCompare(String(b), "sk"));
-      els.cat.innerHTML =
-        `<option value="">Všetky kategórie</option>` +
-        cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-    }
-
-    // ============================================================
-    // FILTER + SORT + PAGING
-    // ============================================================
-    function applyFilters(){
-      const q = els.q.value.trim().toLowerCase();
-      const cat = els.cat.value;
-      const stock = els.stock.value;
-      const onlyImgs = els.onlyImgs.checked;
-      const onlyPrice = els.onlyPrice.checked;
-
-      FILTERED = PRODUCTS.filter(p => {
-        if (cat && p.category !== cat) return false;
-
-        if (stock){
-          const b = stockBadge(p.stock);
-          if (stock === "in" && b.txt !== "Skladom") return false;
-          if (stock === "out" && b.txt !== "Nedostupné") return false;
-          if (stock === "unknown" && b.txt !== "Neznáme") return false;
-        }
-
-        if (onlyImgs && !hasImages(p)) return false;
-        if (onlyPrice && !hasPrice(p)) return false;
-
-        if (!q) return true;
-        const hay = `${p.code||""} ${p.title||""} ${p.category||""} ${p.short||""} ${p.sku||""}`.toLowerCase();
-        return hay.includes(q);
-      });
-
-      FILTERED = sortItems(FILTERED, els.sort.value, els.q.value.trim());
-
-      visibleCount = PAGE_SIZE;
-      els.resultPill.textContent = FILTERED.length.toString();
-      renderGrid(FILTERED);
-    }
-
-    function sortItems(items, mode, query){
-      const arr = [...items];
-
-      // ak je query, "relevance" = necháme pôvodné poradie (typicky CSR export)
-      if (mode === "relevance") return arr;
-
-      if (mode === "price_asc"){
-        return arr.sort((a,b)=> Number(a.priceEUR||Infinity) - Number(b.priceEUR||Infinity));
-      }
-      if (mode === "price_desc"){
-        return arr.sort((a,b)=> Number(b.priceEUR||-Infinity) - Number(a.priceEUR||-Infinity));
-      }
-      if (mode === "title_asc"){
-        return arr.sort((a,b)=> String(a.title||a.code||"").localeCompare(String(b.title||b.code||""), "sk"));
-      }
-      if (mode === "title_desc"){
-        return arr.sort((a,b)=> String(b.title||b.code||"").localeCompare(String(a.title||a.code||""), "sk"));
-      }
-      return arr;
-    }
-
-    function renderGrid(items){
-      const slice = items.slice(0, visibleCount);
-      els.shownPill.textContent = slice.length.toString();
-
-      // info
-      if (items.length === 0){
-        els.grid.innerHTML = `
-          <div class="card" style="grid-column: span 12; cursor:default; min-height:auto">
-            <div class="content">
-              <div class="title">Žiadne výsledky</div>
-              <div class="sub">Skús zmeniť filter alebo vyhľadávanie.</div>
-            </div>
-          </div>
-        `;
-      } else {
-        els.grid.innerHTML = slice.map(p => cardHtml(p)).join("");
-        els.grid.querySelectorAll("[data-open]").forEach(card => {
-          card.addEventListener("click", () => {
-            const code = card.getAttribute("data-open");
-            const prod = PRODUCTS.find(x => x.code === code);
-            if (prod) openModal(prod);
-          });
-        });
-      }
-
-      // Load more
-      if (items.length > visibleCount){
-        els.loadMore.style.display = "inline-flex";
-        const remaining = items.length - visibleCount;
-        els.loadMore.textContent = `Načítať ďalšie (${Math.min(PAGE_SIZE, remaining)})`;
-        els.loadInfo.textContent = `Zobrazené ${slice.length} z ${items.length}`;
-      } else {
-        els.loadMore.style.display = "none";
-        els.loadInfo.textContent = items.length ? `Zobrazené ${slice.length} z ${items.length}` : "";
-      }
-    }
-
-    function cardHtml(p){
-      const badge = stockBadge(p.stock);
-      const title = p.title || p.code || "Produkt";
-      const sub = p.short || p.category || "";
-      const price = formatPrice(p.priceEUR);
-
-      // hlavný obrázok: preferuj JSON images[0], inak candidates
-      const first = (Array.isArray(p.images) && p.images.length) ? p.images[0] : MAIN_IMAGE_CANDIDATES(p.code)[0];
-      const main = imgUrl(p.code, first);
-
-      return `
-        <div class="card" data-open="${escapeHtml(p.code)}">
-          <div class="thumb">
-            <img src="${main}" alt="${escapeHtml(title)}"
-              onerror="this.onerror=null; this.src='${placeholderSvg(title)}'; this.style.background='transparent'; this.style.objectFit='contain';" />
-          </div>
-          <div class="content">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="sub">${escapeHtml(sub)}</div>
-            <div class="row">
-              <div class="price">${escapeHtml(price)}</div>
-              <span class="badge ${badge.cls}">${badge.txt}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // ============================================================
-    // MODAL
-    // ============================================================
-    function openModal(p){
-      const badge = stockBadge(p.stock);
-
-      els.mTitle.textContent = p.title || p.code || "Produkt";
-      els.mCode.textContent = `Kód: ${p.code || "—"}`;
-      els.mCat.textContent = p.category || "—";
-      els.mPrice.textContent = formatPrice(p.priceEUR);
-      els.mStock.textContent = (badge.txt === "Skladom" && typeof p.stock === "number") ? `Skladom: ${p.stock} ks` : badge.txt;
-      els.mSku.textContent = p.sku || p.code || "—";
-      els.mDesc.textContent = (p.description || p.short || "—");
-
-      els.mBadge.className = `badge ${badge.cls}`;
-      els.mBadge.textContent = badge.txt;
-
-      // obrázky: preferuj JSON images, inak candidates
-      const imgs = (Array.isArray(p.images) && p.images.length) ? p.images : MAIN_IMAGE_CANDIDATES(p.code);
-      const urls = imgs.map(fn => imgUrl(p.code, fn));
-
-      setMain(urls[0], els.mTitle.textContent);
-
-      els.mThumbs.innerHTML = urls.map((u,i)=>`
-        <div class="t" data-i="${i}">
-          <img src="${u}" alt=""
-               onerror="this.style.display='none'; this.parentElement.style.display='none';" />
-        </div>
-      `).join("");
-
-      els.mThumbs.querySelectorAll(".t").forEach(t => {
-        t.addEventListener("click", () => {
-          const i = Number(t.getAttribute("data-i"));
-          setMain(urls[i], els.mTitle.textContent);
-        });
-      });
-
-      // copy link
-      const link = `${location.origin}${location.pathname}?code=${encodeURIComponent(p.code)}`;
-      els.mCopy.onclick = async () => {
-        try{
-          await navigator.clipboard.writeText(link);
-          els.mCopy.textContent = "Skopírované ✅";
-          setTimeout(()=>els.mCopy.textContent="Skopírovať link", 1200);
-        }catch{
-          alert("Nepodarilo sa skopírovať, skús manuálne: " + link);
-        }
-      };
-
-      // ask (mailto)
-      els.mAsk.onclick = () => {
-        const subject = encodeURIComponent(`Dopyt CSR: ${p.code} – ${p.title || ""}`);
-        const body = encodeURIComponent(
-          `Ahojte RACEM,\n\nMám záujem o produkt:\n- Kód: ${p.code}\n- Názov: ${p.title || ""}\n- Kategória: ${p.category || ""}\n\nProsím o cenu, dostupnosť a dodanie.\n\nMeno:\nTelefón:\nMesto:\n\nĎakujem.`
-        );
-        location.href = `mailto:info@remperformance.sk?subject=${subject}&body=${body}`;
-      };
-
-      els.overlay.classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
-
-    function setMain(url, alt){
-      els.mMainImg.src = url;
-      els.mMainImg.alt = alt;
-      els.mMainImg.onerror = () => {
-        els.mMainImg.onerror = null;
-        els.mMainImg.src = placeholderSvg("No image");
-        els.mMainImg.style.objectFit = "contain";
-      };
-    }
-
-    function closeModal(){
-      els.overlay.classList.remove("open");
-      document.body.style.overflow = "";
-    }
-
-    // ============================================================
-    // EVENTS
-    // ============================================================
-    els.close.addEventListener("click", closeModal);
-    els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closeModal(); });
-    window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
-
-    els.q.addEventListener("input", applyFilters);
-    els.cat.addEventListener("change", applyFilters);
-    els.stock.addEventListener("change", applyFilters);
-    els.sort.addEventListener("change", applyFilters);
-    els.onlyImgs.addEventListener("change", applyFilters);
-    els.onlyPrice.addEventListener("change", applyFilters);
-
-    els.reload.addEventListener("click", async ()=> {
-      els.reload.textContent = "Reload…";
-      try { await loadProducts(); }
-      finally { els.reload.textContent = "Reload"; }
-    });
-
-    els.loadMore.addEventListener("click", () => {
-      visibleCount += PAGE_SIZE;
-      renderGrid(FILTERED);
-    });
-
-    // Deep-link: ?code=AI007
-    function maybeOpenFromQuery(){
-      const params = new URLSearchParams(location.search);
-      const code = params.get("code");
-      if (!code) return;
-      const p = PRODUCTS.find(x => x.code === code);
-      if (p) openModal(p);
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    (async function init(){
-      try{
-        await loadProducts();
-        maybeOpenFromQuery();
-      }catch(err){
-        els.grid.innerHTML = `
-          <div class="card" style="grid-column: span 12; cursor:default; min-height:auto">
-            <div class="content">
-              <div class="title">Chýbajú dáta / JSON sa nenačítal</div>
-              <div class="sub">Skontroluj, že súbory existujú v repozitári:</div>
-              <div class="sub"><b>${escapeHtml(DATA_URLS.join(", "))}</b></div>
-              <div class="sub" style="color:#ffd1d4">${escapeHtml(err.message || String(err))}</div>
-              <div class="sub">Tip: otvor DevTools → Network a pozri, či fetch dostáva 200.</div>
-            </div>
-          </div>
-        `;
-      }
-    })();
-  </script>
+/* ==== INIT ==== */
+loadProducts();
+</script>
 </body>
 </html>
