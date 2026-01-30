@@ -1678,13 +1678,11 @@
   animation: ctaSweep 1.2s linear infinite;
 }
 
-/* jemný reset len pre obrázok (aby sa nehýbal) */
-.pCard .pMedia img{
-  transform: none !important;
+/* žiadny pohyb, žiadny zoom */
+.pCard *{
+  transform:none !important;
+  transition:none !important;
 }
-
-/* ak nechceš skoky vnútri, nechaj transitions na texte/ikonkách žiť */
-
 
 /* rovnaká animácia ako CTA */
 @keyframes ctaSweep{
@@ -1835,48 +1833,6 @@ input[readonly]:focus{
   transform:none !important;
   filter:none;
 }
-
-    /* ===========================
-   ORDER MODAL – SCROLL FIX
-   =========================== */
-
-#orderModal .modalCard{
-  max-height: 92vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* header nech je pevný */
-#orderModal .modalHead{
-  flex: 0 0 auto;
-}
-
-/* toto je wrapper s paddingom -> sprav ho scroll */
-#orderModal .modalContent{
-  flex: 1 1 auto;
-  overflow: auto;
-  padding: 14px;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* jemný scrollbar ako máš inde */
-#orderModal .modalContent::-webkit-scrollbar{ width: 10px; }
-#orderModal .modalContent::-webkit-scrollbar-thumb{
-  background: rgba(255,255,255,0.10);
-  border-radius: 999px;
-  border: 2px solid rgba(0,0,0,0.35);
-}
-#orderModal .modalContent::-webkit-scrollbar-thumb:hover{
-  background: rgba(179,31,36,0.35);
-}
-
-/* na mobile nech scrolluje celé (kvôli keyboardu) */
-@media (max-width: 980px){
-  #orderModal .modalCard{ max-height: 94vh; }
-  #orderModal .modalContent{ overflow: auto; }
-}
-
-    body.modal-open{ overflow: hidden; }
 
   </style>
 </head>
@@ -2089,7 +2045,7 @@ input[readonly]:focus{
         <b>Galéria</b>
         <button class="xBtn" id="closeGalleryModal" type="button" aria-label="Close">×</button>
       </div>
-      <div class="modalContent">
+      <div style="padding:14px;">
         <div class="mImg" style="min-height:420px;">
           <img id="gFull" src="" alt="Gallery image">
           <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
@@ -2130,7 +2086,7 @@ input[readonly]:focus{
       <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
     </div>
 
-    <div class="modalContent">
+    <div style="padding:14px;">
 
       <div class="orderIntro">
         Toto je <b>nezáväzná objednávka</b>. Pre dokončenie objednávky ťa bude kontaktovať <b>TEAM RACEM</b>
@@ -2253,792 +2209,866 @@ input[readonly]:focus{
 </footer>
 
 
- <script>
-  const PLACEHOLDER_DATA_URI =
-    "data:image/svg+xml;charset=UTF-8," +
-    encodeURIComponent(`
-      <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
-        <defs>
-          <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
-            <stop offset='0' stop-color='#111'/>
-            <stop offset='1' stop-color='#050505'/>
-          </linearGradient>
-        </defs>
-        <rect width='1200' height='800' fill='url(#g)'/>
-        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
-          fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
-          NO IMAGE
-        </text>
-      </svg>
-    `);
+  <script>
+    const PLACEHOLDER_DATA_URI =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0' stop-color='#111'/>
+              <stop offset='1' stop-color='#050505'/>
+            </linearGradient>
+          </defs>
+          <rect width='1200' height='800' fill='url(#g)'/>
+          <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+            fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
+            NO IMAGE
+          </text>
+        </svg>
+      `);
 
-  const DATA = {
-    cars: [
-      { id:"e36",  label:"BMW E36",          image:"assets/E36-main.webp" },
-      { id:"e46",  label:"BMW E46",          image:"assets/e46-main.webp" },
-      { id:"e90",  label:"BMW E90",          image:"assets/e90-main.webp" },
-      { id:"e92",  label:"BMW E92",          image:"assets/e92-main.webp" },
-      { id:"f30",  label:"BMW F30",          image:"assets/F30-main.webp" },
-      { id:"f80",  label:"BMW F80",          image:"assets/f80-main.webp" },
-      { id:"g8x",  label:"BMW G80/82/83",    image:"assets/g80-main.webp" },
-      { id:"evox", label:"Mitsubishi Evo X", image:"assets/evox-main.jpg" },
-      { id:"cam5", label:"Camaro Gen5",      image:"assets/gen5-main.webp" },
-      { id:"cam6", label:"Camaro Gen6",      image:"assets/gen6-main.webp" },
-      { id:"gt4",  label:"Porsche GT4",      image:"assets/gt4-main.webp" }
-    ],
-    products: []
-  };
-
-  let activeCarId = "";
-  let activeProduct = null;
-  let activeVariantIndex = 0;
-  let activeImgIndex = 0;
-
-  const $  = (s, el=document) => el.querySelector(s);
-  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
-
-  function escapeHtml(str){
-    return String(str ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  function fmtEUR(n){
-    if (typeof n !== "number" || Number.isNaN(n)) return "—";
-    return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
-  }
-
-  function getStockStatus(p){
-    const s = (p.stockStatus || "").trim();
-    if (s) return s;
-    const a = (p.availability || "").trim();
-    if (a === "in_stock") return "in_stock";
-    if (a === "out_of_stock") return "out_of_stock";
-    return "made_to_order";
-  }
-
-  function stockLabel(status){
-    if (status === "in_stock") return "SKLADOM";
-    if (status === "out_of_stock") return "VYPREDANÉ";
-    return "NA OBJEDNÁVKU";
-  }
-
-  function minPriceEUR(prod){
-    if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
-
-    const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
-    if (!prices.length) return "cena na dopyt";
-
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
-  }
-
-  function variantSummary(p){
-    const vars = Array.isArray(p.variants) ? p.variants : [];
-    if (!vars.length) return "Bez variantu";
-
-    const names = vars.map(v => v.name || "Variant").filter(Boolean);
-    const unique = Array.from(new Set(names));
-
-    if (unique.length === 1) return `Variant: ${unique[0]}`;
-    return `Variantov: ${unique.length}`;
-  }
-
-  function shipSummary(p){
-    const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
-    return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
-  }
-
-  function deliverySummary(p){
-    return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
-  }
-
-  function setSafeImage(imgEl, url, noImgEl){
-    if (!imgEl) return;
-    if (noImgEl) noImgEl.style.display = "none";
-    imgEl.onerror = () => {
-      imgEl.onerror = null;
-      imgEl.src = PLACEHOLDER_DATA_URI;
-      if (noImgEl) noImgEl.style.display = "grid";
+    const DATA = {
+      cars: [
+        { id:"e36", label:"BMW E36",          image:"assets/E36-main.webp" },
+        { id:"e46", label:"BMW E46",          image:"assets/e46-main.webp" },
+        { id:"e90", label:"BMW E90",          image:"assets/e90-main.webp" },
+        { id:"e92", label:"BMW E92",          image:"assets/e92-main.webp" },
+        { id:"f30", label:"BMW F30",          image:"assets/F30-main.webp" },
+        { id:"f80", label:"BMW F80",          image:"assets/f80-main.webp" },
+        { id:"g8x", label:"BMW G80/82/83",    image:"assets/g80-main.webp" },
+        { id:"evox",label:"Mitsubishi Evo X", image:"assets/evox-main.jpg" },
+        { id:"cam5",label:"Camaro Gen5",      image:"assets/gen5-main.webp" },
+        { id:"cam6",label:"Camaro Gen6",      image:"assets/gen6-main.webp" },
+        { id:"gt4", label:"Porsche GT4",      image:"assets/gt4-main.webp" }
+      ],
+      products: []
     };
-    imgEl.src = url || PLACEHOLDER_DATA_URI;
-  }
 
-  async function loadProducts(){
-    try{
-      const res = await fetch("sfxla-products.json", { cache: "no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
 
-      const json = await res.json();
-      const list = Array.isArray(json.products) ? json.products : [];
+    let activeCarId = "";
+    let activeProduct = null;
+    let activeVariantIndex = 0;
+    let activeImgIndex = 0;
 
-      DATA.products = list.map(p => {
-        const images = Array.isArray(p.images) ? p.images : [];
-        const image = p.image || images[0] || "";
-        return {
-          ...p,
-          image,
-          images,
-          variants: Array.isArray(p.variants) ? p.variants : [],
-          short: p.short || p.subtitle || "",
-          description: p.description || "",
-          delivery: p.delivery || "Upresníme po objednávke",
-          shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : 0
-        };
-      });
 
-    }catch(err){
-      console.error("Failed to load sfxla-products.json:", err);
-      DATA.products = [];
+    const $ = (s, el=document) => el.querySelector(s);
+    const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
-  }
 
-  function buildCars(){
-    const host = $("#carCards");
-    if (!host) return;
-    host.innerHTML = "";
+    function fmtEUR(n){
+      if (typeof n !== "number" || Number.isNaN(n)) return "—";
+      return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
+    }
 
-    const allCard = document.createElement("div");
-    allCard.className = "carCard" + (activeCarId === "" ? " active" : "");
-    allCard.tabIndex = 0;
-    allCard.setAttribute("role","button");
-    allCard.dataset.car = "";
-    allCard.innerHTML = `
-      <div class="carMedia">
-        <img src="assets/E36-main.webp" alt="Všetky autá">
-        <div class="carNameOverlay"><b>VŠETKY</b></div>
-      </div>
-    `;
-    allCard.addEventListener("click", () => selectCar(""));
-    allCard.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); selectCar(""); }
-    });
-    host.appendChild(allCard);
+    function getStockStatus(p){
+      const s = (p.stockStatus || "").trim();
+      if (s) return s;
+      const a = (p.availability || "").trim();
+      if (a === "in_stock") return "in_stock";
+      if (a === "out_of_stock") return "out_of_stock";
+      return "made_to_order";
+    }
+    function stockLabel(status){
+      if (status === "in_stock") return "SKLADOM";
+      if (status === "out_of_stock") return "VYPREDANÉ";
+      return "NA OBJEDNÁVKU";
+    }
 
-    DATA.cars.forEach(c => {
-      const card = document.createElement("div");
-      card.className = "carCard" + (c.id === activeCarId ? " active" : "");
-      card.tabIndex = 0;
-      card.setAttribute("role","button");
-      card.dataset.car = c.id;
+    function minPriceEUR(prod){
+  // 1) ak má produkt priamo priceEUR
+  if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
 
-      card.innerHTML = `
+  // 2) inak z variantov
+  const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
+  if (!prices.length) return "cena na dopyt";
+
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+
+  // keď má viac variantov, ukáž "od"
+  return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+}
+
+    function variantSummary(p){
+  const vars = Array.isArray(p.variants) ? p.variants : [];
+  if (!vars.length) return "Bez variantu";
+
+  const names = vars.map(v => v.name || "Variant").filter(Boolean);
+  const unique = Array.from(new Set(names));
+
+  if (unique.length === 1) return `Variant: ${unique[0]}`;
+  return `Variantov: ${unique.length}`;
+}
+
+
+function shipSummary(p){
+  const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
+  return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
+}
+
+function deliverySummary(p){
+  return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
+}
+
+
+    function setSafeImage(imgEl, url, noImgEl){
+      if (!imgEl) return;
+      if (noImgEl) noImgEl.style.display = "none";
+      imgEl.onerror = () => {
+        imgEl.onerror = null;
+        imgEl.src = PLACEHOLDER_DATA_URI;
+        if (noImgEl) noImgEl.style.display = "grid";
+      };
+      imgEl.src = url || PLACEHOLDER_DATA_URI;
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch("sfxla-products.json", { cache: "no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+
+        const json = await res.json();
+        const list = Array.isArray(json.products) ? json.products : [];
+
+        DATA.products = list.map(p => {
+          const images = Array.isArray(p.images) ? p.images : [];
+          const image = p.image || images[0] || "";
+          return {
+            ...p,
+            image,
+            images,
+            variants: Array.isArray(p.variants) ? p.variants : [],
+            short: p.short || p.subtitle || "",
+            description: p.description || "",
+            delivery: p.delivery || "Upresníme po objednávke",
+            shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : 0
+          };
+        });
+
+      }catch(err){
+        console.error("Failed to load sfxla-products.json:", err);
+        DATA.products = [];
+      }
+    }
+
+    function buildCars(){
+      const host = $("#carCards");
+      if (!host) return;
+      host.innerHTML = "";
+
+      const allCard = document.createElement("div");
+      allCard.className = "carCard" + (activeCarId === "" ? " active" : "");
+      allCard.tabIndex = 0;
+      allCard.setAttribute("role","button");
+      allCard.dataset.car = "";
+      allCard.innerHTML = `
         <div class="carMedia">
-          <img src="${escapeHtml(c.image || "")}" alt="${escapeHtml(c.label)}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">
-          <div class="carNameOverlay"><b>${escapeHtml(c.label)}</b></div>
+          <img src="assets/E36-main.webp" alt="Všetky autá">
+          <div class="carNameOverlay"><b>VŠETKY</b></div>
         </div>
       `;
-
-      card.addEventListener("click", () => selectCar(c.id));
-      card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          selectCar(c.id);
-        }
+      allCard.addEventListener("click", () => selectCar(""));
+      allCard.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); selectCar(""); }
       });
+      host.appendChild(allCard);
 
-      host.appendChild(card);
-    });
+      DATA.cars.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "carCard" + (c.id === activeCarId ? " active" : "");
+        card.tabIndex = 0;
+        card.setAttribute("role","button");
+        card.dataset.car = c.id;
 
-    updateCarActive();
-  }
-
-  function selectCar(id){
-    activeCarId = id || "";
-    updateCarActive();
-    renderAll();
-    document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
-  }
-
-  function updateCarActive(){
-    $$(".carCard").forEach(c => {
-      const id = c.dataset.car || "";
-      c.classList.toggle("active", id === activeCarId);
-    });
-  }
-
-  function buildFilterOptions(){
-    const cat = $("#cat");
-    if (!cat) return;
-
-    const cats = new Set();
-    DATA.products.forEach(p => { if (p.category) cats.add(p.category); });
-
-    cat.innerHTML =
-      `<option value="">Kategória: všetko</option>` +
-      Array.from(cats).sort().map(x =>
-        `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`
-      ).join("");
-  }
-
-  function getFilteredProducts(){
-    const q = ($("#q")?.value || "").trim().toLowerCase();
-    const cat = $("#cat")?.value || "";
-
-    return DATA.products.filter(p => {
-      if (activeCarId && p.carId !== activeCarId) return false;
-      if (cat && p.category !== cat) return false;
-
-      if (q){
-        const blob = `${p.title} ${p.short} ${p.category}`.toLowerCase();
-        if (!blob.includes(q)) return false;
-      }
-      return true;
-    });
-  }
-
-  function renderProducts(){
-    const grid = $("#productGrid");
-    const titleEl = $("#productsTitle");
-    const statEl = $("#stat");
-    if (!grid) return;
-
-    const carLabel = activeCarId
-      ? (DATA.cars.find(c=>c.id===activeCarId)?.label || activeCarId)
-      : "všetky autá";
-
-    if (titleEl) titleEl.textContent = `Diely pre: ${carLabel}`;
-
-    const items = getFilteredProducts();
-    if (statEl) statEl.textContent = `${items.length} dielov`;
-
-    grid.innerHTML = "";
-
-    if (!DATA.products.length){
-      grid.innerHTML = `
-        <div class="panel" style="grid-column:1/-1; padding:18px;">
-          <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
-          <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
-          <p style="margin:0;">
-            Uisti sa, že súbor <b>sfxla-products.json</b> je v roote (vedľa tohto HTML) a je validný JSON.
-            <br>Tip: ak testuješ cez <b>file://</b> (dvojklik), fetch často nefunguje — musí to bežať cez GitHub Pages.
-          </p>
-        </div>
-      `;
-      return;
-    }
-
-    if (!items.length){
-      grid.innerHTML = `
-        <div class="panel" style="grid-column:1/-1; padding:18px;">
-          <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-          <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-          <p style="margin:0;">Skús zmeniť kategóriu, alebo vyber “Všetky autá”.</p>
-        </div>
-      `;
-      return;
-    }
-
-    items.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "pCard";
-      card.tabIndex = 0;
-      card.setAttribute("role","button");
-      card.setAttribute("aria-label", "Open " + (p.title || "product"));
-
-      const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
-
-      card.innerHTML = `
-        <div class="pMedia">
-          <img alt="${escapeHtml(p.title)}">
-        </div>
-
-        <div class="pBody">
-          <div class="pName">${escapeHtml(p.title || "")}</div>
-          <p class="pDesc">${escapeHtml(p.short || "")}</p>
-
-          <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
-              ${escapeHtml(variantSummary(p))}
-            </div>
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
-              ${escapeHtml(shipSummary(p))}
-            </div>
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
-              ${escapeHtml(deliverySummary(p))}
-            </div>
+        card.innerHTML = `
+          <div class="carMedia">
+            <img src="${escapeHtml(c.image || "")}" alt="${escapeHtml(c.label)}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">
+            <div class="carNameOverlay"><b>${escapeHtml(c.label)}</b></div>
           </div>
+        `;
 
-          <div class="pBottom">
-            <div class="price">${escapeHtml(minPriceEUR(p))}</div>
-            <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
-          </div>
-        </div>
-      `;
+        card.addEventListener("click", () => selectCar(c.id));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            selectCar(c.id);
+          }
+        });
 
-      const imgEl = card.querySelector(".pMedia img");
-      setSafeImage(imgEl, imgSrc, null);
-
-      card.addEventListener("click", () => openProduct(p));
-      card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          openProduct(p);
-        }
+        host.appendChild(card);
       });
 
-      grid.appendChild(card);
-    });
-  }
-
-  function renderAll(){
-    renderProducts();
-    updateCarActive();
-  }
-
-  /* ==========================
-     MODALS (shared helpers)
-     ========================== */
-  const productModal = $("#productModal");
-  const galleryModal = $("#galleryModal");
-  const orderModal   = $("#orderModal");
-  const megaGalleryModal = $("#megaGalleryModal");
-
-  function openModal(modal){
-    if (!modal) return;
-    modal.classList.add("show");
-    modal.setAttribute("aria-hidden","false");
-    document.body.classList.add("modal-open");
-  }
-
-  function closeModal(modal){
-    if (!modal) return;
-    modal.classList.remove("show");
-    modal.setAttribute("aria-hidden","true");
-
-    // ak už nie je otvorený žiadny modal, vráť scroll
-    if (![orderModal, productModal, galleryModal, megaGalleryModal].some(m => m?.classList.contains("show"))){
-      document.body.classList.remove("modal-open");
-    }
-  }
-
-  /* ==========================
-     PRODUCT MODAL elements
-     ========================== */
-  const closeProductModal = $("#closeProductModal");
-  const modalTitle = $("#modalTitle");
-  const mRibbon = $("#mRibbon");
-  const mImg = $("#mImg");
-  const mNoImg = $("#mNoImg");
-  const mDesc = $("#mDesc");
-  const mVariantList = $("#mVariantList");
-  const mVariantWrap = $("#mVariantWrap");
-  const mPriceBig = $("#mPriceBig");
-  const mShip = $("#mShip");
-  const mDelivery = $("#mDelivery");
-  const mOrder = $("#mOrder");
-  const mPrev = $("#mPrev");
-  const mNext = $("#mNext");
-  const mThumbs = $("#mThumbs");
-
-  const gFull = $("#gFull");
-  const gNoImg = $("#gNoImg");
-  const closeGalleryModal = $("#closeGalleryModal");
-
-  function getProductImages(p){
-    const arr = []
-      .concat(p?.image ? [p.image] : [])
-      .concat(Array.isArray(p?.images) ? p.images : []);
-    return Array.from(new Set(arr.filter(Boolean)));
-  }
-
-  function buildThumbs(){
-    if (!mThumbs || !activeProduct) return;
-    const imgs = getProductImages(activeProduct);
-
-    if (imgs.length <= 1){
-      mThumbs.innerHTML = "";
-      return;
+      updateCarActive();
     }
 
-    mThumbs.innerHTML = "";
-    imgs.forEach((src, i) => {
-      const d = document.createElement("div");
-      d.className = "thumb" + (i === activeImgIndex ? " active" : "");
-      d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
-      d.addEventListener("click", () => setModalImage(i));
-      mThumbs.appendChild(d);
-    });
-  }
-
-  function setModalImage(index){
-    if (!activeProduct) return;
-    const imgs = getProductImages(activeProduct);
-
-    if (!imgs.length){
-      setSafeImage(mImg, "", mNoImg);
-      if (mThumbs) mThumbs.innerHTML = "";
-      return;
-    }
-
-    activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
-    setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
-
-    if (mThumbs){
-      $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
-    }
-
-    if (mThumbs && !mThumbs.children.length) buildThumbs();
-  }
-
-  function setActiveChip(index){
-    $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
-  }
-
-  function buildVariantChips(){
-    if (!mVariantList) return;
-
-    const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
-
-    if (!vars.length){
-      if (mVariantWrap) mVariantWrap.style.display = "none";
-      mVariantList.innerHTML = "";
-      activeVariantIndex = 0;
-      return;
-    }
-
-    if (mVariantWrap) mVariantWrap.style.display = "block";
-    mVariantList.innerHTML = "";
-
-    vars.forEach((v, i) => {
-      const chip = document.createElement("div");
-      chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-
-      const name = (v.name || `Variant ${i+1}`).toUpperCase();
-      const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
-
-      chip.innerHTML = `
-        <span class="vMain">${escapeHtml(name)}</span>
-        <span class="vMeta">
-          <span class="badge">${escapeHtml(price)}</span>
-        </span>
-      `;
-
-      chip.addEventListener("click", () => {
-        activeVariantIndex = i;
-        setActiveChip(i);
-        updateVariantPrice();
-      });
-
-      mVariantList.appendChild(chip);
-    });
-  }
-
-  function buildOrderBlob(){
-    const lines = [
-      `Výrobca: ${$("#o_manufacturer")?.value || "—"}`,
-      `Diel: ${$("#o_product")?.value || "—"}`,
-      `Variant: ${$("#o_variant")?.value || "—"}`,
-      `Cena: ${$("#o_price")?.value || "—"}`,
-      `Doprava: ${$("#o_shipping")?.value || "—"}`,
-      `Dodanie: ${$("#o_delivery")?.value || "—"}`,
-      ``,
-      `Vozidlo: ${$("#car")?.value || ""}`,
-      `Poznámka: ${$("#customer_note")?.value || ""}`
-    ].join("\n");
-
-    const blob = $("#orderBlob");
-    if (blob) blob.value = lines;
-  }
-
-  function updateVariantPrice(){
-    if (!activeProduct) return;
-
-    const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-    const v = vars[activeVariantIndex];
-
-    const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
-    const delivery = activeProduct.delivery || "Upresníme po objednávke";
-
-    const base =
-      (v && typeof v.priceEUR === "number") ? v.priceEUR :
-      (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
-      null;
-
-    const variantName = vars.length ? (v?.name || "—") : "—";
-
-    if (mPriceBig){
-      mPriceBig.innerHTML = base !== null
-        ? `<small>CENA</small><br>${fmtEUR(base)}`
-        : `<small>CENA</small><br>UPRESNÍME`;
-    }
-
-    if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
-    if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
-
-    // ✅ predvyplnenie sumára objednávky
-    const manufacturer = "Streetfighter LA";
-
-    const oMan = $("#o_manufacturer");
-    const oProd = $("#o_product");
-    const oVar  = $("#o_variant");
-    const oPrice = $("#o_price");
-    const oShip = $("#o_shipping");
-    const oDel  = $("#o_delivery");
-
-    if (oMan) oMan.value = manufacturer;
-    if (oProd) oProd.value = activeProduct.title || "—";
-    if (oVar)  oVar.value  = variantName;
-    if (oPrice) oPrice.value = base !== null ? fmtEUR(base) : "UPRESNÍME";
-    if (oShip) oShip.value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
-    if (oDel)  oDel.value  = delivery;
-
-    buildOrderBlob();
-  }
-
-  function openProduct(p){
-    activeProduct = p;
-    activeVariantIndex = 0;
-
-    const title = p.title || "—";
-    if (modalTitle) modalTitle.textContent = `Streetfighter LA — ${title}`;
-
-    const status = getStockStatus(p);
-    if (mRibbon){
-      mRibbon.className = `ribbon ${status}`;
-      mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
-    }
-
-    if (mDesc){
-      mDesc.textContent = p.description || p.short || "";
-    }
-
-    activeImgIndex = 0;
-    setModalImage(0);
-    buildThumbs();
-
-    buildVariantChips();
-    updateVariantPrice();
-
-    openModal(productModal);
-  }
-
-  // product image nav
-  if (mPrev) mPrev.addEventListener("click", () => setModalImage(activeImgIndex - 1));
-  if (mNext) mNext.addEventListener("click", () => setModalImage(activeImgIndex + 1));
-
-  // arrows inside product modal
-  window.addEventListener("keydown", (e) => {
-    if (!productModal?.classList.contains("show")) return;
-    if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
-    if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
-  });
-
-  // click to fullscreen from product image
-  if (mImg){
-    mImg.addEventListener("click", () => {
-      if (!activeProduct) return;
-      const imgs = getProductImages(activeProduct);
-      if (!imgs.length) return;
-
-      const src = imgs[activeImgIndex] || imgs[0];
-      setSafeImage(gFull, src, gNoImg);
-      openModal(galleryModal);
-    });
-  }
-
-  // close product modal
-  if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
-  if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
-
-  // gallery thumbs in hero section (3 small images)
-  const galleryEl = $("#gallery");
-  if (galleryEl){
-    galleryEl.addEventListener("click", (e) => {
-      const item = e.target.closest(".gItem");
-      if (!item) return;
-      const full = item.getAttribute("data-full") || "";
-      if (!full) return;
-
-      setSafeImage(gFull, full, gNoImg);
-      openModal(galleryModal);
-    });
-  }
-
-  if (closeGalleryModal) closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
-  if (galleryModal) galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
-
-  /* ==========================
-     ORDER MODAL
-     ========================== */
-  const closeOrderModal = $("#closeOrderModal");
-  const cancelSend = $("#cancelSend");
-  const orderForm = $("#orderForm");
-  const consent = $("#consent");
-  const sendBtn = $("#sendBtn");
-
-  function openOrderModal(){
-    closeModal(productModal);
-    if (!orderModal) return;
-
-    const cn = $("#customer_note");
-    if (cn) cn.value = "";
-
-    if (consent) consent.checked = false;
-    if (sendBtn) sendBtn.disabled = true;
-
-    buildOrderBlob();
-    openModal(orderModal);
-
-    setTimeout(()=> $("#name")?.focus(), 50);
-  }
-
-  if (mOrder) mOrder.addEventListener("click", openOrderModal);
-
-  if (consent && sendBtn){
-    consent.addEventListener("change", () => {
-      sendBtn.disabled = !consent.checked;
-    });
-  }
-
-  if (orderForm){
-    orderForm.addEventListener("submit", (e) => {
-      if (consent && !consent.checked){
-        e.preventDefault();
-        consent.focus();
-        return;
-      }
-      buildOrderBlob();
-    });
-  }
-
-  $("#customer_note")?.addEventListener("input", buildOrderBlob);
-  $("#car")?.addEventListener("input", buildOrderBlob);
-
-  if (closeOrderModal) closeOrderModal.addEventListener("click", () => closeModal(orderModal));
-  if (cancelSend) cancelSend.addEventListener("click", () => closeModal(orderModal));
-  if (orderModal) orderModal.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
-
-  /* ==========================
-     FILTER listeners
-     ========================== */
-  ["q","cat"].forEach(id => {
-    const el = $("#" + id);
-    if (!el) return;
-    el.addEventListener("input", renderAll);
-    el.addEventListener("change", renderAll);
-  });
-
-  const showAllBtn = $("#showAll");
-  if (showAllBtn){
-    showAllBtn.addEventListener("click", () => {
-      activeCarId = "";
+    function selectCar(id){
+      activeCarId = id || "";
       updateCarActive();
       renderAll();
-    });
-  }
-
-  // ESC closes any open modal
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape"){
-      [orderModal, productModal, galleryModal, megaGalleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
+      document.querySelector("#produkty")?.scrollIntoView({behavior:"smooth", block:"start"});
     }
+
+    function updateCarActive(){
+      $$(".carCard").forEach(c => {
+        const id = c.dataset.car || "";
+        c.classList.toggle("active", id === activeCarId);
+      });
+    }
+
+    function buildFilterOptions(){
+  const cat = $("#cat");
+  if (!cat) return;
+
+  const cats = new Set();
+  DATA.products.forEach(p => {
+    if (p.category) cats.add(p.category);
   });
 
-  /* ==========================
-     MEGA GALLERY DATA + LOGIC
-     ========================== */
-  const MEGA_GALLERY = [
-    {
-      id: "e36",
-      label: "BMW E36",
-      images: [
-        "assets/BMW-E36-Wide-Body-Kit_2048x2048.webp",
-        "assets/BMW-E36-Rear-Spoiler_2048x2048.webp",
-        "assets/e36-3.jpg",
-        "assets/e36-4.jpg",
-        "assets/e36-5.jpg",
-        "assets/e36-7.jpg",
-        "assets/e36-8.jpg",
-        "assets/e36-9.jpg",
-        "assets/e36-10.jpg",
-        "assets/e36-11.jpg",
-        "assets/e36-12.jpg",
-        "assets/e36-13.jpg",
-        "assets/e36-14.jpg",
-        "assets/e36-15.jpg",
-        "assets/e36-16.jpg",
-        "assets/ducktaill.webp",
-        "assets/e36-lipp.jpg",
-        "assets/e36-6.jpg"
-      ]
-    },
-    {
-      id: "e46",
-      label: "BMW E46",
-      images: [
-        "assets/e46-main.webp",
-        "assets/e46-side.webp",
-        "assets/e46-rear.webp",
-        "assets/e46-prof.webp",
-        "assets/e46-11.webp",
-        "assets/e46-flare.webp",
-        "assets/190320100331lc2327DrN-xxl.jpg",
-        "assets/190320100331lc2327e5q-hd.jpg",
-        "assets/190320100331lc2327Hnv-xxl.jpg",
-        "assets/190320100331lc2327mkH-xxl.jpg",
-        "assets/190320100331lc23271CS-xxl.jpg",
-        "assets/190320100332lc2327bbP-hd.jpg",
-        "assets/190320100332lc2327i4C-hd.jpg",
-        "assets/190320100332lc2327Mqb-md.jpg",
-        "assets/190320100332lc2327Wki-md.jpg",
-        "assets/190320100332lc2327YTV-xxl.jpg",
-        "assets/190320100332lc2327Zfd-xxl.jpg",
-        "assets/190320100332lc232739F-xxl.jpg",
-        "assets/190320100333lc2327CVg-xxl.jpg",
-        "assets/190320100333lc2327f8Q-xxl.jpg",
-        "assets/190320100333lc2327fqC-xxl.jpg",
-        "assets/190320100333lc2327G76-hd.jpg",
-        "assets/190320100333lc2327L0p-hd.jpg",
-        "assets/190320100333lc2327o9u-hd.jpg",
-        "assets/190320100333lc2327ZWl-s.jpg",
-        "assets/190320100333lc23272IF-xxl.jpg",
-        "assets/190320100334lc2327b9q-hd.jpg",
-        "assets/190320100334lc2327Baf-xxl.jpg",
-        "assets/190320100334lc23272Rl-xxl.jpg",
-        "assets/190320100334lc232774h-xxl.jpg"
-      ]
-    },
-    {
-      id: "e90",
-      label: "BMW E90",
-      images: [
-        "assets/e90-mainp.webp",
-        "assets/e90-main.webp",
-        "assets/e90-rear.webp",
-        "assets/190320100313lc2327MKL-xl.jpg",
-        "assets/190320100313lc23275qt-xl.jpg",
-        "assets/190320100314lc2327DlG-l.jpg",
-        "assets/190320100314lc2327Ejr-xl.jpg",
-        "assets/190320100314lc2327EzF-l.jpg",
-        "assets/190320100314lc2327gC3-xl.jpg",
-        "assets/190320100314lc2327h1p-md.jpg",
-        "assets/190320100314lc2327hIO-l.jpg",
-        "assets/190320100314lc2327lge-hd.jpg",
-        "assets/190320100314lc2327N97-xl.jpg",
-        "assets/190320100314lc2327TuA-l.jpg",
-        "assets/190320100314lc2327Wce-xl.jpg",
-        "assets/190320100315lc2327Dun-md.jpg",
-        "assets/190320100315lc2327HIQ-xl.jpg",
-        "assets/190320100315lc2327iQP-l.jpg",
-        "assets/190320100315lc2327O2i-md.jpg",
-        "assets/190320100315lc2327xR6-xl.jpg"
-      ]
-    },
-    {
-      id: "e92",
-      label: "BMW E92",
-      images: [
-        "assets/e92-main.webp",
-        "assets/e92-rear.webp",
-        "assets/e92-side.jpg",
-        "assets/e92-front.jpg",
-        "assets/e92-sider.jpg",
-        "assets/e92-lip.jpg",
+  cat.innerHTML =
+    `<option value="">Kategória: všetko</option>` +
+    Array.from(cats).sort().map(x =>
+      `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`
+    ).join("");
+}
+
+
+    function getFilteredProducts(){
+      const q = ($("#q")?.value || "").trim().toLowerCase();
+      const cat = $("#cat")?.value || "";
+
+      return DATA.products.filter(p => {
+        if (activeCarId && p.carId !== activeCarId) return false;
+        if (cat && p.category !== cat) return false;
+
+        if (q){
+          const blob = `${p.title} ${p.short} ${p.category}`.toLowerCase();
+          if (!blob.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderProducts(){
+      const grid = $("#productGrid");
+      const titleEl = $("#productsTitle");
+      const statEl = $("#stat");
+      if (!grid) return;
+
+      const carLabel = activeCarId
+        ? (DATA.cars.find(c=>c.id===activeCarId)?.label || activeCarId)
+        : "všetky autá";
+
+      if (titleEl) titleEl.textContent = `Diely pre: ${carLabel}`;
+
+      const items = getFilteredProducts();
+      if (statEl) statEl.textContent = `${items.length} dielov`;
+
+      grid.innerHTML = "";
+
+      if (!DATA.products.length){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
+            <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
+            <p style="margin:0;">
+              Uisti sa, že súbor <b>sfxla-products.json</b> je v roote (vedľa tohto HTML) a je validný JSON.
+              <br>Tip: ak testuješ cez <b>file://</b> (dvojklik), fetch často nefunguje — musí to bežať cez GitHub Pages.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      if (!items.length){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>nič sme nenašli</div>
+            <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
+            <p style="margin:0;">Skús zmeniť kategóriu, variant alebo vyber “Všetky autá”.</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(p => {
+        const car = DATA.cars.find(c=>c.id===p.carId)?.label || p.carId;
+
+        const card = document.createElement("div");
+        card.className = "pCard";
+        card.tabIndex = 0;
+        card.setAttribute("role","button");
+        card.setAttribute("aria-label", "Open " + (p.title || "product"));
+
+        const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
+
+        card.innerHTML = `
+  <div class="pMedia">
+    <img alt="${escapeHtml(p.title)}">
+  </div>
+
+  <div class="pBody">
+    <div class="pName">${escapeHtml(p.title || "")}</div>
+    <p class="pDesc">${escapeHtml(p.short || "")}</p>
+
+    <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(variantSummary(p))}
+      </div>
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(shipSummary(p))}
+      </div>
+      <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">
+        ${escapeHtml(deliverySummary(p))}
+      </div>
+    </div>
+
+    <div class="pBottom">
+      <div class="price">${escapeHtml(minPriceEUR(p))}</div>
+      <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
+    </div>
+  </div>
+`;
+
+
+        const imgEl = card.querySelector(".pMedia img");
+        setSafeImage(imgEl, imgSrc, null);
+
+        card.addEventListener("click", () => openProduct(p));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            openProduct(p);
+          }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function renderAll(){
+      renderProducts();
+      updateCarActive();
+    }
+
+    // Modal elements
+    const productModal = $("#productModal");
+    const closeProductModal = $("#closeProductModal");
+    const modalTitle = $("#modalTitle");
+    const mRibbon = $("#mRibbon");
+    const mImg = $("#mImg");
+    const mNoImg = $("#mNoImg");
+    const mTitle = $("#mTitle");
+    const mDesc = $("#mDesc");
+    const mVariantList = $("#mVariantList");
+    const mPriceBig = $("#mPriceBig");
+    const mVariantWrap = $("#mVariantWrap");
+    const mShip = $("#mShip");
+    const mDelivery = $("#mDelivery");
+    const mOrder = $("#mOrder");
+    const mPrev = $("#mPrev");
+    const mNext = $("#mNext");
+    const mThumbs = $("#mThumbs");
+
+    if (mPrev) mPrev.addEventListener("click", () => setModalImage(activeImgIndex - 1));
+if (mNext) mNext.addEventListener("click", () => setModalImage(activeImgIndex + 1));
+
+window.addEventListener("keydown", (e) => {
+  if (!productModal?.classList.contains("show")) return;
+  if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
+  if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
+});
+
+    // 🔍 CLICK TO EXPAND – product image fullscreen
+if (mImg){
+  mImg.addEventListener("click", () => {
+    if (!activeProduct) return;
+
+    const imgs = getProductImages(activeProduct);
+    if (!imgs.length) return;
+
+    const src = imgs[activeImgIndex] || imgs[0];
+    setSafeImage(gFull, src, gNoImg);
+
+    if (galleryModal){
+      galleryModal.classList.add("show");
+      galleryModal.setAttribute("aria-hidden","false");
+    }
+  });
+}
+
+
+function getProductImages(p){
+  const arr = []
+    .concat(p?.image ? [p.image] : [])
+    .concat(Array.isArray(p?.images) ? p.images : []);
+  // unikátne + bez prázdnych
+  return Array.from(new Set(arr.filter(Boolean)));
+}
+
+function setModalImage(index){
+  if (!activeProduct) return;
+  const imgs = getProductImages(activeProduct);
+  if (!imgs.length){
+    setSafeImage(mImg, "", mNoImg);
+    if (mThumbs) mThumbs.innerHTML = "";
+    return;
+  }
+
+  activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+  setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
+
+  if (mThumbs){
+    $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
+  }
+  // ak thumbs ešte neexistujú (napr. prvé otvorenie), vytvor ich
+if (mThumbs && !mThumbs.children.length) buildThumbs();
+}
+
+function buildThumbs(){
+  if (!mThumbs || !activeProduct) return;
+  const imgs = getProductImages(activeProduct);
+
+  // keď je 0/1 obrázok, thumbnails netreba
+  if (imgs.length <= 1){
+    mThumbs.innerHTML = "";
+    return;
+  }
+
+  mThumbs.innerHTML = "";
+  imgs.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "thumb" + (i === activeImgIndex ? " active" : "");
+    d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
+    d.addEventListener("click", () => setModalImage(i));
+    mThumbs.appendChild(d);
+  });
+}
+
+    function openProduct(p){
+      activeProduct = p;
+      activeVariantIndex = 0;
+
+      const title = p.title || "—";
+      if (modalTitle) modalTitle.textContent = `Streetfighter LA — ${title}`;
+      if (mTitle) mTitle.textContent = title;
+
+      const status = getStockStatus(p);
+      if (mRibbon){
+        mRibbon.className = `ribbon ${status}`;
+        mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
+      }
+
+      if (mDesc){
+        mDesc.textContent = p.description || p.short || "";
+      }
+
+      activeImgIndex = 0;                  // ✅ reset image index
+setModalImage(0);                    // ✅ nastav prvý obrázok
+buildThumbs();                       // ✅ sprav thumbnails
+
+buildVariantChips();
+updateVariantPrice();
+
+      if (productModal){
+        productModal.classList.add("show");
+        productModal.setAttribute("aria-hidden","false");
+      }
+    }
+
+function buildVariantChips(){
+  if (!mVariantList) return;
+
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+
+  // Ak produkt nemá variants, ale má priceEUR -> schovaj variant blok
+  if (!vars.length){
+    if (mVariantWrap) mVariantWrap.style.display = "none";
+    mVariantList.innerHTML = "";
+    activeVariantIndex = 0;
+    return;
+  }
+
+  if (mVariantWrap) mVariantWrap.style.display = "block";
+  mVariantList.innerHTML = "";
+
+  vars.forEach((v, i) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+
+    const name = (v.name || `Variant ${i+1}`).toUpperCase();
+    const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(name)}</span>
+      <span class="vMeta">
+        <span class="badge">${escapeHtml(price)}</span>
+      </span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = i;
+      setActiveChip(i);
+      updateVariantPrice();
+    });
+
+    mVariantList.appendChild(chip);
+  });
+}
+
+
+    function setActiveChip(index){
+      $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
+    }
+
+   function updateVariantPrice(){
+  if (!activeProduct) return;
+
+  const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+  const v = vars[activeVariantIndex];
+
+  const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
+  const delivery = activeProduct.delivery || "Upresníme po objednávke";
+
+  // cena: buď z variantu, alebo z product.priceEUR
+  const base =
+    (v && typeof v.priceEUR === "number") ? v.priceEUR :
+    (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
+    null;
+
+  const variantName = vars.length ? (v?.name || "—") : "—";
+
+  if (mPriceBig){
+    mPriceBig.innerHTML = base !== null
+      ? `<small>CENA</small><br>${fmtEUR(base)}`
+      : `<small>CENA</small><br>UPRESNÍME`;
+  }
+
+  if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
+  if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+
+  const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
+  const status = getStockStatus(activeProduct);
+
+const manufacturer = "Streetfighter LA";
+
+$("#o_manufacturer").value = manufacturer;
+$("#o_product").value = activeProduct.title || "—";
+$("#o_variant").value = variantName;
+$("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
+$("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
+$("#o_delivery").value = delivery;
+
+
+  const msg = $("#message");
+  const blob = $("#orderBlob");
+const carInput = $("#car");
+const customerNote = $("#customer_note");
+
+if (carInput) carInput.value = car;
+
+
+// keď zákazník píše poznámku, udrž “order blob” aktuálny
+if (customerNote){
+  customerNote.oninput = () => {
+    if (!blob) return;
+    blob.value += `\n\nPOZNÁMKA ZÁKAZNÍKA:\n${customerNote.value || ""}`;
+  };
+}
+
+
+}
+
+    function closeModal(modal){
+      if (!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
+    if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
+
+    const galleryModal = $("#galleryModal");
+    const closeGalleryModal = $("#closeGalleryModal");
+    const gFull = $("#gFull");
+    const gNoImg = $("#gNoImg");
+
+    const galleryEl = $("#gallery");
+    if (galleryEl){
+      galleryEl.addEventListener("click", (e) => {
+        const item = e.target.closest(".gItem");
+        if (!item) return;
+        const full = item.getAttribute("data-full") || "";
+        if (!full) return;
+
+        setSafeImage(gFull, full, gNoImg);
+
+        if (galleryModal){
+          galleryModal.classList.add("show");
+          galleryModal.setAttribute("aria-hidden","false");
+        }
+      });
+    }
+
+    if (closeGalleryModal) closeGalleryModal.addEventListener("click", () => closeModal(galleryModal));
+    if (galleryModal) galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
+
+    const orderModal = $("#orderModal");
+    const closeOrderModal = $("#closeOrderModal");
+    const cancelSend = $("#cancelSend");
+    const orderForm = $("#orderForm");
+const consent = $("#consent");
+const sendBtn = $("#sendBtn");
+
+
+   function openOrderModal(){
+  closeModal(productModal);
+  if (!orderModal) return;
+
+  const cn = $("#customer_note");
+  if (cn) cn.value = "";
+
+  if (consent) consent.checked = false;
+  if (sendBtn) sendBtn.disabled = true;
+
+  buildOrderBlob();
+
+  orderModal.classList.add("show");
+  orderModal.setAttribute("aria-hidden","false");
+  setTimeout(()=> $("#name")?.focus(), 50);
+}
+if (consent && sendBtn){
+  consent.addEventListener("change", () => {
+    sendBtn.disabled = !consent.checked;
+  });
+}
+
+if (orderForm){
+  orderForm.addEventListener("submit", (e) => {
+    // poistka: required checkbox + disabled button (aj keby niekto hackol)
+    if (consent && !consent.checked){
+      e.preventDefault();
+      consent.focus();
+      return;
+    }
+    buildOrderBlob(); // posledné prepočítanie pred odoslaním
+  });
+}
+
+// keď niekto píše poznámku/auto, nech sa blob udržiava
+$("#customer_note")?.addEventListener("input", buildOrderBlob);
+$("#car")?.addEventListener("input", buildOrderBlob);
+
+
+  
+
+    if (mOrder) mOrder.addEventListener("click", openOrderModal);
+    if (closeOrderModal) closeOrderModal.addEventListener("click", () => closeModal(orderModal));
+    if (cancelSend) cancelSend.addEventListener("click", () => closeModal(orderModal));
+    if (orderModal) orderModal.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
+
+    const openGeneralForm = $("#openGeneralForm");
+    if (openGeneralForm){
+      openGeneralForm.addEventListener("click", () => {
+        const car = $("#car");
+        if (msg){
+          msg.value =
+`DOPYT – Streetfighter LA
+
+Auto:
+Diel:
+Variant:
+
+Poznámka (dopíš rok/facelift/verziu):`;
+        }
+        if (car) car.value = "";
+        openOrderModal();
+      });
+    }
+
+    ["q","cat"].forEach(id => {
+      const el = $("#" + id);
+      if (!el) return;
+      el.addEventListener("input", renderAll);
+      el.addEventListener("change", renderAll);
+    });
+
+    const showAllBtn = $("#showAll");
+    if (showAllBtn){
+      showAllBtn.addEventListener("click", () => {
+        activeCarId = "";
+        updateCarActive();
+        renderAll();
+      });
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape"){
+        [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
+      }
+    });
+
+    (async () => {
+      await loadProducts();
+      buildFilterOptions();
+      buildCars();
+      renderAll();
+      console.log("SFXLA products loaded:", DATA.products.length);
+    })();
+
+
+    function buildOrderBlob(){
+  const lines = [
+    `Výrobca: ${$("#o_manufacturer")?.value || "—"}`,
+    `Diel: ${$("#o_product")?.value || "—"}`,
+    `Variant: ${$("#o_variant")?.value || "—"}`,
+    `Cena: ${$("#o_price")?.value || "—"}`,
+    `Doprava: ${$("#o_shipping")?.value || "—"}`,
+    `Dodanie: ${$("#o_delivery")?.value || "—"}`,
+    ``,
+    `Vozidlo: ${$("#car")?.value || ""}`,
+    `Poznámka: ${$("#customer_note")?.value || ""}`
+  ].join("\n");
+
+  const blob = $("#orderBlob");
+  if (blob) blob.value = lines;
+}
+
+    /* ===========================
+   MEGA GALLERY (8 áut) LOGIC
+   =========================== */
+
+// ⚠️ Tu si len uprav cesty k fotkám.
+// Odporúčanie štruktúry:
+// assets/sfxla-mega/e36/1.jpg
+// assets/sfxla-mega/e36/2.jpg
+// ...
+const MEGA_GALLERY = [
+
+  /* ======================
+     BMW E36
+     ====================== */
+  {
+    id: "e36",
+    label: "BMW E36",
+    images: [
+      "assets/BMW-E36-Wide-Body-Kit_2048x2048.webp",
+
+      "assets/BMW-E36-Rear-Spoiler_2048x2048.webp",
+      "assets/e36-3.jpg",
+      "assets/e36-4.jpg",
+      "assets/e36-5.jpg",
+      "assets/e36-7.jpg",
+      "assets/e36-8.jpg",
+      "assets/e36-9.jpg",
+      "assets/e36-10.jpg",
+      "assets/e36-11.jpg",
+      "assets/e36-12.jpg",
+      "assets/e36-13.jpg",
+      "assets/e36-14.jpg",
+      "assets/e36-15.jpg",
+      "assets/e36-16.jpg",
+      "assets/ducktaill.webp",
+
+      "assets/e36-lipp.jpg",
+      "assets/e36-6.jpg"
+    ]
+  },
+
+  /* ======================
+     BMW E46
+     ====================== */
+  {
+    id: "e46",
+    label: "BMW E46",
+    images: [
+      "assets/e46-main.webp",
+      "assets/e46-side.webp",
+      "assets/e46-rear.webp",
+      "assets/e46-prof.webp",
+      "assets/e46-11.webp",
+      "assets/e46-flare.webp",
+
+      "assets/190320100331lc2327DrN-xxl.jpg",
+      "assets/190320100331lc2327e5q-hd.jpg",
+      "assets/190320100331lc2327Hnv-xxl.jpg",
+      "assets/190320100331lc2327mkH-xxl.jpg",
+      "assets/190320100331lc23271CS-xxl.jpg",
+      "assets/190320100332lc2327bbP-hd.jpg",
+      "assets/190320100332lc2327i4C-hd.jpg",
+      "assets/190320100332lc2327Mqb-md.jpg",
+      "assets/190320100332lc2327Wki-md.jpg",
+      "assets/190320100332lc2327YTV-xxl.jpg",
+      "assets/190320100332lc2327Zfd-xxl.jpg",
+      "assets/190320100332lc232739F-xxl.jpg",
+      "assets/190320100333lc2327CVg-xxl.jpg",
+      "assets/190320100333lc2327f8Q-xxl.jpg",
+      "assets/190320100333lc2327fqC-xxl.jpg",
+      "assets/190320100333lc2327G76-hd.jpg",
+      "assets/190320100333lc2327L0p-hd.jpg",
+      "assets/190320100333lc2327o9u-hd.jpg",
+      "assets/190320100333lc2327ZWl-s.jpg",
+      "assets/190320100333lc23272IF-xxl.jpg",
+      "assets/190320100334lc2327b9q-hd.jpg",
+      "assets/190320100334lc2327Baf-xxl.jpg",
+      "assets/190320100334lc23272Rl-xxl.jpg",
+      "assets/190320100334lc232774h-xxl.jpg"
+    ]
+  },
+
+  /* ======================
+     BMW E90
+     ====================== */
+  {
+    id: "e90",
+    label: "BMW E90",
+    images: [
+      "assets/e90-mainp.webp",
+      "assets/e90-main.webp",
+      "assets/e90-rear.webp",
+
+    "assets/190320100313lc2327MKL-xl.jpg",
+    "assets/190320100313lc23275qt-xl.jpg",
+    "assets/190320100314lc2327DlG-l.jpg",
+    "assets/190320100314lc2327Ejr-xl.jpg",
+    "assets/190320100314lc2327EzF-l.jpg",
+    "assets/190320100314lc2327gC3-xl.jpg",
+    "assets/190320100314lc2327h1p-md.jpg",
+    "assets/190320100314lc2327hIO-l.jpg",
+    "assets/190320100314lc2327lge-hd.jpg",
+    "assets/190320100314lc2327N97-xl.jpg",
+    "assets/190320100314lc2327TuA-l.jpg",
+    "assets/190320100314lc2327Wce-xl.jpg",
+    "assets/190320100315lc2327Dun-md.jpg",
+    "assets/190320100315lc2327HIQ-xl.jpg",
+    "assets/190320100315lc2327iQP-l.jpg",
+    "assets/190320100315lc2327O2i-md.jpg",
+    "assets/190320100315lc2327xR6-xl.jpg"
+    ]
+  },
+
+  /* ======================
+     BMW E92
+     ====================== */
+  {
+    id: "e92",
+    label: "BMW E92",
+    images: [
+      "assets/e92-main.webp",
+      "assets/e92-rear.webp",
+      "assets/e92-side.jpg",
+      "assets/e92-front.jpg",
+      "assets/e92-sider.jpg",
+
+      "assets/e92-lip.jpg",
 
       "assets/e92-spoiler.jpg",
       "assets/e92-spoiler1.jpg",
@@ -3330,6 +3360,7 @@ input[readonly]:focus{
 
 let activeMegaId = MEGA_GALLERY[0]?.id || "";
 
+const megaGalleryModal = $("#megaGalleryModal");
 const openMegaGalleryBtn = $("#openMegaGallery");
 const closeMegaGalleryModalBtn = $("#closeMegaGalleryModal");
 
@@ -3407,11 +3438,10 @@ function renderMegaGrid(catId){
     item.addEventListener("click", () => {
       setSafeImage(gFull, src, gNoImg);
       if (galleryModal){
-        item.addEventListener("click", () => {
-  setSafeImage(gFull, src, gNoImg);
-  openModal(galleryModal);
-});
-
+        galleryModal.classList.add("show");
+        galleryModal.setAttribute("aria-hidden","false");
+      }
+    });
 
     megaGrid.appendChild(item);
   });
