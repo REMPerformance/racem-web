@@ -3930,22 +3930,18 @@ const sendBtn = $("#sendBtn");
   if (sendBtn) sendBtn.disabled = true;
 
   buildOrderBlob();
-renderOrderSummaryUI(); // ✅ prepne single/multi a vyplní zoznam
+  renderOrderSummaryUI();     // prepne single/multi a vyplní zoznam
+  setOrderSummaryFromCart();  // nastaví readonly polia pre multi
 
-    
   orderModal.classList.add("show");
   orderModal.setAttribute("aria-hidden","false");
   setTimeout(()=> $("#name")?.focus(), 50);
 }
+
 if (consent && sendBtn){
   consent.addEventListener("change", () => {
     sendBtn.disabled = !consent.checked;
   });
-}
-
-// ✅ toto volaj hocikedy keď sa mení košík / otvorí order modal
-setOrderSummaryFromCart();
-
 }
 
     function renderOrderSummaryUI(){
