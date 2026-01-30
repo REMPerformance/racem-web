@@ -2554,62 +2554,62 @@ body.modalOpen{
           <div class="orderDivider full"></div>
 
           <!-- ✅ SUMÁR objednávky (readonly) -->
-          <div class="orderSummary">
-            <div class="orderSummaryHead">
-              <b>Sumár objednávky</b>
-              <div class="mini">automaticky vyplnené</div>
-            </div>
-
-            <div class="orderSummaryGrid">
-
-              <!-- ✅ MULTI položky (zobrazí sa len keď CART.length > 0) -->
-<div class="orderItems" id="orderItems" style="display:none;">
-  <div class="orderItemsHead">
-    <div class="miniStat" style="font-size:13px; letter-spacing:.20em;">Položky v košíku</div>
-    <div class="miniStat" id="orderItemsCount" style="font-size:13px; letter-spacing:.20em;">0</div>
+         <div class="orderSummary">
+  <div class="orderSummaryHead">
+    <b>Sumár objednávky</b>
+    <div class="mini">automaticky vyplnené</div>
   </div>
 
-  <div class="orderItemsList" id="orderItemsList"></div>
+  <!-- ✅ MULTI položky – teraz už NIE JE v grid-e -->
+  <div class="orderItems" id="orderItems" style="display:none;">
+    <div class="orderItemsHead">
+      <div class="miniStat" style="font-size:13px; letter-spacing:.20em;">Položky v košíku</div>
+      <div class="miniStat" id="orderItemsCount" style="font-size:13px; letter-spacing:.20em;">0</div>
+    </div>
 
-  <div class="orderTotals">
-    <div class="line"><span>Suma (bez dopravy)</span><b id="o_sumPrice">0 €</b></div>
-    <div class="line"><span>Doprava</span><b id="o_sumShip">0 €</b></div>
-    <div class="line total"><span>Spolu od</span><b id="o_sumTotal">0 €</b></div>
+    <div class="orderItemsList" id="orderItemsList"></div>
+
+    <div class="orderTotals">
+      <div class="line"><span>Suma (bez dopravy)</span><b id="o_sumPrice">0 €</b></div>
+      <div class="line"><span>Doprava</span><b id="o_sumShip">0 €</b></div>
+      <div class="line total"><span>Spolu od</span><b id="o_sumTotal">0 €</b></div>
+    </div>
+  </div>
+
+  <!-- ✅ SINGLE readonly grid (tvoje polia) -->
+  <div class="orderSummaryGrid" id="orderSingleGrid">
+    <div class="roField">
+      <label>Výrobca</label>
+      <input id="o_manufacturer" name="manufacturer" readonly>
+    </div>
+
+    <div class="roField">
+      <label>Diel</label>
+      <input id="o_product" name="product" readonly>
+    </div>
+
+    <div class="roField">
+      <label>Variant</label>
+      <input id="o_variant" name="variant" readonly>
+    </div>
+
+    <div class="roField">
+      <label>Cena</label>
+      <input id="o_price" name="price" readonly>
+    </div>
+
+    <div class="roField">
+      <label>Doprava</label>
+      <input id="o_shipping" name="shipping" readonly>
+    </div>
+
+    <div class="roField">
+      <label>Dodanie</label>
+      <input id="o_delivery" name="delivery" readonly>
+    </div>
   </div>
 </div>
 
-              
-              <div class="roField">
-                <label>Výrobca</label>
-                <input id="o_manufacturer" name="manufacturer" readonly>
-              </div>
-
-              <div class="roField">
-                <label>Diel</label>
-                <input id="o_product" name="product" readonly>
-              </div>
-
-              <div class="roField">
-                <label>Variant</label>
-                <input id="o_variant" name="variant" readonly>
-              </div>
-
-              <div class="roField">
-                <label>Cena</label>
-                <input id="o_price" name="price" readonly>
-              </div>
-
-              <div class="roField">
-                <label>Doprava</label>
-                <input id="o_shipping" name="shipping" readonly>
-              </div>
-
-              <div class="roField">
-                <label>Dodanie</label>
-                <input id="o_delivery" name="delivery" readonly>
-              </div>
-            </div>
-          </div>
 
           <!-- ✅ Povinný checkbox -->
           <div class="consent">
@@ -2839,20 +2839,27 @@ function addActiveToCart(){
       setSafeImage(imgEl, item.image || "", null);
 
       row.querySelector('[data-act="dec"]').addEventListener("click", () => {
-        item.qty = Math.max(1, (item.qty || 1) - 1);
-        renderCartModal();
-        renderCartBar();
-      });
-      row.querySelector('[data-act="inc"]').addEventListener("click", () => {
-        item.qty = (item.qty || 1) + 1;
-        renderCartModal();
-        renderCartBar();
-      });
-      row.querySelector(".cartRemove").addEventListener("click", () => {
-        CART = CART.filter(x => x.key !== item.key);
-        renderCartModal();
-        renderCartBar();
-      });
+  item.qty = Math.max(1, (item.qty || 1) - 1);
+  renderCartModal();
+  renderCartBar();
+  renderOrderSummaryUI();
+  buildOrderBlob();
+});
+row.querySelector('[data-act="inc"]').addEventListener("click", () => {
+  item.qty = (item.qty || 1) + 1;
+  renderCartModal();
+  renderCartBar();
+  renderOrderSummaryUI();
+  buildOrderBlob();
+});
+row.querySelector(".cartRemove").addEventListener("click", () => {
+  CART = CART.filter(x => x.key !== item.key);
+  renderCartModal();
+  renderCartBar();
+  renderOrderSummaryUI();
+  buildOrderBlob();
+});
+
 
       body.appendChild(row);
     });
@@ -3514,7 +3521,7 @@ if (consent && sendBtn){
   const itemsList = document.querySelector("#orderItemsList");
   const itemsCount = document.querySelector("#orderItemsCount");
 
-  const grid = document.querySelector(".orderSummaryGrid"); // tvoje single readonly polia
+  const grid = document.querySelector("#orderSingleGrid"); // tvoje single readonly polia
 
   if (!itemsWrap || !itemsList || !grid) return;
 
