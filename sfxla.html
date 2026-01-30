@@ -1877,17 +1877,26 @@ body.modalOpen{
 }
 
 
-    /* ===========================
+   /* ===========================
    CART BAR (slide-down)
    =========================== */
 .cartBar{
   position: fixed;
   left: 0;
   right: 0;
-  top: 0;               /* JS to posunie pod topbar */
+
+  /* ✅ vždy pod topbar (nastavuje JS cez CSS premennú) */
+  top: var(--topbar-h, 0px);
+
   z-index: 130;
-  transform: translateY(-110%);
-  transition: transform .22s ease;
+
+  /* ✅ keď je prázdny: úplne mimo, neviditeľný, neklikateľný */
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+
+  transition: transform .22s ease, opacity .18s ease;
+
   background: rgba(10,10,10,0.62);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(12px);
@@ -1895,7 +1904,10 @@ body.modalOpen{
 
 .cartBar.show{
   transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
+
 .cartBarInner{
   padding: 10px 6vw;
   display:flex;
@@ -2113,11 +2125,6 @@ body.modalOpen{
     </div>
   </div>
 
-    <div class="topbar" id="top">
-    <div class="nav">
-      ...
-    </div>
-  </div>
 
   <!-- ✅ CART BAR (slide-down) – musí byť v BODY, nie v STYLE -->
   <div class="cartBar" id="cartBar" aria-hidden="true">
@@ -2607,14 +2614,14 @@ function cartSumShipping(){
   return CART.reduce((s,i)=> s + (i.shippingEUR||0), 0);
 }
 
-    function syncCartBarOffset(){
+   function syncCartBarOffset(){
   const topbar = document.querySelector(".topbar");
-  const cartBar = document.querySelector("#cartBar");
-  if (!cartBar) return;
-
   const h = topbar ? topbar.offsetHeight : 0;
-  cartBar.style.top = h + "px";
+
+  // ✅ globálne nastav CSS premennú (cartBar si ju berie cez top: var(--topbar-h))
+  document.documentElement.style.setProperty("--topbar-h", h + "px");
 }
+
 
 window.addEventListener("resize", syncCartBarOffset);
 window.addEventListener("load", syncCartBarOffset);
@@ -2774,6 +2781,7 @@ if (cartModal) cartModal.addEventListener("click", (e)=>{ if(e.target===cartModa
 if (cartBarClear) cartBarClear.addEventListener("click", () => {
   CART = [];
   renderCartBar();
+  renderCartModal();
 });
 
 if (cartBack) cartBack.addEventListener("click", () => closeModal(cartModal));
