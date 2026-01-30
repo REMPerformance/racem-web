@@ -1678,11 +1678,13 @@
   animation: ctaSweep 1.2s linear infinite;
 }
 
-/* žiadny pohyb, žiadny zoom */
-.pCard *{
-  transform:none !important;
-  transition:none !important;
+/* jemný reset len pre obrázok (aby sa nehýbal) */
+.pCard .pMedia img{
+  transform: none !important;
 }
+
+/* ak nechceš skoky vnútri, nechaj transitions na texte/ikonkách žiť */
+
 
 /* rovnaká animácia ako CTA */
 @keyframes ctaSweep{
@@ -3328,7 +3330,6 @@ input[readonly]:focus{
 
 let activeMegaId = MEGA_GALLERY[0]?.id || "";
 
-const megaGalleryModal = $("#megaGalleryModal");
 const openMegaGalleryBtn = $("#openMegaGallery");
 const closeMegaGalleryModalBtn = $("#closeMegaGalleryModal");
 
@@ -3406,10 +3407,11 @@ function renderMegaGrid(catId){
     item.addEventListener("click", () => {
       setSafeImage(gFull, src, gNoImg);
       if (galleryModal){
-        galleryModal.classList.add("show");
-        galleryModal.setAttribute("aria-hidden","false");
-      }
-    });
+        item.addEventListener("click", () => {
+  setSafeImage(gFull, src, gNoImg);
+  openModal(galleryModal);
+});
+
 
     megaGrid.appendChild(item);
   });
@@ -3422,22 +3424,6 @@ if (megaGalleryModal){
   megaGalleryModal.addEventListener("click", (e) => {
     if (e.target === megaGalleryModal) closeMegaGallery();
   });
-}
-function openModal(modal){
-  if (!modal) return;
-  modal.classList.add("show");
-  modal.setAttribute("aria-hidden","false");
-  document.body.classList.add("modal-open");
-}
-
-function closeModal(modal){
-  if (!modal) return;
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden","true");
-  // ak už nie je otvorený žiadny modal, vráť scroll
-  if (![orderModal, productModal, galleryModal, megaGalleryModal].some(m => m?.classList.contains("show"))){
-    document.body.classList.remove("modal-open");
-  }
 }
 
   </script>
