@@ -1833,6 +1833,46 @@ input[readonly]:focus{
   transform:none !important;
   filter:none;
 }
+/* ===========================
+   ORDER MODAL – SCROLL FIX
+   =========================== */
+
+/* card už má max-height + flex z tvojho všeobecného modalu,
+   ale pre istotu to zacielime priamo na order modal */
+#orderModal .modalCard{
+  max-height: 92vh;          /* nikdy nepresiahne obrazovku */
+  display:flex;
+  flex-direction:column;
+}
+
+/* header nech je pevný */
+#orderModal .modalHead{
+  flex: 0 0 auto;
+}
+
+/* toto je tá scroll zóna */
+#orderModal .orderBody{
+  flex: 1 1 auto;
+  overflow-y: auto;          /* ✅ scroll vo vnútri */
+  overflow-x: hidden;
+  padding: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* jemný scrollbar aby to vyzeralo profi */
+#orderModal .orderBody::-webkit-scrollbar{ width: 10px; }
+#orderModal .orderBody::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.10);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+#orderModal .orderBody::-webkit-scrollbar-thumb:hover{
+  background: rgba(179,31,36,0.35);
+}
+
+body.modalOpen{
+  overflow: hidden;
+}
 
   </style>
 </head>
@@ -2086,7 +2126,7 @@ input[readonly]:focus{
       <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
     </div>
 
-    <div style="padding:14px;">
+    <div class="orderBody">
 
       <div class="orderIntro">
         Toto je <b>nezáväzná objednávka</b>. Pre dokončenie objednávky ťa bude kontaktovať <b>TEAM RACEM</b>
@@ -2788,10 +2828,15 @@ if (customerNote){
 }
 
     function closeModal(modal){
-      if (!modal) return;
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden","true");
-    }
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+
+  // ak už nie je otvorený žiadny modal, odomkni body
+  const anyOpen = $$(".modal").some(m => m.classList.contains("show"));
+  if (!anyOpen) document.body.classList.remove("modalOpen");
+}
+
 
     if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
     if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
