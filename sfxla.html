@@ -1657,22 +1657,15 @@
 }
 
 /* animovaný outline – rovnaký trik ako CTA */
+/* jemný sweep iba na border, bez zabitia vnútorných transitionov */
 .pCard::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
   border-radius: inherit;
-  background:
-    linear-gradient(
-      120deg,
-      transparent 30%,
-      rgba(179,31,36,.9),
-      transparent 70%
-    );
+  background: linear-gradient(120deg, transparent 30%, rgba(179,31,36,.9), transparent 70%);
   opacity:0;
-  transition: opacity .25s ease;
-}
-
-/* hover = len rozsvietený okraj */
-.pCard:hover{
-  border-color: rgba(179,31,36,.55);
+  pointer-events:none;
 }
 
 .pCard:hover::before{
@@ -1680,17 +1673,11 @@
   animation: ctaSweep 1.2s linear infinite;
 }
 
-/* žiadny pohyb, žiadny zoom */
-.pCard *{
-  transform:none !important;
-  transition:none !important;
+@keyframes ctaSweep{
+  from{ transform: translateX(-60%); }
+  to{ transform: translateX(60%); }
 }
 
-/* rovnaká animácia ako CTA */
-@keyframes ctaSweep{
-  from{ background-position:0% 0%; }
-  to{ background-position:200% 0%; }
-}
 input[readonly]{
   opacity: .85;
   cursor: default;
@@ -3300,23 +3287,23 @@ row.querySelector(".cartRemove").addEventListener("click", () => {
     });
   }
 
-  // sumáre
+   // sumáre
   const itemsCount = cartCount();
   const sumPrice = cartSumPrice();
   const sumShip = cartSumShipping();
   const sumTotal = sumPrice + sumShip;
 
   const elItems = $("#cartSumItems");
-const elPrice = $("#cartSumPrice");
-const elShip  = $("#cartSumShip");
-const elTotal = $("#cartSumTotal");
+  const elPrice = $("#cartSumPrice");
+  const elShip  = $("#cartSumShip");
+  const elTotal = $("#cartSumTotal");
 
-if (elItems) elItems.textContent = String(itemsCount);
-if (elPrice) elPrice.textContent = fmtEUR(sumPrice);
-if (elShip)  elShip.textContent  = sumShip ? fmtEUR(sumShip) : "podľa položiek";
-if (elTotal) elTotal.textContent = fmtEUR(sumTotal);
-
+  if (elItems) elItems.textContent = String(itemsCount);
+  if (elPrice) elPrice.textContent = fmtEUR(sumPrice);
+  if (elShip)  elShip.textContent  = sumShip ? fmtEUR(sumShip) : "podľa položiek";
+  if (elTotal) elTotal.textContent = fmtEUR(sumTotal);
 }
+
 
 const cartModal = $("#cartModal");
 const closeCartModal = $("#closeCartModal");
@@ -3866,7 +3853,7 @@ $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
 $("#o_delivery").value = delivery;
 
 
-  const msg = $("#message");
+  const msg = $("#customer_note");
   const blob = $("#orderBlob");
 const carInput = $("#car");
 const customerNote = $("#customer_note");
@@ -3954,7 +3941,11 @@ if (consent && sendBtn){
   consent.addEventListener("change", () => {
     sendBtn.disabled = !consent.checked;
   });
-  setOrderSummaryFromCart();
+}
+
+// ✅ toto volaj hocikedy keď sa mení košík / otvorí order modal
+setOrderSummaryFromCart();
+
 }
 
     function renderOrderSummaryUI(){
