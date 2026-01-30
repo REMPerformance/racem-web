@@ -2194,6 +2194,242 @@ body.modalOpen{
   flex-wrap:wrap;
   justify-content:flex-end;
 }
+/* ===========================
+   CART BAR – výrazne odlíšený od TOPBAR
+   (vložiť na koniec <style>)
+   =========================== */
+
+:root{
+  --cartbar-bg: rgba(6,6,6,.72);
+  --cartbar-line: rgba(255,255,255,.10);
+  --cartbar-glow: rgba(179,31,36,.25);
+}
+
+/* pás je "checkout" – viac kontrastu, vlastný akcent */
+.cartBar{
+  background:
+    radial-gradient(circle at 18% 20%, rgba(179,31,36,.22), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35)),
+    var(--cartbar-bg);
+  border-bottom: 1px solid var(--cartbar-line);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+}
+
+/* horná akcent čiara – hneď vieš, že to nie je menu */
+.cartBar::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, rgba(179,31,36,.9), transparent);
+  box-shadow: 0 0 18px rgba(179,31,36,.35);
+  pointer-events:none;
+}
+
+/* vnútro – nech má "kartu" pocit, nie len riadok */
+.cartBarInner{
+  border-radius: 18px;
+  padding: 12px 6vw;
+}
+
+/* pill: viac čitateľné, viac “checkout badge” */
+.cartPill{
+  border-color: rgba(255,255,255,.14);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(179,31,36,.18), transparent 60%),
+    rgba(0,0,0,.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  font-size: 12px;
+  letter-spacing: .22em;
+}
+
+/* count nech je vizuálne "badge" */
+#cartBarCount{
+  display:inline-grid;
+  place-items:center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(179,31,36,.22);
+  border: 1px solid rgba(179,31,36,.35);
+  box-shadow: 0 10px 24px rgba(179,31,36,.12);
+  margin-right: 6px;
+  font-weight: 900;
+}
+
+/* total viac dominantný */
+.cartTotal{
+  font-size: 15px;
+  letter-spacing:.24em;
+  padding-left: 8px;
+  opacity: 1;
+  text-shadow: 0 14px 40px rgba(0,0,0,.65);
+}
+
+/* pravá strana – CTA nech je "hlavná" */
+.cartBarRight .btn.secondary{
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.16);
+}
+.cartBarRight .btn.secondary:hover{
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255,255,255,.28);
+}
+
+/* mobile: nech sa to nezlomí škaredo */
+@media (max-width: 560px){
+  .cartBarInner{
+    padding: 12px 18px;
+    gap: 10px;
+  }
+  .cartBarLeft{
+    flex-wrap:wrap;
+    row-gap: 8px;
+  }
+  .cartBarRight{
+    width:100%;
+    justify-content:stretch;
+  }
+  .cartBarRight .btn{
+    flex:1;
+    justify-content:center;
+  }
+}
+
+    /* ===========================
+   CART MODAL – facelift (premium checkout)
+   =========================== */
+
+#cartModal .modalHead{
+  background:
+    radial-gradient(circle at 20% 30%, rgba(179,31,36,.18), transparent 55%),
+    rgba(0,0,0,.35);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+/* Item karta – viac "produktová" */
+.cartItem{
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(179,31,36,.12), transparent 60%),
+    linear-gradient(180deg, rgba(20,20,20,.80), rgba(10,10,10,.70));
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 16px 54px rgba(0,0,0,.45);
+  padding: 14px;
+  gap: 14px;
+}
+
+/* väčší thumb, lepší "shop" pocit */
+.cartThumb{
+  width: 112px;
+  height: 86px;
+  border-radius: 16px;
+  border-color: rgba(255,255,255,.12);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+
+/* title nech je čitateľnejší */
+.cartInfo b{
+  font-size: 15px;
+  letter-spacing:.20em;
+  margin-bottom: 8px;
+}
+
+/* meta text kompaktnejší */
+.cartMeta{
+  font-size: 12.8px;
+  color: rgba(255,255,255,.72);
+}
+
+/* qty ovládač – viac "hardware" */
+.qtyBox{
+  border-radius: 16px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,.32);
+  border-color: rgba(255,255,255,.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.qtyBox button{
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.14);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.qtyBox button:hover{
+  transform: translateY(-1px);
+  background: rgba(179,31,36,.18);
+  border-color: rgba(179,31,36,.35);
+}
+.qtyBox span{
+  min-width: 28px;
+  font-size: 13px;
+  opacity:.95;
+}
+
+/* remove tlačidlo – menej “kričí”, ale stále danger */
+.cartRemove{
+  border-radius: 16px;
+  background: rgba(239,68,68,.10);
+  border-color: rgba(239,68,68,.22);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.cartRemove:hover{
+  transform: translateY(-1px);
+  background: rgba(239,68,68,.16);
+  border-color: rgba(239,68,68,.32);
+}
+
+/* footer nech vyzerá ako "checkout bar" */
+.cartFoot{
+  border-top: 1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(179,31,36,.16), transparent 60%),
+    rgba(0,0,0,.40);
+  box-shadow: 0 -18px 70px rgba(0,0,0,.45);
+}
+
+.cartFootLeft{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 12px 14px;
+}
+
+.cartFootRight .btn{
+  border-radius: 16px;
+}
+
+/* Mobile – položka sa rozloží pod seba */
+@media (max-width: 560px){
+  .cartItem{
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .cartControls{
+    justify-content: space-between;
+  }
+  .cartThumb{
+    width: 100%;
+    height: 160px;
+  }
+  .cartFootLeft{
+    width: 100%;
+    min-width: 0;
+  }
+  .cartFootRight{
+    width: 100%;
+  }
+  .cartFootRight .btn{
+    flex:1;
+    justify-content:center;
+  }
+}
+.cartBar.show:hover{
+  filter: brightness(1.04);
+}
 
   </style>
 </head>
