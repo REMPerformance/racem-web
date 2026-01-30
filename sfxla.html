@@ -1835,6 +1835,99 @@ input[readonly]:focus{
   transform:none !important;
   filter:none;
 }
+
+    /* ===========================
+   ORDER SUMMARY (multi items)
+   =========================== */
+.orderItems{
+  margin-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  padding-top: 14px;
+}
+
+.orderItemsHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+.orderItemsList{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.orderItemRow{
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.orderItemTop{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.orderItemTop b{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color:#fff;
+  line-height:1.1;
+}
+
+.orderItemTop .qty{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255,255,255,0.80);
+  white-space:nowrap;
+}
+
+.orderItemMeta{
+  margin-top: 8px;
+  color: rgba(255,255,255,0.74);
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing:.02em;
+}
+
+.orderTotals{
+  margin-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  padding-top: 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.orderTotals .line{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  color: rgba(255,255,255,0.74);
+  font-size: 13px;
+}
+
+.orderTotals .line b{
+  color:#fff;
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+}
+
+.orderTotals .line.total{
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.90);
+}
+
 /* ===========================
    ORDER MODAL – SCROLL FIX
    =========================== */
@@ -2468,6 +2561,24 @@ body.modalOpen{
             </div>
 
             <div class="orderSummaryGrid">
+
+              <!-- ✅ MULTI položky (zobrazí sa len keď CART.length > 0) -->
+<div class="orderItems" id="orderItems" style="display:none;">
+  <div class="orderItemsHead">
+    <div class="miniStat" style="font-size:13px; letter-spacing:.20em;">Položky v košíku</div>
+    <div class="miniStat" id="orderItemsCount" style="font-size:13px; letter-spacing:.20em;">0</div>
+  </div>
+
+  <div class="orderItemsList" id="orderItemsList"></div>
+
+  <div class="orderTotals">
+    <div class="line"><span>Suma (bez dopravy)</span><b id="o_sumPrice">0 €</b></div>
+    <div class="line"><span>Doprava</span><b id="o_sumShip">0 €</b></div>
+    <div class="line total"><span>Spolu od</span><b id="o_sumTotal">0 €</b></div>
+  </div>
+</div>
+
+              
               <div class="roField">
                 <label>Výrobca</label>
                 <input id="o_manufacturer" name="manufacturer" readonly>
@@ -2791,6 +2902,9 @@ if (cartCheckout) cartCheckout.addEventListener("click", () => {
   closeModal(cartModal);
   openOrderModal();
 });
+
+    renderOrderSummaryUI(); // ✅ keď je order modal otvorený, refreshne sumár
+
 
     function fmtEUR(n){
       if (typeof n !== "number" || Number.isNaN(n)) return "—";
@@ -3381,7 +3495,9 @@ const sendBtn = $("#sendBtn");
   if (sendBtn) sendBtn.disabled = true;
 
   buildOrderBlob();
+renderOrderSummaryUI(); // ✅ prepne single/multi a vyplní zoznam
 
+    
   orderModal.classList.add("show");
   orderModal.setAttribute("aria-hidden","false");
   setTimeout(()=> $("#name")?.focus(), 50);
@@ -3392,6 +3508,68 @@ if (consent && sendBtn){
   });
   setOrderSummaryFromCart();
 }
+
+    function renderOrderSummaryUI(){
+  const itemsWrap = document.querySelector("#orderItems");
+  const itemsList = document.querySelector("#orderItemsList");
+  const itemsCount = document.querySelector("#orderItemsCount");
+
+  const grid = document.querySelector(".orderSummaryGrid"); // tvoje single readonly polia
+
+  if (!itemsWrap || !itemsList || !grid) return;
+
+  const isMulti = CART.length > 0;
+
+  // prepínač UI
+  itemsWrap.style.display = isMulti ? "block" : "none";
+  grid.style.display = isMulti ? "none" : "grid";
+
+  if (!isMulti) return;
+
+  // multi: naplň zoznam
+  itemsList.innerHTML = "";
+  if (itemsCount) itemsCount.textContent = `${CART.length} položiek`;
+
+  CART.forEach((it, idx) => {
+    const carLabel = it.carId ? (DATA.cars.find(c=>c.id===it.carId)?.label || it.carId) : "—";
+    const priceText = it.priceUnknown ? "UPRESNÍME" : fmtEUR(it.priceEUR);
+    const shipText = it.shippingEUR ? fmtEUR(it.shippingEUR) : "PODĽA DOHODY";
+
+    const row = document.createElement("div");
+    row.className = "orderItemRow";
+    row.innerHTML = `
+      <div class="orderItemTop">
+        <b>${escapeHtml(`${idx+1}) ${it.title}`)}</b>
+        <div class="qty">x ${escapeHtml(String(it.qty || 1))}</div>
+      </div>
+      <div class="orderItemMeta">
+        Auto: ${escapeHtml(carLabel)}<br>
+        Variant: ${escapeHtml(it.variantName || "—")}<br>
+        Cena/ks: ${escapeHtml(priceText)}<br>
+        Doprava: ${escapeHtml(shipText)}<br>
+        Dodanie: ${escapeHtml(it.delivery || "Upresníme")}
+      </div>
+    `;
+    itemsList.appendChild(row);
+  });
+
+  // totals
+  const sumPrice = cartSumPrice();
+  const sumShip = cartSumShipping();
+  const sumTotal = sumPrice + sumShip;
+
+  const oSumPrice = document.querySelector("#o_sumPrice");
+  const oSumShip  = document.querySelector("#o_sumShip");
+  const oSumTotal = document.querySelector("#o_sumTotal");
+
+  if (oSumPrice) oSumPrice.textContent = fmtEUR(sumPrice);
+  if (oSumShip)  oSumShip.textContent  = sumShip ? fmtEUR(sumShip) : "podľa položiek";
+  if (oSumTotal) oSumTotal.textContent = fmtEUR(sumTotal);
+
+  // zároveň nastav aj tie readonly polia (nech mail/form má jasné “multi” hodnoty)
+  setOrderSummaryFromCart();
+}
+
 
     if (cartBarClear) cartBarClear.addEventListener("click", () => {
   CART = [];
@@ -3478,8 +3656,6 @@ renderCartBar();
     })();
 
 function setOrderSummaryFromCart(){
-  const multi = CART.length > 0;
-
   const man = document.querySelector("#o_manufacturer");
   const prod = document.querySelector("#o_product");
   const vari = document.querySelector("#o_variant");
@@ -3489,15 +3665,19 @@ function setOrderSummaryFromCart(){
 
   if (!man || !prod || !vari || !price || !ship || !del) return;
 
-  if (multi){
+  if (CART.length){
     man.value = "Streetfighter LA";
     prod.value = `VIAC POLOŽIEK (${CART.length})`;
     vari.value = "viď košík";
     price.value = fmtEUR(cartSumPrice());
     ship.value = cartSumShipping() ? fmtEUR(cartSumShipping()) : "PODĽA DOHODY";
     del.value = "podľa položiek";
+    return;
   }
+
+  // ✅ ak košík je prázdny, nech to ostane “single product” (už to plní updateVariantPrice)
 }
+
 
     function buildOrderBlob(){
   let lines = [];
