@@ -2073,16 +2073,17 @@ body.modalOpen{
   border:1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.03);
   border-radius: 18px;
-  padding: 12px;
+  padding: 20px 22px;
   display:grid;
   grid-template-columns: 96px 1fr auto;
-  gap: 12px;
-  align-items:center;
+  gap: 22px;
+  align-items:flex-start;
   margin-bottom: 12px;
 }
 .cartThumb{
-  width:96px;
-  height:72px;
+  width:110px;
+  height:78px;
+  margin-top: 6px;   /* 🔥 jemné odsadenie od horného okraja */
   border-radius: 14px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,0.10);
@@ -2151,6 +2152,14 @@ body.modalOpen{
   text-transform: uppercase;
   font-size: 12px;
 }
+
+    .cartInfo{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;        /* 🔥 kľúčové – oddelí title a meta */
+  padding-top: 4px;
+}
+
 
 .cartFoot{
   flex: 0 0 auto;
@@ -2331,17 +2340,26 @@ body.modalOpen{
 
 /* title nech je čitateľnejší */
 .cartInfo b{
-  font-size: 15px;
-  letter-spacing:.20em;
-  margin-bottom: 8px;
+  font-size: 17px;
+  letter-spacing: .18em;
+  line-height: 1.25;
+  margin-bottom: 2px;
 }
+
 
 /* meta text kompaktnejší */
 .cartMeta{
-  font-size: 12.8px;
-  color: rgba(255,255,255,.72);
+  display:flex;
+  flex-direction:column;
+  gap: 6px;           /* 🔥 riadky sa od seba oddelia */
+  font-size: 13.5px;
+  line-height: 1.5;   /* 🔥 text prestane byť natlačený */
+  color: rgba(255,255,255,.75);
 }
 
+.cartMeta span{
+  color: rgba(255,255,255,.55);
+}
 /* qty ovládač – viac "hardware" */
 .qtyBox{
   border-radius: 16px;
