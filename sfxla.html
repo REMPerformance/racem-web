@@ -2826,8 +2826,9 @@ body.modalOpen{
         </div>
         <div class="cartFootLine total">
   <span>Spolu od</span>
-  <b>528 €</b>
+  <b id="cartSumTotal">0 €</b>
 </div>
+
       </div>
 
       <div class="cartFootRight">
@@ -3209,10 +3210,16 @@ row.querySelector(".cartRemove").addEventListener("click", () => {
   const sumShip = cartSumShipping();
   const sumTotal = sumPrice + sumShip;
 
-  $("#cartSumItems").textContent = String(itemsCount);
-  $("#cartSumPrice").textContent = fmtEUR(sumPrice);
-  $("#cartSumShip").textContent = sumShip ? fmtEUR(sumShip) : "podľa položiek";
-  $("#cartSumTotal").textContent = fmtEUR(sumTotal);
+  const elItems = $("#cartSumItems");
+const elPrice = $("#cartSumPrice");
+const elShip  = $("#cartSumShip");
+const elTotal = $("#cartSumTotal");
+
+if (elItems) elItems.textContent = String(itemsCount);
+if (elPrice) elPrice.textContent = fmtEUR(sumPrice);
+if (elShip)  elShip.textContent  = sumShip ? fmtEUR(sumShip) : "podľa položiek";
+if (elTotal) elTotal.textContent = fmtEUR(sumTotal);
+
 }
 
 const cartModal = $("#cartModal");
