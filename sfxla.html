@@ -2525,6 +2525,106 @@ body.modalOpen{
   text-shadow: 0 0 18px rgba(177,31,36,.35);
 }
 
+/* ===========================
+   CONSENT CHECKBOX (UIverse-style)
+   =========================== */
+
+.consent{
+  grid-column: 1 / -1;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+}
+
+/* wrapper okolo checkboxu */
+.checkbox-btn{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  cursor:pointer;
+  user-select:none;
+  width:100%;
+}
+
+/* skry default checkbox */
+.checkbox-btn input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+/* custom box */
+.checkbox-btn .checkmark{
+  flex: 0 0 auto;
+  position:relative;
+  margin-top: 2px;
+  height: 22px;
+  width: 22px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.92);
+  background: rgba(0,0,0,0.20);
+  transition: .18s ease;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+/* hover highlight */
+.checkbox-btn:hover .checkmark{
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.55), 0 0 20px rgba(179,31,36,0.16);
+}
+
+/* checkmark animation (tvoj štýl) */
+.checkbox-btn .checkmark:after{
+  content:"";
+  position:absolute;
+  visibility:hidden;
+  opacity:0;
+  left:50%;
+  top:45%;
+  width: 9px;
+  height: 12px;
+  border: 2px solid #0ea021;
+  filter: drop-shadow(0 0 10px #0ea021);
+  border-width: 0 2.5px 2.5px 0;
+  transition: .18s ease;
+  transform: translate(-50%,-50%) rotate(-90deg) scale(0.2);
+}
+
+/* checked */
+.checkbox-btn input:checked ~ .checkmark{
+  border: none;
+  transform: rotate(45deg);
+  background: rgba(0,0,0,0.15);
+}
+
+.checkbox-btn input:checked ~ .checkmark:after{
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%,-50%) rotate(0deg) scale(1);
+  animation: consentPulse .9s ease-in;
+}
+
+@keyframes consentPulse{
+  0%, 100% { transform: translate(-50%,-50%) rotate(0deg) scale(1); }
+  50% { transform: translate(-50%,-50%) rotate(0deg) scale(1.55); }
+}
+
+/* text vedľa checkboxu */
+.consentText{
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.78);
+}
+
+/* keď nie je zaškrtnuté a user skúša odoslať (voliteľné - pekné upozornenie) */
+.consent.isError{
+  border-color: rgba(239,68,68,0.55);
+  box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
+}
 
   </style>
 </head>
@@ -2944,14 +3044,17 @@ body.modalOpen{
 
 
           <!-- ✅ Povinný checkbox -->
-          <div class="consent">
-            <input id="consent" name="consent" type="checkbox" required>
-            <div class="consentText">
-              Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
-              <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
-            </div>
-          </div>
-        </div>
+          <div class="consent" id="consentWrap">
+  <label class="checkbox-btn" for="consent">
+    <input id="consent" name="consent" type="checkbox" required>
+    <span class="checkmark" aria-hidden="true"></span>
+
+    <div class="consentText">
+      Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
+      <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
+    </div>
+  </label>
+</div>
 
         <div class="formActions">
           <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
@@ -3925,15 +4028,24 @@ if (consent && sendBtn){
 
 if (orderForm){
   orderForm.addEventListener("submit", (e) => {
-    // poistka: required checkbox + disabled button (aj keby niekto hackol)
+    const wrap = document.querySelector("#consentWrap");
+
     if (consent && !consent.checked){
       e.preventDefault();
+
+      if (wrap){
+        wrap.classList.add("isError");
+        setTimeout(()=> wrap.classList.remove("isError"), 1200);
+      }
+
       consent.focus();
       return;
     }
-    buildOrderBlob(); // posledné prepočítanie pred odoslaním
+
+    buildOrderBlob();
   });
 }
+
 
 // keď niekto píše poznámku/auto, nech sa blob udržiava
 $("#customer_note")?.addEventListener("input", buildOrderBlob);
