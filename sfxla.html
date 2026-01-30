@@ -2450,6 +2450,88 @@ body.modalOpen{
 .cartBar.show:hover{
   filter: brightness(1.04);
 }
+/* SUMÁR (ľavá karta) – čitateľnosť + štýl */
+.cartFootLeft{
+  min-width: 280px;                 /* bolo 260, nech sa to nadýchne */
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* samotná karta */
+.cartFootLeft .cartFoot{
+  background: linear-gradient(180deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.03)
+  );
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  padding: 16px 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px);
+  outline: 1px solid rgba(0,0,0,.35);
+}
+
+/* riadok v karte: 2 stĺpce (label + hodnota) */
+.cartFootLeft .cartFootLine{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14.5px;               /* väčšie */
+  line-height: 1.25;
+  color: rgba(255,255,255,.88);
+}
+
+/* tenké deliace čiary medzi riadkami */
+.cartFootLeft .cartFootLine + .cartFootLine{
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+/* ľavý text (label) */
+.cartFootLeft .cartFootLine span{
+  color: rgba(255,255,255,.78);
+  letter-spacing: .2px;
+}
+
+/* pravá hodnota (čísla) */
+.cartFootLeft .cartFootLine b,
+.cartFootLeft .cartFootLine strong{
+  font-weight: 800;
+  color: rgba(255,255,255,.95);
+  font-size: 15px;
+}
+
+/* “Spolu” – mega zvýraznenie */
+.cartFootLeft .cartFootLine.total{
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(177,31,36,.45); /* RACEM red */
+}
+
+.cartFootLeft .cartFootLine.total span{
+  color: rgba(255,255,255,.92);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cartFootLeft .cartFootLine.total b{
+  font-size: 18px;                 /* nech to konečne vidno */
+  font-weight: 900;
+  letter-spacing: .4px;
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(177,31,36,.35);
+}
+
+/* malý “chip” efekt pre čísla (voliteľné, vyzerá premium) */
+.cartFootLeft .cartFootLine b{
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
 
   </style>
 </head>
@@ -2743,9 +2825,9 @@ body.modalOpen{
           <b id="cartSumShip">podľa položiek</b>
         </div>
         <div class="cartFootLine total">
-          <span>Spolu od</span>
-          <b id="cartSumTotal">0 €</b>
-        </div>
+  <span>Spolu od</span>
+  <b>528 €</b>
+</div>
       </div>
 
       <div class="cartFootRight">
