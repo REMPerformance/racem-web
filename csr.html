@@ -227,7 +227,6 @@
       pointer-events:none;
     }
 
-    /* ✅ UPRAV: CSR hero pozadie */
     .heroBg{
       position:absolute; inset:0;
       background: url("assets/csr-hero.webp") center/cover no-repeat;
@@ -270,7 +269,6 @@
     }
     .originPill b{ color:#fff; }
 
-    /* minimalist flag placeholder (ak nechceš vlajku, vyhoď span úplne) */
     .flag{
       width:22px;
       height:14px;
@@ -322,13 +320,6 @@
       grid-template-columns: 1.15fr .85fr;
       gap: 16px;
       align-items:start;
-    }
-
-    .divider{
-      height:1px;
-      width:100%;
-      background: rgba(255,255,255,0.08);
-      margin: 18px 0;
     }
 
     .filterBar{
@@ -389,7 +380,6 @@
       background: rgba(179,31,36,0.12);
     }
     .sel option{ background:#0b0b0b; color:#fff; }
-    .sel option:checked{ background: rgba(179,31,36,0.55); }
 
     .miniStat{
       color: rgba(255,255,255,0.70);
@@ -399,7 +389,6 @@
       text-transform: uppercase;
     }
 
-    /* ✅ 5 vedľa seba (ako chceš) */
     .productGrid{
       display:grid;
       grid-template-columns: repeat(5, minmax(0,1fr));
@@ -424,8 +413,6 @@
       box-shadow: 0 22px 70px rgba(0,0,0,0.70);
       transform: translateY(-3px);
     }
-    .pCard:active{ transform: translateY(-1px) scale(0.99); }
-
     .pMedia{
       position:relative;
       height: 220px;
@@ -440,8 +427,6 @@
       object-fit: cover;
       object-position:center;
       display:block;
-      transform:none;
-      filter:none;
       pointer-events:none;
     }
     .pBody{
@@ -503,7 +488,6 @@
       border-color: rgba(179,31,36,0.35);
     }
 
-    /* MODALS */
     .modal{
       position:fixed; inset:0; z-index:999;
       display:none;
@@ -522,7 +506,6 @@
       box-shadow: 0 22px 80px rgba(0,0,0,0.70);
       overflow:hidden;
       position:relative;
-
       max-height: 92vh;
       display:flex;
       flex-direction:column;
@@ -882,7 +865,6 @@
       padding-top: 10px;
     }
 
-    /* ORDER FORM facelift (rovnaké ako tvoje) */
     .orderIntro{
       margin: 0 0 14px 0;
       padding: 12px 14px;
@@ -1027,6 +1009,41 @@
       filter:none;
     }
 
+    /* ✅ LOADING OVERLAY */
+    #loadingOverlay{
+      position:fixed; inset:0; z-index:2000;
+      display:none;
+      background: rgba(0,0,0,0.62);
+      backdrop-filter: blur(10px);
+      align-items:center; justify-content:center;
+    }
+    #loadingOverlay.show{ display:flex; }
+    .loadBox{
+      display:flex; flex-direction:column; gap:14px; align-items:center;
+      padding:18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(10,10,10,0.72);
+      box-shadow: 0 22px 80px rgba(0,0,0,0.70);
+      min-width: min(420px, 90vw);
+    }
+    .spinner{
+      width:44px; height:44px;
+      border-radius:999px;
+      border: 3px solid rgba(255,255,255,0.18);
+      border-top-color: var(--red);
+      animation: spin .85s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadingText{
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+      font-size: 14px;
+      text-align:center;
+    }
+
     /* responsive */
     @media (max-width: 1400px){
       .productGrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
@@ -1066,7 +1083,6 @@
   <div class="topbar" id="top">
     <div class="nav">
       <a href="index.html" class="brand-mini" aria-label="RACEM">
-        <!-- ✅ UPRAV: tvoje logo -->
         <img src="assets/rmgroup.png" alt="RACEM logo">
         <div class="brand-title"></div>
       </a>
@@ -1093,7 +1109,6 @@
           <div class="pill originPill">
             <span class="flag" aria-hidden="true"></span>
             <span>PÔVOD:</span>
-            <!-- ✅ uprav podľa seba -->
             <b>EÚ</b>
           </div>
 
@@ -1107,8 +1122,8 @@
         <div class="panel">
           <div class="pill"><span class="dot"></span>Tip</div>
           <p style="margin:10px 0 0">
-            Ak máš v JSONe pri produktoch polia pre auto (napr. <b>make</b>/<b>model</b> alebo <b>manufacturer</b>/<b>carModel</b>),
-            filtre sa naplnia automaticky.
+            Tu sa výrobca auta rieši tak, že sa načíta samostatný JSON súbor. Preto musí existovať
+            <b>manifest.json</b> v tom istom priečinku ako táto stránka.
           </p>
         </div>
       </div>
@@ -1130,11 +1145,12 @@
           <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
 
-            <!-- ✅ NOVÉ: auto make + model -->
+            <!-- ✅ MAKE načíta súbor -->
             <select class="sel" id="make">
-              <option value="">Výrobca auta: všetko</option>
+              <option value="">Výrobca auta: vyber</option>
             </select>
 
+            <!-- ✅ MODEL sa doplní z načítaného súboru -->
             <select class="sel" id="model" disabled>
               <option value="">Model: všetko</option>
             </select>
@@ -1148,6 +1164,14 @@
         </div>
 
         <div class="productGrid" id="productGrid"></div>
+
+        <!-- ✅ LOAD MORE -->
+        <div style="display:flex; justify-content:center; margin-top:16px;">
+          <button class="btn secondary" id="loadMoreBtn" type="button" style="display:none;">
+            Načítať ďalšie
+          </button>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1197,7 +1221,7 @@
     </div>
   </div>
 
-  <!-- GALLERY MODAL (fullscreen obrázok) -->
+  <!-- GALLERY MODAL -->
   <div class="modal" id="galleryModal" aria-hidden="true" style="z-index:1200;">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
@@ -1227,7 +1251,6 @@
           cez poskytnuté osobné údaje (telefonicky alebo e-mailom).
         </div>
 
-        <!-- ✅ sem si nechaj svoj Formspree endpoint -->
         <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
           <input type="hidden" id="orderBlob" name="order_blob" value="">
 
@@ -1334,6 +1357,14 @@
     </div>
   </footer>
 
+  <!-- ✅ LOADING OVERLAY HTML -->
+  <div id="loadingOverlay">
+    <div class="loadBox">
+      <div class="spinner"></div>
+      <div id="loadingText">Načítavam…</div>
+    </div>
+  </div>
+
   <script>
     const PLACEHOLDER_DATA_URI =
       "data:image/svg+xml;charset=UTF-8," +
@@ -1354,9 +1385,17 @@
       `);
 
     const BRAND_NAME = "CSR Automotive";
-    const JSON_FILE = "products.json"; // ✅ vedľa html
+
+    // ✅ všetko je v /csr-cars (HTML aj JSON aj manifest)
+    const JSON_BASE = "./";
+    const MANIFEST_FILE = JSON_BASE + "manifest.json";
+    const PAGE_SIZE = 20;
 
     const DATA = { products: [] };
+
+    let MAKE_MAP = [];
+    let currentMakeFile = "";
+    let renderLimit = PAGE_SIZE;
 
     let activeProduct = null;
     let activeVariantIndex = 0;
@@ -1364,6 +1403,17 @@
 
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+    function showLoading(text="Načítavam…"){
+      const o = $("#loadingOverlay");
+      const t = $("#loadingText");
+      if (t) t.textContent = text;
+      if (o) o.classList.add("show");
+    }
+    function hideLoading(){
+      const o = $("#loadingOverlay");
+      if (o) o.classList.remove("show");
+    }
 
     function escapeHtml(str){
       return String(str ?? "")
@@ -1404,14 +1454,6 @@
       imgEl.src = url || PLACEHOLDER_DATA_URI;
     }
 
-    // --- AUTO MAKE/MODEL normalizácia (vezme hocijaké tvoje názvy polí) ---
-    function getMake(p){
-      return (p.make || p.manufacturer || p.carMake || p.brand || p.vehicleMake || "").toString().trim();
-    }
-    function getModel(p){
-      return (p.model || p.carModel || p.vehicleModel || p.series || p.platform || "").toString().trim();
-    }
-
     function minPriceEUR(prod){
       if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
       const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
@@ -1444,9 +1486,45 @@
       return Array.from(new Set(arr.filter(Boolean)));
     }
 
-    async function loadProducts(){
+    async function loadManifest(){
+      showLoading("Načítavam zoznam značiek…");
       try{
-        const res = await fetch(JSON_FILE, { cache: "no-store" });
+        const res = await fetch(MANIFEST_FILE, { cache:"no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        const json = await res.json();
+        MAKE_MAP = Array.isArray(json.makes) ? json.makes : [];
+
+        const makeSel = $("#make");
+        if (makeSel){
+          makeSel.innerHTML =
+            `<option value="">Výrobca auta: vyber</option>` +
+            MAKE_MAP.map(x => `<option value="${escapeHtml(x.file)}">${escapeHtml(x.label)}</option>`).join("");
+        }
+      }catch(err){
+        console.error("Manifest load failed:", err);
+        const makeSel = $("#make");
+        if (makeSel){
+          makeSel.innerHTML = `<option value="">Manifest sa nenačítal</option>`;
+        }
+      }finally{
+        hideLoading();
+      }
+    }
+
+    async function loadProductsFromFile(file){
+      if(!file){
+        DATA.products = [];
+        renderLimit = PAGE_SIZE;
+        buildCategoryOptions();
+        refreshModels();
+        renderProducts();
+        return;
+      }
+
+      showLoading("Načítavam produkty…");
+      try{
+        const url = JSON_BASE + file;
+        const res = await fetch(url, { cache:"no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
 
         const json = await res.json();
@@ -1467,56 +1545,48 @@
           };
         });
 
+        renderLimit = PAGE_SIZE;
+        $("#model").value = "";
+        $("#cat").value = "";
+        $("#q").value = "";
+
+        buildCategoryOptions();
+        refreshModels();
+        renderProducts();
+
+        document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
+
       }catch(err){
-        console.error("Failed to load products.json:", err);
+        console.error("Failed to load make file:", err);
         DATA.products = [];
+        buildCategoryOptions();
+        refreshModels();
+        renderProducts();
+      }finally{
+        hideLoading();
       }
     }
 
-    function buildFilterOptions(){
+    function buildCategoryOptions(){
       const catSel = $("#cat");
-      const makeSel = $("#make");
-      const modelSel = $("#model");
+      if (!catSel) return;
 
-      // categories
       const cats = new Set();
       DATA.products.forEach(p => p.category && cats.add(p.category));
-      if (catSel){
-        catSel.innerHTML =
-          `<option value="">Kategória: všetko</option>` +
-          Array.from(cats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-      }
 
-      // makes
-      const makes = new Set();
-      DATA.products.forEach(p => {
-        const m = getMake(p);
-        if (m) makes.add(m);
-      });
-      if (makeSel){
-        makeSel.innerHTML =
-          `<option value="">Výrobca auta: všetko</option>` +
-          Array.from(makes).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-      }
-
-      // model list depends on make
-      if (modelSel){
-        modelSel.innerHTML = `<option value="">Model: všetko</option>`;
-        modelSel.disabled = true;
-      }
+      catSel.innerHTML =
+        `<option value="">Kategória: všetko</option>` +
+        Array.from(cats).sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
     }
 
     function refreshModels(){
-      const make = $("#make")?.value || "";
       const modelSel = $("#model");
       if (!modelSel) return;
 
       const models = new Set();
       DATA.products.forEach(p => {
-        const pm = getMake(p);
-        const mdl = getModel(p);
-        if (!mdl) return;
-        if (!make || pm === make) models.add(mdl);
+        const mdl = (p.model || "").toString().trim();
+        if (mdl) models.add(mdl);
       });
 
       modelSel.innerHTML =
@@ -1530,20 +1600,16 @@
     function getFilteredProducts(){
       const q = ($("#q")?.value || "").trim().toLowerCase();
       const cat = $("#cat")?.value || "";
-      const make = $("#make")?.value || "";
       const model = $("#model")?.value || "";
 
       return DATA.products.filter(p => {
         if (cat && p.category !== cat) return false;
 
-        const pmake = getMake(p);
-        const pmodel = getModel(p);
-
-        if (make && pmake !== make) return false;
+        const pmodel = (p.model || "").toString().trim();
         if (model && pmodel !== model) return false;
 
         if (q){
-          const blob = `${p.title} ${p.short} ${p.category} ${pmake} ${pmodel}`.toLowerCase();
+          const blob = `${p.title} ${p.short} ${p.category} ${p.model}`.toLowerCase();
           if (!blob.includes(q)) return false;
         }
         return true;
@@ -1554,14 +1620,15 @@
       const grid = $("#productGrid");
       const titleEl = $("#productsTitle");
       const statEl = $("#stat");
+      const loadMoreBtn = $("#loadMoreBtn");
       if (!grid) return;
 
-      const make = $("#make")?.value || "";
+      const makeLabel = MAKE_MAP.find(x => x.file === currentMakeFile)?.label || "";
       const model = $("#model")?.value || "";
       const cat = $("#cat")?.value || "";
 
       const titleParts = [];
-      if (make) titleParts.push(make);
+      if (makeLabel) titleParts.push(makeLabel);
       if (model) titleParts.push(model);
       if (cat) titleParts.push(cat);
 
@@ -1572,17 +1639,29 @@
 
       grid.innerHTML = "";
 
+      if (!currentMakeFile){
+        grid.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:18px;">
+            <div class="pill"><span class="dot"></span>vyber výrobcu auta</div>
+            <h2 style="margin:12px 0 8px;">Najprv zvoľ značku</h2>
+            <p style="margin:0;">Vyber výrobcu auta v hornom filtri – načíta sa príslušný JSON súbor.</p>
+          </div>
+        `;
+        if (loadMoreBtn) loadMoreBtn.style.display = "none";
+        return;
+      }
+
       if (!DATA.products.length){
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
             <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
             <p style="margin:0;">
-              Uisti sa, že súbor <b>${escapeHtml(JSON_FILE)}</b> je vedľa tohto HTML a je validný JSON.
-              <br>Ak testuješ cez <b>file://</b>, fetch často nefunguje — spúšťaj cez GitHub Pages / lokálny server.
+              Skontroluj, či súbor <b>${escapeHtml(currentMakeFile)}</b> existuje v /csr-cars a je validný JSON.
             </p>
           </div>
         `;
+        if (loadMoreBtn) loadMoreBtn.style.display = "none";
         return;
       }
 
@@ -1591,35 +1670,42 @@
           <div class="panel" style="grid-column:1/-1; padding:18px;">
             <div class="pill"><span class="dot"></span>nič sme nenašli</div>
             <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">Skús zmeniť značku, model, kategóriu alebo vymazať vyhľadávanie.</p>
+            <p style="margin:0;">Skús zmeniť model, kategóriu alebo vymazať vyhľadávanie.</p>
           </div>
         `;
+        if (loadMoreBtn) loadMoreBtn.style.display = "none";
         return;
       }
 
-      items.forEach(p => {
+      const total = items.length;
+      const shown = Math.min(renderLimit, total);
+      const slice = items.slice(0, shown);
+
+      if (loadMoreBtn){
+        loadMoreBtn.style.display = (shown < total) ? "inline-flex" : "none";
+        loadMoreBtn.onclick = () => {
+          renderLimit += PAGE_SIZE;
+          renderProducts();
+        };
+      }
+
+      slice.forEach(p => {
         const card = document.createElement("div");
         card.className = "pCard";
         card.tabIndex = 0;
         card.setAttribute("role","button");
 
         const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
-
-        const mk = getMake(p);
-        const md = getModel(p);
-
-        const carLine = (mk || md)
-          ? `${mk || ""}${(mk && md) ? " " : ""}${md || ""}`.trim()
-          : "";
+        const modelLine = (p.model || "").toString().trim();
 
         card.innerHTML = `
           <div class="pMedia"><img alt="${escapeHtml(p.title)}"></div>
           <div class="pBody">
             <div class="pName">${escapeHtml(p.title || "")}</div>
-            <p class="pDesc">${escapeHtml(p.short || carLine || "")}</p>
+            <p class="pDesc">${escapeHtml(p.short || modelLine || "")}</p>
 
             <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
-              ${carLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Auto: ${escapeHtml(carLine)}</div>` : ""}
+              ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
               <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
               <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
               <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(deliverySummary(p))}</div>
@@ -1766,7 +1852,6 @@
       if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
       if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
 
-      // order summary
       $("#o_manufacturer").value = BRAND_NAME;
       $("#o_product").value = activeProduct.title || "—";
       $("#o_variant").value = variantName;
@@ -1774,11 +1859,8 @@
       $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
       $("#o_delivery").value = delivery;
 
-      // auto fill
-      const mk = getMake(activeProduct);
-      const md = getModel(activeProduct);
-      const carLine = (mk || md) ? `${mk || ""}${(mk && md) ? " " : ""}${md || ""}`.trim() : "";
-      if ($("#car")) $("#car").value = carLine;
+      const md = (activeProduct.model || "").toString().trim();
+      if ($("#car") && md) $("#car").value = md;
     }
 
     function openProduct(p){
@@ -1809,7 +1891,6 @@
       }
     }
 
-    // click image -> fullscreen
     if (mImg){
       mImg.addEventListener("click", () => {
         if (!activeProduct) return;
@@ -1822,7 +1903,6 @@
       });
     }
 
-    // nav buttons + keyboard
     mPrev?.addEventListener("click", () => setModalImage(activeImgIndex - 1));
     mNext?.addEventListener("click", () => setModalImage(activeImgIndex + 1));
 
@@ -1902,34 +1982,39 @@
     $("#customer_note")?.addEventListener("input", buildOrderBlob);
     $("#car")?.addEventListener("input", buildOrderBlob);
 
-    // Filters
+    // Filters (na už načítané produkty)
     ["q","cat","model"].forEach(id => {
       const el = $("#" + id);
       if (!el) return;
-      el.addEventListener("input", renderProducts);
-      el.addEventListener("change", renderProducts);
+      el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
+      el.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
     });
 
-    $("#make")?.addEventListener("change", () => {
-      refreshModels();
-      renderProducts();
+    // ✅ make = načítaj súbor
+    $("#make")?.addEventListener("change", async () => {
+      const file = $("#make").value || "";
+      currentMakeFile = file;
+      await loadProductsFromFile(file);
     });
 
     $("#resetFilters")?.addEventListener("click", () => {
       $("#q").value = "";
       $("#cat").value = "";
-      $("#make").value = "";
       $("#model").value = "";
-      $("#model").disabled = true;
+      $("#model").disabled = !DATA.products.length;
+      renderLimit = PAGE_SIZE;
       renderProducts();
     });
 
     (async () => {
-      await loadProducts();
-      buildFilterOptions();
+      await loadManifest();
+
+      // nič nenačítaj, kým user nevyberie značku
+      DATA.products = [];
+      renderLimit = PAGE_SIZE;
+      buildCategoryOptions();
       refreshModels();
       renderProducts();
-      console.log("CSR products loaded:", DATA.products.length);
     })();
   </script>
 </body>
