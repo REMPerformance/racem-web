@@ -1009,7 +1009,6 @@
       filter:none;
     }
 
-    /* ✅ LOADING OVERLAY */
     #loadingOverlay{
       position:fixed; inset:0; z-index:2000;
       display:none;
@@ -1044,7 +1043,6 @@
       text-align:center;
     }
 
-    /* responsive */
     @media (max-width: 1400px){
       .productGrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
     }
@@ -1122,8 +1120,8 @@
         <div class="panel">
           <div class="pill"><span class="dot"></span>Tip</div>
           <p style="margin:10px 0 0">
-            Tu sa výrobca auta rieši tak, že sa načíta samostatný JSON súbor. Preto musí existovať
-            <b>manifest.json</b> v tom istom priečinku ako táto stránka.
+            Výrobca auta tu funguje tak, že sa načíta samostatný JSON súbor z priečinka <b>/csr-cars</b>.
+            Preto musí existovať <b>/csr-cars/manifest.json</b>.
           </p>
         </div>
       </div>
@@ -1145,12 +1143,10 @@
           <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
 
-            <!-- ✅ MAKE načíta súbor -->
             <select class="sel" id="make">
               <option value="">Výrobca auta: vyber</option>
             </select>
 
-            <!-- ✅ MODEL sa doplní z načítaného súboru -->
             <select class="sel" id="model" disabled>
               <option value="">Model: všetko</option>
             </select>
@@ -1165,7 +1161,6 @@
 
         <div class="productGrid" id="productGrid"></div>
 
-        <!-- ✅ LOAD MORE -->
         <div style="display:flex; justify-content:center; margin-top:16px;">
           <button class="btn secondary" id="loadMoreBtn" type="button" style="display:none;">
             Načítať ďalšie
@@ -1176,7 +1171,6 @@
     </div>
   </section>
 
-  <!-- PRODUCT DETAIL MODAL -->
   <div class="modal" id="productModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
       <div class="modalHead">
@@ -1221,7 +1215,6 @@
     </div>
   </div>
 
-  <!-- GALLERY MODAL -->
   <div class="modal" id="galleryModal" aria-hidden="true" style="z-index:1200;">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
@@ -1237,7 +1230,6 @@
     </div>
   </div>
 
-  <!-- ORDER FORM MODAL -->
   <div class="modal" id="orderModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Objednávkový formulár">
       <div class="modalHead">
@@ -1357,7 +1349,6 @@
     </div>
   </footer>
 
-  <!-- ✅ LOADING OVERLAY HTML -->
   <div id="loadingOverlay">
     <div class="loadBox">
       <div class="spinner"></div>
@@ -1386,8 +1377,8 @@
 
     const BRAND_NAME = "CSR Automotive";
 
-    // ✅ všetko je v /csr-cars (HTML aj JSON aj manifest)
-    const JSON_BASE = "./";
+    // ✅ HTML je v root, JSON + manifest sú v /csr-cars/
+    const JSON_BASE = "/csr-cars/";
     const MANIFEST_FILE = JSON_BASE + "manifest.json";
     const PAGE_SIZE = 20;
 
@@ -1733,7 +1724,6 @@
       });
     }
 
-    // Modal refs
     const productModal = $("#productModal");
     const closeProductModal = $("#closeProductModal");
     const modalTitle = $("#modalTitle");
@@ -1922,7 +1912,6 @@
     closeGalleryModal?.addEventListener("click", () => closeModal(galleryModal));
     galleryModal?.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
 
-    // ORDER MODAL
     const orderModal = $("#orderModal");
     const closeOrderModal = $("#closeOrderModal");
     const cancelSend = $("#cancelSend");
@@ -1982,7 +1971,6 @@
     $("#customer_note")?.addEventListener("input", buildOrderBlob);
     $("#car")?.addEventListener("input", buildOrderBlob);
 
-    // Filters (na už načítané produkty)
     ["q","cat","model"].forEach(id => {
       const el = $("#" + id);
       if (!el) return;
@@ -1990,7 +1978,6 @@
       el.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
     });
 
-    // ✅ make = načítaj súbor
     $("#make")?.addEventListener("change", async () => {
       const file = $("#make").value || "";
       currentMakeFile = file;
@@ -2008,8 +1995,6 @@
 
     (async () => {
       await loadManifest();
-
-      // nič nenačítaj, kým user nevyberie značku
       DATA.products = [];
       renderLimit = PAGE_SIZE;
       buildCategoryOptions();
