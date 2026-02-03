@@ -1699,7 +1699,11 @@ function applyMarkup(n) {
       const image = p.image || images[0] || "";
       function normalizeLoadedList(json) {
   const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+
   return list.map(p => {
+    const images = Array.isArray(p.images) ? p.images : [];
+    const image = p.image || images[0] || "";
+
     // ✅ PREKLAD UŽ TU
     const titleFull = toSlovak(p.title || "");
     const shortFull = toSlovak(p.short || p.subtitle || "");
@@ -1714,9 +1718,6 @@ function applyMarkup(n) {
       ...v,
       name: toSlovak(v?.name || "")
     }));
-
-    const images = Array.isArray(p.images) ? p.images : [];
-    const image = p.image || images[0] || "";
 
     return {
       ...p,
@@ -1746,8 +1747,9 @@ function applyMarkup(n) {
       makeFile: "",
       makeLabel: ""
     };
-    });
-  }
+  });
+}
+
 
   function pickRandom(arr, n) {
     const a = Array.isArray(arr) ? arr.slice() : [];
