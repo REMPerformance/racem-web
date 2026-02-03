@@ -382,76 +382,91 @@
     }
     .sel option{ background:#0b0b0b; color:#fff; }
 
-    /* ✅ make buttons (namiesto dropdownu) */
-    .makePanel{
-      width:100%;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      padding: 12px;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
-    }
-    .makeHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
-    .makeHeader .miniStat{
-      color: rgba(255,255,255,0.70);
-      font-family:"Oswald", system-ui, sans-serif;
-      font-size: 14px;
-      letter-spacing:.20em;
-      text-transform: uppercase;
-    }
-    .makeGrid{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .makeBtn{
-      cursor:pointer;
-      user-select:none;
-      border-radius: 16px;
-      padding: 10px 12px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.28);
-      color: rgba(255,255,255,0.92);
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.16em;
-      text-transform: uppercase;
-      font-size: 12px;
-      line-height: 1.15;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .makeBtn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.12);
-    }
-    .makeBtn.active{
-      border-color: rgba(179,31,36,0.70);
-      background: rgba(179,31,36,0.22);
-      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
-      transform: scale(1.03);
-    }
-    .makeBtn.ghost{
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.06);
-    }
-    .makeBtn.ghost:hover{
-      border-color: rgba(255,255,255,0.32);
-      background: rgba(255,255,255,0.09);
-    }
-    .makeMoreRow{
-      margin-top:10px;
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+   /* ✅ make filter panel - vizuálne výraznejší */
+.makePanel{
+  width:100%;
+  border-radius: 20px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:
+    radial-gradient(circle at 18% 25%, rgba(179,31,36,0.14), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.22));
+  padding: 16px 16px 14px;
+  box-shadow:
+    0 22px 70px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.makeHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 12px;
+}
+
+.makeHeader .miniStat{
+  color: rgba(255,255,255,0.78);
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing:.22em;
+  text-transform: uppercase;
+}
+
+.makeGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+}
+
+/* ✅ väčšie chipy + lepší “button” pocit */
+.makeBtn{
+  cursor:pointer;
+  user-select:none;
+  border-radius: 18px;
+  padding: 12px 14px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.32);
+  color: rgba(255,255,255,0.92);
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1;
+  transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease, filter .15s ease;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.30);
+}
+
+.makeBtn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.48);
+  background: rgba(179,31,36,0.14);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+}
+
+.makeBtn.active{
+  border-color: rgba(179,31,36,0.85);
+  background: linear-gradient(180deg, rgba(179,31,36,0.35), rgba(0,0,0,0.28));
+  box-shadow:
+    0 18px 55px rgba(179,31,36,0.12),
+    0 18px 70px rgba(0,0,0,0.55);
+  transform: translateY(-1px) scale(1.03);
+  filter: saturate(1.1);
+}
+
+/* ✅ “Výber” nech je tiež pekný, ale jemne odlíšený */
+.makeBtn.ghost{
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+}
+.makeBtn.ghost:hover{
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.09);
+}
+
+/* ✅ zruš tento layout úplne (už ho nebudeme používať) */
+.makeMoreRow{ display:none !important; }
+
 
     .miniStat{
       color: rgba(255,255,255,0.70);
@@ -1220,9 +1235,10 @@
 
           <div class="makeGrid" id="makeButtons"></div>
 
-          <div class="makeMoreRow">
-            <button class="makeBtn ghost" id="toggleMakesBtn" type="button" style="display:none;">Zobraziť viac</button>
-          </div>
+         <div class="makeMoreRow">
+  <button class="makeBtn ghost" id="toggleMakesBtn" type="button" style="display:none;">Zobraziť viac</button>
+</div>
+
         </div>
 
         <div class="filterBar">
@@ -1464,6 +1480,22 @@
   const MANIFEST_FILE = JSON_BASE + "manifest.json";
   const PAGE_SIZE = 20;
 
+   const MAKE_PRIORITY_ORDER = [
+  "BMW",
+  "Volkswagen",
+  "Škoda",
+  "Skoda",
+  "Audi",
+  "Honda",
+  "Toyota",
+  "SEAT",
+  "Seat",
+  "Nissan",
+  "Lamborghini",
+  "Ferrari"
+];
+
+
   // ✅ po otvorení webu načítaj náhodné produkty z týchto značiek (ak existujú v manifeste)
   const FEATURED_MAKES_PREFER = [
     "Lamborghini.json",
@@ -1632,54 +1664,11 @@
     const total = MAKE_MAP.length;
     if (makeCount) makeCount.textContent = `${total} značiek`;
 
-    const firstN = 10;
-    const visible = showAllMakes ? MAKE_MAP : MAKE_MAP.slice(0, firstN);
+   const visible = MAKE_MAP; // ✅ vždy zobraz všetko
 
-    box.innerHTML = "";
+// ✅ toggle button už nepoužívame
+if (moreBtn) moreBtn.style.display = "none";
 
-    // ✅ "Výber" = featured (žiadny konkrétny make file)
-    const allBtn = document.createElement("button");
-    allBtn.type = "button";
-    allBtn.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
-    allBtn.textContent = "Výber";
-    allBtn.title = "Zobrazí náhodné produkty";
-    allBtn.addEventListener("click", async () => {
-      currentMakeFile = "";
-      currentMakeLabel = "";
-      $("#q").value = "";
-      $("#cat").value = "";
-      $("#model").value = "";
-      renderLimit = PAGE_SIZE;
-      applyDataProducts(featuredSample);
-      buildMakeButtons();
-    });
-    box.appendChild(allBtn);
-
-    visible.forEach(m => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "makeBtn" + (currentMakeFile === m.file ? " active" : "");
-      b.textContent = m.label;
-      b.title = m.label;
-      b.addEventListener("click", async () => {
-        currentMakeFile = m.file;
-        currentMakeLabel = m.label;
-        await loadProductsFromFile(m.file);
-        buildMakeButtons();
-      });
-      box.appendChild(b);
-    });
-
-    if (moreBtn){
-      if (total > firstN){
-        moreBtn.style.display = "inline-flex";
-        moreBtn.textContent = showAllMakes ? "Zobraziť menej" : "Zobraziť viac";
-        moreBtn.onclick = () => { showAllMakes = !showAllMakes; buildMakeButtons(); };
-      }else{
-        moreBtn.style.display = "none";
-      }
-    }
-  }
 
   // ✅ FIX: podpor "brands" aj "makes" a zmapuj tvoju štruktúru manifestu
   function parseManifestToMakeMap(json){
@@ -1695,6 +1684,33 @@
       return { label, file };
     }).filter(x => x.label && x.file);
   }
+function normalizeMakeName(s){
+  return String(s || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function sortMakesWithPriority(list){
+  const prio = MAKE_PRIORITY_ORDER.map(normalizeMakeName);
+  const idx = (label) => prio.indexOf(normalizeMakeName(label));
+
+  const arr = Array.isArray(list) ? list.slice() : [];
+  arr.sort((a,b) => {
+    const ai = idx(a.label);
+    const bi = idx(b.label);
+
+    const aIsPrio = ai !== -1;
+    const bIsPrio = bi !== -1;
+
+    if (aIsPrio && bIsPrio) return ai - bi;
+    if (aIsPrio && !bIsPrio) return -1;
+    if (!aIsPrio && bIsPrio) return 1;
+
+    return String(a.label).localeCompare(String(b.label), "sk");
+  });
+  return arr;
+}
 
   async function loadManifest(){
     showLoading("Načítavam zoznam značiek…");
@@ -1705,10 +1721,9 @@
 
       MAKE_MAP = parseManifestToMakeMap(json);
 
-      // stabilné zoradenie (A-Z)
-      MAKE_MAP.sort((a,b) => String(a.label).localeCompare(String(b.label), "sk"));
-
-      buildMakeButtons();
+      // ✅ zoradenie: najprv priority poradie, potom ostatné A–Z
+MAKE_MAP = sortMakesWithPriority(MAKE_MAP);
+buildMakeButtons();
     }catch(err){
       console.error("Manifest load failed:", err);
       MAKE_MAP = [];
