@@ -1618,12 +1618,64 @@
     return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
   }
 
-  // ✅ +20% prirážka pre všetko (produkty, varianty, doprava)
-const PRICE_MARKUP = 1.20;
+// ================================
+// ✅ CENNÍK podľa shippingCategory
+// nič v JSON nemeníme – len display ceny
+// ================================
+function getCatNumber(p) {
+  const raw = String(p?.shippingCategory ?? p?.shipping_category ?? p?.shippingCat ?? "").trim();
+  if (!raw) return null;
+  const m = raw.match(/([1-5])/);
+  return m ? Number(m[1]) : null;
+}
 
-function applyMarkup(n) {
-  if (typeof n !== "number" || Number.isNaN(n)) return n;
-  return Math.round(n * PRICE_MARKUP);
+function roundEUR(n) {
+  return Math.round(n);
+}
+
+function calcPriceFromBase(base, p) {
+  if (typeof base !== "number" || Number.isNaN(base)) return null;
+
+  const cat = getCatNumber(p);
+
+  // bez kategórie
+  if (!cat) {
+    return roundEUR(base * 1.30);
+  }
+
+  if (cat === 1) return roundEUR(base * 1.30);
+  if (cat === 2) return roundEUR(base * 1.30); // shipping riešime zvlášť
+  if (cat === 3) return roundEUR(base * 1.25 + 30);
+  if (cat === 4) return roundEUR(base * 1.25 + 35);
+  if (cat === 5) return roundEUR(base * 1.25 + 20);
+
+  return roundEUR(base * 1.30);
+}
+
+function calcShippingDisplay(p) {
+  const cat = getCatNumber(p);
+
+  // bez kategórie
+  if (!cat) {
+    return { text: "Doprava: Upresníme", value: null, included: false };
+  }
+
+  if (cat === 1) return { text: "Doprava: v cene", value: 0, included: true };
+  if (cat === 2) return { text: "Doprava: v cene (15 €)", value: 15, included: true }; // podľa tvojho zadania
+  if (cat === 3) return { text: `Doprava: ${fmtEUR(39)}`, value: 39, included: false };
+  if (cat === 4) return { text: `Doprava: ${fmtEUR(89)}`, value: 89, included: false };
+  if (cat === 5) return { text: `Doprava: ${fmtEUR(189)}`, value: 189, included: false };
+
+  return { text: "Doprava: Upresníme", value: null, included: false };
+}
+
+function getDisplayedPriceForProductOrVariant(p, variant) {
+  const base =
+    (variant && typeof variant.priceEUR === "number") ? variant.priceEUR :
+    (typeof p?.priceEUR === "number") ? p.priceEUR :
+    null;
+
+  return calcPriceFromBase(base, p);
 }
 
 
@@ -1653,19 +1705,22 @@ function applyMarkup(n) {
   }
 
  function minPriceEUR(prod) {
-  if (typeof prod.priceEUR === "number") return fmtEUR(applyMarkup(prod.priceEUR));
+  // ak má product priceEUR
+  const direct = (typeof prod.priceEUR === "number") ? calcPriceFromBase(prod.priceEUR, prod) : null;
 
   const prices = (prod.variants || [])
-    .map(v => v.priceEUR)
-    .filter(x => typeof x === "number")
-    .map(applyMarkup);
+    .map(v => (typeof v.priceEUR === "number") ? calcPriceFromBase(v.priceEUR, prod) : null)
+    .filter(x => typeof x === "number" && !Number.isNaN(x));
 
-  if (!prices.length) return "cena na dopyt";
+  if (!prices.length && typeof direct !== "number") return "cena na dopyt";
 
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
+  const all = prices.length ? prices : [direct].filter(x => typeof x === "number");
+  const min = Math.min(...all);
+  const max = Math.max(...all);
+
   return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
 }
+
 
 
   function variantSummary(p) {
@@ -2165,7 +2220,9 @@ function applyMarkup(n) {
       const chip = document.createElement("div");
       chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
       const name = toSlovak(v.name || `Variant ${i + 1}`).toUpperCase();
-      const price = (typeof v.priceEUR === "number") ? fmtEUR(applyMarkup(v.priceEUR)) : "UPRESNÍME";
+     const disp = getDisplayedPriceForProductOrVariant(activeProduct, v);
+const price = (typeof disp === "number") ? fmtEUR(disp) : "UPRESNÍME";
+
 
       chip.innerHTML = `
         <span class="vMain">${escapeHtml(name)}</span>
@@ -2182,40 +2239,39 @@ function applyMarkup(n) {
   }
 
   function updateVariantPrice() {
-    if (!activeProduct) return;
+  if (!activeProduct) return;
 
-    const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-    const v = vars[activeVariantIndex];
+  const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+  const v = vars[activeVariantIndex];
 
-    const ship = (typeof activeProduct.shippingEUR === "number") ? applyMarkup(activeProduct.shippingEUR) : 0;
+  const basePrice = getDisplayedPriceForProductOrVariant(activeProduct, v);
+  const ship = calcShippingDisplay(activeProduct);
 
-const base =
-  (v && typeof v.priceEUR === "number") ? applyMarkup(v.priceEUR) :
-  (typeof activeProduct.priceEUR === "number") ? applyMarkup(activeProduct.priceEUR) :
-  null;
+  const variantName = vars.length ? (v?.name || "—") : "—";
 
-
-    const variantName = vars.length ? (v?.name || "—") : "—";
-
-    if (mPriceBig) {
-      mPriceBig.innerHTML = base !== null
-        ? `<small>CENA</small><br>${fmtEUR(base)}`
-        : `<small>CENA</small><br>UPRESNÍME`;
-    }
-// ✅ podľa zadania: jednotná info len v detaile
-if (mShip) mShip.textContent = `Doprava a dodanie: od 21 €`;
-
-    $("#o_manufacturer").value = activeProduct.makeLabel || "—";
-    $("#o_product").value = activeProduct.title || "—";
-    $("#o_variant").value = variantName;
-    $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
- $("#o_shipping").value = "DOPRAVA A DODANIE: OD 21 €";
-$("#o_delivery").value = "—";
-
-
-    const md = (activeProduct.model || "").toString().trim();
-    if ($("#car") && md) $("#car").value = md;
+  if (mPriceBig) {
+    mPriceBig.innerHTML = (typeof basePrice === "number")
+      ? `<small>CENA</small><br>${fmtEUR(basePrice)}`
+      : `<small>CENA</small><br>UPRESNÍME`;
   }
+
+  // shipping line v detaile produktu
+  if (mShip) mShip.textContent = ship.text;
+
+  // objednávkový sumár
+  $("#o_manufacturer").value = activeProduct.makeLabel || "—";
+  $("#o_product").value = activeProduct.title || "—";
+  $("#o_variant").value = variantName;
+  $("#o_price").value = (typeof basePrice === "number") ? fmtEUR(basePrice) : "UPRESNÍME";
+
+  // do formulára dáme presne to, čo vidí zákazník
+  $("#o_shipping").value = ship.text.replace("Doprava:", "").trim();
+  $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
+
+  const md = (activeProduct.model || "").toString().trim();
+  if ($("#car") && md) $("#car").value = md;
+}
+
 // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
 // ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
 const TRANSLATE_MAP = [
