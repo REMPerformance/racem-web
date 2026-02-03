@@ -334,8 +334,9 @@
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      align-items:flex-start;
+      align-items:center;
     }
+
     .in, .sel{
       border:1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.25);
@@ -381,81 +382,83 @@
     }
     .sel option{ background:#0b0b0b; color:#fff; }
 
+    /* ✅ make buttons (namiesto dropdownu) */
+    .makePanel{
+      width:100%;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      padding: 12px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }
+    .makeHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .makeHeader .miniStat{
+      color: rgba(255,255,255,0.70);
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size: 14px;
+      letter-spacing:.20em;
+      text-transform: uppercase;
+    }
+    .makeGrid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .makeBtn{
+      cursor:pointer;
+      user-select:none;
+      border-radius: 16px;
+      padding: 10px 12px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.28);
+      color: rgba(255,255,255,0.92);
+      font-family:"Oswald", system-ui, sans-serif;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      font-size: 12px;
+      line-height: 1.15;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .makeBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.45);
+      background: rgba(179,31,36,0.12);
+    }
+    .makeBtn.active{
+      border-color: rgba(179,31,36,0.70);
+      background: rgba(179,31,36,0.22);
+      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
+      transform: scale(1.03);
+    }
+    .makeBtn.ghost{
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+    }
+    .makeBtn.ghost:hover{
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.09);
+    }
+    .makeMoreRow{
+      margin-top:10px;
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     .miniStat{
       color: rgba(255,255,255,0.70);
       font-family:"Oswald", system-ui, sans-serif;
       font-size: 16px;
       letter-spacing:.20em;
       text-transform: uppercase;
-    }
-
-    /* --- MAKE BUTTON FILTER --- */
-    .makePanel{
-      border:1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 12px;
-      background: rgba(0,0,0,0.22);
-      box-shadow: 0 14px 44px rgba(0,0,0,0.40);
-      min-width: min(860px, 100%);
-    }
-    .makeHeaderRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap:wrap;
-    }
-    .makeHeaderRow .miniStat{
-      font-size: 14px;
-      letter-spacing:.22em;
-    }
-    .makeGrid{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
-      gap: 10px;
-    }
-    .makeBtn{
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.92);
-      border-radius: 14px;
-      padding: 12px 10px;
-      cursor:pointer;
-      font-family:"Oswald", system-ui, sans-serif;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size: 13px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      user-select:none;
-      text-align:center;
-      min-height: 44px;
-    }
-    .makeBtn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.45);
-      background: rgba(179,31,36,0.14);
-      box-shadow: 0 18px 50px rgba(179,31,36,0.10);
-    }
-    .makeBtn.active{
-      border-color: rgba(179,31,36,0.75);
-      background: rgba(179,31,36,0.22);
-      box-shadow: 0 18px 60px rgba(179,31,36,0.14);
-      transform: translateY(-1px);
-    }
-    .makeBtn .tag{
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.25);
-      border-radius: 999px;
-      padding: 6px 8px;
-      font-size: 11px;
-      letter-spacing:.14em;
-      opacity:.9;
-      white-space:nowrap;
     }
 
     .productGrid{
@@ -958,6 +961,7 @@
       gap: 12px;
       margin-top: 6px;
     }
+    .formGrid .full{ grid-column: 1 / -1; }
     label{
       display:block;
       font-family:"Oswald", system-ui, sans-serif;
@@ -1113,12 +1117,9 @@
 
     @media (max-width: 1400px){
       .productGrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
-      .makeGrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
     }
     @media (max-width: 1200px){
       .productGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .makeGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .makePanel{ min-width: 100%; }
     }
     @media (max-width: 980px){
       .wrap{ padding:0 18px; }
@@ -1130,7 +1131,6 @@
       .modalBody{ grid-template-columns: 1fr; overflow:auto; }
       .mInfo{ overflow: visible; height:auto; padding-right:0; }
       .mImg{ min-height: 240px; }
-      .makeGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
     @media (max-width: 560px){
       section{ padding: 56px 0; }
@@ -1139,7 +1139,6 @@
       .orderSummaryGrid{ grid-template-columns: 1fr; }
       .in,.sel{ min-width: 160px; }
       .priceBig{ font-size: 30px; }
-      .makeGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -1193,8 +1192,8 @@
         <div class="panel">
           <div class="pill"><span class="dot"></span>Tip</div>
           <p style="margin:10px 0 0">
-            Výrobca auta tu funguje tak, že sa načíta samostatný JSON súbor z priečinka <b>/csr-cars</b>.
-            Preto musí existovať <b>/csr-cars/manifest.json</b>.
+            Výrobca auta sa načíta zo samostatného JSON súboru z priečinka <b>/csr-cars</b>.
+            Zoznam značiek je v <b>/csr-cars/manifest.json</b>.
           </p>
         </div>
       </div>
@@ -1208,28 +1207,26 @@
         <h2>Produkty CSR</h2>
 
         <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
-          <div class="miniStat" id="productsTitle">Filtre: všetko</div>
+          <div class="miniStat" id="productsTitle">Filtre: výber</div>
           <div class="miniStat" id="stat">0 produktov</div>
         </div>
 
+        <!-- ✅ značky ako buttony + "zobraziť viac" -->
+        <div class="makePanel" style="margin-top:14px;">
+          <div class="makeHeader">
+            <div class="miniStat">Výrobca auta</div>
+            <div class="miniStat" id="makeCount">—</div>
+          </div>
+
+          <div class="makeGrid" id="makeButtons"></div>
+
+          <div class="makeMoreRow">
+            <button class="makeBtn ghost" id="toggleMakesBtn" type="button" style="display:none;">Zobraziť viac</button>
+          </div>
+        </div>
+
         <div class="filterBar">
-          <div class="filtersLeft" style="flex:1 1 100%;">
-
-            <div class="makePanel" aria-label="Výrobca auta">
-              <div class="makeHeaderRow">
-                <div class="miniStat" id="makeHeaderText">Výrobca auta</div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-                  <button class="btn secondary" id="featuredBtn" type="button" title="Zobraziť náhodné produkty z top značiek">
-                    Featured
-                  </button>
-                  <button class="btn secondary" id="toggleMakes" type="button">
-                    Zobraziť viac
-                  </button>
-                </div>
-              </div>
-              <div class="makeGrid" id="makeGrid"></div>
-            </div>
-
+          <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
 
             <select class="sel" id="model" disabled>
@@ -1465,33 +1462,36 @@
     // ✅ HTML je v root, JSON + manifest sú v /csr-cars/
     const JSON_BASE = "/csr-cars/";
     const MANIFEST_FILE = JSON_BASE + "manifest.json";
+    const PAGE_SIZE = 20;
 
-    // --- Featured (náhodné produkty po otvorení) ---
-    // ⚠️ Uprav názvy, ak by tvoje súbory mali iné pomenovanie.
-    const FEATURED_FILES = [
+    // ✅ po otvorení webu načítaj náhodné produkty z týchto značiek (ak existujú v manifeste)
+    const FEATURED_MAKES_PREFER = [
       "Lamborghini.json",
       "Ferrari.json",
       "Volkswagen.json",
       "Škoda.json",
+      "Skoda.json",
       "BMW.json",
       "Audi.json"
     ];
-    const FEATURED_MIN = 20;
-
-    const PAGE_SIZE = 20;
+    const FEATURED_COUNT = 20;
 
     const DATA = { products: [] };
-    let MAKE_MAP = [];
-    let currentMakeFile = "";
+
+    let MAKE_MAP = [];               // {label,file}
+    let currentMakeFile = "";        // "" = featured výber
+    let currentMakeLabel = "";       // text
     let renderLimit = PAGE_SIZE;
+
+    let featuredPool = [];           // všetky produkty z featured značiek
+    let featuredSample = [];         // 20 náhodných
 
     let activeProduct = null;
     let activeVariantIndex = 0;
     let activeImgIndex = 0;
 
-    // make filter UI
+    // UI: make buttons
     let showAllMakes = false;
-    let featuredMode = true; // default po otvorení
 
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1514,6 +1514,14 @@
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
+    }
+
+    function truncateWords(text, maxWords=6){
+      const s = String(text ?? "").trim();
+      if (!s) return "";
+      const words = s.split(/\s+/).filter(Boolean);
+      if (words.length <= maxWords) return s;
+      return words.slice(0, maxWords).join(" ") + "…";
     }
 
     function fmtEUR(n){
@@ -1578,52 +1586,102 @@
       return Array.from(new Set(arr.filter(Boolean)));
     }
 
-    // ---- MANIFEST + MAKE GRID ----
+    function normalizeLoadedList(json){
+      const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+      return list.map(p => {
+        const images = Array.isArray(p.images) ? p.images : [];
+        const image = p.image || images[0] || "";
+        const titleFull = p.title || "";
+        const shortFull = p.short || p.subtitle || "";
 
-    function normalizeFileName(name){
-      // len pomocná: keď by sa niekde líšili diakritiky v URL – necháme to minimálne.
-      return String(name || "");
+        return {
+          ...p,
+          title: titleFull,
+          titleShort: truncateWords(titleFull, 6),
+          image,
+          images,
+          variants: Array.isArray(p.variants) ? p.variants : [],
+          short: shortFull,
+          shortShort: truncateWords(shortFull, 6),
+          description: p.description || "",
+          delivery: p.delivery || "Upresníme po objednávke",
+          shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
+          model: (p.model || "").toString().trim(),
+          category: (p.category || "").toString().trim(),
+          makeFile: "",   // doplníme pri load
+          makeLabel: ""   // doplníme pri load
+        };
+      });
     }
 
-    function renderMakeGrid(){
-      const grid = $("#makeGrid");
-      if (!grid) return;
-      grid.innerHTML = "";
+    function pickRandom(arr, n){
+      const a = Array.isArray(arr) ? arr.slice() : [];
+      for (let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a.slice(0, Math.min(n, a.length));
+    }
 
-      const list = Array.isArray(MAKE_MAP) ? MAKE_MAP.slice() : [];
-      // zoradiť podľa label
-      list.sort((a,b) => String(a.label||"").localeCompare(String(b.label||""), "sk"));
+    function buildMakeButtons(){
+      const box = $("#makeButtons");
+      const moreBtn = $("#toggleMakesBtn");
+      const makeCount = $("#makeCount");
+      if (!box) return;
 
-      const visible = showAllMakes ? list : list.slice(0, 10);
-      const active = currentMakeFile || "";
-      const featuredActive = featuredMode;
+      const total = MAKE_MAP.length;
+      if (makeCount) makeCount.textContent = `${total} značiek`;
 
-      // Featured pseudo button ako prvý (vizuálne ako make)
-      const featBtn = document.createElement("button");
-      featBtn.className = "makeBtn" + (featuredActive ? " active" : "");
-      featBtn.type = "button";
-      featBtn.innerHTML = `FEATURED <span class="tag">mix</span>`;
-      featBtn.addEventListener("click", async () => {
-        await activateFeatured();
+      const firstN = 10;
+      const visible = showAllMakes ? MAKE_MAP : MAKE_MAP.slice(0, firstN);
+
+      box.innerHTML = "";
+
+      // ✅ "Výber" = featured (žiadny konkrétny make file)
+      const allBtn = document.createElement("button");
+      allBtn.type = "button";
+      allBtn.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
+      allBtn.textContent = "Výber";
+      allBtn.title = "Zobrazí náhodné produkty";
+      allBtn.addEventListener("click", async () => {
+        currentMakeFile = "";
+        currentMakeLabel = "";
+        $("#q").value = "";
+        $("#cat").value = "";
+        $("#model").value = "";
+        renderLimit = PAGE_SIZE;
+        applyDataProducts(featuredSample, "Výber", "");
       });
-      grid.appendChild(featBtn);
+      box.appendChild(allBtn);
 
       visible.forEach(m => {
-        const btn = document.createElement("button");
-        btn.className = "makeBtn" + ((normalizeFileName(m.file) === active && !featuredMode) ? " active" : "");
-        btn.type = "button";
-        btn.textContent = m.label || m.file || "—";
-        btn.addEventListener("click", async () => {
-          await activateMake(m.file);
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "makeBtn" + (currentMakeFile === m.file ? " active" : "");
+        b.textContent = m.label;
+        b.title = m.label;
+        b.addEventListener("click", async () => {
+          currentMakeFile = m.file;
+          currentMakeLabel = m.label;
+          await loadProductsFromFile(m.file);
+          // zvýraznenie
+          $$(".makeBtn", box).forEach(x => x.classList.remove("active"));
+          b.classList.add("active");
+          // "Výber" (ghost) odznačiť
+          box.querySelector(".makeBtn.ghost")?.classList.remove("active");
         });
-        grid.appendChild(btn);
+        box.appendChild(b);
       });
-    }
 
-    function syncToggleMakesBtn(){
-      const t = $("#toggleMakes");
-      if (!t) return;
-      t.textContent = showAllMakes ? "Zobraziť menej" : "Zobraziť viac";
+      if (moreBtn){
+        if (total > firstN){
+          moreBtn.style.display = "inline-flex";
+          moreBtn.textContent = showAllMakes ? "Zobraziť menej" : "Zobraziť viac";
+          moreBtn.onclick = () => { showAllMakes = !showAllMakes; buildMakeButtons(); };
+        }else{
+          moreBtn.style.display = "none";
+        }
+      }
     }
 
     async function loadManifest(){
@@ -1633,122 +1691,117 @@
         if(!res.ok) throw new Error("HTTP " + res.status);
         const json = await res.json();
         MAKE_MAP = Array.isArray(json.makes) ? json.makes : [];
-        renderMakeGrid();
-        syncToggleMakesBtn();
+
+        // stabilné zoradenie (A-Z)
+        MAKE_MAP.sort((a,b) => String(a.label).localeCompare(String(b.label), "sk"));
+
+        buildMakeButtons();
       }catch(err){
         console.error("Manifest load failed:", err);
         MAKE_MAP = [];
-        renderMakeGrid();
+        const box = $("#makeButtons");
+        if (box){
+          box.innerHTML = `<div class="miniStat" style="letter-spacing:.18em;">Manifest sa nenačítal</div>`;
+        }
       }finally{
         hideLoading();
       }
     }
 
-    // ---- LOADERS (single make / featured) ----
-
-    function mapIncomingProduct(p){
-      const images = Array.isArray(p.images) ? p.images : [];
-      const image = p.image || images[0] || "";
-      return {
-        ...p,
-        image,
-        images,
-        variants: Array.isArray(p.variants) ? p.variants : [],
-        short: p.short || p.subtitle || "",
-        description: p.description || "",
-        delivery: p.delivery || "Upresníme po objednávke",
-        shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
-      };
+    function applyDataProducts(list, labelForTitle="", fileForTitle=""){
+      DATA.products = Array.isArray(list) ? list.slice() : [];
+      // reset filtračných dropdownov
+      buildCategoryOptions();
+      refreshModels();
+      renderProducts();
     }
 
-    async function loadProductsFromFile(file, { silent=false } = {}){
-      if(!file){
-        DATA.products = [];
+    async function loadFeaturedProducts(){
+      // load viac značiek naraz, z nich vyber 20 random
+      showLoading("Načítavam výber produktov…");
+      try{
+        const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
+        const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
+        const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6); // fallback
+
+        const results = await Promise.allSettled(
+          toLoad.map(async (m) => {
+            const res = await fetch(JSON_BASE + m.file, { cache:"no-store" });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const json = await res.json();
+            const list = normalizeLoadedList(json).map(p => ({...p, makeFile:m.file, makeLabel:m.label}));
+            return list;
+          })
+        );
+
+        featuredPool = [];
+        results.forEach(r => {
+          if (r.status === "fulfilled" && Array.isArray(r.value)){
+            featuredPool = featuredPool.concat(r.value);
+          }
+        });
+
+        // ak sa nič nenačítalo, tak nech aspoň nie je prázdno
+        if (!featuredPool.length){
+          featuredSample = [];
+        }else{
+          featuredSample = pickRandom(featuredPool, FEATURED_COUNT);
+        }
+
+        // zobraz výber hneď po otvorení
+        currentMakeFile = "";
+        currentMakeLabel = "";
         renderLimit = PAGE_SIZE;
-        buildCategoryOptions();
-        refreshModels();
-        renderProducts();
+        applyDataProducts(featuredSample, "Výber", "");
+        // aktivuj "Výber" button
+        buildMakeButtons();
+      }catch(err){
+        console.error("Featured load failed:", err);
+        featuredPool = [];
+        featuredSample = [];
+        applyDataProducts([], "Výber", "");
+      }finally{
+        hideLoading();
+      }
+    }
+
+    async function loadProductsFromFile(file){
+      if(!file){
+        // návrat na featured
+        $("#q").value = "";
+        $("#cat").value = "";
+        $("#model").value = "";
+        renderLimit = PAGE_SIZE;
+        applyDataProducts(featuredSample, "Výber", "");
+        buildMakeButtons();
         return;
       }
 
-      if (!silent) showLoading("Načítavam produkty…");
+      showLoading("Načítavam produkty…");
       try{
         const url = JSON_BASE + file;
         const res = await fetch(url, { cache:"no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
 
         const json = await res.json();
-        const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+        const list = normalizeLoadedList(json).map(p => ({
+          ...p,
+          makeFile: file,
+          makeLabel: (MAKE_MAP.find(x => x.file === file)?.label || "")
+        }));
 
-        return list.map(mapIncomingProduct);
+        renderLimit = PAGE_SIZE;
+        $("#model").value = "";
+        $("#cat").value = "";
+        $("#q").value = "";
+
+        applyDataProducts(list, currentMakeLabel, file);
+
+        document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
+
       }catch(err){
-        console.error("Failed to load make file:", file, err);
-        return [];
-      }finally{
-        if (!silent) hideLoading();
-      }
-    }
-
-    function shuffle(arr){
-      const a = arr.slice();
-      for (let i=a.length-1; i>0; i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    async function activateFeatured(){
-      featuredMode = true;
-      currentMakeFile = "";
-      $("#q").value = "";
-      $("#cat").value = "";
-      $("#model").value = "";
-      $("#model").disabled = true;
-      renderLimit = PAGE_SIZE;
-
-      showLoading("Načítavam featured produkty…");
-      try{
-        // načítaj paralelne viac súborov
-        const loads = FEATURED_FILES.map(f => loadProductsFromFile(f, { silent:true }));
-        const parts = await Promise.all(loads);
-        const merged = parts.flat().filter(Boolean);
-
-        // náhodne premiešať a vybrať aspoň FEATURED_MIN
-        const shuffled = shuffle(merged);
-        const picked = shuffled.slice(0, Math.max(FEATURED_MIN, PAGE_SIZE));
-
-        DATA.products = picked;
-
-        buildCategoryOptions();
-        refreshModels();
-        renderMakeGrid();
-        renderProducts();
-
-        document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
-      }finally{
-        hideLoading();
-      }
-    }
-
-    async function activateMake(file){
-      featuredMode = false;
-      currentMakeFile = file || "";
-      renderLimit = PAGE_SIZE;
-
-      $("#q").value = "";
-      $("#cat").value = "";
-      $("#model").value = "";
-
-      showLoading("Načítavam produkty…");
-      try{
-        const list = await loadProductsFromFile(file, { silent:true });
-        DATA.products = list;
-        buildCategoryOptions();
-        refreshModels();
-        renderMakeGrid();
-        renderProducts();
-        document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
+        console.error("Failed to load make file:", err);
+        applyDataProducts([], currentMakeLabel, file);
       }finally{
         hideLoading();
       }
@@ -1763,7 +1816,8 @@
 
       catSel.innerHTML =
         `<option value="">Kategória: všetko</option>` +
-        Array.from(cats).sort((a,b)=>String(a).localeCompare(String(b), "sk")).map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+        Array.from(cats).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+          .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
     }
 
     function refreshModels(){
@@ -1778,7 +1832,8 @@
 
       modelSel.innerHTML =
         `<option value="">Model: všetko</option>` +
-        Array.from(models).sort((a,b)=>String(a).localeCompare(String(b), "sk")).map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+        Array.from(models).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+          .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
 
       modelSel.disabled = !models.size;
       if (modelSel.disabled) modelSel.value = "";
@@ -1796,7 +1851,7 @@
         if (model && pmodel !== model) return false;
 
         if (q){
-          const blob = `${p.title} ${p.short} ${p.category} ${p.model}`.toLowerCase();
+          const blob = `${p.title} ${p.short} ${p.category} ${p.model} ${p.makeLabel}`.toLowerCase();
           if (!blob.includes(q)) return false;
         }
         return true;
@@ -1810,45 +1865,33 @@
       const loadMoreBtn = $("#loadMoreBtn");
       if (!grid) return;
 
-      const makeLabel = (!featuredMode && currentMakeFile)
-        ? (MAKE_MAP.find(x => x.file === currentMakeFile)?.label || "")
-        : "";
+      const makeLabel =
+        currentMakeFile
+          ? (MAKE_MAP.find(x => x.file === currentMakeFile)?.label || currentMakeLabel || "")
+          : "Výber";
 
       const model = $("#model")?.value || "";
       const cat = $("#cat")?.value || "";
 
       const titleParts = [];
-      if (featuredMode) titleParts.push("FEATURED");
       if (makeLabel) titleParts.push(makeLabel);
       if (model) titleParts.push(model);
       if (cat) titleParts.push(cat);
 
-      if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: všetko";
+      if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: výber";
 
       const items = getFilteredProducts();
       if (statEl) statEl.textContent = `${items.length} produktov`;
 
       grid.innerHTML = "";
 
-      if (!featuredMode && !currentMakeFile){
-        grid.innerHTML = `
-          <div class="panel" style="grid-column:1/-1; padding:18px;">
-            <div class="pill"><span class="dot"></span>vyber výrobcu auta</div>
-            <h2 style="margin:12px 0 8px;">Najprv zvoľ značku</h2>
-            <p style="margin:0;">Vyber výrobcu auta vyššie – načíta sa príslušný JSON súbor. Alebo klikni Featured.</p>
-          </div>
-        `;
-        if (loadMoreBtn) loadMoreBtn.style.display = "none";
-        return;
-      }
-
       if (!DATA.products.length){
         grid.innerHTML = `
           <div class="panel" style="grid-column:1/-1; padding:18px;">
-            <div class="pill"><span class="dot"></span>produkty sa nenačítali</div>
+            <div class="pill"><span class="dot"></span>nič sa nenačítalo</div>
             <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
             <p style="margin:0;">
-              Skontroluj, či súbory existujú v /csr-cars a sú validné JSON.
+              Skontroluj, či súbory existujú v <b>/csr-cars</b> a či je <b>manifest.json</b> validný.
             </p>
           </div>
         `;
@@ -1889,13 +1932,20 @@
         const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
         const modelLine = (p.model || "").toString().trim();
 
+        // ✅ názvy max 6 slov (card), full názov v modale
+        const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+        const descShort =
+          p.shortShort ||
+          truncateWords(p.short || modelLine || "", 6);
+
         card.innerHTML = `
-          <div class="pMedia"><img alt="${escapeHtml(p.title)}"></div>
+          <div class="pMedia"><img alt="${escapeHtml(p.title || titleShort)}"></div>
           <div class="pBody">
-            <div class="pName">${escapeHtml(p.title || "")}</div>
-            <p class="pDesc">${escapeHtml(p.short || modelLine || "")}</p>
+            <div class="pName">${escapeHtml(titleShort)}</div>
+            <p class="pDesc">${escapeHtml(descShort)}</p>
 
             <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+              ${p.makeLabel ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Značka: ${escapeHtml(p.makeLabel)}</div>` : ""}
               ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
               <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
               <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
@@ -2042,7 +2092,8 @@
       if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
       if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
 
-      $("#o_manufacturer").value = BRAND_NAME;
+      // ✅ výrobca = vybraná značka auta (makeLabel), nie CSR
+      $("#o_manufacturer").value = activeProduct.makeLabel || "—";
       $("#o_product").value = activeProduct.title || "—";
       $("#o_variant").value = variantName;
       $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
@@ -2057,8 +2108,10 @@
       activeProduct = p;
       activeVariantIndex = 0;
 
+      // ✅ modal ukazuje plný názov (nie skracovaný)
       const title = p.title || "—";
-      if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${title}`;
+      const carMake = p.makeLabel ? `${p.makeLabel} • ` : "";
+      if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
 
       const status = getStockStatus(p);
       if (mRibbon){
@@ -2121,7 +2174,7 @@
 
     function buildOrderBlob(){
       const lines = [
-        `Výrobca: ${$("#o_manufacturer")?.value || "—"}`,
+        `Značka auta: ${$("#o_manufacturer")?.value || "—"}`,
         `Diel: ${$("#o_product")?.value || "—"}`,
         `Variant: ${$("#o_variant")?.value || "—"}`,
         `Cena: ${$("#o_price")?.value || "—"}`,
@@ -2187,17 +2240,9 @@
       renderProducts();
     });
 
-    $("#toggleMakes")?.addEventListener("click", () => {
-      showAllMakes = !showAllMakes;
-      syncToggleMakesBtn();
-      renderMakeGrid();
-    });
-
-    $("#featuredBtn")?.addEventListener("click", activateFeatured);
-
     (async () => {
       await loadManifest();
-      await activateFeatured(); // ✅ default po otvorení: featured mix
+      await loadFeaturedProducts();
     })();
   </script>
 </body>
