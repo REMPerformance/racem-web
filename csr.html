@@ -1438,7 +1438,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
   const PLACEHOLDER_DATA_URI =
     "data:image/svg+xml;charset=UTF-8," +
     encodeURIComponent(`
@@ -1527,17 +1527,6 @@
   function fmtEUR(n){
     if (typeof n !== "number" || Number.isNaN(n)) return "—";
     return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
-  }
-
-  // ✅ FIX: manifest môže mať file ako "csr-cars/BMW.json" alebo "/csr-cars/BMW.json"
-  function cleanFile(file){
-    let f = String(file || "").trim();
-    if (!f) return "";
-    f = f.replace(/^\/+/, ""); // remove leading /
-    if (f.toLowerCase().startsWith(JSON_BASE.toLowerCase())) {
-      f = f.slice(JSON_BASE.length);
-    }
-    return f;
   }
 
   function getStockStatus(p){
@@ -1648,7 +1637,7 @@
 
     box.innerHTML = "";
 
-    // ✅ "Výber" = featured
+    // ✅ "Výber" = featured (žiadny konkrétny make file)
     const allBtn = document.createElement("button");
     allBtn.type = "button";
     allBtn.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
@@ -1661,7 +1650,7 @@
       $("#cat").value = "";
       $("#model").value = "";
       renderLimit = PAGE_SIZE;
-      applyDataProducts(featuredSample, "Výber", "");
+      applyDataProducts(featuredSample);
       buildMakeButtons();
     });
     box.appendChild(allBtn);
@@ -1669,24 +1658,15 @@
     visible.forEach(m => {
       const b = document.createElement("button");
       b.type = "button";
-
-      const fileClean = cleanFile(m.file);
-      b.className = "makeBtn" + (currentMakeFile === fileClean ? " active" : "");
+      b.className = "makeBtn" + (currentMakeFile === m.file ? " active" : "");
       b.textContent = m.label;
       b.title = m.label;
-
       b.addEventListener("click", async () => {
-        currentMakeFile = fileClean;
+        currentMakeFile = m.file;
         currentMakeLabel = m.label;
-
-        await loadProductsFromFile(fileClean);
-
-        // zvýraznenie
-        $$(".makeBtn", box).forEach(x => x.classList.remove("active"));
-        b.classList.add("active");
-        box.querySelector(".makeBtn.ghost")?.classList.remove("active");
+        await loadProductsFromFile(m.file);
+        buildMakeButtons();
       });
-
       box.appendChild(b);
     });
 
@@ -1701,28 +1681,29 @@
     }
   }
 
+  // ✅ FIX: podpor "brands" aj "makes" a zmapuj tvoju štruktúru manifestu
+  function parseManifestToMakeMap(json){
+    const raw =
+      (Array.isArray(json.brands) && json.brands) ||
+      (Array.isArray(json.makes) && json.makes) ||
+      [];
+
+    return raw.map(x => {
+      // podporí: {name,file,slug} aj {label,file}
+      const label = (x.label || x.name || "").toString().trim();
+      const file = (x.file || "").toString().trim();
+      return { label, file };
+    }).filter(x => x.label && x.file);
+  }
+
   async function loadManifest(){
     showLoading("Načítavam zoznam značiek…");
     try{
       const res = await fetch(MANIFEST_FILE, { cache:"no-store" });
       if(!res.ok) throw new Error("HTTP " + res.status);
-
       const json = await res.json();
 
-      // ✅ FIX: podporujeme {makes:[...]} aj [...]
-      const makes =
-        Array.isArray(json?.makes) ? json.makes :
-        Array.isArray(json) ? json :
-        [];
-
-      // normalizuj na {label,file}
-      MAKE_MAP = makes
-        .filter(x => x && (x.label || x.file))
-        .map(x => ({
-          label: String(x.label || "").trim(),
-          file: String(x.file || "").trim()
-        }))
-        .filter(x => x.label && x.file);
+      MAKE_MAP = parseManifestToMakeMap(json);
 
       // stabilné zoradenie (A-Z)
       MAKE_MAP.sort((a,b) => String(a.label).localeCompare(String(b.label), "sk"));
@@ -1751,16 +1732,15 @@
     showLoading("Načítavam výber produktov…");
     try{
       const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
-      const inManifest = MAKE_MAP.filter(m => preferred.has(cleanFile(m.file).toLowerCase()));
-      const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6); // fallback
+      const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
+      const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6);
 
       const results = await Promise.allSettled(
         toLoad.map(async (m) => {
-          const f = cleanFile(m.file);
-          const res = await fetch(JSON_BASE + f, { cache:"no-store" });
+          const res = await fetch(JSON_BASE + m.file, { cache:"no-store" });
           if (!res.ok) throw new Error("HTTP " + res.status);
           const json = await res.json();
-          const list = normalizeLoadedList(json).map(p => ({...p, makeFile:f, makeLabel:m.label}));
+          const list = normalizeLoadedList(json).map(p => ({...p, makeFile:m.file, makeLabel:m.label}));
           return list;
         })
       );
@@ -1778,7 +1758,6 @@
       currentMakeLabel = "";
       renderLimit = PAGE_SIZE;
       applyDataProducts(featuredSample);
-
       buildMakeButtons();
     }catch(err){
       console.error("Featured load failed:", err);
@@ -1791,30 +1770,26 @@
   }
 
   async function loadProductsFromFile(file){
-    const f = cleanFile(file);
-
-    if(!f){
+    if(!file){
       $("#q").value = "";
       $("#cat").value = "";
       $("#model").value = "";
       renderLimit = PAGE_SIZE;
       applyDataProducts(featuredSample);
-      buildMakeButtons();
       return;
     }
 
     showLoading("Načítavam produkty…");
     try{
-      const url = JSON_BASE + f;
+      const url = JSON_BASE + file;
       const res = await fetch(url, { cache:"no-store" });
       if(!res.ok) throw new Error("HTTP " + res.status);
 
       const json = await res.json();
-      const label = (MAKE_MAP.find(x => cleanFile(x.file) === f)?.label || currentMakeLabel || "");
-
+      const label = (MAKE_MAP.find(x => x.file === file)?.label || "");
       const list = normalizeLoadedList(json).map(p => ({
         ...p,
-        makeFile: f,
+        makeFile: file,
         makeLabel: label
       }));
 
@@ -1826,7 +1801,6 @@
       applyDataProducts(list);
 
       document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
-
     }catch(err){
       console.error("Failed to load make file:", err);
       applyDataProducts([]);
@@ -1895,7 +1869,7 @@
 
     const makeLabel =
       currentMakeFile
-        ? (MAKE_MAP.find(x => cleanFile(x.file) === currentMakeFile)?.label || currentMakeLabel || "")
+        ? (MAKE_MAP.find(x => x.file === currentMakeFile)?.label || currentMakeLabel || "")
         : "Výber";
 
     const model = $("#model")?.value || "";
@@ -1920,6 +1894,9 @@
           <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
           <p style="margin:0;">
             Skontroluj, či súbory existujú v <b>/csr-cars</b> a či je <b>manifest.json</b> validný.
+          </p>
+          <p style="margin:12px 0 0; color:rgba(255,255,255,.65); font-size:13px;">
+            Tip: v manifeste musí byť pole <b>brands</b> alebo <b>makes</b> s kľúčmi <b>name/label</b> a <b>file</b>.
           </p>
         </div>
       `;
@@ -2268,6 +2245,7 @@
     await loadFeaturedProducts();
   })();
 </script>
+
 
 </body>
 </html>
