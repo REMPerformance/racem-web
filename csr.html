@@ -1697,26 +1697,55 @@ function applyMarkup(n) {
     return list.map(p => {
       const images = Array.isArray(p.images) ? p.images : [];
       const image = p.image || images[0] || "";
-      const titleFull = p.title || "";
-      const shortFull = p.short || p.subtitle || "";
+      function normalizeLoadedList(json) {
+  const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+  return list.map(p => {
+    // ✅ PREKLAD UŽ TU
+    const titleFull = toSlovak(p.title || "");
+    const shortFull = toSlovak(p.short || p.subtitle || "");
+    const descFull  = toSlovak(p.description || "");
 
-      return {
-        ...p,
-        title: titleFull,
-        titleShort: truncateWords(titleFull, 6),
-        image,
-        images,
-        variants: Array.isArray(p.variants) ? p.variants : [],
-        short: shortFull,
-        shortShort: truncateWords(shortFull, 6),
-        description: p.description || "",
-        delivery: p.delivery || "Upresníme po objednávke",
-        shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
-        model: (p.model || "").toString().trim(),
-        category: (p.category || "").toString().trim(),
-        makeFile: "",
-        makeLabel: ""
-      };
+    const modelFull = toSlovak((p.model || "").toString().trim());
+    const catFull   = toSlovak((p.category || "").toString().trim());
+    const delFull   = toSlovak(p.delivery || "Upresníme po objednávke");
+
+    const variants = Array.isArray(p.variants) ? p.variants : [];
+    const variantsSk = variants.map(v => ({
+      ...v,
+      name: toSlovak(v?.name || "")
+    }));
+
+    const images = Array.isArray(p.images) ? p.images : [];
+    const image = p.image || images[0] || "";
+
+    return {
+      ...p,
+
+      title: titleFull,
+      titleShort: truncateWords(titleFull, 6),
+
+      image,
+      images,
+
+      variants: variantsSk,
+
+      short: shortFull,
+      shortShort: truncateWords(shortFull, 6),
+
+      description: descFull,
+
+      delivery: delFull,
+
+      shippingEUR: (typeof p.shippingEUR === "number")
+        ? p.shippingEUR
+        : ((typeof p.shipping === "number") ? p.shipping : 0),
+
+      model: modelFull,
+      category: catFull,
+
+      makeFile: "",
+      makeLabel: ""
+    };
     });
   }
 
@@ -2193,29 +2222,72 @@ $("#o_delivery").value = "—";
   }
 // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
 const TRANSLATE_MAP = [
-  [/front\s*lip/gi, "predné lipo"],
-  [/rear\s*diffuser/gi, "zadný difúzor"],
-  [/diffuser/gi, "difúzor"],
-  [/spoiler/gi, "spojler"],
-  [/side\s*skirt/gi, "prahy"],
-  [/bumper/gi, "nárazník"],
-  [/grill/gi, "maska"],
-  [/carbon/gi, "karbón"],
-  [/fiberglass|gfk/gi, "sklolaminát"],
-  [/paintable|ready\s*to\s*paint/gi, "určené na lakovanie"],
-  [/installation|mounting/gi, "montáž"],
-  [/includes|scope\s*of\s*delivery|lieferumfang/gi, "obsah balenia"],
-  [/certificate|gutachten/gi, "certifikát"],
-  [/excluding/gi, "okrem"],
-  [/without/gi, "bez"],
-  [/with/gi, "s"],
+  // --- časté automotive / diely ---
+  [/\bFrontansatz\b/gi, "predné lipo"],
+  [/\bHeckansatz\b/gi, "zadný difúzor"],
+  [/\bHecklippe\b/gi, "zadné lipo (spojler)"],
+  [/\bSeitenschweller\b/gi, "bočné prahy"],
+  [/\bSchweller\b/gi, "prahy"],
+  [/\bSpoiler\b/gi, "spojler"],
+  [/\bDiffusor\b/gi, "difúzor"],
+  [/\bStoßstange\b|\bStossstange\b/gi, "nárazník"],
+
+  // --- modely / karoséria ---
+  [/\bKarosserievariante\(n\)\b/gi, "karoséria / verzia"],
+  [/\bCompact\b/gi, "Compact"],
+  [/\bCoup[eé]\b/gi, "Coupé"],
+  [/\bLimousine\b/gi, "Sedan"],
+  [/\bTouring\b/gi, "Touring (kombi)"],
+  [/\bCabrio\b/gi, "Cabrio"],
+
+  // --- roky / vhodnosť ---
+  [/\bBaujahr\b/gi, "rok výroby"],
+  [/\bgeeignet\s+f[üu]r\b/gi, "vhodné pre"],
+  [/\bpassend\s+f[üu]r\b/gi, "pasuje na"],
+  [/\bausgenommen\b/gi, "okrem"],
+  [/\balle\b/gi, "všetky"],
+
+  // --- obsah balenia / montáž ---
+  [/\bLieferumfang\b/gi, "obsah balenia"],
+  [/\bMontagezubeh[öo]r\b/gi, "montážne príslušenstvo"],
+  [/\bAnbauanleitung\b|\bMontageanleitung\b/gi, "návod na montáž"],
+  [/\bsofern\s+notwendig\b/gi, "ak je potrebné"],
+
+  // --- certifikáty / schválenie ---
+  [/\bTeilegutachten\b/gi, "technický posudok"],
+  [/\bgutachterlicher\s+Stellungnahme\b/gi, "odborné stanovisko (posudok)"],
+  [/\b(ABE)\b/gi, "ABE (schválenie)"],
+  [/\bStraßenverkehr\b|\bStraßenverkehrsordnung\b/gi, "cestná premávka"],
+  [/\bzul[aä]ssig\b/gi, "schválené"],
+  [/\bEintragung\b/gi, "zápis do TP"],
+
+  // --- materiál / lakovanie ---
+  [/\bhochwertig(?:em|es|e|er)\b/gi, "kvalitný"],
+  [/\bMaterial\b/gi, "materiál"],
+  [/\bGFK\b|\bglasfaserverst[äa]rkt(?:er|es|e|em)?\b/gi, "sklolaminát"],
+  [/\bgefertigt\b/gi, "vyrobené"],
+  [/\bgleichm[aä]ßige\b/gi, "rovnomerná"],
+  [/\bOberfl[aä]chenstruktur\b/gi, "štruktúra povrchu"],
+  [/\berm[öo]glicht\b/gi, "umožňuje"],
+  [/\blackier(?:bar|f[aä]hig)\b/gi, "určené na lakovanie"],
+  [/\bProdukt\s+ist\s+unlackiert\b/gi, "produkt je nelakovaný"],
+  [/\bohne\s+gro[ßs]e\s+Vorarbeiten\b/gi, "bez veľkých príprav"],
+
+  // --- EN fallback ---
+  [/\bfront\s*lip\b/gi, "predné lipo"],
+  [/\bside\s*skirt(s)?\b/gi, "bočné prahy"],
+  [/\brear\s*diffuser\b/gi, "zadný difúzor"],
+  [/\bpaintable\b|\bready\s*to\s*paint\b/gi, "určené na lakovanie"],
 ];
 
 function toSlovak(text) {
   let t = String(text ?? "");
   TRANSLATE_MAP.forEach(([re, rep]) => { t = t.replace(re, rep); });
+  // drobné čistenie
+  t = t.replace(/\s+\./g, ".").replace(/\s+,/g, ",").trim();
   return t;
 }
+
 
   function openProduct(p) {
     activeProduct = p;
