@@ -1454,7 +1454,7 @@
     </div>
   </div>
 
- <script>
+<script>
   const PLACEHOLDER_DATA_URI =
     "data:image/svg+xml;charset=UTF-8," +
     encodeURIComponent(`
@@ -1475,26 +1475,25 @@
 
   const BRAND_NAME = "CSR Automotive";
 
-  // ✅ HTML je v root, JSON + manifest sú v /csr-cars/
+  // ✅ JSON + manifest sú v /csr-cars/
   const JSON_BASE = "csr-cars/";
   const MANIFEST_FILE = JSON_BASE + "manifest.json";
   const PAGE_SIZE = 20;
 
-   const MAKE_PRIORITY_ORDER = [
-  "BMW",
-  "Volkswagen",
-  "Škoda",
-  "Skoda",
-  "Audi",
-  "Honda",
-  "Toyota",
-  "SEAT",
-  "Seat",
-  "Nissan",
-  "Lamborghini",
-  "Ferrari"
-];
-
+  const MAKE_PRIORITY_ORDER = [
+    "BMW",
+    "Volkswagen",
+    "Škoda",
+    "Skoda",
+    "Audi",
+    "Honda",
+    "Toyota",
+    "SEAT",
+    "Seat",
+    "Nissan",
+    "Lamborghini",
+    "Ferrari"
+  ];
 
   // ✅ po otvorení webu načítaj náhodné produkty z týchto značiek (ak existujú v manifeste)
   const FEATURED_MAKES_PREFER = [
@@ -1515,40 +1514,37 @@
   let currentMakeLabel = "";       // text
   let renderLimit = PAGE_SIZE;
 
-  let featuredPool = [];           // všetky produkty z featured značiek
-  let featuredSample = [];         // 20 náhodných
+  let featuredPool = [];
+  let featuredSample = [];
 
   let activeProduct = null;
   let activeVariantIndex = 0;
   let activeImgIndex = 0;
 
-  // UI: make buttons
-  let showAllMakes = false;
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 
-  const $ = (s, el=document) => el.querySelector(s);
-  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
-
-  function showLoading(text="Načítavam…"){
+  function showLoading(text = "Načítavam…") {
     const o = $("#loadingOverlay");
     const t = $("#loadingText");
     if (t) t.textContent = text;
     if (o) o.classList.add("show");
   }
-  function hideLoading(){
+  function hideLoading() {
     const o = $("#loadingOverlay");
     if (o) o.classList.remove("show");
   }
 
-  function escapeHtml(str){
+  function escapeHtml(str) {
     return String(str ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
-  function truncateWords(text, maxWords=6){
+  function truncateWords(text, maxWords = 6) {
     const s = String(text ?? "").trim();
     if (!s) return "";
     const words = s.split(/\s+/).filter(Boolean);
@@ -1556,26 +1552,12 @@
     return words.slice(0, maxWords).join(" ") + "…";
   }
 
-  function fmtEUR(n){
+  function fmtEUR(n) {
     if (typeof n !== "number" || Number.isNaN(n)) return "—";
     return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
   }
 
-  function getStockStatus(p){
-    const s = (p.stockStatus || "").trim();
-    if (s) return s;
-    const a = (p.availability || "").trim();
-    if (a === "in_stock") return "in_stock";
-    if (a === "out_of_stock") return "out_of_stock";
-    return "made_to_order";
-  }
-  function stockLabel(status){
-    if (status === "in_stock") return "SKLADOM";
-    if (status === "out_of_stock") return "VYPREDANÉ";
-    return "NA OBJEDNÁVKU";
-  }
-
-  function setSafeImage(imgEl, url, noImgEl){
+  function setSafeImage(imgEl, url, noImgEl) {
     if (!imgEl) return;
     if (noImgEl) noImgEl.style.display = "none";
     imgEl.onerror = () => {
@@ -1586,7 +1568,21 @@
     imgEl.src = url || PLACEHOLDER_DATA_URI;
   }
 
-  function minPriceEUR(prod){
+  function getStockStatus(p) {
+    const s = (p.stockStatus || "").trim();
+    if (s) return s;
+    const a = (p.availability || "").trim();
+    if (a === "in_stock") return "in_stock";
+    if (a === "out_of_stock") return "out_of_stock";
+    return "made_to_order";
+  }
+  function stockLabel(status) {
+    if (status === "in_stock") return "SKLADOM";
+    if (status === "out_of_stock") return "VYPREDANÉ";
+    return "NA OBJEDNÁVKU";
+  }
+
+  function minPriceEUR(prod) {
     if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
     const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
     if (!prices.length) return "cena na dopyt";
@@ -1595,7 +1591,7 @@
     return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
   }
 
-  function variantSummary(p){
+  function variantSummary(p) {
     const vars = Array.isArray(p.variants) ? p.variants : [];
     if (!vars.length) return "Bez variantu";
     const names = vars.map(v => v.name || "Variant").filter(Boolean);
@@ -1603,22 +1599,23 @@
     if (unique.length === 1) return `Variant: ${unique[0]}`;
     return `Variantov: ${unique.length}`;
   }
-  function shipSummary(p){
+
+  function shipSummary(p) {
     const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
     return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
   }
-  function deliverySummary(p){
+  function deliverySummary(p) {
     return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
   }
 
-  function getProductImages(p){
+  function getProductImages(p) {
     const arr = []
       .concat(p?.image ? [p.image] : [])
       .concat(Array.isArray(p?.images) ? p.images : []);
     return Array.from(new Set(arr.filter(Boolean)));
   }
 
-  function normalizeLoadedList(json){
+  function normalizeLoadedList(json) {
     const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
     return list.map(p => {
       const images = Array.isArray(p.images) ? p.images : [];
@@ -1646,125 +1643,154 @@
     });
   }
 
-  function pickRandom(arr, n){
+  function pickRandom(arr, n) {
     const a = Array.isArray(arr) ? arr.slice() : [];
-    for (let i = a.length - 1; i > 0; i--){
+    for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a.slice(0, Math.min(n, a.length));
   }
 
-  function buildMakeButtons(){
+  // ✅ manifest parser (podporí brands aj makes)
+  function parseManifestToMakeMap(json) {
+    const raw =
+      (Array.isArray(json.brands) && json.brands) ||
+      (Array.isArray(json.makes) && json.makes) ||
+      [];
+    return raw.map(x => {
+      const label = (x.label || x.name || "").toString().trim();
+      const file = (x.file || "").toString().trim();
+      return { label, file };
+    }).filter(x => x.label && x.file);
+  }
+
+  function normalizeMakeName(s) {
+    return String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+  }
+
+  function sortMakesWithPriority(list) {
+    const prio = MAKE_PRIORITY_ORDER.map(normalizeMakeName);
+    const idx = (label) => prio.indexOf(normalizeMakeName(label));
+
+    const arr = Array.isArray(list) ? list.slice() : [];
+    arr.sort((a, b) => {
+      const ai = idx(a.label);
+      const bi = idx(b.label);
+
+      const aIsPrio = ai !== -1;
+      const bIsPrio = bi !== -1;
+
+      if (aIsPrio && bIsPrio) return ai - bi;
+      if (aIsPrio && !bIsPrio) return -1;
+      if (!aIsPrio && bIsPrio) return 1;
+
+      return String(a.label).localeCompare(String(b.label), "sk");
+    });
+    return arr;
+  }
+
+  function setActiveMakeButton(file) {
+    $$(".makeBtn[data-file]").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.file === String(file || ""));
+    });
+    const pickBtn = $("#makePickBtn");
+    if (pickBtn) pickBtn.classList.toggle("active", !file);
+  }
+
+  function buildMakeButtons() {
     const box = $("#makeButtons");
-    const moreBtn = $("#toggleMakesBtn");
     const makeCount = $("#makeCount");
     if (!box) return;
 
     const total = MAKE_MAP.length;
     if (makeCount) makeCount.textContent = `${total} značiek`;
 
-   const visible = MAKE_MAP; // ✅ vždy zobraz všetko
+    // vždy zobraz všetko, bez "zobraziť viac"
+    box.innerHTML = "";
 
-// ✅ toggle button už nepoužívame
-if (moreBtn) moreBtn.style.display = "none";
+    // "Výber" button
+    const pick = document.createElement("button");
+    pick.type = "button";
+    pick.id = "makePickBtn";
+    pick.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
+    pick.textContent = "Výber";
+    pick.addEventListener("click", async () => {
+      currentMakeFile = "";
+      currentMakeLabel = "";
+      renderLimit = PAGE_SIZE;
+      $("#q").value = "";
+      $("#cat").value = "";
+      $("#model").value = "";
+      setActiveMakeButton("");
+      applyDataProducts(featuredSample);
+    });
+    box.appendChild(pick);
 
-
-  // ✅ FIX: podpor "brands" aj "makes" a zmapuj tvoju štruktúru manifestu
-  function parseManifestToMakeMap(json){
-    const raw =
-      (Array.isArray(json.brands) && json.brands) ||
-      (Array.isArray(json.makes) && json.makes) ||
-      [];
-
-    return raw.map(x => {
-      // podporí: {name,file,slug} aj {label,file}
-      const label = (x.label || x.name || "").toString().trim();
-      const file = (x.file || "").toString().trim();
-      return { label, file };
-    }).filter(x => x.label && x.file);
+    // značky
+    MAKE_MAP.forEach(m => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "makeBtn";
+      b.textContent = m.label;
+      b.dataset.file = m.file;
+      if (m.file === currentMakeFile) b.classList.add("active");
+      b.addEventListener("click", async () => {
+        currentMakeFile = m.file;
+        currentMakeLabel = m.label;
+        setActiveMakeButton(m.file);
+        await loadProductsFromFile(m.file);
+      });
+      box.appendChild(b);
+    });
   }
-function normalizeMakeName(s){
-  return String(s || "")
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, " ");
-}
 
-function sortMakesWithPriority(list){
-  const prio = MAKE_PRIORITY_ORDER.map(normalizeMakeName);
-  const idx = (label) => prio.indexOf(normalizeMakeName(label));
-
-  const arr = Array.isArray(list) ? list.slice() : [];
-  arr.sort((a,b) => {
-    const ai = idx(a.label);
-    const bi = idx(b.label);
-
-    const aIsPrio = ai !== -1;
-    const bIsPrio = bi !== -1;
-
-    if (aIsPrio && bIsPrio) return ai - bi;
-    if (aIsPrio && !bIsPrio) return -1;
-    if (!aIsPrio && bIsPrio) return 1;
-
-    return String(a.label).localeCompare(String(b.label), "sk");
-  });
-  return arr;
-}
-
-  async function loadManifest(){
+  async function loadManifest() {
     showLoading("Načítavam zoznam značiek…");
-    try{
-      const res = await fetch(MANIFEST_FILE, { cache:"no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
+    try {
+      const res = await fetch(MANIFEST_FILE, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
       const json = await res.json();
 
-      MAKE_MAP = parseManifestToMakeMap(json);
-
-      // ✅ zoradenie: najprv priority poradie, potom ostatné A–Z
-MAKE_MAP = sortMakesWithPriority(MAKE_MAP);
-buildMakeButtons();
-    }catch(err){
+      MAKE_MAP = sortMakesWithPriority(parseManifestToMakeMap(json));
+      buildMakeButtons();
+    } catch (err) {
       console.error("Manifest load failed:", err);
       MAKE_MAP = [];
       const box = $("#makeButtons");
-      if (box){
-        box.innerHTML = `<div class="miniStat" style="letter-spacing:.18em;">Manifest sa nenačítal</div>`;
-      }
-    }finally{
+      if (box) box.innerHTML = `<div class="miniStat" style="letter-spacing:.18em;">Manifest sa nenačítal</div>`;
+    } finally {
       hideLoading();
     }
   }
 
-  function applyDataProducts(list){
+  function applyDataProducts(list) {
     DATA.products = Array.isArray(list) ? list.slice() : [];
     buildCategoryOptions();
     refreshModels();
     renderProducts();
   }
 
-  async function loadFeaturedProducts(){
+  async function loadFeaturedProducts() {
     showLoading("Načítavam výber produktov…");
-    try{
+    try {
       const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
       const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
       const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6);
 
       const results = await Promise.allSettled(
         toLoad.map(async (m) => {
-          const res = await fetch(JSON_BASE + m.file, { cache:"no-store" });
+          const res = await fetch(JSON_BASE + m.file, { cache: "no-store" });
           if (!res.ok) throw new Error("HTTP " + res.status);
           const json = await res.json();
-          const list = normalizeLoadedList(json).map(p => ({...p, makeFile:m.file, makeLabel:m.label}));
+          const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
           return list;
         })
       );
 
       featuredPool = [];
       results.forEach(r => {
-        if (r.status === "fulfilled" && Array.isArray(r.value)){
-          featuredPool = featuredPool.concat(r.value);
-        }
+        if (r.status === "fulfilled" && Array.isArray(r.value)) featuredPool = featuredPool.concat(r.value);
       });
 
       featuredSample = featuredPool.length ? pickRandom(featuredPool, FEATURED_COUNT) : [];
@@ -1772,41 +1798,36 @@ buildMakeButtons();
       currentMakeFile = "";
       currentMakeLabel = "";
       renderLimit = PAGE_SIZE;
+
       applyDataProducts(featuredSample);
       buildMakeButtons();
-    }catch(err){
+      setActiveMakeButton("");
+    } catch (err) {
       console.error("Featured load failed:", err);
       featuredPool = [];
       featuredSample = [];
       applyDataProducts([]);
-    }finally{
+    } finally {
       hideLoading();
     }
   }
 
-  async function loadProductsFromFile(file){
-    if(!file){
-      $("#q").value = "";
-      $("#cat").value = "";
-      $("#model").value = "";
+  async function loadProductsFromFile(file) {
+    if (!file) {
       renderLimit = PAGE_SIZE;
       applyDataProducts(featuredSample);
       return;
     }
 
     showLoading("Načítavam produkty…");
-    try{
+    try {
       const url = JSON_BASE + file;
-      const res = await fetch(url, { cache:"no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
 
       const json = await res.json();
       const label = (MAKE_MAP.find(x => x.file === file)?.label || "");
-      const list = normalizeLoadedList(json).map(p => ({
-        ...p,
-        makeFile: file,
-        makeLabel: label
-      }));
+      const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: file, makeLabel: label }));
 
       renderLimit = PAGE_SIZE;
       $("#model").value = "";
@@ -1814,17 +1835,16 @@ buildMakeButtons();
       $("#q").value = "";
 
       applyDataProducts(list);
-
-      document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
-    }catch(err){
+      document.getElementById("produktySekcia")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (err) {
       console.error("Failed to load make file:", err);
       applyDataProducts([]);
-    }finally{
+    } finally {
       hideLoading();
     }
   }
 
-  function buildCategoryOptions(){
+  function buildCategoryOptions() {
     const catSel = $("#cat");
     if (!catSel) return;
 
@@ -1833,11 +1853,11 @@ buildMakeButtons();
 
     catSel.innerHTML =
       `<option value="">Kategória: všetko</option>` +
-      Array.from(cats).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+      Array.from(cats).sort((a, b) => String(a).localeCompare(String(b), "sk"))
         .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
   }
 
-  function refreshModels(){
+  function refreshModels() {
     const modelSel = $("#model");
     if (!modelSel) return;
 
@@ -1849,14 +1869,14 @@ buildMakeButtons();
 
     modelSel.innerHTML =
       `<option value="">Model: všetko</option>` +
-      Array.from(models).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+      Array.from(models).sort((a, b) => String(a).localeCompare(String(b), "sk"))
         .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
 
     modelSel.disabled = !models.size;
     if (modelSel.disabled) modelSel.value = "";
   }
 
-  function getFilteredProducts(){
+  function getFilteredProducts() {
     const q = ($("#q")?.value || "").trim().toLowerCase();
     const cat = $("#cat")?.value || "";
     const model = $("#model")?.value || "";
@@ -1867,7 +1887,7 @@ buildMakeButtons();
       const pmodel = (p.model || "").toString().trim();
       if (model && pmodel !== model) return false;
 
-      if (q){
+      if (q) {
         const blob = `${p.title} ${p.short} ${p.category} ${p.model} ${p.makeLabel}`.toLowerCase();
         if (!blob.includes(q)) return false;
       }
@@ -1875,7 +1895,7 @@ buildMakeButtons();
     });
   }
 
-  function renderProducts(){
+  function renderProducts() {
     const grid = $("#productGrid");
     const titleEl = $("#productsTitle");
     const statEl = $("#stat");
@@ -1902,7 +1922,7 @@ buildMakeButtons();
 
     grid.innerHTML = "";
 
-    if (!DATA.products.length){
+    if (!DATA.products.length) {
       grid.innerHTML = `
         <div class="panel" style="grid-column:1/-1; padding:18px;">
           <div class="pill"><span class="dot"></span>nič sa nenačítalo</div>
@@ -1910,16 +1930,13 @@ buildMakeButtons();
           <p style="margin:0;">
             Skontroluj, či súbory existujú v <b>/csr-cars</b> a či je <b>manifest.json</b> validný.
           </p>
-          <p style="margin:12px 0 0; color:rgba(255,255,255,.65); font-size:13px;">
-            Tip: v manifeste musí byť pole <b>brands</b> alebo <b>makes</b> s kľúčmi <b>name/label</b> a <b>file</b>.
-          </p>
         </div>
       `;
       if (loadMoreBtn) loadMoreBtn.style.display = "none";
       return;
     }
 
-    if (!items.length){
+    if (!items.length) {
       grid.innerHTML = `
         <div class="panel" style="grid-column:1/-1; padding:18px;">
           <div class="pill"><span class="dot"></span>nič sme nenašli</div>
@@ -1935,7 +1952,7 @@ buildMakeButtons();
     const shown = Math.min(renderLimit, total);
     const slice = items.slice(0, shown);
 
-    if (loadMoreBtn){
+    if (loadMoreBtn) {
       loadMoreBtn.style.display = (shown < total) ? "inline-flex" : "none";
       loadMoreBtn.onclick = () => {
         renderLimit += PAGE_SIZE;
@@ -1947,7 +1964,7 @@ buildMakeButtons();
       const card = document.createElement("div");
       card.className = "pCard";
       card.tabIndex = 0;
-      card.setAttribute("role","button");
+      card.setAttribute("role", "button");
 
       const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
       const modelLine = (p.model || "").toString().trim();
@@ -1981,7 +1998,7 @@ buildMakeButtons();
 
       card.addEventListener("click", () => openProduct(p));
       card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           openProduct(p);
         }
@@ -1991,6 +2008,7 @@ buildMakeButtons();
     });
   }
 
+  // ===== MODAL LOGIKA (tvoje pôvodné) =====
   const productModal = $("#productModal");
   const closeProductModal = $("#closeProductModal");
   const modalTitle = $("#modalTitle");
@@ -2013,16 +2031,16 @@ buildMakeButtons();
   const gFull = $("#gFull");
   const gNoImg = $("#gNoImg");
 
-  function closeModal(modal){
+  function closeModal(modal) {
     if (!modal) return;
     modal.classList.remove("show");
-    modal.setAttribute("aria-hidden","true");
+    modal.setAttribute("aria-hidden", "true");
   }
 
-  function setModalImage(index){
+  function setModalImage(index) {
     if (!activeProduct) return;
     const imgs = getProductImages(activeProduct);
-    if (!imgs.length){
+    if (!imgs.length) {
       setSafeImage(mImg, "", mNoImg);
       if (mThumbs) mThumbs.innerHTML = "";
       return;
@@ -2030,32 +2048,32 @@ buildMakeButtons();
     activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
     setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
 
-    if (mThumbs){
+    if (mThumbs) {
       $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
+      if (!mThumbs.children.length) buildThumbs();
     }
-    if (mThumbs && !mThumbs.children.length) buildThumbs();
   }
 
-  function buildThumbs(){
+  function buildThumbs() {
     if (!mThumbs || !activeProduct) return;
     const imgs = getProductImages(activeProduct);
-    if (imgs.length <= 1){ mThumbs.innerHTML = ""; return; }
+    if (imgs.length <= 1) { mThumbs.innerHTML = ""; return; }
 
     mThumbs.innerHTML = "";
     imgs.forEach((src, i) => {
       const d = document.createElement("div");
       d.className = "thumb" + (i === activeImgIndex ? " active" : "");
-      d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
+      d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i + 1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
       d.addEventListener("click", () => setModalImage(i));
       mThumbs.appendChild(d);
     });
   }
 
-  function buildVariantChips(){
+  function buildVariantChips() {
     if (!mVariantList) return;
     const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
-    if (!vars.length){
+    if (!vars.length) {
       if (mVariantWrap) mVariantWrap.style.display = "none";
       mVariantList.innerHTML = "";
       activeVariantIndex = 0;
@@ -2068,7 +2086,7 @@ buildMakeButtons();
     vars.forEach((v, i) => {
       const chip = document.createElement("div");
       chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-      const name = (v.name || `Variant ${i+1}`).toUpperCase();
+      const name = (v.name || `Variant ${i + 1}`).toUpperCase();
       const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
 
       chip.innerHTML = `
@@ -2085,7 +2103,7 @@ buildMakeButtons();
     });
   }
 
-  function updateVariantPrice(){
+  function updateVariantPrice() {
     if (!activeProduct) return;
 
     const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
@@ -2101,7 +2119,7 @@ buildMakeButtons();
 
     const variantName = vars.length ? (v?.name || "—") : "—";
 
-    if (mPriceBig){
+    if (mPriceBig) {
       mPriceBig.innerHTML = base !== null
         ? `<small>CENA</small><br>${fmtEUR(base)}`
         : `<small>CENA</small><br>UPRESNÍME`;
@@ -2120,7 +2138,7 @@ buildMakeButtons();
     if ($("#car") && md) $("#car").value = md;
   }
 
-  function openProduct(p){
+  function openProduct(p) {
     activeProduct = p;
     activeVariantIndex = 0;
 
@@ -2129,7 +2147,7 @@ buildMakeButtons();
     if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
 
     const status = getStockStatus(p);
-    if (mRibbon){
+    if (mRibbon) {
       mRibbon.className = `ribbon ${status}`;
       mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
     }
@@ -2143,13 +2161,13 @@ buildMakeButtons();
     buildVariantChips();
     updateVariantPrice();
 
-    if (productModal){
+    if (productModal) {
       productModal.classList.add("show");
-      productModal.setAttribute("aria-hidden","false");
+      productModal.setAttribute("aria-hidden", "false");
     }
   }
 
-  if (mImg){
+  if (mImg) {
     mImg.addEventListener("click", () => {
       if (!activeProduct) return;
       const imgs = getProductImages(activeProduct);
@@ -2157,7 +2175,7 @@ buildMakeButtons();
       const src = imgs[activeImgIndex] || imgs[0];
       setSafeImage(gFull, src, gNoImg);
       galleryModal?.classList.add("show");
-      galleryModal?.setAttribute("aria-hidden","false");
+      galleryModal?.setAttribute("aria-hidden", "false");
     });
   }
 
@@ -2165,11 +2183,11 @@ buildMakeButtons();
   mNext?.addEventListener("click", () => setModalImage(activeImgIndex + 1));
 
   window.addEventListener("keydown", (e) => {
-    if (productModal?.classList.contains("show")){
+    if (productModal?.classList.contains("show")) {
       if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
       if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
     }
-    if (e.key === "Escape"){
+    if (e.key === "Escape") {
       [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
     }
   });
@@ -2187,7 +2205,7 @@ buildMakeButtons();
   const consent = $("#consent");
   const sendBtn = $("#sendBtn");
 
-  function buildOrderBlob(){
+  function buildOrderBlob() {
     const lines = [
       `Značka auta: ${$("#o_manufacturer")?.value || "—"}`,
       `Diel: ${$("#o_product")?.value || "—"}`,
@@ -2204,7 +2222,7 @@ buildMakeButtons();
     if (blob) blob.value = lines;
   }
 
-  function openOrderModal(){
+  function openOrderModal() {
     closeModal(productModal);
     if (!orderModal) return;
 
@@ -2214,8 +2232,8 @@ buildMakeButtons();
 
     buildOrderBlob();
     orderModal.classList.add("show");
-    orderModal.setAttribute("aria-hidden","false");
-    setTimeout(()=> $("#name")?.focus(), 50);
+    orderModal.setAttribute("aria-hidden", "false");
+    setTimeout(() => $("#name")?.focus(), 50);
   }
 
   if (mOrder) mOrder.addEventListener("click", openOrderModal);
@@ -2223,12 +2241,12 @@ buildMakeButtons();
   cancelSend?.addEventListener("click", () => closeModal(orderModal));
   orderModal?.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
 
-  if (consent && sendBtn){
+  if (consent && sendBtn) {
     consent.addEventListener("change", () => { sendBtn.disabled = !consent.checked; });
   }
 
   orderForm?.addEventListener("submit", (e) => {
-    if (consent && !consent.checked){
+    if (consent && !consent.checked) {
       e.preventDefault();
       consent.focus();
       return;
@@ -2239,7 +2257,7 @@ buildMakeButtons();
   $("#customer_note")?.addEventListener("input", buildOrderBlob);
   $("#car")?.addEventListener("input", buildOrderBlob);
 
-  ["q","cat","model"].forEach(id => {
+  ["q", "cat", "model"].forEach(id => {
     const el = $("#" + id);
     if (!el) return;
     el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
@@ -2260,6 +2278,7 @@ buildMakeButtons();
     await loadFeaturedProducts();
   })();
 </script>
+
 
 
 </body>
