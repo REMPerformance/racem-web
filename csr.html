@@ -2217,70 +2217,139 @@ $("#o_delivery").value = "—";
     if ($("#car") && md) $("#car").value = md;
   }
 // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
+// ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
 const TRANSLATE_MAP = [
-  // --- časté automotive / diely ---
+  // ====== PRIORITA: celé frázy / vety ======
+  [/ab\s+Facelift\s+werden\s+andere\s+Stoßstangenhalter\s+benötigt/gi,
+    "od faceliftu sú potrebné iné držiaky nárazníka"],
+
+  [/ab\s+Facelift\s+werden\s+andere\s+Stoßstangenhalter\s+benötigt/gi,
+    "od faceliftu sú potrebné iné držiaky nárazníka"],
+
+  [/mit\s+fahrzeugspezifischem\s+typovy?\s+Zertifikat.*?§\s*19\.?\s*3\s*StVZO/gi,
+    "s typovým certifikátom pre konkrétne vozidlo (dokumentácia k dielu) pre schválenie montáže podľa §19.3 StVZO"],
+
+  [/Stoßstangenhalter\b|\bStossstangenhalter\b/gi,
+    "držiaky nárazníka"],
+
+  [/Nebellampen\s+sind\s+im\s+Lieferumfang\s+nicht\s+enthalten/gi,
+    "hmlovky nie sú súčasťou balenia"],
+
+  [/ist\s+aus\s+hochwertigem\s+ABS\s+Kunststoff\s+gefertigt/gi,
+    "je vyrobený z kvalitného ABS plastu"],
+
+  [/gleichm[aä]ßige\s+Oberfl[aä]chenstruktur\s+erm[öo]glicht\s+eine\s+Lackierung\s+ohne\s+gro[ßs]e\s+Vorarbeiten/gi,
+    "rovnomerná štruktúra povrchu umožňuje lakovanie bez veľkých príprav"],
+
+  [/Material\s+ist\s+flexibel/gi,
+    "materiál je flexibilný"],
+
+  [/Produkt\s+ist\s+unlackiert/gi,
+    "produkt je nelakovaný"],
+
+  [/inkl\.?\s*Zubeh[öo]r\s*\(Gitter\)/gi,
+    "vrátane príslušenstva (mriežka)"],
+
+  [/inkl\.?\s*Montagezubeh[öo]r,\s*sofern\s+notwendig/gi,
+    "vrátane montážneho príslušenstva, ak je potrebné"],
+
+  [/inkl\.?\s*Montageanleitung/gi,
+    "vrátane montážneho návodu"],
+
+  [/mit\s+fahrzeugspezifischem\s+typ(?:-| )?Zertifikat.*?§\s*19\.?\s*3\s*StVZO/gi,
+    "s typovým certifikátom pre konkrétne vozidlo (dokumentácia k dielu) pre schválenie montáže podľa §19.3 StVZO"],
+
+  [/im\s+Lieferumfang\s+nicht\s+enthalten/gi, "nie je súčasťou balenia"],
+  [/nicht\s+im\s+Lieferumfang\s+enthalten/gi, "nie je súčasťou balenia"],
+
+  [/Produkt\s+ist\s+unlackiert/gi, "Produkt je nelakovaný"],
+  [/ohne\s+gro[ßs]e\s+Vorarbeiten/gi, "bez veľkých príprav"],
+  [/gleichm[aä]ßige\s+Oberfl[aä]chenstruktur/gi, "rovnomerná štruktúra povrchu"],
+  [/erm[öo]glicht\s+eine\s+Lackierung/gi, "umožňuje lakovanie"],
+  [/sofern\s+notwendig/gi, "ak je potrebné"],
+
+  [/f[üu]r\s+Modell-\/Karosserievariante\(n\)/gi, "pre model / karosársku verziu"],
+  [/geeignet\s+f[üu]r/gi, "vhodné pre"],
+  [/passend\s+f[üu]r/gi, "pasuje na"],
+
+  // ====== Automotive / diely (DE) ======
   [/\bFrontansatz\b/gi, "predné lipo"],
+  [/\bFrontlippe\b/gi, "predné lipo"],
   [/\bHeckansatz\b/gi, "zadný difúzor"],
+  [/\bHeckdiffusor\b/gi, "zadný difúzor"],
   [/\bHecklippe\b/gi, "zadné lipo (spojler)"],
+  [/\bSpoilerlippe\b/gi, "lipo spojler"],
   [/\bSeitenschweller\b/gi, "bočné prahy"],
   [/\bSchweller\b/gi, "prahy"],
-  [/\bSpoiler\b/gi, "spojler"],
   [/\bDiffusor\b/gi, "difúzor"],
+  [/\bSpoiler\b/gi, "spojler"],
   [/\bStoßstange\b|\bStossstange\b/gi, "nárazník"],
+  [/\bStoßstangenhalter\b|\bStossstangenhalter\b/gi, "držiaky nárazníka"],
+  [/\bStoßstangenhalterung\b|\bStossstangenhalterung\b/gi, "úchyt/držiak nárazníka"],
+  [/\bGitter\b/gi, "mriežka"],
+  [/\bZubeh[öo]r\b/gi, "príslušenstvo"],
+  [/\bNebellampen\b/gi, "hmlovky"],
+  [/\bNebelscheinwerfer\b/gi, "hmlovky"],
 
-  // --- modely / karoséria ---
-  [/\bKarosserievariante\(n\)\b/gi, "karoséria / verzia"],
-  [/\bCompact\b/gi, "Compact"],
-  [/\bCoup[eé]\b/gi, "Coupé"],
-  [/\bLimousine\b/gi, "Sedan"],
-  [/\bTouring\b/gi, "Touring (kombi)"],
-  [/\bCabrio\b/gi, "Cabrio"],
+  // ====== Materiál / lakovanie ======
+  [/\blackierbar\b|\blackierf[aä]hig\b/gi, "určené na lakovanie"],
+  [/\bABS\b/gi, "ABS"],
+  [/\bKunststoff\b/gi, "plast"],
+  [/\bhochwertig(?:em|es|e|er)?\b/gi, "kvalitný"],
+  [/\bflexibel\b/gi, "flexibilný"],
+  [/\bMaterial\b/gi, "materiál"],
+  [/\bgefertigt\b/gi, "vyrobené"],
 
-  // --- roky / vhodnosť ---
-  [/\bBaujahr\b/gi, "rok výroby"],
-  [/\bgeeignet\s+f[üu]r\b/gi, "vhodné pre"],
-  [/\bpassend\s+f[üu]r\b/gi, "pasuje na"],
-  [/\bausgenommen\b/gi, "okrem"],
-  [/\balle\b/gi, "všetky"],
-
-  // --- obsah balenia / montáž ---
+  // ====== Montáž / dokumentácia ======
   [/\bLieferumfang\b/gi, "obsah balenia"],
   [/\bMontagezubeh[öo]r\b/gi, "montážne príslušenstvo"],
   [/\bAnbauanleitung\b|\bMontageanleitung\b/gi, "návod na montáž"],
-  [/\bsofern\s+notwendig\b/gi, "ak je potrebné"],
-
-  // --- certifikáty / schválenie ---
   [/\bTeilegutachten\b/gi, "technický posudok"],
-  [/\bgutachterlicher\s+Stellungnahme\b/gi, "odborné stanovisko (posudok)"],
-  [/\b(ABE)\b/gi, "ABE (schválenie)"],
-  [/\bStraßenverkehr\b|\bStraßenverkehrsordnung\b/gi, "cestná premávka"],
-  [/\bzul[aä]ssig\b/gi, "schválené"],
+  [/\bMaterialgutachten\b/gi, "materiálový certifikát"],
   [/\bEintragung\b/gi, "zápis do TP"],
+  [/\bzul[aä]ssig\b/gi, "schválené"],
+  [/\bStVZO\b/gi, "StVZO (DE predpis)"],
 
-  // --- materiál / lakovanie ---
-  [/\bhochwertig(?:em|es|e|er)\b/gi, "kvalitný"],
-  [/\bMaterial\b/gi, "materiál"],
-  [/\bGFK\b|\bglasfaserverst[äa]rkt(?:er|es|e|em)?\b/gi, "sklolaminát"],
-  [/\bgefertigt\b/gi, "vyrobené"],
-  [/\bgleichm[aä]ßige\b/gi, "rovnomerná"],
-  [/\bOberfl[aä]chenstruktur\b/gi, "štruktúra povrchu"],
-  [/\berm[öo]glicht\b/gi, "umožňuje"],
-  [/\blackier(?:bar|f[aä]hig)\b/gi, "určené na lakovanie"],
-  [/\bProdukt\s+ist\s+unlackiert\b/gi, "produkt je nelakovaný"],
-  [/\bohne\s+gro[ßs]e\s+Vorarbeiten\b/gi, "bez veľkých príprav"],
+  // ====== Karoséria / typ ======
+  [/\bLimousine\b/gi, "sedan"],
+  [/\bTouring\b/gi, "Touring (kombi)"],
+  [/\bKombi\b/gi, "kombi"],
+  [/\bCoup[eé]\b/gi, "Coupé"],
+  [/\bCabrio\b/gi, "Cabrio"],
+  [/\bCompact\b/gi, "Compact"],
 
-  // --- EN fallback ---
+  // ====== EN fallback (keď niečo prelezie v angličtine) ======
+  [/\bfront\s*bumper\b/gi, "predný nárazník"],
   [/\bfront\s*lip\b/gi, "predné lipo"],
   [/\bside\s*skirt(s)?\b/gi, "bočné prahy"],
   [/\brear\s*diffuser\b/gi, "zadný difúzor"],
   [/\bpaintable\b|\bready\s*to\s*paint\b/gi, "určené na lakovanie"],
+  [/\bincluded\b/gi, "v balení"],
+  [/\bnot\s+included\b/gi, "nie je súčasťou balenia"],
+
+  
 ];
 
+// ✅ preklad + čistenie textu (odstráni DE bordel, zlepší čitateľnosť)
 function toSlovak(text) {
   let t = String(text ?? "");
-  TRANSLATE_MAP.forEach(([re, rep]) => { t = t.replace(re, rep); });
-  // drobné čistenie
-  t = t.replace(/\s+\./g, ".").replace(/\s+,/g, ",").trim();
+
+  // normalizuj DE znaky (aby regexy lepšie sedia)
+  t = t.replaceAll("ß", "ss");
+
+  // phrase+word map
+  for (const [re, rep] of TRANSLATE_MAP) t = t.replace(re, rep);
+
+  // čistenie medzier/punktuácie
+  t = t
+    .replace(/\s+\./g, ".")
+    .replace(/\s+,/g, ",")
+    .replace(/\s+:/g, ":")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+
   return t;
 }
 
