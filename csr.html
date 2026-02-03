@@ -1439,811 +1439,835 @@
   </div>
 
   <script>
-    const PLACEHOLDER_DATA_URI =
-      "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(`
-        <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
-          <defs>
-            <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
-              <stop offset='0' stop-color='#111'/>
-              <stop offset='1' stop-color='#050505'/>
-            </linearGradient>
-          </defs>
-          <rect width='1200' height='800' fill='url(#g)'/>
-          <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
-            fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
-            NO IMAGE
-          </text>
-        </svg>
-      `);
+  const PLACEHOLDER_DATA_URI =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
+      <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+        <defs>
+          <linearGradient id='g' x1='0' x2='0' y1='0' y2='1'>
+            <stop offset='0' stop-color='#111'/>
+            <stop offset='1' stop-color='#050505'/>
+          </linearGradient>
+        </defs>
+        <rect width='1200' height='800' fill='url(#g)'/>
+        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+          fill='rgba(255,255,255,0.55)' font-family='Arial' font-size='44' letter-spacing='6'>
+          NO IMAGE
+        </text>
+      </svg>
+    `);
 
-    const BRAND_NAME = "CSR Automotive";
+  const BRAND_NAME = "CSR Automotive";
 
-    // ✅ HTML je v root, JSON + manifest sú v /csr-cars/
-    const JSON_BASE = "csr-cars/";
-    const MANIFEST_FILE = JSON_BASE + "manifest.json";
-    const PAGE_SIZE = 20;
+  // ✅ HTML je v root, JSON + manifest sú v /csr-cars/
+  const JSON_BASE = "csr-cars/";
+  const MANIFEST_FILE = JSON_BASE + "manifest.json";
+  const PAGE_SIZE = 20;
 
-    // ✅ po otvorení webu načítaj náhodné produkty z týchto značiek (ak existujú v manifeste)
-    const FEATURED_MAKES_PREFER = [
-      "Lamborghini.json",
-      "Ferrari.json",
-      "Volkswagen.json",
-      "Škoda.json",
-      "Skoda.json",
-      "BMW.json",
-      "Audi.json"
-    ];
-    const FEATURED_COUNT = 20;
+  // ✅ po otvorení webu načítaj náhodné produkty z týchto značiek (ak existujú v manifeste)
+  const FEATURED_MAKES_PREFER = [
+    "Lamborghini.json",
+    "Ferrari.json",
+    "Volkswagen.json",
+    "Škoda.json",
+    "Skoda.json",
+    "BMW.json",
+    "Audi.json"
+  ];
+  const FEATURED_COUNT = 20;
 
-    const DATA = { products: [] };
+  const DATA = { products: [] };
 
-    let MAKE_MAP = [];               // {label,file}
-    let currentMakeFile = "";        // "" = featured výber
-    let currentMakeLabel = "";       // text
-    let renderLimit = PAGE_SIZE;
+  let MAKE_MAP = [];               // {label,file}
+  let currentMakeFile = "";        // "" = featured výber
+  let currentMakeLabel = "";       // text
+  let renderLimit = PAGE_SIZE;
 
-    let featuredPool = [];           // všetky produkty z featured značiek
-    let featuredSample = [];         // 20 náhodných
+  let featuredPool = [];           // všetky produkty z featured značiek
+  let featuredSample = [];         // 20 náhodných
 
-    let activeProduct = null;
-    let activeVariantIndex = 0;
-    let activeImgIndex = 0;
+  let activeProduct = null;
+  let activeVariantIndex = 0;
+  let activeImgIndex = 0;
 
-    // UI: make buttons
-    let showAllMakes = false;
+  // UI: make buttons
+  let showAllMakes = false;
 
-    const $ = (s, el=document) => el.querySelector(s);
-    const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+  const $ = (s, el=document) => el.querySelector(s);
+  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
 
-    function showLoading(text="Načítavam…"){
-      const o = $("#loadingOverlay");
-      const t = $("#loadingText");
-      if (t) t.textContent = text;
-      if (o) o.classList.add("show");
+  function showLoading(text="Načítavam…"){
+    const o = $("#loadingOverlay");
+    const t = $("#loadingText");
+    if (t) t.textContent = text;
+    if (o) o.classList.add("show");
+  }
+  function hideLoading(){
+    const o = $("#loadingOverlay");
+    if (o) o.classList.remove("show");
+  }
+
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function truncateWords(text, maxWords=6){
+    const s = String(text ?? "").trim();
+    if (!s) return "";
+    const words = s.split(/\s+/).filter(Boolean);
+    if (words.length <= maxWords) return s;
+    return words.slice(0, maxWords).join(" ") + "…";
+  }
+
+  function fmtEUR(n){
+    if (typeof n !== "number" || Number.isNaN(n)) return "—";
+    return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
+  }
+
+  // ✅ FIX: manifest môže mať file ako "csr-cars/BMW.json" alebo "/csr-cars/BMW.json"
+  function cleanFile(file){
+    let f = String(file || "").trim();
+    if (!f) return "";
+    f = f.replace(/^\/+/, ""); // remove leading /
+    if (f.toLowerCase().startsWith(JSON_BASE.toLowerCase())) {
+      f = f.slice(JSON_BASE.length);
     }
-    function hideLoading(){
-      const o = $("#loadingOverlay");
-      if (o) o.classList.remove("show");
-    }
+    return f;
+  }
 
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
+  function getStockStatus(p){
+    const s = (p.stockStatus || "").trim();
+    if (s) return s;
+    const a = (p.availability || "").trim();
+    if (a === "in_stock") return "in_stock";
+    if (a === "out_of_stock") return "out_of_stock";
+    return "made_to_order";
+  }
+  function stockLabel(status){
+    if (status === "in_stock") return "SKLADOM";
+    if (status === "out_of_stock") return "VYPREDANÉ";
+    return "NA OBJEDNÁVKU";
+  }
 
-    function truncateWords(text, maxWords=6){
-      const s = String(text ?? "").trim();
-      if (!s) return "";
-      const words = s.split(/\s+/).filter(Boolean);
-      if (words.length <= maxWords) return s;
-      return words.slice(0, maxWords).join(" ") + "…";
-    }
+  function setSafeImage(imgEl, url, noImgEl){
+    if (!imgEl) return;
+    if (noImgEl) noImgEl.style.display = "none";
+    imgEl.onerror = () => {
+      imgEl.onerror = null;
+      imgEl.src = PLACEHOLDER_DATA_URI;
+      if (noImgEl) noImgEl.style.display = "grid";
+    };
+    imgEl.src = url || PLACEHOLDER_DATA_URI;
+  }
 
-    function fmtEUR(n){
-      if (typeof n !== "number" || Number.isNaN(n)) return "—";
-      return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
-    }
+  function minPriceEUR(prod){
+    if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
+    const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
+    if (!prices.length) return "cena na dopyt";
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+  }
 
-    function getStockStatus(p){
-      const s = (p.stockStatus || "").trim();
-      if (s) return s;
-      const a = (p.availability || "").trim();
-      if (a === "in_stock") return "in_stock";
-      if (a === "out_of_stock") return "out_of_stock";
-      return "made_to_order";
-    }
-    function stockLabel(status){
-      if (status === "in_stock") return "SKLADOM";
-      if (status === "out_of_stock") return "VYPREDANÉ";
-      return "NA OBJEDNÁVKU";
-    }
+  function variantSummary(p){
+    const vars = Array.isArray(p.variants) ? p.variants : [];
+    if (!vars.length) return "Bez variantu";
+    const names = vars.map(v => v.name || "Variant").filter(Boolean);
+    const unique = Array.from(new Set(names));
+    if (unique.length === 1) return `Variant: ${unique[0]}`;
+    return `Variantov: ${unique.length}`;
+  }
+  function shipSummary(p){
+    const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
+    return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
+  }
+  function deliverySummary(p){
+    return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
+  }
 
-    function setSafeImage(imgEl, url, noImgEl){
-      if (!imgEl) return;
-      if (noImgEl) noImgEl.style.display = "none";
-      imgEl.onerror = () => {
-        imgEl.onerror = null;
-        imgEl.src = PLACEHOLDER_DATA_URI;
-        if (noImgEl) noImgEl.style.display = "grid";
+  function getProductImages(p){
+    const arr = []
+      .concat(p?.image ? [p.image] : [])
+      .concat(Array.isArray(p?.images) ? p.images : []);
+    return Array.from(new Set(arr.filter(Boolean)));
+  }
+
+  function normalizeLoadedList(json){
+    const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+    return list.map(p => {
+      const images = Array.isArray(p.images) ? p.images : [];
+      const image = p.image || images[0] || "";
+      const titleFull = p.title || "";
+      const shortFull = p.short || p.subtitle || "";
+
+      return {
+        ...p,
+        title: titleFull,
+        titleShort: truncateWords(titleFull, 6),
+        image,
+        images,
+        variants: Array.isArray(p.variants) ? p.variants : [],
+        short: shortFull,
+        shortShort: truncateWords(shortFull, 6),
+        description: p.description || "",
+        delivery: p.delivery || "Upresníme po objednávke",
+        shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
+        model: (p.model || "").toString().trim(),
+        category: (p.category || "").toString().trim(),
+        makeFile: "",
+        makeLabel: ""
       };
-      imgEl.src = url || PLACEHOLDER_DATA_URI;
-    }
-
-    function minPriceEUR(prod){
-      if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
-      const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
-      if (!prices.length) return "cena na dopyt";
-      const min = Math.min(...prices);
-      const max = Math.max(...prices);
-      return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
-    }
-
-    function variantSummary(p){
-      const vars = Array.isArray(p.variants) ? p.variants : [];
-      if (!vars.length) return "Bez variantu";
-      const names = vars.map(v => v.name || "Variant").filter(Boolean);
-      const unique = Array.from(new Set(names));
-      if (unique.length === 1) return `Variant: ${unique[0]}`;
-      return `Variantov: ${unique.length}`;
-    }
-    function shipSummary(p){
-      const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
-      return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
-    }
-    function deliverySummary(p){
-      return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
-    }
-
-    function getProductImages(p){
-      const arr = []
-        .concat(p?.image ? [p.image] : [])
-        .concat(Array.isArray(p?.images) ? p.images : []);
-      return Array.from(new Set(arr.filter(Boolean)));
-    }
-
-    function normalizeLoadedList(json){
-      const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
-      return list.map(p => {
-        const images = Array.isArray(p.images) ? p.images : [];
-        const image = p.image || images[0] || "";
-        const titleFull = p.title || "";
-        const shortFull = p.short || p.subtitle || "";
-
-        return {
-          ...p,
-          title: titleFull,
-          titleShort: truncateWords(titleFull, 6),
-          image,
-          images,
-          variants: Array.isArray(p.variants) ? p.variants : [],
-          short: shortFull,
-          shortShort: truncateWords(shortFull, 6),
-          description: p.description || "",
-          delivery: p.delivery || "Upresníme po objednávke",
-          shippingEUR: (typeof p.shippingEUR === "number") ? p.shippingEUR : ((typeof p.shipping === "number") ? p.shipping : 0),
-          model: (p.model || "").toString().trim(),
-          category: (p.category || "").toString().trim(),
-          makeFile: "",   // doplníme pri load
-          makeLabel: ""   // doplníme pri load
-        };
-      });
-    }
-
-    function pickRandom(arr, n){
-      const a = Array.isArray(arr) ? arr.slice() : [];
-      for (let i = a.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a.slice(0, Math.min(n, a.length));
-    }
-
-    function buildMakeButtons(){
-      const box = $("#makeButtons");
-      const moreBtn = $("#toggleMakesBtn");
-      const makeCount = $("#makeCount");
-      if (!box) return;
-
-      const total = MAKE_MAP.length;
-      if (makeCount) makeCount.textContent = `${total} značiek`;
-
-      const firstN = 10;
-      const visible = showAllMakes ? MAKE_MAP : MAKE_MAP.slice(0, firstN);
-
-      box.innerHTML = "";
-
-      // ✅ "Výber" = featured (žiadny konkrétny make file)
-      const allBtn = document.createElement("button");
-      allBtn.type = "button";
-      allBtn.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
-      allBtn.textContent = "Výber";
-      allBtn.title = "Zobrazí náhodné produkty";
-      allBtn.addEventListener("click", async () => {
-        currentMakeFile = "";
-        currentMakeLabel = "";
-        $("#q").value = "";
-        $("#cat").value = "";
-        $("#model").value = "";
-        renderLimit = PAGE_SIZE;
-        applyDataProducts(featuredSample, "Výber", "");
-      });
-      box.appendChild(allBtn);
-
-      visible.forEach(m => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "makeBtn" + (currentMakeFile === m.file ? " active" : "");
-        b.textContent = m.label;
-        b.title = m.label;
-        b.addEventListener("click", async () => {
-          currentMakeFile = m.file;
-          currentMakeLabel = m.label;
-          await loadProductsFromFile(m.file);
-          // zvýraznenie
-          $$(".makeBtn", box).forEach(x => x.classList.remove("active"));
-          b.classList.add("active");
-          // "Výber" (ghost) odznačiť
-          box.querySelector(".makeBtn.ghost")?.classList.remove("active");
-        });
-        box.appendChild(b);
-      });
-
-      if (moreBtn){
-        if (total > firstN){
-          moreBtn.style.display = "inline-flex";
-          moreBtn.textContent = showAllMakes ? "Zobraziť menej" : "Zobraziť viac";
-          moreBtn.onclick = () => { showAllMakes = !showAllMakes; buildMakeButtons(); };
-        }else{
-          moreBtn.style.display = "none";
-        }
-      }
-    }
-
-    async function loadManifest(){
-      showLoading("Načítavam zoznam značiek…");
-      try{
-        const res = await fetch(MANIFEST_FILE, { cache:"no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const json = await res.json();
-        MAKE_MAP = Array.isArray(json.makes) ? json.makes : [];
-
-        // stabilné zoradenie (A-Z)
-        MAKE_MAP.sort((a,b) => String(a.label).localeCompare(String(b.label), "sk"));
-
-        buildMakeButtons();
-      }catch(err){
-        console.error("Manifest load failed:", err);
-        MAKE_MAP = [];
-        const box = $("#makeButtons");
-        if (box){
-          box.innerHTML = `<div class="miniStat" style="letter-spacing:.18em;">Manifest sa nenačítal</div>`;
-        }
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function applyDataProducts(list, labelForTitle="", fileForTitle=""){
-      DATA.products = Array.isArray(list) ? list.slice() : [];
-      // reset filtračných dropdownov
-      buildCategoryOptions();
-      refreshModels();
-      renderProducts();
-    }
-
-    async function loadFeaturedProducts(){
-      // load viac značiek naraz, z nich vyber 20 random
-      showLoading("Načítavam výber produktov…");
-      try{
-        const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
-        const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
-        const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6); // fallback
-
-        const results = await Promise.allSettled(
-          toLoad.map(async (m) => {
-            const res = await fetch(JSON_BASE + m.file, { cache:"no-store" });
-            if (!res.ok) throw new Error("HTTP " + res.status);
-            const json = await res.json();
-            const list = normalizeLoadedList(json).map(p => ({...p, makeFile:m.file, makeLabel:m.label}));
-            return list;
-          })
-        );
-
-        featuredPool = [];
-        results.forEach(r => {
-          if (r.status === "fulfilled" && Array.isArray(r.value)){
-            featuredPool = featuredPool.concat(r.value);
-          }
-        });
-
-        // ak sa nič nenačítalo, tak nech aspoň nie je prázdno
-        if (!featuredPool.length){
-          featuredSample = [];
-        }else{
-          featuredSample = pickRandom(featuredPool, FEATURED_COUNT);
-        }
-
-        // zobraz výber hneď po otvorení
-        currentMakeFile = "";
-        currentMakeLabel = "";
-        renderLimit = PAGE_SIZE;
-        applyDataProducts(featuredSample, "Výber", "");
-        // aktivuj "Výber" button
-        buildMakeButtons();
-      }catch(err){
-        console.error("Featured load failed:", err);
-        featuredPool = [];
-        featuredSample = [];
-        applyDataProducts([], "Výber", "");
-      }finally{
-        hideLoading();
-      }
-    }
-
-    async function loadProductsFromFile(file){
-      if(!file){
-        // návrat na featured
-        $("#q").value = "";
-        $("#cat").value = "";
-        $("#model").value = "";
-        renderLimit = PAGE_SIZE;
-        applyDataProducts(featuredSample, "Výber", "");
-        buildMakeButtons();
-        return;
-      }
-
-      showLoading("Načítavam produkty…");
-      try{
-        const url = JSON_BASE + file;
-        const res = await fetch(url, { cache:"no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-
-        const json = await res.json();
-        const list = normalizeLoadedList(json).map(p => ({
-          ...p,
-          makeFile: file,
-          makeLabel: (MAKE_MAP.find(x => x.file === file)?.label || "")
-        }));
-
-        renderLimit = PAGE_SIZE;
-        $("#model").value = "";
-        $("#cat").value = "";
-        $("#q").value = "";
-
-        applyDataProducts(list, currentMakeLabel, file);
-
-        document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
-
-      }catch(err){
-        console.error("Failed to load make file:", err);
-        applyDataProducts([], currentMakeLabel, file);
-      }finally{
-        hideLoading();
-      }
-    }
-
-    function buildCategoryOptions(){
-      const catSel = $("#cat");
-      if (!catSel) return;
-
-      const cats = new Set();
-      DATA.products.forEach(p => p.category && cats.add(p.category));
-
-      catSel.innerHTML =
-        `<option value="">Kategória: všetko</option>` +
-        Array.from(cats).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
-          .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-    }
-
-    function refreshModels(){
-      const modelSel = $("#model");
-      if (!modelSel) return;
-
-      const models = new Set();
-      DATA.products.forEach(p => {
-        const mdl = (p.model || "").toString().trim();
-        if (mdl) models.add(mdl);
-      });
-
-      modelSel.innerHTML =
-        `<option value="">Model: všetko</option>` +
-        Array.from(models).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
-          .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-
-      modelSel.disabled = !models.size;
-      if (modelSel.disabled) modelSel.value = "";
-    }
-
-    function getFilteredProducts(){
-      const q = ($("#q")?.value || "").trim().toLowerCase();
-      const cat = $("#cat")?.value || "";
-      const model = $("#model")?.value || "";
-
-      return DATA.products.filter(p => {
-        if (cat && p.category !== cat) return false;
-
-        const pmodel = (p.model || "").toString().trim();
-        if (model && pmodel !== model) return false;
-
-        if (q){
-          const blob = `${p.title} ${p.short} ${p.category} ${p.model} ${p.makeLabel}`.toLowerCase();
-          if (!blob.includes(q)) return false;
-        }
-        return true;
-      });
-    }
-
-    function renderProducts(){
-      const grid = $("#productGrid");
-      const titleEl = $("#productsTitle");
-      const statEl = $("#stat");
-      const loadMoreBtn = $("#loadMoreBtn");
-      if (!grid) return;
-
-      const makeLabel =
-        currentMakeFile
-          ? (MAKE_MAP.find(x => x.file === currentMakeFile)?.label || currentMakeLabel || "")
-          : "Výber";
-
-      const model = $("#model")?.value || "";
-      const cat = $("#cat")?.value || "";
-
-      const titleParts = [];
-      if (makeLabel) titleParts.push(makeLabel);
-      if (model) titleParts.push(model);
-      if (cat) titleParts.push(cat);
-
-      if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: výber";
-
-      const items = getFilteredProducts();
-      if (statEl) statEl.textContent = `${items.length} produktov`;
-
-      grid.innerHTML = "";
-
-      if (!DATA.products.length){
-        grid.innerHTML = `
-          <div class="panel" style="grid-column:1/-1; padding:18px;">
-            <div class="pill"><span class="dot"></span>nič sa nenačítalo</div>
-            <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
-            <p style="margin:0;">
-              Skontroluj, či súbory existujú v <b>/csr-cars</b> a či je <b>manifest.json</b> validný.
-            </p>
-          </div>
-        `;
-        if (loadMoreBtn) loadMoreBtn.style.display = "none";
-        return;
-      }
-
-      if (!items.length){
-        grid.innerHTML = `
-          <div class="panel" style="grid-column:1/-1; padding:18px;">
-            <div class="pill"><span class="dot"></span>nič sme nenašli</div>
-            <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-            <p style="margin:0;">Skús zmeniť model, kategóriu alebo vymazať vyhľadávanie.</p>
-          </div>
-        `;
-        if (loadMoreBtn) loadMoreBtn.style.display = "none";
-        return;
-      }
-
-      const total = items.length;
-      const shown = Math.min(renderLimit, total);
-      const slice = items.slice(0, shown);
-
-      if (loadMoreBtn){
-        loadMoreBtn.style.display = (shown < total) ? "inline-flex" : "none";
-        loadMoreBtn.onclick = () => {
-          renderLimit += PAGE_SIZE;
-          renderProducts();
-        };
-      }
-
-      slice.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "pCard";
-        card.tabIndex = 0;
-        card.setAttribute("role","button");
-
-        const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
-        const modelLine = (p.model || "").toString().trim();
-
-        // ✅ názvy max 6 slov (card), full názov v modale
-        const titleShort = p.titleShort || truncateWords(p.title || "", 6);
-        const descShort =
-          p.shortShort ||
-          truncateWords(p.short || modelLine || "", 6);
-
-        card.innerHTML = `
-          <div class="pMedia"><img alt="${escapeHtml(p.title || titleShort)}"></div>
-          <div class="pBody">
-            <div class="pName">${escapeHtml(titleShort)}</div>
-            <p class="pDesc">${escapeHtml(descShort)}</p>
-
-            <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
-              ${p.makeLabel ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Značka: ${escapeHtml(p.makeLabel)}</div>` : ""}
-              ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
-              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
-              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
-              <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(deliverySummary(p))}</div>
-            </div>
-
-            <div class="pBottom">
-              <div class="price">${escapeHtml(minPriceEUR(p))}</div>
-              <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
-            </div>
-          </div>
-        `;
-
-        const imgEl = card.querySelector(".pMedia img");
-        setSafeImage(imgEl, imgSrc, null);
-
-        card.addEventListener("click", () => openProduct(p));
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            openProduct(p);
-          }
-        });
-
-        grid.appendChild(card);
-      });
-    }
-
-    const productModal = $("#productModal");
-    const closeProductModal = $("#closeProductModal");
-    const modalTitle = $("#modalTitle");
-    const mRibbon = $("#mRibbon");
-    const mImg = $("#mImg");
-    const mNoImg = $("#mNoImg");
-    const mDesc = $("#mDesc");
-    const mVariantList = $("#mVariantList");
-    const mVariantWrap = $("#mVariantWrap");
-    const mPriceBig = $("#mPriceBig");
-    const mShip = $("#mShip");
-    const mDelivery = $("#mDelivery");
-    const mOrder = $("#mOrder");
-    const mPrev = $("#mPrev");
-    const mNext = $("#mNext");
-    const mThumbs = $("#mThumbs");
-
-    const galleryModal = $("#galleryModal");
-    const closeGalleryModal = $("#closeGalleryModal");
-    const gFull = $("#gFull");
-    const gNoImg = $("#gNoImg");
-
-    function closeModal(modal){
-      if (!modal) return;
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden","true");
-    }
-
-    function setModalImage(index){
-      if (!activeProduct) return;
-      const imgs = getProductImages(activeProduct);
-      if (!imgs.length){
-        setSafeImage(mImg, "", mNoImg);
-        if (mThumbs) mThumbs.innerHTML = "";
-        return;
-      }
-      activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
-      setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
-
-      if (mThumbs){
-        $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
-      }
-      if (mThumbs && !mThumbs.children.length) buildThumbs();
-    }
-
-    function buildThumbs(){
-      if (!mThumbs || !activeProduct) return;
-      const imgs = getProductImages(activeProduct);
-      if (imgs.length <= 1){ mThumbs.innerHTML = ""; return; }
-
-      mThumbs.innerHTML = "";
-      imgs.forEach((src, i) => {
-        const d = document.createElement("div");
-        d.className = "thumb" + (i === activeImgIndex ? " active" : "");
-        d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
-        d.addEventListener("click", () => setModalImage(i));
-        mThumbs.appendChild(d);
-      });
-    }
-
-    function buildVariantChips(){
-      if (!mVariantList) return;
-      const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
-
-      if (!vars.length){
-        if (mVariantWrap) mVariantWrap.style.display = "none";
-        mVariantList.innerHTML = "";
-        activeVariantIndex = 0;
-        return;
-      }
-
-      if (mVariantWrap) mVariantWrap.style.display = "block";
-      mVariantList.innerHTML = "";
-
-      vars.forEach((v, i) => {
-        const chip = document.createElement("div");
-        chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-        const name = (v.name || `Variant ${i+1}`).toUpperCase();
-        const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
-
-        chip.innerHTML = `
-          <span class="vMain">${escapeHtml(name)}</span>
-          <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
-        `;
-        chip.addEventListener("click", () => {
-          activeVariantIndex = i;
-          $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
-          updateVariantPrice();
-        });
-
-        mVariantList.appendChild(chip);
-      });
-    }
-
-    function updateVariantPrice(){
-      if (!activeProduct) return;
-
-      const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-      const v = vars[activeVariantIndex];
-
-      const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
-      const delivery = activeProduct.delivery || "Upresníme po objednávke";
-
-      const base =
-        (v && typeof v.priceEUR === "number") ? v.priceEUR :
-        (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
-        null;
-
-      const variantName = vars.length ? (v?.name || "—") : "—";
-
-      if (mPriceBig){
-        mPriceBig.innerHTML = base !== null
-          ? `<small>CENA</small><br>${fmtEUR(base)}`
-          : `<small>CENA</small><br>UPRESNÍME`;
-      }
-      if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
-      if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
-
-      // ✅ výrobca = vybraná značka auta (makeLabel), nie CSR
-      $("#o_manufacturer").value = activeProduct.makeLabel || "—";
-      $("#o_product").value = activeProduct.title || "—";
-      $("#o_variant").value = variantName;
-      $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
-      $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
-      $("#o_delivery").value = delivery;
-
-      const md = (activeProduct.model || "").toString().trim();
-      if ($("#car") && md) $("#car").value = md;
-    }
-
-    function openProduct(p){
-      activeProduct = p;
-      activeVariantIndex = 0;
-
-      // ✅ modal ukazuje plný názov (nie skracovaný)
-      const title = p.title || "—";
-      const carMake = p.makeLabel ? `${p.makeLabel} • ` : "";
-      if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
-
-      const status = getStockStatus(p);
-      if (mRibbon){
-        mRibbon.className = `ribbon ${status}`;
-        mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
-      }
-
-      if (mDesc) mDesc.textContent = p.description || p.short || "";
-
-      activeImgIndex = 0;
-      setModalImage(0);
-      buildThumbs();
-
-      buildVariantChips();
-      updateVariantPrice();
-
-      if (productModal){
-        productModal.classList.add("show");
-        productModal.setAttribute("aria-hidden","false");
-      }
-    }
-
-    if (mImg){
-      mImg.addEventListener("click", () => {
-        if (!activeProduct) return;
-        const imgs = getProductImages(activeProduct);
-        if (!imgs.length) return;
-        const src = imgs[activeImgIndex] || imgs[0];
-        setSafeImage(gFull, src, gNoImg);
-        galleryModal?.classList.add("show");
-        galleryModal?.setAttribute("aria-hidden","false");
-      });
-    }
-
-    mPrev?.addEventListener("click", () => setModalImage(activeImgIndex - 1));
-    mNext?.addEventListener("click", () => setModalImage(activeImgIndex + 1));
-
-    window.addEventListener("keydown", (e) => {
-      if (productModal?.classList.contains("show")){
-        if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
-        if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
-      }
-      if (e.key === "Escape"){
-        [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
-      }
     });
+  }
 
-    closeProductModal?.addEventListener("click", () => closeModal(productModal));
-    productModal?.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
-
-    closeGalleryModal?.addEventListener("click", () => closeModal(galleryModal));
-    galleryModal?.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
-
-    const orderModal = $("#orderModal");
-    const closeOrderModal = $("#closeOrderModal");
-    const cancelSend = $("#cancelSend");
-    const orderForm = $("#orderForm");
-    const consent = $("#consent");
-    const sendBtn = $("#sendBtn");
-
-    function buildOrderBlob(){
-      const lines = [
-        `Značka auta: ${$("#o_manufacturer")?.value || "—"}`,
-        `Diel: ${$("#o_product")?.value || "—"}`,
-        `Variant: ${$("#o_variant")?.value || "—"}`,
-        `Cena: ${$("#o_price")?.value || "—"}`,
-        `Doprava: ${$("#o_shipping")?.value || "—"}`,
-        `Dodanie: ${$("#o_delivery")?.value || "—"}`,
-        ``,
-        `Vozidlo: ${$("#car")?.value || ""}`,
-        `Poznámka: ${$("#customer_note")?.value || ""}`
-      ].join("\n");
-
-      const blob = $("#orderBlob");
-      if (blob) blob.value = lines;
+  function pickRandom(arr, n){
+    const a = Array.isArray(arr) ? arr.slice() : [];
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
+    return a.slice(0, Math.min(n, a.length));
+  }
 
-    function openOrderModal(){
-      closeModal(productModal);
-      if (!orderModal) return;
+  function buildMakeButtons(){
+    const box = $("#makeButtons");
+    const moreBtn = $("#toggleMakesBtn");
+    const makeCount = $("#makeCount");
+    if (!box) return;
 
-      $("#customer_note") && ($("#customer_note").value = "");
-      if (consent) consent.checked = false;
-      if (sendBtn) sendBtn.disabled = true;
+    const total = MAKE_MAP.length;
+    if (makeCount) makeCount.textContent = `${total} značiek`;
 
-      buildOrderBlob();
-      orderModal.classList.add("show");
-      orderModal.setAttribute("aria-hidden","false");
-      setTimeout(()=> $("#name")?.focus(), 50);
-    }
+    const firstN = 10;
+    const visible = showAllMakes ? MAKE_MAP : MAKE_MAP.slice(0, firstN);
 
-    if (mOrder) mOrder.addEventListener("click", openOrderModal);
-    closeOrderModal?.addEventListener("click", () => closeModal(orderModal));
-    cancelSend?.addEventListener("click", () => closeModal(orderModal));
-    orderModal?.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
+    box.innerHTML = "";
 
-    if (consent && sendBtn){
-      consent.addEventListener("change", () => { sendBtn.disabled = !consent.checked; });
-    }
-
-    orderForm?.addEventListener("submit", (e) => {
-      if (consent && !consent.checked){
-        e.preventDefault();
-        consent.focus();
-        return;
-      }
-      buildOrderBlob();
-    });
-
-    $("#customer_note")?.addEventListener("input", buildOrderBlob);
-    $("#car")?.addEventListener("input", buildOrderBlob);
-
-    ["q","cat","model"].forEach(id => {
-      const el = $("#" + id);
-      if (!el) return;
-      el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-      el.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-    });
-
-    $("#resetFilters")?.addEventListener("click", () => {
+    // ✅ "Výber" = featured
+    const allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "makeBtn ghost" + (!currentMakeFile ? " active" : "");
+    allBtn.textContent = "Výber";
+    allBtn.title = "Zobrazí náhodné produkty";
+    allBtn.addEventListener("click", async () => {
+      currentMakeFile = "";
+      currentMakeLabel = "";
       $("#q").value = "";
       $("#cat").value = "";
       $("#model").value = "";
-      $("#model").disabled = !DATA.products.length;
       renderLimit = PAGE_SIZE;
-      renderProducts();
+      applyDataProducts(featuredSample, "Výber", "");
+      buildMakeButtons();
+    });
+    box.appendChild(allBtn);
+
+    visible.forEach(m => {
+      const b = document.createElement("button");
+      b.type = "button";
+
+      const fileClean = cleanFile(m.file);
+      b.className = "makeBtn" + (currentMakeFile === fileClean ? " active" : "");
+      b.textContent = m.label;
+      b.title = m.label;
+
+      b.addEventListener("click", async () => {
+        currentMakeFile = fileClean;
+        currentMakeLabel = m.label;
+
+        await loadProductsFromFile(fileClean);
+
+        // zvýraznenie
+        $$(".makeBtn", box).forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+        box.querySelector(".makeBtn.ghost")?.classList.remove("active");
+      });
+
+      box.appendChild(b);
     });
 
-    (async () => {
-      await loadManifest();
-      await loadFeaturedProducts();
-    })();
-  </script>
+    if (moreBtn){
+      if (total > firstN){
+        moreBtn.style.display = "inline-flex";
+        moreBtn.textContent = showAllMakes ? "Zobraziť menej" : "Zobraziť viac";
+        moreBtn.onclick = () => { showAllMakes = !showAllMakes; buildMakeButtons(); };
+      }else{
+        moreBtn.style.display = "none";
+      }
+    }
+  }
+
+  async function loadManifest(){
+    showLoading("Načítavam zoznam značiek…");
+    try{
+      const res = await fetch(MANIFEST_FILE, { cache:"no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+
+      const json = await res.json();
+
+      // ✅ FIX: podporujeme {makes:[...]} aj [...]
+      const makes =
+        Array.isArray(json?.makes) ? json.makes :
+        Array.isArray(json) ? json :
+        [];
+
+      // normalizuj na {label,file}
+      MAKE_MAP = makes
+        .filter(x => x && (x.label || x.file))
+        .map(x => ({
+          label: String(x.label || "").trim(),
+          file: String(x.file || "").trim()
+        }))
+        .filter(x => x.label && x.file);
+
+      // stabilné zoradenie (A-Z)
+      MAKE_MAP.sort((a,b) => String(a.label).localeCompare(String(b.label), "sk"));
+
+      buildMakeButtons();
+    }catch(err){
+      console.error("Manifest load failed:", err);
+      MAKE_MAP = [];
+      const box = $("#makeButtons");
+      if (box){
+        box.innerHTML = `<div class="miniStat" style="letter-spacing:.18em;">Manifest sa nenačítal</div>`;
+      }
+    }finally{
+      hideLoading();
+    }
+  }
+
+  function applyDataProducts(list){
+    DATA.products = Array.isArray(list) ? list.slice() : [];
+    buildCategoryOptions();
+    refreshModels();
+    renderProducts();
+  }
+
+  async function loadFeaturedProducts(){
+    showLoading("Načítavam výber produktov…");
+    try{
+      const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
+      const inManifest = MAKE_MAP.filter(m => preferred.has(cleanFile(m.file).toLowerCase()));
+      const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6); // fallback
+
+      const results = await Promise.allSettled(
+        toLoad.map(async (m) => {
+          const f = cleanFile(m.file);
+          const res = await fetch(JSON_BASE + f, { cache:"no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const json = await res.json();
+          const list = normalizeLoadedList(json).map(p => ({...p, makeFile:f, makeLabel:m.label}));
+          return list;
+        })
+      );
+
+      featuredPool = [];
+      results.forEach(r => {
+        if (r.status === "fulfilled" && Array.isArray(r.value)){
+          featuredPool = featuredPool.concat(r.value);
+        }
+      });
+
+      featuredSample = featuredPool.length ? pickRandom(featuredPool, FEATURED_COUNT) : [];
+
+      currentMakeFile = "";
+      currentMakeLabel = "";
+      renderLimit = PAGE_SIZE;
+      applyDataProducts(featuredSample);
+
+      buildMakeButtons();
+    }catch(err){
+      console.error("Featured load failed:", err);
+      featuredPool = [];
+      featuredSample = [];
+      applyDataProducts([]);
+    }finally{
+      hideLoading();
+    }
+  }
+
+  async function loadProductsFromFile(file){
+    const f = cleanFile(file);
+
+    if(!f){
+      $("#q").value = "";
+      $("#cat").value = "";
+      $("#model").value = "";
+      renderLimit = PAGE_SIZE;
+      applyDataProducts(featuredSample);
+      buildMakeButtons();
+      return;
+    }
+
+    showLoading("Načítavam produkty…");
+    try{
+      const url = JSON_BASE + f;
+      const res = await fetch(url, { cache:"no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+
+      const json = await res.json();
+      const label = (MAKE_MAP.find(x => cleanFile(x.file) === f)?.label || currentMakeLabel || "");
+
+      const list = normalizeLoadedList(json).map(p => ({
+        ...p,
+        makeFile: f,
+        makeLabel: label
+      }));
+
+      renderLimit = PAGE_SIZE;
+      $("#model").value = "";
+      $("#cat").value = "";
+      $("#q").value = "";
+
+      applyDataProducts(list);
+
+      document.getElementById("produktySekcia")?.scrollIntoView({ behavior:"smooth", block:"start" });
+
+    }catch(err){
+      console.error("Failed to load make file:", err);
+      applyDataProducts([]);
+    }finally{
+      hideLoading();
+    }
+  }
+
+  function buildCategoryOptions(){
+    const catSel = $("#cat");
+    if (!catSel) return;
+
+    const cats = new Set();
+    DATA.products.forEach(p => p.category && cats.add(p.category));
+
+    catSel.innerHTML =
+      `<option value="">Kategória: všetko</option>` +
+      Array.from(cats).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+        .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+  }
+
+  function refreshModels(){
+    const modelSel = $("#model");
+    if (!modelSel) return;
+
+    const models = new Set();
+    DATA.products.forEach(p => {
+      const mdl = (p.model || "").toString().trim();
+      if (mdl) models.add(mdl);
+    });
+
+    modelSel.innerHTML =
+      `<option value="">Model: všetko</option>` +
+      Array.from(models).sort((a,b)=>String(a).localeCompare(String(b), "sk"))
+        .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
+
+    modelSel.disabled = !models.size;
+    if (modelSel.disabled) modelSel.value = "";
+  }
+
+  function getFilteredProducts(){
+    const q = ($("#q")?.value || "").trim().toLowerCase();
+    const cat = $("#cat")?.value || "";
+    const model = $("#model")?.value || "";
+
+    return DATA.products.filter(p => {
+      if (cat && p.category !== cat) return false;
+
+      const pmodel = (p.model || "").toString().trim();
+      if (model && pmodel !== model) return false;
+
+      if (q){
+        const blob = `${p.title} ${p.short} ${p.category} ${p.model} ${p.makeLabel}`.toLowerCase();
+        if (!blob.includes(q)) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderProducts(){
+    const grid = $("#productGrid");
+    const titleEl = $("#productsTitle");
+    const statEl = $("#stat");
+    const loadMoreBtn = $("#loadMoreBtn");
+    if (!grid) return;
+
+    const makeLabel =
+      currentMakeFile
+        ? (MAKE_MAP.find(x => cleanFile(x.file) === currentMakeFile)?.label || currentMakeLabel || "")
+        : "Výber";
+
+    const model = $("#model")?.value || "";
+    const cat = $("#cat")?.value || "";
+
+    const titleParts = [];
+    if (makeLabel) titleParts.push(makeLabel);
+    if (model) titleParts.push(model);
+    if (cat) titleParts.push(cat);
+
+    if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: výber";
+
+    const items = getFilteredProducts();
+    if (statEl) statEl.textContent = `${items.length} produktov`;
+
+    grid.innerHTML = "";
+
+    if (!DATA.products.length){
+      grid.innerHTML = `
+        <div class="panel" style="grid-column:1/-1; padding:18px;">
+          <div class="pill"><span class="dot"></span>nič sa nenačítalo</div>
+          <h2 style="margin:12px 0 8px;">Skontroluj JSON</h2>
+          <p style="margin:0;">
+            Skontroluj, či súbory existujú v <b>/csr-cars</b> a či je <b>manifest.json</b> validný.
+          </p>
+        </div>
+      `;
+      if (loadMoreBtn) loadMoreBtn.style.display = "none";
+      return;
+    }
+
+    if (!items.length){
+      grid.innerHTML = `
+        <div class="panel" style="grid-column:1/-1; padding:18px;">
+          <div class="pill"><span class="dot"></span>nič sme nenašli</div>
+          <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
+          <p style="margin:0;">Skús zmeniť model, kategóriu alebo vymazať vyhľadávanie.</p>
+        </div>
+      `;
+      if (loadMoreBtn) loadMoreBtn.style.display = "none";
+      return;
+    }
+
+    const total = items.length;
+    const shown = Math.min(renderLimit, total);
+    const slice = items.slice(0, shown);
+
+    if (loadMoreBtn){
+      loadMoreBtn.style.display = (shown < total) ? "inline-flex" : "none";
+      loadMoreBtn.onclick = () => {
+        renderLimit += PAGE_SIZE;
+        renderProducts();
+      };
+    }
+
+    slice.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "pCard";
+      card.tabIndex = 0;
+      card.setAttribute("role","button");
+
+      const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
+      const modelLine = (p.model || "").toString().trim();
+
+      const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+      const descShort = p.shortShort || truncateWords(p.short || modelLine || "", 6);
+
+      card.innerHTML = `
+        <div class="pMedia"><img alt="${escapeHtml(p.title || titleShort)}"></div>
+        <div class="pBody">
+          <div class="pName">${escapeHtml(titleShort)}</div>
+          <p class="pDesc">${escapeHtml(descShort)}</p>
+
+          <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
+            ${p.makeLabel ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Značka: ${escapeHtml(p.makeLabel)}</div>` : ""}
+            ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
+            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
+            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
+            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(deliverySummary(p))}</div>
+          </div>
+
+          <div class="pBottom">
+            <div class="price">${escapeHtml(minPriceEUR(p))}</div>
+            <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
+          </div>
+        </div>
+      `;
+
+      const imgEl = card.querySelector(".pMedia img");
+      setSafeImage(imgEl, imgSrc, null);
+
+      card.addEventListener("click", () => openProduct(p));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          openProduct(p);
+        }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  const productModal = $("#productModal");
+  const closeProductModal = $("#closeProductModal");
+  const modalTitle = $("#modalTitle");
+  const mRibbon = $("#mRibbon");
+  const mImg = $("#mImg");
+  const mNoImg = $("#mNoImg");
+  const mDesc = $("#mDesc");
+  const mVariantList = $("#mVariantList");
+  const mVariantWrap = $("#mVariantWrap");
+  const mPriceBig = $("#mPriceBig");
+  const mShip = $("#mShip");
+  const mDelivery = $("#mDelivery");
+  const mOrder = $("#mOrder");
+  const mPrev = $("#mPrev");
+  const mNext = $("#mNext");
+  const mThumbs = $("#mThumbs");
+
+  const galleryModal = $("#galleryModal");
+  const closeGalleryModal = $("#closeGalleryModal");
+  const gFull = $("#gFull");
+  const gNoImg = $("#gNoImg");
+
+  function closeModal(modal){
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden","true");
+  }
+
+  function setModalImage(index){
+    if (!activeProduct) return;
+    const imgs = getProductImages(activeProduct);
+    if (!imgs.length){
+      setSafeImage(mImg, "", mNoImg);
+      if (mThumbs) mThumbs.innerHTML = "";
+      return;
+    }
+    activeImgIndex = ((index % imgs.length) + imgs.length) % imgs.length;
+    setSafeImage(mImg, imgs[activeImgIndex], mNoImg);
+
+    if (mThumbs){
+      $$(".thumb", mThumbs).forEach((t, i) => t.classList.toggle("active", i === activeImgIndex));
+    }
+    if (mThumbs && !mThumbs.children.length) buildThumbs();
+  }
+
+  function buildThumbs(){
+    if (!mThumbs || !activeProduct) return;
+    const imgs = getProductImages(activeProduct);
+    if (imgs.length <= 1){ mThumbs.innerHTML = ""; return; }
+
+    mThumbs.innerHTML = "";
+    imgs.forEach((src, i) => {
+      const d = document.createElement("div");
+      d.className = "thumb" + (i === activeImgIndex ? " active" : "");
+      d.innerHTML = `<img src="${escapeHtml(src)}" alt="thumb ${i+1}" onerror="this.src='${PLACEHOLDER_DATA_URI}'">`;
+      d.addEventListener("click", () => setModalImage(i));
+      mThumbs.appendChild(d);
+    });
+  }
+
+  function buildVariantChips(){
+    if (!mVariantList) return;
+    const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+
+    if (!vars.length){
+      if (mVariantWrap) mVariantWrap.style.display = "none";
+      mVariantList.innerHTML = "";
+      activeVariantIndex = 0;
+      return;
+    }
+
+    if (mVariantWrap) mVariantWrap.style.display = "block";
+    mVariantList.innerHTML = "";
+
+    vars.forEach((v, i) => {
+      const chip = document.createElement("div");
+      chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+      const name = (v.name || `Variant ${i+1}`).toUpperCase();
+      const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
+
+      chip.innerHTML = `
+        <span class="vMain">${escapeHtml(name)}</span>
+        <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+      `;
+      chip.addEventListener("click", () => {
+        activeVariantIndex = i;
+        $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
+        updateVariantPrice();
+      });
+
+      mVariantList.appendChild(chip);
+    });
+  }
+
+  function updateVariantPrice(){
+    if (!activeProduct) return;
+
+    const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+    const v = vars[activeVariantIndex];
+
+    const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
+    const delivery = activeProduct.delivery || "Upresníme po objednávke";
+
+    const base =
+      (v && typeof v.priceEUR === "number") ? v.priceEUR :
+      (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
+      null;
+
+    const variantName = vars.length ? (v?.name || "—") : "—";
+
+    if (mPriceBig){
+      mPriceBig.innerHTML = base !== null
+        ? `<small>CENA</small><br>${fmtEUR(base)}`
+        : `<small>CENA</small><br>UPRESNÍME`;
+    }
+    if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
+    if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+
+    $("#o_manufacturer").value = activeProduct.makeLabel || "—";
+    $("#o_product").value = activeProduct.title || "—";
+    $("#o_variant").value = variantName;
+    $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
+    $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
+    $("#o_delivery").value = delivery;
+
+    const md = (activeProduct.model || "").toString().trim();
+    if ($("#car") && md) $("#car").value = md;
+  }
+
+  function openProduct(p){
+    activeProduct = p;
+    activeVariantIndex = 0;
+
+    const title = p.title || "—";
+    const carMake = p.makeLabel ? `${p.makeLabel} • ` : "";
+    if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
+
+    const status = getStockStatus(p);
+    if (mRibbon){
+      mRibbon.className = `ribbon ${status}`;
+      mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
+    }
+
+    if (mDesc) mDesc.textContent = p.description || p.short || "";
+
+    activeImgIndex = 0;
+    setModalImage(0);
+    buildThumbs();
+
+    buildVariantChips();
+    updateVariantPrice();
+
+    if (productModal){
+      productModal.classList.add("show");
+      productModal.setAttribute("aria-hidden","false");
+    }
+  }
+
+  if (mImg){
+    mImg.addEventListener("click", () => {
+      if (!activeProduct) return;
+      const imgs = getProductImages(activeProduct);
+      if (!imgs.length) return;
+      const src = imgs[activeImgIndex] || imgs[0];
+      setSafeImage(gFull, src, gNoImg);
+      galleryModal?.classList.add("show");
+      galleryModal?.setAttribute("aria-hidden","false");
+    });
+  }
+
+  mPrev?.addEventListener("click", () => setModalImage(activeImgIndex - 1));
+  mNext?.addEventListener("click", () => setModalImage(activeImgIndex + 1));
+
+  window.addEventListener("keydown", (e) => {
+    if (productModal?.classList.contains("show")){
+      if (e.key === "ArrowLeft") setModalImage(activeImgIndex - 1);
+      if (e.key === "ArrowRight") setModalImage(activeImgIndex + 1);
+    }
+    if (e.key === "Escape"){
+      [orderModal, productModal, galleryModal].forEach(m => m?.classList.contains("show") && closeModal(m));
+    }
+  });
+
+  closeProductModal?.addEventListener("click", () => closeModal(productModal));
+  productModal?.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
+
+  closeGalleryModal?.addEventListener("click", () => closeModal(galleryModal));
+  galleryModal?.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(galleryModal); });
+
+  const orderModal = $("#orderModal");
+  const closeOrderModal = $("#closeOrderModal");
+  const cancelSend = $("#cancelSend");
+  const orderForm = $("#orderForm");
+  const consent = $("#consent");
+  const sendBtn = $("#sendBtn");
+
+  function buildOrderBlob(){
+    const lines = [
+      `Značka auta: ${$("#o_manufacturer")?.value || "—"}`,
+      `Diel: ${$("#o_product")?.value || "—"}`,
+      `Variant: ${$("#o_variant")?.value || "—"}`,
+      `Cena: ${$("#o_price")?.value || "—"}`,
+      `Doprava: ${$("#o_shipping")?.value || "—"}`,
+      `Dodanie: ${$("#o_delivery")?.value || "—"}`,
+      ``,
+      `Vozidlo: ${$("#car")?.value || ""}`,
+      `Poznámka: ${$("#customer_note")?.value || ""}`
+    ].join("\n");
+
+    const blob = $("#orderBlob");
+    if (blob) blob.value = lines;
+  }
+
+  function openOrderModal(){
+    closeModal(productModal);
+    if (!orderModal) return;
+
+    $("#customer_note") && ($("#customer_note").value = "");
+    if (consent) consent.checked = false;
+    if (sendBtn) sendBtn.disabled = true;
+
+    buildOrderBlob();
+    orderModal.classList.add("show");
+    orderModal.setAttribute("aria-hidden","false");
+    setTimeout(()=> $("#name")?.focus(), 50);
+  }
+
+  if (mOrder) mOrder.addEventListener("click", openOrderModal);
+  closeOrderModal?.addEventListener("click", () => closeModal(orderModal));
+  cancelSend?.addEventListener("click", () => closeModal(orderModal));
+  orderModal?.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
+
+  if (consent && sendBtn){
+    consent.addEventListener("change", () => { sendBtn.disabled = !consent.checked; });
+  }
+
+  orderForm?.addEventListener("submit", (e) => {
+    if (consent && !consent.checked){
+      e.preventDefault();
+      consent.focus();
+      return;
+    }
+    buildOrderBlob();
+  });
+
+  $("#customer_note")?.addEventListener("input", buildOrderBlob);
+  $("#car")?.addEventListener("input", buildOrderBlob);
+
+  ["q","cat","model"].forEach(id => {
+    const el = $("#" + id);
+    if (!el) return;
+    el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
+    el.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
+  });
+
+  $("#resetFilters")?.addEventListener("click", () => {
+    $("#q").value = "";
+    $("#cat").value = "";
+    $("#model").value = "";
+    $("#model").disabled = !DATA.products.length;
+    renderLimit = PAGE_SIZE;
+    renderProducts();
+  });
+
+  (async () => {
+    await loadManifest();
+    await loadFeaturedProducts();
+  })();
+</script>
+
 </body>
 </html>
