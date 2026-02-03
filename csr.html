@@ -1364,7 +1364,6 @@
           <div class="priceBlock">
             <div class="priceBig" id="mPriceBig">—</div>
             <div class="priceSub" id="mShip">—</div>
-            <div class="priceSub" id="mDelivery">—</div>
           </div>
 
           <div class="mActions">
@@ -1619,6 +1618,15 @@
     return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
   }
 
+  // ✅ +20% prirážka pre všetko (produkty, varianty, doprava)
+const PRICE_MARKUP = 1.20;
+
+function applyMarkup(n) {
+  if (typeof n !== "number" || Number.isNaN(n)) return n;
+  return Math.round(n * PRICE_MARKUP);
+}
+
+
   function setSafeImage(imgEl, url, noImgEl) {
     if (!imgEl) return;
     if (noImgEl) noImgEl.style.display = "none";
@@ -1644,14 +1652,21 @@
     return "NA OBJEDNÁVKU";
   }
 
-  function minPriceEUR(prod) {
-    if (typeof prod.priceEUR === "number") return fmtEUR(prod.priceEUR);
-    const prices = (prod.variants || []).map(v => v.priceEUR).filter(x => typeof x === "number");
-    if (!prices.length) return "cena na dopyt";
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
-  }
+ function minPriceEUR(prod) {
+  if (typeof prod.priceEUR === "number") return fmtEUR(applyMarkup(prod.priceEUR));
+
+  const prices = (prod.variants || [])
+    .map(v => v.priceEUR)
+    .filter(x => typeof x === "number")
+    .map(applyMarkup);
+
+  if (!prices.length) return "cena na dopyt";
+
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+}
+
 
   function variantSummary(p) {
     const vars = Array.isArray(p.variants) ? p.variants : [];
@@ -2023,8 +2038,6 @@
             ${p.makeLabel ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Značka: ${escapeHtml(p.makeLabel)}</div>` : ""}
             ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
             <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(shipSummary(p))}</div>
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(deliverySummary(p))}</div>
           </div>
 
           <div class="pBottom">
@@ -2061,7 +2074,6 @@
   const mVariantWrap = $("#mVariantWrap");
   const mPriceBig = $("#mPriceBig");
   const mShip = $("#mShip");
-  const mDelivery = $("#mDelivery");
   const mOrder = $("#mOrder");
   const mPrev = $("#mPrev");
   const mNext = $("#mNext");
@@ -2127,8 +2139,8 @@
     vars.forEach((v, i) => {
       const chip = document.createElement("div");
       chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-      const name = (v.name || `Variant ${i + 1}`).toUpperCase();
-      const price = (typeof v.priceEUR === "number") ? fmtEUR(v.priceEUR) : "UPRESNÍME";
+      const name = toSlovak(v.name || `Variant ${i + 1}`).toUpperCase();
+      const price = (typeof v.priceEUR === "number") ? fmtEUR(applyMarkup(v.priceEUR)) : "UPRESNÍME";
 
       chip.innerHTML = `
         <span class="vMain">${escapeHtml(name)}</span>
@@ -2150,13 +2162,13 @@
     const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
     const v = vars[activeVariantIndex];
 
-    const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
-    const delivery = activeProduct.delivery || "Upresníme po objednávke";
+    const ship = (typeof activeProduct.shippingEUR === "number") ? applyMarkup(activeProduct.shippingEUR) : 0;
 
-    const base =
-      (v && typeof v.priceEUR === "number") ? v.priceEUR :
-      (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
-      null;
+const base =
+  (v && typeof v.priceEUR === "number") ? applyMarkup(v.priceEUR) :
+  (typeof activeProduct.priceEUR === "number") ? applyMarkup(activeProduct.priceEUR) :
+  null;
+
 
     const variantName = vars.length ? (v?.name || "—") : "—";
 
@@ -2165,27 +2177,53 @@
         ? `<small>CENA</small><br>${fmtEUR(base)}`
         : `<small>CENA</small><br>UPRESNÍME`;
     }
-    if (mShip) mShip.textContent = `Doprava: ${ship ? fmtEUR(ship) : "podľa dohody"}`;
-    if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
+// ✅ podľa zadania: jednotná info len v detaile
+if (mShip) mShip.textContent = `Doprava a dodanie: od 21 €`;
 
     $("#o_manufacturer").value = activeProduct.makeLabel || "—";
     $("#o_product").value = activeProduct.title || "—";
     $("#o_variant").value = variantName;
     $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
-    $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
-    $("#o_delivery").value = delivery;
+ $("#o_shipping").value = "DOPRAVA A DODANIE: OD 21 €";
+$("#o_delivery").value = "—";
+
 
     const md = (activeProduct.model || "").toString().trim();
     if ($("#car") && md) $("#car").value = md;
   }
+// ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
+const TRANSLATE_MAP = [
+  [/front\s*lip/gi, "predné lipo"],
+  [/rear\s*diffuser/gi, "zadný difúzor"],
+  [/diffuser/gi, "difúzor"],
+  [/spoiler/gi, "spojler"],
+  [/side\s*skirt/gi, "prahy"],
+  [/bumper/gi, "nárazník"],
+  [/grill/gi, "maska"],
+  [/carbon/gi, "karbón"],
+  [/fiberglass|gfk/gi, "sklolaminát"],
+  [/paintable|ready\s*to\s*paint/gi, "určené na lakovanie"],
+  [/installation|mounting/gi, "montáž"],
+  [/includes|scope\s*of\s*delivery|lieferumfang/gi, "obsah balenia"],
+  [/certificate|gutachten/gi, "certifikát"],
+  [/excluding/gi, "okrem"],
+  [/without/gi, "bez"],
+  [/with/gi, "s"],
+];
+
+function toSlovak(text) {
+  let t = String(text ?? "");
+  TRANSLATE_MAP.forEach(([re, rep]) => { t = t.replace(re, rep); });
+  return t;
+}
 
   function openProduct(p) {
     activeProduct = p;
     activeVariantIndex = 0;
 
-    const title = p.title || "—";
+const title = toSlovak(p.title || "—");
     const carMake = p.makeLabel ? `${p.makeLabel} • ` : "";
-    if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
+if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
 
     const status = getStockStatus(p);
     if (mRibbon) {
@@ -2193,7 +2231,7 @@
       mRibbon.innerHTML = `<span class="rDot"></span>${escapeHtml(stockLabel(status))}`;
     }
 
-    if (mDesc) mDesc.textContent = p.description || p.short || "";
+    if (mDesc) mDesc.textContent = toSlovak(p.description || p.short || "");
 
     activeImgIndex = 0;
     setModalImage(0);
