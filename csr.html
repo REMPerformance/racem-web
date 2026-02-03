@@ -1692,28 +1692,23 @@ function applyMarkup(n) {
     return Array.from(new Set(arr.filter(Boolean)));
   }
 
-  function normalizeLoadedList(json) {
-    const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
-    return list.map(p => {
-      const images = Array.isArray(p.images) ? p.images : [];
-      const image = p.image || images[0] || "";
-      function normalizeLoadedList(json) {
-  const list = Array.isArray(json.products) ? json.products : (Array.isArray(json) ? json : []);
+ function normalizeLoadedList(json) {
+  const list = Array.isArray(json?.products) ? json.products : (Array.isArray(json) ? json : []);
 
   return list.map(p => {
-    const images = Array.isArray(p.images) ? p.images : [];
-    const image = p.image || images[0] || "";
+    const images = Array.isArray(p?.images) ? p.images : [];
+    const image = p?.image || images[0] || "";
 
-    // ✅ PREKLAD UŽ TU
-    const titleFull = toSlovak(p.title || "");
-    const shortFull = toSlovak(p.short || p.subtitle || "");
-    const descFull  = toSlovak(p.description || "");
+    // preklad
+    const titleFull = toSlovak(p?.title || "");
+    const shortFull = toSlovak(p?.short || p?.subtitle || "");
+    const descFull  = toSlovak(p?.description || "");
 
-    const modelFull = toSlovak((p.model || "").toString().trim());
-    const catFull   = toSlovak((p.category || "").toString().trim());
-    const delFull   = toSlovak(p.delivery || "Upresníme po objednávke");
+    const modelFull = toSlovak(String(p?.model || "").trim());
+    const catFull   = toSlovak(String(p?.category || "").trim());
+    const delFull   = toSlovak(p?.delivery || "Upresníme po objednávke");
 
-    const variants = Array.isArray(p.variants) ? p.variants : [];
+    const variants = Array.isArray(p?.variants) ? p.variants : [];
     const variantsSk = variants.map(v => ({
       ...v,
       name: toSlovak(v?.name || "")
@@ -1737,9 +1732,9 @@ function applyMarkup(n) {
 
       delivery: delFull,
 
-      shippingEUR: (typeof p.shippingEUR === "number")
+      shippingEUR: (typeof p?.shippingEUR === "number")
         ? p.shippingEUR
-        : ((typeof p.shipping === "number") ? p.shipping : 0),
+        : ((typeof p?.shipping === "number") ? p.shipping : 0),
 
       model: modelFull,
       category: catFull,
@@ -1749,7 +1744,6 @@ function applyMarkup(n) {
     };
   });
 }
-
 
   function pickRandom(arr, n) {
     const a = Array.isArray(arr) ? arr.slice() : [];
@@ -2430,6 +2424,9 @@ if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
     await loadManifest();
     await loadFeaturedProducts();
   })();
+
+  console.log("CSR script loaded OK");
+
 </script>
 
 
