@@ -382,6 +382,69 @@
     }
     .sel option{ background:#0b0b0b; color:#fff; }
 
+    /* ✅ výrazný model filter */
+.sel.modelPrimary{
+  min-width: 260px;
+  padding: 14px 52px 14px 14px;
+  border-radius: 18px;
+  border:1px solid rgba(179,31,36,0.55);
+  background:
+    radial-gradient(circle at 18% 30%, rgba(179,31,36,0.18), transparent 60%),
+    rgba(0,0,0,0.45);
+  box-shadow:
+    0 0 0 4px rgba(179,31,36,0.14),
+    0 18px 60px rgba(0,0,0,0.55);
+  font-size: 15px;
+  letter-spacing:.06em;
+}
+
+.sel.modelPrimary:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.85);
+  background:
+    radial-gradient(circle at 18% 30%, rgba(179,31,36,0.22), transparent 60%),
+    rgba(0,0,0,0.48);
+}
+
+/* label/hint pred modelom */
+.modelLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.22);
+  color: rgba(255,255,255,0.82);
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.modelLabel .dot{
+  width:8px;height:8px;border-radius:999px;
+  background: var(--red);
+  box-shadow: 0 0 18px rgba(179,31,36,.7);
+}
+
+/* filterBar viac “kompaktný” a pekne zarovnaný */
+.filterBar{
+  margin-top: 16px;
+  display:flex;
+  gap: 12px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.filtersLeft{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+
    /* ✅ make filter panel - vizuálne výraznejší */
 .makePanel{
   width:100%;
@@ -1245,13 +1308,12 @@
           <div class="filtersLeft">
             <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
 
-            <select class="sel" id="model" disabled>
-              <option value="">Model: všetko</option>
-            </select>
+            <div class="modelLabel"><span class="dot"></span>Model</div>
 
-            <select class="sel" id="cat">
-              <option value="">Kategória: všetko</option>
-            </select>
+<select class="sel modelPrimary" id="model" disabled>
+  <option value="">Vyber model (alebo nechaj všetko)</option>
+</select>
+
 
             <button class="btn secondary" id="resetFilters" type="button">Reset filtrov</button>
           </div>
@@ -1706,7 +1768,6 @@
     const total = MAKE_MAP.length;
     if (makeCount) makeCount.textContent = `${total} značiek`;
 
-    // vždy zobraz všetko, bez "zobraziť viac"
     box.innerHTML = "";
 
     // "Výber" button
@@ -1720,7 +1781,6 @@
       currentMakeLabel = "";
       renderLimit = PAGE_SIZE;
       $("#q").value = "";
-      $("#cat").value = "";
       $("#model").value = "";
       setActiveMakeButton("");
       applyDataProducts(featuredSample);
@@ -1766,7 +1826,6 @@
 
   function applyDataProducts(list) {
     DATA.products = Array.isArray(list) ? list.slice() : [];
-    buildCategoryOptions();
     refreshModels();
     renderProducts();
   }
@@ -1831,7 +1890,6 @@
 
       renderLimit = PAGE_SIZE;
       $("#model").value = "";
-      $("#cat").value = "";
       $("#q").value = "";
 
       applyDataProducts(list);
@@ -1842,19 +1900,6 @@
     } finally {
       hideLoading();
     }
-  }
-
-  function buildCategoryOptions() {
-    const catSel = $("#cat");
-    if (!catSel) return;
-
-    const cats = new Set();
-    DATA.products.forEach(p => p.category && cats.add(p.category));
-
-    catSel.innerHTML =
-      `<option value="">Kategória: všetko</option>` +
-      Array.from(cats).sort((a, b) => String(a).localeCompare(String(b), "sk"))
-        .map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
   }
 
   function refreshModels() {
@@ -1876,19 +1921,17 @@
     if (modelSel.disabled) modelSel.value = "";
   }
 
+  // ✅ KATEGÓRIA JE PREČ -> filtruje sa len model + search
   function getFilteredProducts() {
     const q = ($("#q")?.value || "").trim().toLowerCase();
-    const cat = $("#cat")?.value || "";
-    const model = $("#model")?.value || "";
+    const model = ($("#model")?.value || "").trim();
 
-    return DATA.products.filter(p => {
-      if (cat && p.category !== cat) return false;
-
+    return (DATA.products || []).filter(p => {
       const pmodel = (p.model || "").toString().trim();
       if (model && pmodel !== model) return false;
 
       if (q) {
-        const blob = `${p.title} ${p.short} ${p.category} ${p.model} ${p.makeLabel}`.toLowerCase();
+        const blob = `${p.title || ""} ${p.short || ""} ${p.model || ""} ${p.makeLabel || ""}`.toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
@@ -1908,12 +1951,10 @@
         : "Výber";
 
     const model = $("#model")?.value || "";
-    const cat = $("#cat")?.value || "";
 
     const titleParts = [];
     if (makeLabel) titleParts.push(makeLabel);
     if (model) titleParts.push(model);
-    if (cat) titleParts.push(cat);
 
     if (titleEl) titleEl.textContent = titleParts.length ? `Filtre: ${titleParts.join(" • ")}` : "Filtre: výber";
 
@@ -1941,7 +1982,7 @@
         <div class="panel" style="grid-column:1/-1; padding:18px;">
           <div class="pill"><span class="dot"></span>nič sme nenašli</div>
           <h2 style="margin:12px 0 8px;">Skús zmeniť filtre</h2>
-          <p style="margin:0;">Skús zmeniť model, kategóriu alebo vymazať vyhľadávanie.</p>
+          <p style="margin:0;">Skús zmeniť model alebo vymazať vyhľadávanie.</p>
         </div>
       `;
       if (loadMoreBtn) loadMoreBtn.style.display = "none";
@@ -2257,7 +2298,8 @@
   $("#customer_note")?.addEventListener("input", buildOrderBlob);
   $("#car")?.addEventListener("input", buildOrderBlob);
 
-  ["q", "cat", "model"].forEach(id => {
+  // ✅ listenery bez "cat"
+  ["q", "model"].forEach(id => {
     const el = $("#" + id);
     if (!el) return;
     el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
@@ -2266,7 +2308,6 @@
 
   $("#resetFilters")?.addEventListener("click", () => {
     $("#q").value = "";
-    $("#cat").value = "";
     $("#model").value = "";
     $("#model").disabled = !DATA.products.length;
     renderLimit = PAGE_SIZE;
