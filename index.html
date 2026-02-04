@@ -3047,13 +3047,12 @@
     document.addEventListener('DOMContentLoaded', loadHomepageStock);
 
     /// ===== SHIPPING BAR (rotate + closable + sticky offset) =====
+// ===== SHIPPING BAR (rotate + closable, NO MEMORY) =====
 (function shipbarSystem(){
   const bar = document.getElementById("shipbar");
   const el  = document.getElementById("shipbarText");
   const closeBtn = document.getElementById("shipbarClose");
   if (!bar || !el) return;
-
-  const KEY = "racem_shipbar_closed"; // "1" => closed
 
   const messages = [
     "Odosielame do CZ, PL, HU, AT a celej EÚ.",
@@ -3064,40 +3063,27 @@
     "We ship across the European Union."
   ];
 
-  // === helpers ===
+  // shipbar je po reloade vždy VISIBLE
+  bar.classList.remove("is-hidden");
+
   function setStickyOffset(){
-    // nastav top offset topbaru podľa reálnej výšky shipbaru
     const h = bar.classList.contains("is-hidden") ? 0 : Math.ceil(bar.getBoundingClientRect().height);
     document.documentElement.style.setProperty("--stickyOffset", h + "px");
   }
 
   function hideBar(){
     bar.classList.add("is-hidden");
-    sessionStorage.setItem(KEY, "1");
     setStickyOffset();
   }
 
-  function showBar(){
-    bar.classList.remove("is-hidden");
-    sessionStorage.removeItem(KEY);
-    setStickyOffset();
-  }
-
-  // === init visibility from storage ===
-  if (sessionStorage.getItem(KEY) === "1"){
-    bar.classList.add("is-hidden");
-  }
-
-  // close click
   closeBtn?.addEventListener("click", hideBar);
 
-  // set offset now + on resize
   setStickyOffset();
   window.addEventListener("resize", setStickyOffset, { passive: true });
 
-  // === rotator ===
+  // rotator – 4 sekundy
   let i = 0;
-  const intervalMs = 4000; // ✅ 4 sekundy
+  const intervalMs = 4000;
 
   function swapText(next){
     el.classList.add("out");
@@ -3105,23 +3091,17 @@
       el.classList.remove("out");
       el.classList.add("in");
       el.textContent = next;
-
-      requestAnimationFrame(() => {
-        el.classList.remove("in");
-      });
+      requestAnimationFrame(() => el.classList.remove("in"));
     }, 220);
   }
 
-  // nespúšťaj rotáciu, ak je bar zavretý
   setInterval(() => {
     if (bar.classList.contains("is-hidden")) return;
     i = (i + 1) % messages.length;
     swapText(messages[i]);
   }, intervalMs);
-
-  // ak sa bar niekedy znovu zobrazí (ty by si to možno raz chcel), offset sa upraví
-  // showBar(); // nechávam len ako poznámku
 })();
+
 
 
 
