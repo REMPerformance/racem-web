@@ -1380,6 +1380,136 @@
   white-space:nowrap;
 }
 
+/* ===== CSR info section ===== */
+.csrPanel{
+  background:
+    radial-gradient(circle at 16% 18%, rgba(179,31,36,0.18), transparent 55%),
+    linear-gradient(180deg, rgba(18,18,18,0.88), rgba(10,10,10,0.78));
+}
+
+.csrTop{
+  display:grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap:16px;
+  align-items:start;
+}
+
+.csrLead{
+  font-size:15.5px;
+  line-height:1.9;
+  color: rgba(255,255,255,0.80);
+  margin-top: 10px;
+}
+
+.csrBadges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 14px;
+}
+
+.csrBadge{
+  display:inline-flex;
+  align-items:center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.86);
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.30);
+}
+
+.csrSide{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.csrSideBox{
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.22);
+  padding:14px;
+  box-shadow: 0 14px 46px rgba(0,0,0,0.35);
+}
+
+.csrSideTitle{
+  font-family: var(--font);
+  letter-spacing:.20em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: rgba(255,255,255,0.90);
+}
+
+.csrDivider{
+  height:1px;
+  width:100%;
+  background: rgba(255,255,255,0.10);
+  margin: 18px 0 16px;
+}
+
+.csrReasons{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+
+.csrReason{
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(179,31,36,0.14), transparent 55%),
+    rgba(0,0,0,0.22);
+  padding: 14px 14px 12px;
+  box-shadow: 0 16px 54px rgba(0,0,0,0.45);
+  overflow:hidden;
+}
+
+.csrReasonHead{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom: 8px;
+}
+
+.csrCheck{
+  width:34px;
+  height:34px;
+  border-radius: 14px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(179,31,36,0.55);
+  background: rgba(179,31,36,0.14);
+  color:#fff;
+  font-weight: 900;
+  box-shadow: 0 0 0 4px rgba(179,31,36,0.10);
+  flex: 0 0 auto;
+}
+
+.csrReasonTitle{
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  color:#fff;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.csrReason p{
+  margin: 0;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.75;
+  font-size: 14.5px;
+}
+
+@media (max-width: 980px){
+  .csrTop{ grid-template-columns: 1fr; }
+  .csrReasons{ grid-template-columns: 1fr; }
+}
 
   </style>
 </head>
@@ -1410,33 +1540,124 @@
     </div>
   </section>
 
-  <section id="oZnacke">
-    <div class="wrap">
-      <div class="grid2">
-        <div class="panel">
-          <div class="pill originPill">
-            <span class="flag" aria-hidden="true"></span>
-            <span>PÔVOD:</span>
-            <b>EÚ</b>
+  <section id="oCSR">
+  <div class="wrap">
+    <div class="panel csrPanel">
+      <div class="csrTop">
+        <div>
+          <div class="pill"><span class="dot"></span>O značke</div>
+          <h2 style="margin-top:14px;">CSR Automotive</h2>
+          <p class="csrLead">
+            V CSR Automotive veria, že auto so spojlerom jednoducho vyzerá lepšie než bez neho.
+            Zameriavajú sa na vylepšenie sériových áut športovými a štýlovými doplnkami – najmä aero a karosárskymi dielmi.
+            Pri vývoji produktov dodržiavajú smernice <b>KBA</b> (nemecký federálny úrad pre motorovú dopravu) a <b>ECE</b> predpisy,
+            aby boli úpravy použiteľné a legálne v bežnej cestnej premávke.
+          </p>
+
+          <div class="csrBadges">
+            <span class="csrBadge">3D laser skeny</span>
+            <span class="csrBadge">KBA / TÜV procesy</span>
+            <span class="csrBadge">ABE / TTG (bez zápisu)</span>
+            <span class="csrBadge">Made in Germany</span>
+          </div>
+        </div>
+
+        <div class="csrSide">
+          <div class="csrSideBox">
+            <div class="csrSideTitle">Ako to u teba funguje na RACEM</div>
+            <p style="margin:10px 0 0;">
+              Produkty si vyfiltruješ podľa značky a modelu, pošleš <b>nezáväznú objednávku</b>
+              a <b>TEAM RACEM</b> ti následne overí kompatibilitu a potvrdí dodanie.
+            </p>
           </div>
 
-          <h2>CSR Automotive</h2>
+          <div class="csrSideBox">
+            <div class="csrSideTitle">Poznámka k dokladom</div>
+            <p style="margin:10px 0 0;">
+              Pri mnohých dieloch CSR býva dostupné <b>ABE</b> alebo typové schválenie (<b>TTG</b>).
+              Dokumenty sa zvyčajne nosia pri sebe a predkladajú pri kontrole (podľa konkrétneho dielu a krajiny).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="csrDivider"></div>
+
+      <div class="pill"><span class="dot"></span>Prečo si vybrať CSR</div>
+      <h2 style="margin-top:14px;">Dôvody, prečo CSR dáva zmysel</h2>
+
+      <div class="csrReasons">
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">High-tech vývoj produktov</div>
+          </div>
           <p>
-            CSR Automotive je známy výrobca aero a karosárskych dielov. Na RACEM stránke si vieš filtrovať produkty podľa
-            značky auta, modelu, kategórie a rýchlo poslať nezáväznú objednávku – kompatibilitu ti následne overí TEAM RACEM.
+            Produkty vyvíjajú na základe presných <b>3D laserových skenov</b>.
+            Vďaka tomu sa rieši každý detail vozidla a pasovanie je na vysokej úrovni.
           </p>
         </div>
 
-        <div class="panel">
-          <div class="pill"><span class="dot"></span>Tip</div>
-          <p style="margin:10px 0 0">
-            Výrobca auta sa načíta zo samostatného JSON súboru z priečinka <b>/csr-cars</b>.
-            Zoznam značiek je v <b>/csr-cars/manifest.json</b>.
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">Vyrobené v Nemecku</div>
+          </div>
+          <p>
+            3D skenovanie, vývoj, prototypy, sériová výroba, kontrola kvality, predaj, expedícia aj podpora –
+            všetko v štandarde „Made in Germany“.
+          </p>
+        </div>
+
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">KBA posúdenie / TÜV procesy</div>
+          </div>
+          <p>
+            Pri vývoji sa držia noriem a predpisov pre bežnú cestnú premávku v Nemecku.
+            Produkty prechádzajú procesmi, ktoré sú podmienkou pre typové schválenia (TTG/ABE).
+          </p>
+        </div>
+
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">Podpora v jazyku zákazníka</div>
+          </div>
+          <p>
+            Ak vznikne otázka alebo problém, dá sa riešiť podpora cez e-mail/online kanály.
+            (CSR uvádza viacero jazykov – my to pre teba zjednodušíme cez TEAM RACEM.)
+          </p>
+        </div>
+
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">Jednoduchá montáž</div>
+          </div>
+          <p>
+            Diely sú navrhnuté na rýchlu a jednoduchú montáž.
+            Pri veľa komponentoch sa používa aj <b>3M páska</b> (podľa typu dielu).
+          </p>
+        </div>
+
+        <div class="csrReason">
+          <div class="csrReasonHead">
+            <span class="csrCheck">✓</span>
+            <div class="csrReasonTitle">ABE / TTG – bez potreby zápisu</div>
+          </div>
+          <p>
+            Veľa produktov má platné <b>ABE</b> alebo typové schválenie (<b>TTG</b>),
+            takže často netreba extra zápis – dokumenty sa len nosia pri sebe (podľa dielu/krajiny).
           </p>
         </div>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
 
   <section id="produktySekcia">
     <div class="wrap">
