@@ -9,8 +9,8 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <!-- ✅ SEO -->
-  <title>RACEM | Performance diely & bodykits</title>
-  <meta name="description" content="RACEM (REM Performance) – performance autodiely, nezohnateľné diely na mieru, overenie kompatibility a mobilný autoservis. Západné Slovensko.">
+  <title>RACEM | Performance bodykits & aero</title>
+ <meta name="description" content="RACEM (REM Performance) – performance diely, bodykity, aero diely, diely na objednávku.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://racem.sk/">
@@ -18,15 +18,15 @@
   <!-- ✅ Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="RACEM">
-  <meta property="og:title" content="RACEM | Performance diely & mobilný autoservis">
-  <meta property="og:description" content="Performance diely, nezohnateľné autodiely na mieru, overenie kompatibility a mobilný autoservis na západnom Slovensku.">
+  <meta property="og:title" content="RACEM | Performance & aero bodykits">
+  <meta property="og:description" content="Performance diely, autodiely, bodykits, mobilný autoservis">
   <meta property="og:url" content="https://racem.sk/">
   <meta property="og:image" content="https://racem.sk/assets/og-racem.jpg">
 
   <!-- ✅ Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="RACEM | Performance diely & mobilný autoservis">
-  <meta name="twitter:description" content="Performance diely, nezohnateľné autodiely a mobilný autoservis. Overíme kompatibilitu, zjednáme cenu, dodáme.">
+  <meta name="twitter:description" content="Performance diely, autodiely a mobilný autoservis. Bodykits a aero diely">
   <meta name="twitter:image" content="https://racem.sk/assets/og-racem.jpg">
 
   <style>
@@ -188,7 +188,7 @@
     /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
     .topbar{
       position:sticky;
-      top:0;
+      top:44;
       z-index:100;
       backdrop-filter: blur(12px);
       background: rgba(10,10,10,0.62);
@@ -1287,6 +1287,7 @@
       section{ padding: 52px 0 !important; }
       .hero{ padding: 46px 0 40px !important; }
       .wrap{ padding: 0 14px !important; }
+      .topbar{ top: 56px; }
 
       h1{ font-size: 34px !important; line-height: 1.08 !important; }
       h2{ font-size: 24px !important; line-height: 1.15 !important; }
@@ -2056,6 +2057,86 @@
   display:flex;
   justify-content:center;
 }
+/* ===== SHIPPING BAR (TOP ROTATING) ===== */
+.shipbar{
+  position: sticky;
+  top: 0;
+  z-index: 120; /* nad obsahom, pod modalmi */
+  width: 100%;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+
+  /* žltá/oranžová – jasná a čitateľná */
+  background: linear-gradient(90deg, #ffcc00, #ff8a00);
+  color: #0b0b0b;
+}
+
+.shipbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 12px;
+  padding: 10px 14px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.shipbar-flags{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(0,0,0,0.18);
+}
+
+.shipbar-flags .flag{
+  font-size: 18px;
+  line-height: 1;
+  filter: saturate(1.05);
+}
+
+.shipbar-textwrap{
+  position: relative;
+  overflow: hidden;
+  height: 22px;           /* fix výška kvôli animácii */
+  min-width: min(720px, 72vw);
+}
+
+.shipbar-text{
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* animácia */
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform .35s ease, opacity .35s ease;
+}
+
+.shipbar-text.out{
+  transform: translateY(120%);
+  opacity: 0;
+}
+
+.shipbar-text.in{
+  transform: translateY(-120%);
+  opacity: 0;
+}
+
+/* na mobile nech to nie je preplnené */
+@media (max-width: 560px){
+  .shipbar-inner{ justify-content:flex-start; }
+  .shipbar-textwrap{ min-width: 0; height: 34px; }
+  .shipbar-text{
+    white-space: normal;
+    line-height: 1.25;
+  }
+}
 
   </style>
 </head>
@@ -2064,6 +2145,24 @@
   <div class="bg"></div>
   <div class="noise"></div>
     <img class="rmgroup-bg" src="assets/rmgroup.png" alt="" aria-hidden="true">
+
+      <!-- SHIPPING BAR (rotating) -->
+  <div class="shipbar" role="status" aria-live="polite">
+    <div class="shipbar-inner">
+      <div class="shipbar-flags" aria-hidden="true" title="CZ • PL • HU • AT • EU">
+        <span class="flag">🇨🇿</span>
+        <span class="flag">🇵🇱</span>
+        <span class="flag">🇭🇺</span>
+        <span class="flag">🇦🇹</span>
+        <span class="flag">🇪🇺</span>
+      </div>
+
+      <div class="shipbar-textwrap">
+        <div class="shipbar-text" id="shipbarText">Odosielame aj do Českej republiky.</div>
+      </div>
+    </div>
+  </div>
+
 
 
   <div class="topbar">
@@ -2094,7 +2193,9 @@
           <img src="assets/text.png" alt="BEAT THEM ALL" class="hero-slogan-image">
         </h1>
 
-        <span class="sr-only">RACEM – Performance diely</span>
+       <span class="sr-only">
+  RACEM – performance diely, bodykity, aero diely a diely na objednávku.
+</span>
 
         <!-- SERVICES UNDER LOGO -->
         <div class="heroServices">
@@ -2283,11 +2384,11 @@
       <div class="panel reveal" style="padding:40px">
         <span class="pill">
           <span class="dot"></span>
-          nezohnateľné • špecifické • atypické • racing
+          performance • motor • podvozok • diely na objednávku
         </span>
 
         <h2 style="margin-top:22px; max-width:1100px">
-          Máš nezohnateľný diel?
+          Plnohodnotné športové autodiely.
         </h2>
 
         <p style="font-size:17px; max-width:1000px">
@@ -2316,7 +2417,7 @@
         </p>
 
         <div class="ctaRow" style="margin-top:20px">
-          <a class="btn btnPrimary" href="#kontakt">Chcem zohnať diel</a>
+          <a class="btn btnPrimary" href="#kontakt">Chcem diely</a>
         </div>
       </div>
     </div>
@@ -2538,7 +2639,7 @@
     </div>
 
     <div class="muted2">
-      Performance diely • mobilný autoservis • sponzoring
+      Performance diely • bodykity • aero • mobilný autoservis
     </div>
   </div>
 
@@ -2909,6 +3010,57 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadHomepageStock);
+
+    // ===== SHIPPING BAR ROTATOR (every 3s) =====
+(function shipbarRotator(){
+  const el = document.getElementById("shipbarText");
+  if (!el) return;
+
+  const messages = [
+    // SK (bonus, aby to bolo domáce)
+    "Odosielame aj do Českej republiky, Poľska, Maďarska, Rakúska a celej EÚ.",
+
+    // CZ
+    "Produkty odesíláme i do České republiky.",
+
+    // PL
+    "Wysyłamy produkty również do Polski.",
+
+    // HU
+    "Termékeinket Magyarországra is szállítjuk.",
+
+    // AT (DE)
+    "Wir liefern unsere Produkte auch nach Österreich.",
+
+    // EN (EU)
+    "We ship to the Czech Republic, Poland, Hungary, Austria, and across the EU."
+  ];
+
+  let i = 0;
+  const intervalMs = 3000;
+
+  function swapText(next){
+    // animácia: najprv von
+    el.classList.add("out");
+    setTimeout(() => {
+      // priprav “in” stav (príde zhora)
+      el.classList.remove("out");
+      el.classList.add("in");
+      el.textContent = next;
+
+      // potom prepnúť do normálu
+      requestAnimationFrame(() => {
+        el.classList.remove("in");
+      });
+    }, 260);
+  }
+
+  setInterval(() => {
+    i = (i + 1) % messages.length;
+    swapText(messages[i]);
+  }, intervalMs);
+})();
+
 
     // ===== REVEAL ON SCROLL =====
     const reveals = document.querySelectorAll('.reveal');
