@@ -188,7 +188,7 @@
     /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
     .topbar{
       position:sticky;
-      top:44;
+      top:30;
       z-index:100;
       backdrop-filter: blur(12px);
       background: rgba(10,10,10,0.62);
@@ -1287,7 +1287,7 @@
       section{ padding: 52px 0 !important; }
       .hero{ padding: 46px 0 40px !important; }
       .wrap{ padding: 0 14px !important; }
-      .topbar{ top: 56px; }
+      .topbar{ top: 40px; }
 
       h1{ font-size: 34px !important; line-height: 1.08 !important; }
       h2{ font-size: 24px !important; line-height: 1.15 !important; }
@@ -2058,85 +2058,102 @@
   justify-content:center;
 }
 /* ===== SHIPPING BAR (TOP ROTATING) ===== */
+/* ===== SHIPPING BAR – SLIM / CLEAN ===== */
 .shipbar{
   position: sticky;
   top: 0;
-  z-index: 120; /* nad obsahom, pod modalmi */
-  width: 100%;
-  border-bottom: 1px solid rgba(0,0,0,0.25);
+  z-index: 120;
 
-  /* žltá/oranžová – jasná a čitateľná */
-  background: linear-gradient(90deg, #ffcc00, #ff8a00);
-  color: #0b0b0b;
+  height: 32px; /* 👈 TENKÉ */
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(90deg, #ffb800, #ff9800);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  color: #111;
 }
 
 .shipbar-inner{
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  gap: 12px;
-  padding: 10px 14px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 10px;
+
+  padding: 0 12px;
 }
 
+/* vlajky – malé, čisté */
 .shipbar-flags{
   display:flex;
+  gap: 6px;
   align-items:center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.25);
-  border: 1px solid rgba(0,0,0,0.18);
+  opacity: 0.9;
 }
 
 .shipbar-flags .flag{
-  font-size: 18px;
+  font-size: 14px; /* 👈 menšie */
   line-height: 1;
-  filter: saturate(1.05);
 }
 
+/* text wrapper – stabilná výška */
 .shipbar-textwrap{
   position: relative;
   overflow: hidden;
-  height: 22px;           /* fix výška kvôli animácii */
-  min-width: min(720px, 72vw);
+  height: 16px;
+  min-width: min(520px, 70vw);
 }
 
+/* TEXT – menej hrubý, technický look */
 .shipbar-text{
-  font-weight: 900;
-  letter-spacing: .04em;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;              /* 👈 už nie beton */
+  font-size: 11px;               /* 👈 menšie */
+  letter-spacing: .06em;         /* 👈 motorsport feel */
   text-transform: uppercase;
-  font-size: 12.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #111;
 
-  /* animácia */
+  white-space: nowrap;
+  text-align: center;
+
   transform: translateY(0);
   opacity: 1;
-  transition: transform .35s ease, opacity .35s ease;
+  transition: transform .3s ease, opacity .3s ease;
 }
 
+/* animácie */
 .shipbar-text.out{
-  transform: translateY(120%);
+  transform: translateY(100%);
   opacity: 0;
 }
-
 .shipbar-text.in{
-  transform: translateY(-120%);
+  transform: translateY(-100%);
   opacity: 0;
 }
 
-/* na mobile nech to nie je preplnené */
+/* MOBILE */
 @media (max-width: 560px){
-  .shipbar-inner{ justify-content:flex-start; }
-  .shipbar-textwrap{ min-width: 0; height: 34px; }
+  .shipbar{
+    height: 40px;
+  }
+  .shipbar-inner{
+    justify-content: flex-start;
+  }
+  .shipbar-textwrap{
+    height: 28px;
+    min-width: 0;
+  }
   .shipbar-text{
+    font-size: 10.5px;
+    line-height: 1.2;
+    text-align: left;
     white-space: normal;
-    line-height: 1.25;
   }
 }
+
 
   </style>
 </head>
@@ -3020,8 +3037,8 @@
     // SK (bonus, aby to bolo domáce)
     "Odosielame aj do Českej republiky, Poľska, Maďarska, Rakúska a celej EÚ.",
 
-    // CZ
-    "Produkty odesíláme i do České republiky.",
+        // EN (EU)
+    "We ship our products across the EU.",
 
     // PL
     "Wysyłamy produkty również do Polski.",
@@ -3030,10 +3047,7 @@
     "Termékeinket Magyarországra is szállítjuk.",
 
     // AT (DE)
-    "Wir liefern unsere Produkte auch nach Österreich.",
-
-    // EN (EU)
-    "We ship to the Czech Republic, Poland, Hungary, Austria, and across the EU."
+    "Wir liefern unsere Produkte auch nach Österreich."
   ];
 
   let i = 0;
