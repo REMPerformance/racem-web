@@ -1698,9 +1698,11 @@
   }
   function applyMarkup(price) {
   if (typeof price !== "number" || Number.isNaN(price)) return null;
-  if (price <= 0) return null; // ✅ 0 alebo záporné = cena na vyžiadanie
+  if (price === 0) return null;         // ✅ iba 0
+  if (price < 0) return null;           // (voliteľné)
   return Math.round(price * PRICE_MARKUP);
 }
+
 
 
   function escapeHtml(str) {
@@ -1721,9 +1723,10 @@
   }
 
   function fmtEUR(n) {
-  if (typeof n !== "number" || Number.isNaN(n) || n <= 0) return PRICE_ON_REQUEST;
+  if (typeof n !== "number" || Number.isNaN(n)) return "—";
   return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
 }
+
 
 
   // ================================
@@ -1757,15 +1760,17 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
   }
 
   function getJsonPriceEUR(p, variant) {
-    const vPrice = variant?.priceEUR;
-    const pPrice = p?.priceEUR;
+  const vPrice = variant?.priceEUR;
+  const pPrice = p?.priceEUR;
 
-    // fallbacky keby niekde prišlo iné pole
-    const vAlt = variant?.price;
-    const pAlt = p?.price;
+  // fallbacky keby niekde prišlo iné pole
+  const vAlt = variant?.price;
+  const pAlt = p?.price;
 
-    return (typeof cand === "number") ? applyMarkup(cand) : null;
-  }
+  const cand = [vPrice, pPrice, vAlt, pAlt].find(x => typeof x === "number" && !Number.isNaN(x));
+  return (typeof cand === "number") ? applyMarkup(cand) : null;
+}
+
 
   function minPriceEUR(prod) {
     const direct = getJsonPriceEUR(prod, null);
