@@ -2058,9 +2058,9 @@
   display:flex;
   justify-content:center;
 }
-/* ===== SHIPPING BAR – SLIM, CLOSABLE, READABLE ===== */
+/* ===== SHIPPING BAR – CLEAN / READABLE ===== */
 :root{
-  --stickyOffset: 32px; /* fallback – JS to prepočíta */
+  --stickyOffset: 34px;
 }
 
 .shipbar{
@@ -2068,7 +2068,7 @@
   top: 0;
   z-index: 120;
 
-  height: 32px;
+  height: 34px;
   display: flex;
   align-items: center;
 
@@ -2081,40 +2081,43 @@
 
 .shipbar-inner{
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;        /* 👈 viac priestoru */
   margin: 0 auto;
 
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap: 10px;
+  gap: 14px;
 
-  padding: 0 10px;
+  padding: 0 14px;
 }
 
+/* vlajky vľavo */
 .shipbar-flags{
   display:flex;
   gap: 6px;
   align-items:center;
-  opacity: 0.92;
+  opacity: .95;
+  flex-shrink: 0;
 }
 .shipbar-flags .flag{
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1;
 }
 
+/* text má maximum priestoru */
 .shipbar-textwrap{
+  flex: 1;                  /* 👈 ROZŤIAHNE SA */
   position: relative;
   overflow: hidden;
-  height: 18px;
-  min-width: min(560px, 72vw);
+  height: 20px;
 }
 
+/* TEXT – väčší, stále technický */
 .shipbar-text{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-weight: 700;     /* ✅ čitateľnejšie */
-  font-size: 11.8px;    /* ✅ väčšie */
-  letter-spacing: .07em;
+  font-weight: 700;
+  font-size: 13px;          /* 👈 VÄČŠIE */
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: #111;
 
@@ -2125,44 +2128,54 @@
   opacity: 1;
   transition: transform .28s ease, opacity .28s ease;
 }
+
 .shipbar-text.out{ transform: translateY(100%); opacity: 0; }
 .shipbar-text.in{ transform: translateY(-100%); opacity: 0; }
 
-/* Close button */
+/* CLOSE – úplne vpravo */
 .shipbar-close{
+  margin-left: auto;        /* 👈 POSUN NA KRAJ */
   width: 26px;
   height: 26px;
   display:grid;
   place-items:center;
-  border-radius: 10px;
 
+  border-radius: 10px;
   border: 1px solid rgba(0,0,0,0.22);
   background: rgba(255,255,255,0.28);
-  color: rgba(0,0,0,0.78);
+  color: rgba(0,0,0,0.75);
 
   cursor: pointer;
   font-weight: 900;
   line-height: 1;
-  transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+  flex-shrink: 0;
+
+  transition: transform .15s ease, background .15s ease, color .15s ease;
 }
 .shipbar-close:hover{
-  background: rgba(255,255,255,0.40);
-  border-color: rgba(0,0,0,0.30);
-  color: rgba(0,0,0,0.92);
+  background: rgba(255,255,255,0.42);
+  color: #000;
   transform: translateY(-1px);
 }
 .shipbar-close:active{ transform: scale(0.96); }
 
 /* MOBILE */
 @media (max-width: 560px){
-  :root{ --stickyOffset: 40px; } /* fallback */
-  .shipbar{ height: 40px; }
-  .shipbar-textwrap{ height: 28px; min-width: 0; }
+  :root{ --stickyOffset: 40px; }
+
+  .shipbar{
+    height: 40px;
+  }
+
+  .shipbar-textwrap{
+    height: 30px;
+  }
+
   .shipbar-text{
-    font-size: 11.2px;
-    line-height: 1.2;
-    text-align: left;
+    font-size: 12px;
+    line-height: 1.25;
     white-space: normal;
+    text-align: left;
   }
 }
 
@@ -2191,7 +2204,7 @@
       <div class="shipbar-text" id="shipbarText">Odosielame do CZ, PL, HU, AT a celej EÚ.</div>
     </div>
 
-    <button class="shipbar-close" id="shipbarClose" type="button" aria-label="Zavrieť oznam">
+    <button class="shipbar-close" id="shipbarClose" type="button" aria-label="Zavrieť">
       ✕
     </button>
   </div>
