@@ -15,7 +15,7 @@
   <link rel="canonical" href="https://racem.sk/csr-automotive.html" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&display=swap');
 
 
     :root{
@@ -23,7 +23,7 @@
       --bg:#0b0b0b;
       --text:#ffffff;
       --line: rgba(255,255,255,0.08);
-      --font: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --font: "Oxanium", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
       --green:#16c784;
       --orange:#f59e0b;
@@ -1782,17 +1782,40 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
     return { text: "Doprava: Upresníme", value: null, included: false };
   }
 
-  function getJsonPriceEUR(p, variant) {
-  const vPrice = variant?.priceEUR;
-  const pPrice = p?.priceEUR;
+  function parsePriceAny(x){
+  if (typeof x === "number" && !Number.isNaN(x)) return x;
+  if (typeof x !== "string") return null;
 
-  // fallbacky keby niekde prišlo iné pole
-  const vAlt = variant?.price;
-  const pAlt = p?.price;
+  // zober iba čísla + bodku/čiarku, vyhoď € a text
+  const cleaned = x
+    .trim()
+    .replace(/\s/g, "")
+    .replace(/€/g, "")
+    .replace(/[^0-9,.-]/g, "")
+    .replace(",", "."); // "129,00" -> "129.00"
 
-  const cand = [vPrice, pPrice, vAlt, pAlt].find(x => typeof x === "number" && !Number.isNaN(x));
+  const n = parseFloat(cleaned);
+  return (Number.isFinite(n) ? n : null);
+}
+
+function getJsonPriceEUR(p, variant) {
+  const candRaw = [
+    variant?.priceEUR,
+    p?.priceEUR,
+    variant?.price,
+    p?.price,
+
+    // bonus fallbacky, ak ti to niekde prišlo takto:
+    variant?.price_eur,
+    p?.price_eur,
+    variant?.eur,
+    p?.eur
+  ].find(v => v !== undefined && v !== null && String(v).trim() !== "");
+
+  const cand = parsePriceAny(candRaw);
   return (typeof cand === "number") ? applyMarkup(cand) : null;
 }
+
 
 
   function minPriceEUR(prod) {
