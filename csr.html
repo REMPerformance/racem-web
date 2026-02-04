@@ -1743,10 +1743,14 @@
   }
   function applyMarkup(price) {
   if (typeof price !== "number" || Number.isNaN(price)) return null;
-  if (price === 0) return null;         // ✅ iba 0
-  if (price < 0) return null;           // (voliteľné)
+
+  // ❌ NEZABÍJAJ 0
+  // if (price === 0) return null;
+
+  if (price <= 0) return null; // len záporné / nezmysel
   return Math.round(price * PRICE_MARKUP);
 }
+
 
 
 
@@ -2435,8 +2439,9 @@ function getJsonPriceEUR(p, variant) {
   function updateVariantPrice() {
     if (!activeProduct) return;
 
-    const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-    const v = vars[activeVariantIndex];
+   const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+const v = vars.length ? vars[activeVariantIndex] : null;
+
 
     const price = getJsonPriceEUR(activeProduct, v);
     const shipTextDetail = SHIPPING_TEXT_DETAIL;
@@ -2444,9 +2449,9 @@ function getJsonPriceEUR(p, variant) {
     const variantName = vars.length ? (v?.name || "—") : "—";
 
    if (mPriceBig) {
-  mPriceBig.innerHTML = (typeof price === "number")
-    ? `<small>CENA</small>${fmtEUR(price)}`
-    : `<small>CENA</small>${PRICE_ON_REQUEST}`;
+  mPriceBig.innerHTML = 
+  `<small>CENA</small>${typeof price === "number" ? fmtEUR(price) : PRICE_ON_REQUEST}`;
+
 }
 
     if (mShip) mShip.textContent = shipTextDetail;
