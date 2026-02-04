@@ -595,13 +595,6 @@
       color:#fff;
       line-height: 1.0;
     }
-    .pDesc{
-      margin:0;
-      font-size: 13.5px;
-      line-height:1.6;
-      color: rgba(255,255,255,0.72);
-      flex:1;
-    }
     .pBottom{
       display:flex;
       justify-content:space-between;
@@ -1221,6 +1214,101 @@
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
+
+    /* === KARTA: čistý obsah (title, make, model, cena, detail) === */
+.pTop{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.pMetaRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 10px;
+  margin-top:2px;
+}
+
+.pMetaTag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.22);
+  color: rgba(255,255,255,0.72);
+  font-size: 12.5px;
+  letter-spacing:.04em;
+  line-height: 1;
+}
+.pMetaTag b{
+  color:#fff;
+  font-weight: 900;
+  letter-spacing:.06em;
+}
+
+.pBottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.price{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 16px;
+  color: rgba(255,255,255,0.92);
+  white-space:nowrap;
+}
+
+.detailBtn{
+  border:none;
+  cursor:pointer;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  font-family:"Oswald", system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+  box-shadow: 0 16px 46px rgba(0,0,0,0.40);
+}
+
+.detailBtn .arr{
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.pCard:hover .detailBtn{
+  transform: translateY(-1px);
+  border-color: rgba(179,31,36,0.42);
+  background: rgba(179,31,36,0.14);
+}
+
+.pCard:hover .detailBtn .arr{
+  transform: translateX(3px);
+  border-color: rgba(179,31,36,0.35);
+  background: rgba(179,31,36,0.12);
+}
+
   </style>
 </head>
 
@@ -1618,66 +1706,58 @@
     return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
   }
 
-// ================================
-// ✅ CENNÍK podľa shippingCategory
-// nič v JSON nemeníme – len display ceny
-// ================================
-function getCatNumber(p) {
-  const raw = String(p?.shippingCategory ?? p?.shipping_category ?? p?.shippingCat ?? "").trim();
-  if (!raw) return null;
-  const m = raw.match(/([1-5])/);
-  return m ? Number(m[1]) : null;
-}
-
-function roundEUR(n) {
-  return Math.round(n);
-}
-
-function calcPriceFromBase(base, p) {
-  if (typeof base !== "number" || Number.isNaN(base)) return null;
-
-  const cat = getCatNumber(p);
-
-  // bez kategórie
-  if (!cat) {
-    return roundEUR(base * 1.30);
+  // ================================
+  // ✅ CENA = LEN Z JSON (priceEUR / variants.priceEUR)
+  // ✅ SHIPPING = LEN PODĽA shippingCategory
+  // ================================
+  function getCatNumber(p) {
+    const raw = String(p?.shippingCategory ?? p?.shipping_category ?? p?.shippingCat ?? "").trim();
+    if (!raw) return null;
+    const m = raw.match(/([1-5])/);
+    return m ? Number(m[1]) : null;
   }
 
-  if (cat === 1) return roundEUR(base * 1.30);
-  if (cat === 2) return roundEUR(base * 1.30); // shipping riešime zvlášť
-  if (cat === 3) return roundEUR(base * 1.25 + 30);
-  if (cat === 4) return roundEUR(base * 1.25 + 35);
-  if (cat === 5) return roundEUR(base * 1.25 + 20);
+  // ⚠️ nechávam tvoje aktuálne hodnoty dopravy tak ako si ich mal v kóde
+  function calcShippingByCategory(p) {
+    const cat = getCatNumber(p);
 
-  return roundEUR(base * 1.30);
-}
+    if (!cat) return { text: "Doprava: Upresníme", value: null, included: false };
 
-function calcShippingDisplay(p) {
-  const cat = getCatNumber(p);
+    if (cat === 1) return { text: "Doprava: v cene", value: 0, included: true };
+    if (cat === 2) return { text: "Doprava: v cene (15 €)", value: 15, included: true };
+    if (cat === 3) return { text: `Doprava: ${fmtEUR(39)}`, value: 39, included: false };
+    if (cat === 4) return { text: `Doprava: ${fmtEUR(89)}`, value: 89, included: false };
+    if (cat === 5) return { text: `Doprava: ${fmtEUR(189)}`, value: 189, included: false };
 
-  // bez kategórie
-  if (!cat) {
     return { text: "Doprava: Upresníme", value: null, included: false };
   }
 
-  if (cat === 1) return { text: "Doprava: v cene", value: 0, included: true };
-  if (cat === 2) return { text: "Doprava: v cene (15 €)", value: 15, included: true }; // podľa tvojho zadania
-  if (cat === 3) return { text: `Doprava: ${fmtEUR(39)}`, value: 39, included: false };
-  if (cat === 4) return { text: `Doprava: ${fmtEUR(89)}`, value: 89, included: false };
-  if (cat === 5) return { text: `Doprava: ${fmtEUR(189)}`, value: 189, included: false };
+  function getJsonPriceEUR(p, variant) {
+    const vPrice = variant?.priceEUR;
+    const pPrice = p?.priceEUR;
 
-  return { text: "Doprava: Upresníme", value: null, included: false };
-}
+    // fallbacky keby niekde prišlo iné pole
+    const vAlt = variant?.price;
+    const pAlt = p?.price;
 
-function getDisplayedPriceForProductOrVariant(p, variant) {
-  const base =
-    (variant && typeof variant.priceEUR === "number") ? variant.priceEUR :
-    (typeof p?.priceEUR === "number") ? p.priceEUR :
-    null;
+    const cand = [vPrice, pPrice, vAlt, pAlt].find(x => typeof x === "number" && !Number.isNaN(x));
+    return (typeof cand === "number") ? cand : null;
+  }
 
-  return calcPriceFromBase(base, p);
-}
+  function minPriceEUR(prod) {
+    const direct = getJsonPriceEUR(prod, null);
 
+    const prices = (Array.isArray(prod?.variants) ? prod.variants : [])
+      .map(v => getJsonPriceEUR(prod, v))
+      .filter(x => typeof x === "number" && !Number.isNaN(x));
+
+    const all = prices.length ? prices : (typeof direct === "number" ? [direct] : []);
+    if (!all.length) return "cena na dopyt";
+
+    const min = Math.min(...all);
+    const max = Math.max(...all);
+    return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
+  }
 
   function setSafeImage(imgEl, url, noImgEl) {
     if (!imgEl) return;
@@ -1704,25 +1784,6 @@ function getDisplayedPriceForProductOrVariant(p, variant) {
     return "NA OBJEDNÁVKU";
   }
 
- function minPriceEUR(prod) {
-  // ak má product priceEUR
-  const direct = (typeof prod.priceEUR === "number") ? calcPriceFromBase(prod.priceEUR, prod) : null;
-
-  const prices = (prod.variants || [])
-    .map(v => (typeof v.priceEUR === "number") ? calcPriceFromBase(v.priceEUR, prod) : null)
-    .filter(x => typeof x === "number" && !Number.isNaN(x));
-
-  if (!prices.length && typeof direct !== "number") return "cena na dopyt";
-
-  const all = prices.length ? prices : [direct].filter(x => typeof x === "number");
-  const min = Math.min(...all);
-  const max = Math.max(...all);
-
-  return (min === max) ? fmtEUR(min) : `od ${fmtEUR(min)}`;
-}
-
-
-
   function variantSummary(p) {
     const vars = Array.isArray(p.variants) ? p.variants : [];
     if (!vars.length) return "Bez variantu";
@@ -1732,10 +1793,6 @@ function getDisplayedPriceForProductOrVariant(p, variant) {
     return `Variantov: ${unique.length}`;
   }
 
-  function shipSummary(p) {
-    const ship = (typeof p.shippingEUR === "number") ? p.shippingEUR : 0;
-    return ship ? `Doprava: ${fmtEUR(ship)}` : "Doprava: podľa dohody";
-  }
   function deliverySummary(p) {
     return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
   }
@@ -1747,58 +1804,54 @@ function getDisplayedPriceForProductOrVariant(p, variant) {
     return Array.from(new Set(arr.filter(Boolean)));
   }
 
- function normalizeLoadedList(json) {
-  const list = Array.isArray(json?.products) ? json.products : (Array.isArray(json) ? json : []);
+  function normalizeLoadedList(json) {
+    const list = Array.isArray(json?.products) ? json.products : (Array.isArray(json) ? json : []);
 
-  return list.map(p => {
-    const images = Array.isArray(p?.images) ? p.images : [];
-    const image = p?.image || images[0] || "";
+    return list.map(p => {
+      const images = Array.isArray(p?.images) ? p.images : [];
+      const image = p?.image || images[0] || "";
 
-    // preklad
-    const titleFull = toSlovak(p?.title || "");
-    const shortFull = toSlovak(p?.short || p?.subtitle || "");
-    const descFull  = toSlovak(p?.description || "");
+      // preklad
+      const titleFull = toSlovak(p?.title || "");
+      const shortFull = toSlovak(p?.short || p?.subtitle || "");
+      const descFull  = toSlovak(p?.description || "");
 
-    const modelFull = toSlovak(String(p?.model || "").trim());
-    const catFull   = toSlovak(String(p?.category || "").trim());
-    const delFull   = toSlovak(p?.delivery || "Upresníme po objednávke");
+      const modelFull = toSlovak(String(p?.model || "").trim());
+      const catFull   = toSlovak(String(p?.category || "").trim());
+      const delFull   = toSlovak(p?.delivery || "Upresníme po objednávke");
 
-    const variants = Array.isArray(p?.variants) ? p.variants : [];
-    const variantsSk = variants.map(v => ({
-      ...v,
-      name: toSlovak(v?.name || "")
-    }));
+      const variants = Array.isArray(p?.variants) ? p.variants : [];
+      const variantsSk = variants.map(v => ({
+        ...v,
+        name: toSlovak(v?.name || "")
+      }));
 
-    return {
-      ...p,
+      return {
+        ...p,
 
-      title: titleFull,
-      titleShort: truncateWords(titleFull, 6),
+        title: titleFull,
+        titleShort: truncateWords(titleFull, 6),
 
-      image,
-      images,
+        image,
+        images,
 
-      variants: variantsSk,
+        variants: variantsSk,
 
-      short: shortFull,
-      shortShort: truncateWords(shortFull, 6),
+        short: shortFull,
+        shortShort: truncateWords(shortFull, 6),
 
-      description: descFull,
+        description: descFull,
 
-      delivery: delFull,
+        delivery: delFull,
 
-      shippingEUR: (typeof p?.shippingEUR === "number")
-        ? p.shippingEUR
-        : ((typeof p?.shipping === "number") ? p.shipping : 0),
+        model: modelFull,
+        category: catFull,
 
-      model: modelFull,
-      category: catFull,
-
-      makeFile: "",
-      makeLabel: ""
-    };
-  });
-}
+        makeFile: "",
+        makeLabel: ""
+      };
+    });
+  }
 
   function pickRandom(arr, n) {
     const a = Array.isArray(arr) ? arr.slice() : [];
@@ -2103,29 +2156,38 @@ function getDisplayedPriceForProductOrVariant(p, variant) {
       card.setAttribute("role", "button");
 
       const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
-      const modelLine = (p.model || "").toString().trim();
 
       const titleShort = p.titleShort || truncateWords(p.title || "", 6);
-      const descShort = p.shortShort || truncateWords(p.short || modelLine || "", 6);
+
+      const make = (p.makeLabel || "").toString().trim();
+      const model = (p.model || "").toString().trim();
 
       card.innerHTML = `
         <div class="pMedia"><img alt="${escapeHtml(p.title || titleShort)}"></div>
-        <div class="pBody">
-          <div class="pName">${escapeHtml(titleShort)}</div>
-          <p class="pDesc">${escapeHtml(descShort)}</p>
 
-          <div class="pMeta" style="display:flex; flex-direction:column; gap:6px; margin-top:2px;">
-            ${p.makeLabel ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Značka: ${escapeHtml(p.makeLabel)}</div>` : ""}
-            ${modelLine ? `<div class="miniStat" style="font-size:13px; letter-spacing:.18em;">Model: ${escapeHtml(modelLine)}</div>` : ""}
-            <div class="miniStat" style="font-size:13px; letter-spacing:.18em;">${escapeHtml(variantSummary(p))}</div>
+        <div class="pBody">
+          <div class="pTop">
+            <div class="pName">${escapeHtml(titleShort)}</div>
+            <div class="pMetaRow">
+              ${make ? `<span class="pMetaTag">Značka: <b>${escapeHtml(make)}</b></span>` : ""}
+              ${model ? `<span class="pMetaTag">Model: <b>${escapeHtml(model)}</b></span>` : ""}
+            </div>
           </div>
 
           <div class="pBottom">
             <div class="price">${escapeHtml(minPriceEUR(p))}</div>
-            <div class="openHint"><span>Detail</span> <span class="arr">→</span></div>
+            <button class="detailBtn" type="button" aria-label="Detail produktu">
+              Detail <span class="arr">→</span>
+            </button>
           </div>
         </div>
       `;
+
+      const detailBtn = card.querySelector(".detailBtn");
+      if (detailBtn) detailBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openProduct(p);
+      });
 
       const imgEl = card.querySelector(".pMedia img");
       setSafeImage(imgEl, imgSrc, null);
@@ -2220,9 +2282,9 @@ function getDisplayedPriceForProductOrVariant(p, variant) {
       const chip = document.createElement("div");
       chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
       const name = toSlovak(v.name || `Variant ${i + 1}`).toUpperCase();
-     const disp = getDisplayedPriceForProductOrVariant(activeProduct, v);
-const price = (typeof disp === "number") ? fmtEUR(disp) : "UPRESNÍME";
 
+      const p = getJsonPriceEUR(activeProduct, v);
+      const price = (typeof p === "number") ? fmtEUR(p) : "UPRESNÍME";
 
       chip.innerHTML = `
         <span class="vMain">${escapeHtml(name)}</span>
@@ -2239,179 +2301,140 @@ const price = (typeof disp === "number") ? fmtEUR(disp) : "UPRESNÍME";
   }
 
   function updateVariantPrice() {
-  if (!activeProduct) return;
+    if (!activeProduct) return;
 
-  const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-  const v = vars[activeVariantIndex];
+    const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
+    const v = vars[activeVariantIndex];
 
-  const basePrice = getDisplayedPriceForProductOrVariant(activeProduct, v);
-  const ship = calcShippingDisplay(activeProduct);
+    const price = getJsonPriceEUR(activeProduct, v);
+    const ship = calcShippingByCategory(activeProduct);
 
-  const variantName = vars.length ? (v?.name || "—") : "—";
+    const variantName = vars.length ? (v?.name || "—") : "—";
 
-  if (mPriceBig) {
-    mPriceBig.innerHTML = (typeof basePrice === "number")
-      ? `<small>CENA</small><br>${fmtEUR(basePrice)}`
-      : `<small>CENA</small><br>UPRESNÍME`;
+    if (mPriceBig) {
+      mPriceBig.innerHTML = (typeof price === "number")
+        ? `<small>CENA</small><br>${fmtEUR(price)}`
+        : `<small>CENA</small><br>UPRESNÍME`;
+    }
+
+    if (mShip) mShip.textContent = ship.text;
+
+    // objednávkový sumár
+    $("#o_manufacturer").value = activeProduct.makeLabel || "—";
+    $("#o_product").value = activeProduct.title || "—";
+    $("#o_variant").value = variantName;
+    $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : "UPRESNÍME";
+    $("#o_shipping").value = ship.text.replace("Doprava:", "").trim();
+    $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
+
+    const md = (activeProduct.model || "").toString().trim();
+    if ($("#car") && md) $("#car").value = md;
   }
 
-  // shipping line v detaile produktu
-  if (mShip) mShip.textContent = ship.text;
+  // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
+  // ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
+  const TRANSLATE_MAP = [
+    [/ab\s+facelift\s+werden\s+andere\s+stossstangenhalter\s+benotigt/gi,
+      "od faceliftu sú potrebné iné držiaky nárazníka"],
+    [/mit\s+fahrzeugspezifischem\s+typ(?:-| )?zertifikat[\s\S]*?§\s*19\.?\s*3\s*stvzo/gi,
+      "s typovým certifikátom pre konkrétne vozidlo (dokumentácia k dielu) pre schválenie montáže podľa §19.3 StVZO"],
+    [/gleichmassige\s+oberflachenstruktur\s+ermoglicht\s+eine\s+lackierung\s+ohne\s+grosse\s+vorarbeiten/gi,
+      "rovnomerná štruktúra povrchu umožňuje lakovanie bez veľkých príprav"],
+    [/ist\s+aus\s+hochwertigem\s+abs\s+kunststoff\s+gefertigt/gi,
+      "je vyrobený z kvalitného ABS plastu"],
+    [/nebellampen\s+sind\s+im\s+lieferumfang\s+nicht\s+enthalten/gi,
+      "hmlovky nie sú súčasťou balenia"],
+    [/im\s+lieferumfang\s+nicht\s+enthalten/gi,
+      "nie je súčasťou balenia"],
+    [/produkt\s+ist\s+unlackiert/gi, "produkt je nelakovaný"],
+    [/material\s+ist\s+flexibel/gi, "materiál je flexibilný"],
+    [/inkl\.?\s*zubehor\s*\(gitter\)/gi, "vrátane príslušenstva (mriežka)"],
+    [/inkl\.?\s*montagezubehor,\s*sofern\s+notwendig/gi,
+      "vrátane montážneho príslušenstva, ak je potrebné"],
+    [/inkl\.?\s*montageanleitung/gi, "vrátane montážneho návodu"],
+    [/\bstossstangenhalter\b/gi, "držiaky nárazníka"],
+    [/\bstossstange\b/gi, "nárazník"],
+    [/\bnebellampen\b/gi, "hmlovky"],
+    [/\bzubeh[öo]r\b/gi, "príslušenstvo"],
+    [/\bgitter\b/gi, "mriežka"],
+    [/\bkunststoff\b/gi, "plast"],
+    [/\bgefertigt\b/gi, "vyrobené"],
+    [/\bstvzo\b/gi, "StVZO (DE predpis)"],
+    [/\bFrontansatz\b/gi, "predné lipo"],
+    [/\bFrontlippe\b/gi, "predné lipo"],
+    [/\bHeckansatz\b/gi, "zadný difúzor"],
+    [/\bHeckdiffusor\b/gi, "zadný difúzor"],
+    [/\bHecklippe\b/gi, "zadné lipo (spojler)"],
+    [/\bSpoilerlippe\b/gi, "lipo spojler"],
+    [/\bSeitenschweller\b/gi, "bočné prahy"],
+    [/\bSchweller\b/gi, "prahy"],
+    [/\bDiffusor\b/gi, "difúzor"],
+    [/\bSpoiler\b/gi, "spojler"],
+    [/\bStoßstange\b|\bStossstange\b/gi, "nárazník"],
+    [/\bStoßstangenhalter\b|\bStossstangenhalter\b/gi, "držiaky nárazníka"],
+    [/\bStoßstangenhalterung\b|\bStossstangenhalterung\b/gi, "úchyt/držiak nárazníka"],
+    [/\bGitter\b/gi, "mriežka"],
+    [/\bZubeh[öo]r\b/gi, "príslušenstvo"],
+    [/\bNebellampen\b/gi, "hmlovky"],
+    [/\bNebelscheinwerfer\b/gi, "hmlovky"],
+    [/\blackierbar\b|\blackierf[aä]hig\b/gi, "určené na lakovanie"],
+    [/\bABS\b/gi, "ABS"],
+    [/\bKunststoff\b/gi, "plast"],
+    [/\bhochwertig(?:em|es|e|er)?\b/gi, "kvalitný"],
+    [/\bflexibel\b/gi, "flexibilný"],
+    [/\bMaterial\b/gi, "materiál"],
+    [/\bgefertigt\b/gi, "vyrobené"],
+    [/\bLieferumfang\b/gi, "obsah balenia"],
+    [/\bMontagezubeh[öo]r\b/gi, "montážne príslušenstvo"],
+    [/\bAnbauanleitung\b|\bMontageanleitung\b/gi, "návod na montáž"],
+    [/\bTeilegutachten\b/gi, "technický posudok"],
+    [/\bMaterialgutachten\b/gi, "materiálový certifikát"],
+    [/\bEintragung\b/gi, "zápis do TP"],
+    [/\bzul[aä]ssig\b/gi, "schválené"],
+    [/\bStVZO\b/gi, "StVZO (DE predpis)"],
+    [/\bLimousine\b/gi, "sedan"],
+    [/\bTouring\b/gi, "Touring (kombi)"],
+    [/\bKombi\b/gi, "kombi"],
+    [/\bCoup[eé]\b/gi, "Coupé"],
+    [/\bCabrio\b/gi, "Cabrio"],
+    [/\bCompact\b/gi, "Compact"],
+    [/\bfront\s*bumper\b/gi, "predný nárazník"],
+    [/\bfront\s*lip\b/gi, "predné lipo"],
+    [/\bside\s*skirt(s)?\b/gi, "bočné prahy"],
+    [/\brear\s*diffuser\b/gi, "zadný difúzor"],
+    [/\bpaintable\b|\bready\s*to\s*paint\b/gi, "určené na lakovanie"],
+    [/\bincluded\b/gi, "v balení"],
+    [/\bnot\s+included\b/gi, "nie je súčasťou balenia"],
+  ];
 
-  // objednávkový sumár
-  $("#o_manufacturer").value = activeProduct.makeLabel || "—";
-  $("#o_product").value = activeProduct.title || "—";
-  $("#o_variant").value = variantName;
-  $("#o_price").value = (typeof basePrice === "number") ? fmtEUR(basePrice) : "UPRESNÍME";
+  function normalizeGerman(s) {
+    return String(s ?? "")
+      .replace(/ß/g, "ss")
+      .replace(/[äÄ]/g, "a")
+      .replace(/[öÖ]/g, "o")
+      .replace(/[üÜ]/g, "u")
+      .replace(/[éÉ]/g, "e");
+  }
 
-  // do formulára dáme presne to, čo vidí zákazník
-  $("#o_shipping").value = ship.text.replace("Doprava:", "").trim();
-  $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
-
-  const md = (activeProduct.model || "").toString().trim();
-  if ($("#car") && md) $("#car").value = md;
-}
-
-// ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
-// ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
-const TRANSLATE_MAP = [
-  // ====== PRIORITA: celé CSR vety (zhltnú celý riadok) ======
-
-  // facelift držiaky (podporí aj Stoss / Stos, ß aj bez ß po normalizácii)
-  [/ab\s+facelift\s+werden\s+andere\s+stossstangenhalter\s+benotigt/gi,
-    "od faceliftu sú potrebné iné držiaky nárazníka"],
-
-  // typový certifikát / §19.3 StVZO (chytí aj keď je okolo bordel)
-  [/mit\s+fahrzeugspezifischem\s+typ(?:-| )?zertifikat[\s\S]*?§\s*19\.?\s*3\s*stvzo/gi,
-    "s typovým certifikátom pre konkrétne vozidlo (dokumentácia k dielu) pre schválenie montáže podľa §19.3 StVZO"],
-
-  // rovnomerná štruktúra + lakovanie bez veľkých príprav (chytí aj gleichmassige/ermoglicht/grosse vďaka normalizeGerman)
-  [/gleichmassige\s+oberflachenstruktur\s+ermoglicht\s+eine\s+lackierung\s+ohne\s+grosse\s+vorarbeiten/gi,
-    "rovnomerná štruktúra povrchu umožňuje lakovanie bez veľkých príprav"],
-
-  // ABS veta – aby nezostalo "ist aus"
-  [/ist\s+aus\s+hochwertigem\s+abs\s+kunststoff\s+gefertigt/gi,
-    "je vyrobený z kvalitného ABS plastu"],
-
-  // hmlovky nie sú v balení (dve varianty)
-  [/nebellampen\s+sind\s+im\s+lieferumfang\s+nicht\s+enthalten/gi,
-    "hmlovky nie sú súčasťou balenia"],
-  [/im\s+lieferumfang\s+nicht\s+enthalten/gi,
-    "nie je súčasťou balenia"],
-
-  // ====== krátke CSR kúsky ======
-  [/produkt\s+ist\s+unlackiert/gi, "produkt je nelakovaný"],
-  [/material\s+ist\s+flexibel/gi, "materiál je flexibilný"],
-
-  [/inkl\.?\s*zubehor\s*\(gitter\)/gi, "vrátane príslušenstva (mriežka)"],
-  [/inkl\.?\s*montagezubehor,\s*sofern\s+notwendig/gi,
-    "vrátane montážneho príslušenstva, ak je potrebné"],
-  [/inkl\.?\s*montageanleitung/gi, "vrátane montážneho návodu"],
-
-  // ====== potom až všeobecné slovníky (tvoje existujúce) ======
-  [/\bstossstangenhalter\b/gi, "držiaky nárazníka"],
-  [/\bstossstange\b/gi, "nárazník"],
-  [/\bnebellampen\b/gi, "hmlovky"],
-  [/\bzubehor\b/gi, "príslušenstvo"],
-  [/\bgitter\b/gi, "mriežka"],
-  [/\bkunststoff\b/gi, "plast"],
-  [/\bgefertigt\b/gi, "vyrobené"],
-  [/\bstvzo\b/gi, "StVZO (DE predpis)"],
-
-  // ====== Automotive / diely (DE) ======
-  [/\bFrontansatz\b/gi, "predné lipo"],
-  [/\bFrontlippe\b/gi, "predné lipo"],
-  [/\bHeckansatz\b/gi, "zadný difúzor"],
-  [/\bHeckdiffusor\b/gi, "zadný difúzor"],
-  [/\bHecklippe\b/gi, "zadné lipo (spojler)"],
-  [/\bSpoilerlippe\b/gi, "lipo spojler"],
-  [/\bSeitenschweller\b/gi, "bočné prahy"],
-  [/\bSchweller\b/gi, "prahy"],
-  [/\bDiffusor\b/gi, "difúzor"],
-  [/\bSpoiler\b/gi, "spojler"],
-  [/\bStoßstange\b|\bStossstange\b/gi, "nárazník"],
-  [/\bStoßstangenhalter\b|\bStossstangenhalter\b/gi, "držiaky nárazníka"],
-  [/\bStoßstangenhalterung\b|\bStossstangenhalterung\b/gi, "úchyt/držiak nárazníka"],
-  [/\bGitter\b/gi, "mriežka"],
-  [/\bZubeh[öo]r\b/gi, "príslušenstvo"],
-  [/\bNebellampen\b/gi, "hmlovky"],
-  [/\bNebelscheinwerfer\b/gi, "hmlovky"],
-
-  // ====== Materiál / lakovanie ======
-  [/\blackierbar\b|\blackierf[aä]hig\b/gi, "určené na lakovanie"],
-  [/\bABS\b/gi, "ABS"],
-  [/\bKunststoff\b/gi, "plast"],
-  [/\bhochwertig(?:em|es|e|er)?\b/gi, "kvalitný"],
-  [/\bflexibel\b/gi, "flexibilný"],
-  [/\bMaterial\b/gi, "materiál"],
-  [/\bgefertigt\b/gi, "vyrobené"],
-
-  // ====== Montáž / dokumentácia ======
-  [/\bLieferumfang\b/gi, "obsah balenia"],
-  [/\bMontagezubeh[öo]r\b/gi, "montážne príslušenstvo"],
-  [/\bAnbauanleitung\b|\bMontageanleitung\b/gi, "návod na montáž"],
-  [/\bTeilegutachten\b/gi, "technický posudok"],
-  [/\bMaterialgutachten\b/gi, "materiálový certifikát"],
-  [/\bEintragung\b/gi, "zápis do TP"],
-  [/\bzul[aä]ssig\b/gi, "schválené"],
-  [/\bStVZO\b/gi, "StVZO (DE predpis)"],
-
-  // ====== Karoséria / typ ======
-  [/\bLimousine\b/gi, "sedan"],
-  [/\bTouring\b/gi, "Touring (kombi)"],
-  [/\bKombi\b/gi, "kombi"],
-  [/\bCoup[eé]\b/gi, "Coupé"],
-  [/\bCabrio\b/gi, "Cabrio"],
-  [/\bCompact\b/gi, "Compact"],
-
-  // ====== EN fallback (keď niečo prelezie v angličtine) ======
-  [/\bfront\s*bumper\b/gi, "predný nárazník"],
-  [/\bfront\s*lip\b/gi, "predné lipo"],
-  [/\bside\s*skirt(s)?\b/gi, "bočné prahy"],
-  [/\brear\s*diffuser\b/gi, "zadný difúzor"],
-  [/\bpaintable\b|\bready\s*to\s*paint\b/gi, "určené na lakovanie"],
-  [/\bincluded\b/gi, "v balení"],
-  [/\bnot\s+included\b/gi, "nie je súčasťou balenia"],
-
-  
-];
-
-function normalizeGerman(s) {
-  return String(s ?? "")
-    .replace(/ß/g, "ss")
-    .replace(/[äÄ]/g, "a")
-    .replace(/[öÖ]/g, "o")
-    .replace(/[üÜ]/g, "u")
-    .replace(/[éÉ]/g, "e");
-}
-
-function toSlovak(text) {
-  // 1) normalizuj (aby si chytil aj "gleichmassige / ermoglicht / grosse")
-  let t = normalizeGerman(text);
-
-  // 2) prekladaj
-  TRANSLATE_MAP.forEach(([re, rep]) => { t = t.replace(re, rep); });
-
-  // 3) čistenie
-  t = t
-    .replace(/\s+\./g, ".")
-    .replace(/\s+,/g, ",")
-    .replace(/\(kombi\)(\s*\(kombi\))+/gi, "(kombi)")   // zredukuje (kombi)(kombi)...
-    .replace(/\s{2,}/g, " ")
-    .trim();
-
-  return t;
-}
-
-
+  function toSlovak(text) {
+    let t = normalizeGerman(text);
+    TRANSLATE_MAP.forEach(([re, rep]) => { t = t.replace(re, rep); });
+    t = t
+      .replace(/\s+\./g, ".")
+      .replace(/\s+,/g, ",")
+      .replace(/\(kombi\)(\s*\(kombi\))+/gi, "(kombi)")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    return t;
+  }
 
   function openProduct(p) {
     activeProduct = p;
     activeVariantIndex = 0;
 
-const title = toSlovak(p.title || "—");
+    const title = toSlovak(p.title || "—");
     const carMake = p.makeLabel ? `${p.makeLabel} • ` : "";
-if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
+    if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
 
     const status = getStockStatus(p);
     if (mRibbon) {
@@ -2546,7 +2569,6 @@ if (modalTitle) modalTitle.textContent = `${BRAND_NAME} — ${carMake}${title}`;
   })();
 
   console.log("CSR script loaded OK");
-
 </script>
 
 
