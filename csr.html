@@ -1638,6 +1638,7 @@
   const JSON_BASE = "csr-cars/";
   const MANIFEST_FILE = JSON_BASE + "manifest.json";
   const PAGE_SIZE = 20;
+  const PRICE_MARKUP = 1.23;
 
   const MAKE_PRIORITY_ORDER = [
     "BMW",
@@ -1693,6 +1694,11 @@
     const o = $("#loadingOverlay");
     if (o) o.classList.remove("show");
   }
+  function applyMarkup(price) {
+  if (typeof price !== "number" || Number.isNaN(price)) return null;
+  // zaokrúhlenie na celé eurá (môžeš zmeniť na .99 ak chceš)
+  return Math.round(price * PRICE_MARKUP);
+}
 
   function escapeHtml(str) {
     return String(str ?? "")
@@ -1755,7 +1761,7 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
     const pAlt = p?.price;
 
     const cand = [vPrice, pPrice, vAlt, pAlt].find(x => typeof x === "number" && !Number.isNaN(x));
-    return (typeof cand === "number") ? cand : null;
+    return (typeof cand === "number") ? applyMarkup(cand) : null;
   }
 
   function minPriceEUR(prod) {
