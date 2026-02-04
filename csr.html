@@ -1639,6 +1639,8 @@
   const MANIFEST_FILE = JSON_BASE + "manifest.json";
   const PAGE_SIZE = 20;
   const PRICE_MARKUP = 1.23;
+  const PRICE_ON_REQUEST = "Cena na vyžiadanie";
+
 
   const MAKE_PRIORITY_ORDER = [
     "BMW",
@@ -1696,9 +1698,10 @@
   }
   function applyMarkup(price) {
   if (typeof price !== "number" || Number.isNaN(price)) return null;
-  // zaokrúhlenie na celé eurá (môžeš zmeniť na .99 ak chceš)
+  if (price <= 0) return null; // ✅ 0 alebo záporné = cena na vyžiadanie
   return Math.round(price * PRICE_MARKUP);
 }
+
 
   function escapeHtml(str) {
     return String(str ?? "")
@@ -1718,9 +1721,10 @@
   }
 
   function fmtEUR(n) {
-    if (typeof n !== "number" || Number.isNaN(n)) return "—";
-    return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
-  }
+  if (typeof n !== "number" || Number.isNaN(n) || n <= 0) return PRICE_ON_REQUEST;
+  return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
+}
+
 
   // ================================
 // ✅ SHIPPING NATVRDO (od 21 €)
@@ -1760,7 +1764,6 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
     const vAlt = variant?.price;
     const pAlt = p?.price;
 
-    const cand = [vPrice, pPrice, vAlt, pAlt].find(x => typeof x === "number" && !Number.isNaN(x));
     return (typeof cand === "number") ? applyMarkup(cand) : null;
   }
 
@@ -1772,7 +1775,7 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
       .filter(x => typeof x === "number" && !Number.isNaN(x));
 
     const all = prices.length ? prices : (typeof direct === "number" ? [direct] : []);
-    if (!all.length) return "cena na dopyt";
+    if (!all.length) return PRICE_ON_REQUEST;
 
     const min = Math.min(...all);
     const max = Math.max(...all);
@@ -2309,7 +2312,7 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
       const name = toSlovak(v.name || `Variant ${i + 1}`).toUpperCase();
 
       const p = getJsonPriceEUR(activeProduct, v);
-      const price = (typeof p === "number") ? fmtEUR(p) : "UPRESNÍME";
+      const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
 
       chip.innerHTML = `
         <span class="vMain">${escapeHtml(name)}</span>
@@ -2339,7 +2342,7 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
     if (mPriceBig) {
       mPriceBig.innerHTML = (typeof price === "number")
         ? `<small>CENA</small><br>${fmtEUR(price)}`
-        : `<small>CENA</small><br>UPRESNÍME`;
+        : `<small>CENA</small><br>${PRICE_ON_REQUEST.toUpperCase()}`;
     }
 
     if (mShip) mShip.textContent = shipTextDetail;
@@ -2348,7 +2351,7 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
     $("#o_manufacturer").value = activeProduct.makeLabel || "—";
     $("#o_product").value = activeProduct.title || "—";
     $("#o_variant").value = variantName;
-    $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : "UPRESNÍME";
+    $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : PRICE_ON_REQUEST;
     $("#o_shipping").value = SHIPPING_TEXT_FORM;
     $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
 
