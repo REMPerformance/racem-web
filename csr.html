@@ -1783,38 +1783,69 @@ const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
   }
 
   function parsePriceAny(x){
-  if (typeof x === "number" && !Number.isNaN(x)) return x;
-  if (typeof x !== "string") return null;
+  if (x === null || x === undefined) return null;
 
-  // zober iba čísla + bodku/čiarku, vyhoď € a text
-  const cleaned = x
-    .trim()
-    .replace(/\s/g, "")
-    .replace(/€/g, "")
-    .replace(/[^0-9,.-]/g, "")
-    .replace(",", "."); // "129,00" -> "129.00"
+  // číslo
+  if (typeof x === "number" && Number.isFinite(x)) return x;
 
-  const n = parseFloat(cleaned);
-  return (Number.isFinite(n) ? n : null);
+  // string (napr. "129,00 €", "129.00", "EUR 129")
+  if (typeof x === "string") {
+    const cleaned = x
+      .trim()
+      .replace(/\s/g, "")
+      .replace(/€/g, "")
+      .replace(/eur/gi, "")
+      .replace(/[^0-9,.-]/g, "")
+      .replace(",", ".");
+    const n = parseFloat(cleaned);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  return null;
 }
 
 function getJsonPriceEUR(p, variant) {
-  const candRaw = [
+  // ✅ Sem daj všetky reálne kľúče, ktoré môžu byť v CSR JSON
+  const sources = [
+    // variant (najvyššia priorita)
     variant?.priceEUR,
-    p?.priceEUR,
-    variant?.price,
-    p?.price,
-
-    // bonus fallbacky, ak ti to niekde prišlo takto:
     variant?.price_eur,
-    p?.price_eur,
     variant?.eur,
-    p?.eur
-  ].find(v => v !== undefined && v !== null && String(v).trim() !== "");
+    variant?.price,
+    variant?.preis,
+    variant?.preisBrutto,
+    variant?.preisNetto,
+    variant?.price_gross,
+    variant?.price_net,
+    variant?.gross,
+    variant?.net,
 
-  const cand = parsePriceAny(candRaw);
-  return (typeof cand === "number") ? applyMarkup(cand) : null;
+    // product
+    p?.priceEUR,
+    p?.price_eur,
+    p?.eur,
+    p?.price,
+    p?.preis,
+    p?.preisBrutto,
+    p?.preisNetto,
+    p?.price_gross,
+    p?.price_net,
+    p?.gross,
+    p?.net
+  ];
+
+  for (const s of sources) {
+    const n = parsePriceAny(s);
+    if (typeof n === "number") {
+      // ak niekde príde cena v centoch (napr. 12900), tak toto ju zachráni
+      const normalized = (n > 9999 ? (n / 100) : n);
+      return applyMarkup(normalized);
+    }
+  }
+
+  return null;
 }
+
 
 
 
@@ -2413,6 +2444,21 @@ function getJsonPriceEUR(p, variant) {
   // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
   // ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
   const TRANSLATE_MAP = [
+    [/schwarz\s+glanz(end)?/gi, "čierny lesklý"],
+[/hochgl[aä]nzend/gi, "vysoký lesk"],
+[/allgemeine\s+betriebserlaubnis/gi, "všeobecné povolenie na prevádzku (certifikát)"],
+[/keine\s+eintragung\s+notwendig/gi, "nie je potrebný zápis do TP"],
+[/ohne\s+eintragung/gi, "bez zápisu do TP"],
+[/für\s+den\s+straßenverkehr\s+zugelassen/gi, "schválené pre cestnú premávku"],
+[/passgenau/gi, "presne pasujúce"],
+[/kein\s+universalteil/gi, "nejde o univerzálny diel"],
+[/fahrzeugspezifisch/gi, "určené pre konkrétny model vozidla"],
+[/inklusive\s+montagematerial/gi, "vrátane montážneho materiálu"],
+[/montagematerial\s+wird\s+mitgeliefert/gi, "montážny materiál je súčasťou balenia"],
+[/schutzfolie\s+vor\s+montage\s+entfernen/gi, "pred montážou odstráň ochrannú fóliu"],
+[/lackierung\s+nicht\s+notwendig/gi, "lakovanie nie je potrebné"],
+[/lackieren\s+nicht\s+notwendig/gi, "lakovanie nie je potrebné"],
+[/besser\s+als\s+lackiert/gi, "lepšie než lakované"],
     [/ab\s+facelift\s+werden\s+andere\s+stossstangenhalter\s+benotigt/gi,
       "od faceliftu sú potrebné iné držiaky nárazníka"],
     [/mit\s+fahrzeugspezifischem\s+typ(?:-| )?zertifikat[\s\S]*?§\s*19\.?\s*3\s*stvzo/gi,
