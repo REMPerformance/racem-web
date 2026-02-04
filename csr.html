@@ -1237,34 +1237,51 @@
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
     }
-/* ✅ MODAL: cena + dodanie vždy viditeľné (sticky footer vpravo) */
-.mInfo{
-  overflow: auto;            /* nech ostane scroll, ale sticky funguje */
-  position: relative;
-}
-
-/* cena blok nech sedí pri spodku aj keď je dlhý popis */
-.priceBlock{
-  position: sticky;
-  bottom: 72px;              /* nech je nad tlačidlom */
-  z-index: 5;
-}
-
-/* tlačidlo objednať stále viditeľné */
-.mActions{
-  position: sticky;
-  bottom: 0;
-  z-index: 6;
-  background: rgba(12,12,12,0.92);
-  padding: 12px 0 0;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
 
     /* === KARTA: čistý obsah (title, make, model, cena, detail) === */
 .pTop{
   display:flex;
   flex-direction:column;
   gap:10px;
+}
+
+    /* ✅ pravý stĺpec: scroll iba pre obsah, cena + button vždy dole */
+.mInfo{
+  overflow: hidden;          /* dôležité */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+}
+
+.mScroll{
+  flex: 1 1 auto;
+  overflow: auto;            /* scrolluje len text */
+  padding-right: 10px;
+}
+
+/* (scrollbar styling môže zostať ako máš na .mInfo, presuň ho na .mScroll) */
+.mScroll::-webkit-scrollbar{ width: 10px; }
+.mScroll::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.10);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+.mScroll::-webkit-scrollbar-thumb:hover{
+  background: rgba(179,31,36,0.35);
+}
+
+/* footer časti nech sú normálne v layoute */
+.priceBlock,
+.mActions{
+  flex: 0 0 auto;
+}
+
+/* poistka aby text určite nebol “neviditeľný” */
+.priceBig, .priceBig *{
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: #fff;
 }
 
 .pMetaRow{
@@ -1492,27 +1509,32 @@
           <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
         </div>
 
-        <div class="mInfo">
-          <div class="mInfoTop">
-            <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
-          </div>
+       <div class="mInfo">
+  <div class="mInfoTop">
+    <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
+  </div>
 
-          <div class="mDesc" id="mDesc"></div>
+  <!-- ✅ scrolluje iba obsah (popis + varianty) -->
+  <div class="mScroll">
+    <div class="mDesc" id="mDesc"></div>
 
-          <div id="mVariantWrap" style="display:none;">
-            <div class="mLabel">Variant</div>
-            <div class="variantList" id="mVariantList"></div>
-          </div>
+    <div id="mVariantWrap" style="display:none;">
+      <div class="mLabel">Variant</div>
+      <div class="variantList" id="mVariantList"></div>
+    </div>
+  </div>
 
-          <div class="priceBlock">
-            <div class="priceBig" id="mPriceBig">—</div>
-            <div class="priceSub" id="mShip">—</div>
-          </div>
+  <!-- ✅ vždy dole, bez sticky -->
+  <div class="priceBlock">
+    <div class="priceBig" id="mPriceBig">—</div>
+    <div class="priceSub" id="mShip">—</div>
+  </div>
 
-          <div class="mActions">
-            <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
-          </div>
-        </div>
+  <div class="mActions">
+    <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
