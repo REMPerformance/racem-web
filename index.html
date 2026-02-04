@@ -3073,18 +3073,18 @@
 
   function hideBar(){
     bar.classList.add("is-hidden");
-    localStorage.setItem(KEY, "1");
+    sessionStorage.setItem(KEY, "1");
     setStickyOffset();
   }
 
   function showBar(){
     bar.classList.remove("is-hidden");
-    localStorage.removeItem(KEY);
+    sessionStorage.removeItem(KEY);
     setStickyOffset();
   }
 
   // === init visibility from storage ===
-  if (localStorage.getItem(KEY) === "1"){
+  if (sessionStorage.getItem(KEY) === "1"){
     bar.classList.add("is-hidden");
   }
 
