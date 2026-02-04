@@ -1309,6 +1309,16 @@
   background: rgba(179,31,36,0.12);
 }
 
+    .shipMini{
+  margin-top:6px;
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.62);
+  white-space:nowrap;
+}
+
+
   </style>
 </head>
 
@@ -1707,8 +1717,12 @@
   }
 
   // ================================
-  // ✅ CENA = LEN Z JSON (priceEUR / variants.priceEUR)
-  // ✅ SHIPPING = LEN PODĽA shippingCategory
+// ✅ SHIPPING NATVRDO (od 21 €)
+// ================================
+const SHIPPING_TEXT_CARD   = "Doprava: od 21 €";
+const SHIPPING_TEXT_DETAIL = "Doprava: od 21 € (upresníme po potvrdení objednávky)";
+const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
+
   // ================================
   function getCatNumber(p) {
     const raw = String(p?.shippingCategory ?? p?.shipping_category ?? p?.shippingCat ?? "").trim();
@@ -2175,11 +2189,16 @@
           </div>
 
           <div class="pBottom">
-            <div class="price">${escapeHtml(minPriceEUR(p))}</div>
-            <button class="detailBtn" type="button" aria-label="Detail produktu">
-              Detail <span class="arr">→</span>
-            </button>
-          </div>
+  <div>
+    <div class="price">${escapeHtml(minPriceEUR(p))}</div>
+    <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
+  </div>
+
+  <button class="detailBtn" type="button" aria-label="Detail produktu">
+    Detail <span class="arr">→</span>
+  </button>
+</div>
+
         </div>
       `;
 
@@ -2307,7 +2326,7 @@
     const v = vars[activeVariantIndex];
 
     const price = getJsonPriceEUR(activeProduct, v);
-    const ship = calcShippingByCategory(activeProduct);
+    const shipTextDetail = SHIPPING_TEXT_DETAIL;
 
     const variantName = vars.length ? (v?.name || "—") : "—";
 
@@ -2317,14 +2336,14 @@
         : `<small>CENA</small><br>UPRESNÍME`;
     }
 
-    if (mShip) mShip.textContent = ship.text;
+    if (mShip) mShip.textContent = shipTextDetail;
 
     // objednávkový sumár
     $("#o_manufacturer").value = activeProduct.makeLabel || "—";
     $("#o_product").value = activeProduct.title || "—";
     $("#o_variant").value = variantName;
     $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : "UPRESNÍME";
-    $("#o_shipping").value = ship.text.replace("Doprava:", "").trim();
+    $("#o_shipping").value = SHIPPING_TEXT_FORM;
     $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
 
     const md = (activeProduct.model || "").toString().trim();
