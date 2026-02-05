@@ -4197,13 +4197,9 @@ async function openCsrProjectDetail(projectId){
     ytBox.className = "csrPhotoBig csrYt";
     ytBox.style.cursor = "pointer";
 
-    ytBox.innerHTML = `
-      <img alt="${escapeHtml(proj.yt.label || "YouTube")}">
-      <div class="csrYtOverlay">
-        <div class="csrYtPlay">▶</div>
-        <div class="csrYtText">${escapeHtml(proj.yt.label || "YouTube")}</div>
-      </div>
-    `;
+  ytBox.innerHTML = `
+  <img alt="${escapeHtml(proj.yt.label || "YouTube")}">
+`;
 
     const ytImg = ytBox.querySelector("img");
     setSafeImage(ytImg, proj.yt.thumb, null);
