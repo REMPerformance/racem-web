@@ -3826,11 +3826,6 @@ const CSR_PROJECTS = [
     Podvozok: <b>AP Sportfahrwerk</b> • Disky: <b>Tomason</b> (Wheelscompany) • Polep: <b>CR Carwrapping</b>
   </div>
 
-  <div class="csrCodes">
-    <b>Použité diely (kódy):</b><br>
-    CSR-HF912, CSR-VB033, CSR-FP019, CSR-CSL625, CSR-CSL636, CSR-HA305, CSR-SS487, CSR-CSL682, CSR-SS497, CSR-HA411
-  </div>
-
   <div class="csrCTAmini">
     Chceš rovnaký set na svoj Golf? Vyber diely nižšie a pošli nezáväznú objednávku – overíme kompatibilitu a doladíme dodanie.
   </div>
@@ -4071,45 +4066,14 @@ async function openCsrProjectDetail(projectId){
  // 🔥 YouTube teaser (klik → otvorí playlist)
 const ytUrl = "https://www.youtube.com/playlist?list=PLpp6X0dBSNh1kqOCyJdMVbsz7wV2uoizO";
 
+// 🔥 YouTube teaser image (klik → playlist)
+const ytUrl = "https://www.youtube.com/playlist?list=PLpp6X0dBSNh1kqOCyJdMVbsz7wV2uoizO";
+
 const ytBox = document.createElement("div");
 ytBox.className = "csrPhotoBig";
 ytBox.style.cursor = "pointer";
 
-ytBox.innerHTML = `
-  <div style="position:relative;width:100%;height:100%;">
-    <img alt="YouTube video">
-
-    <!-- play button -->
-    <div style="
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:none;
-    ">
-      <div style="
-        width:64px;
-        height:64px;
-        border-radius:999px;
-        background:rgba(179,31,36,0.85);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        box-shadow:0 0 40px rgba(179,31,36,.6);
-      ">
-        <div style="
-          width:0;
-          height:0;
-          border-left:18px solid #fff;
-          border-top:11px solid transparent;
-          border-bottom:11px solid transparent;
-          margin-left:4px;
-        "></div>
-      </div>
-    </div>
-  </div>
-`;
+ytBox.innerHTML = `<img alt="YouTube video">`;
 
 const ytImg = ytBox.querySelector("img");
 setSafeImage(
@@ -4118,7 +4082,7 @@ setSafeImage(
   null
 );
 
-// klik = otvor youtube
+// klik otvorí youtube
 ytBox.addEventListener("click", () => {
   window.open(ytUrl, "_blank");
 });
