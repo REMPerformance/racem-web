@@ -3831,20 +3831,62 @@ const CSR_PROJECTS = [
     "CSR-HA411"
   ]
   },
-  {
-    id: "p2",
-    car: "Audi RS3 8Y",
-    title: "Audi RS3 8Y — Street look CSR",
-    cover: "assets/csr-projects/rs3/cover.webp",
-    desc: "Zamerané na predok + zadok, vizuálne rozšírenie a nižší profil.",
-    photos: [
-      "assets/csr-projects/rs3/1.webp",
-      "assets/csr-projects/rs3/2.webp",
-      "assets/csr-projects/rs3/3.webp",
-      "assets/csr-projects/rs3/4.webp"
-    ],
-    productIds: ["223456", "223457"]
+ {
+  id: "p2",
+  car: "Audi RS3 8Y",
+  title: "Audi RS3 8Y — Street look CSR",
+
+  // dôležité: z ktorého JSON súboru sa majú hľadať produkty podľa productIds
+  sourceFile: "Audi.json",
+
+  // cover pre grid kartu
+  cover: "csr-cars/csr-projects/rs3/cover.webp",
+
+  // 3 fotky pod sebou v detaile
+  photos: [
+    "csr-cars/csr-projects/rs3/1.webp",
+    "csr-cars/csr-projects/rs3/2.webp",
+    "csr-cars/csr-projects/rs3/3.webp"
+  ],
+
+  // YouTube (voliteľné)
+  yt: {
+    url: "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+    thumb: "csr-cars/csr-projects/rs3/yt-teaser.webp",
+    label: "YouTube teaser"
   },
+
+  // HTML popis (rovnaký štýl ako máš pri Golfe)
+  desc: `
+<div class="csrBlocks">
+  <div class="csrKicker">Audi RS3 8Y Project</div>
+  <div class="csrTitleLine">Agresívnejší street look bez „showcar“ kompromisov</div>
+
+  <div>
+    Cieľ je jednoduchý: posunúť predok a zadok opticky nižšie, spraviť auto širšie a „komplet“,
+    ale stále držať použiteľnosť na cestách. CSR diely sú navrhnuté s dôrazom na pasovanie a konzistentný look.
+  </div>
+
+  <div class="csrBadges2">
+    <span class="csrBadge2"><span class="dot"></span>Presné pasovanie</span>
+    <span class="csrBadge2"><span class="dot"></span>Daily-friendly</span>
+    <span class="csrBadge2"><span class="dot"></span>Kompletný look</span>
+    <span class="csrBadge2"><span class="dot"></span>Rýchla montáž</span>
+  </div>
+
+  <div class="csrCTAmini">
+    Chceš rovnaký set? Vyber diely nižšie a pošli nezáväznú objednávku – overíme kompatibilitu a dodanie.
+  </div>
+</div>
+`,
+
+  // tieto kódy musia existovať v Audi.json (sku/id/artikelnummer)
+  productIds: [
+    "CSR-XXXXXX",
+    "CSR-YYYYYY",
+    "CSR-ZZZZZZ"
+  ]
+},
   {
     id: "p3",
     car: "Škoda Octavia RS",
@@ -4044,20 +4086,27 @@ async function openCsrProjectDetail(projectId){
   }
   
 // 🔥 YouTube teaser image (klik → playlist)
-const ytUrl = "https://www.youtube.com/playlist?list=PLpp6X0dBSNh1kqOCyJdMVbsz7wV2uoizO";
+  // ✅ YouTube teaser (podľa projektu)
+  if (proj.yt?.url && proj.yt?.thumb && csrDetailPhotoCol) {
+    const ytBox = document.createElement("div");
+    ytBox.className = "csrPhotoBig csrYt";
+    ytBox.style.cursor = "pointer";
 
-const ytBox = document.createElement("div");
-ytBox.className = "csrPhotoBig";
-ytBox.style.cursor = "pointer";
+    ytBox.innerHTML = `
+      <img alt="${escapeHtml(proj.yt.label || "YouTube")}">
+      <div class="csrYtOverlay">
+        <div class="csrYtPlay">▶</div>
+        <div class="csrYtText">${escapeHtml(proj.yt.label || "YouTube")}</div>
+      </div>
+    `;
 
-ytBox.innerHTML = `<img alt="YouTube video">`;
+    const ytImg = ytBox.querySelector("img");
+    setSafeImage(ytImg, proj.yt.thumb, null);
 
-const ytImg = ytBox.querySelector("img");
-setSafeImage(
-  ytImg,
-  "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp",
-  null
-);
+    ytBox.addEventListener("click", () => window.open(proj.yt.url, "_blank"));
+    csrDetailPhotoCol.appendChild(ytBox);
+  }
+
 
 // klik otvorí youtube
 ytBox.addEventListener("click", () => {
