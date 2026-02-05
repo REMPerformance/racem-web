@@ -1852,6 +1852,7 @@
   color: rgba(255,255,255,0.80);
   line-height:1.8;
   font-size: 14.5px;
+  white-space: normal;
 }
 
 .csrDetailSection{
@@ -2045,7 +2046,114 @@
   }
 }
 
+.csrDetailDesc{
+  color: rgba(255,255,255,0.82);
+  font-size: 14.5px;
+  line-height: 1.8;
+}
 
+.csrBlocks{ display:flex; flex-direction:column; gap:12px; margin-top: 10px; }
+
+.csrKicker{
+  color: rgba(255,255,255,0.72);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.csrTitleLine{
+  font-family: var(--font);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-size: 18px;
+  color:#fff;
+  line-height: 1.15;
+  margin: 2px 0 6px;
+}
+
+.csrBadges2{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 10px;
+}
+.csrBadge2{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.88);
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  font-size: 11.5px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.30);
+}
+.csrBadge2 .dot{
+  width:8px;height:8px;border-radius:999px;
+  background: var(--red);
+  box-shadow: 0 0 18px rgba(179,31,36,.65);
+}
+
+.csrSplit{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.csrBox{
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.22);
+  padding: 14px;
+  box-shadow: 0 16px 54px rgba(0,0,0,0.35);
+}
+.csrBox h4{
+  margin:0 0 8px;
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color:#fff;
+}
+.csrList{ margin:0; padding-left: 18px; }
+.csrList li{ margin: 6px 0; color: rgba(255,255,255,0.82); }
+
+.csrPartners{
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(179,31,36,0.14), transparent 60%),
+    rgba(0,0,0,0.22);
+}
+
+.csrCodes{
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.28);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  word-break: break-word;
+}
+.csrCTAmini{
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border:1px solid rgba(179,31,36,0.35);
+  background: rgba(179,31,36,0.12);
+  color: rgba(255,255,255,0.86);
+}
+@media (max-width: 980px){
+  .csrSplit{ grid-template-columns: 1fr; }
+}
   </style>
 </head>
 
@@ -2485,7 +2593,7 @@
   <div class="csrHeroText">
     <div class="pill" style="margin-bottom:10px;"><span class="dot"></span>Projekt</div>
     <h2 id="csrDetailTitle" class="csrH2">—</h2>
-    <p id="csrDetailDesc" class="csrP">—</p>
+    <div id="csrDetailDesc" class="csrDetailDesc">—</div>
   </div>
 </div>
 
@@ -3631,15 +3739,65 @@ const CSR_PROJECTS = [
     id: "p1",
     car: "VW Golf 7 R",
     title: "VW Golf 7R Facelift Projekt CSR",
-    // teaser / cover (do grid karty)
+    sourceFile: "Volkswagen.json",
     cover: "csr-cars/csr-projects/Teaser-Projektfahrzeug-Golf7R-V2.webp",
-   desc: `Projekt vozidla VW Golf 7R facelift ukazuje kompletné možnosti úpravy vozidla pomocou homologizovaných dielov CSR Automotive určených pre legálne použitie na cestách v rámci EÚ.
+   desc: `
+<div class="csrBlocks">
+  <div class="csrKicker">VW Golf 7R Facelift Project</div>
+  <div class="csrTitleLine">Všetko, čo je možné: CSR body kit pre Golf 7R facelift (7.5)</div>
 
-Základ bodykitu obsahuje predný spoiler, predné flapsy, bočné prahy, zadný difúzor, zadný spoiler, kryty predných svetiel a kryty zadných svetiel. Rozšírený Add-on bodykit dopĺňa predný spoiler add-on, rozšírenia prahov a add-on difúzor.
+  <div>
+    Tento projekt ukazuje, ako ďaleko sa dá posunúť sériové auto pri použití <b>StVZO-kompatibilných</b> dielov
+    <b>CSR Automotive</b> – agresívny vzhľad, čisté pasovanie a použiteľnosť na bežných cestách.
+  </div>
 
-Podvozok: AP Sportfahrwerk  
-Disky: Tomason  
-Polep: CR Carwrapping`,
+  <div class="csrBadges2">
+    <span class="csrBadge2"><span class="dot"></span>Homologizované diely</span>
+    <span class="csrBadge2"><span class="dot"></span>Presné pasovanie</span>
+    <span class="csrBadge2"><span class="dot"></span>Daily-friendly</span>
+    <span class="csrBadge2"><span class="dot"></span>EU / StVZO prístup</span>
+  </div>
+
+  <div class="csrSplit">
+    <div class="csrBox">
+      <h4>Základný bodykit (Basic)</h4>
+      <ul class="csrList">
+        <li>predný spojler</li>
+        <li>predné flapsy</li>
+        <li>bočné prahy</li>
+        <li>zadný difúzor</li>
+        <li>zadný spojler</li>
+        <li>kryty predných svetiel</li>
+        <li>kryty zadných svetiel</li>
+      </ul>
+    </div>
+
+    <div class="csrBox">
+      <h4>Rozšírenie (Add-on)</h4>
+      <ul class="csrList">
+        <li>add-on predný spojler</li>
+        <li>add-on prahy</li>
+        <li>add-on difúzor</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="csrPartners">
+    <b>Partneri projektu:</b><br>
+    Podvozok: <b>AP Sportfahrwerk</b> • Disky: <b>Tomason</b> (Wheelscompany) • Polep: <b>CR Carwrapping</b>
+  </div>
+
+  <div class="csrCodes">
+    <b>Použité diely (kódy):</b><br>
+    CSR-HF912, CSR-VB033, CSR-FP019, CSR-CSL625, CSR-CSL636, CSR-HA305, CSR-SS487, CSR-CSL682, CSR-SS497, CSR-HA411
+  </div>
+
+  <div class="csrCTAmini">
+    Chceš rovnaký set na svoj Golf? Vyber diely nižšie a pošli nezáväznú objednávku – overíme kompatibilitu a doladíme dodanie.
+  </div>
+</div>
+`,
+
     // 3 fotky do detailu (pod seba)
     photos: [
       "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp",
@@ -3748,17 +3906,67 @@ function hardCloseModal(modal){
   modal.setAttribute("aria-hidden","true");
 }
 
-// 4) Find product by ID (artikelnummer/id) v DATA.products
-function findProductById(id){
-  const target = String(id || "").trim();
-  if (!target) return null;
+// ✅ cache načítaných súborov pre projekty
+const CSR_FILE_CACHE = new Map(); // file -> normalized products[]
 
-  // skús rôzne kľúče ktoré v JSONoch používaš
-  return (DATA.products || []).find(p => {
-    const pid =
-      String(p?.id ?? p?.artikelnummer ?? p?.artikelNummer ?? p?.artikelnummer_id ?? "").trim();
-    return pid === target;
-  }) || null;
+// ✅ načíta a normalizuje produkty z konkrétneho json súboru (napr. Volkswagen.json)
+async function loadProductsFromMakeFileCached(file){
+  const f = String(file || "").trim();
+  if (!f) return [];
+
+  if (CSR_FILE_CACHE.has(f)) return CSR_FILE_CACHE.get(f);
+
+  const res = await fetch(JSON_BASE + f, { cache: "no-store" });
+  if (!res.ok) throw new Error("HTTP " + res.status + " pri načítaní " + f);
+  const json = await res.json();
+
+  // normalizeLoadedList už máš vyššie (preklad, image, variants...)
+  const list = normalizeLoadedList(json).map(p => ({
+    ...p,
+    makeFile: f,
+    makeLabel: (MAKE_MAP.find(x => x.file === f)?.label || p.makeLabel || "")
+  }));
+
+  CSR_FILE_CACHE.set(f, list);
+  return list;
+}
+
+// ✅ porovnanie kódu s produktom (SKU/ID/artikelnummer...)
+function matchesSkuOrId(product, code){
+  const target = String(code || "").trim();
+  if (!target) return false;
+
+  // skús všetky možné kľúče čo CSR JSON môže mať
+  const candidates = [
+    product?.sku,
+    product?.SKU,
+    product?.Sku,
+    product?.id,
+    product?.artikelnummer,
+    product?.artikelNummer,
+    product?.articleNumber,
+    product?.artikel_number,
+    product?.productNumber
+  ]
+    .filter(v => v !== undefined && v !== null)
+    .map(v => String(v).trim());
+
+  // priamy match
+  if (candidates.includes(target)) return true;
+
+  // keď niekde máš bez "CSR-" a ty posielaš s "CSR-"
+  const noPrefix = target.replace(/^CSR-/i, "");
+  if (noPrefix !== target && candidates.includes(noPrefix)) return true;
+
+  // alebo opačne: JSON má "CSR-" a ty máš bez
+  if (candidates.some(c => c.replace(/^CSR-/i, "") === noPrefix)) return true;
+
+  return false;
+}
+
+// ✅ nájdi produkt v zozname podľa SKU/ID
+function findProductInListByCode(list, code){
+  return (Array.isArray(list) ? list : []).find(p => matchesSkuOrId(p, code)) || null;
 }
 
 // 5) Render grid 4 projektov
@@ -3786,7 +3994,7 @@ function renderCsrProjectsGrid(){
 }
 
 // 6) Detail view
-function openCsrProjectDetail(projectId){
+async function openCsrProjectDetail(projectId){
   const proj = CSR_PROJECTS.find(x => x.id === projectId);
   if (!proj) return;
 
@@ -3796,7 +4004,7 @@ function openCsrProjectDetail(projectId){
 
  // text vpravo
 if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
-if (csrDetailDesc)  csrDetailDesc.textContent  = proj.desc || "";
+if (csrDetailDesc) csrDetailDesc.innerHTML = proj.desc || "";
 
 // ľavý stĺpec: 3 fotky pod sebou (bez hero cover v detaile)
 if (csrDetailPhotoCol){
@@ -3822,10 +4030,28 @@ if (csrDetailPhotoCol){
 }
 
 
-  // parts (produkty)
+    // parts (produkty) — ✅ načítaj z konkrétneho súboru (Volkswagen.json)
+  let pool = [];
+
+  try {
+    if (proj.sourceFile) {
+      showLoading("Načítavam produkty pre projekt…");
+      pool = await loadProductsFromMakeFileCached(proj.sourceFile);
+    } else {
+      // fallback: ak nemáš sourceFile, použije to, čo je práve načítané na stránke
+      pool = DATA.products || [];
+    }
+  } catch (e) {
+    console.error("Project products load failed:", e);
+    pool = DATA.products || [];
+  } finally {
+    hideLoading();
+  }
+
   const products = (proj.productIds || [])
-    .map(id => findProductById(id))
+    .map(code => findProductInListByCode(pool, code))
     .filter(Boolean);
+
 
   if (csrPartsCount) csrPartsCount.textContent = `${products.length} položiek`;
 
