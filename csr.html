@@ -2059,28 +2059,27 @@
   </p>
 
   <ul class="csrLegalList">
-    <li>zápis úpravy do technického preukazu (TP)</li>
+    <li>vystavenie potvrdenia o vykonanej montáži / protokolu o práci</li>
     <li>odbornú montáž športových a karosárskych dielov</li>
-    <li>správu o odbornej montáži</li>
+    <li>poradenstvo k dokladom (ABE/TTG) a postupu pri evidencii úprav</li>
+    <li>sprostredkovanie zápisu do TP (ak je potrebné)</li>
   </ul>
 
   <p class="csrLegalNote">
-    Konkrétny postup a rozsah služieb závisí od typu dielu, vozidla a platnej legislatívy.
-    Radi vám všetko vysvetlíme individuálne.
+    Legálnosť a potrebné doklady sa líšia podľa typu dielu, vozidla a krajiny. Pred objednávkou to preveríme.
   </p>
 </div>
 
 
-        <div class="csrSide">
-          <div class="csrSideBox">>
-
-            <<div class="csrCTA">
-  <button class="btn cta csrBigBtn" id="openCsrProjects" type="button">
-    Projekty od CSR <span class="arr">→</span>
-  </button>
-  <button class="btn secondary csrBigBtn" id="openCsrGallery" type="button">
-    Galéria CSR <span class="arr">→</span>
-  </button>
+        <div class="csrSideBox">
+  <div class="csrCTA">
+    <button class="btn cta csrBigBtn" id="openCsrProjects" type="button">
+      Projekty od CSR <span class="arr">→</span>
+    </button>
+    <button class="btn secondary csrBigBtn" id="openCsrGallery" type="button">
+      Galéria CSR <span class="arr">→</span>
+    </button>
+  </div>
 </div>
 
           </div>
@@ -2182,10 +2181,9 @@
     <div class="wrap">
       <div class="panel">
         <div class="pill"><span class="dot"></span>Ponuka</div>
-        <h2>Produkty CSR</h2>
+        <h2>Naša ponuka</h2>
 
         <div id="produkty" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
-          <div class="miniStat" id="productsTitle">Filtre: výber</div>
           <div class="miniStat" id="stat">0 produktov</div>
         </div>
 
@@ -3574,21 +3572,23 @@ const v = vars.length ? vars[activeVariantIndex] : null;
 
 // 1) Sem si doplň reálne assety
 const CSR_PROJECTS = [
-  {
-    id: "p1",
-    car: "BMW M4 G82",
-    title: "BMW M4 G82 — Aero balík CSR",
-    cover: "assets/csr-projects/m4g82/cover.webp",
-    desc: "Kompletné aero: predné lipo, prahy, zadný difúzor a spojler. Cieľ: čistý agresívny look bez prehnaného gýču.",
+   {
+    id: "g7rfl",
+    car: "VW Golf 7R Facelift",
+    title: "VW Golf 7R Facelift Project",
+    cover: "assets/csr-projects/golf7rfl/cover.webp",
+    desc: "Agresívnejší predok, čistejšia bočná línia a zadok, všetko s OEM+ pasovaním.",
     photos: [
-      "assets/csr-projects/m4g82/1.webp",
-      "assets/csr-projects/m4g82/2.webp",
-      "assets/csr-projects/m4g82/3.webp",
-      "assets/csr-projects/m4g82/4.webp"
+      "assets/csr-projects/golf7rfl/1.webp",
+      "assets/csr-projects/golf7rfl/2.webp",
+      "assets/csr-projects/golf7rfl/3.webp",
+      "assets/csr-projects/golf7rfl/4.webp"
     ],
-    // prepojenie na produkty z tvojich JSON:
-    // odporúčam dávať sem ID (artikelnummer) z JSONu -> rýchle a presné.
-    productIds: ["123456", "123457", "123458"]
+    parts: [
+      { makeFile: "Volkswagen.json", id: "123456" },
+      { makeFile: "Volkswagen.json", id: "123457" },
+      { makeFile: "Volkswagen.json", id: "123458" }
+    ]
   },
   {
     id: "p2",
@@ -3694,6 +3694,34 @@ function findProductById(id){
   }) || null;
 }
 
+  // Cache na načítané make JSONy (napr. Volkswagen.json -> produkty[])
+const CSR_MAKE_CACHE = new Map();
+
+async function getMakeProducts(makeFile){
+  if (!makeFile) return [];
+  if (CSR_MAKE_CACHE.has(makeFile)) return CSR_MAKE_CACHE.get(makeFile);
+
+  // načítaj JSON súbor danej značky
+  const url = JSON_BASE + makeFile; // máš už JSON_BASE = "csr-cars/"
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error("Neviem načítať " + makeFile + " (HTTP " + res.status + ")");
+
+  const json = await res.json();
+  // použijeme tvoju existujúcu normalizáciu a doplníme make info
+  const label = (MAKE_MAP.find(x => x.file === makeFile)?.label || "");
+  const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile, makeLabel: label }));
+
+  CSR_MAKE_CACHE.set(makeFile, list);
+  return list;
+}
+
+function findProductInListById(list, id){
+  const target = String(id || "").trim();
+  if (!target) return null;
+  return (list || []).find(p => String(p?.id ?? p?.artikelnummer ?? "").trim() === target) || null;
+}
+
+
 // 5) Render grid 4 projektov
 function renderCsrProjectsGrid(){
   if (!csrProjectGrid) return;
@@ -3719,15 +3747,13 @@ function renderCsrProjectsGrid(){
 }
 
 // 6) Detail view
-function openCsrProjectDetail(projectId){
+async function openCsrProjectDetail(projectId){
   const proj = CSR_PROJECTS.find(x => x.id === projectId);
   if (!proj) return;
 
-  // prepni view
   if (csrGridView) csrGridView.style.display = "none";
   if (csrDetailView) csrDetailView.style.display = "block";
 
-  // hero
   if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
   if (csrDetailDesc)  csrDetailDesc.textContent  = proj.desc || "";
   if (csrDetailHeroImg) setSafeImage(csrDetailHeroImg, proj.cover, null);
@@ -3742,7 +3768,6 @@ function openCsrProjectDetail(projectId){
       const im = tile.querySelector("img");
       setSafeImage(im, src, null);
 
-      // použijeme tvoj existujúci lightbox (galleryModal)
       tile.addEventListener("click", () => {
         setSafeImage(gFull, src, gNoImg);
         galleryModal?.classList.add("show");
@@ -3753,48 +3778,81 @@ function openCsrProjectDetail(projectId){
     });
   }
 
-  // parts (produkty)
-  const products = (proj.productIds || [])
-    .map(id => findProductById(id))
-    .filter(Boolean);
-
-  if (csrPartsCount) csrPartsCount.textContent = `${products.length} položiek`;
+  // parts (produkty) – LAZY LOAD podľa makeFile
+  const parts = Array.isArray(proj.parts) ? proj.parts : [];
+  if (csrPartsCount) csrPartsCount.textContent = `Načítavam…`;
 
   if (csrDetailParts){
-    csrDetailParts.innerHTML = "";
+    csrDetailParts.innerHTML = `
+      <div class="panel" style="grid-column:1/-1; padding:14px;">
+        <div class="pill"><span class="dot"></span>produkty</div>
+        <p style="margin:10px 0 0;">Načítavam produkty pre projekt…</p>
+      </div>
+    `;
+  }
 
-    if (!products.length){
+  try{
+    // načítaj potrebné značky (unikátne)
+    const makeFiles = Array.from(new Set(parts.map(x => x.makeFile).filter(Boolean)));
+    const makeLists = await Promise.all(makeFiles.map(getMakeProducts));
+
+    // poskladaj produkty v poradí ako parts
+    const products = parts.map(ref => {
+      const idx = makeFiles.indexOf(ref.makeFile);
+      const list = idx >= 0 ? makeLists[idx] : [];
+      return findProductInListById(list, ref.id);
+    }).filter(Boolean);
+
+    if (csrPartsCount) csrPartsCount.textContent = `${products.length} položiek`;
+
+    if (csrDetailParts){
+      csrDetailParts.innerHTML = "";
+
+      if (!products.length){
+        csrDetailParts.innerHTML = `
+          <div class="panel" style="grid-column:1/-1; padding:14px;">
+            <div class="pill"><span class="dot"></span>produkty</div>
+            <p style="margin:10px 0 0;">
+              K tomuto projektu ešte nie sú priradené produkty (doplň <b>parts</b> s <b>makeFile</b> a <b>id</b>).
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      products.forEach(p => {
+        const c = document.createElement("div");
+        c.className = "csrPartCard";
+
+        const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+        const priceTxt = minPriceEUR(p);
+
+        c.innerHTML = `
+          <div class="csrPartBody">
+            <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
+            <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
+            <div class="csrPartFoot">
+              <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
+              <div class="openHint"><span class="arr">→</span></div>
+            </div>
+          </div>
+        `;
+
+        c.addEventListener("click", () => openProduct(p));
+        csrDetailParts.appendChild(c);
+      });
+    }
+  } catch(err){
+    console.error(err);
+    if (csrPartsCount) csrPartsCount.textContent = `Chyba`;
+    if (csrDetailParts){
       csrDetailParts.innerHTML = `
         <div class="panel" style="grid-column:1/-1; padding:14px;">
-          <div class="pill"><span class="dot"></span>produkty</div>
-          <p style="margin:10px 0 0;">K tomuto projektu ešte nie sú priradené produkty (doplň <b>productIds</b> podľa ID z JSON).</p>
+          <div class="pill"><span class="dot"></span>chyba</div>
+          <p style="margin:10px 0 0;">Nepodarilo sa načítať produkty pre tento projekt.</p>
         </div>
       `;
-      return;
     }
-
-    products.forEach(p => {
-      const c = document.createElement("div");
-      c.className = "csrPartCard";
-
-      const titleShort = p.titleShort || truncateWords(p.title || "", 6);
-      const priceTxt = minPriceEUR(p);
-
-      c.innerHTML = `
-        <div class="csrPartBody">
-          <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
-          <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
-          <div class="csrPartFoot">
-            <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
-            <div class="openHint"><span class="arr">→</span></div>
-          </div>
-        </div>
-      `;
-
-      // klik otvorí tvoj produkt modal
-      c.addEventListener("click", () => openProduct(p));
-      csrDetailParts.appendChild(c);
-    });
   }
 }
 
