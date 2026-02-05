@@ -2254,9 +2254,9 @@
 
 
 .cartInner{
-  padding: 12px 6vw;
+  padding: 6px 6vw;
+  gap:8px;
   display:flex;
-  gap:12px;
   align-items:center;
   justify-content:space-between;
 }
@@ -2280,64 +2280,66 @@
 
 .cartItem{
   flex: 0 0 auto;
-  border:1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.28);
-  border-radius: 16px;
-  padding: 10px 12px;
   display:flex;
   align-items:center;
-  gap:10px;
-  min-width: 260px;
+  gap:8px;
+  padding:6px 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  min-width: 180px;
+  max-width: 260px;
 }
 
+/* malý obrázok */
 .cartItem img{
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   object-fit: contain;
   background: rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.08);
 }
 
+/* text */
 .cartItemTitle{
   font-family: var(--font);
-  letter-spacing:.12em;
+  font-size: 11px;
+  letter-spacing:.06em;
   text-transform: uppercase;
-  font-size: 12px;
-  line-height: 1.2;
   color:#fff;
-  max-width: 170px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
 }
 
 .cartItemMeta{
-  font-size: 12px;
-  color: rgba(255,255,255,0.70);
-  line-height: 1.4;
+  display:none; /* meta info zbytočné hore */
 }
 
+/* qty */
 .cartQty{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:4px;
   margin-left:auto;
 }
 
 .qtyBtn{
-  width: 34px;
-  height: 34px;
-  border-radius: 14px;
-  border:1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  color:#fff;
-  cursor:pointer;
-  font-weight:900;
+  width:22px;
+  height:22px;
+  border-radius:7px;
+  font-size:13px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
 }
 
 .qtyNum{
-  min-width: 22px;
-  text-align:center;
-  font-weight:900;
-  color:#fff;
+  min-width:16px;
+  font-size:12px;
+  font-weight:700;
 }
 
 .cartRight{
@@ -3062,11 +3064,9 @@ function renderCart(){
       div.innerHTML = `
         <img src="${escapeHtml(item.img || PLACEHOLDER_DATA_URI)}" alt="">
         <div>
-          <div class="cartItemTitle">${escapeHtml(truncateWords(item.title, 7))}</div>
-          <div class="cartItemMeta">
-            ${escapeHtml(item.make)} ${item.model ? "• " + escapeHtml(item.model) : ""}<br>
-            ${typeof item.price === "number" ? fmtEUR(item.price) : PRICE_ON_REQUEST}
-          </div>
+          <div class="cartItemTitle">
+  ${escapeHtml(truncateWords(item.title, 4))}
+</div>
         </div>
         <div class="cartQty">
           <button class="qtyBtn" data-dec type="button">−</button>
