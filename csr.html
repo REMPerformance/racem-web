@@ -1700,6 +1700,42 @@
   gap: 14px;
 }
 
+    /* ===== CSR DETAIL: fotky pod sebou (ľavý stĺpec) ===== */
+.csrDetailHero{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  align-items:start;
+}
+
+.csrPhotoCol{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.csrPhotoBig{
+  border-radius: 18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+  height: 240px;
+}
+
+.csrPhotoBig img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* mobil */
+@media (max-width: 720px){
+  .csrDetailHero{ grid-template-columns: 1fr; }
+  .csrPhotoBig{ height: 220px; }
+}
+
+
 .csrProjectCard{
   border-radius: 18px;
   overflow:hidden;
@@ -2418,24 +2454,18 @@
       <div class="csrView csrDetailView" id="csrProjectDetailView" style="display:none;">
         <button class="btn secondary csrBackBtn" id="csrBackToProjects" type="button">← Späť na projekty</button>
 
-        <div class="csrDetailHero">
-          <div class="csrHeroImgWrap">
-            <img id="csrDetailHeroImg" src="" alt="Projekt CSR">
-          </div>
+       <div class="csrDetailHero">
+  <!-- Ľavo: 3 fotky pod sebou -->
+  <div class="csrPhotoCol" id="csrDetailPhotoCol"></div>
 
-          <div class="csrHeroText">
-            <div class="pill" style="margin-bottom:10px;"><span class="dot"></span>Projekt</div>
-            <h2 id="csrDetailTitle" class="csrH2">—</h2>
-            <p id="csrDetailDesc" class="csrP">—</p>
-          </div>
-        </div>
+  <!-- Vpravo: text -->
+  <div class="csrHeroText">
+    <div class="pill" style="margin-bottom:10px;"><span class="dot"></span>Projekt</div>
+    <h2 id="csrDetailTitle" class="csrH2">—</h2>
+    <p id="csrDetailDesc" class="csrP">—</p>
+  </div>
+</div>
 
-        <div class="csrDetailSection">
-          <div class="csrSectionHead">
-            <div class="csrSectionTitle">Fotky projektu</div>
-          </div>
-          <div class="csrPhotoRow" id="csrDetailPhotos"></div>
-        </div>
 
         <div class="csrDetailSection">
           <div class="csrSectionHead">
@@ -3576,19 +3606,18 @@ const v = vars.length ? vars[activeVariantIndex] : null;
 const CSR_PROJECTS = [
   {
     id: "p1",
-    car: "BMW M4 G82",
-    title: "BMW M4 G82 — Aero balík CSR",
-    cover: "assets/csr-projects/m4g82/cover.webp",
-    desc: "Kompletné aero: predné lipo, prahy, zadný difúzor a spojler. Cieľ: čistý agresívny look bez prehnaného gýču.",
+    car: "VW Golf 7 R",
+    title: "VW Golf 7 R — Projekt CSR",
+    // teaser / cover (do grid karty)
+    cover: "csr-cars/csr-projects/Teaser-Projektfahrzeug-Golf7R-V2.webp",
+    desc: "Projekt vozidla VW Golf 7 R s dielmi od CSR Automotive. Vybrané produkty nižšie sú presne tie, ktoré sa použili na tomto projekte.",
+    // 3 fotky do detailu (pod seba)
     photos: [
-      "assets/csr-projects/m4g82/1.webp",
-      "assets/csr-projects/m4g82/2.webp",
-      "assets/csr-projects/m4g82/3.webp",
-      "assets/csr-projects/m4g82/4.webp"
+      "csr-cars/csr-projects/VW_Golf-7R-Showcar-1.webp",
+      "csr-cars/csr-projects/VW_Golf-7R-Showcar-4.webp",
+      "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp"
     ],
-    // prepojenie na produkty z tvojich JSON:
-    // odporúčam dávať sem ID (artikelnummer) z JSONu -> rýchle a presné.
-    productIds: ["123456", "123457", "123458"]
+    productIds: []
   },
   {
     id: "p2",
@@ -3658,12 +3687,10 @@ const closeCsrGalleryBtn  = document.getElementById("closeCsrGalleryModal");
 const csrGridView   = document.getElementById("csrProjectsGridView");
 const csrDetailView = document.getElementById("csrProjectDetailView");
 const csrProjectGrid = document.getElementById("csrProjectGrid");
-
+const csrDetailPhotoCol = document.getElementById("csrDetailPhotoCol");
 const csrBackBtn = document.getElementById("csrBackToProjects");
-const csrDetailHeroImg = document.getElementById("csrDetailHeroImg");
 const csrDetailTitle = document.getElementById("csrDetailTitle");
 const csrDetailDesc  = document.getElementById("csrDetailDesc");
-const csrDetailPhotos = document.getElementById("csrDetailPhotos");
 const csrDetailParts  = document.getElementById("csrDetailParts");
 const csrPartsCount   = document.getElementById("csrPartsCount");
 
@@ -3727,31 +3754,33 @@ function openCsrProjectDetail(projectId){
   if (csrGridView) csrGridView.style.display = "none";
   if (csrDetailView) csrDetailView.style.display = "block";
 
-  // hero
-  if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
-  if (csrDetailDesc)  csrDetailDesc.textContent  = proj.desc || "";
-  if (csrDetailHeroImg) setSafeImage(csrDetailHeroImg, proj.cover, null);
+ // text vpravo
+if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
+if (csrDetailDesc)  csrDetailDesc.textContent  = proj.desc || "";
 
-  // photos
-  if (csrDetailPhotos){
-    csrDetailPhotos.innerHTML = "";
-    (proj.photos || []).forEach(src => {
-      const tile = document.createElement("div");
-      tile.className = "csrPhoto";
-      tile.innerHTML = `<img alt="foto projektu">`;
-      const im = tile.querySelector("img");
-      setSafeImage(im, src, null);
+// ľavý stĺpec: 3 fotky pod sebou (bez hero cover v detaile)
+if (csrDetailPhotoCol){
+  csrDetailPhotoCol.innerHTML = "";
 
-      // použijeme tvoj existujúci lightbox (galleryModal)
-      tile.addEventListener("click", () => {
-        setSafeImage(gFull, src, gNoImg);
-        galleryModal?.classList.add("show");
-        galleryModal?.setAttribute("aria-hidden","false");
-      });
+  (proj.photos || []).forEach(src => {
+    const box = document.createElement("div");
+    box.className = "csrPhotoBig";
+    box.innerHTML = `<img alt="foto projektu">`;
 
-      csrDetailPhotos.appendChild(tile);
+    const im = box.querySelector("img");
+    setSafeImage(im, src, null);
+
+    // lightbox (už máš galleryModal)
+    box.addEventListener("click", () => {
+      setSafeImage(gFull, src, gNoImg);
+      galleryModal?.classList.add("show");
+      galleryModal?.setAttribute("aria-hidden","false");
     });
-  }
+
+    csrDetailPhotoCol.appendChild(box);
+  });
+}
+
 
   // parts (produkty)
   const products = (proj.productIds || [])
