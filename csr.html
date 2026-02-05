@@ -229,12 +229,34 @@
       pointer-events:none;
     }
 
-    .heroBg{
-      position:absolute; inset:0;
-      background: url("assets/csr-hero.webp") center/cover no-repeat;
-      transform: scale(1.02);
-      filter: contrast(1.05) saturate(1.05);
-    }
+   .hero {
+  position: relative;
+  width: 100%;
+  height: 75vh;
+  overflow: hidden;
+}
+
+.heroMedia,
+.heroBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.heroBg{
+  position:absolute;
+  inset:0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 900ms ease;
+  will-change: opacity;
+}
+
+.heroBg.show{ opacity: 1; }
+
     .heroInner{
       position:relative; z-index:3;
       width:100%;
@@ -2296,12 +2318,14 @@
     </div>
   </div>
 
-  <section class="hero" aria-label="CSR hero">
-    <div class="heroMedia">
-      <div class="heroBg"></div>
-      <div class="heroInner"></div>
-    </div>
-  </section>
+ <section class="hero" aria-label="CSR hero">
+  <div class="heroMedia">
+    <div class="heroBg heroBgA show"></div>
+    <div class="heroBg heroBgB"></div>
+    <div class="heroInner"></div>
+  </div>
+</section>
+
 
   <section id="oCSR">
   <div class="wrap">
@@ -4501,6 +4525,65 @@ csrBackBtn?.addEventListener("click", backToCsrProjects);
 csrProjectsModal?.addEventListener("click", (e) => {
   if (e.target === csrProjectsModal) hardCloseModal(csrProjectsModal);
 });
+
+
+  // ================================
+// HERO: 3 obrázky (crossfade A/B)
+// ================================
+const HERO_IMAGES = [
+  "csr-cars/csr-projects/csr2.png",
+  "csr-cars/csr-projects/csr1.png",
+  "csr-cars/csr-projects/swan neck CSR.png"
+];
+
+const heroA = document.querySelector(".heroBgA");
+const heroB = document.querySelector(".heroBgB");
+
+let heroIndex = 0;
+let heroFrontIsA = true;
+
+function setHeroBg(el, url){
+  if (!el) return;
+  el.style.backgroundImage = `url("${url}")`;
+}
+
+function preloadHeroImages(urls){
+  urls.forEach(u => { const i = new Image(); i.src = u; });
+}
+
+function nextHero(){
+  if (!heroA || !heroB || HERO_IMAGES.length < 1) return;
+
+  heroIndex = (heroIndex + 1) % HERO_IMAGES.length;
+  const nextUrl = HERO_IMAGES[heroIndex];
+
+  const front = heroFrontIsA ? heroA : heroB;
+  const back  = heroFrontIsA ? heroB : heroA;
+
+  setHeroBg(back, nextUrl);
+
+  // crossfade
+  back.classList.add("show");
+  front.classList.remove("show");
+
+  heroFrontIsA = !heroFrontIsA;
+}
+
+// init
+(function initHero(){
+  if (!heroA || !heroB || HERO_IMAGES.length < 1) return;
+
+  preloadHeroImages(HERO_IMAGES);
+
+  setHeroBg(heroA, HERO_IMAGES[0]);
+  heroA.classList.add("show");
+  heroB.classList.remove("show");
+
+  // každých 5s ďalší obrázok (zmeň si na čo chceš)
+  if (HERO_IMAGES.length > 1){
+    setInterval(nextHero, 5000);
+  }
+})();
 
 console.log("CSR script loaded OK");
 
