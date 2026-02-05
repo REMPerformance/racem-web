@@ -2204,6 +2204,157 @@
 /* =========================
    HERO FIX: bez červeného tingu
    ========================= */
+/* ✅ ORDER MODAL: scroll vo vnútri */
+#orderModal .modalCard{
+  max-height: 92vh;
+  display:flex;
+  flex-direction:column;
+}
+
+#orderModal .orderBody{
+  padding:14px;
+  overflow:auto;           /* kľúč */
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+}
+
+/* voliteľné: jemný scrollbar */
+#orderModal .orderBody::-webkit-scrollbar{ width: 10px; }
+#orderModal .orderBody::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.10);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+#orderModal .orderBody::-webkit-scrollbar-thumb:hover{
+  background: rgba(179,31,36,0.35);
+}
+
+    /* ✅ CART BAR */
+.cartBar{
+  position: sticky;
+  top: 0;                  /* vysúva sa zhora */
+  z-index: 120;
+  transform: translateY(-110%);
+  transition: transform .22s ease;
+  background: rgba(10,10,10,0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.cartBar.show{
+  transform: translateY(0);
+}
+
+.cartInner{
+  padding: 12px 6vw;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.cartLeft{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width: 220px;
+}
+
+.cartMid{
+  flex: 1 1 auto;
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  padding: 6px 4px;
+}
+.cartMid::-webkit-scrollbar{ height: 8px; }
+.cartMid::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.12); border-radius:999px; }
+
+.cartItem{
+  flex: 0 0 auto;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.28);
+  border-radius: 16px;
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width: 260px;
+}
+
+.cartItem img{
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.cartItemTitle{
+  font-family: var(--font);
+  letter-spacing:.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 1.2;
+  color:#fff;
+  max-width: 170px;
+}
+
+.cartItemMeta{
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+  line-height: 1.4;
+}
+
+.cartQty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-left:auto;
+}
+
+.qtyBtn{
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+
+.qtyNum{
+  min-width: 22px;
+  text-align:center;
+  font-weight:900;
+  color:#fff;
+}
+
+.cartRight{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.cartTotal{
+  text-align:right;
+}
+
+.cartBtns{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+@media (max-width: 980px){
+  .cartInner{ padding: 12px 18px; flex-wrap:wrap; }
+  .cartLeft{ min-width:auto; }
+  .cartRight{ width:100%; justify-content:space-between; }
+  .cartTotal{ text-align:left; }
+}
+
 
   </style>
 </head>
@@ -2226,6 +2377,32 @@
       </nav>
     </div>
   </div>
+
+  <!-- ✅ CART BAR (slide-down) -->
+<div class="cartBar" id="cartBar" aria-hidden="true">
+  <div class="cartInner">
+    <div class="cartLeft">
+      <div class="pill"><span class="dot"></span>Košík</div>
+      <div class="miniStat" id="cartCountText">0 položiek</div>
+    </div>
+
+    <div class="cartMid" id="cartItems"></div>
+
+    <div class="cartRight">
+      <div class="cartTotal">
+        <div class="miniStat">Spolu</div>
+        <div class="price" id="cartTotalPrice">0 €</div>
+        <div class="shipMini">Doprava: od 21 €</div>
+      </div>
+      <div class="cartBtns">
+        <button class="btn secondary" id="cartClearBtn" type="button">Vyprázdniť</button>
+        <button class="btn cta" id="cartCheckoutBtn" type="button">Ku objednávke</button>
+        <button class="xBtn" id="cartCloseBtn" type="button" aria-label="Close">×</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
   <section id="oCSR">
@@ -2480,7 +2657,8 @@
   </div>
 
   <div class="mActions">
-    <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
+   <button class="btn cta" id="mOrderBtn" type="button">OBJEDNAŤ</button>
+<button class="btn secondary" id="mAddToCartBtn" type="button">PRIDAŤ DO KOŠÍKA</button>
   </div>
 </div>
 
@@ -2494,7 +2672,7 @@
         <b>Galéria</b>
         <button class="xBtn" id="closeGalleryModal" type="button" aria-label="Close">×</button>
       </div>
-      <div style="padding:14px;">
+      <div class="orderBody">
         <div class="mImg" style="min-height:420px;">
           <img id="gFull" src="" alt="Gallery image">
           <div class="noImg" id="gNoImg" style="display:none;">NO IMAGE</div>
@@ -2510,7 +2688,7 @@
         <button class="xBtn" id="closeOrderModal" type="button" aria-label="Close">×</button>
       </div>
 
-      <div style="padding:14px;">
+      <div class="orderBody">
         <div class="orderIntro">
           Toto je <b>nezáväzná objednávka</b>. Pre dokončenie objednávky ťa bude kontaktovať <b>TEAM RACEM</b>
           cez poskytnuté osobné údaje (telefonicky alebo e-mailom).
@@ -2569,10 +2747,7 @@
                   <input id="o_product" name="product" readonly>
                 </div>
 
-                <div class="roField">
-                  <label>Variant</label>
-                  <input id="o_variant" name="variant" readonly>
-                </div>
+              
 
                 <div class="roField">
                   <label>Cena</label>
@@ -2782,6 +2957,135 @@
   return Math.round(price * PRICE_MARKUP);
 }
 
+// ================================
+// ✅ CART
+// ================================
+const CART_KEY = "racem_csr_cart_v1";
+let CART = loadCart();
+
+function loadCart(){
+  try{
+    const raw = localStorage.getItem(CART_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+function saveCart(){
+  localStorage.setItem(CART_KEY, JSON.stringify(CART));
+}
+
+function cartIndexByKey(key){
+  return CART.findIndex(x => x.key === key);
+}
+
+function productCartKey(p){
+  // bez variantov: key je makeFile + id/sku
+  const code = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
+  return `${String(p?.makeFile||"")}|${code}`;
+}
+
+function cartAdd(p, qty=1){
+  if (!p) return;
+  const key = productCartKey(p);
+  const idx = cartIndexByKey(key);
+  if (idx >= 0) CART[idx].qty += qty;
+  else{
+    CART.push({
+      key,
+      qty: Math.max(1, qty|0),
+      sku: p?.sku || "",
+      title: p?.title || "",
+      img: (p?.image || (Array.isArray(p?.images)?p.images[0]:"") || ""),
+      make: p?.makeLabel || "",
+      model: p?.model || "",
+      price: getBestPriceEUR(p) // number|null
+    });
+  }
+  saveCart();
+  renderCart(true);
+}
+
+function cartSetQty(key, qty){
+  const idx = cartIndexByKey(key);
+  if (idx < 0) return;
+  if (qty <= 0) CART.splice(idx,1);
+  else CART[idx].qty = qty;
+  saveCart();
+  renderCart(true);
+}
+
+function cartClear(){
+  CART = [];
+  saveCart();
+  renderCart(false);
+}
+
+function cartCount(){
+  return CART.reduce((s,x)=>s + (x.qty||0), 0);
+}
+
+function cartTotal(){
+  return CART.reduce((s,x)=>{
+    const p = (typeof x.price === "number") ? x.price : 0;
+    return s + p * (x.qty||0);
+  }, 0);
+}
+
+function renderCart(forceShow=false){
+  const bar = document.getElementById("cartBar");
+  const itemsEl = document.getElementById("cartItems");
+  const countEl = document.getElementById("cartCountText");
+  const totalEl = document.getElementById("cartTotalPrice");
+
+  const count = cartCount();
+  const total = cartTotal();
+
+  if (countEl) countEl.textContent = `${count} položiek`;
+  if (totalEl) totalEl.textContent = fmtEUR(total);
+
+  if (itemsEl){
+    if (!CART.length){
+      itemsEl.innerHTML = `<div class="miniStat" style="letter-spacing:.18em; opacity:.75;">Košík je prázdny</div>`;
+    } else {
+      itemsEl.innerHTML = "";
+      CART.forEach(item=>{
+        const div = document.createElement("div");
+        div.className = "cartItem";
+        div.innerHTML = `
+          <img src="${escapeHtml(item.img || PLACEHOLDER_DATA_URI)}" alt="">
+          <div>
+            <div class="cartItemTitle">${escapeHtml(truncateWords(item.title, 7))}</div>
+            <div class="cartItemMeta">
+              ${escapeHtml(item.make)} ${item.model ? "• " + escapeHtml(item.model) : ""}<br>
+              ${typeof item.price === "number" ? fmtEUR(item.price) : PRICE_ON_REQUEST}
+            </div>
+          </div>
+          <div class="cartQty">
+            <button class="qtyBtn" data-dec type="button">−</button>
+            <div class="qtyNum">${item.qty}</div>
+            <button class="qtyBtn" data-inc type="button">＋</button>
+          </div>
+        `;
+
+        div.querySelector("[data-dec]")?.addEventListener("click", ()=>cartSetQty(item.key, (item.qty||1)-1));
+        div.querySelector("[data-inc]")?.addEventListener("click", ()=>cartSetQty(item.key, (item.qty||1)+1));
+
+        itemsEl.appendChild(div);
+      });
+    }
+  }
+
+  if (bar){
+    const show = forceShow || count > 0;
+    bar.classList.toggle("show", show);
+    bar.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+}
+
+// buttons
+document.getElementById("cartClearBtn")?.addEventListener("click", cartClear);
+document.getElementById("cartCloseBtn")?.addEventListener("click", ()=>renderCart(false));
+document.getElementById("cartCheckoutBtn")?.addEventListener("click", ()=>openCheckoutFromCart());
 
 
 
@@ -2807,6 +3111,19 @@
   return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
 }
 
+const mOrderBtn = $("#mOrderBtn");
+const mAddToCartBtn = $("#mAddToCartBtn");
+
+mAddToCartBtn?.addEventListener("click", () => {
+  if (!activeProduct) return;
+  cartAdd(activeProduct, 1);
+  closeModal(productModal);
+});
+
+mOrderBtn?.addEventListener("click", () => {
+  if (!activeProduct) return;
+  openOrderModal(); // ak chceš objednávkový formulár
+});
 
 
   // ================================
@@ -3348,10 +3665,19 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
   <button class="detailBtn" type="button" aria-label="Detail produktu">
     Detail <span class="arr">→</span>
   </button>
+  <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
+  Do košíka <span class="arr">＋</span>
+</button>
 </div>
 
         </div>
       `;
+
+      const addBtn = card.querySelector('[data-add]');
+if (addBtn) addBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  cartAdd(p, 1);
+});
 
       const detailBtn = card.querySelector(".detailBtn");
       if (detailBtn) detailBtn.addEventListener("click", (e) => {
@@ -3470,37 +3796,38 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
     });
   }
 
-  function updateVariantPrice() {
-    if (!activeProduct) return;
-
-   const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
-const v = vars.length ? vars[activeVariantIndex] : null;
-
-
-    const price = getJsonPriceEUR(activeProduct, v);
-    const shipTextDetail = SHIPPING_TEXT_DETAIL;
-
-    const variantName = vars.length ? (v?.name || "—") : "—";
-
-   if (mPriceBig) {
-  mPriceBig.innerHTML = 
-  `<small>CENA</small>${typeof price === "number" ? fmtEUR(price) : PRICE_ON_REQUEST}`;
-
+ function getBestPriceEUR(p){
+  // najnižšia dostupná cena (produkt alebo varianty), ale bez UI variantov
+  const direct = getJsonPriceEUR(p, null);
+  const vars = Array.isArray(p?.variants) ? p.variants : [];
+  const prices = vars.map(v => getJsonPriceEUR(p, v)).filter(n => typeof n === "number");
+  const all = prices.length ? prices : (typeof direct === "number" ? [direct] : []);
+  if (!all.length) return null;
+  return Math.min(...all);
 }
 
-    if (mShip) mShip.textContent = shipTextDetail;
+function updateVariantPrice() {
+  if (!activeProduct) return;
 
-    // objednávkový sumár
-    $("#o_manufacturer").value = activeProduct.makeLabel || "—";
-    $("#o_product").value = activeProduct.title || "—";
-    $("#o_variant").value = variantName;
-    $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : PRICE_ON_REQUEST;
-    $("#o_shipping").value = SHIPPING_TEXT_FORM;
-    $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
+  const price = getBestPriceEUR(activeProduct);
 
-    const md = (activeProduct.model || "").toString().trim();
-    if ($("#car") && md) $("#car").value = md;
+  if (mPriceBig) {
+    mPriceBig.innerHTML =
+      `<small>CENA</small>${typeof price === "number" ? fmtEUR(price) : PRICE_ON_REQUEST}`;
   }
+
+  if (mShip) mShip.textContent = SHIPPING_TEXT_DETAIL;
+
+  // sumár pre formulár (bez variantu)
+  $("#o_manufacturer").value = activeProduct.makeLabel || "—";
+  $("#o_product").value = activeProduct.title || "—";
+  $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : PRICE_ON_REQUEST;
+  $("#o_shipping").value = SHIPPING_TEXT_FORM;
+  $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
+
+  const md = (activeProduct.model || "").toString().trim();
+  if ($("#car") && md) $("#car").value = md;
+}
 
   // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
   // ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
@@ -3634,7 +3961,6 @@ const v = vars.length ? vars[activeVariantIndex] : null;
     setModalImage(0);
     buildThumbs();
 
-    buildVariantChips();
     updateVariantPrice();
 
     if (productModal) {
@@ -3681,23 +4007,6 @@ const v = vars.length ? vars[activeVariantIndex] : null;
   const consent = $("#consent");
   const sendBtn = $("#sendBtn");
 
-  function buildOrderBlob() {
-    const lines = [
-      `Značka auta: ${$("#o_manufacturer")?.value || "—"}`,
-      `Diel: ${$("#o_product")?.value || "—"}`,
-      `Variant: ${$("#o_variant")?.value || "—"}`,
-      `Cena: ${$("#o_price")?.value || "—"}`,
-      `Doprava: ${$("#o_shipping")?.value || "—"}`,
-      `Dodanie: ${$("#o_delivery")?.value || "—"}`,
-      ``,
-      `Vozidlo: ${$("#car")?.value || ""}`,
-      `Poznámka: ${$("#customer_note")?.value || ""}`
-    ].join("\n");
-
-    const blob = $("#orderBlob");
-    if (blob) blob.value = lines;
-  }
-
   function openOrderModal() {
     closeModal(productModal);
     if (!orderModal) return;
@@ -3712,7 +4021,12 @@ const v = vars.length ? vars[activeVariantIndex] : null;
     setTimeout(() => $("#name")?.focus(), 50);
   }
 
-  if (mOrder) mOrder.addEventListener("click", openOrderModal);
+  if (mOrder) mOrder.addEventListener("click", () => {
+  if (!activeProduct) return;
+  cartAdd(activeProduct, 1);
+  closeModal(productModal);
+});
+
   closeOrderModal?.addEventListener("click", () => closeModal(orderModal));
   cancelSend?.addEventListener("click", () => closeModal(orderModal));
   orderModal?.addEventListener("click", (e) => { if (e.target === orderModal) closeModal(orderModal); });
@@ -3732,6 +4046,39 @@ const v = vars.length ? vars[activeVariantIndex] : null;
 
   $("#customer_note")?.addEventListener("input", buildOrderBlob);
   $("#car")?.addEventListener("input", buildOrderBlob);
+
+  function openCheckoutFromCart(){
+  if (!CART.length){
+    renderCart(false);
+    return;
+  }
+
+  // naplň sumár do formulára (bez variantov)
+  const lines = CART.map(x => {
+    const priceTxt = (typeof x.price === "number") ? fmtEUR(x.price) : PRICE_ON_REQUEST;
+    return `${x.qty}× ${x.title} (${priceTxt})`;
+  });
+
+  $("#o_manufacturer").value = "Mix (viac produktov)";
+  $("#o_product").value = lines.join(" | ");
+  $("#o_price").value = fmtEUR(cartTotal());
+  $("#o_shipping").value = SHIPPING_TEXT_FORM; // "od 21 € ..."
+  $("#o_delivery").value = "Upresníme po objednávke";
+
+  // otvor order modal
+  if (productModal?.classList.contains("show")) closeModal(productModal);
+  if (!orderModal) return;
+
+  $("#customer_note") && ($("#customer_note").value = "");
+  if (consent) consent.checked = false;
+  if (sendBtn) sendBtn.disabled = true;
+
+  buildOrderBlob(); // zoberie hodnoty z o_* a dá ich do hidden blobu
+  orderModal.classList.add("show");
+  orderModal.setAttribute("aria-hidden", "false");
+  setTimeout(() => $("#name")?.focus(), 50);
+}
+
 
   // ✅ listenery bez "cat"
   ["q", "model"].forEach(id => {
@@ -3753,6 +4100,30 @@ const v = vars.length ? vars[activeVariantIndex] : null;
     await loadManifest();
     await loadFeaturedProducts();
   })();
+
+renderCart(false);
+
+  function buildOrderBlob() {
+  const cartLines = CART.length ? CART.map(x => {
+    const p = (typeof x.price === "number") ? fmtEUR(x.price) : PRICE_ON_REQUEST;
+    return `- ${x.qty}× ${x.title} | ${p}`;
+  }).join("\n") : "";
+
+  const lines = [
+    `SUMÁR OBJEDNÁVKY`,
+    cartLines ? cartLines : `- ${$("#o_product")?.value || "—"}`,
+    ``,
+    `Spolu: ${$("#o_price")?.value || "—"}`,
+    `Doprava: ${$("#o_shipping")?.value || "—"}`,
+    `Dodanie: ${$("#o_delivery")?.value || "—"}`,
+    ``,
+    `Vozidlo: ${$("#car")?.value || ""}`,
+    `Poznámka: ${$("#customer_note")?.value || ""}`
+  ].join("\n");
+
+  const blob = $("#orderBlob");
+  if (blob) blob.value = lines;
+}
 
   // ================================
 // CSR PROJECTS + CSR GALLERY POPUPS
