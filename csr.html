@@ -2191,7 +2191,8 @@
 #productModal{
   z-index: 99999;
 }
-    
+    #csrGalleryModal{ z-index: 9150; } /* medzi projekty a gallery */
+
   </style>
 </head>
 
@@ -2484,7 +2485,7 @@
     </div>
   </div>
 
-  <div class="modal" id="galleryModal" aria-hidden="true" style="z-index:1200;">
+  <div class="modal" id="galleryModal" aria-hidden="true">
     <div class="modalCard" role="dialog" aria-modal="true" aria-label="Gallery image">
       <div class="modalHead">
         <b>Galéria</b>
@@ -2606,7 +2607,7 @@
   </div>
 
   <!-- ========= CSR PROJECTS MODAL ========= -->
-<div class="modal" id="csrProjectsModal" aria-hidden="true" style="z-index:1300;">
+<div class="modal" id="csrProjectsModal" aria-hidden="true">
   <div class="modalCard csrModalCard" role="dialog" aria-modal="true" aria-label="CSR Projekty">
     <div class="modalHead">
       <b id="csrProjectsTitle">Projekty od CSR</b>
@@ -2649,7 +2650,7 @@
 </div>
 
 <!-- ========= CSR GALLERY MODAL (simple grid + lightbox reuse) ========= -->
-<div class="modal" id="csrGalleryModal" aria-hidden="true" style="z-index:1300;">
+<div class="modal" id="csrGalleryModal" aria-hidden="true">
   <div class="modalCard csrModalCard" role="dialog" aria-modal="true" aria-label="CSR Galéria">
     <div class="modalHead">
       <b>Galéria CSR</b>
@@ -4139,13 +4140,6 @@ if (csrDetailPhotoCol){
   csrDetailParts.appendChild(c);
 });
 
-
-      // klik otvorí tvoj produkt modal
-      c.addEventListener("click", () => openProduct(p));
-      csrDetailParts.appendChild(c);
-    });
-  }
-}
 
 function backToCsrProjects(){
   if (csrDetailView) csrDetailView.style.display = "none";
