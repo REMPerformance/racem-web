@@ -2191,6 +2191,30 @@
 #productModal{
   z-index: 99999;
 }
+
+    .csrYt{ position:relative; }
+.csrYtOverlay{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  gap:10px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.55));
+}
+.csrYtPlay{
+  width:74px; height:74px;
+  border-radius:999px;
+  display:grid; place-items:center;
+  border:1px solid rgba(255,255,255,0.22);
+  background: rgba(0,0,0,0.45);
+  font-size: 26px;
+}
+.csrYtText{
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255,255,255,0.88);
+}
+
     #csrGalleryModal{ z-index: 9150; } /* medzi projekty a gallery */
 
   </style>
@@ -4130,6 +4154,7 @@ async function openCsrProjectDetail(projectId){
   
 // 🔥 YouTube teaser image (klik → playlist)
   // ✅ YouTube teaser (podľa projektu)
+   // ✅ YouTube teaser (podľa projektu)
   if (proj.yt?.url && proj.yt?.thumb && csrDetailPhotoCol) {
     const ytBox = document.createElement("div");
     ytBox.className = "csrPhotoBig csrYt";
@@ -4149,6 +4174,7 @@ async function openCsrProjectDetail(projectId){
     ytBox.addEventListener("click", () => window.open(proj.yt.url, "_blank"));
     csrDetailPhotoCol.appendChild(ytBox);
   }
+
 
 
   // produkty pre projekt
