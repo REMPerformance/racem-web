@@ -2254,6 +2254,15 @@
   transform: translateZ(0);
 }
 
+    .pSku{
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: .12em;
+  opacity: .75;
+  text-transform: uppercase;
+}
+
+
   </style>
 </head>
 
@@ -3254,13 +3263,9 @@ function getJsonPriceEUR(p, variant) {
 
       const json = await res.json();
       const label = (MAKE_MAP.find(x => x.file === file)?.label || "");
-      const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: file, makeLabel: label }));
+      let list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: file, makeLabel: label }));
 
-      // 🔍 DEBUG: over či tam reálne sú aj -B / -L
-const dbg = list.filter(p => String(p?.sku || "").includes("CSR-HA335"));
-console.log("DEBUG HA335 loaded:", dbg.map(x => x.sku));
-console.log("DEBUG total loaded:", list.length);
-
+list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
 
       renderLimit = PAGE_SIZE;
       $("#model").value = "";
@@ -3305,7 +3310,7 @@ console.log("DEBUG total loaded:", list.length);
       if (model && pmodel !== model) return false;
 
       if (q) {
-        const blob = `${p.title || ""} ${p.short || ""} ${p.model || ""} ${p.makeLabel || ""}`.toLowerCase();
+        const blob = `${p.title || ""} ${p.short || ""} ${p.model || ""} ${p.makeLabel || ""} ${p.sku || ""}`.toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
@@ -3394,6 +3399,7 @@ console.log("DEBUG total loaded:", list.length);
         <div class="pBody">
           <div class="pTop">
             <div class="pName">${escapeHtml(titleShort)}</div>
+<div class="pSku">${escapeHtml((p.sku || "").replace(/^CSR-/, ""))}</div>
             <div class="pMetaRow">
               ${make ? `<span class="pMetaTag">Značka: <b>${escapeHtml(make)}</b></span>` : ""}
               ${model ? `<span class="pMetaTag">Model: <b>${escapeHtml(model)}</b></span>` : ""}
