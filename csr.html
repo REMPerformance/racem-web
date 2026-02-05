@@ -638,7 +638,7 @@
     }
 
     .modal{
-      position:fixed; inset:0; z-index:999;
+      position:fixed; inset:0; z-index:9000;
       display:none;
       align-items:center;
       justify-content:center;
@@ -2154,6 +2154,44 @@
 @media (max-width: 980px){
   .csrSplit{ grid-template-columns: 1fr; }
 }
+
+    .csrPartMedia{
+  height: 140px;
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(179,31,36,0.12), transparent 55%),
+    rgba(0,0,0,0.22);
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+.csrPartMedia img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit: contain;         /* ✅ neorezať */
+  object-position:center;
+  padding: 10px;
+  display:block;
+}
+
+
+    /* CSR project popup */
+#csrProjectsModal{
+  z-index: 9100;
+}
+
+/* gallery */
+#galleryModal{
+  z-index: 9200;
+}
+
+/* 🔥 PRODUKT MODAL MUSÍ BYŤ NAJVYŠŠIE */
+#productModal{
+  z-index: 99999;
+}
+    
   </style>
 </head>
 
@@ -4069,22 +4107,38 @@ if (csrDetailPhotoCol){
     }
 
     products.forEach(p => {
-      const c = document.createElement("div");
-      c.className = "csrPartCard";
+  const c = document.createElement("div");
+  c.className = "csrPartCard";
 
-      const titleShort = p.titleShort || truncateWords(p.title || "", 6);
-      const priceTxt = minPriceEUR(p);
+  const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+  const priceTxt = minPriceEUR(p);
 
-      c.innerHTML = `
-        <div class="csrPartBody">
-          <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
-          <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
-          <div class="csrPartFoot">
-            <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
-            <div class="openHint"><span class="arr">→</span></div>
-          </div>
-        </div>
-      `;
+  const imgSrc =
+    p.image ||
+    (Array.isArray(p.images) ? p.images[0] : "") ||
+    "";
+
+  c.innerHTML = `
+    <div class="csrPartMedia"><img alt="${escapeHtml(titleShort)}"></div>
+
+    <div class="csrPartBody">
+      <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
+      <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
+      <div class="csrPartFoot">
+        <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
+        <div class="openHint"><span class="arr">→</span></div>
+      </div>
+    </div>
+  `;
+
+  // ✅ nastav obrázok bezpečne (fallback)
+  const im = c.querySelector(".csrPartMedia img");
+  setSafeImage(im, imgSrc, null);
+
+  c.addEventListener("click", () => openProduct(p));
+  csrDetailParts.appendChild(c);
+});
+
 
       // klik otvorí tvoj produkt modal
       c.addEventListener("click", () => openProduct(p));
