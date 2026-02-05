@@ -4033,6 +4033,7 @@ function renderCsrProjectsGrid(){
 }
 
 // 6) Detail view
+// 6) Detail view
 async function openCsrProjectDetail(projectId){
   const proj = CSR_PROJECTS.find(x => x.id === projectId);
   if (!proj) return;
@@ -4041,43 +4042,39 @@ async function openCsrProjectDetail(projectId){
   if (csrGridView) csrGridView.style.display = "none";
   if (csrDetailView) csrDetailView.style.display = "block";
 
- // text vpravo
-if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
-if (csrDetailDesc) csrDetailDesc.innerHTML = proj.desc || "";
+  // text vpravo
+  if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
+  if (csrDetailDesc) csrDetailDesc.innerHTML = proj.desc || "";
 
-// ľavý stĺpec: 3 fotky pod sebou (bez hero cover v detaile)
-if (csrDetailPhotoCol){
-  csrDetailPhotoCol.innerHTML = "";
+  // ľavý stĺpec: fotky pod sebou
+  if (csrDetailPhotoCol){
+    csrDetailPhotoCol.innerHTML = "";
 
-  (proj.photos || []).forEach(src => {
-    const box = document.createElement("div");
-    box.className = "csrPhotoBig";
-    box.innerHTML = `<img alt="foto projektu">`;
+    (proj.photos || []).forEach(src => {
+      const box = document.createElement("div");
+      box.className = "csrPhotoBig";
+      box.innerHTML = `<img alt="foto projektu">`;
 
-    const im = box.querySelector("img");
-    setSafeImage(im, src, null);
+      const im = box.querySelector("img");
+      setSafeImage(im, src, null);
 
-    // lightbox (už máš galleryModal)
-    box.addEventListener("click", () => {
-      setSafeImage(gFull, src, gNoImg);
-      galleryModal?.classList.add("show");
-      galleryModal?.setAttribute("aria-hidden","false");
+      box.addEventListener("click", () => {
+        setSafeImage(gFull, src, gNoImg);
+        galleryModal?.classList.add("show");
+        galleryModal?.setAttribute("aria-hidden","false");
+      });
+
+      csrDetailPhotoCol.appendChild(box);
     });
+  }
 
-    csrDetailPhotoCol.appendChild(box);
-  });
-}
-
-
-    // parts (produkty) — ✅ načítaj z konkrétneho súboru (Volkswagen.json)
+  // produkty pre projekt
   let pool = [];
-
   try {
     if (proj.sourceFile) {
       showLoading("Načítavam produkty pre projekt…");
       pool = await loadProductsFromMakeFileCached(proj.sourceFile);
     } else {
-      // fallback: ak nemáš sourceFile, použije to, čo je práve načítané na stránke
       pool = DATA.products || [];
     }
   } catch (e) {
@@ -4091,7 +4088,6 @@ if (csrDetailPhotoCol){
     .map(code => findProductInListByCode(pool, code))
     .filter(Boolean);
 
-
   if (csrPartsCount) csrPartsCount.textContent = `${products.length} položiek`;
 
   if (csrDetailParts){
@@ -4101,45 +4097,41 @@ if (csrDetailPhotoCol){
       csrDetailParts.innerHTML = `
         <div class="panel" style="grid-column:1/-1; padding:14px;">
           <div class="pill"><span class="dot"></span>produkty</div>
-          <p style="margin:10px 0 0;">K tomuto projektu ešte nie sú priradené produkty (doplň <b>productIds</b> podľa ID z JSON).</p>
+          <p style="margin:10px 0 0;">K tomuto projektu ešte nie sú priradené produkty (doplň <b>productIds</b> podľa ID/SKU z JSON).</p>
         </div>
       `;
       return;
     }
 
     products.forEach(p => {
-  const c = document.createElement("div");
-  c.className = "csrPartCard";
+      const c = document.createElement("div");
+      c.className = "csrPartCard";
 
-  const titleShort = p.titleShort || truncateWords(p.title || "", 6);
-  const priceTxt = minPriceEUR(p);
+      const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+      const priceTxt = minPriceEUR(p);
 
-  const imgSrc =
-    p.image ||
-    (Array.isArray(p.images) ? p.images[0] : "") ||
-    "";
+      const imgSrc = p.image || (Array.isArray(p.images) ? p.images[0] : "") || "";
 
-  c.innerHTML = `
-    <div class="csrPartMedia"><img alt="${escapeHtml(titleShort)}"></div>
+      c.innerHTML = `
+        <div class="csrPartMedia"><img alt="${escapeHtml(titleShort)}"></div>
+        <div class="csrPartBody">
+          <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
+          <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
+          <div class="csrPartFoot">
+            <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
+            <div class="openHint"><span class="arr">→</span></div>
+          </div>
+        </div>
+      `;
 
-    <div class="csrPartBody">
-      <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
-      <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
-      <div class="csrPartFoot">
-        <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
-        <div class="openHint"><span class="arr">→</span></div>
-      </div>
-    </div>
-  `;
+      const im = c.querySelector(".csrPartMedia img");
+      setSafeImage(im, imgSrc, null);
 
-  // ✅ nastav obrázok bezpečne (fallback)
-  const im = c.querySelector(".csrPartMedia img");
-  setSafeImage(im, imgSrc, null);
-
-  c.addEventListener("click", () => openProduct(p));
-  csrDetailParts.appendChild(c);
-});
-
+      c.addEventListener("click", () => openProduct(p));
+      csrDetailParts.appendChild(c);
+    });
+  }
+} // ✅ TU sa zavrie openCsrProjectDetail
 
 function backToCsrProjects(){
   if (csrDetailView) csrDetailView.style.display = "none";
@@ -4155,6 +4147,7 @@ function renderCsrGallery(){
     const t = document.createElement("div");
     t.className = "csrGalleryTile";
     t.innerHTML = `<img alt="CSR galéria">`;
+
     const im = t.querySelector("img");
     setSafeImage(im, src, null);
 
@@ -4192,8 +4185,8 @@ csrGalleryModal?.addEventListener("click", (e) => {
   if (e.target === csrGalleryModal) hardCloseModal(csrGalleryModal);
 });
 
+console.log("CSR script loaded OK");
 
-  console.log("CSR script loaded OK");
 </script>
 
 
