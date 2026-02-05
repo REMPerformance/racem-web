@@ -3256,6 +3256,12 @@ function getJsonPriceEUR(p, variant) {
       const label = (MAKE_MAP.find(x => x.file === file)?.label || "");
       const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: file, makeLabel: label }));
 
+      // 🔍 DEBUG: over či tam reálne sú aj -B / -L
+const dbg = list.filter(p => String(p?.sku || "").includes("CSR-HA335"));
+console.log("DEBUG HA335 loaded:", dbg.map(x => x.sku));
+console.log("DEBUG total loaded:", list.length);
+
+
       renderLimit = PAGE_SIZE;
       $("#model").value = "";
       $("#q").value = "";
