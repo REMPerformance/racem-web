@@ -1523,21 +1523,45 @@
 .csrTop{ gap: 18px; }
 .csrLead{ margin-top: 8px; }
 
-/* logo s bielym pozadím */
+/* ===== CSR LOGO väčšie + bez bieleho pozadia ===== */
 .csrLogoWrap{
-  width: fit-content;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 14px 18px;
-  border: 1px solid rgba(0,0,0,0.10);
-  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+  display:block;
+  margin-bottom: 18px; /* väčšia medzera pod logom */
 }
+
 .csrLogoWrap img{
-  height: 46px;
+  height: 90px;          /* zväčšené logo */
   width: auto;
   display:block;
-  object-fit: contain;
+  background: transparent !important; /* bez bieleho */
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
+
+/* ===== O značke vyššie ===== */
+.csrSectionTop{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+/* nadpis O značke vyššie */
+.csrSectionTop .pill{
+  margin-bottom: 6px;
+}
+
+/* text pod logom nech má odstup */
+.csrIntroText{
+  margin-top: 8px;
+  max-width: 880px;
+  line-height: 1.75;
+  font-size: 15px;
+  color: rgba(255,255,255,0.82);
+}
+
 
 /* badge spacing */
 .csrBadges{ margin-top: 12px; gap: 10px; }
@@ -1981,12 +2005,12 @@
   <img src="assets/CSR-Logo-Shop_transparent.svg" alt="CSR Automotive">
 </div>
 
-          <p class="csrLead">
-            V CSR Automotive veria, že auto so spojlerom jednoducho vyzerá lepšie než bez neho.
-            Zameriavajú sa na vylepšenie sériových áut športovými a štýlovými doplnkami – najmä aero a karosárskymi dielmi.
-            Pri vývoji produktov dodržiavajú smernice <b>KBA</b> (nemecký federálny úrad pre motorovú dopravu) a <b>ECE</b> predpisy,
-            aby boli úpravy použiteľné a legálne v bežnej cestnej premávke.
-          </p>
+          <div class="csrIntroText">
+  CSR Automotive veria, že auto so spojlerom jednoducho vyzerá lepšie než bez neho.
+  Zameriavajú sa na vylepšenie sériových áut športovými a štýlovými doplnkami – najmä aero a karosárskymi dielmi.
+  Pri vývoji produktov dodržiavajú smernice KBA a ECE predpisy, aby boli úpravy použiteľné a legálne
+  v bežnej cestnej premávke.
+</div>
 
 
           <div class="csrBadges">
@@ -2027,12 +2051,7 @@
 
 
         <div class="csrSide">
-          <div class="csrSideBox">
-            <div class="csrSideTitle">Ako to u teba funguje na RACEM</div>
-            <p style="margin:10px 0 0;">
-              Produkty si vyfiltruješ podľa značky a modelu, pošleš <b>nezáväznú objednávku</b>
-              a <b>TEAM RACEM</b> ti následne overí kompatibilitu a potvrdí dodanie.
-            </p>
+          <div class="csrSideBox">>
 
             <<div class="csrCTA">
   <button class="btn cta csrBigBtn" id="openCsrProjects" type="button">
@@ -2049,7 +2068,7 @@
             <div class="csrSideTitle">Poznámka k dokladom</div>
             <p style="margin:10px 0 0;">
               Pri mnohých dieloch CSR býva dostupné <b>ABE</b> alebo typové schválenie (<b>TTG</b>).
-              Dokumenty sa zvyčajne nosia pri sebe a predkladajú pri kontrole (podľa konkrétneho dielu a krajiny).
+              Dokumenty sa zvyčajne nosia pri sebe a predkladajú pri kontrole.
             </p>
           </div>
         </div>
@@ -2057,8 +2076,8 @@
 
       <div class="csrDivider"></div>
 
-      <div class="pill"><span class="dot"></span>Prečo si vybrať CSR</div>
-      <h2 style="margin-top:14px;">Dôvody, prečo CSR dáva zmysel</h2>
+      <div class="pill"><span class="dot"></span>Prečo CSR</div>
+      <h2 style="margin-top:14px;">O CSR Automotive</h2>
 
       <div class="csrReasons">
         <div class="csrReason">
@@ -2097,11 +2116,10 @@
         <div class="csrReason">
           <div class="csrReasonHead">
             <span class="csrCheck">✓</span>
-            <div class="csrReasonTitle">Podpora v jazyku zákazníka</div>
+            <div class="csrReasonTitle">Okamžitá podpora</div>
           </div>
           <p>
-            Ak vznikne otázka alebo problém, dá sa riešiť podpora cez e-mail/online kanály.
-            (CSR uvádza viacero jazykov – my to pre teba zjednodušíme cez TEAM RACEM.)
+            Ak vznikne otázka alebo problém, vieme Vám zabezpečiť okamžitu podporu alebo reklamáciu, do pár hodín.
           </p>
         </div>
 
@@ -2112,7 +2130,7 @@
           </div>
           <p>
             Diely sú navrhnuté na rýchlu a jednoduchú montáž.
-            Pri veľa komponentoch sa používa aj <b>3M páska</b> (podľa typu dielu).
+            Pri mveľa komponentoch sa používa aj <b>3M páska</b> (podľa typu dielu).
           </p>
         </div>
 
@@ -2132,7 +2150,7 @@
   <span class="csrNoteDot"></span>
   <div>
     <b>Info:</b>Niektoré texty môžu byť ešte v nemčine.
-    Aktívne pracujeme na ich plnohodnotnom preložení do slovenčiny. Ďakujeme za pochopenie
+    Aktívne pracujeme na ich plnohodnotnom preložení do slovenčiny. Ďakujeme za pochopenie.
   </div>
 </div>
 
