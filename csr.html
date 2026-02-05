@@ -3755,12 +3755,20 @@ const v = vars.length ? vars[activeVariantIndex] : null;
 // 1) Sem si doplň reálne assety
 const CSR_PROJECTS = [
   {
-    id: "p1",
-    car: "VW Golf 7 R",
-    title: "VW Golf 7R Facelift Projekt CSR",
-    sourceFile: "Volkswagen.json",
-    cover: "csr-cars/csr-projects/Teaser-Projektfahrzeug-Golf7R-V2.webp",
-   desc: `
+  id: "p1",
+  car: "VW Golf 7 R",
+  title: "VW Golf 7R Facelift Projekt CSR",
+  sourceFile: "Volkswagen.json",
+
+  cover: "csr-cars/csr-projects/Teaser-Projektfahrzeug-Golf7R-V2.webp",
+
+  yt: {
+    url: "https://www.youtube.com/playlist?list=PLpp6X0dBSNh1kqOCyJdMVbsz7wV2uoizO",
+    thumb: "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp",
+    label: "VW Golf 7R CSR Project"
+  },
+
+  desc: `
 <div class="csrBlocks">
   <div class="csrKicker">VW Golf 7R Facelift Project</div>
   <div class="csrTitleLine">Všetko, čo je možné: CSR body kit pre Golf 7R facelift (7.5)</div>
@@ -3812,13 +3820,13 @@ const CSR_PROJECTS = [
 </div>
 `,
 
-    // 3 fotky do detailu (pod seba)
-    photos: [
-      "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp",
-      "csr-cars/csr-projects/VW_Golf-7R-Showcar-1.webp",
-      "csr-cars/csr-projects/VW_Golf-7R-Showcar-4.webp"
-    ],
-    productIds: [
+  photos: [
+    "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp",
+    "csr-cars/csr-projects/VW_Golf-7R-Showcar-1.webp",
+    "csr-cars/csr-projects/VW_Golf-7R-Showcar-4.webp"
+  ],
+
+  productIds: [
     "CSR-HF912",
     "CSR-VB033",
     "CSR-FP019",
@@ -3830,7 +3838,7 @@ const CSR_PROJECTS = [
     "CSR-SS497",
     "CSR-HA411"
   ]
-  },
+},
  {
   id: "p2",
   car: "BMW 2 Series F22",
@@ -4141,14 +4149,6 @@ async function openCsrProjectDetail(projectId){
     ytBox.addEventListener("click", () => window.open(proj.yt.url, "_blank"));
     csrDetailPhotoCol.appendChild(ytBox);
   }
-
-
-// klik otvorí youtube
-ytBox.addEventListener("click", () => {
-  window.open(ytUrl, "_blank");
-});
-
-csrDetailPhotoCol.appendChild(ytBox);
 
 
   // produkty pre projekt
