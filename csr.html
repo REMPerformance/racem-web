@@ -2263,6 +2263,17 @@
 }
 
 
+    .csrLegalNote{
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: .7;
+  letter-spacing: .04em;
+}
+
+
   </style>
 </head>
 
@@ -2353,9 +2364,6 @@
             <div class="csrCTA">
   <button class="btn cta csrBigBtn" id="openCsrProjects" type="button">
     Projekty od CSR <span class="arr">→</span>
-  </button>
-  <button class="btn secondary csrBigBtn" id="openCsrGallery" type="button">
-    Galéria CSR <span class="arr">→</span>
   </button>
 </div>
 
@@ -4331,6 +4339,17 @@ async function openCsrProjectDetail(projectId){
   if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
   if (csrDetailDesc) csrDetailDesc.innerHTML = proj.desc || "";
 
+  if (csrDetailDesc) {
+  csrDetailDesc.innerHTML = `
+    ${proj.desc || ""}
+    <div class="csrLegalNote">
+      Všetky obrázky a vizuálne materiály v tejto sekcii sú majetkom spoločnosti
+      <b>CSR Automotive</b> a sú použité so súhlasom výrobcu.
+    </div>
+  `;
+}
+
+
   // ľavý stĺpec: fotky pod sebou
   if (csrDetailPhotoCol){
     csrDetailPhotoCol.innerHTML = "";
@@ -4474,21 +4493,13 @@ openCsrProjectsBtn?.addEventListener("click", () => {
   openModal(csrProjectsModal);
 });
 
-openCsrGalleryBtn?.addEventListener("click", () => {
-  renderCsrGallery();
-  openModal(csrGalleryModal);
-});
 
 closeCsrProjectsBtn?.addEventListener("click", () => hardCloseModal(csrProjectsModal));
-closeCsrGalleryBtn?.addEventListener("click", () => hardCloseModal(csrGalleryModal));
 
 csrBackBtn?.addEventListener("click", backToCsrProjects);
 
 csrProjectsModal?.addEventListener("click", (e) => {
   if (e.target === csrProjectsModal) hardCloseModal(csrProjectsModal);
-});
-csrGalleryModal?.addEventListener("click", (e) => {
-  if (e.target === csrGalleryModal) hardCloseModal(csrGalleryModal);
 });
 
 console.log("CSR script loaded OK");
