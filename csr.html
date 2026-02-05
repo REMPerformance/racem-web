@@ -4068,6 +4068,24 @@ async function openCsrProjectDetail(projectId){
     });
   }
 
+  // 🔥 YouTube teaser image pod projekt fotkami
+const ytBox = document.createElement("div");
+ytBox.className = "csrPhotoBig";
+ytBox.innerHTML = `<img alt="YouTube teaser">`;
+
+const ytImg = ytBox.querySelector("img");
+setSafeImage(ytImg, "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp", null);
+
+// klik = fullscreen ako ostatné
+ytBox.addEventListener("click", () => {
+  setSafeImage(gFull, "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp", gNoImg);
+  galleryModal?.classList.add("show");
+  galleryModal?.setAttribute("aria-hidden","false");
+});
+
+csrDetailPhotoCol.appendChild(ytBox);
+
+
   // produkty pre projekt
   let pool = [];
   try {
