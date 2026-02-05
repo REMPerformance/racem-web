@@ -2231,19 +2231,27 @@
 
     /* ✅ CART BAR */
 .cartBar{
-  position: sticky;
-  top: 0;                  /* vysúva sa zhora */
-  z-index: 120;
-  transform: translateY(-110%);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;                 /* nastaví JS na výšku topbaru */
+  z-index: 99;            /* pod topbar (topbar má 100) */
+  display: none;          /* keď je prázdny, nech neexistuje v layoute */
+  transform: translateY(-120%);
   transition: transform .22s ease;
   background: rgba(10,10,10,0.82);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;   /* keď je skrytý, nech sa nedá kliknúť */
 }
 
 .cartBar.show{
+  display: block;
   transform: translateY(0);
+  pointer-events: auto;
 }
+
+
 
 .cartInner{
   padding: 12px 6vw;
@@ -3021,6 +3029,7 @@ function cartClear(){
   saveCart();
   renderCart();
 }
+updateCartBarTopOffset();
 
 function cartCount(){
   return CART.reduce((s,x)=>s + (x.qty||0), 0);
@@ -3073,12 +3082,31 @@ function renderCart(){
     });
   }
 
-  if (bar){
-    const show = count > 0;               // ✅ iba ak je niečo v košíku
-    bar.classList.toggle("show", show);
-    bar.setAttribute("aria-hidden", show ? "false" : "true");
+if (bar){
+  const show = count > 0;
+
+  if (!show){
+    bar.classList.remove("show");
+    bar.style.display = "none";
+    bar.setAttribute("aria-hidden", "true");
+    return;
   }
+
+  bar.style.display = "block";
+  bar.classList.add("show");
+  bar.setAttribute("aria-hidden", "false");
 }
+
+}
+function updateCartBarTopOffset(){
+  const bar = document.getElementById("cartBar");
+  const topbar = document.querySelector(".topbar");
+  if (!bar || !topbar) return;
+  const h = topbar.getBoundingClientRect().height || 0;
+  bar.style.top = `${Math.round(h)}px`;
+}
+
+window.addEventListener("resize", updateCartBarTopOffset);
 
 
 // buttons
