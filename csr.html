@@ -4068,19 +4068,59 @@ async function openCsrProjectDetail(projectId){
     });
   }
 
-  // 🔥 YouTube teaser image pod projekt fotkami
+ // 🔥 YouTube teaser (klik → otvorí playlist)
+const ytUrl = "https://www.youtube.com/playlist?list=PLpp6X0dBSNh1kqOCyJdMVbsz7wV2uoizO";
+
 const ytBox = document.createElement("div");
 ytBox.className = "csrPhotoBig";
-ytBox.innerHTML = `<img alt="YouTube teaser">`;
+ytBox.style.cursor = "pointer";
+
+ytBox.innerHTML = `
+  <div style="position:relative;width:100%;height:100%;">
+    <img alt="YouTube video">
+
+    <!-- play button -->
+    <div style="
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+    ">
+      <div style="
+        width:64px;
+        height:64px;
+        border-radius:999px;
+        background:rgba(179,31,36,0.85);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 0 40px rgba(179,31,36,.6);
+      ">
+        <div style="
+          width:0;
+          height:0;
+          border-left:18px solid #fff;
+          border-top:11px solid transparent;
+          border-bottom:11px solid transparent;
+          margin-left:4px;
+        "></div>
+      </div>
+    </div>
+  </div>
+`;
 
 const ytImg = ytBox.querySelector("img");
-setSafeImage(ytImg, "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp", null);
+setSafeImage(
+  ytImg,
+  "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp",
+  null
+);
 
-// klik = fullscreen ako ostatné
+// klik = otvor youtube
 ytBox.addEventListener("click", () => {
-  setSafeImage(gFull, "csr-cars/csr-projects/Teaser-YouTube-Golf-7R_V1.webp", gNoImg);
-  galleryModal?.classList.add("show");
-  galleryModal?.setAttribute("aria-hidden","false");
+  window.open(ytUrl, "_blank");
 });
 
 csrDetailPhotoCol.appendChild(ytBox);
