@@ -244,18 +244,51 @@
   height: 100%;
 }
 
-.heroBg{
-  position:absolute;
-  inset:0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 900ms ease;
-  will-change: opacity;
+/* HERO: obrázky ako <img> (nie background) */
+.heroMedia{
+  position:relative;
+  min-height: min(70vh, 720px);
+  overflow:hidden;
+  display:grid;
+  place-items:stretch;
 }
 
-.heroBg.show{ opacity: 1; }
+.heroImg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+
+  /* ✅ fit bez orezu */
+  object-fit: contain;
+  object-position: center;
+
+  /* dôležité: nech nie je "mäkké" */
+  image-rendering: auto;
+
+  opacity:0;
+  transition: opacity 1600ms ease; /* pomalší crossfade */
+  will-change: opacity, transform;
+  transform: scale(1.02);          /* jemný “cinematic” zoom */
+}
+
+.heroImg.show{
+  opacity:1;
+  animation: heroKenBurns 18s ease-in-out infinite;
+}
+
+@keyframes heroKenBurns{
+  0%   { transform: scale(1.02) translateY(0); }
+  50%  { transform: scale(1.05) translateY(-1%); }
+  100% { transform: scale(1.02) translateY(0); }
+}
+
+/* ak chceš úplne bez zoomu, zruš animation a nechaj len opacity */
+@media (prefers-reduced-motion: reduce){
+  .heroImg.show{ animation:none !important; }
+  .heroImg{ transition:none !important; }
+}
+
 
     .heroInner{
       position:relative; z-index:3;
@@ -2320,8 +2353,8 @@
 
  <section class="hero" aria-label="CSR hero">
   <div class="heroMedia">
-    <div class="heroBg heroBgA show"></div>
-    <div class="heroBg heroBgB"></div>
+   <img class="heroImg heroImgA show" alt="" decoding="async" fetchpriority="high">
+<img class="heroImg heroImgB" alt="" decoding="async">
     <div class="heroInner"></div>
   </div>
 </section>
@@ -4526,64 +4559,63 @@ csrProjectsModal?.addEventListener("click", (e) => {
   if (e.target === csrProjectsModal) hardCloseModal(csrProjectsModal);
 });
 
-
-  // ================================
-// HERO: 3 obrázky (crossfade A/B)
-// ================================
+// ===== HERO SLIDER =====
 const HERO_IMAGES = [
   "csr-cars/csr-projects/csr2.png",
   "csr-cars/csr-projects/csr1.png",
   "csr-cars/csr-projects/swan neck CSR.png"
 ];
 
-const heroA = document.querySelector(".heroBgA");
-const heroB = document.querySelector(".heroBgB");
+const HERO_INTERVAL = 6500; // pomalšie prepínanie (ms)
 
+const heroA = document.querySelector(".heroImgA");
+const heroB = document.querySelector(".heroImgB");
 let heroIndex = 0;
-let heroFrontIsA = true;
+let heroOnA = true;
 
-function setHeroBg(el, url){
-  if (!el) return;
-  el.style.backgroundImage = `url("${url}")`;
+function preload(src){
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
 }
 
-function preloadHeroImages(urls){
-  urls.forEach(u => { const i = new Image(); i.src = u; });
+async function setHeroInitial(){
+  if (!heroA || !heroB || !HERO_IMAGES.length) return;
+
+  // preload prvé 2
+  await preload(HERO_IMAGES[0]);
+  heroA.src = HERO_IMAGES[0];
+  heroA.classList.add("show");
+
+  if (HERO_IMAGES[1]) await preload(HERO_IMAGES[1]);
+  heroB.src = HERO_IMAGES[1] || HERO_IMAGES[0];
 }
 
-function nextHero(){
-  if (!heroA || !heroB || HERO_IMAGES.length < 1) return;
+async function heroTick(){
+  if (!heroA || !heroB || HERO_IMAGES.length < 2) return;
 
   heroIndex = (heroIndex + 1) % HERO_IMAGES.length;
-  const nextUrl = HERO_IMAGES[heroIndex];
+  const nextSrc = HERO_IMAGES[heroIndex];
 
-  const front = heroFrontIsA ? heroA : heroB;
-  const back  = heroFrontIsA ? heroB : heroA;
+  await preload(nextSrc);
 
-  setHeroBg(back, nextUrl);
+  const showEl = heroOnA ? heroB : heroA;
+  const hideEl = heroOnA ? heroA : heroB;
 
-  // crossfade
-  back.classList.add("show");
-  front.classList.remove("show");
+  showEl.src = nextSrc;
+  showEl.classList.add("show");
+  hideEl.classList.remove("show");
 
-  heroFrontIsA = !heroFrontIsA;
+  heroOnA = !heroOnA;
 }
 
-// init
-(function initHero(){
-  if (!heroA || !heroB || HERO_IMAGES.length < 1) return;
+setHeroInitial().then(() => {
+  if (HERO_IMAGES.length > 1) setInterval(heroTick, HERO_INTERVAL);
+});
 
-  preloadHeroImages(HERO_IMAGES);
-
-  setHeroBg(heroA, HERO_IMAGES[0]);
-  heroA.classList.add("show");
-  heroB.classList.remove("show");
-
-  // každých 5s ďalší obrázok (zmeň si na čo chceš)
-  if (HERO_IMAGES.length > 1){
-    setInterval(nextHero, 5000);
-  }
-})();
 
 console.log("CSR script loaded OK");
 
