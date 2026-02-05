@@ -1674,6 +1674,274 @@
 }
 
 
+    /* ===== CSR POPUP (projekty/galéria) ===== */
+.csrModalCard{
+  width: min(1100px, 100%);
+}
+
+.csrModalBody{
+  padding: 14px;
+  overflow: auto;
+}
+
+.csrView{ width:100%; }
+
+.csrProjectGrid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 14px;
+}
+
+.csrProjectCard{
+  border-radius: 18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(179,31,36,0.10), transparent 55%),
+    linear-gradient(180deg, rgba(16,16,16,0.92), rgba(8,8,8,0.78));
+  box-shadow: 0 16px 54px rgba(0,0,0,0.55);
+  cursor:pointer;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+.csrProjectCard:hover{
+  transform: translateY(-3px);
+  border-color: rgba(179,31,36,0.55);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.70);
+}
+
+.csrProjectMedia{
+  height: 190px;
+  position:relative;
+  background: rgba(0,0,0,0.25);
+}
+
+.csrProjectMedia img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.csrProjectBody{
+  padding: 14px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+}
+
+.csrProjectName{
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 14px;
+  color:#fff;
+  line-height:1.2;
+}
+
+.csrProjectMeta{
+  color: rgba(255,255,255,0.70);
+  font-size: 13px;
+  line-height:1.6;
+}
+
+.csrBackBtn{
+  margin-bottom: 12px;
+}
+
+.csrDetailHero{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.csrHeroImgWrap{
+  border-radius: 18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+  min-height: 340px;
+}
+
+.csrHeroImgWrap img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.csrH2{
+  margin: 0 0 10px 0;
+  font-family: var(--font);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: clamp(20px, 2.6vw, 30px);
+  line-height:1.05;
+}
+
+.csrP{
+  margin:0;
+  color: rgba(255,255,255,0.80);
+  line-height:1.8;
+  font-size: 14.5px;
+}
+
+.csrDetailSection{
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 16px 54px rgba(0,0,0,0.35);
+}
+
+.csrSectionHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 10px;
+}
+
+.csrSectionTitle{
+  font-family: var(--font);
+  letter-spacing:.20em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+}
+
+.csrPhotoRow{
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  padding-bottom: 6px;
+}
+
+.csrPhotoRow::-webkit-scrollbar{ height: 8px; }
+.csrPhotoRow::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.12); border-radius: 999px; }
+
+.csrPhoto{
+  width: 220px;
+  height: 150px;
+  border-radius: 16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+  flex: 0 0 auto;
+  cursor:pointer;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.csrPhoto:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.35);
+}
+.csrPhoto img{
+  width:100%; height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.csrPartsGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+}
+
+.csrPartCard{
+  border-radius: 18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.24);
+  box-shadow: 0 14px 46px rgba(0,0,0,0.35);
+  cursor:pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+.csrPartCard:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.35);
+  background: rgba(179,31,36,0.10);
+}
+.csrPartBody{
+  padding: 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.csrPartTitle{
+  font-family: var(--font);
+  letter-spacing:.16em;
+  text-transform: uppercase;
+  font-size: 12.5px;
+  line-height:1.2;
+  color:#fff;
+}
+.csrPartSub{
+  color: rgba(255,255,255,0.70);
+  font-size: 12.5px;
+}
+.csrPartFoot{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+.csrPartPrice{
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  white-space:nowrap;
+}
+
+.csrGalleryGrid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 12px;
+}
+
+.csrGalleryTile{
+  border-radius: 16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.24);
+  cursor:pointer;
+  transition: transform .18s ease, border-color .18s ease;
+  height: 140px;
+}
+.csrGalleryTile:hover{
+  transform: translateY(-2px);
+  border-color: rgba(179,31,36,0.35);
+}
+.csrGalleryTile img{
+  width:100%; height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.csrGalleryNote{
+  margin-top: 10px;
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  letter-spacing:.06em;
+}
+
+@media (max-width: 1100px){
+  .csrProjectGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .csrGalleryGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .csrPartsGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 720px){
+  .csrDetailHero{ grid-template-columns: 1fr; }
+  .csrGalleryGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .csrPartsGrid{ grid-template-columns: 1fr; }
+}
+
+
   </style>
 </head>
 
@@ -1766,9 +2034,13 @@
               a <b>TEAM RACEM</b> ti následne overí kompatibilitu a potvrdí dodanie.
             </p>
 
-            <div class="csrCTA">
-  <a class="btn cta csrBigBtn" href="#projektyCSR">Projekty od CSR <span class="arr">→</span></a>
-  <a class="btn secondary csrBigBtn" href="#galeriaCSR">Galéria CSR <span class="arr">→</span></a>
+            <<div class="csrCTA">
+  <button class="btn cta csrBigBtn" id="openCsrProjects" type="button">
+    Projekty od CSR <span class="arr">→</span>
+  </button>
+  <button class="btn secondary csrBigBtn" id="openCsrGallery" type="button">
+    Galéria CSR <span class="arr">→</span>
+  </button>
 </div>
 
           </div>
@@ -2090,6 +2362,71 @@
       </div>
     </div>
   </div>
+
+  <!-- ========= CSR PROJECTS MODAL ========= -->
+<div class="modal" id="csrProjectsModal" aria-hidden="true" style="z-index:1300;">
+  <div class="modalCard csrModalCard" role="dialog" aria-modal="true" aria-label="CSR Projekty">
+    <div class="modalHead">
+      <b id="csrProjectsTitle">Projekty od CSR</b>
+      <button class="xBtn" id="closeCsrProjectsModal" type="button" aria-label="Close">×</button>
+    </div>
+
+    <div class="csrModalBody">
+      <!-- VIEW 1: grid -->
+      <div class="csrView csrGridView" id="csrProjectsGridView">
+        <div class="csrProjectGrid" id="csrProjectGrid"></div>
+      </div>
+
+      <!-- VIEW 2: detail -->
+      <div class="csrView csrDetailView" id="csrProjectDetailView" style="display:none;">
+        <button class="btn secondary csrBackBtn" id="csrBackToProjects" type="button">← Späť na projekty</button>
+
+        <div class="csrDetailHero">
+          <div class="csrHeroImgWrap">
+            <img id="csrDetailHeroImg" src="" alt="Projekt CSR">
+          </div>
+
+          <div class="csrHeroText">
+            <div class="pill" style="margin-bottom:10px;"><span class="dot"></span>Projekt</div>
+            <h2 id="csrDetailTitle" class="csrH2">—</h2>
+            <p id="csrDetailDesc" class="csrP">—</p>
+          </div>
+        </div>
+
+        <div class="csrDetailSection">
+          <div class="csrSectionHead">
+            <div class="csrSectionTitle">Fotky projektu</div>
+          </div>
+          <div class="csrPhotoRow" id="csrDetailPhotos"></div>
+        </div>
+
+        <div class="csrDetailSection">
+          <div class="csrSectionHead">
+            <div class="csrSectionTitle">Použité produkty</div>
+            <div class="miniStat" id="csrPartsCount">—</div>
+          </div>
+          <div class="csrPartsGrid" id="csrDetailParts"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========= CSR GALLERY MODAL (simple grid + lightbox reuse) ========= -->
+<div class="modal" id="csrGalleryModal" aria-hidden="true" style="z-index:1300;">
+  <div class="modalCard csrModalCard" role="dialog" aria-modal="true" aria-label="CSR Galéria">
+    <div class="modalHead">
+      <b>Galéria CSR</b>
+      <button class="xBtn" id="closeCsrGalleryModal" type="button" aria-label="Close">×</button>
+    </div>
+
+    <div class="csrModalBody">
+      <div class="csrGalleryGrid" id="csrGalleryGrid"></div>
+      <div class="csrGalleryNote">Tip: klikni na fotku pre zväčšenie.</div>
+    </div>
+  </div>
+</div>
+
 
   <footer id="kontakt" style="border-top:1px solid rgba(255,255,255,0.08); padding:40px 0;">
     <div class="wrap" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center;">
@@ -3193,6 +3530,288 @@ const v = vars.length ? vars[activeVariantIndex] : null;
     await loadManifest();
     await loadFeaturedProducts();
   })();
+
+  // ================================
+// CSR PROJECTS + CSR GALLERY POPUPS
+// ================================
+
+// 1) Sem si doplň reálne assety
+const CSR_PROJECTS = [
+  {
+    id: "p1",
+    car: "BMW M4 G82",
+    title: "BMW M4 G82 — Aero balík CSR",
+    cover: "assets/csr-projects/m4g82/cover.webp",
+    desc: "Kompletné aero: predné lipo, prahy, zadný difúzor a spojler. Cieľ: čistý agresívny look bez prehnaného gýču.",
+    photos: [
+      "assets/csr-projects/m4g82/1.webp",
+      "assets/csr-projects/m4g82/2.webp",
+      "assets/csr-projects/m4g82/3.webp",
+      "assets/csr-projects/m4g82/4.webp"
+    ],
+    // prepojenie na produkty z tvojich JSON:
+    // odporúčam dávať sem ID (artikelnummer) z JSONu -> rýchle a presné.
+    productIds: ["123456", "123457", "123458"]
+  },
+  {
+    id: "p2",
+    car: "Audi RS3 8Y",
+    title: "Audi RS3 8Y — Street look CSR",
+    cover: "assets/csr-projects/rs3/cover.webp",
+    desc: "Zamerané na predok + zadok, vizuálne rozšírenie a nižší profil.",
+    photos: [
+      "assets/csr-projects/rs3/1.webp",
+      "assets/csr-projects/rs3/2.webp",
+      "assets/csr-projects/rs3/3.webp",
+      "assets/csr-projects/rs3/4.webp"
+    ],
+    productIds: ["223456", "223457"]
+  },
+  {
+    id: "p3",
+    car: "Škoda Octavia RS",
+    title: "Octavia RS — decentný aero upgrade",
+    cover: "assets/csr-projects/octavia/cover.webp",
+    desc: "Decentné lipo + prahy, aby to bolo športové ale stále daily-friendly.",
+    photos: [
+      "assets/csr-projects/octavia/1.webp",
+      "assets/csr-projects/octavia/2.webp",
+      "assets/csr-projects/octavia/3.webp",
+      "assets/csr-projects/octavia/4.webp"
+    ],
+    productIds: ["323456"]
+  },
+  {
+    id: "p4",
+    car: "VW Golf 7 GTI",
+    title: "Golf 7 GTI — komplet exteriér CSR",
+    cover: "assets/csr-projects/golf7/cover.webp",
+    desc: "Komplet exteriér, vizuálne zjednotené prvky, dôraz na pasovanie.",
+    photos: [
+      "assets/csr-projects/golf7/1.webp",
+      "assets/csr-projects/golf7/2.webp",
+      "assets/csr-projects/golf7/3.webp",
+      "assets/csr-projects/golf7/4.webp"
+    ],
+    productIds: ["423456", "423457", "423458", "423459"]
+  }
+];
+
+// Voliteľne: samostatná CSR galéria (nezávislá od projektov)
+const CSR_GALLERY = [
+  "assets/csr-gallery/1.webp",
+  "assets/csr-gallery/2.webp",
+  "assets/csr-gallery/3.webp",
+  "assets/csr-gallery/4.webp",
+  "assets/csr-gallery/5.webp",
+  "assets/csr-gallery/6.webp",
+  "assets/csr-gallery/7.webp",
+  "assets/csr-gallery/8.webp",
+];
+
+// 2) DOM
+const csrProjectsModal = document.getElementById("csrProjectsModal");
+const csrGalleryModal  = document.getElementById("csrGalleryModal");
+
+const openCsrProjectsBtn = document.getElementById("openCsrProjects");
+const openCsrGalleryBtn  = document.getElementById("openCsrGallery");
+const closeCsrProjectsBtn = document.getElementById("closeCsrProjectsModal");
+const closeCsrGalleryBtn  = document.getElementById("closeCsrGalleryModal");
+
+const csrGridView   = document.getElementById("csrProjectsGridView");
+const csrDetailView = document.getElementById("csrProjectDetailView");
+const csrProjectGrid = document.getElementById("csrProjectGrid");
+
+const csrBackBtn = document.getElementById("csrBackToProjects");
+const csrDetailHeroImg = document.getElementById("csrDetailHeroImg");
+const csrDetailTitle = document.getElementById("csrDetailTitle");
+const csrDetailDesc  = document.getElementById("csrDetailDesc");
+const csrDetailPhotos = document.getElementById("csrDetailPhotos");
+const csrDetailParts  = document.getElementById("csrDetailParts");
+const csrPartsCount   = document.getElementById("csrPartsCount");
+
+const csrGalleryGrid = document.getElementById("csrGalleryGrid");
+
+// 3) Helpers - otvorenie/zatvorenie (použijeme tvoje closeModal)
+function openModal(modal){
+  if (!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+}
+function hardCloseModal(modal){
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+}
+
+// 4) Find product by ID (artikelnummer/id) v DATA.products
+function findProductById(id){
+  const target = String(id || "").trim();
+  if (!target) return null;
+
+  // skús rôzne kľúče ktoré v JSONoch používaš
+  return (DATA.products || []).find(p => {
+    const pid =
+      String(p?.id ?? p?.artikelnummer ?? p?.artikelNummer ?? p?.artikelnummer_id ?? "").trim();
+    return pid === target;
+  }) || null;
+}
+
+// 5) Render grid 4 projektov
+function renderCsrProjectsGrid(){
+  if (!csrProjectGrid) return;
+  csrProjectGrid.innerHTML = "";
+
+  CSR_PROJECTS.forEach(proj => {
+    const card = document.createElement("div");
+    card.className = "csrProjectCard";
+    card.innerHTML = `
+      <div class="csrProjectMedia"><img alt="${escapeHtml(proj.title)}"></div>
+      <div class="csrProjectBody">
+        <div class="csrProjectName">${escapeHtml(proj.car)}</div>
+        <div class="csrProjectMeta">${escapeHtml(proj.title)}</div>
+      </div>
+    `;
+
+    const imgEl = card.querySelector("img");
+    setSafeImage(imgEl, proj.cover, null);
+
+    card.addEventListener("click", () => openCsrProjectDetail(proj.id));
+    csrProjectGrid.appendChild(card);
+  });
+}
+
+// 6) Detail view
+function openCsrProjectDetail(projectId){
+  const proj = CSR_PROJECTS.find(x => x.id === projectId);
+  if (!proj) return;
+
+  // prepni view
+  if (csrGridView) csrGridView.style.display = "none";
+  if (csrDetailView) csrDetailView.style.display = "block";
+
+  // hero
+  if (csrDetailTitle) csrDetailTitle.textContent = proj.title || "—";
+  if (csrDetailDesc)  csrDetailDesc.textContent  = proj.desc || "";
+  if (csrDetailHeroImg) setSafeImage(csrDetailHeroImg, proj.cover, null);
+
+  // photos
+  if (csrDetailPhotos){
+    csrDetailPhotos.innerHTML = "";
+    (proj.photos || []).forEach(src => {
+      const tile = document.createElement("div");
+      tile.className = "csrPhoto";
+      tile.innerHTML = `<img alt="foto projektu">`;
+      const im = tile.querySelector("img");
+      setSafeImage(im, src, null);
+
+      // použijeme tvoj existujúci lightbox (galleryModal)
+      tile.addEventListener("click", () => {
+        setSafeImage(gFull, src, gNoImg);
+        galleryModal?.classList.add("show");
+        galleryModal?.setAttribute("aria-hidden","false");
+      });
+
+      csrDetailPhotos.appendChild(tile);
+    });
+  }
+
+  // parts (produkty)
+  const products = (proj.productIds || [])
+    .map(id => findProductById(id))
+    .filter(Boolean);
+
+  if (csrPartsCount) csrPartsCount.textContent = `${products.length} položiek`;
+
+  if (csrDetailParts){
+    csrDetailParts.innerHTML = "";
+
+    if (!products.length){
+      csrDetailParts.innerHTML = `
+        <div class="panel" style="grid-column:1/-1; padding:14px;">
+          <div class="pill"><span class="dot"></span>produkty</div>
+          <p style="margin:10px 0 0;">K tomuto projektu ešte nie sú priradené produkty (doplň <b>productIds</b> podľa ID z JSON).</p>
+        </div>
+      `;
+      return;
+    }
+
+    products.forEach(p => {
+      const c = document.createElement("div");
+      c.className = "csrPartCard";
+
+      const titleShort = p.titleShort || truncateWords(p.title || "", 6);
+      const priceTxt = minPriceEUR(p);
+
+      c.innerHTML = `
+        <div class="csrPartBody">
+          <div class="csrPartTitle">${escapeHtml(titleShort)}</div>
+          <div class="csrPartSub">${escapeHtml(p.makeLabel || "")}${p.model ? " • " + escapeHtml(p.model) : ""}</div>
+          <div class="csrPartFoot">
+            <div class="csrPartPrice">${escapeHtml(priceTxt)}</div>
+            <div class="openHint"><span class="arr">→</span></div>
+          </div>
+        </div>
+      `;
+
+      // klik otvorí tvoj produkt modal
+      c.addEventListener("click", () => openProduct(p));
+      csrDetailParts.appendChild(c);
+    });
+  }
+}
+
+function backToCsrProjects(){
+  if (csrDetailView) csrDetailView.style.display = "none";
+  if (csrGridView) csrGridView.style.display = "block";
+}
+
+// 7) CSR gallery render
+function renderCsrGallery(){
+  if (!csrGalleryGrid) return;
+  csrGalleryGrid.innerHTML = "";
+
+  CSR_GALLERY.forEach(src => {
+    const t = document.createElement("div");
+    t.className = "csrGalleryTile";
+    t.innerHTML = `<img alt="CSR galéria">`;
+    const im = t.querySelector("img");
+    setSafeImage(im, src, null);
+
+    t.addEventListener("click", () => {
+      setSafeImage(gFull, src, gNoImg);
+      galleryModal?.classList.add("show");
+      galleryModal?.setAttribute("aria-hidden","false");
+    });
+
+    csrGalleryGrid.appendChild(t);
+  });
+}
+
+// 8) Events
+openCsrProjectsBtn?.addEventListener("click", () => {
+  renderCsrProjectsGrid();
+  backToCsrProjects();
+  openModal(csrProjectsModal);
+});
+
+openCsrGalleryBtn?.addEventListener("click", () => {
+  renderCsrGallery();
+  openModal(csrGalleryModal);
+});
+
+closeCsrProjectsBtn?.addEventListener("click", () => hardCloseModal(csrProjectsModal));
+closeCsrGalleryBtn?.addEventListener("click", () => hardCloseModal(csrGalleryModal));
+
+csrBackBtn?.addEventListener("click", backToCsrProjects);
+
+csrProjectsModal?.addEventListener("click", (e) => {
+  if (e.target === csrProjectsModal) hardCloseModal(csrProjectsModal);
+});
+csrGalleryModal?.addEventListener("click", (e) => {
+  if (e.target === csrGalleryModal) hardCloseModal(csrGalleryModal);
+});
+
 
   console.log("CSR script loaded OK");
 </script>
