@@ -566,21 +566,25 @@
       transform: translateY(-3px);
     }
     .pMedia{
-      position:relative;
-      height: 220px;
-      overflow:hidden;
-      background: transparent;
-    }
-    .pMedia img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      object-position:center;
-      display:block;
-      pointer-events:none;
-    }
+  position:relative;
+  height: 220px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+
+.pMedia img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit: contain;          /* ✅ bez orezu */
+  object-position:center;
+  padding: 10px;
+  display:block;
+  pointer-events:none;
+}
+
     .pBody{
       padding: 14px 14px 16px;
       display:flex;
@@ -1718,16 +1722,25 @@
   border-radius: 18px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.35);
   height: 240px;
+  display:grid;
+  place-items:center;
+  background:
+  radial-gradient(circle at 20% 20%, rgba(179,31,36,0.14), transparent 55%),
+  rgba(0,0,0,0.35);
+
 }
 
 .csrPhotoBig img{
   width:100%;
   height:100%;
-  object-fit: cover;
+  object-fit: contain;          /* ✅ neoreže */
+  object-position:center;
+  padding: 10px;
   display:block;
 }
+
 
 /* mobil */
 @media (max-width: 720px){
@@ -1757,15 +1770,25 @@
 .csrProjectMedia{
   height: 190px;
   position:relative;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0,0,0,0.35);
+  display:grid;
+  place-items:center;
+  background:
+  radial-gradient(circle at 20% 20%, rgba(179,31,36,0.14), transparent 55%),
+  rgba(0,0,0,0.35);
+
 }
 
 .csrProjectMedia img{
   position:absolute; inset:0;
   width:100%; height:100%;
-  object-fit: cover;
+  object-fit: contain;          /* ✅ neoreže */
+  object-position: center;
+  padding: 10px;                /* ✅ trochu vzduchu */
   display:block;
 }
+
+
 
 .csrProjectBody{
   padding: 14px;
@@ -3613,9 +3636,9 @@ const CSR_PROJECTS = [
     desc: "Projekt vozidla VW Golf 7 R s dielmi od CSR Automotive. Vybrané produkty nižšie sú presne tie, ktoré sa použili na tomto projekte.",
     // 3 fotky do detailu (pod seba)
     photos: [
+      "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp",
       "csr-cars/csr-projects/VW_Golf-7R-Showcar-1.webp",
-      "csr-cars/csr-projects/VW_Golf-7R-Showcar-4.webp",
-      "csr-cars/csr-projects/Golf-7R-Projektfahrzeug-Header-V2.webp"
+      "csr-cars/csr-projects/VW_Golf-7R-Showcar-4.webp"
     ],
     productIds: []
   },
