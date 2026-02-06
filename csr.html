@@ -2724,23 +2724,21 @@
   line-height: 1.25;
   text-align: right;
   max-width: 260px;
-}
 
-.sumRows{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
 
 .sumRow{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.08);
+  padding: 12px 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
 }
+.sumRows{ gap:0; }
+.sumRow:last-child{ border-bottom:none; }
+
 
 .sumRow span{
   opacity: .8;
@@ -3091,6 +3089,14 @@
         <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
   <input type="hidden" id="orderBlob" name="order_blob" value="">
 
+            <!-- hidden polia pre JS (NEVYMAZÁVAŤ) -->
+  <input type="hidden" id="o_manufacturer" name="o_manufacturer" value="">
+  <input type="hidden" id="o_product"       name="o_product" value="">
+  <input type="hidden" id="o_price"         name="o_price" value="">
+  <input type="hidden" id="o_shipping"      name="o_shipping" value="">
+  <input type="hidden" id="o_delivery"      name="o_delivery" value="">
+
+
   <div class="formGrid">
     <div>
       <label for="name">Meno</label>
@@ -3127,7 +3133,7 @@
     <div class="sumCard" id="orderSummary">
   <div class="sumHeader">
     <div class="sumTitle">Sumár objednávky</div>
-    <div class="sumHint" id="shippingHint">Doprava sa vypočíta podľa kategórie produktov</div>
+    <div class="sumHint" id="shippingHint">Doprava od 21€</div>
   </div>
 
   <div class="sumRows">
@@ -3535,7 +3541,8 @@ document.getElementById("cartCheckoutBtn")?.addEventListener("click", ()=>openCh
   return n.toLocaleString("sk-SK", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
 }
 
-const mOrderBtn = $("#mOrderBtn");
+const mOrderBtn = document.getElementById("mOrderBtn");
+mOrderBtn?.addEventListener("click", openOrderModal);
 const mAddToCartBtn = $("#mAddToCartBtn");
 
 mAddToCartBtn?.addEventListener("click", () => {
@@ -4488,11 +4495,6 @@ function updateVariantPrice() {
     setTimeout(() => $("#name")?.focus(), 50);
   }
 
-  if (mOrder) mOrder.addEventListener("click", () => {
-  if (!activeProduct) return;
-  cartAdd(activeProduct, 1);
-  closeModal(productModal);
-});
 
   closeOrderModal?.addEventListener("click", () => closeModal(orderModal));
   cancelSend?.addEventListener("click", () => closeModal(orderModal));
