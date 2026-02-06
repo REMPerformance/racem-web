@@ -2860,6 +2860,166 @@
 .sumRow--total .sumRight{
   font-size: 18px;
 }
+/* ===== RACEM ORDER SUMMARY ===== */
+.sumCard--big{
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.22));
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+}
+
+.sumHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 10px;
+}
+
+.sumTitle{
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #fff;
+}
+
+.sumSub{
+  margin-top: 4px;
+  font-size: 12px;
+  opacity:.72;
+  letter-spacing:.06em;
+}
+
+.sumList{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  margin: 10px 0 12px;
+}
+
+.sumEmpty{
+  padding: 10px 0;
+  opacity: .75;
+  font-size: 13px;
+}
+
+.sumRow{
+  display:flex;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(179,31,36,.14), transparent 55%),
+    rgba(0,0,0,.18);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.sumRow:hover{
+  transform: translateY(-1px);
+  border-color: rgba(179,31,36,.28);
+}
+
+.sumLeft{ min-width:0; }
+.sumTitleRow{
+  display:flex;
+  gap: 10px;
+  align-items:baseline;
+  min-width:0;
+}
+.sumQty{
+  font-weight: 900;
+  letter-spacing:.08em;
+  opacity:.9;
+  white-space:nowrap;
+}
+.sumName{
+  font-weight: 900;
+  letter-spacing:.02em;
+  font-size: 13.5px;
+  color:#fff;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width: 44ch;
+}
+
+.sumMeta{
+  margin-top: 6px;
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.sumPill{
+  display:inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  font-size: 11px;
+  letter-spacing:.08em;
+  text-transform: uppercase;
+  opacity:.92;
+}
+
+.sumSku{
+  font-size: 11px;
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  opacity:.62;
+}
+
+.sumRight{
+  text-align:right;
+  white-space:nowrap;
+}
+.sumPrice{
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing:.06em;
+}
+.sumUnit{
+  margin-top: 6px;
+  font-size: 11.5px;
+  opacity:.65;
+  letter-spacing:.08em;
+}
+
+.sumDivider{
+  height:1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+  margin: 12px 0;
+}
+
+.sumLine{
+  display:flex;
+  justify-content:space-between;
+  gap: 14px;
+  padding: 8px 2px;
+  font-size: 12.5px;
+  letter-spacing:.08em;
+  opacity:.86;
+}
+.sumLine b{
+  opacity: 1;
+  color:#fff;
+  letter-spacing:.06em;
+}
+.sumLine--total{
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top:1px solid rgba(255,255,255,.10);
+  font-size: 13px;
+  opacity: 1;
+}
+.sumLine--total b{
+  color: #fff;
+  text-shadow: 0 0 18px rgba(179,31,36,.28);
+}
 
   </style>
 </head>
@@ -3255,25 +3415,21 @@
   <div class="sumDivider"></div>
 
   <!-- doprava ako položka, nezapočítaná -->
-  <div class="sumRow sumRow--shipping">
-    <div class="sumLeft">
-      <div class="sumLabel">Doprava</div>
-      <div class="sumMeta">Cena podľa kategórie / dopravcu</div>
-    </div>
-    <div class="sumRight" id="sumShipping">od 21 €</div>
-  </div>
-
-  <div class="sumDivider"></div>
-
-  <!-- medzisúčet -->
-  <div class="sumRow sumRow--total">
-    <div class="sumLeft">
-      <div class="sumLabel">Medzisúčet</div>
-      <div class="sumMeta">Bez dopravy</div>
-    </div>
-    <div class="sumRight" id="sumSubtotal">—</div>
-  </div>
+<div class="sumLine">
+  <span>Medzisúčet</span>
+  <b id="sumSubtotal">—</b>
 </div>
+
+<div class="sumLine">
+  <span>Doprava</span>
+  <b id="sumShipping">od 21 €</b>
+</div>
+
+<div class="sumLine sumLine--total">
+  <span>Spolu (bez dopravy)</span>
+  <b id="sumTotal">—</b>
+</div>
+
 
 
     <div class="consent">
@@ -3688,6 +3844,7 @@ mOrderBtn?.addEventListener("click", () => {
 // ================================
 const SHIPPING_TEXT_CARD   = "Doprava: od 21 €";
 const SHIPPING_TEXT_DETAIL = "Doprava: od 21 € (upresníme po potvrdení objednávky)";
+  const SHIPPING_FIXED = "od 21 €";
 const SHIPPING_TEXT_FORM   = "od 21 € (upresníme po potvrdení objednávky)";
 
   // ================================
@@ -4679,74 +4836,84 @@ function updateVariantPrice() {
   const list = document.getElementById("orderItemsUI");
   const sumSubtotalEl = document.getElementById("sumSubtotal");
   const sumShippingEl = document.getElementById("sumShipping");
+  const sumTotalEl    = document.getElementById("sumTotal"); // (ak nemáš, pridaj v HTML – nižšie)
 
   if (!list) return;
 
-  // Doprava ako text (nezapočítavať do medzisúčtu)
-  if (sumShippingEl) sumShippingEl.textContent = (typeof SHIPPING_TEXT_FORM === "string" && SHIPPING_TEXT_FORM.trim())
-    ? SHIPPING_TEXT_FORM
-    : "od 21 €";
+  // ✅ Doprava natvrdo
+  if (sumShippingEl) sumShippingEl.textContent = SHIPPING_FIXED;
 
-  // ak je košík prázdny, zobraz “single produkt” (napr. keď klikne OBJEDNAŤ v detaile)
-  const items = (Array.isArray(CART) && CART.length) ? CART : (activeProduct ? [{
-    qty: 1,
-    title: activeProduct.title || "",
-    make: activeProduct.makeLabel || "",
-    model: activeProduct.model || "",
-    price: getBestPriceEUR(activeProduct),
-    img: activeProduct.image || (Array.isArray(activeProduct.images) ? activeProduct.images[0] : "")
-  }] : []);
+  // items: košík alebo single produkt
+  const items = (Array.isArray(CART) && CART.length)
+    ? CART
+    : (activeProduct ? [{
+        qty: 1,
+        title: activeProduct.title || "",
+        make: activeProduct.makeLabel || "",
+        model: activeProduct.model || "",
+        sku: activeProduct.sku || activeProduct.id || "",
+        price: getBestPriceEUR(activeProduct),
+        img: activeProduct.image || (Array.isArray(activeProduct.images) ? activeProduct.images[0] : "")
+      }] : []);
 
   if (!items.length){
-    list.innerHTML = `<div style="opacity:.75">Košík je prázdny.</div>`;
+    list.innerHTML = `<div class="sumEmpty">Košík je prázdny.</div>`;
     if (sumSubtotalEl) sumSubtotalEl.textContent = "—";
+    if (sumTotalEl) sumTotalEl.textContent = "—";
     return;
   }
 
-  // vyrenderuj položky
-  list.innerHTML = "";
   let subtotal = 0;
 
-  items.forEach(item=>{
-    const qty = Number(item.qty || 0);
-    const title = item.title || "Produkt";
-    const make = item.make || "";
-    const model = item.model || "";
-    const sku = item.sku || "";
+  list.innerHTML = "";
+  items.forEach(item => {
+    const qty = Math.max(1, Number(item.qty || 1));
+    const title = String(item.title || "Produkt");
+    const make = String(item.make || "");
+    const model = String(item.model || "");
+    const sku = String(item.sku || "").trim();
 
-    const unit = (typeof item.price === "number") ? item.price : Number(item.price || 0);
-    const lineTotal = unit * qty;
-    subtotal += lineTotal;
+    const unit = (typeof item.price === "number" && Number.isFinite(item.price)) ? item.price : null;
+    const lineTotal = (unit !== null) ? unit * qty : null;
+    if (lineTotal !== null) subtotal += lineTotal;
 
-    const metaParts = [];
-    if (make || model) metaParts.push(`${make}${make && model ? " • " : ""}${model}`);
-    if (sku) metaParts.push(`SKU: ${sku}`);
-    metaParts.push(`Ks: ${qty}`);
+    const meta = [make, model].filter(Boolean).join(" • ");
 
     const row = document.createElement("div");
-    row.className = "sumItem";
+    row.className = "sumRow";
     row.innerHTML = `
-      <div>
-        <div class="sumItemTitle">${escapeHtml(title)}</div>
-        <div class="sumItemMeta">${escapeHtml(metaParts.join(" — "))}</div>
+      <div class="sumLeft">
+        <div class="sumTitleRow">
+          <span class="sumQty">${qty}×</span>
+          <span class="sumName">${escapeHtml(title)}</span>
+        </div>
+        <div class="sumMeta">
+          ${meta ? `<span class="sumPill">${escapeHtml(meta)}</span>` : ""}
+          ${sku ? `<span class="sumSku">SKU: ${escapeHtml(String(sku).replace(/^CSR-/i,""))}</span>` : ""}
+        </div>
       </div>
-      <div class="sumItemPrice">${fmtEUR(lineTotal)}</div>
+      <div class="sumRight">
+        <div class="sumPrice">${lineTotal !== null ? fmtEUR(lineTotal) : PRICE_ON_REQUEST}</div>
+        ${unit !== null ? `<div class="sumUnit">${fmtEUR(unit)} / ks</div>` : `<div class="sumUnit">—</div>`}
+      </div>
     `;
     list.appendChild(row);
   });
 
-  // medzisúčet (len produkty)
   if (sumSubtotalEl) sumSubtotalEl.textContent = fmtEUR(subtotal);
 
-  // hidden polia do formu (aby odoslanie sedelo)
+  // ✅ total = len produkty (dopravu nezapočítavame, lebo je "od 21€")
+  if (sumTotalEl) sumTotalEl.textContent = fmtEUR(subtotal);
+
+  // hidden polia pre form (drž to konzistentné)
   const o_product  = document.getElementById("o_product");
   const o_price    = document.getElementById("o_price");
   const o_shipping = document.getElementById("o_shipping");
   const o_delivery = document.getElementById("o_delivery");
 
-  if (o_product)  o_product.value  = (typeof getCartBlobText === "function") ? getCartBlobText(items) : JSON.stringify(items);
+  if (o_product)  o_product.value  = items.map(x => `${x.qty}× ${x.title}`).join(" | ");
   if (o_price)    o_price.value    = fmtEUR(subtotal);
-  if (o_shipping) o_shipping.value = (sumShippingEl ? sumShippingEl.textContent : "od 21 €");
+  if (o_shipping) o_shipping.value = SHIPPING_FIXED;
   if (o_delivery) o_delivery.value = "Upresníme po objednávke";
 }
 
