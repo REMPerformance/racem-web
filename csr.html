@@ -2430,6 +2430,116 @@
   }
 }
 
+/* =========================
+   KARTA HOVER (len karta)
+========================= */
+.productCard{
+  transition: all .25s ease;
+}
+
+.productCard:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* zrušíme aby sa buttony farbili spolu s kartou */
+.productCard:hover button{
+  background:unset;
+  border-color:unset;
+  color:unset;
+}
+
+
+/* =========================
+   BUTTON WRAP
+========================= */
+.pBottom{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+/* cena blok nech je hore */
+.pBottom > div{
+  width:100%;
+}
+
+
+/* =========================
+   BASE BUTTON STYLE
+========================= */
+.detailBtn,
+.detailBtnn{
+  flex:1;
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:all .18s ease;
+  border:1px solid transparent;
+  background:#0b0b0b;
+  color:#fff;
+}
+
+/* nech sú menšie */
+.detailBtn,
+.detailBtnn{
+  height:36px;
+}
+
+
+/* =========================
+   DETAIL BUTTON (červený)
+========================= */
+.detailBtn{
+  background:#b31f24;
+  border:1px solid #b31f24;
+  color:#fff;
+}
+
+.detailBtn:hover{
+  background:#d92b31;
+  border-color:#d92b31;
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(179,31,36,.45);
+}
+
+
+/* =========================
+   ADD TO CART BUTTON (iný štýl)
+========================= */
+.detailBtnn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.18);
+  color:#fff;
+}
+
+/* zvýraznenie až keď hover naň */
+.detailBtnn:hover{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(255,255,255,.25);
+}
+
+
+/* =========================
+   šípky jemnejšie
+========================= */
+.detailBtn .arr,
+.detailBtnn .arr{
+  font-size:12px;
+  opacity:.7;
+}
+
+    
   </style>
 </head>
 
