@@ -2365,6 +2365,45 @@
   .cartTotal{ text-align:left; }
 }
 
+    /* aby sa nič na karte "neodrezávalo" */
+.product-card,
+.card,
+.product {
+  overflow: visible !important;
+}
+
+/* spodná časť s tlačidlami */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+
+  /* kľúčové: keď je málo miesta, nech sa nezmiznú, ale zalomia */
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+/* tlačidlá na karte – 2 vedľa seba, ak sa dá */
+.card-actions .btn {
+  flex: 1 1 160px;      /* min šírka tlačidla, potom sa zalomí */
+  min-width: 160px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;  /* nech sa text neláme divne */
+}
+
+/* ak chceš na mobile radšej pod seba */
+@media (max-width: 520px) {
+  .card-actions .btn {
+    flex: 1 1 100%;
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 
   </style>
 </head>
