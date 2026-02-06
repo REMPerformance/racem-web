@@ -4413,14 +4413,36 @@ function updateVariantPrice() {
   const consent = $("#consent");
   const sendBtn = $("#sendBtn");
 
-  function openOrderModal() {
-    closeModal(productModal);
-    if (!orderModal) return;
+ function openOrderModal() {
+  closeModal(productModal);
+  if (!orderModal) return;
 
-    $("#customer_note") && ($("#customer_note").value = "");
-    if (consent) consent.checked = false;
-    if (sendBtn) sendBtn.disabled = true;
+  // reset form state
+  $("#customer_note") && ($("#customer_note").value = "");
+  if (consent) consent.checked = false;
+  if (sendBtn) sendBtn.disabled = true;
 
+  // ✅ ak je košík plný, sumár berieme z košíka
+  if (CART.length) {
+    const lines = CART.map(x => {
+      const priceTxt = (typeof x.price === "number") ? fmtEUR(x.price) : PRICE_ON_REQUEST;
+      return `${x.qty}× ${x.title} (${priceTxt})`;
+    });
+
+    $("#o_manufacturer").value = "Mix (viac produktov)";
+    $("#o_product").value = lines.join(" | ");
+    $("#o_price").value = fmtEUR(cartTotal());
+    $("#o_shipping").value = SHIPPING_TEXT_FORM;
+    $("#o_delivery").value = "Upresníme po objednávke";
+  } else {
+    // ✅ single produkt (keď klikne OBJEDNAŤ v detaile)
+    // updateVariantPrice() už nastavuje o_* pre activeProduct, necháme to tak
+  }
+
+  // ✅ vykresli položky do sumáru UI
+  renderOrderSummaryUI();
+
+   
     buildOrderBlob();
     orderModal.classList.add("show");
     orderModal.setAttribute("aria-hidden", "false");
@@ -4478,7 +4500,8 @@ function updateVariantPrice() {
   $("#customer_note") && ($("#customer_note").value = "");
   if (consent) consent.checked = false;
   if (sendBtn) sendBtn.disabled = true;
-
+    
+  renderOrderSummaryUI();
   buildOrderBlob(); // zoberie hodnoty z o_* a dá ich do hidden blobu
   orderModal.classList.add("show");
   orderModal.setAttribute("aria-hidden", "false");
