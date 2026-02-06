@@ -2604,20 +2604,81 @@
 /* ===== LAYOUT ===== */
 .pBottom{
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
+  flex-direction:column;
+  gap:6px;
+  margin-top:8px;
 }
 
-.pBottom > div{
+/* ===== DETAIL BUTTON ===== */
+.detailFX{
+  position:relative;
+  height:34px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font-family:Oxanium, Arial;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding-left:2px;
+  overflow:hidden;
+}
+
+/* základ text (šedý stroke) */
+.detailFX .actual{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.45);
+}
+
+/* červený hover text */
+.detailFX .hover{
+  position:absolute;
+  left:0;
+  top:0;
+  height:100%;
+  width:0%;
+  overflow:hidden;
+  white-space:nowrap;
+  color:#b31f24;
+  border-right:3px solid #b31f24;
+  transition:width .35s ease;
+  -webkit-text-stroke:1px #b31f24;
+  display:flex;
+  align-items:center;
+}
+
+/* hover efekt */
+.detailFX:hover .hover{
   width:100%;
 }
 
-/* tlačidlá vedľa seba */
-.detailFX,
-.detailBtnn{
-  flex:1;
-  min-width:0;
+/* jemný glow */
+.detailFX:hover{
+  filter:drop-shadow(0 0 6px rgba(179,31,36,.6));
 }
+
+
+/* ===== KOŠÍK BUTTON ===== */
+.cartBtn{
+  height:36px;
+  border-radius:10px;
+  background:#0b0b0b;
+  border:1px solid rgba(255,255,255,0.18);
+  color:#fff;
+  font-size:13px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.cartBtn:hover{
+  background:#b31f24;
+  border-color:#b31f24;
+  box-shadow:0 6px 18px rgba(179,31,36,.35);
+}
+
 
     
   </style>
@@ -3943,8 +4004,8 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
   </div>
 
   <button class="detailFX" data-text="DETAIL">
-  <span class="actual-text">&nbsp;DETAIL&nbsp;</span>
-  <span aria-hidden="true" class="hover-text">&nbsp;DETAIL&nbsp;</span>
+  <span class="actual">DETAIL</span>
+  <span class="hover">DETAIL</span>
 </button>
 
   <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
