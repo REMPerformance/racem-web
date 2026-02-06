@@ -3810,6 +3810,18 @@ function showFeaturedFromPool(count = FEATURED_COUNT){
   setActiveMakeButton("");
 }
 
+function showFeaturedFromPool(n = FEATURED_COUNT){
+  featuredSample = featuredPool.length ? pickRandom(featuredPool, n) : [];
+
+  currentMakeFile = "";
+  currentMakeLabel = "";
+  renderLimit = PAGE_SIZE;
+
+  applyDataProducts(featuredSample);
+  buildMakeButtons();
+  setActiveMakeButton("");
+}
+
 async function loadFeaturedProducts() {
   showLoading("Načítavam výber produktov…");
   try {
@@ -3822,18 +3834,18 @@ async function loadFeaturedProducts() {
         const res = await fetch(JSON_BASE + m.file, { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const json = await res.json();
-        return normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
+        const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
+        return list;
       })
     );
 
     featuredPool = [];
     results.forEach(r => {
-      if (r.status === "fulfilled" && Array.isArray(r.value)) {
-        featuredPool = featuredPool.concat(r.value);
-      }
+      if (r.status === "fulfilled" && Array.isArray(r.value)) featuredPool = featuredPool.concat(r.value);
     });
 
     showFeaturedFromPool(FEATURED_COUNT);
+
   } catch (err) {
     console.error("Featured load failed:", err);
     featuredPool = [];
@@ -3843,7 +3855,6 @@ async function loadFeaturedProducts() {
     hideLoading();
   }
 }
-
 
 
       featuredSample = featuredPool.length ? pickRandom(featuredPool, FEATURED_COUNT) : [];
@@ -5411,6 +5422,37 @@ function hideLoading(){
 
 
 console.log("CSR script loaded OK");
+
+
+  async function init(){
+  await loadManifest();         // naplní MAKE_MAP + buttony
+  await loadFeaturedProducts(); // zobrazí výber 20 produktov
+
+  // filtre
+  $("#q")?.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
+  $("#model")?.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
+  $("#resetFilters")?.addEventListener("click", () => {
+    $("#q").value = "";
+    $("#model").value = "";
+    renderLimit = PAGE_SIZE;
+    renderProducts();
+  });
+
+  // CSR projekty modal (aspoň open/close – ak máš ďalšiu logiku nižšie, nechaj)
+  const openBtn = document.getElementById("openCsrProjects");
+  const modal = document.getElementById("csrProjectsModal");
+  const closeBtn = document.getElementById("closeCsrProjectsModal");
+  openBtn?.addEventListener("click", () => {
+    modal?.classList.add("show");
+    modal?.setAttribute("aria-hidden","false");
+  });
+  closeBtn?.addEventListener("click", () => closeModal(modal));
+  modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(modal); });
+
+  renderCart(); // nech nabehne košík UI ak niečo bolo v localStorage
+}
+
+window.addEventListener("load", init);
 
 </script>
 
