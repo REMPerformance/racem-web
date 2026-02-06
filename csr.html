@@ -3798,6 +3798,18 @@ function getJsonPriceEUR(p, variant) {
     renderProducts();
   }
 
+function showFeaturedFromPool(count = FEATURED_COUNT){
+  featuredSample = featuredPool.length ? pickRandom(featuredPool, count) : [];
+
+  currentMakeFile = "";
+  currentMakeLabel = "";
+  renderLimit = PAGE_SIZE;
+
+  applyDataProducts(featuredSample);
+  buildMakeButtons();
+  setActiveMakeButton("");
+}
+
 async function loadFeaturedProducts() {
   showLoading("Načítavam výber produktov…");
   try {
@@ -3810,26 +3822,28 @@ async function loadFeaturedProducts() {
         const res = await fetch(JSON_BASE + m.file, { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const json = await res.json();
-        const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
-        return list;
+        return normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
       })
     );
 
     featuredPool = [];
     results.forEach(r => {
-      if (r.status === "fulfilled" && Array.isArray(r.value)) featuredPool = featuredPool.concat(r.value);
+      if (r.status === "fulfilled" && Array.isArray(r.value)) {
+        featuredPool = featuredPool.concat(r.value);
+      }
     });
 
-    // ✅ tu: vyber náhodných 20 a zobraz ich
-    showFeaturedFromPool(20); // alebo koľko chceš
-
-  } catch (e) {
-    console.error(e);
-    // voliteľne: nejaká hláška do gridu
+    showFeaturedFromPool(FEATURED_COUNT);
+  } catch (err) {
+    console.error("Featured load failed:", err);
+    featuredPool = [];
+    featuredSample = [];
+    applyDataProducts([]);
   } finally {
     hideLoading();
   }
 }
+
 
 
       featuredSample = featuredPool.length ? pickRandom(featuredPool, FEATURED_COUNT) : [];
@@ -4028,7 +4042,7 @@ function withLoading(ms = 450) {
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
- <button class="animated-button" onclick="openProduct('${p.id}')">
+ <button class="animated-button" data-detail type="button">
   <svg viewBox="0 0 24 24" class="arr-2">
     <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
   </svg>
@@ -4060,6 +4074,13 @@ if (addBtn) addBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         openProduct(p);
       });
+
+      const detailBtn2 = card.querySelector('[data-detail]');
+if (detailBtn2) detailBtn2.addEventListener("click", (e) => {
+  e.stopPropagation();
+  openProduct(p);
+});
+
 
       const imgEl = card.querySelector(".pMedia img");
       setSafeImage(imgEl, imgSrc, null);
