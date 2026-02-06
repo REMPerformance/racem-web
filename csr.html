@@ -1261,43 +1261,15 @@
   white-space:nowrap;
 }
 
-.detailBtn{
-  border:none;
-  cursor:pointer;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(0,0,0,0.35);
-  border:1px solid rgba(255,255,255,0.14);
-  color:#fff;
-  font-family: var(--font);
-  font-size: 13px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-  box-shadow: 0 16px 46px rgba(0,0,0,0.40);
-}
 
-.detailBtn .arr{
-  width: 30px;
-  height: 30px;
-  border-radius: 12px;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
 
-.pCard:hover .detailBtn{
+.pCard:hover{
   transform: translateY(-1px);
   border-color: rgba(179,31,36,0.42);
   background: rgba(179,31,36,0.14);
 }
 
-.pCard:hover .detailBtn .arr{
+.pCard:hover .arr{
   transform: translateX(3px);
   border-color: rgba(179,31,36,0.35);
   background: rgba(179,31,36,0.12);
@@ -2537,6 +2509,82 @@
 .detailBtnn .arr{
   font-size:12px;
   opacity:.7;
+}
+/* === RACEM DETAIL BUTTON === */
+.animated-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 4px;
+  width:100%;
+  padding: 12px 18px;
+  border: 3px solid transparent;
+  font-size: 13px;
+  background: transparent;
+  border-radius: 100px;
+  font-weight: 700;
+  letter-spacing:.5px;
+  color: #b31f24;
+  box-shadow: 0 0 0 2px #b31f24;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .5s cubic-bezier(.23,1,.32,1);
+}
+
+.animated-button svg{
+  position:absolute;
+  width:20px;
+  fill:#b31f24;
+  z-index:9;
+  transition: all .6s cubic-bezier(.23,1,.32,1);
+}
+
+.animated-button .arr-1{ right:16px; }
+.animated-button .arr-2{ left:-25%; }
+
+.animated-button .circle{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:20px;
+  height:20px;
+  background:#b31f24;
+  border-radius:50%;
+  opacity:0;
+  transition: all .6s cubic-bezier(.23,1,.32,1);
+}
+
+.animated-button .text{
+  position:relative;
+  z-index:1;
+  transform:translateX(-8px);
+  transition: all .6s cubic-bezier(.23,1,.32,1);
+}
+
+.animated-button:hover{
+  color:#111;
+  border-radius:14px;
+  box-shadow:0 0 0 10px transparent;
+}
+
+.animated-button:hover .arr-1{ right:-25%; }
+.animated-button:hover .arr-2{ left:16px; }
+
+.animated-button:hover .text{ transform:translateX(10px); }
+
+.animated-button:hover svg{ fill:#111; }
+
+.animated-button:hover .circle{
+  width:260px;
+  height:260px;
+  opacity:1;
+}
+
+.animated-button:active{
+  transform:scale(.95);
+  box-shadow:0 0 0 4px #b31f24;
 }
 
     
@@ -3862,9 +3910,19 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
-  <button class="detailBtn" type="button" aria-label="Detail produktu">
-    Detail <span class="arr">→</span>
-  </button>
+ <button class="animated-button" onclick="openProduct('${p.id}')">
+  <svg viewBox="0 0 24 24" class="arr-2">
+    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+  </svg>
+
+  <span class="text">DETAIL</span>
+  <span class="circle"></span>
+
+  <svg viewBox="0 0 24 24" class="arr-1">
+    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
+  </svg>
+</button>
+
   <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
   Do košíka <span class="arr">＋</span>
 </button>
