@@ -2694,6 +2694,63 @@
 @media(max-width:900px){
   .footerGrid{ grid-template-columns:1fr; }
 }
+.sumCard{
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 16px;
+  padding: 14px 14px 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+.sumHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.sumTitle{
+  font-weight: 800;
+  letter-spacing: .3px;
+  font-size: 14px;
+  text-transform: uppercase;
+  opacity: .95;
+}
+
+.sumHint{
+  font-size: 12px;
+  opacity: .65;
+  line-height: 1.25;
+  text-align: right;
+  max-width: 260px;
+}
+
+.sumRows{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.sumRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.sumRow span{
+  opacity: .8;
+  font-size: 13px;
+}
+
+.sumRow strong{
+  font-size: 14px;
+  letter-spacing:.2px;
+}
 
   </style>
 </head>
@@ -3067,43 +3124,25 @@
 
     <div class="orderDivider full"></div>
 
-    <div class="orderSummary">
-      <div class="orderSummaryHead">
-        <b>Sumár objednávky</b>
-        <div class="mini">automaticky vyplnené</div>
-      </div>
+    <div class="sumCard" id="orderSummary">
+  <div class="sumHeader">
+    <div class="sumTitle">Sumár objednávky</div>
+    <div class="sumHint" id="shippingHint">Doprava sa vypočíta podľa kategórie produktov</div>
+  </div>
 
-      <div class="orderSummaryGrid">
-        <div class="roField full">
-          <label>Položky v košíku</label>
-          <div id="orderItemsUI" style="
-            border:1px solid rgba(255,255,255,0.12);
-            background: rgba(0,0,0,0.28);
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-          "></div>
-        </div>
-
-        <div class="roField">
-          <label>Spolu</label>
-          <input id="o_price" name="price" readonly>
-        </div>
-
-        <div class="roField">
-          <label>Doprava</label>
-          <input id="o_shipping" name="shipping" readonly>
-        </div>
-
-        <div class="roField full">
-          <label>Dodanie</label>
-          <input id="o_delivery" name="delivery" readonly>
-        </div>
-
-        <input type="hidden" id="o_manufacturer" name="manufacturer" value="">
-        <input type="hidden" id="o_product" name="product" value="">
-      </div>
+  <div class="sumRows">
+    <div class="sumRow">
+      <span>Medzisúčet</span>
+      <strong id="sumSubtotal">0,00 €</strong>
     </div>
+
+    <div class="sumRow">
+      <span>Doprava</span>
+      <strong id="sumShipping">0,00 €</strong>
+    </div>
+  </div>
+</div>
+
 
     <div class="consent">
       <input id="consent" name="consent" type="checkbox" required>
