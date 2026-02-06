@@ -2587,7 +2587,114 @@
   box-shadow:0 0 0 4px #b31f24;
 }
 
-    
+    /* ===== FOOTER ===== */
+.siteFooter{
+  margin-top:80px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.35);
+  padding: 50px 0 30px;
+}
+
+.footerGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:40px;
+}
+
+.footerTitle{
+  font-family: var(--font);
+  letter-spacing:.18em;
+  text-transform: uppercase;
+  color:#fff;
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+.footerText{
+  color: rgba(255,255,255,0.72);
+  line-height:1.7;
+  font-size:14px;
+  margin-bottom:14px;
+}
+
+.footerLinks{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.footerLinks a{
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,0.72);
+  border:1px solid rgba(255,255,255,0.14);
+  padding:8px 10px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.footerLinks a:hover{
+  color:#fff;
+  border-color: rgba(179,31,36,0.5);
+  background: rgba(179,31,36,0.15);
+}
+
+/* form */
+.footerForm{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.footerForm input,
+.footerForm textarea{
+  width:100%;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.4);
+  padding:10px;
+  color:#fff;
+  font-family: var(--font);
+}
+
+.footerForm textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+.footerForm button{
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  background: linear-gradient(180deg,#b31f24,#7d1418);
+  color:#fff;
+  font-family: var(--font);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.footerForm button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 40px rgba(179,31,36,.3);
+}
+
+.footerBottom{
+  margin-top:40px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:16px;
+  text-align:center;
+  color: rgba(255,255,255,0.55);
+  font-size:13px;
+}
+
+/* mobile */
+@media(max-width:900px){
+  .footerGrid{ grid-template-columns:1fr; }
+}
+
   </style>
 </head>
 
@@ -3077,18 +3184,49 @@
 </div>
 
 
-  <footer id="kontakt" style="border-top:1px solid rgba(255,255,255,0.08); padding:40px 0;">
-    <div class="wrap" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center;">
-      <div style="color:rgba(255,255,255,0.55); font-size:14px;">
-        © 2026 RACEM / REM Performance
+  <footer class="siteFooter">
+  <div class="wrap footerWrap">
+
+    <div class="footerGrid">
+
+      <!-- LEFT -->
+      <div class="footerCol">
+        <div class="footerTitle">RACEM / REM PERFORMANCE</div>
+
+        <div class="footerText">
+          Prevádzkovateľ webu:<br>
+          <b>REM Performance</b><br>
+          Slovensko / EU<br>
+          info@remperformance.sk
+        </div>
+
+        <div class="footerLinks">
+          <a href="/vop.html">VOP</a>
+          <a href="/ochrana-osobnych-udajov.html">Ochrana osobných údajov</a>
+        </div>
       </div>
-      <div style="display:flex; gap:18px; flex-wrap:wrap;">
-        <a href="vop.html">VOP</a>
-        <a href="ochrana-osobnych-udajov.html">Ochrana osobných údajov</a>
-        <a href="kontakt.html">Kontakt</a>
+
+      <!-- RIGHT CONTACT FORM -->
+      <div class="footerCol">
+        <div class="footerTitle">Rýchly kontakt</div>
+
+        <form action="https://formspree.io/f/xkgzdpzg" method="POST" class="footerForm">
+          <input type="text" name="name" placeholder="Meno" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="message" placeholder="Správa..." required></textarea>
+          <button type="submit">Odoslať</button>
+        </form>
       </div>
+
     </div>
-  </footer>
+
+    <div class="footerBottom">
+      © <span id="year"></span> REM Performance
+    </div>
+
+  </div>
+</footer>
+
 
   <div id="loadingOverlay">
     <div class="loadBox">
@@ -5214,7 +5352,7 @@ setHeroInitial().then(() => {
   });
 })();
 
-
+document.getElementById("year").textContent = new Date().getFullYear();
 console.log("CSR script loaded OK");
 
 </script>
