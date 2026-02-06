@@ -4750,42 +4750,6 @@ function updateVariantPrice() {
   if (o_delivery) o_delivery.value = "Upresníme po objednávke";
 }
 
-
-  box.innerHTML = items.map(x=>{
-    const priceTxt = (typeof x.price === "number") ? fmtEUR(x.price) : PRICE_ON_REQUEST;
-    const meta = `${x.make || ""}${x.model ? " • " + x.model : ""}`.trim();
-    return `
-      <div style="display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
-        <div style="min-width:0;">
-          <div style="font-weight:900; letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:#fff;">
-            ${escapeHtml(x.qty)}× ${escapeHtml(x.title)}
-          </div>
-          <div style="opacity:.72; font-size:12.5px; line-height:1.4;">
-            ${escapeHtml(meta)}
-          </div>
-        </div>
-        <div style="white-space:nowrap; font-weight:900;">
-          ${escapeHtml(priceTxt)}
-        </div>
-      </div>
-    `;
-  }).join("") + `
-    <div style="padding-top:10px; display:flex; justify-content:space-between; font-weight:900;">
-      <div style="opacity:.75; letter-spacing:.14em; text-transform:uppercase;">Medzisúčet</div>
-      <div>${fmtEUR(cartTotal() || (typeof getBestPriceEUR(activeProduct)==="number" ? getBestPriceEUR(activeProduct) : 0))}</div>
-    </div>
-  `;
-}
-
-
-  // ✅ listenery bez "cat"
-  ["q", "model"].forEach(id => {
-    const el = $("#" + id);
-    if (!el) return;
-    el.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-    el.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-  });
-
   $("#resetFilters")?.addEventListener("click", () => {
     $("#q").value = "";
     $("#model").value = "";
@@ -5553,7 +5517,6 @@ setHeroInitial().then(() => {
   if (HERO_IMAGES.length > 1) setInterval(heroTick, HERO_INTERVAL);
 });
 
-closeCsrProjectsBtn?.addEventListener("click", closeCsrProjectsModal);
 
 csrProjectsModal?.addEventListener("click", (e) => {
   if (e.target === csrProjectsModal) closeCsrProjectsModal();
