@@ -2538,6 +2538,86 @@
   font-size:12px;
   opacity:.7;
 }
+/* ===== DETAIL FX BUTTON ===== */
+.detailFX{
+  position:relative;
+  border:none;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  font-family:Oxanium, Arial;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-size:13px;
+  height:36px;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* text base */
+.detailFX .actual-text{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.7);
+}
+
+/* hover overlay */
+.detailFX .hover-text{
+  position:absolute;
+  inset:0;
+  width:0%;
+  overflow:hidden;
+  color:#b31f24;
+  border-right:4px solid #b31f24;
+  transition:0.45s ease;
+  white-space:nowrap;
+  -webkit-text-stroke:1px #b31f24;
+}
+
+/* hover efekt */
+.detailFX:hover .hover-text{
+  width:100%;
+  filter:drop-shadow(0 0 8px rgba(179,31,36,.7));
+}
+
+
+/* ===== KOŠÍK BUTTON ===== */
+.detailBtnn{
+  flex:1;
+  height:36px;
+  font-size:13px;
+  border-radius:10px;
+  background:#0b0b0b;
+  border:1px solid rgba(255,255,255,0.18);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.detailBtnn:hover{
+  background:#b31f24;
+  border-color:#b31f24;
+}
+
+
+/* ===== LAYOUT ===== */
+.pBottom{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.pBottom > div{
+  width:100%;
+}
+
+/* tlačidlá vedľa seba */
+.detailFX,
+.detailBtnn{
+  flex:1;
+  min-width:0;
+}
 
     
   </style>
@@ -3862,9 +3942,11 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
-  <button class="detailBtn" type="button" aria-label="Detail produktu">
-    Detail <span class="arr">→</span>
-  </button>
+  <button class="detailFX" data-text="DETAIL">
+  <span class="actual-text">&nbsp;DETAIL&nbsp;</span>
+  <span aria-hidden="true" class="hover-text">&nbsp;DETAIL&nbsp;</span>
+</button>
+
   <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
   Do košíka <span class="arr">＋</span>
 </button>
