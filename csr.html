@@ -2586,99 +2586,6 @@
   transform:scale(.95);
   box-shadow:0 0 0 4px #b31f24;
 }
-/* =========================
-   LOADING OVERLAY (CSR)
-   ========================= */
-.loadingOverlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(6px);
-}
-
-.loadingOverlay.show{
-  display: flex;
-}
-
-.loadingCard{
-  --bg-color: #111;
-  background: rgba(17,17,17,.92);
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: 0 20px 60px rgba(0,0,0,.55);
-  padding: 18px 22px;
-  border-radius: 18px;
-  min-width: 320px;
-  max-width: 92vw;
-}
-
-.loaderLine{
-  color: rgba(255,255,255,.75);
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  box-sizing: content-box;
-  height: 32px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-}
-
-.loadingBase{
-  white-space: nowrap;
-}
-
-.words{
-  overflow: hidden;
-  position: relative;
-  height: 32px;
-  margin-left: 6px;
-}
-
-.words::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(
-    rgba(17,17,17,.92) 10%,
-    transparent 30%,
-    transparent 70%,
-    rgba(17,17,17,.92) 90%
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-
-.word{
-  display:block;
-  height:32px;
-  line-height:32px;
-  padding-left: 6px;
-  color: #b31f24; /* RACEM red */
-  animation: spinWords 2.8s infinite;
-}
-
-@keyframes spinWords{
-  10% { transform: translateY(-102%); }
-  25% { transform: translateY(-100%); }
-  35% { transform: translateY(-202%); }
-  50% { transform: translateY(-200%); }
-  60% { transform: translateY(-302%); }
-  75% { transform: translateY(-300%); }
-  85% { transform: translateY(-402%); }
-  100%{ transform: translateY(-400%); }
-}
-
-.loadingHint{
-  margin-top: 8px;
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size: 13px;
-  color: rgba(255,255,255,.55);
-}
 
     
   </style>
@@ -3798,64 +3705,27 @@ function getJsonPriceEUR(p, variant) {
     renderProducts();
   }
 
-function showFeaturedFromPool(count = FEATURED_COUNT){
-  featuredSample = featuredPool.length ? pickRandom(featuredPool, count) : [];
+  async function loadFeaturedProducts() {
+    showLoading("Načítavam výber produktov…");
+    try {
+      const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
+      const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
+      const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6);
 
-  currentMakeFile = "";
-  currentMakeLabel = "";
-  renderLimit = PAGE_SIZE;
+      const results = await Promise.allSettled(
+        toLoad.map(async (m) => {
+          const res = await fetch(JSON_BASE + m.file, { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const json = await res.json();
+          const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
+          return list;
+        })
+      );
 
-  applyDataProducts(featuredSample);
-  buildMakeButtons();
-  setActiveMakeButton("");
-}
-
-function showFeaturedFromPool(n = FEATURED_COUNT){
-  featuredSample = featuredPool.length ? pickRandom(featuredPool, n) : [];
-
-  currentMakeFile = "";
-  currentMakeLabel = "";
-  renderLimit = PAGE_SIZE;
-
-  applyDataProducts(featuredSample);
-  buildMakeButtons();
-  setActiveMakeButton("");
-}
-
-async function loadFeaturedProducts() {
-  showLoading("Načítavam výber produktov…");
-  try {
-    const preferred = new Set(FEATURED_MAKES_PREFER.map(x => x.toLowerCase()));
-    const inManifest = MAKE_MAP.filter(m => preferred.has(String(m.file).toLowerCase()));
-    const toLoad = inManifest.length ? inManifest : MAKE_MAP.slice(0, 6);
-
-    const results = await Promise.allSettled(
-      toLoad.map(async (m) => {
-        const res = await fetch(JSON_BASE + m.file, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const json = await res.json();
-        const list = normalizeLoadedList(json).map(p => ({ ...p, makeFile: m.file, makeLabel: m.label }));
-        return list;
-      })
-    );
-
-    featuredPool = [];
-    results.forEach(r => {
-      if (r.status === "fulfilled" && Array.isArray(r.value)) featuredPool = featuredPool.concat(r.value);
-    });
-
-    showFeaturedFromPool(FEATURED_COUNT);
-
-  } catch (err) {
-    console.error("Featured load failed:", err);
-    featuredPool = [];
-    featuredSample = [];
-    applyDataProducts([]);
-  } finally {
-    hideLoading();
-  }
-}
-
+      featuredPool = [];
+      results.forEach(r => {
+        if (r.status === "fulfilled" && Array.isArray(r.value)) featuredPool = featuredPool.concat(r.value);
+      });
 
       featuredSample = featuredPool.length ? pickRandom(featuredPool, FEATURED_COUNT) : [];
 
@@ -3944,26 +3814,13 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
       return true;
     });
   }
-function withLoading(ms = 450) {
-  showLoading();
-  return new Promise(resolve => {
-    setTimeout(() => {
-      hideLoading();
-      resolve();
-    }, ms);
-  });
-}
 
- async function renderProducts() {
-
-  // loader na chvíľu pri rerendere (zmena filtrov)
-  await withLoading(450);
-
-  const grid = $("#productGrid");
-  const titleEl = $("#productsTitle");
-  const statEl = $("#stat");
-  const loadMoreBtn = $("#loadMoreBtn");
-  if (!grid) return;
+  function renderProducts() {
+    const grid = $("#productGrid");
+    const titleEl = $("#productsTitle");
+    const statEl = $("#stat");
+    const loadMoreBtn = $("#loadMoreBtn");
+    if (!grid) return;
 
     const makeLabel =
       currentMakeFile
@@ -4053,7 +3910,7 @@ function withLoading(ms = 450) {
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
- <button class="animated-button" data-detail type="button">
+ <button class="animated-button" onclick="openProduct('${p.id}')">
   <svg viewBox="0 0 24 24" class="arr-2">
     <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
   </svg>
@@ -4085,13 +3942,6 @@ if (addBtn) addBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         openProduct(p);
       });
-
-      const detailBtn2 = card.querySelector('[data-detail]');
-if (detailBtn2) detailBtn2.addEventListener("click", (e) => {
-  e.stopPropagation();
-  openProduct(p);
-});
-
 
       const imgEl = card.querySelector(".pMedia img");
       setSafeImage(imgEl, imgSrc, null);
@@ -5364,114 +5214,11 @@ setHeroInitial().then(() => {
   });
 })();
 
-// =========================
-// LOADING OVERLAY HELPERS
-// =========================
-const loadingOverlay = document.getElementById("productsLoadingOverlay");
-
-function showLoading(){
-  if (!loadingOverlay) return;
-  loadingOverlay.classList.add("show");
-  loadingOverlay.setAttribute("aria-hidden", "false");
-}
-
-function hideLoading(){
-  if (!loadingOverlay) return;
-  loadingOverlay.classList.remove("show");
-  loadingOverlay.setAttribute("aria-hidden", "true");
-}
-
-// aby loader neblikol keď je fetch rýchly
-function sleep(ms){ return new Promise(res => setTimeout(res, ms)); }
-
-// wrapper na "load products"
-async function loadProductsWithLoading(reason = ""){
-  const minShow = 350; // min. čas na obrazovke
-  const t0 = performance.now();
-
-  showLoading();
-
-  try{
-    // TU VOLAJ TVOJU FUNKCIU, ktorá reálne načítava a renderuje produkty:
-    // - napr. await loadProducts();
-    // - alebo await loadProducts(selectedManufacturer, selectedModel, ...)
-
-    await loadProducts(); // <-- zmeň podľa tvojho kódu
-
-  } finally{
-    const elapsed = performance.now() - t0;
-    if (elapsed < minShow) await sleep(minShow - elapsed);
-    hideLoading();
-  }
-}
-
-  // ==========================
-// LOADER ON/OFF FUNKCIE
-// ==========================
-const loadingOverlay = document.getElementById("productsLoadingOverlay");
-
-function showLoading(){
-  if (!loadingOverlay) return;
-  loadingOverlay.classList.add("show");
-}
-
-function hideLoading(){
-  if (!loadingOverlay) return;
-  loadingOverlay.classList.remove("show");
-}
-
 
 console.log("CSR script loaded OK");
 
-
-  async function init(){
-  await loadManifest();         // naplní MAKE_MAP + buttony
-  await loadFeaturedProducts(); // zobrazí výber 20 produktov
-
-  // filtre
-  $("#q")?.addEventListener("input", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-  $("#model")?.addEventListener("change", () => { renderLimit = PAGE_SIZE; renderProducts(); });
-  $("#resetFilters")?.addEventListener("click", () => {
-    $("#q").value = "";
-    $("#model").value = "";
-    renderLimit = PAGE_SIZE;
-    renderProducts();
-  });
-
-  // CSR projekty modal (aspoň open/close – ak máš ďalšiu logiku nižšie, nechaj)
-  const openBtn = document.getElementById("openCsrProjects");
-  const modal = document.getElementById("csrProjectsModal");
-  const closeBtn = document.getElementById("closeCsrProjectsModal");
-  openBtn?.addEventListener("click", () => {
-    modal?.classList.add("show");
-    modal?.setAttribute("aria-hidden","false");
-  });
-  closeBtn?.addEventListener("click", () => closeModal(modal));
-  modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(modal); });
-
-  renderCart(); // nech nabehne košík UI ak niečo bolo v localStorage
-}
-
-window.addEventListener("load", init);
-
 </script>
 
-<!-- LOADING OVERLAY -->
-<div id="productsLoadingOverlay" class="loadingOverlay" aria-hidden="true">
-  <div class="loadingCard">
-    <div class="loaderLine">
-      <span class="loadingBase">Načítavam</span>
-      <span class="words" aria-hidden="true">
-        <span class="word">produkty…</span>
-        <span class="word">obrázky…</span>
-        <span class="word">popisy…</span>
-        <span class="word">ceny…</span>
-        <span class="word">produkty…</span>
-      </span>
-    </div>
-    <div class="loadingHint">Prosím počkaj chvíľku.</div>
-  </div>
-</div>
 
 
 </body>
