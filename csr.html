@@ -2538,147 +2538,6 @@
   font-size:12px;
   opacity:.7;
 }
-/* ===== DETAIL FX BUTTON ===== */
-.detailFX{
-  position:relative;
-  border:none;
-  background:transparent;
-  padding:0;
-  cursor:pointer;
-  font-family:Oxanium, Arial;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-size:13px;
-  height:36px;
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* text base */
-.detailFX .actual-text{
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,0.7);
-}
-
-/* hover overlay */
-.detailFX .hover-text{
-  position:absolute;
-  inset:0;
-  width:0%;
-  overflow:hidden;
-  color:#b31f24;
-  border-right:4px solid #b31f24;
-  transition:0.45s ease;
-  white-space:nowrap;
-  -webkit-text-stroke:1px #b31f24;
-}
-
-/* hover efekt */
-.detailFX:hover .hover-text{
-  width:100%;
-  filter:drop-shadow(0 0 8px rgba(179,31,36,.7));
-}
-
-
-/* ===== KOŠÍK BUTTON ===== */
-.detailBtnn{
-  flex:1;
-  height:36px;
-  font-size:13px;
-  border-radius:10px;
-  background:#0b0b0b;
-  border:1px solid rgba(255,255,255,0.18);
-  color:#fff;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.detailBtnn:hover{
-  background:#b31f24;
-  border-color:#b31f24;
-}
-
-
-/* ===== LAYOUT ===== */
-.pBottom{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-top:8px;
-}
-
-/* ===== DETAIL BUTTON ===== */
-.detailFX{
-  position:relative;
-  height:34px;
-  border:none;
-  background:transparent;
-  cursor:pointer;
-  font-family:Oxanium, Arial;
-  font-size:13px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  padding-left:2px;
-  overflow:hidden;
-}
-
-/* základ text (šedý stroke) */
-.detailFX .actual{
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,0.45);
-}
-
-/* červený hover text */
-.detailFX .hover{
-  position:absolute;
-  left:0;
-  top:0;
-  height:100%;
-  width:0%;
-  overflow:hidden;
-  white-space:nowrap;
-  color:#b31f24;
-  border-right:3px solid #b31f24;
-  transition:width .35s ease;
-  -webkit-text-stroke:1px #b31f24;
-  display:flex;
-  align-items:center;
-}
-
-/* hover efekt */
-.detailFX:hover .hover{
-  width:100%;
-}
-
-/* jemný glow */
-.detailFX:hover{
-  filter:drop-shadow(0 0 6px rgba(179,31,36,.6));
-}
-
-
-/* ===== KOŠÍK BUTTON ===== */
-.cartBtn{
-  height:36px;
-  border-radius:10px;
-  background:#0b0b0b;
-  border:1px solid rgba(255,255,255,0.18);
-  color:#fff;
-  font-size:13px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.cartBtn:hover{
-  background:#b31f24;
-  border-color:#b31f24;
-  box-shadow:0 6px 18px rgba(179,31,36,.35);
-}
-
 
     
   </style>
@@ -4003,11 +3862,9 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
-  <button class="detailFX" data-text="DETAIL">
-  <span class="actual">DETAIL</span>
-  <span class="hover">DETAIL</span>
-</button>
-
+  <button class="detailBtn" type="button" aria-label="Detail produktu">
+    Detail <span class="arr">→</span>
+  </button>
   <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
   Do košíka <span class="arr">＋</span>
 </button>
