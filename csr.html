@@ -591,7 +591,7 @@
     }
 
     .modal{
-      position:fixed; inset:0; z-index:9000;
+      position:fixed; inset:0; z-index:99999;
       display:none;
       align-items:center;
       justify-content:center;
@@ -3033,94 +3033,94 @@
         </div>
 
         <form id="orderForm" action="https://formspree.io/f/xnjjqkpd" method="POST">
-          <input type="hidden" id="orderBlob" name="order_blob" value="">
+  <input type="hidden" id="orderBlob" name="order_blob" value="">
 
-          <div class="formGrid">
-            <div>
-              <label for="name">Meno</label>
-              <input id="name" name="name" type="text" required placeholder="Meno">
-            </div>
+  <div class="formGrid">
+    <div>
+      <label for="name">Meno</label>
+      <input id="name" name="name" type="text" required placeholder="Meno">
+    </div>
 
-            <div>
-              <label for="phone">Telefón</label>
-              <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
-            </div>
+    <div>
+      <label for="phone">Telefón</label>
+      <input id="phone" name="phone" type="tel" required placeholder="+421 ...">
+    </div>
 
-            <div>
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" required placeholder="racem@...">
-            </div>
+    <div>
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required placeholder="racem@...">
+    </div>
 
-            <div>
-              <label for="address">Adresa doručenia</label>
-              <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
-            </div>
+    <div>
+      <label for="address">Adresa doručenia</label>
+      <input id="address" name="address" type="text" required placeholder="Adresa doručenia">
+    </div>
 
-            <div class="full">
-              <label for="car">Vozidlo (pre overenie kompatibility)</label>
-              <input id="car" name="car" type="text" placeholder="Napr. Alfa Romeo 147 1.9 JTD 2006">
-            </div>
+    <div class="full">
+      <label for="car">Vozidlo (pre overenie kompatibility)</label>
+      <input id="car" name="car" type="text" placeholder="Napr. Alfa Romeo 147 1.9 JTD 2006">
+    </div>
 
-            <div class="full">
-              <label for="customer_note">Poznámka zákazníka</label>
-              <textarea id="customer_note" name="customer_note" placeholder="Napíš čo je dôležité (rok, facelift, verzia, detail želania)..."></textarea>
-            </div>
+    <div class="full">
+      <label for="customer_note">Poznámka zákazníka</label>
+      <textarea id="customer_note" name="customer_note" placeholder="Napíš čo je dôležité (rok, facelift, verzia, detail želania)..."></textarea>
+    </div>
 
-            <div class="orderDivider full"></div>
+    <div class="orderDivider full"></div>
 
-            <div class="orderSummary">
-              <div class="orderSummaryHead">
-                <b>Sumár objednávky</b>
-                <div class="mini">automaticky vyplnené</div>
-              </div>
+    <div class="orderSummary">
+      <div class="orderSummaryHead">
+        <b>Sumár objednávky</b>
+        <div class="mini">automaticky vyplnené</div>
+      </div>
 
-             <div class="orderSummaryGrid">
-  <div class="roField full">
-    <label>Položky v košíku</label>
-    <div id="orderItemsUI" style="
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.28);
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-    "></div>
+      <div class="orderSummaryGrid">
+        <div class="roField full">
+          <label>Položky v košíku</label>
+          <div id="orderItemsUI" style="
+            border:1px solid rgba(255,255,255,0.12);
+            background: rgba(0,0,0,0.28);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+          "></div>
+        </div>
+
+        <div class="roField">
+          <label>Spolu</label>
+          <input id="o_price" name="price" readonly>
+        </div>
+
+        <div class="roField">
+          <label>Doprava</label>
+          <input id="o_shipping" name="shipping" readonly>
+        </div>
+
+        <div class="roField full">
+          <label>Dodanie</label>
+          <input id="o_delivery" name="delivery" readonly>
+        </div>
+
+        <input type="hidden" id="o_manufacturer" name="manufacturer" value="">
+        <input type="hidden" id="o_product" name="product" value="">
+      </div>
+    </div>
+
+    <div class="consent">
+      <input id="consent" name="consent" type="checkbox" required>
+      <div class="consentText">
+        Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
+        <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
+      </div>
+    </div>
   </div>
 
-  <div class="roField">
-    <label>Spolu</label>
-    <input id="o_price" name="price" readonly>
+  <div class="formActions">
+    <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
+    <button class="btn btnSend" id="sendBtn" type="submit" disabled>Odoslať</button>
   </div>
+</form>
 
-  <div class="roField">
-    <label>Doprava</label>
-    <input id="o_shipping" name="shipping" readonly>
-  </div>
-
-  <div class="roField full">
-    <label>Dodanie</label>
-    <input id="o_delivery" name="delivery" readonly>
-  </div>
-
-  <!-- tieto 2 nechám hidden (ale stále posielaš do formu ak chceš) -->
-  <input type="hidden" id="o_manufacturer" name="manufacturer" value="">
-  <input type="hidden" id="o_product" name="product" value="">
-</div>
-
-
-            <div class="consent">
-              <input id="consent" name="consent" type="checkbox" required>
-              <div class="consentText">
-                Beriem na vedomie, že toto je <b>nezáväzná objednávka</b> a k jej dokončeniu ma bude kontaktovať
-                <b>TEAM RACEM</b> pomocou poskytnutých osobných údajov.
-              </div>
-            </div>
-          </div>
-
-          <div class="formActions">
-            <button class="btn secondary" id="cancelSend" type="button">Zavrieť</button>
-            <button class="btn btnSend" id="sendBtn" type="submit" disabled>Odoslať</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
@@ -4048,20 +4048,18 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
     <div class="shipMini">${escapeHtml(SHIPPING_TEXT_CARD)}</div>
   </div>
 
- <button class="animated-button" onclick="openProduct('${p.id}')">
+ <button class="animated-button" data-detail type="button">
   <svg viewBox="0 0 24 24" class="arr-2">
     <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
   </svg>
-
   <span class="text">DETAIL</span>
   <span class="circle"></span>
-
   <svg viewBox="0 0 24 24" class="arr-1">
     <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/>
   </svg>
 </button>
 
-  <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
+<button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
   Do košíka <span class="arr">＋</span>
 </button>
 </div>
@@ -4070,21 +4068,26 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
       `;
 
       const addBtn = card.querySelector('[data-add]');
-if (addBtn) addBtn.addEventListener("click", (e) => {
+addBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
   e.stopPropagation();
   cartAdd(p, 1);
 });
 
-      const detailBtn = card.querySelector(".detailBtn");
-      if (detailBtn) detailBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openProduct(p);
-      });
+const detailBtn = card.querySelector('[data-detail]');
+detailBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  openProduct(p);
+});
+
+// klik na kartu = detail (ok)
+card.addEventListener("click", () => openProduct(p));
+
 
       const imgEl = card.querySelector(".pMedia img");
       setSafeImage(imgEl, imgSrc, null);
 
-      card.addEventListener("click", () => openProduct(p));
       card.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -4337,7 +4340,15 @@ function updateVariantPrice() {
     return t;
   }
 
-  function openProduct(p) {
+ function openProduct(p) {
+  // ✅ ak príde string (id), nájdi produkt objekt
+  if (typeof p === "string") {
+    const key = p.trim();
+    const all = (DATA.products || []).concat(featuredPool || [], featuredSample || []);
+    p = all.find(x => String(x?.id || "").trim() === key || String(x?.sku || "").trim() === key) || null;
+    if (!p) return;
+  }
+   
     activeProduct = p;
     activeVariantIndex = 0;
 
@@ -4445,7 +4456,7 @@ function updateVariantPrice() {
 
   function openCheckoutFromCart(){
   if (!CART.length){
-    renderCart(false);
+    renderCart();
     return;
   }
 
@@ -5294,6 +5305,12 @@ async function heroTick(){
 
 setHeroInitial().then(() => {
   if (HERO_IMAGES.length > 1) setInterval(heroTick, HERO_INTERVAL);
+});
+
+closeCsrProjectsBtn?.addEventListener("click", closeCsrProjectsModal);
+
+csrProjectsModal?.addEventListener("click", (e) => {
+  if (e.target === csrProjectsModal) closeCsrProjectsModal();
 });
 
 
