@@ -5297,61 +5297,6 @@ setHeroInitial().then(() => {
 });
 
 
-  // ================================
-// ✅ CSR PROJECTS MODAL: OPEN/CLOSE
-// ================================
-(function bindCsrProjectsModal(){
-  const openBtn  = document.getElementById("openCsrProjects");
-  const modal    = document.getElementById("csrProjectsModal");
-  const closeBtn = document.getElementById("closeCsrProjectsModal");
-  const backBtn  = document.getElementById("csrBackToProjects");
-
-  const gridView   = document.getElementById("csrProjectsGridView");
-  const detailView = document.getElementById("csrProjectDetailView");
-
-  if (!openBtn || !modal) {
-    console.warn("CSR projects: chýba #openCsrProjects alebo #csrProjectsModal");
-    return;
-  }
-
-  function openModal(){
-    // vždy sa vráť do grid view (ak si bol v detaile)
-    if (gridView) gridView.style.display = "";
-    if (detailView) detailView.style.display = "none";
-
-    modal.classList.add("show");
-    modal.setAttribute("aria-hidden", "false");
-  }
-
-  function closeModal(){
-    modal.classList.remove("show");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  openBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    openModal();
-  });
-
-  closeBtn?.addEventListener("click", closeModal);
-
-  // klik mimo karty zavrie
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  // späť v detaile
-  backBtn?.addEventListener("click", () => {
-    if (gridView) gridView.style.display = "";
-    if (detailView) detailView.style.display = "none";
-  });
-
-  // ESC nech zavrie aj CSR projekty
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
-  });
-})();
-
 document.getElementById("year").textContent = new Date().getFullYear();
 console.log("CSR script loaded OK");
 
