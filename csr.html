@@ -2587,105 +2587,7 @@
   box-shadow:0 0 0 4px #b31f24;
 }
 
-    /* === RACEM CART BUTTON (spin neon) === */
-.cartfx{
-  position:relative;
-  display:inline-block;
-  width:100%;
-  max-width:220px;
-  height:52px;
-  border:none;
-  background:transparent;
-  cursor:pointer;
-  padding:0;
-  border-radius:17px;
-  isolation:isolate;
-}
-
-.cartfx .backdrop{
-  position:absolute;
-  inset:-9900%;
-  background:radial-gradient(circle at 50% 50%, #0000 0, #0000 20%, #111111aa 50%);
-  background-size:3px 3px;
-  z-index:-1;
-  pointer-events:none;
-}
-
-.cartfx .button-border{
-  padding:3px;
-  inset:0;
-  background:#0005;
-  border-radius:inherit;
-  clip-path:path("M 90 0 C 121 0 126 5 126 33 C 126 61 121 66 90 66 L 33 66 C 5 66 0 61 0 33 C 0 5 5 0 33 0 Z");
-  height:100%;
-}
-
-.cartfx .button{
-  width:100%;
-  height:100%;
-  background:#111215;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  color:#fff;
-  font-weight:800;
-  letter-spacing:.4px;
-  border-radius:0.875em;
-  clip-path:path("M 90 0 C 115 0 120 5 120 30 C 120 55 115 60 90 60 L 30 60 C 5 60 0 55 0 30 C 0 5 5 0 30 0 Z");
-  overflow:hidden;
-  position:relative;
-}
-
-.cartfx .spin{
-  position:absolute;
-  inset:0;
-  z-index:-2;
-  opacity:.55;
-  overflow:hidden;
-  transition:.3s;
-  pointer-events:none;
-}
-
-.cartfx:active .spin{ opacity:1; }
-
-.cartfx .spin-blur{ filter:blur(2em) url(#unopaq); }
-.cartfx .spin-intense{ inset:-0.125em; filter:blur(0.25em) url(#unopaq2); border-radius:0.75em; }
-.cartfx .spin-inside{ inset:-2px; border-radius:inherit; filter:blur(2px) url(#unopaq3); z-index:0; }
-
-.cartfx .spin::before{
-  content:"";
-  position:absolute;
-  inset:-150%;
-  animation: speen 8s cubic-bezier(0.56,0.15,0.28,0.86) infinite, woah 4s infinite;
-  animation-play-state:paused;
-}
-
-.cartfx:hover .spin::before{ animation-play-state:running; }
-
-/* Farby -> RACEM red gradient */
-.cartfx .spin-blur::before{ background:linear-gradient(90deg, #b31f24 30%, #0000 50%, #ffffff 70%); }
-.cartfx .spin-intense::before{ background:linear-gradient(90deg, #ff6b6b 20%, #0000 45% 55%, #b31f24 80%); }
-.cartfx .spin-inside::before{ background:linear-gradient(90deg, #ffd1d1 30%, #0000 45% 55%, #ffffff 70%); }
-
-@keyframes speen{
-  0%{ rotate:10deg; }
-  50%{ rotate:190deg; }
-  100%{ rotate:370deg; }
-}
-@keyframes woah{
-  0%,100%{ scale:1; }
-  50%{ scale:.75; }
-}
-
-/* mini icon */
-.cartfx .cart-ic{
-  width:18px;
-  height:18px;
-  fill:#fff;
-  opacity:.9;
-}
-
+    
   </style>
 </head>
 
@@ -4021,24 +3923,9 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
   </svg>
 </button>
 
-  <button class="cartfx" onclick="addToCart('${p.id}')">
-  <div class="backdrop"></div>
-
-  <div class="spin spin-blur"></div>
-  <div class="spin spin-intense"></div>
-
-  <div class="button-border">
-    <div class="spin spin-inside"></div>
-
-    <div class="button">
-      <svg class="cart-ic" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM6.2 6l.6 3h11.9l-1.1 5.2H8.1l-.4-2H6.2L5 3H2V1h4.6l.6 3H21l-2 9H8.4l.2 1h10.8v2H7.2c-.9 0-1.7-.6-1.9-1.5L3.3 3H2V1h2.9c.9 0 1.7.6 1.9 1.5Z"/>
-      </svg>
-      <span>DO KOŠÍKA</span>
-    </div>
-  </div>
+  <button class="detailBtn" data-add type="button" aria-label="Pridať do košíka">
+  Do košíka <span class="arr">＋</span>
 </button>
-
 </div>
 
         </div>
