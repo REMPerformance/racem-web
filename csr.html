@@ -495,11 +495,28 @@
     }
 
     .productGrid{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
-      gap: 14px;
-      margin-top: 16px;
-    }
+  display:grid;
+  gap: 14px;
+  margin-top: 16px;
+
+  /* ✅ samo si vyberie počet stĺpcov podľa šírky */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+
+/* menší mobil / landscape: 3 vedľa seba */
+@media (min-width: 700px) and (max-width: 980px){
+  .productGrid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* tablet: 4 */
+@media (min-width: 981px) and (max-width: 1200px){
+  .productGrid{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
 
     .pCard{
       position: relative;
@@ -2799,6 +2816,24 @@
     font-size: 10px;
     letter-spacing: .08em;
   }
+}
+.pMedia{
+  position:relative;
+  aspect-ratio: 4 / 3;   /* ✅ drží tvar karty */
+  height: auto;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+
+.pMedia img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit: contain;   /* ✅ celé */
+  object-position:center;
+  padding: 10px;
 }
 
   </style>
