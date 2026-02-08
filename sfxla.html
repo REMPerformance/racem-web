@@ -2640,6 +2640,119 @@ body{
 footer{
   margin-top: auto;
 }
+/* ===========================
+   MOBILE = viac ako PC (compact desktop-like)
+   Daj na ÚPLNÝ KONIEC <style>
+   =========================== */
+
+/* 1) Menej obrovské paddingy na mobile */
+@media (max-width: 980px){
+  .wrap{ padding: 0 14px; }
+  section{ padding: 56px 0; }
+  .nav{ padding: 12px 14px; }
+  .heroInner{ padding: 0 14px 22px; }
+}
+
+/* 2) TOPBAR: nech ostane v jednej línii a nezaberá výšku */
+@media (max-width: 780px){
+  .nav{
+    gap: 10px;
+    align-items:center;
+  }
+  .brand-mini img{ height: 52px; }          /* logo menšie, ale stále výrazné */
+  .nav-links{
+    gap: 14px;
+    flex-wrap: nowrap;                       /* ✅ neskladá sa do 2 riadkov */
+    overflow:auto;                           /* ✅ keď sa nezmestí, dá sa scrollnúť */
+    -webkit-overflow-scrolling: touch;
+    justify-content:flex-end;
+    max-width: 62vw;                         /* nech nezabije logo */
+    padding-bottom: 2px;
+  }
+  .nav-links a{ font-size: 14px; }
+  .nav-links::-webkit-scrollbar{ height: 0; }
+}
+
+/* 3) “O značke” (grid2): drž 2 stĺpce dlhšie (ako PC) */
+@media (max-width: 860px){
+  .grid2{
+    grid-template-columns: 1.15fr .85fr;     /* ✅ stále 2 stĺpce */
+    gap: 12px;
+  }
+  .panel{ padding: 18px; }
+}
+
+/* Až na úplne malom mobile to zlož pod seba */
+@media (max-width: 560px){
+  .grid2{ grid-template-columns: 1fr; }
+}
+
+/* 4) Gallery: nie 1 stĺpec hneď, ale 2 stĺpce skoro stále */
+@media (max-width: 980px){
+  .gallery{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 420px){
+  .gallery{ grid-template-columns: 1fr; }
+}
+
+/* 5) CAR CARDS: desktop-like – viac kariet na riadok (bez toho aby boli gigantické) */
+@media (max-width: 980px){
+  .carCards{ grid-template-columns: repeat(3, minmax(0,1fr)); } /* bolo 2 */
+  .carMedia{ height: 170px; }                                   /* kompaktnejšie */
+  .carNameOverlay b{ font-size: 22px; }
+}
+
+/* Keď je extrémne úzky mobil, daj 2 stĺpce (nie 1) */
+@media (max-width: 560px){
+  .carCards{ grid-template-columns: repeat(2, minmax(0,1fr)); } /* bolo 1 */
+  .carMedia{ height: 150px; }
+  .carNameOverlay b{ font-size: 18px; letter-spacing: .18em; }
+}
+
+/* 6) Product grid: nech je 2 stĺpce aj na mobile (1 stĺpec až keď je fakt úzke) */
+@media (max-width: 980px){
+  .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); } /* už máš, necháme */
+  .pMedia{ height: 210px; }                                        /* menej vysoké */
+  .pName{ font-size: 18px; }
+}
+
+/* Na bežnom mobile nech je stále 2 stĺpce */
+@media (max-width: 560px){
+  .productGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); } /* bolo 1 */
+  .pMedia{ height: 170px; }
+  .pDesc{ display:none; }                                          /* desktop-like “kompakt” */
+  .price{ font-size: 14px; }
+  .openHint{ font-size: 13px; }
+}
+
+/* Až na úplne mini šírkach daj 1 stĺpec */
+@media (max-width: 380px){
+  .productGrid{ grid-template-columns: 1fr; }
+}
+
+/* 7) Filter bar: nech to vyzerá ako desktop (1 riadok, scroll) */
+@media (max-width: 560px){
+  .filterBar{
+    justify-content:flex-start;
+  }
+  .filtersLeft{
+    flex-wrap: nowrap;
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+    width:100%;
+    padding-bottom: 2px;
+  }
+  .filtersLeft::-webkit-scrollbar{ height: 0; }
+  .in,.sel{ min-width: 200px; } /* desktop-like */
+  #showAll{ white-space: nowrap; }
+}
+
+/* 8) Cart bar: na mobile nech sa neskladá “zbytočne” na 2 riadky */
+@media (max-width: 560px){
+  .cartBarLeft{ flex-wrap: nowrap; }
+  .cartBarRight{ width:auto; }
+  .cartBarRight .btn{ flex: 0 0 auto; }
+}
 
   </style>
 </head>
