@@ -2737,6 +2737,69 @@
   object-position:center;
   padding:8px;
 }
+/* === MOBILE: 4 stĺpce bez rozpadnutého textu === */
+@media (max-width: 700px){
+
+  .productGrid{ gap: 10px; }
+
+  .pCard{
+    border-radius: 16px;
+  }
+
+  /* obrázok menší, ale vždy celý */
+  .pMedia{
+    height: 88px;
+  }
+  .pMedia img{
+    object-fit: contain;
+    padding: 6px;
+  }
+
+  /* telo karty kompaktnejšie */
+  .pBody{
+    padding: 10px 10px 12px;
+    gap: 8px;
+  }
+
+  /* HLAVNÉ: text sa ti rozpadá kvôli veľkosti + letter-spacing */
+  .pName{
+    font-size: 11px;
+    letter-spacing: .08em;
+    line-height: 1.15;
+    word-break: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;         /* max 3 riadky */
+    -webkit-box-orient: vertical;
+  }
+
+  /* cena tiež menšia aby sa zmestila */
+  .price{
+    font-size: 12px;
+    letter-spacing: .10em;
+  }
+
+  /* “detail” hint nech nezaberá pol karty */
+  .openHint{
+    font-size: 11px;
+    letter-spacing: .10em;
+    gap: 6px;
+  }
+  .openHint .arr{
+    width: 28px;
+    height: 28px;
+    border-radius: 12px;
+  }
+
+  /* voliteľné: ak máš v kartách extra meta tagy, na mobile ich skry */
+  .pMetaRow{ display:none; }
+
+  /* ak máš shipMini (doprava), nech je to kratšie/menšie */
+  .shipMini{
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+}
 
   </style>
 </head>
