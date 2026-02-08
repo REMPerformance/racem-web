@@ -2455,6 +2455,162 @@
 
   .heroPanel.globePanel{ width: min(320px, 92vw) !important; }
 }
+/* =========================================
+   MOBILE COMPACT: HERO LOGO + NAV + SHIPBAR + FOOTER
+   (daj úplne na KONIEC CSS)
+========================================= */
+
+@media (max-width: 980px){
+
+  /* ---------- HERO: logo + BEAT THEM ALL vedľa seba ---------- */
+  .hero-title{
+    flex-wrap: nowrap !important;     /* drž v jednom riadku */
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-logo-inline{
+    height: 46px !important;          /* menšie logo */
+    width: auto !important;
+  }
+
+  .hero-dash{
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
+
+  .hero-slogan-image{
+    height: 18px !important;          /* menší BEAT THEM ALL */
+    width: auto !important;
+    max-width: 56vw;                   /* aby to nepretieklo */
+    object-fit: contain !important;
+  }
+
+  /* keď je naozaj úzky mobil, radšej “zrež” slogan než wrap */
+  @media (max-width: 420px){
+    .hero-slogan-image{ max-width: 48vw !important; }
+  }
+
+  /* ---------- NAV: jeden riadok, menšie, swipe scroll ---------- */
+  .topbar{
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-centered{
+    padding: 10px 0 !important;
+    max-width: 100% !important;
+  }
+
+  .nav-links{
+    display: flex !important;
+    flex-wrap: nowrap !important;        /* všetko vedľa seba */
+    gap: 14px !important;
+    justify-content: flex-start !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+
+    padding: 0 8px 6px !important;
+    scroll-snap-type: x mandatory;
+  }
+
+  .nav-links a{
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+
+    font-size: 10.5px !important;
+    letter-spacing: .10em !important;
+    padding: 4px 0 !important;
+    opacity: .92;
+  }
+
+  /* nech scroll bar nevyzerá hnusne */
+  .nav-links::-webkit-scrollbar{ height: 6px; }
+  .nav-links::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+
+  /* ---------- SHIPBAR (žltá vec): menšia + menej “roztiahnuté” ---------- */
+  :root{ --stickyOffset: 30px; }
+
+  .shipbar{
+    height: 30px !important;
+  }
+
+  .shipbar-inner{
+    padding-left: 10px !important;
+    padding-right: 38px !important;
+  }
+
+  .shipbar-flags .flag{
+    font-size: 16px !important;
+  }
+
+  .shipbar-textwrap{
+    height: 18px !important;
+    padding: 0 10px !important;
+  }
+
+  .shipbar-text{
+    font-size: 11px !important;
+    letter-spacing: .08em !important;
+    word-spacing: .25em !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .shipbar-close{
+    right: 8px !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 9px !important;
+    font-size: 14px !important;
+  }
+
+  /* ---------- FOOTER: menší, kompaktnejší ---------- */
+  footer{
+    padding: 26px 0 !important;
+  }
+
+  .foot{
+    gap: 8px !important;
+    font-size: 11.5px !important;
+  }
+
+  .footer-socials{
+    padding: 8px 10px !important;
+    border-radius: 14px !important;
+    gap: 10px !important;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.35) !important;
+  }
+
+  .footer-social{
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .footer-social svg{ width: 16px !important; }
+}
+
+@media (max-width: 560px){
+
+  /* HERO ešte menší */
+  .hero-logo-inline{ height: 42px !important; }
+  .hero-slogan-image{ height: 16px !important; }
+
+  /* shipbar ešte o chlp menší */
+  :root{ --stickyOffset: 28px; }
+  .shipbar{ height: 28px !important; }
+  .shipbar-text{ font-size: 10.5px !important; letter-spacing: .06em !important; }
+
+  /* footer */
+  footer{ padding: 22px 0 !important; }
+  .foot{ font-size: 11px !important; }
+}
 
   </style>
 </head>
