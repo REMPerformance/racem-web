@@ -2681,6 +2681,25 @@
   /* zruš wrap/centrovanie linkov z pôvodných pravidiel */
   .nav-links{ flex-wrap: nowrap !important; }
 }
+/* ✅ MOBILE: HERO logo 2× väčšie (finálny override) */
+@media (max-width: 980px){
+  .hero-logo-inline{
+    height: 128px !important;  /* 2× oproti 64px */
+    width: auto !important;
+  }
+
+  /* nech to vizuálne sedí a nezaberie zbytočne výšku */
+  .hero-title{
+    margin-top: 16px !important; /* máš tam 36px, toto to skrotí */
+    justify-content: center !important; /* nech je to pekne */
+  }
+}
+
+@media (max-width: 560px){
+  .hero-logo-inline{
+    height: 120px !important;  /* jemne menšie pre mini mobily */
+  }
+}
 
   </style>
 </head>
