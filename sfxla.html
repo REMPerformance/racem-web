@@ -1354,7 +1354,7 @@
 .imgNav.next{ right: 14px; }
 
 .thumbRow{
-  position:absolute;
+  position:relative;
   left: 14px;
   right: 14px;
   bottom: 14px;
@@ -2862,6 +2862,56 @@ footer{
 @media (max-width: 768px){
   #mImg{ max-height: 55vh; }
   .thumbRow img{ width: 76px; height: 58px; }
+}
+/* LEFT column (obrázky) musí mať vlastný flow */
+.modalBody{
+  align-items: flex-start;
+}
+
+/* wrapper ľavej časti */
+.modalBody > div:first-child{
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* hlavný image box */
+.mImg{
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* thumbnails už NESMÚ byť absolute ani overlay */
+.thumbRow{
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 6px 2px;
+
+  width: 100%;
+  overflow-x: auto;
+  z-index: 1;
+}
+
+/* thumbnails obrázky */
+.thumbRow img{
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex: 0 0 auto;
+}
+
+/* nech pravý panel nikdy nelezie pod galériu */
+.mInfo{
+  position: relative;
+  z-index: 5;
 }
 
   </style>
