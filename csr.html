@@ -3349,32 +3349,50 @@ function cartIndexByKey(key){
   return CART.findIndex(x => x.key === key);
 }
 
-function productCartKey(p){
-  // bez variantov: key je makeFile + id/sku
-  const code = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
-  return `${String(p?.makeFile||"")}|${code}`;
+function productCartKey(p, v){
+  const base = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
+  const vCode = String(v?.sku || v?.id || v?.gtn || "").trim() || (v ? `v${activeVariantIndex}` : "");
+  return `${String(p?.makeFile||"")}|${base}|${vCode}`;
 }
+
 
 function cartAdd(p, qty=1){
   if (!p) return;
-  const key = productCartKey(p);
+
+  const vSel = getSelectedVariant(p);
+  const key = productCartKey(p, vSel);
+
   const idx = cartIndexByKey(key);
-  if (idx >= 0) CART[idx].qty += qty;
-  else{
+  if (idx >= 0) {
+    CART[idx].qty += qty;
+  } else {
+    const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
+    const price = getJsonPriceEUR(p, vSel); // ✅ cena vybraného variantu
+    const img = (
+      (Array.isArray(vSel?.images) ? vSel.images[0] : "") ||
+      p?.image ||
+      (Array.isArray(p?.images) ? p.images[0] : "") ||
+      ""
+    );
+
     CART.push({
       key,
       qty: Math.max(1, qty|0),
-      sku: p?.sku || "",
-      title: p?.title || "",
-      img: (p?.image || (Array.isArray(p?.images)?p.images[0]:"") || ""),
+      sku: vSel?.sku || p?.sku || "",
+      variantSku: vSel?.sku || "",
+      variantLabel: vLabel,
+      title: (p?.title || "") + (vLabel ? ` — ${vLabel}` : ""),
+      img,
       make: p?.makeLabel || "",
       model: p?.model || "",
-      price: getBestPriceEUR(p) // number|null
+      price: (typeof price === "number") ? price : null
     });
   }
+
   saveCart();
   renderCart();
 }
+
 
 function cartSetQty(key, qty){
   const idx = cartIndexByKey(key);
@@ -3649,13 +3667,14 @@ function getJsonPriceEUR(p, variant) {
   }
 
   function variantSummary(p) {
-    const vars = Array.isArray(p.variants) ? p.variants : [];
-    if (!vars.length) return "Bez variantu";
-    const names = vars.map(v => v.name || "Variant").filter(Boolean);
-    const unique = Array.from(new Set(names));
-    if (unique.length === 1) return `Variant: ${unique[0]}`;
-    return `Variantov: ${unique.length}`;
-  }
+  const vars = Array.isArray(p.variants) ? p.variants : [];
+  if (!vars.length) return "Bez variantu";
+  const names = vars.map((v,i) => getVariantLabel(v,i)).filter(Boolean);
+  const unique = Array.from(new Set(names));
+  if (unique.length === 1) return `Variant: ${unique[0]}`;
+  return `Variantov: ${unique.length}`;
+}
+
 
   function deliverySummary(p) {
     return `Dodanie: ${p.delivery || "Upresníme po objednávke"}`;
@@ -4159,40 +4178,55 @@ card.addEventListener("click", () => openProduct(p));
   }
 
   function buildVariantChips() {
-    if (!mVariantList) return;
-    const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
+  if (!mVariantList) return;
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
-    if (!vars.length) {
-      if (mVariantWrap) mVariantWrap.style.display = "none";
-      mVariantList.innerHTML = "";
-      activeVariantIndex = 0;
-      return;
-    }
-
-    if (mVariantWrap) mVariantWrap.style.display = "block";
+  if (!vars.length) {
+    if (mVariantWrap) mVariantWrap.style.display = "none";
     mVariantList.innerHTML = "";
-
-    vars.forEach((v, i) => {
-      const chip = document.createElement("div");
-      chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-      const name = toSlovak(v.name || `Variant ${i + 1}`).toUpperCase();
-
-      const p = getJsonPriceEUR(activeProduct, v);
-      const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
-
-      chip.innerHTML = `
-        <span class="vMain">${escapeHtml(name)}</span>
-        <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
-      `;
-      chip.addEventListener("click", () => {
-        activeVariantIndex = i;
-        $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
-        updateVariantPrice();
-      });
-
-      mVariantList.appendChild(chip);
-    });
+    activeVariantIndex = 0;
+    return;
   }
+
+  if (mVariantWrap) mVariantWrap.style.display = "block";
+  mVariantList.innerHTML = "";
+
+  vars.forEach((v, i) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+
+    const name = toSlovak(getVariantLabel(v, i)).toUpperCase();
+
+    const p = getJsonPriceEUR(activeProduct, v);
+    const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(name)}</span>
+      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = i;
+      $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
+      updateVariantPrice();
+    });
+
+    mVariantList.appendChild(chip);
+  });
+}
+
+
+  function getSelectedVariant(p){
+  const vars = Array.isArray(p?.variants) ? p.variants : [];
+  return vars[activeVariantIndex] || null;
+}
+
+function getVariantLabel(v, i){
+  // CSR JSON: často býva title, nie name
+  const raw = (v?.name || v?.title || v?.sku || `Variant ${i+1}`);
+  return String(raw).trim();
+}
+
 
  function getBestPriceEUR(p){
   // najnižšia dostupná cena (produkt alebo varianty), ale bez UI variantov
@@ -4207,7 +4241,8 @@ card.addEventListener("click", () => openProduct(p));
 function updateVariantPrice() {
   if (!activeProduct) return;
 
-  const price = getBestPriceEUR(activeProduct);
+  const vSel = getSelectedVariant(activeProduct);
+  const price = getJsonPriceEUR(activeProduct, vSel);
 
   if (mPriceBig) {
     mPriceBig.innerHTML =
@@ -4216,9 +4251,10 @@ function updateVariantPrice() {
 
   if (mShip) mShip.textContent = SHIPPING_TEXT_DETAIL;
 
-  // sumár pre formulár (bez variantu)
+  // ✅ sumár do formulára UŽ aj s variantom
+  const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
   $("#o_manufacturer").value = activeProduct.makeLabel || "—";
-  $("#o_product").value = activeProduct.title || "—";
+  $("#o_product").value = (activeProduct.title || "—") + (vLabel ? ` — ${vLabel}` : "");
   $("#o_price").value = (typeof price === "number") ? fmtEUR(price) : PRICE_ON_REQUEST;
   $("#o_shipping").value = SHIPPING_TEXT_FORM;
   $("#o_delivery").value = activeProduct.delivery || "Upresníme po objednávke";
@@ -4226,6 +4262,7 @@ function updateVariantPrice() {
   const md = (activeProduct.model || "").toString().trim();
   if ($("#car") && md) $("#car").value = md;
 }
+
 
   // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
   // ✅ DE/EN -> SK preklad (phrase-first). Dlhšie frázy musia byť hore.
