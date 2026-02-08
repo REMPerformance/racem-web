@@ -3349,12 +3349,11 @@ function cartIndexByKey(key){
   return CART.findIndex(x => x.key === key);
 }
 
-function productCartKey(p, v){
-  const base = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
-  const vCode = String(v?.sku || v?.id || v?.gtn || "").trim() || (v ? `v${activeVariantIndex}` : "");
-  return `${String(p?.makeFile||"")}|${base}|${vCode}`;
+function productCartKey(p){
+  const code = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
+  const vsku = String(p?._variantSku || "").trim();
+  return `${String(p?.makeFile||"")}|${code}|${vsku}`;
 }
-
 
 function cartAdd(p, qty=1){
   if (!p) return;
@@ -3518,10 +3517,12 @@ const mOrderBtn = $("#mOrderBtn");
 const mAddToCartBtn = $("#mAddToCartBtn");
 
 mAddToCartBtn?.addEventListener("click", () => {
-  if (!activeProduct) return;
-  cartAdd(activeProduct, 1);
+  const item = getActivePurchaseItem();
+  if (!item) return;
+  cartAdd(item, 1);
   closeModal(productModal);
 });
+
 
 mOrderBtn?.addEventListener("click", () => {
   if (!activeProduct) return;
@@ -4222,26 +4223,52 @@ card.addEventListener("click", () => openProduct(p));
 }
 
 function getVariantLabel(v, i){
-  // CSR JSON: často býva title, nie name
+  // CSR JSON: často má "title", nie "name"
   const raw = (v?.name || v?.title || v?.sku || `Variant ${i+1}`);
   return String(raw).trim();
 }
 
+function buildVariantChips() {
+  if (!mVariantList) return;
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
- function getBestPriceEUR(p){
-  // najnižšia dostupná cena (produkt alebo varianty), ale bez UI variantov
-  const direct = getJsonPriceEUR(p, null);
-  const vars = Array.isArray(p?.variants) ? p.variants : [];
-  const prices = vars.map(v => getJsonPriceEUR(p, v)).filter(n => typeof n === "number");
-  const all = prices.length ? prices : (typeof direct === "number" ? [direct] : []);
-  if (!all.length) return null;
-  return Math.min(...all);
+  if (!vars.length) {
+    if (mVariantWrap) mVariantWrap.style.display = "none";
+    mVariantList.innerHTML = "";
+    activeVariantIndex = 0;
+    return;
+  }
+
+  if (mVariantWrap) mVariantWrap.style.display = "block";
+  mVariantList.innerHTML = "";
+
+  vars.forEach((v, i) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
+
+    const name = toSlovak(getVariantLabel(v, i)).toUpperCase();
+    const p = getJsonPriceEUR(activeProduct, v);
+    const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(name)}</span>
+      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = i;
+      $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
+      updateVariantPrice(); // toto je kľúč
+    });
+
+    mVariantList.appendChild(chip);
+  });
 }
 
 function updateVariantPrice() {
   if (!activeProduct) return;
 
-  const vSel = getSelectedVariant(activeProduct);
+  const vSel  = getSelectedVariant(activeProduct);
   const price = getJsonPriceEUR(activeProduct, vSel);
 
   if (mPriceBig) {
@@ -4251,7 +4278,7 @@ function updateVariantPrice() {
 
   if (mShip) mShip.textContent = SHIPPING_TEXT_DETAIL;
 
-  // ✅ sumár do formulára UŽ aj s variantom
+  // ✅ sumár do formulára už aj s variantom
   const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
   $("#o_manufacturer").value = activeProduct.makeLabel || "—";
   $("#o_product").value = (activeProduct.title || "—") + (vLabel ? ` — ${vLabel}` : "");
@@ -4261,6 +4288,23 @@ function updateVariantPrice() {
 
   const md = (activeProduct.model || "").toString().trim();
   if ($("#car") && md) $("#car").value = md;
+}
+
+function getActivePurchaseItem(){
+  if (!activeProduct) return null;
+  const vSel = getSelectedVariant(activeProduct);
+
+  const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
+  const price  = getJsonPriceEUR(activeProduct, vSel);
+
+  return {
+    ...activeProduct,
+    // prepíš SKU/title/price pre košík podľa variantu
+    sku: vSel?.sku || activeProduct.sku || "",
+    title: (activeProduct.title || "") + (vLabel ? ` — ${vLabel}` : ""),
+    _variantSku: vSel?.sku || "",     // pomôže pre unique key
+    _price: (typeof price === "number") ? price : null
+  };
 }
 
 
@@ -4555,7 +4599,7 @@ function updateVariantPrice() {
     title: activeProduct.title || "",
     make: activeProduct.makeLabel || "",
     model: activeProduct.model || "",
-    price: getBestPriceEUR(activeProduct),
+    price: (typeof p?._price === "number") ? p._price : getBestPriceEUR(p),
     img: activeProduct.image || (Array.isArray(activeProduct.images) ? activeProduct.images[0] : "")
   }] : []);
 
