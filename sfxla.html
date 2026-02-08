@@ -4069,7 +4069,7 @@ function buildVariantChips(){
       $$(".vChip", mVariantList).forEach((c, i) => c.classList.toggle("active", i === index));
     }
 
-   function updateVariantPrice(){
+ function updateVariantPrice(){
   if (!activeProduct) return;
 
   const vars = Array.isArray(activeProduct.variants) ? activeProduct.variants : [];
@@ -4078,7 +4078,6 @@ function buildVariantChips(){
   const ship = (typeof activeProduct.shippingEUR === "number") ? activeProduct.shippingEUR : 0;
   const delivery = activeProduct.delivery || "Upresníme po objednávke";
 
-  // cena: buď z variantu, alebo z product.priceEUR
   const base =
     (v && typeof v.priceEUR === "number") ? v.priceEUR :
     (typeof activeProduct.priceEUR === "number") ? activeProduct.priceEUR :
@@ -4096,30 +4095,24 @@ function buildVariantChips(){
   if (mDelivery) mDelivery.textContent = `Dodanie: ${delivery}`;
 
   const car = DATA.cars.find(c=>c.id===activeProduct.carId)?.label || activeProduct.carId;
-  const status = getStockStatus(activeProduct);
 
-const manufacturer = "Streetfighter LA";
+  // readonly polia do formulára
+  const manufacturer = "Streetfighter LA";
+  $("#o_manufacturer").value = manufacturer;
+  $("#o_product").value = activeProduct.title || "—";
+  $("#o_variant").value = variantName;
+  $("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
+  $("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
+  $("#o_delivery").value = delivery;
 
-$("#o_manufacturer").value = manufacturer;
-$("#o_product").value = activeProduct.title || "—";
-$("#o_variant").value = variantName;
-$("#o_price").value = base !== null ? fmtEUR(base) : "UPRESNÍME";
-$("#o_shipping").value = ship ? fmtEUR(ship) : "PODĽA DOHODY";
-$("#o_delivery").value = delivery;
+  const carInput = $("#car");
+  const customerNote = $("#customer_note");
+  if (carInput) carInput.value = car;
 
-
-  const msg = $("#customer_note");
-  const blob = $("#orderBlob");
-const carInput = $("#car");
-const customerNote = $("#customer_note");
-
-if (carInput) carInput.value = car;
-
-
-// keď zákazník píše poznámku, udrž “order blob” aktuálny
-if (customerNote){
-  customerNote.oninput = buildOrderBlob;
-}
+  if (customerNote){
+    customerNote.oninput = buildOrderBlob;
+  }
+} // ✅ TOTO TI CHÝBALO – koniec updateVariantPrice()
 
     function closeModal(modal){
   if (!modal) return;
@@ -4131,9 +4124,17 @@ if (customerNote){
   if (!anyOpen) document.body.classList.remove("modalOpen");
 }
 
+function closeModal(modal){
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+
+  const anyOpen = $$(".modal").some(m => m.classList.contains("show"));
+  if (!anyOpen) document.body.classList.remove("modalOpen");
+}
 
     if (closeProductModal) closeProductModal.addEventListener("click", () => closeModal(productModal));
-    if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
+if (productModal) productModal.addEventListener("click", (e) => { if (e.target === productModal) closeModal(productModal); });
 
     const galleryModal = $("#galleryModal");
     const closeGalleryModal = $("#closeGalleryModal");
