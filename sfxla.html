@@ -3035,7 +3035,7 @@ footer{
 </section>
 
 
-  <!-- PRODUCT DETAIL MODAL -->
+<!-- PRODUCT DETAIL MODAL -->
 <div class="modal" id="productModal" aria-hidden="true">
   <div class="modalCard" role="dialog" aria-modal="true" aria-label="Product details">
     <div class="modalHead">
@@ -3043,60 +3043,54 @@ footer{
       <button class="xBtn" id="closeProductModal" type="button" aria-label="Close">×</button>
     </div>
 
+    <!-- ✅ tu už je 2-stĺpcový layout: vľavo obrázky, vpravo info -->
     <div class="modalBody">
 
-      <!-- ✅ hint MIMO obrázka (neprekrýva) -->
-      <div class="zoomHint" id="zoomHint">KLIKNI PRE ZVÄČŠENIE</div>
+      <!-- LEFT: images -->
+      <div>
+        <div class="zoomHint" id="zoomHint">KLIKNI PRE ZVÄČŠENIE</div>
 
-      <!-- ✅ stage s veľkým obrázkom -->
-      <div class="mImg">
-        <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
-        <button class="imgNav next" id="mNext" type="button" aria-label="Ďalší">›</button>
+        <div class="mImg">
+          <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
+          <button class="imgNav next" id="mNext" type="button" aria-label="Ďalší">›</button>
 
-        <img id="mImg" src="" alt="Product image">
-        <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
+          <img id="mImg" src="" alt="Product image">
+          <div class="noImg" id="mNoImg" style="display:none;">NO IMAGE</div>
+        </div>
+
+        <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
       </div>
 
-      <!-- ✅ thumbnails POD obrázkom -->
-      <div class="thumbRow" id="mThumbs" aria-label="Ďalšie fotky"></div>
-
-      <!-- ...zvyšok detailu (texty/cena/buttony) ... -->
-
-    </div>
-  </div>
-</div>
-
-
-
-        <div class="mInfo">
-
-          <div class="mInfoTop">
-  <div class="ribbon made_to_order" id="mRibbon"><span class="rDot"></span>NA OBJEDNÁVKU</div>
-</div>
-
-
-          <div class="mDesc" id="mDesc"></div>
-
-          <div id="mVariantWrap" style="display:none;">
-<div class="mLabel">Variant</div>
-  <div class="variantList" id="mVariantList"></div>
-</div>
-
-
-          <div class="priceBlock">
-            <div class="priceBig" id="mPriceBig">—</div>
-            <div class="priceSub" id="mShip">—</div>
-            <div class="priceSub" id="mDelivery">—</div>
+      <!-- RIGHT: info -->
+      <div class="mInfo">
+        <div class="mInfoTop">
+          <div class="ribbon made_to_order" id="mRibbon">
+            <span class="rDot"></span>NA OBJEDNÁVKU
           </div>
+        </div>
 
-          <div class="mActions">
-  <button class="btn secondary" id="mAddToCart" type="button">PRIDAŤ DO KOŠÍKA</button>
-  <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
-</div>
+        <div class="mDesc" id="mDesc"></div>
+
+        <div id="mVariantWrap" style="display:none;">
+          <div class="mLabel">Variant</div>
+          <div class="variantList" id="mVariantList"></div>
+        </div>
+
+        <div class="priceBlock">
+          <div class="priceBig" id="mPriceBig">—</div>
+          <div class="priceSub" id="mShip">—</div>
+          <div class="priceSub" id="mDelivery">—</div>
+        </div>
+
+        <div class="mActions">
+          <button class="btn secondary" id="mAddToCart" type="button">PRIDAŤ DO KOŠÍKA</button>
+          <button class="btn cta" id="mOrder" type="button">OBJEDNAŤ</button>
         </div>
       </div>
+
     </div>
   </div>
+</div>
 
   <!-- GALLERY MODAL -->
   <div class="modal" id="galleryModal" aria-hidden="true">
@@ -4124,10 +4118,9 @@ if (carInput) carInput.value = car;
 
 // keď zákazník píše poznámku, udrž “order blob” aktuálny
 if (customerNote){
-  customerNote.oninput = () => {
-    if (!blob) return;
-    blob.value += `\n\nPOZNÁMKA ZÁKAZNÍKA:\n${customerNote.value || ""}`;
-  };
+  customerNote.oninput = buildOrderBlob;
+}
+
 }
 
 
