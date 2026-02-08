@@ -2835,6 +2835,68 @@
   object-position:center;
   padding: 10px;
 }
+@media (max-width: 720px){
+  .productGrid{
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 12px;
+  }
+}
+@media (max-width: 520px){
+  .productGrid{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+@media (max-width: 720px){
+
+  /* karta nech nie je komín */
+  .pMedia{ height: 120px; }
+  .pMedia img{ padding: 8px; object-fit: contain; }
+
+  .pBody{ padding: 12px; gap: 8px; }
+
+  /* názov: menej agresívny, nech sa nerozpadá */
+  .pName{
+    font-size: 13px;
+    letter-spacing: .08em;
+    line-height: 1.15;
+
+    /* max 2 riadky a koniec */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* meta tagy ti robia bordel -> pre 3-grid ich skry */
+  .pMetaRow{ display:none; }
+
+  /* spodok karty nech je kompaktný */
+  .pBottom{
+    margin-top: 6px;
+    padding-top: 8px;
+  }
+
+  .price{
+    font-size: 13px;
+    letter-spacing: .10em;
+  }
+
+  .openHint{
+    font-size: 11px;
+    letter-spacing: .10em;
+    gap: 6px;
+  }
+  .openHint .arr{
+    width: 28px;
+    height: 28px;
+    border-radius: 12px;
+  }
+
+  .shipMini{
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+}
 
   </style>
 </head>
