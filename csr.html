@@ -3132,7 +3132,7 @@
 
         <div class="filterBar">
           <div class="filtersLeft">
-            <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor, prahy, spojler)..." />
+            <input class="in" id="q" type="text" placeholder="Hľadať (napr. lipo, difúzor… alebo ID/SKU dielu)..." />
 
             <div class="modelLabel"><span class="dot"></span>Model</div>
 
@@ -3552,23 +3552,44 @@ function cartIndexByKey(key){
   return CART.findIndex(x => x.key === key);
 }
 
-function productCartKey(p){
+function productCartKey(p, vSel){
   const code = String(p?.sku || p?.id || "").trim() || String(p?.title || "").trim();
-  const vsku = String(p?._variantSku || "").trim();
+  // ✅ variant SKU musí byť súčasť unique kľúča (inak sa varianty zle zlievajú)
+  const vsku = String(vSel?.sku || p?._variantSku || "").trim();
   return `${String(p?.makeFile||"")}|${code}|${vsku}`;
 }
 
 function cartAdd(p, qty=1){
   if (!p) return;
 
-  const vSel = getSelectedVariant(p);
+  const vars = Array.isArray(p?.variants) ? p.variants : [];
+
+  // ✅ výber variantu pre košík:
+  // - ak sem príde "purchase item" z modalu, má _variantSku -> nájdi presný variant
+  // - ak pridávaš z modalu (activeProduct), použi activeVariantIndex
+  // - inak (karta/grid) default prvý variant
+  let vIndex = 0;
+  let vSel = null;
+
+  const forcedSku = String(p?._variantSku || "").trim();
+  if (forcedSku) {
+    vSel = vars.find(v => String(v?.sku || "").trim() === forcedSku) || null;
+    vIndex = Math.max(0, vars.indexOf(vSel));
+  } else if (p === activeProduct) {
+    vIndex = activeVariantIndex;
+    vSel = vars[vIndex] || null;
+  } else {
+    vIndex = 0;
+    vSel = vars[0] || null;
+  }
+
   const key = productCartKey(p, vSel);
 
   const idx = cartIndexByKey(key);
   if (idx >= 0) {
     CART[idx].qty += qty;
   } else {
-    const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
+    const vLabel = vSel ? getVariantLabel(vSel, vIndex) : "";
     const price = getJsonPriceEUR(p, vSel); // ✅ cena vybraného variantu
     const img = (
       (Array.isArray(vSel?.images) ? vSel.images[0] : "") ||
@@ -4168,7 +4189,10 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
       if (model && pmodel !== model) return false;
 
       if (q) {
-        const blob = `${p.title || ""} ${p.short || ""} ${p.model || ""} ${p.makeLabel || ""} ${p.sku || ""}`.toLowerCase();
+        const vblob = (Array.isArray(p?.variants) ? p.variants : [])
+          .map(v => `${v?.sku || ""} ${v?.name || v?.title || ""}`)
+          .join(" ");
+        const blob = `${p.title || ""} ${p.short || ""} ${p.model || ""} ${p.makeLabel || ""} ${p.sku || ""} ${p.id || ""} ${vblob}`.toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
@@ -4257,7 +4281,7 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
         <div class="pBody">
           <div class="pTop">
             <div class="pName">${escapeHtml(titleShort)}</div>
-<div class="pSku">${escapeHtml((p.sku || "").replace(/^CSR-/, ""))}</div>
+<div class="pSku">${escapeHtml(String(p.sku || "").replace(/^CSR-/, ""))}</div>
             <div class="pMetaRow">
               ${make ? `<span class="pMetaTag">Značka: <b>${escapeHtml(make)}</b></span>` : ""}
               ${model ? `<span class="pMetaTag">Model: <b>${escapeHtml(model)}</b></span>` : ""}
@@ -4293,6 +4317,13 @@ list.sort((a,b) => String(a.sku||"").localeCompare(String(b.sku||""), "sk"));
 addBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
+
+  // ✅ ak má produkt varianty, nútime výber v detaile (aby sa do košíka nedal "náhodný" variant)
+  const hasVars = Array.isArray(p?.variants) && p.variants.length;
+  if (hasVars) {
+    openProduct(p);
+    return;
+  }
   cartAdd(p, 1);
 });
 
