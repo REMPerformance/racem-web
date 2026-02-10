@@ -855,6 +855,44 @@
       padding-top: 14px;
     }
 
+/* INCLUDED PACKAGE ICONS */
+.includedWrap{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 12px 0 6px 0;
+}
+
+.includedItem{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.25);
+  font-family: var(--font);
+  font-size: 12px;
+  letter-spacing:.14em;
+  text-transform: uppercase;
+  color:#fff;
+}
+
+.includedIcon{
+  width:26px;
+  height:26px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:13px;
+  font-weight:900;
+  background: rgba(179,31,36,0.18);
+  border:1px solid rgba(179,31,36,0.45);
+  box-shadow: 0 0 0 4px rgba(179,31,36,0.10);
+}
+
+
+
     .mLabel{
       font-family: var(--font);
       font-size: 13px;
@@ -3183,6 +3221,8 @@
   <!-- ✅ scrolluje iba obsah (popis + varianty) -->
   <div class="mScroll">
     <div class="mDesc" id="mDesc"></div>
+    <div id="includedIcons" class="includedWrap"></div>
+
 
     <div id="mVariantWrap" style="display:none;">
       <div class="mLabel">Variant</div>
@@ -4412,44 +4452,6 @@ card.addEventListener("click", () => openProduct(p));
     });
   }
 
-  function buildVariantChips() {
-  if (!mVariantList) return;
-  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
-
-  if (!vars.length) {
-    if (mVariantWrap) mVariantWrap.style.display = "none";
-    mVariantList.innerHTML = "";
-    activeVariantIndex = 0;
-    return;
-  }
-
-  if (mVariantWrap) mVariantWrap.style.display = "block";
-  mVariantList.innerHTML = "";
-
-  vars.forEach((v, i) => {
-    const chip = document.createElement("div");
-    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-
-    const name = toSlovak(getVariantLabel(v, i)).toUpperCase();
-
-    const p = getJsonPriceEUR(activeProduct, v);
-    const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
-
-    chip.innerHTML = `
-      <span class="vMain">${escapeHtml(name)}</span>
-      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
-    `;
-
-    chip.addEventListener("click", () => {
-      activeVariantIndex = i;
-      $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
-      updateVariantPrice();
-    });
-
-    mVariantList.appendChild(chip);
-  });
-}
-
 
   function getSelectedVariant(p){
   const vars = Array.isArray(p?.variants) ? p.variants : [];
@@ -4677,6 +4679,27 @@ function getActivePurchaseItem(){
     }
 
     if (mDesc) mDesc.textContent = toSlovak(p.description || p.short || "");
+   // ===== INCLUDED IN PACKAGE (certificate / 3Mmontage / instructions) =====
+const incWrap = document.getElementById("includedIcons");
+if (incWrap){
+  incWrap.innerHTML = "";
+
+  const add = (icon, text) => {
+    const el = document.createElement("div");
+    el.className = "includedItem";
+    el.innerHTML = `<div class="includedIcon">${icon}</div>${text}`;
+    incWrap.appendChild(el);
+  };
+
+  // ukaz len ak je to v JSON a je to "yes"
+  if (p?.certificate === "yes") add("✔", "TÜV certifikát");
+  if (p?.["3Mmontage"] === "yes") add("🛠", "3M montáž");
+  if (p?.instructions === "yes") add("📄", "Montážny návod");
+
+  // ak nič nie je, nech to nezaberá miesto
+  if (!incWrap.children.length) incWrap.innerHTML = "";
+}
+
 
     activeImgIndex = 0;
     setModalImage(0);
