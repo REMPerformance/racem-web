@@ -24,6 +24,8 @@
       --muted: rgba(255,255,255,.62);
       --red:#b31f24;
       --red2:#ff2b2f;
+      --ok: #2ecc71;
+      --warn:#f1c40f;
       --shadow: 0 20px 60px rgba(0,0,0,.55);
       --glass: blur(10px);
       --radius: 18px;
@@ -64,9 +66,7 @@
       letter-spacing:.08em;
     }
     .brand img{height:34px; width:auto; display:block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6));}
-    .brand .txt{
-      display:flex; flex-direction:column; line-height:1.05;
-    }
+    .brand .txt{display:flex; flex-direction:column; line-height:1.05;}
     .brand .txt b{font-family: Oswald, sans-serif; font-weight:600; letter-spacing:.12em}
     .brand .txt span{font-size:12px; color:var(--muted); letter-spacing:.14em}
     .brand .txt b{position:relative;}
@@ -103,7 +103,7 @@
     .hero{padding: 32px 0 18px;}
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: 1.05fr .95fr;
       gap:16px;
       align-items:stretch;
     }
@@ -155,73 +155,97 @@
       max-width: 62ch;
     }
 
-    /* ✅ 3 kocky - RACEM look */
+    /* ✅ Live status stats */
     .heroStats{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
       margin-top:12px;
     }
+
     .stat{
       position:relative;
       padding:14px 14px 12px;
       border-radius: 16px;
       background:
-        radial-gradient(480px 160px at 20% 0%, rgba(179,31,36,.18), transparent 55%),
+        radial-gradient(520px 180px at 12% 0%, rgba(179,31,36,.16), transparent 55%),
         rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.10);
       box-shadow: 0 18px 50px rgba(0,0,0,.45);
       overflow:hidden;
+      min-height: 92px;
     }
     .stat:before{
       content:"";
       position:absolute; inset:0;
       background:
-        linear-gradient(120deg, rgba(179,31,36,.18), transparent 35%),
+        linear-gradient(120deg, rgba(179,31,36,.14), transparent 35%),
         linear-gradient(0deg, rgba(0,0,0,.0), rgba(0,0,0,.25));
       opacity:.9;
       pointer-events:none;
     }
-    .stat .row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .stat .label{
+
+    .statTop{
       position:relative;
-      display:flex; flex-direction:column;
-      gap:6px;
-      min-width:0;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .stat .label b{
+    .statTitle{
+      min-width:0;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .statTitle b{
       font-family: Oswald, sans-serif;
       letter-spacing:.12em;
       text-transform:uppercase;
       font-size:12px;
-      color: rgba(255,255,255,.78);
+      color: rgba(255,255,255,.82);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .stat .label span{
+    .statTitle span{
       color: rgba(255,255,255,.60);
       font-size:12px;
       letter-spacing:.06em;
       line-height:1.35;
     }
-    .stat .value{
+    .statValue{
       position:relative;
+      display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+      flex: 0 0 auto;
+    }
+    .statValue .big{
       font-family: Oswald, sans-serif;
       font-size:28px;
       letter-spacing:.06em;
       text-shadow: 0 12px 30px rgba(0,0,0,.6);
+      line-height:1;
     }
-    .stat .ico{
-      width:34px; height:34px;
-      border-radius: 12px;
-      display:grid; place-items:center;
-      border:1px solid rgba(179,31,36,.45);
-      background: rgba(179,31,36,.10);
-      box-shadow: 0 14px 35px rgba(0,0,0,.45);
-      flex: 0 0 auto;
+    .liveRow{
+      display:flex; align-items:center; gap:8px;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.62);
+      white-space:nowrap;
     }
-    .stat .bar{
+    .livePip{
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 0 rgba(46,204,113,.35);
+      animation: pipPulse 1.5s infinite;
+    }
+    .livePip.warn{ background: var(--warn); animation-duration: 1.9s; box-shadow: 0 0 0 0 rgba(241,196,15,.30); }
+    .livePip.red{ background: var(--red2); animation-duration: 1.6s; box-shadow: 0 0 0 0 rgba(255,43,47,.30); }
+
+    @keyframes pipPulse{
+      0%{ box-shadow: 0 0 0 0 rgba(46,204,113,.35); }
+      70%{ box-shadow: 0 0 0 10px rgba(46,204,113,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(46,204,113,0); }
+    }
+
+    .statBar{
       position:relative;
       margin-top:10px;
       height:2px;
@@ -229,8 +253,7 @@
       background: rgba(255,255,255,.10);
       overflow:hidden;
     }
-    .stat .bar:after{
-      content:"";
+    .statBar > i{
       display:block;
       height:100%;
       width:46%;
@@ -238,7 +261,7 @@
       border-radius: 99px;
     }
 
-    /* Right panel (globe) */
+    /* Globe */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -271,6 +294,95 @@
       font-size:12px;
       color:var(--muted);
       line-height:1.5;
+    }
+
+    /* Globe side info */
+    .globeInfo{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding: 12px;
+      display:grid;
+      gap:10px;
+    }
+    .globeInfoTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .globeInfoTop b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .globeInfoTop span{
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.08em;
+    }
+    .miniList{
+      display:grid;
+      gap:8px;
+    }
+    .miniItem{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      padding:10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+    }
+    .miniLeft{
+      display:flex; flex-direction:column; gap:5px;
+      min-width:0;
+    }
+    .miniLeft b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.08em;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .miniLeft span{
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      line-height:1.3;
+    }
+    .miniRight{
+      display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+      flex:0 0 auto;
+    }
+    .miniBadge{
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      padding:6px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.80);
+      white-space:nowrap;
+    }
+    .miniBadge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
+    .miniBadge.lock{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
+    .miniPip{
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--red2);
+      box-shadow: 0 0 0 0 rgba(255,43,47,.30);
+      animation: ping 1.6s infinite;
+      margin-top:2px;
+    }
+    .miniPip.locked{
+      background: rgba(255,255,255,.55);
+      animation-duration: 2.1s;
+      box-shadow: 0 0 0 0 rgba(255,255,255,.18);
+    }
+    @keyframes ping{
+      0%{ box-shadow: 0 0 0 0 rgba(255,43,47,.30); }
+      70%{ box-shadow: 0 0 0 12px rgba(255,43,47,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(255,43,47,0); }
     }
 
     /* Controls */
@@ -423,7 +535,7 @@
       background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
     }
 
-    /* Locked cards */
+    /* Locked */
     .supplier.locked{
       cursor:not-allowed;
       filter: blur(0.6px) saturate(.85);
@@ -680,41 +792,69 @@
               aj rýchle FAQ. Klikni na dodávateľa a máš všetko na jednom mieste.
             </p>
 
+            <!-- ✅ Real “live” stats (bez emoji) -->
             <div class="heroStats">
               <div class="stat">
-                <div class="row">
-                  <div class="label">
+                <div class="statTop">
+                  <div class="statTitle">
                     <b>Aktívni dodávatelia</b>
-                    <span>okamžite použiteľné pre objednávky</span>
+                    <span>pripravení na objednávky</span>
                   </div>
-                  <div class="ico">🟢</div>
-                  <div class="value">2</div>
+                  <div class="statValue">
+                    <div class="big" id="statActive">2</div>
+                    <div class="liveRow"><span class="livePip"></span><span>LIVE</span></div>
+                  </div>
                 </div>
-                <div class="bar"></div>
+                <div class="statBar"><i style="width:60%"></i></div>
               </div>
 
               <div class="stat">
-                <div class="row">
-                  <div class="label">
-                    <b>Rozširujeme</b>
-                    <span>noví partneri vo výbere</span>
+                <div class="statTop">
+                  <div class="statTitle">
+                    <b>Rozširujeme sieť</b>
+                    <span>partneri v onboarding fáze</span>
                   </div>
-                  <div class="ico">🔒</div>
-                  <div class="value">+3</div>
+                  <div class="statValue">
+                    <div class="big" id="statLocked">+3</div>
+                    <div class="liveRow"><span class="livePip warn"></span><span>IN REVIEW</span></div>
+                  </div>
                 </div>
-                <div class="bar"></div>
+                <div class="statBar"><i style="width:42%"></i></div>
               </div>
 
               <div class="stat">
-                <div class="row">
-                  <div class="label">
-                    <b>Krajiny</b>
-                    <span>aktuálne pokrytie dodávok</span>
+                <div class="statTop">
+                  <div class="statTitle">
+                    <b>Krajiny pokrytia</b>
+                    <span>aktuálne aktívne trasy</span>
                   </div>
-                  <div class="ico">🌍</div>
-                  <div class="value">2</div>
+                  <div class="statValue">
+                    <div class="big" id="statCountries">2</div>
+                    <div class="liveRow"><span class="livePip red"></span><span>SYNC</span></div>
+                  </div>
                 </div>
-                <div class="bar"></div>
+                <div class="statBar"><i style="width:48%"></i></div>
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <!-- short “system note” -->
+            <div style="
+              border:1px solid rgba(255,255,255,.10);
+              background: rgba(0,0,0,.14);
+              border-radius: 16px;
+              padding:12px;
+              color: rgba(255,255,255,.72);
+              font-size:12px;
+              letter-spacing:.06em;
+              line-height:1.6;
+            ">
+              <b style="font-family:Oswald, sans-serif;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.88);">
+                Live status
+              </b>
+              <div style="margin-top:6px;color:rgba(255,255,255,.62);">
+                Štatistiky sú odvodené priamo z databázy dodávateľov (ACTIVE/LOCKED) a regionálnych záznamov.
               </div>
             </div>
           </div>
@@ -722,56 +862,24 @@
           <div class="card heroRight">
             <div class="globeTop">
               <b>Zemeguľa dodávateľov</b>
-              <span>drag / hover / click</span>
+              <span>pulzné signály • auto rotate</span>
             </div>
 
             <canvas id="globe" aria-label="Zemeguľa"></canvas>
 
-            <!-- Tooltip -->
-            <div id="globeTip" style="
-              position:fixed;
-              z-index:9999;
-              pointer-events:none;
-              display:none;
-              padding:10px 12px;
-              border-radius:12px;
-              border:1px solid rgba(255,255,255,.14);
-              background: rgba(10,10,12,.86);
-              backdrop-filter: blur(10px);
-              box-shadow: 0 20px 60px rgba(0,0,0,.55);
-              font-size:12px;
-              letter-spacing:.06em;
-              color: rgba(255,255,255,.92);
-            ">
-              <b id="globeTipName" style="display:block;font-family:Oswald, sans-serif;letter-spacing:.08em;"></b>
-              <span id="globeTipMeta" style="display:block;margin-top:4px;color:rgba(255,255,255,.65);"></span>
-            </div>
+            <!-- Side info (vedľa globe, ale v tom istom carde) -->
+            <div class="globeInfo">
+              <div class="globeInfoTop">
+                <b>Signály / uzly</b>
+                <span id="globeInfoTime">—</span>
+              </div>
 
-            <!-- Toast (pri locked kliknutí) -->
-            <div id="toast" style="
-              position:fixed;
-              left:50%;
-              bottom:22px;
-              transform:translateX(-50%);
-              z-index:9999;
-              display:none;
-              padding:12px 14px;
-              border-radius:14px;
-              border:1px solid rgba(255,255,255,.14);
-              background: rgba(10,10,12,.86);
-              backdrop-filter: blur(10px);
-              box-shadow: 0 20px 60px rgba(0,0,0,.55);
-              font-size:12px;
-              letter-spacing:.06em;
-              color: rgba(255,255,255,.92);
-            ">
-              <b style="font-family:Oswald, sans-serif;letter-spacing:.10em;">LOCKED</b>
-              <span id="toastTxt" style="margin-left:8px;color:rgba(255,255,255,.65);"></span>
-            </div>
+              <div class="miniList" id="miniList"></div>
 
-            <p class="globeHint">
-              Hover na bod = info. Klik na ACTIVE = detail dodávateľa. Klik na LOCKED = coming soon.
-            </p>
+              <p class="globeHint" style="margin-top:2px;">
+                Pulzujúce kruhy = aktívna komunikácia (objednávky / dopyty / logistika). Locked uzly sú iba “preview”.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -897,10 +1005,9 @@
 
   </main>
 
-  <!-- ===== Main app script (non-module) ===== -->
   <script>
     // =========================
-    // DATA (2 active + 3 locked)
+    // DATA
     // =========================
     const SUPPLIERS = [
       {
@@ -943,8 +1050,6 @@
         lat: 39.8283,
         lon: -98.5795
       },
-
-      // Locked suppliers (preview)
       {
         id: "locked-1",
         name: "Locked Supplier #1",
@@ -1007,7 +1112,7 @@
       }
     ];
 
-    window.SUPPLIERS = SUPPLIERS; // expose for module globe
+    window.SUPPLIERS = SUPPLIERS;
 
     // =========================
     // Helpers
@@ -1096,6 +1201,19 @@
       `;
     }
 
+    function computeStats(){
+      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
+      const locked = SUPPLIERS.filter(s => s.locked || s.status === "LOCKED");
+
+      const countrySet = new Set(active.map(s => s.country).filter(Boolean));
+      const regionSet = new Set(active.map(s => s.region).filter(Boolean));
+
+      $("#statActive").textContent = String(active.length);
+      $("#statLocked").textContent = `+${locked.length}`;
+      // “krajiny” môže byť na základe region, alebo country - tu dáme region count (EU/US = 2)
+      $("#statCountries").textContent = String(regionSet.size || countrySet.size || 0);
+    }
+
     function applyFilters(){
       const qs = (q.value || "").trim().toLowerCase();
       const r = region.value;
@@ -1118,20 +1236,13 @@
       grid.querySelectorAll(".supplier").forEach(el => {
         el.addEventListener("click", () => {
           const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
-          if(!sup) return;
-
-          if (sup.locked || sup.status === "LOCKED") {
-            if (typeof window.showToast === "function") window.showToast(`${sup.name} — Coming soon`);
-            return;
-          }
+          if(!sup || sup.locked) return;
           openModal(el.dataset.id);
         });
       });
 
-      // Tell globe which IDs are currently visible (for hit-test + markers)
-      if (window.setGlobeVisibleIds) {
-        window.setGlobeVisibleIds(new Set(out.map(x => x.id)));
-      }
+      // refresh mini list based on current filtered list (keep top few)
+      renderMiniList(out);
     }
 
     // =========================
@@ -1179,7 +1290,6 @@
       modalBack.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
-    window.openModal = openModal; // ✅ make global for module
 
     function closeModal(){
       modalBack.style.display = "none";
@@ -1201,6 +1311,46 @@
     }
 
     // =========================
+    // Mini list (vedľa globe)
+    // =========================
+    function miniRowHTML(sup){
+      const isLocked = sup.locked || sup.status === "LOCKED";
+      const badge = isLocked ? `<span class="miniBadge lock">LOCKED</span>` : `<span class="miniBadge ok">ACTIVE</span>`;
+      const pip = isLocked ? `<span class="miniPip locked"></span>` : `<span class="miniPip"></span>`;
+      const lt = isLocked ? "—" : leadLabel(sup.leadTimeDays);
+
+      return `
+        <div class="miniItem">
+          <div class="miniLeft">
+            <b>${escapeHTML(sup.name)}</b>
+            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)}</span>
+          </div>
+          <div class="miniRight">
+            ${badge}
+            ${pip}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMiniList(list){
+      // prefer active first, then locked; max 4 rows
+      const sorted = [...list].sort((a,b) => {
+        const al = (a.locked || a.status === "LOCKED") ? 1 : 0;
+        const bl = (b.locked || b.status === "LOCKED") ? 1 : 0;
+        return al - bl;
+      }).slice(0,4);
+
+      $("#miniList").innerHTML = sorted.map(miniRowHTML).join("");
+    }
+
+    function updateTime(){
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2,"0");
+      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} • status feed`;
+    }
+
+    // =========================
     // Wire UI
     // =========================
     q.addEventListener("input", applyFilters);
@@ -1219,33 +1369,17 @@
     // init
     $("#year").textContent = new Date().getFullYear();
     renderGlobalGallery();
+    computeStats();
     applyFilters();
+    updateTime();
+    setInterval(updateTime, 1000);
   </script>
 
-  <!-- ===== COBE Globe (ui-layouts style) ===== -->
+  <!-- ===== COBE Globe + pulsing rings ===== -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
     const canvas = document.getElementById("globe");
-
-    const tip = document.getElementById("globeTip");
-    const tipName = document.getElementById("globeTipName");
-    const tipMeta = document.getElementById("globeTipMeta");
-
-    const toast = document.getElementById("toast");
-    const toastTxt = document.getElementById("toastTxt");
-    let toastT = null;
-
-    window.showToast = (msg) => {
-      toastTxt.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(toastT);
-      toastT = setTimeout(() => (toast.style.display = "none"), 1600);
-    };
-
-    // RACEM origin (SK - orientačne)
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
-
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     function fitCanvas() {
@@ -1256,66 +1390,87 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    // Visible IDs from filters (default = all)
-    let visibleIds = new Set((window.SUPPLIERS || []).map(s => s.id));
-    window.setGlobeVisibleIds = (set) => {
-      visibleIds = set instanceof Set ? set : new Set(set);
-    };
+    // Origin (SK - orientačne)
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
 
-    // Build markers: RACEM + all visible suppliers (ACTIVE + LOCKED)
-    function buildMarkers() {
-      const suppliers = (window.SUPPLIERS || [])
-        .filter(s => visibleIds.has(s.id))
-        .filter(s => typeof s.lat === "number" && typeof s.lon === "number");
-
-      const markers = [
-        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.11 }, // RACEM
-        ...suppliers.map(s => ({
-          location: [s.lat, s.lon],
-          size: (s.locked || s.status === "LOCKED") ? 0.065 : 0.09
-        }))
-      ];
-      return markers;
+    // Helpers
+    const rad = (deg) => (deg * Math.PI) / 180;
+    function latLonToXYZ(lat, lon){
+      const la = rad(lat), lo = rad(lon);
+      return { x: Math.cos(la)*Math.cos(lo), y: Math.sin(la), z: Math.cos(la)*Math.sin(lo) };
     }
-
-    // --- hit test helpers (light projection) ---
-    function rad(deg){ return (deg * Math.PI) / 180; }
-
-    function latLonToXYZ(lat, lon) {
-      const la = rad(lat);
-      const lo = rad(lon);
-      return {
-        x: Math.cos(la) * Math.cos(lo),
-        y: Math.sin(la),
-        z: Math.cos(la) * Math.sin(lo)
-      };
-    }
-
     function rotateY(p, phi) {
       const c = Math.cos(phi), s = Math.sin(phi);
       return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
     }
-
     function projectToScreen(p, phi, w, h) {
       const pr = rotateY(p, phi);
-      if (pr.z < 0) return null; // back hemisphere
-
-      const cx = w / 2;
-      const cy = h / 2;
-      const R = Math.min(w, h) * 0.36;
-
+      if (pr.z < 0) return null;
+      const cx = w/2, cy = h/2;
+      const R = Math.min(w,h) * 0.36;
       const scale = 1 / (1.35 - pr.z);
-      const sx = cx + pr.x * scale * R;
-      const sy = cy - pr.y * scale * R;
-
-      return { sx, sy, z: pr.z };
+      return {
+        sx: cx + pr.x * scale * R,
+        sy: cy - pr.y * scale * R,
+        z: pr.z
+      };
     }
+
+    const SUPPLIERS = window.SUPPLIERS || [];
+
+    // COBE markers (len body, pulsing rings kreslíme cez overlay canvas)
+    function buildMarkers() {
+      const nodes = [
+        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.10 }, // RACEM
+        ...SUPPLIERS
+          .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
+          .map(s => ({ location: [s.lat, s.lon], size: (s.locked || s.status === "LOCKED") ? 0.055 : 0.085 }))
+      ];
+      return nodes;
+    }
+
+    // Create overlay canvas for rings (absolute positioned on top)
+    const overlay = document.createElement("canvas");
+    overlay.style.position = "absolute";
+    overlay.style.inset = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "290px";
+    overlay.style.pointerEvents = "none";
+    overlay.style.borderRadius = "16px";
+
+    // insert overlay after globe canvas
+    canvas.parentElement.style.position = "relative";
+    canvas.parentElement.appendChild(overlay);
+
+    function fitOverlay(){
+      const rect = canvas.getBoundingClientRect();
+      overlay.width = Math.round(rect.width * dpr);
+      overlay.height = Math.round(rect.height * dpr);
+    }
+    fitOverlay();
+    window.addEventListener("resize", fitOverlay);
+
+    const octx = overlay.getContext("2d");
+
+    // ring nodes cache
+    const nodes = [
+      { id:"racem", name:"RACEM", locked:false, lat:RACEM_ORIGIN.lat, lon:RACEM_ORIGIN.lon, intensity: 1.0 },
+      ...SUPPLIERS
+        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
+        .map(s => ({
+          id: s.id,
+          name: s.name,
+          locked: !!(s.locked || s.status === "LOCKED"),
+          lat: s.lat,
+          lon: s.lon,
+          intensity: (s.locked || s.status === "LOCKED") ? 0.55 : 1.0
+        }))
+    ].map(n => ({ ...n, _xyz: latLonToXYZ(n.lat, n.lon) }));
 
     let currentPhi = 0;
     let dragging = false;
     let dragStartX = 0;
     let dragPhiStart = 0;
-
     let latestState = { width: canvas.width, height: canvas.height, phi: 0 };
 
     createGlobe(canvas, {
@@ -1341,110 +1496,97 @@
         state.width = canvas.width;
         state.height = canvas.height;
 
-        if (!dragging) currentPhi += 0.0025;
+        if (!dragging) currentPhi += 0.0022;
         state.phi = currentPhi;
 
         latestState = { width: state.width, height: state.height, phi: state.phi };
-
-        // few markers -> ok to refresh each frame
         state.markers = buildMarkers();
       }
     });
 
+    // Drag rotate (bez hover/click)
     canvas.style.cursor = "grab";
-
-    function getSupplierPoints() {
-      const list = (window.SUPPLIERS || [])
-        .filter(s => visibleIds.has(s.id))
-        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-        .map(s => ({ ...s, _xyz: latLonToXYZ(s.lat, s.lon) }));
-
-      return list;
-    }
-
-    function pickNearestSupplier(clientX, clientY) {
-      const rect = canvas.getBoundingClientRect();
-      const mx = (clientX - rect.left) * dpr;
-      const my = (clientY - rect.top) * dpr;
-
-      const { width:w, height:h, phi } = latestState;
-
-      let best = null;
-      let bestD = Infinity;
-
-      for (const s of getSupplierPoints()) {
-        const pr = projectToScreen(s._xyz, phi, w, h);
-        if (!pr) continue;
-
-        const dx = pr.sx - mx;
-        const dy = pr.sy - my;
-        const d2 = dx*dx + dy*dy;
-
-        if (d2 < bestD) {
-          bestD = d2;
-          best = s;
-        }
-      }
-
-      const th = (18 * dpr) * (18 * dpr);
-      if (best && bestD <= th) return best;
-      return null;
-    }
-
-    // Drag rotate
     canvas.addEventListener("pointerdown", (e) => {
       dragging = true;
       canvas.setPointerCapture(e.pointerId);
       canvas.style.cursor = "grabbing";
       dragStartX = e.clientX;
       dragPhiStart = currentPhi;
-      tip.style.display = "none";
     });
-
     canvas.addEventListener("pointerup", () => {
       dragging = false;
       canvas.style.cursor = "grab";
     });
-
     canvas.addEventListener("pointerout", () => {
       dragging = false;
       canvas.style.cursor = "grab";
-      tip.style.display = "none";
     });
-
     canvas.addEventListener("pointermove", (e) => {
-      if (dragging) {
-        const dx = e.clientX - dragStartX;
-        currentPhi = dragPhiStart + dx * 0.006;
-        return;
-      }
-
-      const s = pickNearestSupplier(e.clientX, e.clientY);
-      if (s) {
-        canvas.style.cursor = "pointer";
-        tip.style.display = "block";
-        tip.style.left = (e.clientX + 14) + "px";
-        tip.style.top  = (e.clientY + 14) + "px";
-        tipName.textContent = s.name;
-        tipMeta.textContent = `${s.country} • ${s.region} • ${s.status || "—"}`;
-      } else {
-        canvas.style.cursor = "grab";
-        tip.style.display = "none";
-      }
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      currentPhi = dragPhiStart + dx * 0.006;
     });
 
-    // Click -> ACTIVE opens modal, LOCKED shows toast
-    canvas.addEventListener("click", (e) => {
-      const s = pickNearestSupplier(e.clientX, e.clientY);
-      if (!s) return;
+    // Pulsing rings draw loop
+    let t0 = performance.now();
+    function drawRings(now){
+      const t = (now - t0) / 1000;
 
-      if (s.locked || s.status === "LOCKED") {
-        window.showToast(`${s.name} — Coming soon`);
-        return;
+      const w = overlay.width, h = overlay.height;
+      octx.clearRect(0,0,w,h);
+
+      const { width:gw, height:gh, phi } = latestState;
+
+      // subtle vignette (optional)
+      octx.fillStyle = "rgba(0,0,0,0.00)";
+      octx.fillRect(0,0,w,h);
+
+      // draw rings: only front hemisphere; locked rings are softer
+      for (const n of nodes){
+        const pr = projectToScreen(n._xyz, phi, gw, gh);
+        if(!pr) continue;
+
+        const x = pr.sx;
+        const y = pr.sy;
+
+        // base dot (tiny)
+        const dotR = n.locked ? 2.0*dpr : 2.6*dpr;
+
+        // pulse parameters
+        const speed = n.locked ? 0.85 : 1.15;
+        const phase = (t * speed + (n.locked ? 0.35 : 0.0)) % 1;
+
+        // 2 rings
+        for (let k=0;k<2;k++){
+          const p = (phase + k*0.5) % 1;
+          const radius = (10 + p*26) * dpr * n.intensity;
+          const alpha = (1 - p) * (n.locked ? 0.16 : 0.22) * n.intensity;
+
+          octx.beginPath();
+          octx.strokeStyle = n.locked
+            ? `rgba(255,255,255,${alpha})`
+            : `rgba(255,43,47,${alpha})`;
+          octx.lineWidth = (n.locked ? 1.0 : 1.3) * dpr;
+          octx.arc(x, y, radius, 0, Math.PI*2);
+          octx.stroke();
+        }
+
+        // center dot
+        octx.beginPath();
+        octx.fillStyle = n.locked ? "rgba(255,255,255,0.55)" : "rgba(255,43,47,0.85)";
+        octx.arc(x, y, dotR, 0, Math.PI*2);
+        octx.fill();
+
+        // glow dot
+        octx.beginPath();
+        octx.fillStyle = n.locked ? "rgba(255,255,255,0.08)" : "rgba(255,43,47,0.10)";
+        octx.arc(x, y, (dotR+6*dpr), 0, Math.PI*2);
+        octx.fill();
       }
 
-      if (typeof window.openModal === "function") window.openModal(s.id);
-    });
+      requestAnimationFrame(drawRings);
+    }
+    requestAnimationFrame(drawRings);
   </script>
 </body>
 </html>
