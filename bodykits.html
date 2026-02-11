@@ -149,7 +149,7 @@
     }
     .heroStats{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap:10px;
       margin-top:12px;
     }
@@ -521,6 +521,20 @@
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
     }
+    .brand .txt b{
+  position:relative;
+}
+.brand .txt b:after{
+  content:"";
+  display:block;
+  width:34px;
+  height:2px;
+  margin-top:6px;
+  background: var(--red);
+  border-radius: 99px;
+  opacity:.9;
+}
+
   </style>
 </head>
 
@@ -528,14 +542,17 @@
   <header>
     <div class="wrap">
       <div class="nav">
-        <a class="brand" href="index.html" aria-label="RACEM">
-          <!-- Daj sem tvoje logo -->
-          <img src="img/logo-racem.png" alt="RACEM logo" onerror="this.style.display='none'">
-          <div class="txt">
-            <b>RACEM</b>
-            <span>Suppliers / Brands</span>
-          </div>
-        </a>
+        <a class="brand" href="index.html" aria-label="RACEM Group">
+  <img src="rmgroup.png" alt="RACEM Group logo"
+       style="height:36px;width:auto;display:block;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));"
+       onerror="this.style.display='none'">
+
+  <div class="txt">
+    <b>RACEM Group</b>
+    <span>Suppliers / Brands</span>
+  </div>
+</a>
+
 
         <nav class="navlinks">
           <a class="chip" href="index.html">Domov</a>
@@ -560,20 +577,28 @@
               aj rýchle FAQ. Klikni na dodávateľa a máš všetko na jednom mieste.
             </p>
 
-            <div class="heroStats">
-              <div class="stat">
-                <b id="statCount">—</b>
-                <span>Dodávatelia</span>
-              </div>
-              <div class="stat">
-                <b id="statFast">—</b>
-                <span>Rýchli (1–5 dní)</span>
-              </div>
-              <div class="stat">
-                <b id="statCountries">—</b>
-                <span>Krajiny</span>
-              </div>
-            </div>
+           <div class="heroStats">
+  <div class="stat">
+    <b>2</b>
+    <span>Dodávatelia</span>
+  </div>
+
+  <div class="stat">
+    <b>+3</b>
+    <span>Aktuálne rozširujeme</span>
+  </div>
+
+  <div class="stat">
+    <b>0</b>
+    <span>Rýchli dodávatelia</span>
+  </div>
+
+  <div class="stat">
+    <b>2</b>
+    <span>Krajiny</span>
+  </div>
+</div>
+
           </div>
 
           <div class="card heroRight">
@@ -740,88 +765,48 @@
     // =========================
     // DEMO DATA (prepíš na svoje)
     // =========================
-    const SUPPLIERS = [
-      {
-        id: "csr",
-        name: "CSR Automotive",
-        region: "EU",
-        country: "DE",
-        tags: ["Bodykits", "Aero", "ABS"],
-        leadTimeDays: [3, 10],
-        stock: "mix",
-        shipping: "Kuriér / paleta (podľa kategórie)",
-        payment: "Karta / prevod",
-        website: "https://www.csr-automotive.com/",
-        desc: "Široká ponuka bodykitov a aero. Mix sklad / objednávka, stabilná dostupnosť.",
-        heroImg: "img/suppliers/csr.jpg",
-        gallery: ["img/suppliers/csr1.jpg","img/suppliers/csr2.jpg","img/suppliers/csr3.jpg"],
-        faq: [
-          { q: "Sú produkty lakovateľné?", a: "Áno, väčšina dielov ide ako lakovateľný základ. Záleží od materiálu." },
-          { q: "Viete dodať TÜV?", a: "Pri niektorých produktoch áno (podľa SKU a série)." }
-        ],
-        // pseudo geopozícia pre globe
-        lat: 51.2, lon: 10.4
-      },
-      {
-        id: "sfxla",
-        name: "Streetfighter LA",
-        region: "EU",
-        country: "NL",
-        tags: ["Widebody", "Drift", "FRP"],
-        leadTimeDays: [10, 28],
-        stock: "made_to_order",
-        shipping: "Kuriér / paleta",
-        payment: "Prevod (často pri custom)",
-        website: "",
-        desc: "Agresívne widebody riešenia, často výroba na objednávku. Ideálne pre drift/projekty.",
-        heroImg: "img/suppliers/sfxla.jpg",
-        gallery: ["img/suppliers/sfxla1.jpg","img/suppliers/sfxla2.jpg","img/suppliers/sfxla3.jpg"],
-        faq: [
-          { q: "Dá sa kúpiť len časť kitu?", a: "Často áno (napr. lemy), ale musí sa overiť dostupnosť dielu." },
-          { q: "Ako je to s fittingom?", a: "FRP vyžaduje prácu na montáži, je to normálne." }
-        ],
-        lat: 52.1, lon: 5.3
-      },
-      {
-        id: "nengun",
-        name: "Nengun Performance",
-        region: "JP",
-        country: "JP",
-        tags: ["JDM", "Engine", "Rare"],
-        leadTimeDays: [7, 35],
-        stock: "mix",
-        shipping: "Air / Sea (podľa rozmerov)",
-        payment: "Karta / prevod",
-        website: "https://www.nengun.com/",
-        desc: "Japonské diely a značky. Doby závisia od skladu a exportu.",
-        heroImg: "img/suppliers/nengun.jpg",
-        gallery: ["img/suppliers/nengun1.jpg","img/suppliers/nengun2.jpg","img/suppliers/nengun3.jpg"],
-        faq: [
-          { q: "Colné/vat?", a: "Áno, pri dovoze mimo EU sa rieši clo a DPH podľa pravidiel." },
-          { q: "Sú diely skladom?", a: "Je to mix. Vždy sa potvrdzuje dostupnosť." }
-        ],
-        lat: 35.7, lon: 139.7
-      },
-      {
-        id: "dubai",
-        name: "UAE Supplier (demo)",
-        region: "AE",
-        country: "AE",
-        tags: ["Luxury", "Aero"],
-        leadTimeDays: [6, 18],
-        stock: "mix",
-        shipping: "Air freight",
-        payment: "Prevod",
-        website: "",
-        desc: "Ukážka pre Blízky východ. Tu si dáš svojho reálneho dodávateľa.",
-        heroImg: "img/suppliers/uae.jpg",
-        gallery: ["img/suppliers/uae1.jpg","img/suppliers/uae2.jpg","img/suppliers/uae3.jpg"],
-        faq: [
-          { q: "Prečo je shipping vyšší?", a: "Air freight + rozmerné balíky. Cena sa počíta podľa objemu." }
-        ],
-        lat: 25.2, lon: 55.3
-      },
-    ];
+   const SUPPLIERS = [
+  {
+    id: "csr",
+    name: "CSR Automotive",
+    region: "EU",
+    country: "Nemecko",
+    tags: ["Bodykits", "Aero", "ABS"],
+    leadTimeDays: [7, 14],
+    stock: "mix",
+    shipping: "Kuriér / paleta",
+    payment: "Karta / prevod",
+    website: "",
+    desc: "Bodykity a aero diely. Stabilný EU dodávateľ.",
+    heroImg: "img/suppliers/csr.jpg",
+    gallery: [],
+    faq: [],
+    // 🇩🇪 Nemecko
+    lat: 51.1657,
+    lon: 10.4515
+  },
+
+  {
+    id: "sfxla",
+    name: "SFXLA",
+    region: "US",
+    country: "USA",
+    tags: ["Widebody", "Race", "FRP"],
+    leadTimeDays: [18, 35],
+    stock: "made_to_order",
+    shipping: "Air / Sea freight",
+    payment: "Prevod",
+    website: "",
+    desc: "Widebody a race diely. Väčšina na objednávku.",
+    heroImg: "img/suppliers/sfxla.jpg",
+    gallery: [],
+    faq: [],
+    // 🇺🇸 USA
+    lat: 39.8283,
+    lon: -98.5795
+  }
+];
+
 
     // =========================
     // Helpers
@@ -849,10 +834,8 @@
     }
 
     function renderStats(list){
-      $("#statCount").textContent = list.length;
-      $("#statFast").textContent = list.filter(x => speedBucket(x.leadTimeDays) === "fast").length;
-      $("#statCountries").textContent = new Set(list.map(x => x.country)).size;
-    }
+  // štatistiky sú ručne nastavené
+}
 
     function cardHTML(x){
       const tags = x.tags.slice(0,3).map(t => `<span class="badge">${t}</span>`).join("");
