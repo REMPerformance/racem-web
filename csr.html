@@ -4458,22 +4458,122 @@ card.addEventListener("click", () => openProduct(p));
   return vars[activeVariantIndex] || null;
 }
 
-function getVariantLabel(v, i){
-  // CSR JSON: často má "title", nie "name"
-  const raw = (v?.name || v?.title || v?.sku || `Variant ${i+1}`);
-  return String(raw).trim();
+function cleanVariantLabelKeepParens(raw, productTitle) {
+  let s = String(raw || "").trim();
+  if (!s) return "";
+
+  // preklad (ak už prekladáš inde, toto nič nepokazí)
+  s = toSlovak(s).trim();
+
+  // častý bordel: "MATERIÁL | CELÝ NÁZOV PRODUKTU"
+  // necháme len ľavú časť (materiál)
+  if (s.includes("|")) s = s.split("|")[0].trim();
+
+  // ⚠️ zátvorky NEODSTRAŇUJEME (user chce zachovať)
+  // iba normalizácia medzier
+  s = s.replace(/\s+/g, " ").trim();
+
+  // --- filter: keď sa variant = celý názov produktu (ten červený text)
+  const t = String(productTitle || "").replace(/\s+/g, " ").trim();
+  if (t) {
+    const sL = s.toLowerCase();
+    const tL = t.toLowerCase();
+
+    // presná zhoda
+    if (sL === tL) return "";
+
+    // ak variant obsahuje celý title alebo title obsahuje variant a je to "dlhé"
+    // (aby sme nevyhodili legit krátke veci)
+    if ((sL.includes(tL) || tL.includes(sL)) && Math.max(s.length, t.length) >= 40) {
+      return "";
+    }
+  }
+
+  return s;
+}
+
+function getVariantLabel(v, i) {
+  const raw = (v?.name || v?.title || "");
+  const cleaned = cleanVariantLabelKeepParens(raw, activeProduct?.title);
+  if (!cleaned) return "";
+  return cleaned;
 }
 
 function buildVariantChips() {
   if (!mVariantList) return;
-  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
   if (!vars.length) {
     if (mVariantWrap) mVariantWrap.style.display = "none";
     mVariantList.innerHTML = "";
     activeVariantIndex = 0;
     return;
   }
+
+  // pripravíme položky + vyfiltrujeme zlé varianty (celý názov produktu, prázdne)
+  const items = vars.map((v, idx) => {
+    const label = getVariantLabel(v, idx); // zátvorky zostanú
+    const priceNum = getJsonPriceEUR(activeProduct, v);
+    return {
+      v, idx,
+      label,
+      upper: String(label || "").toUpperCase(),
+      priceNum: (typeof priceNum === "number") ? priceNum : null
+    };
+  }).filter(it => it.label && it.label.trim().length);
+
+  if (!items.length) {
+    if (mVariantWrap) mVariantWrap.style.display = "none";
+    mVariantList.innerHTML = "";
+    activeVariantIndex = 0;
+    return;
+  }
+
+  if (mVariantWrap) mVariantWrap.style.display = "block";
+  mVariantList.innerHTML = "";
+
+  // Carbon look dvojice: lacnejší = matný, drahší = lesklý
+  const carbon = items
+    .filter(it => it.upper === "CARBON LOOK" && it.priceNum !== null)
+    .sort((a, b) => a.priceNum - b.priceNum);
+
+  const carbonMin = carbon[0] || null; // najlacnejší
+  const carbonMax = carbon.length ? carbon[carbon.length - 1] : null; // najdrahší
+
+  // ak aktívny index padol (vyfiltroval sa), nastav na prvý
+  if (!items.some(it => it.idx === activeVariantIndex)) {
+    activeVariantIndex = items[0].idx;
+  }
+
+  items.forEach((it) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (it.idx === activeVariantIndex ? " active" : "");
+
+    let displayName = it.label; // zátvorky ostávajú
+
+    if (it.upper === "CARBON LOOK" && carbon.length >= 2) {
+      if (carbonMax && it.idx === carbonMax.idx) displayName = "CARBON LOOK - LESKLÝ";
+      else if (carbonMin && it.idx === carbonMin.idx) displayName = "CARBON LOOK - MATNÝ";
+    }
+
+    const price = (it.priceNum !== null) ? fmtEUR(it.priceNum) : PRICE_ON_REQUEST;
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(displayName)}</span>
+      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+    `;
+
+    chip.addEventListener("click", () => {
+      activeVariantIndex = it.idx;
+      $$(".vChip", mVariantList).forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      updateVariantPrice();
+    });
+
+    mVariantList.appendChild(chip);
+  });
+}
+
 
   if (mVariantWrap) mVariantWrap.style.display = "block";
   mVariantList.innerHTML = "";
