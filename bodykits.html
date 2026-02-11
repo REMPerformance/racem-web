@@ -69,9 +69,7 @@
     }
     .brand .txt b{font-family: Oswald, sans-serif; font-weight:600; letter-spacing:.12em}
     .brand .txt span{font-size:12px; color:var(--muted); letter-spacing:.14em}
-    .brand .txt b{
-      position:relative;
-    }
+    .brand .txt b{position:relative;}
     .brand .txt b:after{
       content:"";
       display:block;
@@ -617,14 +615,10 @@
               aj rýchle FAQ. Klikni na dodávateľa a máš všetko na jednom mieste.
             </p>
 
-            <!-- ✅ 2 riadky × 3 -->
             <div class="heroStats">
               <div class="stat"><b>2</b><span>Dodávatelia</span></div>
               <div class="stat"><b>+3</b><span>Aktuálne rozširujeme</span></div>
-              <div class="stat"><b>0</b><span>Rýchli (1–5 dní)</span></div>
               <div class="stat"><b>2</b><span>Krajiny</span></div>
-              <div class="stat"><b>2</b><span>Aktívni</span></div>
-              <div class="stat"><b>3</b><span>Locked</span></div>
             </div>
           </div>
 
@@ -634,9 +628,9 @@
               <span>drag / hover</span>
             </div>
 
-            <canvas id="globe" width="900" height="520" aria-label="Zemeguľa"></canvas>
+            <canvas id="globe" aria-label="Zemeguľa"></canvas>
 
-            <!-- ✅ Hover tooltip -->
+            <!-- Tooltip (hover nad markerom) -->
             <div id="globeTip" style="
               position:fixed;
               z-index:9999;
@@ -657,7 +651,7 @@
             </div>
 
             <p class="globeHint">
-              Klik na bod = detail dodávateľa. Červené linky sú smer objednávok (RACEM → dodávateľ).
+              Klik na bod = detail dodávateľa. (Locked sa na globe nezobrazujú.)
             </p>
           </div>
         </div>
@@ -781,6 +775,7 @@
 
   </main>
 
+  <!-- ===== Main app script (non-module) ===== -->
   <script>
     // =========================
     // DATA (2 active + 3 locked)
@@ -803,7 +798,6 @@
         faq: [],
         status: "ACTIVE",
         locked: false,
-        // 🇩🇪 Germany
         lat: 51.1657,
         lon: 10.4515
       },
@@ -824,7 +818,6 @@
         faq: [],
         status: "ACTIVE",
         locked: false,
-        // 🇺🇸 USA
         lat: 39.8283,
         lon: -98.5795
       },
@@ -885,6 +878,7 @@
         locked: true
       },
     ];
+    window.SUPPLIERS = SUPPLIERS; // expose for module globe
 
     // =========================
     // Helpers
@@ -998,13 +992,16 @@
 
       grid.querySelectorAll(".supplier").forEach(el => {
         el.addEventListener("click", () => {
-          const s = SUPPLIERS.find(x => x.id === el.dataset.id);
-          if(!s || s.locked) return;
+          const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
+          if(!sup || sup.locked) return;
           openModal(el.dataset.id);
         });
       });
 
-      globeState.filteredIds = new Set(out.map(x => x.id));
+      // refresh globe markers with filtered active suppliers
+      if (window.setGlobeActiveIds) {
+        window.setGlobeActiveIds(new Set(out.filter(x => !x.locked && x.status === "ACTIVE").map(x => x.id)));
+      }
     }
 
     // =========================
@@ -1051,14 +1048,11 @@
 
       modalBack.style.display = "flex";
       document.body.style.overflow = "hidden";
-
-      globeState.selectedId = id;
     }
 
     function closeModal(){
       modalBack.style.display = "none";
       document.body.style.overflow = "";
-      globeState.selectedId = null;
     }
     closeBtn.addEventListener("click", closeModal);
     modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
@@ -1074,275 +1068,6 @@
         <img src="${x.src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
       `).join("");
     }
-
-    // =========================
-    // Globe (canvas) + continents + hover + red links
-    // =========================
-    const canvas = document.getElementById("globe");
-    const ctx = canvas.getContext("2d");
-
-    const globeState = {
-      drag:false,
-      rot: 0.9,
-      rotVel: 0.0025,
-      mx:0,
-      filteredIds: new Set(SUPPLIERS.map(s => s.id)),
-      selectedId: null
-    };
-
-    const tip = document.getElementById("globeTip");
-    const tipName = document.getElementById("globeTipName");
-    const tipMeta = document.getElementById("globeTipMeta");
-
-    // RACEM origin (SK - orientačne)
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
-
-    function latLonToXYZ(lat, lon){
-      const la = lat * Math.PI/180;
-      const lo = lon * Math.PI/180;
-      return {
-        x: Math.cos(la) * Math.cos(lo),
-        y: Math.sin(la),
-        z: Math.cos(la) * Math.sin(lo)
-      };
-    }
-
-    function project(p, rot){
-      const x = p.x * Math.cos(rot) + p.z * Math.sin(rot);
-      const z = -p.x * Math.sin(rot) + p.z * Math.cos(rot);
-      const y = p.y;
-      const scale = 1 / (1.6 - z);
-      return { x, y, z, sx: x*scale, sy: y*scale, scale };
-    }
-
-    // stylized continents (light)
-    const CONTINENTS = [
-      [[72,-168],[60,-150],[50,-125],[30,-115],[15,-95],[20,-75],[35,-70],[50,-80],[60,-105],[72,-130],[72,-168]],
-      [[12,-82],[5,-76],[-10,-74],[-25,-70],[-40,-66],[-55,-72],[-50,-60],[-30,-52],[-10,-50],[5,-60],[12,-82]],
-      [[72,-10],[60,10],[55,30],[45,40],[35,32],[30,20],[25,10],[10,10],[-10,20],[-35,20],[-35,10],[-10,0],[10,-10],[35,-10],[45,0],[55,-5],[72,-10]],
-      [[75,35],[65,60],[60,90],[55,120],[45,140],[30,150],[15,135],[10,110],[5,90],[10,70],[20,55],[35,45],[55,45],[75,35]],
-      [[-10,112],[-20,115],[-30,120],[-36,135],[-30,150],[-20,154],[-12,145],[-10,112]],
-    ];
-
-    function drawGlobe(){
-      const w = canvas.width, h = canvas.height;
-      ctx.clearRect(0,0,w,h);
-
-      const cx = w/2, cy = h/2 + 20;
-      const R = Math.min(w,h)*0.34;
-
-      // sphere
-      const grad = ctx.createRadialGradient(cx - R*0.25, cy - R*0.25, R*0.1, cx, cy, R*1.15);
-      grad.addColorStop(0, "rgba(255,255,255,0.08)");
-      grad.addColorStop(0.5, "rgba(255,255,255,0.04)");
-      grad.addColorStop(1, "rgba(0,0,0,0.35)");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI*2);
-      ctx.fill();
-
-      // continents
-      ctx.fillStyle = "rgba(255,255,255,0.06)";
-      ctx.strokeStyle = "rgba(255,255,255,0.09)";
-      ctx.lineWidth = 1;
-
-      for(const poly of CONTINENTS){
-        ctx.beginPath();
-        let started = false;
-        for(const [lat, lon] of poly){
-          const p = latLonToXYZ(lat, lon);
-          const pr = project(p, globeState.rot);
-          if(pr.z < 0.0) continue;
-          const x = cx + pr.sx * R;
-          const y = cy - pr.sy * R;
-          if(!started){ ctx.moveTo(x,y); started = true; }
-          else ctx.lineTo(x,y);
-        }
-        if(started){
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }
-      }
-
-      // grid lines (light)
-      ctx.strokeStyle = "rgba(255,255,255,0.07)";
-      ctx.lineWidth = 1;
-
-      for(let lat=-60; lat<=60; lat+=30){
-        ctx.beginPath();
-        for(let lon=-180; lon<=180; lon+=8){
-          const p = latLonToXYZ(lat, lon);
-          const pr = project(p, globeState.rot);
-          const x = cx + pr.sx * R;
-          const y = cy - pr.sy * R;
-          if(lon === -180) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.stroke();
-      }
-
-      // origin + links
-      const o = latLonToXYZ(RACEM_ORIGIN.lat, RACEM_ORIGIN.lon);
-      const opr = project(o, globeState.rot);
-      const ox = cx + opr.sx * R;
-      const oy = cy - opr.sy * R;
-
-      if(opr.z >= 0.0){
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(255,43,47,0.90)";
-        ctx.arc(ox, oy, 5.5, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(255,43,47,0.14)";
-        ctx.arc(ox, oy, 14, 0, Math.PI*2);
-        ctx.fill();
-      }
-
-      ctx.strokeStyle = "rgba(255,43,47,0.45)";
-      ctx.lineWidth = 1.6;
-
-      for(const s of SUPPLIERS){
-        if(s.locked || s.status !== "ACTIVE") continue;
-        if(typeof s.lat !== "number" || typeof s.lon !== "number") continue;
-
-        const p = latLonToXYZ(s.lat, s.lon);
-        const pr = project(p, globeState.rot);
-        if(pr.z < 0.0 || opr.z < 0.0) continue;
-
-        const sx = cx + pr.sx * R;
-        const sy = cy - pr.sy * R;
-        const mx = (ox + sx) / 2;
-        const my = (oy + sy) / 2 - 22;
-
-        ctx.beginPath();
-        ctx.moveTo(ox, oy);
-        ctx.quadraticCurveTo(mx, my, sx, sy);
-        ctx.stroke();
-      }
-
-      // supplier points (only those with lat/lon)
-      const pts = SUPPLIERS
-        .filter(s => globeState.filteredIds.has(s.id))
-        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-        .map(s => {
-          const p = latLonToXYZ(s.lat, s.lon);
-          const pr = project(p, globeState.rot);
-          return { s, pr };
-        })
-        .sort((a,b) => a.pr.z - b.pr.z);
-
-      for(const it of pts){
-        const {s, pr} = it;
-        if(pr.z < 0.0) continue;
-
-        const x = cx + pr.sx * R;
-        const y = cy - pr.sy * R;
-        const isSel = globeState.selectedId === s.id;
-
-        ctx.beginPath();
-        ctx.fillStyle = isSel ? "rgba(255,43,47,0.95)" : "rgba(179,31,36,0.78)";
-        ctx.arc(x, y, isSel ? 7 : 5, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = isSel ? "rgba(255,43,47,0.18)" : "rgba(179,31,36,0.14)";
-        ctx.arc(x, y, isSel ? 16 : 12, 0, Math.PI*2);
-        ctx.fill();
-      }
-
-      ctx.fillStyle = "rgba(255,255,255,0.60)";
-      ctx.font = "12px Oxanium, Arial";
-      ctx.fillText("RACEM SUPPLIERS", 18, 26);
-    }
-
-    function tick(){
-      if(!globeState.drag) globeState.rot += globeState.rotVel;
-      drawGlobe();
-      requestAnimationFrame(tick);
-    }
-
-    function pickSupplierAt(mx, my){
-      const rect = canvas.getBoundingClientRect();
-      const x0 = (mx - rect.left) * (canvas.width / rect.width);
-      const y0 = (my - rect.top) * (canvas.height / rect.height);
-
-      const cx = canvas.width/2, cy = canvas.height/2 + 20;
-      const R = Math.min(canvas.width, canvas.height)*0.34;
-
-      const pts = SUPPLIERS
-        .filter(s => globeState.filteredIds.has(s.id))
-        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-        .map(s => {
-          const p = latLonToXYZ(s.lat, s.lon);
-          const pr = project(p, globeState.rot);
-          return { s, pr };
-        })
-        .filter(it => it.pr.z >= 0.0)
-        .map(it => {
-          const sx = cx + it.pr.sx * R;
-          const sy = cy - it.pr.sy * R;
-          return { s: it.s, sx, sy };
-        });
-
-      let best = null, bestD = 999999;
-
-      for(const p of pts){
-        const dx = p.sx - x0, dy = p.sy - y0;
-        const d = dx*dx + dy*dy;
-        if(d < bestD){
-          bestD = d;
-          best = p;
-        }
-      }
-      if(best && bestD < 18*18) return best.s;
-      return null;
-    }
-
-    canvas.addEventListener("mousemove", (e) => {
-      const s = pickSupplierAt(e.clientX, e.clientY);
-      if(s){
-        canvas.style.cursor = "pointer";
-        tip.style.display = "block";
-        tip.style.left = (e.clientX + 14) + "px";
-        tip.style.top  = (e.clientY + 14) + "px";
-        tipName.textContent = s.name;
-        tipMeta.textContent = `${s.country} • ${s.region} • ${s.status || "—"}`;
-        globeState.selectedId = s.id;
-      } else {
-        canvas.style.cursor = globeState.drag ? "grabbing" : "grab";
-        tip.style.display = "none";
-        globeState.selectedId = null;
-      }
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-      tip.style.display = "none";
-      globeState.selectedId = null;
-    });
-
-    canvas.addEventListener("mousedown", (e) => {
-      globeState.drag = true;
-      globeState.mx = e.clientX;
-      canvas.style.cursor = "grabbing";
-    });
-
-    window.addEventListener("mouseup", () => {
-      globeState.drag = false;
-      canvas.style.cursor = "grab";
-    });
-
-    window.addEventListener("mousemove", (e) => {
-      if(!globeState.drag) return;
-      const dx = e.clientX - globeState.mx;
-      globeState.mx = e.clientX;
-      globeState.rot += dx * 0.0045;
-    });
-
-    canvas.addEventListener("click", (e) => {
-      const s = pickSupplierAt(e.clientX, e.clientY);
-      if(s && !s.locked) openModal(s.id);
-    });
 
     // =========================
     // Wire UI
@@ -1364,7 +1089,224 @@
     $("#year").textContent = new Date().getFullYear();
     renderGlobalGallery();
     applyFilters();
-    tick();
+  </script>
+
+  <!-- ===== COBE Globe (ui-layouts style) ===== -->
+  <script type="module">
+    import createGlobe from "https://cdn.skypack.dev/cobe";
+
+    const canvas = document.getElementById("globe");
+
+    const tip = document.getElementById("globeTip");
+    const tipName = document.getElementById("globeTipName");
+    const tipMeta = document.getElementById("globeTipMeta");
+
+    // RACEM origin (SK - orientačne)
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function fitCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    fitCanvas();
+    window.addEventListener("resize", fitCanvas);
+
+    // Active IDs from filters
+    let activeIds = new Set(
+      (window.SUPPLIERS || [])
+        .filter(s => !s.locked && s.status === "ACTIVE")
+        .map(s => s.id)
+    );
+
+    window.setGlobeActiveIds = (set) => {
+      activeIds = set instanceof Set ? set : new Set(set);
+    };
+
+    // Build markers: RACEM + active suppliers
+    function buildMarkers() {
+      const suppliers = (window.SUPPLIERS || []).filter(s => !s.locked && s.status === "ACTIVE" && activeIds.has(s.id));
+      const markers = [
+        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.11 }, // RACEM
+        ...suppliers
+          .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
+          .map(s => ({ location: [s.lat, s.lon], size: 0.09 }))
+      ];
+      return markers;
+    }
+
+    // Simple projection to screen for "nearest marker" hover/click
+    // (dobre to sedí pre praktické použitie, je to "najbližší marker" logika)
+    function rad(deg){ return (deg * Math.PI) / 180; }
+    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+    function latLonToXYZ(lat, lon) {
+      const la = rad(lat);
+      const lo = rad(lon);
+      const x = Math.cos(la) * Math.cos(lo);
+      const y = Math.sin(la);
+      const z = Math.cos(la) * Math.sin(lo);
+      return { x, y, z };
+    }
+
+    function rotateY(p, phi) {
+      const c = Math.cos(phi), s = Math.sin(phi);
+      return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
+    }
+
+    // Very light perspective mapping for hit-test (not exact COBE internals, but stable enough)
+    function projectToScreen(p, phi, w, h) {
+      const pr = rotateY(p, phi);
+      // front hemisphere check
+      if (pr.z < 0) return null;
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const R = Math.min(w, h) * 0.36;
+
+      const scale = 1 / (1.35 - pr.z);
+      const sx = cx + pr.x * scale * R;
+      const sy = cy - pr.y * scale * R;
+
+      return { sx, sy, z: pr.z };
+    }
+
+    let currentPhi = 0;
+    let dragging = false;
+    let dragStartX = 0;
+    let dragPhiStart = 0;
+
+    let latestState = { width: canvas.width, height: canvas.height, phi: 0 };
+
+    const globe = createGlobe(canvas, {
+      devicePixelRatio: dpr,
+      width: canvas.width,
+      height: canvas.height,
+
+      phi: 0,
+      theta: 0.25,
+      dark: 1.15,
+      diffuse: 1.25,
+      mapSamples: 40000,
+      mapBrightness: 6,
+
+      baseColor: [0.08, 0.09, 0.10],
+      glowColor: [0.70, 0.10, 0.12],
+      markerColor: [1.0, 0.17, 0.19],
+      backgroundColor: [0, 0, 0, 0],
+
+      markers: buildMarkers(),
+
+      onRender: (state) => {
+        state.width = canvas.width;
+        state.height = canvas.height;
+
+        if (!dragging) currentPhi += 0.0025;
+        state.phi = currentPhi;
+
+        // keep reference for hit-test
+        latestState = { width: state.width, height: state.height, phi: state.phi };
+        // refresh markers each frame (cheap - few markers)
+        state.markers = buildMarkers();
+      }
+    });
+
+    canvas.style.cursor = "grab";
+
+    function getActiveSupplierPoints() {
+      const list = (window.SUPPLIERS || [])
+        .filter(s => !s.locked && s.status === "ACTIVE" && activeIds.has(s.id))
+        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
+        .map(s => ({ ...s, _xyz: latLonToXYZ(s.lat, s.lon) }));
+
+      return list;
+    }
+
+    function pickNearestSupplier(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const mx = (clientX - rect.left) * dpr;
+      const my = (clientY - rect.top) * dpr;
+
+      const { width:w, height:h, phi } = latestState;
+
+      let best = null;
+      let bestD = Infinity;
+
+      for (const s of getActiveSupplierPoints()) {
+        const pr = projectToScreen(s._xyz, phi, w, h);
+        if (!pr) continue;
+
+        const dx = pr.sx - mx;
+        const dy = pr.sy - my;
+        const d2 = dx*dx + dy*dy;
+
+        if (d2 < bestD) {
+          bestD = d2;
+          best = s;
+        }
+      }
+
+      // threshold (v px)
+      const TH = (18 * dpr) * (18 * dpr);
+      if (best && bestD <= TH) return best;
+      return null;
+    }
+
+    // Drag rotate
+    canvas.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.style.cursor = "grabbing";
+      dragStartX = e.clientX;
+      dragPhiStart = currentPhi;
+      tip.style.display = "none";
+    });
+
+    canvas.addEventListener("pointerup", () => {
+      dragging = false;
+      canvas.style.cursor = "grab";
+    });
+
+    canvas.addEventListener("pointerout", () => {
+      dragging = false;
+      canvas.style.cursor = "grab";
+      tip.style.display = "none";
+    });
+
+    canvas.addEventListener("pointermove", (e) => {
+      if (dragging) {
+        const dx = e.clientX - dragStartX;
+        currentPhi = dragPhiStart + dx * 0.006;
+        return;
+      }
+
+      const s = pickNearestSupplier(e.clientX, e.clientY);
+      if (s) {
+        canvas.style.cursor = "pointer";
+        tip.style.display = "block";
+        tip.style.left = (e.clientX + 14) + "px";
+        tip.style.top  = (e.clientY + 14) + "px";
+        tipName.textContent = s.name;
+        tipMeta.textContent = `${s.country} • ${s.region} • ${s.status || "—"}`;
+      } else {
+        canvas.style.cursor = "grab";
+        tip.style.display = "none";
+      }
+    });
+
+    // Click -> openModal
+    canvas.addEventListener("click", (e) => {
+      const s = pickNearestSupplier(e.clientX, e.clientY);
+      if (!s) return;
+      // call your existing openModal from non-module script (global)
+      if (typeof window.openModal === "function") window.openModal(s.id);
+    });
+
+    // expose openModal
+    // (because openModal is in non-module scope, make it global)
+    window.openModal = window.openModal || ((id) => {});
   </script>
 </body>
 </html>
