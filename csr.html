@@ -4453,7 +4453,7 @@ card.addEventListener("click", () => openProduct(p));
   }
 
 
-  function getSelectedVariant(p){
+ function getSelectedVariant(p){
   const vars = Array.isArray(p?.variants) ? p.variants : [];
   return vars[activeVariantIndex] || null;
 }
@@ -4462,76 +4462,21 @@ function cleanVariantLabelKeepParens(raw, productTitle) {
   let s = String(raw || "").trim();
   if (!s) return "";
 
-  // preklad (ak už prekladáš inde, toto nič nepokazí)
-  s = toSlovak(s).trim();
-
-  // častý bordel: "MATERIÁL | CELÝ NÁZOV PRODUKTU"
-  // necháme len ľavú časť (materiál)
-  if (s.includes("|")) s = s.split("|")[0].trim();
-
-  // ⚠️ zátvorky NEODSTRAŇUJEME (user chce zachovať)
-  // iba normalizácia medzier
-  s = s.replace(/\s+/g, " ").trim();
-
-  // --- filter: keď sa variant = celý názov produktu (ten červený text)
-  const t = String(productTitle || "").replace(/\s+/g, " ").trim();
-  if (t) {
-    const sL = s.toLowerCase();
-    const tL = t.toLowerCase();
-
-    // presná zhoda
-    if (sL === tL) return "";
-
-    // ak variant obsahuje celý title alebo title obsahuje variant a je to "dlhé"
-    // (aby sme nevyhodili legit krátke veci)
-    if ((sL.includes(tL) || tL.includes(sL)) && Math.max(s.length, t.length) >= 40) {
-      return "";
-    }
-  }
-
-  return s;
-}
-
-function getVariantLabel(v, i) {
-  const raw = (v?.name || v?.title || "");
-  const cleaned = cleanVariantLabelKeepParens(raw, activeProduct?.title);
-  if (!cleaned) return "";
-  return cleaned;
-}
-
-function buildVariantChips() {
-  if (!mVariantList) return;
-
-  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
-  if (!vars.length) {
-    if (mVariantWrap) mVariantWrap.style.display = "none";
-    mVariantList.innerHTML = "";
-    activeVariantIndex = 0;
-    return;
-  }
-
-  function cleanVariantLabelKeepParens(raw, productTitle) {
-  let s = String(raw || "").trim();
-  if (!s) return "";
-
-  // ✅ toSlovak len ak existuje
+  // ✅ preklad len ak existuje
   if (typeof toSlovak === "function") s = toSlovak(s).trim();
 
   // "MATERIÁL | DLHÝ NÁZOV PRODUKTU" -> len materiál
   if (s.includes("|")) s = s.split("|")[0].trim();
 
+  // zátvorky nechávame
   s = s.replace(/\s+/g, " ").trim();
 
-  // ✅ filter: keď sa tam omylom natlačí celý názov produktu
+  // ✅ vyhoď variant, ak je to v podstate celý názov produktu
   const t = String(productTitle || "").replace(/\s+/g, " ").trim();
   if (t) {
     const sL = s.toLowerCase();
     const tL = t.toLowerCase();
-
-    // presná zhoda
     if (sL === tL) return "";
-
-    // "je to v podstate ten istý dlhý text"
     if ((sL.includes(tL) || tL.includes(sL)) && Math.max(s.length, t.length) >= 40) return "";
   }
 
@@ -4539,106 +4484,31 @@ function buildVariantChips() {
 }
 
 function getVariantLabel(v, i) {
-  // CSR niekedy používa title namiesto name
   const raw = (v?.name || v?.title || "");
-  const cleaned = cleanVariantLabelKeepParens(raw, (window.activeProduct?.title || ""));
-  return cleaned; // môže byť "" => vyfiltruje sa
+  return cleanVariantLabelKeepParens(raw, activeProduct?.title || "");
 }
 
 function buildVariantChips() {
-  if (!window.mVariantList) return;
+  if (!mVariantList) return;
 
-  const ap = window.activeProduct;
-  const vars = Array.isArray(ap?.variants) ? ap.variants : [];
+  const vars = Array.isArray(activeProduct?.variants) ? activeProduct.variants : [];
 
   if (!vars.length) {
-    if (window.mVariantWrap) window.mVariantWrap.style.display = "none";
-    window.mVariantList.innerHTML = "";
-    window.activeVariantIndex = 0;
+    if (mVariantWrap) mVariantWrap.style.display = "none";
+    mVariantList.innerHTML = "";
+    activeVariantIndex = 0;
     return;
   }
 
+  // vyrob items + odfiltruj bordel varianty
   const items = vars.map((v, idx) => {
     const label = getVariantLabel(v, idx);
-    let priceNum = null;
-
-    // ✅ getJsonPriceEUR len ak existuje (poistka)
-    if (typeof getJsonPriceEUR === "function") {
-      const p = getJsonPriceEUR(ap, v);
-      priceNum = (typeof p === "number") ? p : null;
-    }
-
+    const p = getJsonPriceEUR(activeProduct, v);
     return {
       v, idx,
       label,
       upper: String(label || "").toUpperCase(),
-      priceNum
-    };
-  }).filter(it => it.label && it.label.trim().length);
-
-  if (!items.length) {
-    if (window.mVariantWrap) window.mVariantWrap.style.display = "none";
-    window.mVariantList.innerHTML = "";
-    window.activeVariantIndex = 0;
-    return;
-  }
-
-  if (window.mVariantWrap) window.mVariantWrap.style.display = "block";
-  window.mVariantList.innerHTML = "";
-
-  // Carbon look dvojice: lacnejší=matný, drahší=lesklý
-  const carbon = items
-    .filter(it => it.upper === "CARBON LOOK" && it.priceNum !== null)
-    .sort((a, b) => a.priceNum - b.priceNum);
-
-  const carbonMin = carbon[0] || null;
-  const carbonMax = carbon.length ? carbon[carbon.length - 1] : null;
-
-  if (!items.some(it => it.idx === window.activeVariantIndex)) {
-    window.activeVariantIndex = items[0].idx;
-  }
-
-  items.forEach((it) => {
-    const chip = document.createElement("div");
-    chip.className = "vChip" + (it.idx === window.activeVariantIndex ? " active" : "");
-
-    let displayName = it.label; // zátvorky zostávajú
-
-    if (it.upper === "CARBON LOOK" && carbon.length >= 2) {
-      if (carbonMax && it.idx === carbonMax.idx) displayName = "CARBON LOOK - LESKLÝ";
-      else if (carbonMin && it.idx === carbonMin.idx) displayName = "CARBON LOOK - MATNÝ";
-    }
-
-    const price =
-      (it.priceNum !== null && typeof fmtEUR === "function") ? fmtEUR(it.priceNum)
-      : (window.PRICE_ON_REQUEST || "NA DOTAZ");
-
-    chip.innerHTML = `
-      <span class="vMain">${escapeHtml(displayName)}</span>
-      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
-    `;
-
-    chip.addEventListener("click", () => {
-      window.activeVariantIndex = it.idx;
-      $$(".vChip", window.mVariantList).forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      if (typeof updateVariantPrice === "function") updateVariantPrice();
-    });
-
-    window.mVariantList.appendChild(chip);
-  });
-}
-
-
-  // pripravíme položky + vyfiltrujeme zlé varianty (celý názov produktu, prázdne)
-  const items = vars.map((v, idx) => {
-    const label = getVariantLabel(v, idx); // zátvorky zostanú
-    const priceNum = getJsonPriceEUR(activeProduct, v);
-    return {
-      v, idx,
-      label,
-      upper: String(label || "").toUpperCase(),
-      priceNum: (typeof priceNum === "number") ? priceNum : null
+      priceNum: (typeof p === "number") ? p : null
     };
   }).filter(it => it.label && it.label.trim().length);
 
@@ -4652,15 +4522,15 @@ function buildVariantChips() {
   if (mVariantWrap) mVariantWrap.style.display = "block";
   mVariantList.innerHTML = "";
 
-  // Carbon look dvojice: lacnejší = matný, drahší = lesklý
+  // Carbon look: lacnejší=matný, drahší=lesklý (ak sú min. 2)
   const carbon = items
     .filter(it => it.upper === "CARBON LOOK" && it.priceNum !== null)
     .sort((a, b) => a.priceNum - b.priceNum);
 
-  const carbonMin = carbon[0] || null; // najlacnejší
-  const carbonMax = carbon.length ? carbon[carbon.length - 1] : null; // najdrahší
+  const carbonMin = carbon[0] || null;
+  const carbonMax = carbon.length ? carbon[carbon.length - 1] : null;
 
-  // ak aktívny index padol (vyfiltroval sa), nastav na prvý
+  // ak aktívny index už neexistuje (napr. bol mimo), nastav prvý
   if (!items.some(it => it.idx === activeVariantIndex)) {
     activeVariantIndex = items[0].idx;
   }
@@ -4679,42 +4549,15 @@ function buildVariantChips() {
     const price = (it.priceNum !== null) ? fmtEUR(it.priceNum) : PRICE_ON_REQUEST;
 
     chip.innerHTML = `
-      <span class="vMain">${escapeHtml(displayName)}</span>
+      <span class="vMain">${escapeHtml(displayName.toUpperCase())}</span>
       <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
     `;
 
     chip.addEventListener("click", () => {
       activeVariantIndex = it.idx;
-      $$(".vChip", mVariantList).forEach((c) => c.classList.remove("active"));
+      $$(".vChip", mVariantList).forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
       updateVariantPrice();
-    });
-
-    mVariantList.appendChild(chip);
-  });
-}
-
-
-  if (mVariantWrap) mVariantWrap.style.display = "block";
-  mVariantList.innerHTML = "";
-
-  vars.forEach((v, i) => {
-    const chip = document.createElement("div");
-    chip.className = "vChip" + (i === activeVariantIndex ? " active" : "");
-
-    const name = toSlovak(getVariantLabel(v, i)).toUpperCase();
-    const p = getJsonPriceEUR(activeProduct, v);
-    const price = (typeof p === "number") ? fmtEUR(p) : PRICE_ON_REQUEST;
-
-    chip.innerHTML = `
-      <span class="vMain">${escapeHtml(name)}</span>
-      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
-    `;
-
-    chip.addEventListener("click", () => {
-      activeVariantIndex = i;
-      $$(".vChip", mVariantList).forEach((c, idx) => c.classList.toggle("active", idx === i));
-      updateVariantPrice(); // toto je kľúč
     });
 
     mVariantList.appendChild(chip);
@@ -4734,7 +4577,6 @@ function updateVariantPrice() {
 
   if (mShip) mShip.textContent = SHIPPING_TEXT_DETAIL;
 
-  // ✅ sumár do formulára už aj s variantom
   const vLabel = vSel ? getVariantLabel(vSel, activeVariantIndex) : "";
   $("#o_manufacturer").value = activeProduct.makeLabel || "—";
   $("#o_product").value = (activeProduct.title || "—") + (vLabel ? ` — ${vLabel}` : "");
@@ -4755,13 +4597,13 @@ function getActivePurchaseItem(){
 
   return {
     ...activeProduct,
-    // prepíš SKU/title/price pre košík podľa variantu
     sku: vSel?.sku || activeProduct.sku || "",
     title: (activeProduct.title || "") + (vLabel ? ` — ${vLabel}` : ""),
-    _variantSku: vSel?.sku || "",     // pomôže pre unique key
+    _variantSku: vSel?.sku || "",
     _price: (typeof price === "number") ? price : null
   };
 }
+
 
 
   // ✅ jednoduchý DE/EN -> SK preklad pre modal texty (offline)
@@ -5888,10 +5730,8 @@ setHeroInitial().then(() => {
   if (HERO_IMAGES.length > 1) setInterval(heroTick, HERO_INTERVAL);
 });
 
-closeCsrProjectsBtn?.addEventListener("click", closeCsrProjectsModal);
 
 csrProjectsModal?.addEventListener("click", (e) => {
-  if (e.target === csrProjectsModal) closeCsrProjectsModal();
 });
 
 
