@@ -4510,6 +4510,126 @@ function buildVariantChips() {
     return;
   }
 
+  function cleanVariantLabelKeepParens(raw, productTitle) {
+  let s = String(raw || "").trim();
+  if (!s) return "";
+
+  // ✅ toSlovak len ak existuje
+  if (typeof toSlovak === "function") s = toSlovak(s).trim();
+
+  // "MATERIÁL | DLHÝ NÁZOV PRODUKTU" -> len materiál
+  if (s.includes("|")) s = s.split("|")[0].trim();
+
+  s = s.replace(/\s+/g, " ").trim();
+
+  // ✅ filter: keď sa tam omylom natlačí celý názov produktu
+  const t = String(productTitle || "").replace(/\s+/g, " ").trim();
+  if (t) {
+    const sL = s.toLowerCase();
+    const tL = t.toLowerCase();
+
+    // presná zhoda
+    if (sL === tL) return "";
+
+    // "je to v podstate ten istý dlhý text"
+    if ((sL.includes(tL) || tL.includes(sL)) && Math.max(s.length, t.length) >= 40) return "";
+  }
+
+  return s;
+}
+
+function getVariantLabel(v, i) {
+  // CSR niekedy používa title namiesto name
+  const raw = (v?.name || v?.title || "");
+  const cleaned = cleanVariantLabelKeepParens(raw, (window.activeProduct?.title || ""));
+  return cleaned; // môže byť "" => vyfiltruje sa
+}
+
+function buildVariantChips() {
+  if (!window.mVariantList) return;
+
+  const ap = window.activeProduct;
+  const vars = Array.isArray(ap?.variants) ? ap.variants : [];
+
+  if (!vars.length) {
+    if (window.mVariantWrap) window.mVariantWrap.style.display = "none";
+    window.mVariantList.innerHTML = "";
+    window.activeVariantIndex = 0;
+    return;
+  }
+
+  const items = vars.map((v, idx) => {
+    const label = getVariantLabel(v, idx);
+    let priceNum = null;
+
+    // ✅ getJsonPriceEUR len ak existuje (poistka)
+    if (typeof getJsonPriceEUR === "function") {
+      const p = getJsonPriceEUR(ap, v);
+      priceNum = (typeof p === "number") ? p : null;
+    }
+
+    return {
+      v, idx,
+      label,
+      upper: String(label || "").toUpperCase(),
+      priceNum
+    };
+  }).filter(it => it.label && it.label.trim().length);
+
+  if (!items.length) {
+    if (window.mVariantWrap) window.mVariantWrap.style.display = "none";
+    window.mVariantList.innerHTML = "";
+    window.activeVariantIndex = 0;
+    return;
+  }
+
+  if (window.mVariantWrap) window.mVariantWrap.style.display = "block";
+  window.mVariantList.innerHTML = "";
+
+  // Carbon look dvojice: lacnejší=matný, drahší=lesklý
+  const carbon = items
+    .filter(it => it.upper === "CARBON LOOK" && it.priceNum !== null)
+    .sort((a, b) => a.priceNum - b.priceNum);
+
+  const carbonMin = carbon[0] || null;
+  const carbonMax = carbon.length ? carbon[carbon.length - 1] : null;
+
+  if (!items.some(it => it.idx === window.activeVariantIndex)) {
+    window.activeVariantIndex = items[0].idx;
+  }
+
+  items.forEach((it) => {
+    const chip = document.createElement("div");
+    chip.className = "vChip" + (it.idx === window.activeVariantIndex ? " active" : "");
+
+    let displayName = it.label; // zátvorky zostávajú
+
+    if (it.upper === "CARBON LOOK" && carbon.length >= 2) {
+      if (carbonMax && it.idx === carbonMax.idx) displayName = "CARBON LOOK - LESKLÝ";
+      else if (carbonMin && it.idx === carbonMin.idx) displayName = "CARBON LOOK - MATNÝ";
+    }
+
+    const price =
+      (it.priceNum !== null && typeof fmtEUR === "function") ? fmtEUR(it.priceNum)
+      : (window.PRICE_ON_REQUEST || "NA DOTAZ");
+
+    chip.innerHTML = `
+      <span class="vMain">${escapeHtml(displayName)}</span>
+      <span class="vMeta"><span class="badge">${escapeHtml(price)}</span></span>
+    `;
+
+    chip.addEventListener("click", () => {
+      window.activeVariantIndex = it.idx;
+      $$(".vChip", window.mVariantList).forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      if (typeof updateVariantPrice === "function") updateVariantPrice();
+    });
+
+    window.mVariantList.appendChild(chip);
+  });
+}
+
+
   // pripravíme položky + vyfiltrujeme zlé varianty (celý názov produktu, prázdne)
   const items = vars.map((v, idx) => {
     const label = getVariantLabel(v, idx); // zátvorky zostanú
