@@ -4,1330 +4,1213 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <title>RACEM | BODYKITS</title>
-  <meta name="description" content="RACEM – bodykity a aero. Autorizovaní predajcovia, overenie kompatibility a dodanie do SR/ČR/EÚ." />
+  <title>RACEM | Dodávatelia</title>
+  <meta name="description" content="RACEM dodávatelia – dodacie doby, informácie, FAQ a galérie. Objavuj partnerov a značky." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://racem.sk/bodykity.html" />
+
+  <!-- FAVICON (ponechaj svoje) -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+  <!-- Fonts – ak už máš na racem.sk svoje, kľudne zmaž a nechaj tvoje -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
+      --bg:#070709;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
       --red:#b31f24;
-      --bg:#0b0b0b;
-      --panel:#141414;
-      --text:#ffffff;
-      --muted:#cfcfcf;
-      --muted2:#9b9b9b;
-      --line: rgba(255,255,255,0.08);
-      --shadow: 0 22px 70px rgba(0,0,0,0.55);
+      --red2:#ff2b2f;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --glass: blur(10px);
+      --radius: 18px;
+      --wrap: 1200px;
     }
 
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background:
+        radial-gradient(1000px 500px at 20% -10%, rgba(179,31,36,.25), transparent 60%),
+        radial-gradient(900px 450px at 90% 10%, rgba(255,43,47,.12), transparent 55%),
+        radial-gradient(900px 600px at 50% 120%, rgba(179,31,36,.12), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       overflow-x:hidden;
     }
-    a{color:inherit}
 
-    /* FULL WIDTH */
-    .wrap{ width:100%; padding:0 6vw; }
-    section{ padding:110px 0; position:relative; }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--wrap); margin:0 auto; padding:0 18px}
 
-    /* ===== BACKGROUND FX ===== */
-    .bg{
-      position:fixed; inset:0; z-index:-6; pointer-events:none;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(179,31,36,0.22), transparent 45%),
-        radial-gradient(circle at 88% 72%, rgba(179,31,36,0.12), transparent 46%),
-        radial-gradient(circle at 55% 55%, rgba(255,255,255,0.03), transparent 60%);
-      transform: translateZ(0);
-    }
-    .bg::after{
-      content:""; position:absolute; inset:0; opacity:.55;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 44px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 44px);
-      animation: gridMove 24s linear infinite;
-    }
-    @keyframes gridMove{
-      from{ background-position:0 0, 0 0; }
-      to{ background-position:600px 0, 0 600px; }
-    }
-    .noise{
-      position:fixed; inset:-20%; z-index:-5; pointer-events:none;
-      opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
-      animation: noiseMove 10s steps(10) infinite;
-    }
-    @keyframes noiseMove{
-      0%{transform:translate(0,0)}
-      20%{transform:translate(-3%,2%)}
-      40%{transform:translate(4%,-2%)}
-      60%{transform:translate(-2%,-4%)}
-      80%{transform:translate(3%,3%)}
-      100%{transform:translate(0,0)}
-    }
-
-    /* floating glow orbs */
-    .orbs{
-      position:fixed; inset:0; z-index:-4; pointer-events:none;
-      filter: blur(18px);
-      opacity: .75;
-    }
-    .orb{
-      position:absolute;
-      width: 420px; height: 420px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 35% 35%, rgba(179,31,36,0.22), transparent 58%);
-      animation: floaty 10s ease-in-out infinite;
-      mix-blend-mode: screen;
-    }
-    .orb.o2{
-      width: 520px; height: 520px;
-      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.08), transparent 62%);
-      animation-duration: 14s;
-      opacity:.65;
-    }
-    .orb.o3{
-      width: 360px; height: 360px;
-      background: radial-gradient(circle at 35% 35%, rgba(179,31,36,0.16), transparent 58%);
-      animation-duration: 12s;
-      opacity:.6;
-    }
-    @keyframes floaty{
-      0%,100%{ transform: translate(0,0) scale(1); }
-      50%{ transform: translate(22px,-18px) scale(1.05); }
-    }
-
-    /* ===== TOPBAR ===== */
-    .topbar{
-      position:sticky; top:0; z-index:100;
-      backdrop-filter: blur(12px);
-      background: rgba(10,10,10,0.62);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: var(--glass);
+      background: rgba(5,5,6,.62);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
     .nav{
-      width:100%;
-      padding: 14px 6vw;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 18px;
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
     }
-    .brand-mini{
-      display:flex; align-items:center; text-decoration:none;
-      gap: 12px;
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      letter-spacing:.08em;
     }
-    .brand-mini img{
-      height:70px; width:auto; display:block; object-fit:contain;
-      transition: transform .35s ease, filter .35s ease;
+    .brand img{height:34px; width:auto; display:block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6));}
+    .brand .txt{
+      display:flex; flex-direction:column; line-height:1.05;
     }
-    .brand-mini:hover img{
-      transform: scale(1.06);
-      filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
-    }
-    .brand-title{
-      font-weight: 1000;
-      letter-spacing:.22em;
-      text-transform: uppercase;
-      font-size: 12px;
-      color: rgba(255,255,255,0.78);
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-      margin-top:2px;
-    }
-    .brand-title b{
-      font-size: 14px;
-      color:#fff;
-      letter-spacing:.18em;
-    }
+    .brand .txt b{font-family: Oswald, sans-serif; font-weight:600; letter-spacing:.12em}
+    .brand .txt span{font-size:12px; color:var(--muted); letter-spacing:.14em}
 
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap: 34px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    .nav-links a{
-      position:relative;
-      color: rgba(255,255,255,0.76);
-      text-decoration:none;
-      font-size: 12px;
-      font-weight: 1000;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      white-space: nowrap;
-      padding: 6px 0;
-      transition: color .25s ease, text-shadow .25s ease, transform .25s ease;
-    }
-    .nav-links a:hover{
-      color:#fff;
-      text-shadow: 0 0 14px rgba(179,31,36,0.25);
-      transform: translateY(-1px);
-    }
-    .nav-links a::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-10px;
-      width:0;
-      height:2px;
-      background: var(--red);
-      box-shadow: 0 0 10px rgba(179,31,36,.75), 0 0 22px rgba(179,31,36,.35);
-      transform: translateX(-50%);
-      transition: width .32s ease;
-    }
-    .nav-links a:hover::after{ width: 125%; }
-
-    /* LANG SWITCH */
-    .langBox{
-      display:flex; align-items:center; gap:10px;
-      padding:8px 10px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.35);
+    .navlinks{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .chip{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:9px 12px;
       border-radius: 999px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
-    }
-    .langBtn{
-      border:none; cursor:pointer;
-      padding:8px 12px;
-      border-radius:999px;
-      font-weight:1000;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:11px;
-      color:rgba(255,255,255,0.80);
-      background: transparent;
-      transition: background .18s ease, color .18s ease, transform .18s ease;
-    }
-    .langBtn:hover{ transform: translateY(-1px); color:#fff; }
-    .langBtn.active{
-      background: rgba(179,31,36,0.22);
-      color:#fff;
-      border:1px solid rgba(179,31,36,0.45);
-    }
-
-    /* ===== HERO SLIDER ===== */
-    .heroSlider{ padding: 0; }
-    .slider{
-      position:relative;
-      height: min(72vh, 720px);
-      width:100%;
-      overflow:hidden;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      background:#050505;
-    }
-    .slide{
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
-      opacity:0;
-      transform: scale(1.03);
-      transition: opacity .8s ease, transform 1.4s ease;
-    }
-    .slide.active{ opacity:1; transform: scale(1); }
-    .slider::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(179,31,36,0.28), transparent 55%),
-        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.08), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.70));
-      z-index:2;
-      pointer-events:none;
-    }
-    .slider::after{
-      content:"";
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height: 140px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(11,11,11,1));
-      z-index:2;
-      pointer-events:none;
-    }
-
-    .heroOverlay{
-      position:absolute;
-      left: 6vw;
-      right: 6vw;
-      bottom: 42px;
-      z-index:3;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:20px;
-      flex-wrap:wrap;
-    }
-
-    .heroTag{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding:8px 12px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.35);
-      border-radius:999px;
-      color: rgba(255,255,255,0.85);
-      font-size: 11px;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      width: fit-content;
-    }
-    .heroDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 14px rgba(179,31,36,.75); }
-
-    .heroTitle{
-      margin: 12px 0 10px;
-      font-size: clamp(36px, 6vw, 76px);
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-weight: 1000;
-      line-height: 1.02;
-      text-shadow: 0 20px 60px rgba(0,0,0,0.85);
-    }
-    .heroText{
-      margin:0;
-      max-width: 900px;
-      color: rgba(255,255,255,0.78);
-      line-height:1.6;
-      font-size: 15px;
-    }
-
-    .heroControls{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .heroBtn{
-      border:none;
-      cursor:pointer;
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      background: rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.14);
-      color:#fff;
-      font-size: 18px;
-      font-weight: 900;
-      display:grid;
-      place-items:center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-    .heroBtn:hover{
-      transform: translateY(-2px);
-      border-color: rgba(179,31,36,0.42);
-      background: rgba(179,31,36,0.18);
-    }
-    .dots{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      margin-left:6px;
-    }
-    .dotBtn{
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.26);
-      background: rgba(255,255,255,0.08);
-      cursor:pointer;
-      padding:0;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
-    }
-    .dotBtn.active{
-      background: var(--red);
-      border-color: rgba(179,31,36,0.85);
-      box-shadow: 0 0 18px rgba(179,31,36,0.45);
-      transform: scale(1.15);
-    }
-
-    /* ===== PANELS ===== */
-    .panel{
-      background: rgba(20,20,20,0.75);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:30px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-      position:relative;
-      overflow:hidden;
-    }
-    .panel::after{
-      content:"";
-      position:absolute; left:-60px; top:-60px;
-      width:160px; height:160px;
-      background: radial-gradient(circle, rgba(179,31,36,0.18), transparent 60%);
-      opacity:.95;
-    }
-    .panel > *{ position:relative; z-index:1; }
-
-    .pill{
-      display:inline-flex; gap:10px; align-items:center;
-      padding:8px 12px;
-      border:1px solid var(--line);
-      background: rgba(20,20,20,0.6);
-      border-radius:999px;
-      color: var(--muted);
       font-size:12px;
-      letter-spacing:.6px;
+      letter-spacing:.10em;
       text-transform:uppercase;
-      width: fit-content;
+      transition: .18s ease;
+      user-select:none;
     }
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background: var(--red);
-      box-shadow: 0 0 18px rgba(179,31,36,.7);
+    .chip:hover{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.10)}
+    .chip.primary{
+      border-color: rgba(179,31,36,.65);
+      background: linear-gradient(180deg, rgba(179,31,36,.25), rgba(179,31,36,.10));
     }
-    h2{
-      margin: 0 0 14px 0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 38px;
-    }
-    p{
-      margin:0 0 14px 0;
-      color: var(--muted);
-      line-height:1.7;
-      font-size:16px;
-      max-width: 980px;
-    }
-    .muted2{ color: var(--muted2); }
 
-    /* ===== BRAND GRID ===== */
-    .brandGrid{
+    /* Hero */
+    .hero{
+      padding: 32px 0 18px;
+    }
+    .heroGrid{
       display:grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
-      gap: 16px;
-      margin-top: 18px;
-      width:100%;
+      grid-template-columns: 1.1fr .9fr;
+      gap:16px;
+      align-items:stretch;
     }
-
-    .brandCard{
-      border:1px solid rgba(255,255,255,0.10);
-      background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.78));
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: 0 14px 44px rgba(0,0,0,0.42);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: var(--glass);
+    }
+    .heroLeft{
+      padding: 18px 18px 16px;
       position:relative;
-      display:block;
-      text-decoration:none;
-      min-height: 240px;
-      transform: translateZ(0);
+      overflow:hidden;
     }
-    .brandCard::before{
+    .heroLeft:before{
       content:"";
-      position:absolute;
-      top:-60%;
-      left:-30%;
-      width:60%;
-      height:220%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
-      transform: rotate(18deg);
-      opacity:0;
-      transition: opacity .22s ease;
-      pointer-events:none;
-    }
-    .brandCard:hover::before{ opacity: 1; animation: sweep 1.15s ease forwards; }
-    @keyframes sweep{
-      from{ transform: translateX(0) rotate(18deg); }
-      to{ transform: translateX(220%) rotate(18deg); }
-    }
-
-    .brandCard::after{
-      content:"";
-      position:absolute; inset:-90px;
-      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.16), transparent 58%);
-      transform: rotate(16deg);
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 280px at 10% 10%, rgba(179,31,36,.25), transparent 60%),
+        radial-gradient(700px 280px at 85% 20%, rgba(255,43,47,.12), transparent 60%);
       opacity:.9;
       pointer-events:none;
     }
-    .brandCard:hover{
-      transform: translateY(-7px);
-      border-color: rgba(179,31,36,0.45);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.60);
-      filter: brightness(1.03);
+    .heroLeft > *{position:relative}
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:12px; color:var(--muted);
+      letter-spacing:.16em;
+      text-transform:uppercase;
     }
-    .brandTop{
-      padding: 16px 16px 0;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      position:relative;
-      z-index:1;
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--red);
+      box-shadow: 0 0 0 6px rgba(179,31,36,.18);
     }
-    .badge{
-      flex:0 0 auto;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-weight: 1000;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.40);
-      backdrop-filter: blur(8px);
+    h1{
+      margin:10px 0 8px;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size: 34px;
+      line-height:1.05;
     }
-    .badge .bDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
-
-    .brandLogoBox{
-      height: 112px;
-      display:grid;
-      place-items:center;
-      margin: 10px 16px 0;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.02);
-      position:relative;
-      z-index:1;
-      overflow:hidden;
-    }
-    .brandLogo{
-      width: 88%;
-      height: 92px;
-      object-fit: contain;
-      opacity:.95;
-      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.6));
-      transform: scale(1.05);
-      transition: transform .18s ease;
-    }
-    .brandCard:hover .brandLogo{ transform: scale(1.09); }
-
-    .brandBody{
-      padding: 14px 16px 16px;
-      position:relative;
-      z-index:1;
-    }
-    .brandName{
-      margin: 0 0 6px;
-      font-size: 13px;
-      font-weight: 1000;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color:#fff;
-    }
-    .brandDesc{
-      margin:0;
-      font-size: 13.5px;
+    .sub{
+      margin:0 0 14px;
+      color: var(--muted);
+      font-size:14px;
       line-height:1.6;
-      color: rgba(255,255,255,0.72);
+      max-width: 62ch;
     }
-    .goHint{
-      margin-top: 12px;
-      display:inline-flex;
-      align-items:center;
+    .heroStats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
       gap:10px;
-      font-size: 11px;
-      letter-spacing:.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.70);
+      margin-top:12px;
     }
-    .goHint .arr{
-      width: 34px; height: 34px; border-radius: 14px;
-      display:grid; place-items:center;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      transition: transform .18s ease, border-color .18s ease;
+    .stat{
+      padding:12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
     }
-    .brandCard:hover .goHint .arr{
-      transform: translateX(3px);
-      border-color: rgba(179,31,36,0.35);
-    }
+    .stat b{display:block; font-size:18px; letter-spacing:.06em}
+    .stat span{display:block; margin-top:6px; color:var(--muted); font-size:12px; letter-spacing:.10em; text-transform:uppercase}
 
-    /* LOCKED look but still clickable */
-    .locked .brandLogoBox{
-      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(179,31,36,0.06));
-    }
-    .lockIcon{
-      width: 54px; height: 54px;
-      border-radius: 18px;
-      display:grid; place-items:center;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.35);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-      color: rgba(255,255,255,0.88);
-      font-size: 22px;
-    }
-
-    /* ===== AUTHORIZED BRANDS (FULL WIDTH, NO PANEL) ===== */
-    .brandsSection{
-      padding: 110px 0;
-      position: relative;
-    }
-    .brandsSection::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 18% 22%, rgba(179,31,36,0.12), transparent 55%),
-        radial-gradient(circle at 86% 70%, rgba(255,255,255,0.05), transparent 60%);
-      opacity: 1;
-    }
-    .brandsInner{
-      width:100%;
-      padding: 0 6vw;
-      position:relative;
-      z-index:1;
-    }
-    .brandsHead{
+    /* Globe */
+    .heroRight{
+      padding: 14px;
       display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 22px;
-      flex-wrap:wrap;
-      padding-bottom: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 18px;
+      flex-direction:column;
+      gap:10px;
+      overflow:hidden;
+      position:relative;
     }
-    .brandsHeadLeft{
-      max-width: 980px;
+    .globeTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
     }
-    .brandsTitle{
-      margin: 16px 0 10px 0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: clamp(28px, 4.8vw, 54px);
-      line-height: 1.05;
+    .globeTop b{font-size:12px; letter-spacing:.16em; text-transform:uppercase}
+    .globeTop span{font-size:12px; color:var(--muted)}
+    canvas#globe{
+      width:100%;
+      height: 290px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(500px 220px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,.25)),
+        rgba(0,0,0,.15);
+      display:block;
     }
-    .brandsLead{
+    .globeHint{
       margin:0;
-      color: rgba(255,255,255,0.78);
-      line-height:1.7;
-      font-size: 16px;
-      max-width: 980px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
     }
 
-    /* ===== FAQ ===== */
+    /* Controls */
+    .controls{
+      padding: 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .field{
+      flex: 1 1 220px;
+      display:flex; align-items:center; gap:10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .field input{
+      width:100%;
+      background:transparent;
+      border:0;
+      outline:none;
+      color:var(--text);
+      font-size:13px;
+      letter-spacing:.06em;
+    }
+    .select{
+      flex: 0 0 220px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      outline:none;
+      font-size:13px;
+      letter-spacing:.06em;
+    }
+    .btn{
+      padding: 11px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(179,31,36,.55);
+      background: linear-gradient(180deg, rgba(179,31,36,.30), rgba(179,31,36,.12));
+      color: var(--text);
+      font-weight:700;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.ghost{
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-weight:600;
+    }
+
+    /* Grid */
+    .grid{
+      padding: 0 0 26px;
+    }
+    .supplierGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .supplier{
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+    .supplier:hover{
+      border-color: rgba(179,31,36,.50);
+      transform: translateY(-1px);
+    }
+    .supplierTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .supplierName{
+      display:flex; flex-direction:column; gap:6px;
+      min-width:0;
+    }
+    .supplierName b{
+      font-family: Oswald, sans-serif;
+      font-size:18px;
+      letter-spacing:.06em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .supplierName span{color:var(--muted); font-size:12px; letter-spacing:.10em; text-transform:uppercase}
+    .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+    .badge{
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      padding:6px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.80);
+      user-select:none;
+    }
+    .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
+    .supplierMeta{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      padding: 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+    }
+    .metaItem b{display:block; font-size:12px; letter-spacing:.10em; text-transform:uppercase; color:var(--muted)}
+    .metaItem span{display:block; margin-top:6px; font-size:13px; letter-spacing:.04em}
+    .supplierDesc{
+      margin:0;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+    .supplierThumb{
+      height: 130px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(500px 180px at 30% 30%, rgba(179,31,36,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.20));
+      overflow:hidden;
+      position:relative;
+    }
+    .supplierThumb img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      opacity:.9;
+      filter: contrast(1.02) saturate(1.02);
+    }
+    .supplierThumb .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
+    }
+
+    /* Sections */
+    section.block{padding: 14px 0 26px}
+    .sectionTitle{
+      display:flex; align-items:end; justify-content:space-between;
+      gap:12px;
+      margin: 4px 0 10px;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size:22px;
+    }
+    .sectionTitle p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      max-width: 60ch;
+    }
+
+    /* FAQ */
     .faq{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px;
-      width:100%;
+      gap:12px;
     }
     details{
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.03);
-      border-radius: 18px;
-      padding: 14px 16px;
-      transition: border-color .18s ease, background .18s ease, transform .18s ease;
-    }
-    details:hover{
-      border-color: rgba(179,31,36,0.35);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px 12px;
     }
     summary{
       cursor:pointer;
       list-style:none;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-weight:1000;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size: 12px;
-      color:#fff;
+      font-weight:700;
+      letter-spacing:.06em;
+      font-size:13px;
     }
-    summary::-webkit-details-marker{ display:none; }
-    .faqAns{
-      margin-top:10px;
-      color: rgba(255,255,255,0.78);
-      line-height:1.65;
-      font-size: 14px;
-    }
-    .chev{
-      width: 34px; height: 34px;
-      border-radius: 14px;
-      display:grid; place-items:center;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      transition: transform .18s ease;
-      flex:0 0 auto;
-    }
-    details[open] .chev{ transform: rotate(180deg); }
-
-    /* REVEAL */
-    .reveal{opacity:0; transform: translateY(28px); transition: .85s ease}
-    .reveal.active{opacity:1; transform: translateY(0)}
-
-    /* ===== FOOTER ===== */
-    .footer{
-      position:relative;
-      padding: 70px 0 26px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      background:
-        radial-gradient(circle at 18% 18%, rgba(179,31,36,0.16), transparent 55%),
-        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.05), transparent 62%),
-        linear-gradient(180deg, rgba(8,8,8,0.35), rgba(5,5,5,0.92));
-      overflow:hidden;
-    }
-    .footer::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      pointer-events:none;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 56px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 56px);
-      opacity:.35;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1) 32%, rgba(0,0,0,1));
-    }
-    .footerInner{
-      position:relative;
-      z-index:1;
-      padding: 0 6vw;
-    }
-    .footerTop{
-      display:grid;
-      grid-template-columns: 1.3fr 1fr 1fr;
-      gap: 18px;
-      align-items:start;
-    }
-    .fCard{
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.28);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
-      position:relative;
-      overflow:hidden;
-    }
-    .fCard::after{
-      content:"";
-      position:absolute; left:-60px; top:-60px;
-      width:160px; height:160px;
-      background: radial-gradient(circle, rgba(179,31,36,0.14), transparent 60%);
-      opacity:.9;
-      pointer-events:none;
-    }
-    .fCard > *{ position:relative; z-index:1; }
-
-    .fBrand{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      text-decoration:none;
-    }
-    .fBrand img{
-      height: 46px;
-      width:auto;
-      object-fit:contain;
-      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.6));
-    }
-    .fTitle{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-weight:1000;
-      font-size: 11px;
-      color: rgba(255,255,255,0.78);
-      margin-top: 2px;
-    }
-    .fTitle b{
-      font-size: 14px;
-      color:#fff;
-      letter-spacing:.14em;
-    }
-    .fText{
-      margin: 12px 0 0;
-      color: rgba(255,255,255,0.74);
-      line-height:1.65;
-      font-size: 13.5px;
-      max-width: 520px;
-    }
-
-    .fHead{
-      font-weight:1000;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size: 11px;
-      color: rgba(255,255,255,0.86);
-      margin: 2px 0 10px;
-    }
-    .fList{
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:grid;
-      gap: 8px;
-    }
-    .fList a{
-      text-decoration:none;
-      color: rgba(255,255,255,0.72);
-      font-size: 13.5px;
-      line-height:1.55;
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      transition: color .18s ease, transform .18s ease, text-shadow .18s ease;
-    }
-    .fList a:hover{
-      color:#fff;
-      text-shadow: 0 0 16px rgba(179,31,36,0.22);
-      transform: translateX(2px);
-    }
-    .fIco{
-      width: 28px;
-      height: 28px;
-      border-radius: 12px;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.22);
-      color:#fff;
-      flex:0 0 auto;
-    }
-    .fFine{
-      margin-top: 16px;
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.60);
+    summary::-webkit-details-marker{display:none}
+    details p{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:13px;
       line-height:1.6;
     }
-    .footerBottom{
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display:flex;
+
+    /* Modal */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      display:none;
       align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
+      justify-content:center;
+      z-index:200;
+      padding: 18px;
     }
-    .copy{
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.62);
+    .modal{
+      width:min(980px, 100%);
+      max-height: 88vh;
+      overflow:auto;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(10,10,12,.72);
+      box-shadow: 0 30px 90px rgba(0,0,0,.7);
+    }
+    .modalHeader{
+      position:sticky; top:0;
+      background: rgba(10,10,12,.85);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      padding: 14px 14px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    }
+    .modalHeader .left b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size:22px;
+      display:block;
+    }
+    .modalHeader .left span{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-top:4px;
+    }
+    .close{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:12px;
+      font-weight:700;
+    }
+    .modalBody{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:12px;
+    }
+    .modalPanel{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .modalPanel h3{
+      margin:0 0 10px;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size:18px;
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .kv .item{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding: 10px;
+    }
+    .kv .item b{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .kv .item span{
+      display:block;
+      margin-top:6px;
+      font-size:13px;
       letter-spacing:.04em;
     }
-    .miniLinks{
-      display:flex;
-      gap: 14px;
-      flex-wrap:wrap;
-      align-items:center;
+
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
     }
-    .miniLinks a{
-      text-decoration:none;
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.62);
-      transition: color .18s ease, text-shadow .18s ease;
-    }
-    .miniLinks a:hover{
-      color:#fff;
-      text-shadow: 0 0 14px rgba(179,31,36,0.22);
+    .gallery img{
+      width:100%;
+      height: 140px;
+      object-fit:cover;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
     }
 
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      *{ animation: none !important; transition: none !important; }
+    footer{
+      padding: 22px 0 40px;
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.06em;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 1200px){
-      .brandGrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .footerTop{ grid-template-columns: 1fr 1fr; }
-    }
+    /* Responsive */
     @media (max-width: 980px){
-      .wrap{ padding: 0 18px; }
-      section{ padding: 78px 0; }
-      h2{ font-size: clamp(26px, 5.6vw, 34px); }
-      .faq{ grid-template-columns: 1fr; }
-      .brandGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .nav{ padding: 14px 18px; }
-      .nav-links{ gap: 16px; }
-      .brand-mini img{ height:60px; }
-      .slider{ height: min(64vh, 640px); }
-      .heroOverlay{ left:18px; right:18px; bottom: 26px; }
-
-      .brandsInner{ padding: 0 18px; }
-      .brandsHead{ padding-bottom: 14px; margin-bottom: 14px; }
-      .brandsTitle{ margin-top: 14px; }
-
-      .footerInner{ padding: 0 18px; }
+      .heroGrid{grid-template-columns: 1fr; }
+      .supplierGrid{grid-template-columns: repeat(2, 1fr); }
+      .modalBody{grid-template-columns: 1fr; }
     }
     @media (max-width: 560px){
-      section{ padding: 56px 0; }
-      .brandGrid{ grid-template-columns: 1fr; }
-      .langBox{ width:100%; justify-content:space-between; }
-      .nav{ flex-direction:column; align-items:flex-start; gap:12px; }
-      .brand-mini img{ height:54px; }
-      .slider{ height: 62vh; }
-      .heroTitle{ font-size: 36px; }
-
-      .footerTop{ grid-template-columns: 1fr; }
-      .footer{ padding: 56px 0 22px; }
+      h1{font-size:28px}
+      .supplierGrid{grid-template-columns: 1fr; }
+      .faq{grid-template-columns: 1fr; }
+      .gallery{grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg"></div>
-  <div class="noise"></div>
-
-  <div class="orbs" aria-hidden="true">
-    <div class="orb" style="left:-140px; top: 90px;"></div>
-    <div class="orb o2" style="right:-220px; top: 260px;"></div>
-    <div class="orb o3" style="left: 55%; bottom:-200px;"></div>
-  </div>
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="nav">
-      <a href="index.html" class="brand-mini" aria-label="RACEM">
-        <img src="assets/rmgroup.png" alt="RACEM logo">
-        <div class="brand-title">
-          <span data-i18n="nav_sub">RACEM</span>
-          <b data-i18n="nav_main">BODYKITS</b>
-        </div>
-      </a>
-
-      <nav class="nav-links" aria-label="Menu">
-        <a href="index.html" data-i18n="home">Domovská stránka</a>
-        <a href="vop.html" data-i18n="vop">VOP</a>
-        <a href="index.html#kontakt" data-i18n="contact">Kontakt</a>
-      </nav>
-
-      <div class="langBox" aria-label="Language">
-        <button class="langBtn active" id="btnSK" type="button">SK</button>
-        <button class="langBtn" id="btnEN" type="button">EN</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- HERO SLIDER (FULL WIDTH) -->
-  <section class="heroSlider" aria-label="Bodykits hero">
-    <div class="slider" id="slider">
-      <div class="slide active" style="background-image:url('assets/editedsfxla.png')"></div>
-      <div class="slide" style="background-image:url('assets/m3logo.png')"></div>
-      <div class="slide" style="background-image:url('assets/m3logo2.png')"></div>
-
-      <div class="heroOverlay">
-        <div style="max-width: 980px;">
-          <div class="heroTag"><span class="heroDot"></span><span data-i18n="pill">widebody • aero • streetfighter</span></div>
-          <div class="heroTitle" data-i18n="hero_title">BODYKITS</div>
-          <p class="heroText" data-i18n="hero_text">
-            Sme autorizovaným predajcom následovných značiek.
-          </p>
-        </div>
-
-        <div class="heroControls" aria-label="Slider controls">
-          <button class="heroBtn" id="prevBtn" type="button" aria-label="Previous">‹</button>
-          <button class="heroBtn" id="nextBtn" type="button" aria-label="Next">›</button>
-          <div class="dots" id="dots" aria-label="Slide dots"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AUTHORIZED BRANDS (FULL WIDTH, NO PANEL) -->
-  <section class="brandsSection">
-    <div class="brandsInner">
-      <div class="brandsHead reveal">
-        <div class="brandsHeadLeft">
-          <span class="pill"><span class="dot"></span><span data-i18n="brands_pill"> ponuka značiek</span></span>
-          <div class="brandsTitle" data-i18n="brands_title">Vaši výrobcovia bodykitov</div>
-          <p class="brandsLead" data-i18n="brands_text">
-            Klikni na značku pre zobrazenie kompletnej ponuky.
-          </p>
-        </div>
-      </div>
-
-      <div class="brandGrid reveal">
-
-        <!-- SFXLA -->
-        <a class="brandCard" href="sfxla.html" title="Streetfighter LA">
-          <div class="brandTop">
-            <span class="badge"><span class="bDot"></span><span data-i18n="official">USA</span></span>
-          </div>
-          <div class="brandLogoBox">
-            <img class="brandLogo" src="assets/SFXLA_small.avif" alt="Streetfighter LA logo" loading="lazy" decoding="async">
-          </div>
-          <div class="brandBody">
-            <div class="brandName">Streetfighter LA</div>
-            <p class="brandDesc" data-i18n="sfxla_desc">
-              BMW E/F/G , Camaro gen. 5 / 6, EVO X
-            </p>
-            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-          </div>
-        </a>
-
-        <!-- LOCKED 1 -->
-        <a class="brandCard locked" href="bodykits-znacka-1.html" title="Locked brand 1">
-          <div class="brandTop">
-            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-          </div>
-          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-          <div class="brandBody">
-            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-          </div>
-        </a>
-
-        <!-- LOCKED 2 -->
-        <a class="brandCard locked" href="bodykits-znacka-2.html" title="Locked brand 2">
-          <div class="brandTop">
-            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-          </div>
-          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-          <div class="brandBody">
-            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-          </div>
-        </a>
-
-        <!-- LOCKED 3 -->
-        <a class="brandCard locked" href="bodykits-znacka-3.html" title="Locked brand 3">
-          <div class="brandTop">
-            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-          </div>
-          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-          <div class="brandBody">
-            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-          </div>
-        </a>
-
-        <!-- LOCKED 4 -->
-        <a class="brandCard locked" href="bodykits-znacka-4.html" title="Locked brand 4">
-          <div class="brandTop">
-            <span class="badge"><span class="bDot"></span><span data-i18n="locked">locked</span></span>
-          </div>
-          <div class="brandLogoBox"><div class="lockIcon">🔒</div></div>
-          <div class="brandBody">
-            <div class="brandName" data-i18n="locked_title">Odomykáme čoskoro</div>
-            <p class="brandDesc" data-i18n="locked_desc">Stránka značky je pripravená – info dopĺňame.</p>
-            <div class="goHint"><span data-i18n="open">Zobraziť ponuku</span> <span class="arr">→</span></div>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section>
+  <header>
     <div class="wrap">
-      <div class="panel reveal">
-        <span class="pill"><span class="dot"></span><span data-i18n="faq_pill">FAQ</span></span>
-        <h2 style="margin-top:16px;" data-i18n="faq_title">Najčastejšie otázky</h2>
+      <div class="nav">
+        <a class="brand" href="index.html" aria-label="RACEM">
+          <!-- Daj sem tvoje logo -->
+          <img src="img/logo-racem.png" alt="RACEM logo" onerror="this.style.display='none'">
+          <div class="txt">
+            <b>RACEM</b>
+            <span>Suppliers / Brands</span>
+          </div>
+        </a>
+
+        <nav class="navlinks">
+          <a class="chip" href="index.html">Domov</a>
+          <a class="chip primary" href="#suppliers">Dodávatelia</a>
+          <a class="chip" href="#faq">FAQ</a>
+          <a class="chip" href="#how">Ako to funguje</a>
+          <a class="chip" href="#gallery">Galéria</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="heroGrid">
+          <div class="card heroLeft">
+            <div class="kicker"><span class="dot"></span> databáza dodávateľov RACEM</div>
+            <h1>Objavuj partnerov, značky a reálne dodacie doby</h1>
+            <p class="sub">
+              Toto je prehľad dodávateľov, s ktorými vieme riešiť objednávky: značky, skladovosť, odhad dodania, doprava,
+              aj rýchle FAQ. Klikni na dodávateľa a máš všetko na jednom mieste.
+            </p>
+
+            <div class="heroStats">
+              <div class="stat">
+                <b id="statCount">—</b>
+                <span>Dodávatelia</span>
+              </div>
+              <div class="stat">
+                <b id="statFast">—</b>
+                <span>Rýchli (1–5 dní)</span>
+              </div>
+              <div class="stat">
+                <b id="statCountries">—</b>
+                <span>Krajiny</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card heroRight">
+            <div class="globeTop">
+              <b>Zemeguľa dodávateľov</b>
+              <span>drag / hover</span>
+            </div>
+            <canvas id="globe" width="900" height="520" aria-label="Zemeguľa"></canvas>
+            <p class="globeHint">
+              Zobrazuje orientačne, odkiaľ dodávatelia idú. Klik na bod = vyber dodávateľa.
+              (Je to “light” globe, nech je stránka rýchla.)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="suppliers" class="block">
+        <div class="card controls">
+          <div class="field">
+            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
+            <input id="q" type="text" placeholder="napr. CSR, Streetfighter, Japan..." autocomplete="off" />
+          </div>
+
+          <select id="region" class="select" title="Filter región">
+            <option value="all">Všetky regióny</option>
+            <option value="EU">EU</option>
+            <option value="UK">UK</option>
+            <option value="JP">JP</option>
+            <option value="US">US</option>
+            <option value="AE">AE</option>
+          </select>
+
+          <select id="speed" class="select" title="Filter dodania">
+            <option value="all">Všetky dodacie doby</option>
+            <option value="fast">1–5 dní</option>
+            <option value="mid">6–14 dní</option>
+            <option value="slow">15+ dní</option>
+          </select>
+
+          <button class="btn ghost" id="reset">Reset</button>
+          <button class="btn" id="openFAQ">FAQ</button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="supplierGrid" id="grid"></div>
+      </section>
+
+      <section id="how" class="block">
+        <div class="sectionTitle">
+          <h2>Ako to funguje</h2>
+          <p>Jednoduchý flow – bez sľubov. Len reálny proces a info, ktoré potrebuje zákazník.</p>
+        </div>
+
+        <div class="card" style="padding:14px;">
+          <div class="kv">
+            <div class="item">
+              <b>1) Výber</b>
+              <span>Vyber dodávateľa a značku, pozri dodacie doby a materiály.</span>
+            </div>
+            <div class="item">
+              <b>2) Dopyt / objednávka</b>
+              <span>Pošleš SKU / link / fotku – my potvrdíme dostupnosť a cenu.</span>
+            </div>
+            <div class="item">
+              <b>3) Platba</b>
+              <span>Karta / prevod / dobierka podľa typu produktu a dodávateľa.</span>
+            </div>
+            <div class="item">
+              <b>4) Doručenie</b>
+              <span>Kuriér / Zásielkovňa / pošta – podľa rozmerov a kategórie.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="block">
+        <div class="sectionTitle">
+          <h2>FAQ</h2>
+          <p>Najčastejšie otázky okolo dodania, reklamácií, skladovosti a materiálov.</p>
+        </div>
 
         <div class="faq">
           <details>
-            <summary><span data-i18n="faq1_q">Je to plug & play?</span><span class="chev">⌄</span></summary>
-            <div class="faqAns" data-i18n="faq1_a">
-              Väčšina kitov nie je 100% plug & play. Widebody často znamená úpravy (rezanie, úchyty, doladenie).
-              My ti dopredu povieme, čo je realita pre tvoje auto.
-            </div>
+            <summary>Prečo sa dodacia doba líši podľa produktu?</summary>
+            <p>
+              Každý dodávateľ má iný sklad a výrobu. Niečo je “in stock”, niečo ide na objednávku a výroba trvá.
+              Preto vždy pri konkrétnom produkte potvrdzujeme reálny termín.
+            </p>
           </details>
 
           <details>
-            <summary><span data-i18n="faq2_q">Ako riešite kompatibilitu (fitment)?</span><span class="chev">⌄</span></summary>
-            <div class="faqAns" data-i18n="faq2_a">
-              Overujeme karosériu, rok, facelift, šírky a verzie nárazníkov. Potom ti pošleme presné odporúčanie,
-              čo objednať a čo očakávať pri montáži.
-            </div>
+            <summary>Viete zohnať len časť kitu (napr. zadné lemy)?</summary>
+            <p>
+              Áno – pri viacerých značkách sa dá riešiť diel po diely. Záleží na dostupnosti a tom, či výrobca predáva samostatne.
+            </p>
           </details>
 
           <details>
-            <summary><span data-i18n="faq3_q">Aké materiály existujú?</span><span class="chev">⌄</span></summary>
-            <div class="faqAns" data-i18n="faq3_a">
-              Najčastejšie FRP, PU/ABS a Carbon. Každý má plusy/mínusy (pružnosť, váha, opravy, cena).
-              Podľa použitia ti odporučíme správnu voľbu.
-            </div>
+            <summary>Materiály: ABS vs FRP vs Carbon?</summary>
+            <p>
+              ABS = odolné, presné, vhodné na daily. FRP = ľahšie a “race”, vyžaduje viac práce pri montáži. Carbon = top vzhľad/váha, vyššia cena.
+            </p>
           </details>
 
           <details>
-            <summary><span data-i18n="faq4_q">Ako dlho trvá dodanie?</span><span class="chev">⌄</span></summary>
-            <div class="faqAns" data-i18n="faq4_a">
-              Závisí od výroby a dostupnosti. Vždy dostaneš reálny termín a možnosti dopravy ešte pred potvrdením objednávky.
-            </div>
+            <summary>Reklamácie a vrátenie?</summary>
+            <p>
+              Štandardné zákonné lehoty, ale pri dieloch “na objednávku” môžu byť špecifiká. Vždy riešime férovo podľa typu produktu a dodávateľa.
+            </p>
           </details>
         </div>
-      </div>
+      </section>
+
+      <section id="gallery" class="block">
+        <div class="sectionTitle">
+          <h2>Galéria</h2>
+          <p>Ukážky dodávateľov / značiek. (Sem si môžeš pchať aj event fotky alebo montáže.)</p>
+        </div>
+
+        <div class="card" style="padding:14px;">
+          <div class="gallery" id="globalGallery"></div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          © <span id="year"></span> RACEM / REM Performance — suppliers hub
+        </div>
+      </footer>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" aria-label="Footer">
-    <div class="footerInner">
-
-      <div class="footerTop">
-        <div class="fCard">
-          <a class="fBrand" href="index.html" aria-label="RACEM">
-            <img src="assets/rmgroup.png" alt="RACEM logo">
-            <div class="fTitle">
-              <span data-i18n="f_brand_sub">RACEM</span>
-              <b data-i18n="f_brand_main">BODYKITS</b>
-            </div>
-          </a>
-          <p class="fText" data-i18n="f_about">
-            Performance & styling diely. Overenie kompatibility, pomoc s výberom a dodanie do SR/ČR/EÚ.
-          </p>
-          <div class="fFine" data-i18n="f_disclaimer">
-            Pozn.: Fitment sa môže líšiť podľa karosérie, ročníka, faceliftu a úprav. Pred objednávkou odporúčame overenie.
+    <!-- MODAL -->
+    <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Detail dodávateľa">
+      <div class="modal" id="modal">
+        <div class="modalHeader">
+          <div class="left">
+            <b id="mName">—</b>
+            <span id="mMeta">—</span>
           </div>
+          <button class="close" id="close">Close</button>
         </div>
 
-        <div class="fCard">
-          <div class="fHead" data-i18n="f_links">Rýchle odkazy</div>
-          <ul class="fList">
-            <li><a href="index.html"><span class="fIco">🏁</span><span data-i18n="f_home">Domov</span></a></li>
-            <li><a href="vop.html"><span class="fIco">📄</span><span data-i18n="f_terms">VOP</span></a></li>
-            <li><a href="index.html#kontakt"><span class="fIco">✉️</span><span data-i18n="f_contact">Kontakt</span></a></li>
-          </ul>
-        </div>
+        <div class="modalBody">
+          <div class="modalPanel">
+            <h3>Info</h3>
+            <div class="kv" id="mKV"></div>
+            <div style="height:12px"></div>
+            <h3>FAQ (dodávateľ)</h3>
+            <div id="mFAQ" style="display:grid;gap:10px;"></div>
+          </div>
 
-        <div class="fCard">
-          <div class="fHead" data-i18n="f_contact_head">Kontakt</div>
-          <ul class="fList">
-            <li>
-              <a href="mailto:info@remperformance.sk">
-                <span class="fIco">📩</span><span>info@remperformance.sk</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://racem.sk" target="_blank" rel="noopener">
-                <span class="fIco">🌐</span><span>racem.sk</span>
-              </a>
-            </li>
-            <li>
-              <a href="index.html#kontakt">
-                <span class="fIco">📍</span><span data-i18n="f_area">Pôsobnosť: SR / ČR / EÚ</span>
-              </a>
-            </li>
-          </ul>
-          <div class="fFine" data-i18n="f_hours">
-            Odpovedáme čo najrýchlejšie (typicky do 24–48h).
+          <div class="modalPanel">
+            <h3>Galéria</h3>
+            <div class="gallery" id="mGallery"></div>
           </div>
         </div>
       </div>
-
-      <div class="footerBottom">
-        <div class="copy" id="copyright"></div>
-        <div class="miniLinks">
-          <a href="vop.html" data-i18n="f_terms2">VOP</a>
-          <a href="index.html#kontakt" data-i18n="f_contact2">Kontakt</a>
-        </div>
-      </div>
-
     </div>
-  </footer>
+
+  </main>
 
   <script>
-    // REVEAL ON SCROLL
-    const reveals = document.querySelectorAll('.reveal');
-    const activate = () => {
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 110) el.classList.add('active');
-      });
-    };
-    window.addEventListener('scroll', activate, { passive: true });
-    window.addEventListener('load', activate);
-
-    // subtle parallax bg
-    window.addEventListener('scroll', () => {
-      const sc = window.scrollY;
-      const bg = document.querySelector('.bg');
-      if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
-    }, { passive: true });
-
-    // HERO SLIDER
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const dotsWrap = document.getElementById('dots');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    let idx = 0;
-    let timer = null;
-
-    function setSlide(i){
-      idx = (i + slides.length) % slides.length;
-      slides.forEach((s, k) => s.classList.toggle('active', k === idx));
-      if (dotsWrap){
-        dotsWrap.querySelectorAll('.dotBtn').forEach((d,k)=> d.classList.toggle('active', k===idx));
-      }
-    }
-
-    function startAuto(){
-      stopAuto();
-      timer = setInterval(() => setSlide(idx + 1), 5200);
-    }
-    function stopAuto(){
-      if (timer) clearInterval(timer);
-      timer = null;
-    }
-
-    function buildDots(){
-      if (!dotsWrap) return;
-      dotsWrap.innerHTML = '';
-      slides.forEach((_, i) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'dotBtn' + (i===0 ? ' active' : '');
-        b.setAttribute('aria-label', 'Slide ' + (i+1));
-        b.addEventListener('click', () => { setSlide(i); startAuto(); });
-        dotsWrap.appendChild(b);
-      });
-    }
-
-    buildDots();
-    setSlide(0);
-    startAuto();
-
-    prevBtn?.addEventListener('click', () => { setSlide(idx - 1); startAuto(); });
-    nextBtn?.addEventListener('click', () => { setSlide(idx + 1); startAuto(); });
-
-    // pause on hover
-    const slider = document.getElementById('slider');
-    slider?.addEventListener('mouseenter', stopAuto);
-    slider?.addEventListener('mouseleave', startAuto);
-
-    // Copyright year
-    const year = new Date().getFullYear();
-    const c = document.getElementById('copyright');
-    if (c) c.textContent = `© ${year} RACEM. All rights reserved.`;
-
-    // I18N
-    const dict = {
-      sk: {
-        nav_sub: "RACEM",
-        nav_main: "BODYKITS",
-        home: "Domovská stránka",
-        vop: "VOP",
-        contact: "Kontakt",
-        pill: "widebody • aero • streetfighter",
-        hero_title: "BODYKITS",
-        hero_text: "Naša ponuka značiek bodykitov. Klikni na značku a otvorí sa jej stránka.",
-        brands_pill: "ponuka značiek",
-        brands_title: "Vaši výrobcovia bodykitov",
-        brands_text: "Klikni na značku pre zobrazenie kompletnej ponuky.",
-        official: "USA",
-        locked: "locked",
-        locked_title: "Odomykáme čoskoro",
-        locked_desc: "Stránka značky je pripravená – info dopĺňame.",
-        sfxla_desc: "BMW E/F/G , Camaro gen. 5 / 6, EVO X",
-        open: "Zobraziť ponuku",
-        faq_pill: "FAQ",
-        faq_title: "Najčastejšie otázky",
-        faq1_q: "Je to plug & play?",
-        faq1_a: "Väčšina kitov nie je 100% plug & play. Widebody často znamená úpravy (rezanie, úchyty, doladenie). My ti dopredu povieme, čo je realita pre tvoje auto.",
-        faq2_q: "Ako riešite kompatibilitu (fitment)?",
-        faq2_a: "Overujeme karosériu, rok, facelift, šírky a verzie nárazníkov. Potom ti pošleme presné odporúčanie, čo objednať a čo očakávať pri montáži.",
-        faq3_q: "Aké materiály existujú?",
-        faq3_a: "Najčastejšie FRP, PU/ABS a Carbon. Každý má plusy/mínusy (pružnosť, váha, opravy, cena). Podľa použitia ti odporučíme správnu voľbu.",
-        faq4_q: "Ako dlho trvá dodanie?",
-        faq4_a: "Závisí od výroby a dostupnosti. Vždy dostaneš reálny termín a možnosti dopravy ešte pred potvrdením objednávky.",
-
-        f_brand_sub: "RACEM",
-        f_brand_main: "BODYKITS",
-        f_about: "Performance & styling diely. Overenie kompatibility, pomoc s výberom a dodanie do SR/ČR/EÚ.",
-        f_disclaimer: "Pozn.: Fitment sa môže líšiť podľa karosérie, ročníka, faceliftu a úprav. Pred objednávkou odporúčame overenie.",
-        f_links: "Rýchle odkazy",
-        f_home: "Domov",
-        f_terms: "VOP",
-        f_contact: "Kontakt",
-        f_contact_head: "Kontakt",
-        f_area: "Pôsobnosť: SR / ČR / EÚ",
-        f_hours: "Odpovedáme čo najrýchlejšie (typicky do 24–48h).",
-        f_terms2: "VOP",
-        f_contact2: "Kontakt"
+    // =========================
+    // DEMO DATA (prepíš na svoje)
+    // =========================
+    const SUPPLIERS = [
+      {
+        id: "csr",
+        name: "CSR Automotive",
+        region: "EU",
+        country: "DE",
+        tags: ["Bodykits", "Aero", "ABS"],
+        leadTimeDays: [3, 10],
+        stock: "mix",
+        shipping: "Kuriér / paleta (podľa kategórie)",
+        payment: "Karta / prevod",
+        website: "https://www.csr-automotive.com/",
+        desc: "Široká ponuka bodykitov a aero. Mix sklad / objednávka, stabilná dostupnosť.",
+        heroImg: "img/suppliers/csr.jpg",
+        gallery: ["img/suppliers/csr1.jpg","img/suppliers/csr2.jpg","img/suppliers/csr3.jpg"],
+        faq: [
+          { q: "Sú produkty lakovateľné?", a: "Áno, väčšina dielov ide ako lakovateľný základ. Záleží od materiálu." },
+          { q: "Viete dodať TÜV?", a: "Pri niektorých produktoch áno (podľa SKU a série)." }
+        ],
+        // pseudo geopozícia pre globe
+        lat: 51.2, lon: 10.4
       },
-      en: {
-        nav_sub: "RACEM",
-        nav_main: "BODYKITS",
-        home: "Home",
-        vop: "Terms",
-        contact: "Contact",
-        pill: "widebody • aero • streetfighter",
-        hero_title: "BODYKITS",
-        hero_text: "Our bodykit brands selection. Click a brand to open its page.",
-        brands_pill: "brand selection",
-        brands_title: "Your bodykit manufacturers",
-        brands_text: "Click a brand to view the full selection.",
-        official: "USA",
-        locked: "locked",
-        locked_title: "Unlocking soon",
-        locked_desc: "Brand page is ready — details are being added.",
-        sfxla_desc: "BMW E/F/G, Camaro gen. 5/6, EVO X",
-        open: "View selection",
-        faq_pill: "FAQ",
-        faq_title: "Frequently asked questions",
-        faq1_q: "Is it plug & play?",
-        faq1_a: "Most kits are not 100% plug & play. Widebody often requires adjustments (cutting, brackets, fine-tuning). We’ll tell you the real situation for your car upfront.",
-        faq2_q: "How do you verify fitment?",
-        faq2_a: "We check body type, year, facelift, widths and bumper versions. Then we send you a precise recommendation on what to order and what to expect during installation.",
-        faq3_q: "What materials are available?",
-        faq3_a: "Most common: FRP, PU/ABS and Carbon. Each has pros/cons (flex, weight, repairability, price). We recommend what makes sense for your use.",
-        faq4_q: "How long is delivery?",
-        faq4_a: "Depends on production and stock. We always provide a realistic ETA and shipping options before you confirm the order.",
+      {
+        id: "sfxla",
+        name: "Streetfighter LA",
+        region: "EU",
+        country: "NL",
+        tags: ["Widebody", "Drift", "FRP"],
+        leadTimeDays: [10, 28],
+        stock: "made_to_order",
+        shipping: "Kuriér / paleta",
+        payment: "Prevod (často pri custom)",
+        website: "",
+        desc: "Agresívne widebody riešenia, často výroba na objednávku. Ideálne pre drift/projekty.",
+        heroImg: "img/suppliers/sfxla.jpg",
+        gallery: ["img/suppliers/sfxla1.jpg","img/suppliers/sfxla2.jpg","img/suppliers/sfxla3.jpg"],
+        faq: [
+          { q: "Dá sa kúpiť len časť kitu?", a: "Často áno (napr. lemy), ale musí sa overiť dostupnosť dielu." },
+          { q: "Ako je to s fittingom?", a: "FRP vyžaduje prácu na montáži, je to normálne." }
+        ],
+        lat: 52.1, lon: 5.3
+      },
+      {
+        id: "nengun",
+        name: "Nengun Performance",
+        region: "JP",
+        country: "JP",
+        tags: ["JDM", "Engine", "Rare"],
+        leadTimeDays: [7, 35],
+        stock: "mix",
+        shipping: "Air / Sea (podľa rozmerov)",
+        payment: "Karta / prevod",
+        website: "https://www.nengun.com/",
+        desc: "Japonské diely a značky. Doby závisia od skladu a exportu.",
+        heroImg: "img/suppliers/nengun.jpg",
+        gallery: ["img/suppliers/nengun1.jpg","img/suppliers/nengun2.jpg","img/suppliers/nengun3.jpg"],
+        faq: [
+          { q: "Colné/vat?", a: "Áno, pri dovoze mimo EU sa rieši clo a DPH podľa pravidiel." },
+          { q: "Sú diely skladom?", a: "Je to mix. Vždy sa potvrdzuje dostupnosť." }
+        ],
+        lat: 35.7, lon: 139.7
+      },
+      {
+        id: "dubai",
+        name: "UAE Supplier (demo)",
+        region: "AE",
+        country: "AE",
+        tags: ["Luxury", "Aero"],
+        leadTimeDays: [6, 18],
+        stock: "mix",
+        shipping: "Air freight",
+        payment: "Prevod",
+        website: "",
+        desc: "Ukážka pre Blízky východ. Tu si dáš svojho reálneho dodávateľa.",
+        heroImg: "img/suppliers/uae.jpg",
+        gallery: ["img/suppliers/uae1.jpg","img/suppliers/uae2.jpg","img/suppliers/uae3.jpg"],
+        faq: [
+          { q: "Prečo je shipping vyšší?", a: "Air freight + rozmerné balíky. Cena sa počíta podľa objemu." }
+        ],
+        lat: 25.2, lon: 55.3
+      },
+    ];
 
-        f_brand_sub: "RACEM",
-        f_brand_main: "BODYKITS",
-        f_about: "Performance & styling parts. Fitment verification, help with selection, delivery across SK/CZ/EU.",
-        f_disclaimer: "Note: Fitment may vary by body, model year, facelift and modifications. We recommend verification before ordering.",
-        f_links: "Quick links",
-        f_home: "Home",
-        f_terms: "Terms",
-        f_contact: "Contact",
-        f_contact_head: "Contact",
-        f_area: "Coverage: SK / CZ / EU",
-        f_hours: "We reply as fast as possible (typically within 24–48h).",
-        f_terms2: "Terms",
-        f_contact2: "Contact"
-      }
-    };
+    // =========================
+    // Helpers
+    // =========================
+    const $ = (s) => document.querySelector(s);
+    const grid = $("#grid");
+    const q = $("#q");
+    const region = $("#region");
+    const speed = $("#speed");
+    const reset = $("#reset");
 
-    const btnSK = document.getElementById('btnSK');
-    const btnEN = document.getElementById('btnEN');
-
-    function setLang(lang){
-      document.documentElement.lang = lang === 'en' ? 'en' : 'sk';
-      btnSK.classList.toggle('active', lang === 'sk');
-      btnEN.classList.toggle('active', lang === 'en');
-
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const val = dict[lang]?.[key];
-        if(typeof val === 'string') el.innerHTML = val;
-      });
-
-      // Update copyright language
-      const c = document.getElementById('copyright');
-      if (c){
-        const year = new Date().getFullYear();
-        c.textContent = lang === 'en'
-          ? `© ${year} RACEM. All rights reserved.`
-          : `© ${year} RACEM. Všetky práva vyhradené.`;
-      }
+    function leadLabel([a,b]){
+      return a === b ? `${a} dní` : `${a}–${b} dní`;
+    }
+    function speedBucket([a,b]){
+      const max = Math.max(a,b);
+      if (max <= 5) return "fast";
+      if (max <= 14) return "mid";
+      return "slow";
+    }
+    function stockLabel(s){
+      if (s === "in_stock") return "In stock";
+      if (s === "made_to_order") return "Na objednávku";
+      return "Mix";
     }
 
-    btnSK.addEventListener('click', () => setLang('sk'));
-    btnEN.addEventListener('click', () => setLang('en'));
+    function renderStats(list){
+      $("#statCount").textContent = list.length;
+      $("#statFast").textContent = list.filter(x => speedBucket(x.leadTimeDays) === "fast").length;
+      $("#statCountries").textContent = new Set(list.map(x => x.country)).size;
+    }
+
+    function cardHTML(x){
+      const tags = x.tags.slice(0,3).map(t => `<span class="badge">${t}</span>`).join("");
+      const t2 = `<span class="badge red">${x.region}</span>`;
+      const img = x.heroImg ? `<img src="${x.heroImg}" alt="${x.name}" onerror="this.remove()">` : "";
+      return `
+        <div class="card supplier" data-id="${x.id}">
+          <div class="supplierTop">
+            <div class="supplierName">
+              <b title="${x.name}">${x.name}</b>
+              <span>${x.country} • ${x.region} • ${stockLabel(x.stock)}</span>
+            </div>
+            <div class="badges">${t2}${tags}</div>
+          </div>
+
+          <div class="supplierThumb">
+            ${img}
+            <div class="overlay"></div>
+          </div>
+
+          <div class="supplierMeta">
+            <div class="metaItem">
+              <b>Dodanie</b>
+              <span>${leadLabel(x.leadTimeDays)}</span>
+            </div>
+            <div class="metaItem">
+              <b>Doprava</b>
+              <span>${x.shipping}</span>
+            </div>
+          </div>
+
+          <p class="supplierDesc">${x.desc}</p>
+        </div>
+      `;
+    }
+
+    function applyFilters(){
+      const qs = (q.value || "").trim().toLowerCase();
+      const r = region.value;
+      const s = speed.value;
+
+      const out = SUPPLIERS.filter(x => {
+        const hay = [
+          x.name, x.region, x.country, x.desc,
+          ...(x.tags||[])
+        ].join(" ").toLowerCase();
+
+        const okQ = !qs || hay.includes(qs);
+        const okR = (r === "all") || (x.region === r);
+        const okS = (s === "all") || (speedBucket(x.leadTimeDays) === s);
+        return okQ && okR && okS;
+      });
+
+      grid.innerHTML = out.map(cardHTML).join("");
+      renderStats(out);
+
+      grid.querySelectorAll(".supplier").forEach(el => {
+        el.addEventListener("click", () => openModal(el.dataset.id));
+      });
+
+      // refresh globe selection visibility (simple)
+      globeState.filteredIds = new Set(out.map(x => x.id));
+    }
+
+    // =========================
+    // Modal
+    // =========================
+    const modalBack = $("#modalBack");
+    const closeBtn = $("#close");
+
+    function openModal(id){
+      const x = SUPPLIERS.find(s => s.id === id);
+      if(!x) return;
+
+      $("#mName").textContent = x.name;
+      $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)}`;
+
+      const kv = [
+        ["Dodacie doby", leadLabel(x.leadTimeDays)],
+        ["Sklad", stockLabel(x.stock)],
+        ["Doprava", x.shipping],
+        ["Platba", x.payment],
+        ["Web", x.website ? x.website : "—"],
+        ["Značky/kategórie", (x.tags||[]).join(", ") || "—"]
+      ];
+
+      $("#mKV").innerHTML = kv.map(([k,v]) => `
+        <div class="item">
+          <b>${k}</b>
+          <span>${escapeHTML(v)}</span>
+        </div>
+      `).join("");
+
+      $("#mFAQ").innerHTML = (x.faq||[]).map(f => `
+        <details>
+          <summary>${escapeHTML(f.q)}</summary>
+          <p>${escapeHTML(f.a)}</p>
+        </details>
+      `).join("");
+
+      const g = $("#mGallery");
+      g.innerHTML = (x.gallery||[]).slice(0,6).map(src => `
+        <img src="${src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
+      `).join("");
+
+      modalBack.style.display = "flex";
+      document.body.style.overflow = "hidden";
+
+      globeState.selectedId = id; // sync highlight
+    }
+
+    function closeModal(){
+      modalBack.style.display = "none";
+      document.body.style.overflow = "";
+      globeState.selectedId = null;
+    }
+    closeBtn.addEventListener("click", closeModal);
+    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
+    window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+    function escapeHTML(s){
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
+    }
+
+    // =========================
+    // Global Gallery (mix)
+    // =========================
+    function renderGlobalGallery(){
+      const all = SUPPLIERS.flatMap(s => (s.gallery||[]).map(src => ({src, name:s.name})));
+      const pick = all.slice(0,12);
+      $("#globalGallery").innerHTML = pick.map(x => `
+        <img src="${x.src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
+      `).join("");
+    }
+
+    // =========================
+    // Globe (simple canvas)
+    // =========================
+    const canvas = document.getElementById("globe");
+    const ctx = canvas.getContext("2d");
+
+    const globeState = {
+      drag:false,
+      rot: 0.9,
+      rotVel: 0.0025,
+      mx:0,
+      filteredIds: new Set(SUPPLIERS.map(s => s.id)),
+      selectedId: null
+    };
+
+    function resizeCanvas(){
+      // keep internal size fixed for quality, but fit via CSS
+      // (canvas has width/height set in HTML)
+    }
+
+    function latLonToXYZ(lat, lon){
+      const la = lat * Math.PI/180;
+      const lo = lon * Math.PI/180;
+      const x = Math.cos(la) * Math.cos(lo);
+      const y = Math.sin(la);
+      const z = Math.cos(la) * Math.sin(lo);
+      return {x,y,z};
+    }
+
+    function project(p, rot){
+      // rotate around Y axis
+      const x = p.x * Math.cos(rot) + p.z * Math.sin(rot);
+      const z = -p.x * Math.sin(rot) + p.z * Math.cos(rot);
+      const y = p.y;
+
+      // perspective
+      const scale = 1 / (1.6 - z);
+      return { x, y, z, sx: x*scale, sy: y*scale, scale };
+    }
+
+    function drawGlobe(){
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0,0,w,h);
+
+      const cx = w/2, cy = h/2 + 20;
+      const R = Math.min(w,h)*0.34;
+
+      // sphere
+      const grad = ctx.createRadialGradient(cx - R*0.25, cy - R*0.25, R*0.1, cx, cy, R*1.15);
+      grad.addColorStop(0, "rgba(255,255,255,0.08)");
+      grad.addColorStop(0.5, "rgba(255,255,255,0.04)");
+      grad.addColorStop(1, "rgba(0,0,0,0.35)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI*2);
+      ctx.fill();
+
+      // grid lines (light)
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+
+      for(let lat=-60; lat<=60; lat+=30){
+        ctx.beginPath();
+        for(let lon=-180; lon<=180; lon+=8){
+          const p = latLonToXYZ(lat, lon);
+          const pr = project(p, globeState.rot);
+          const x = cx + pr.sx * R;
+          const y = cy - pr.sy * R;
+          if(lon === -180) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+
+      for(let lon=-150; lon<=150; lon+=30){
+        ctx.beginPath();
+        for(let lat=-85; lat<=85; lat+=6){
+          const p = latLonToXYZ(lat, lon);
+          const pr = project(p, globeState.rot);
+          const x = cx + pr.sx * R;
+          const y = cy - pr.sy * R;
+          if(lat === -85) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+
+      // supplier points
+      const pts = SUPPLIERS
+        .filter(s => globeState.filteredIds.has(s.id))
+        .map(s => {
+          const p = latLonToXYZ(s.lat, s.lon);
+          const pr = project(p, globeState.rot);
+          return { s, pr };
+        })
+        // draw far first
+        .sort((a,b) => a.pr.z - b.pr.z);
+
+      for(const it of pts){
+        const {s, pr} = it;
+        const x = cx + pr.sx * R;
+        const y = cy - pr.sy * R;
+
+        // only show front-ish hemisphere
+        if(pr.z < 0.0) continue;
+
+        const isSel = globeState.selectedId === s.id;
+
+        ctx.beginPath();
+        ctx.fillStyle = isSel ? "rgba(255,43,47,0.95)" : "rgba(179,31,36,0.78)";
+        ctx.arc(x, y, isSel ? 7 : 5, 0, Math.PI*2);
+        ctx.fill();
+
+        // halo
+        ctx.beginPath();
+        ctx.fillStyle = isSel ? "rgba(255,43,47,0.18)" : "rgba(179,31,36,0.14)";
+        ctx.arc(x, y, isSel ? 16 : 12, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // label
+      ctx.fillStyle = "rgba(255,255,255,0.60)";
+      ctx.font = "12px Oxanium, Arial";
+      ctx.fillText("RACEM SUPPLIERS", 18, 26);
+    }
+
+    function tick(){
+      if(!globeState.drag) globeState.rot += globeState.rotVel;
+      drawGlobe();
+      requestAnimationFrame(tick);
+    }
+
+    // hit test points
+    function pickSupplierAt(mx, my){
+      const rect = canvas.getBoundingClientRect();
+      const x0 = (mx - rect.left) * (canvas.width / rect.width);
+      const y0 = (my - rect.top) * (canvas.height / rect.height);
+
+      const cx = canvas.width/2, cy = canvas.height/2 + 20;
+      const R = Math.min(canvas.width, canvas.height)*0.34;
+
+      // compute points front hemisphere
+      const pts = SUPPLIERS
+        .filter(s => globeState.filteredIds.has(s.id))
+        .map(s => {
+          const p = latLonToXYZ(s.lat, s.lon);
+          const pr = project(p, globeState.rot);
+          return { s, pr };
+        })
+        .filter(it => it.pr.z >= 0.0)
+        .map(it => {
+          const sx = cx + it.pr.sx * R;
+          const sy = cy - it.pr.sy * R;
+          return { s: it.s, sx, sy };
+        });
+
+      let best = null;
+      let bestD = 999999;
+
+      for(const p of pts){
+        const dx = p.sx - x0, dy = p.sy - y0;
+        const d = dx*dx + dy*dy;
+        if(d < bestD){
+          bestD = d;
+          best = p;
+        }
+      }
+      if(best && bestD < 18*18) return best.s;
+      return null;
+    }
+
+    canvas.addEventListener("mousemove", (e) => {
+      const s = pickSupplierAt(e.clientX, e.clientY);
+      canvas.style.cursor = s ? "pointer" : "grab";
+    });
+
+    canvas.addEventListener("mousedown", (e) => {
+      globeState.drag = true;
+      globeState.mx = e.clientX;
+      canvas.style.cursor = "grabbing";
+    });
+
+    window.addEventListener("mouseup", () => {
+      globeState.drag = false;
+      canvas.style.cursor = "grab";
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if(!globeState.drag) return;
+      const dx = e.clientX - globeState.mx;
+      globeState.mx = e.clientX;
+      globeState.rot += dx * 0.0045;
+    });
+
+    canvas.addEventListener("click", (e) => {
+      const s = pickSupplierAt(e.clientX, e.clientY);
+      if(s) openModal(s.id);
+    });
+
+    // =========================
+    // Wire UI
+    // =========================
+    q.addEventListener("input", applyFilters);
+    region.addEventListener("change", applyFilters);
+    speed.addEventListener("change", applyFilters);
+
+    reset.addEventListener("click", () => {
+      q.value = "";
+      region.value = "all";
+      speed.value = "all";
+      applyFilters();
+    });
+
+    $("#openFAQ").addEventListener("click", () => {
+      location.hash = "#faq";
+    });
+
+    // init
+    $("#year").textContent = new Date().getFullYear();
+    renderGlobalGallery();
+    applyFilters();
+    resizeCanvas();
+    tick();
   </script>
 </body>
 </html>
