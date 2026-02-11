@@ -155,23 +155,90 @@
       max-width: 62ch;
     }
 
-    /* ✅ 2 riadky × 3 boxy */
+    /* ✅ 3 kocky - RACEM look */
     .heroStats{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:10px;
+      gap:12px;
       margin-top:12px;
     }
     .stat{
-      padding:12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.04);
+      position:relative;
+      padding:14px 14px 12px;
+      border-radius: 16px;
+      background:
+        radial-gradient(480px 160px at 20% 0%, rgba(179,31,36,.18), transparent 55%),
+        rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+      overflow:hidden;
     }
-    .stat b{display:block; font-size:18px; letter-spacing:.06em}
-    .stat span{display:block; margin-top:6px; color:var(--muted); font-size:12px; letter-spacing:.10em; text-transform:uppercase}
+    .stat:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(120deg, rgba(179,31,36,.18), transparent 35%),
+        linear-gradient(0deg, rgba(0,0,0,.0), rgba(0,0,0,.25));
+      opacity:.9;
+      pointer-events:none;
+    }
+    .stat .row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .stat .label{
+      position:relative;
+      display:flex; flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .stat .label b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(255,255,255,.78);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .stat .label span{
+      color: rgba(255,255,255,.60);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.35;
+    }
+    .stat .value{
+      position:relative;
+      font-family: Oswald, sans-serif;
+      font-size:28px;
+      letter-spacing:.06em;
+      text-shadow: 0 12px 30px rgba(0,0,0,.6);
+    }
+    .stat .ico{
+      width:34px; height:34px;
+      border-radius: 12px;
+      display:grid; place-items:center;
+      border:1px solid rgba(179,31,36,.45);
+      background: rgba(179,31,36,.10);
+      box-shadow: 0 14px 35px rgba(0,0,0,.45);
+      flex: 0 0 auto;
+    }
+    .stat .bar{
+      position:relative;
+      margin-top:10px;
+      height:2px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .stat .bar:after{
+      content:"";
+      display:block;
+      height:100%;
+      width:46%;
+      background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.65));
+      border-radius: 99px;
+    }
 
-    /* Globe */
+    /* Right panel (globe) */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -312,8 +379,6 @@
       white-space:nowrap;
     }
     .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-
-    /* ✅ status */
     .badge.status{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
     .badge.status.active{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
     .badge.status.locked{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
@@ -358,7 +423,7 @@
       background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
     }
 
-    /* ✅ Locked suppliers (blur + overlay) */
+    /* Locked cards */
     .supplier.locked{
       cursor:not-allowed;
       filter: blur(0.6px) saturate(.85);
@@ -573,7 +638,7 @@
       .supplierGrid{grid-template-columns: 1fr; }
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
-      .heroStats{grid-template-columns: repeat(2, 1fr);} /* na mobile 2x3 */
+      .heroStats{grid-template-columns: repeat(2, 1fr);}
     }
   </style>
 </head>
@@ -616,21 +681,53 @@
             </p>
 
             <div class="heroStats">
-              <div class="stat"><b>2</b><span>Dodávatelia</span></div>
-              <div class="stat"><b>+3</b><span>Aktuálne rozširujeme</span></div>
-              <div class="stat"><b>2</b><span>Krajiny</span></div>
+              <div class="stat">
+                <div class="row">
+                  <div class="label">
+                    <b>Aktívni dodávatelia</b>
+                    <span>okamžite použiteľné pre objednávky</span>
+                  </div>
+                  <div class="ico">🟢</div>
+                  <div class="value">2</div>
+                </div>
+                <div class="bar"></div>
+              </div>
+
+              <div class="stat">
+                <div class="row">
+                  <div class="label">
+                    <b>Rozširujeme</b>
+                    <span>noví partneri vo výbere</span>
+                  </div>
+                  <div class="ico">🔒</div>
+                  <div class="value">+3</div>
+                </div>
+                <div class="bar"></div>
+              </div>
+
+              <div class="stat">
+                <div class="row">
+                  <div class="label">
+                    <b>Krajiny</b>
+                    <span>aktuálne pokrytie dodávok</span>
+                  </div>
+                  <div class="ico">🌍</div>
+                  <div class="value">2</div>
+                </div>
+                <div class="bar"></div>
+              </div>
             </div>
           </div>
 
           <div class="card heroRight">
             <div class="globeTop">
               <b>Zemeguľa dodávateľov</b>
-              <span>drag / hover</span>
+              <span>drag / hover / click</span>
             </div>
 
             <canvas id="globe" aria-label="Zemeguľa"></canvas>
 
-            <!-- Tooltip (hover nad markerom) -->
+            <!-- Tooltip -->
             <div id="globeTip" style="
               position:fixed;
               z-index:9999;
@@ -650,8 +747,30 @@
               <span id="globeTipMeta" style="display:block;margin-top:4px;color:rgba(255,255,255,.65);"></span>
             </div>
 
+            <!-- Toast (pri locked kliknutí) -->
+            <div id="toast" style="
+              position:fixed;
+              left:50%;
+              bottom:22px;
+              transform:translateX(-50%);
+              z-index:9999;
+              display:none;
+              padding:12px 14px;
+              border-radius:14px;
+              border:1px solid rgba(255,255,255,.14);
+              background: rgba(10,10,12,.86);
+              backdrop-filter: blur(10px);
+              box-shadow: 0 20px 60px rgba(0,0,0,.55);
+              font-size:12px;
+              letter-spacing:.06em;
+              color: rgba(255,255,255,.92);
+            ">
+              <b style="font-family:Oswald, sans-serif;letter-spacing:.10em;">LOCKED</b>
+              <span id="toastTxt" style="margin-left:8px;color:rgba(255,255,255,.65);"></span>
+            </div>
+
             <p class="globeHint">
-              Klik na bod = detail dodávateľa. (Locked sa na globe nezobrazujú.)
+              Hover na bod = info. Klik na ACTIVE = detail dodávateľa. Klik na LOCKED = coming soon.
             </p>
           </div>
         </div>
@@ -668,6 +787,9 @@
             <option value="all">Všetky regióny</option>
             <option value="EU">EU</option>
             <option value="US">US</option>
+            <option value="UK">UK</option>
+            <option value="JP">JP</option>
+            <option value="AE">AE</option>
           </select>
 
           <select id="speed" class="select" title="Filter dodania">
@@ -826,8 +948,8 @@
       {
         id: "locked-1",
         name: "Locked Supplier #1",
-        region: "EU",
-        country: "—",
+        region: "UK",
+        country: "UK",
         tags: ["COMING", "SOON"],
         leadTimeDays: [0, 0],
         stock: "mix",
@@ -839,13 +961,15 @@
         gallery: [],
         faq: [],
         status: "LOCKED",
-        locked: true
+        locked: true,
+        lat: 51.5072,
+        lon: -0.1276
       },
       {
         id: "locked-2",
         name: "Locked Supplier #2",
-        region: "EU",
-        country: "—",
+        region: "JP",
+        country: "Japonsko",
         tags: ["COMING", "SOON"],
         leadTimeDays: [0, 0],
         stock: "mix",
@@ -857,13 +981,15 @@
         gallery: [],
         faq: [],
         status: "LOCKED",
-        locked: true
+        locked: true,
+        lat: 35.6762,
+        lon: 139.6503
       },
       {
         id: "locked-3",
         name: "Locked Supplier #3",
-        region: "EU",
-        country: "—",
+        region: "AE",
+        country: "UAE",
         tags: ["COMING", "SOON"],
         leadTimeDays: [0, 0],
         stock: "mix",
@@ -875,9 +1001,12 @@
         gallery: [],
         faq: [],
         status: "LOCKED",
-        locked: true
-      },
+        locked: true,
+        lat: 25.2048,
+        lon: 55.2708
+      }
     ];
+
     window.SUPPLIERS = SUPPLIERS; // expose for module globe
 
     // =========================
@@ -919,9 +1048,6 @@
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[c]));
     }
-
-    // ✅ stats sú ručne v HTML
-    function renderStats(){}
 
     function cardHTML(x){
       const tags = (x.tags||[]).slice(0,3).map(t => `<span class="badge">${escapeHTML(t)}</span>`).join("");
@@ -988,19 +1114,23 @@
       });
 
       grid.innerHTML = out.map(cardHTML).join("");
-      renderStats(out);
 
       grid.querySelectorAll(".supplier").forEach(el => {
         el.addEventListener("click", () => {
           const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
-          if(!sup || sup.locked) return;
+          if(!sup) return;
+
+          if (sup.locked || sup.status === "LOCKED") {
+            if (typeof window.showToast === "function") window.showToast(`${sup.name} — Coming soon`);
+            return;
+          }
           openModal(el.dataset.id);
         });
       });
 
-      // refresh globe markers with filtered active suppliers
-      if (window.setGlobeActiveIds) {
-        window.setGlobeActiveIds(new Set(out.filter(x => !x.locked && x.status === "ACTIVE").map(x => x.id)));
+      // Tell globe which IDs are currently visible (for hit-test + markers)
+      if (window.setGlobeVisibleIds) {
+        window.setGlobeVisibleIds(new Set(out.map(x => x.id)));
       }
     }
 
@@ -1049,6 +1179,7 @@
       modalBack.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
+    window.openModal = openModal; // ✅ make global for module
 
     function closeModal(){
       modalBack.style.display = "none";
@@ -1101,6 +1232,17 @@
     const tipName = document.getElementById("globeTipName");
     const tipMeta = document.getElementById("globeTipMeta");
 
+    const toast = document.getElementById("toast");
+    const toastTxt = document.getElementById("toastTxt");
+    let toastT = null;
+
+    window.showToast = (msg) => {
+      toastTxt.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(toastT);
+      toastT = setTimeout(() => (toast.style.display = "none"), 1600);
+    };
+
     // RACEM origin (SK - orientačne)
     const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
 
@@ -1114,41 +1256,39 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    // Active IDs from filters
-    let activeIds = new Set(
-      (window.SUPPLIERS || [])
-        .filter(s => !s.locked && s.status === "ACTIVE")
-        .map(s => s.id)
-    );
-
-    window.setGlobeActiveIds = (set) => {
-      activeIds = set instanceof Set ? set : new Set(set);
+    // Visible IDs from filters (default = all)
+    let visibleIds = new Set((window.SUPPLIERS || []).map(s => s.id));
+    window.setGlobeVisibleIds = (set) => {
+      visibleIds = set instanceof Set ? set : new Set(set);
     };
 
-    // Build markers: RACEM + active suppliers
+    // Build markers: RACEM + all visible suppliers (ACTIVE + LOCKED)
     function buildMarkers() {
-      const suppliers = (window.SUPPLIERS || []).filter(s => !s.locked && s.status === "ACTIVE" && activeIds.has(s.id));
+      const suppliers = (window.SUPPLIERS || [])
+        .filter(s => visibleIds.has(s.id))
+        .filter(s => typeof s.lat === "number" && typeof s.lon === "number");
+
       const markers = [
         { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.11 }, // RACEM
-        ...suppliers
-          .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-          .map(s => ({ location: [s.lat, s.lon], size: 0.09 }))
+        ...suppliers.map(s => ({
+          location: [s.lat, s.lon],
+          size: (s.locked || s.status === "LOCKED") ? 0.065 : 0.09
+        }))
       ];
       return markers;
     }
 
-    // Simple projection to screen for "nearest marker" hover/click
-    // (dobre to sedí pre praktické použitie, je to "najbližší marker" logika)
+    // --- hit test helpers (light projection) ---
     function rad(deg){ return (deg * Math.PI) / 180; }
-    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
 
     function latLonToXYZ(lat, lon) {
       const la = rad(lat);
       const lo = rad(lon);
-      const x = Math.cos(la) * Math.cos(lo);
-      const y = Math.sin(la);
-      const z = Math.cos(la) * Math.sin(lo);
-      return { x, y, z };
+      return {
+        x: Math.cos(la) * Math.cos(lo),
+        y: Math.sin(la),
+        z: Math.cos(la) * Math.sin(lo)
+      };
     }
 
     function rotateY(p, phi) {
@@ -1156,11 +1296,9 @@
       return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
     }
 
-    // Very light perspective mapping for hit-test (not exact COBE internals, but stable enough)
     function projectToScreen(p, phi, w, h) {
       const pr = rotateY(p, phi);
-      // front hemisphere check
-      if (pr.z < 0) return null;
+      if (pr.z < 0) return null; // back hemisphere
 
       const cx = w / 2;
       const cy = h / 2;
@@ -1180,7 +1318,7 @@
 
     let latestState = { width: canvas.width, height: canvas.height, phi: 0 };
 
-    const globe = createGlobe(canvas, {
+    createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: canvas.width,
       height: canvas.height,
@@ -1206,18 +1344,18 @@
         if (!dragging) currentPhi += 0.0025;
         state.phi = currentPhi;
 
-        // keep reference for hit-test
         latestState = { width: state.width, height: state.height, phi: state.phi };
-        // refresh markers each frame (cheap - few markers)
+
+        // few markers -> ok to refresh each frame
         state.markers = buildMarkers();
       }
     });
 
     canvas.style.cursor = "grab";
 
-    function getActiveSupplierPoints() {
+    function getSupplierPoints() {
       const list = (window.SUPPLIERS || [])
-        .filter(s => !s.locked && s.status === "ACTIVE" && activeIds.has(s.id))
+        .filter(s => visibleIds.has(s.id))
         .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
         .map(s => ({ ...s, _xyz: latLonToXYZ(s.lat, s.lon) }));
 
@@ -1234,7 +1372,7 @@
       let best = null;
       let bestD = Infinity;
 
-      for (const s of getActiveSupplierPoints()) {
+      for (const s of getSupplierPoints()) {
         const pr = projectToScreen(s._xyz, phi, w, h);
         if (!pr) continue;
 
@@ -1248,9 +1386,8 @@
         }
       }
 
-      // threshold (v px)
-      const TH = (18 * dpr) * (18 * dpr);
-      if (best && bestD <= TH) return best;
+      const th = (18 * dpr) * (18 * dpr);
+      if (best && bestD <= th) return best;
       return null;
     }
 
@@ -1296,17 +1433,18 @@
       }
     });
 
-    // Click -> openModal
+    // Click -> ACTIVE opens modal, LOCKED shows toast
     canvas.addEventListener("click", (e) => {
       const s = pickNearestSupplier(e.clientX, e.clientY);
       if (!s) return;
-      // call your existing openModal from non-module script (global)
+
+      if (s.locked || s.status === "LOCKED") {
+        window.showToast(`${s.name} — Coming soon`);
+        return;
+      }
+
       if (typeof window.openModal === "function") window.openModal(s.id);
     });
-
-    // expose openModal
-    // (because openModal is in non-module scope, make it global)
-    window.openModal = window.openModal || ((id) => {});
   </script>
 </body>
 </html>
