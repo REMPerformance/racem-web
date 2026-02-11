@@ -8,10 +8,8 @@
   <meta name="description" content="RACEM dodávatelia – dodacie doby, informácie, FAQ a galérie. Objavuj partnerov a značky." />
   <meta name="robots" content="index,follow" />
 
-  <!-- FAVICON (ponechaj svoje) -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-  <!-- Fonts – ak už máš na racem.sk svoje, kľudne zmaž a nechaj tvoje -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
@@ -71,6 +69,19 @@
     }
     .brand .txt b{font-family: Oswald, sans-serif; font-weight:600; letter-spacing:.12em}
     .brand .txt span{font-size:12px; color:var(--muted); letter-spacing:.14em}
+    .brand .txt b{
+      position:relative;
+    }
+    .brand .txt b:after{
+      content:"";
+      display:block;
+      width:34px;
+      height:2px;
+      margin-top:6px;
+      background: var(--red);
+      border-radius: 99px;
+      opacity:.9;
+    }
 
     .navlinks{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
     .chip{
@@ -91,9 +102,7 @@
     }
 
     /* Hero */
-    .hero{
-      padding: 32px 0 18px;
-    }
+    .hero{padding: 32px 0 18px;}
     .heroGrid{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
@@ -147,9 +156,11 @@
       line-height:1.6;
       max-width: 62ch;
     }
+
+    /* ✅ 2 riadky × 3 boxy */
     .heroStats{
       display:grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap:10px;
       margin-top:12px;
     }
@@ -253,9 +264,6 @@
     }
 
     /* Grid */
-    .grid{
-      padding: 0 0 26px;
-    }
     .supplierGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -291,6 +299,7 @@
       text-overflow:ellipsis;
     }
     .supplierName span{color:var(--muted); font-size:12px; letter-spacing:.10em; text-transform:uppercase}
+
     .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
     .badge{
       font-size:11px;
@@ -302,8 +311,16 @@
       background: rgba(255,255,255,.04);
       color: rgba(255,255,255,.80);
       user-select:none;
+      white-space:nowrap;
     }
     .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
+
+    /* ✅ status */
+    .badge.status{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
+    .badge.status.active{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
+    .badge.status.locked{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
+    .badge.status.soon{border-color: rgba(179,31,36,.45); background: rgba(179,31,36,.10)}
+
     .supplierMeta{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -341,6 +358,44 @@
     .supplierThumb .overlay{
       position:absolute; inset:0;
       background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
+    }
+
+    /* ✅ Locked suppliers (blur + overlay) */
+    .supplier.locked{
+      cursor:not-allowed;
+      filter: blur(0.6px) saturate(.85);
+      opacity:.78;
+    }
+    .lockOverlay{
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.62));
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      padding:12px;
+      pointer-events:none;
+    }
+    .lockOverlay b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:13px;
+    }
+    .lockOverlay span{
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.08em;
+    }
+    .lockPill{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      padding:8px 10px;
+      border-radius: 999px;
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
     }
 
     /* Sections */
@@ -520,21 +575,8 @@
       .supplierGrid{grid-template-columns: 1fr; }
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
+      .heroStats{grid-template-columns: repeat(2, 1fr);} /* na mobile 2x3 */
     }
-    .brand .txt b{
-  position:relative;
-}
-.brand .txt b:after{
-  content:"";
-  display:block;
-  width:34px;
-  height:2px;
-  margin-top:6px;
-  background: var(--red);
-  border-radius: 99px;
-  opacity:.9;
-}
-
   </style>
 </head>
 
@@ -543,16 +585,14 @@
     <div class="wrap">
       <div class="nav">
         <a class="brand" href="index.html" aria-label="RACEM Group">
-  <img src="rmgroup.png" alt="RACEM Group logo"
-       style="height:36px;width:auto;display:block;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));"
-       onerror="this.style.display='none'">
-
-  <div class="txt">
-    <b>RACEM Group</b>
-    <span>Suppliers / Brands</span>
-  </div>
-</a>
-
+          <img src="rmgroup.png" alt="RACEM Group logo"
+               style="height:36px;width:auto;display:block;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));"
+               onerror="this.style.display='none'">
+          <div class="txt">
+            <b>RACEM Group</b>
+            <span>Suppliers / Brands</span>
+          </div>
+        </a>
 
         <nav class="navlinks">
           <a class="chip" href="index.html">Domov</a>
@@ -573,32 +613,19 @@
             <div class="kicker"><span class="dot"></span> databáza dodávateľov RACEM</div>
             <h1>Objavuj partnerov, značky a reálne dodacie doby</h1>
             <p class="sub">
-              Toto je prehľad dodávateľov, s ktorými vieme riešiť objednávky: značky, skladovosť, odhad dodania, doprava,
+              Prehľad dodávateľov, s ktorými vieme riešiť objednávky: značky, skladovosť, odhad dodania, doprava
               aj rýchle FAQ. Klikni na dodávateľa a máš všetko na jednom mieste.
             </p>
 
-           <div class="heroStats">
-  <div class="stat">
-    <b>2</b>
-    <span>Dodávatelia</span>
-  </div>
-
-  <div class="stat">
-    <b>+3</b>
-    <span>Aktuálne rozširujeme</span>
-  </div>
-
-  <div class="stat">
-    <b>0</b>
-    <span>Rýchli dodávatelia</span>
-  </div>
-
-  <div class="stat">
-    <b>2</b>
-    <span>Krajiny</span>
-  </div>
-</div>
-
+            <!-- ✅ 2 riadky × 3 -->
+            <div class="heroStats">
+              <div class="stat"><b>2</b><span>Dodávatelia</span></div>
+              <div class="stat"><b>+3</b><span>Aktuálne rozširujeme</span></div>
+              <div class="stat"><b>0</b><span>Rýchli (1–5 dní)</span></div>
+              <div class="stat"><b>2</b><span>Krajiny</span></div>
+              <div class="stat"><b>2</b><span>Aktívni</span></div>
+              <div class="stat"><b>3</b><span>Locked</span></div>
+            </div>
           </div>
 
           <div class="card heroRight">
@@ -606,10 +633,31 @@
               <b>Zemeguľa dodávateľov</b>
               <span>drag / hover</span>
             </div>
+
             <canvas id="globe" width="900" height="520" aria-label="Zemeguľa"></canvas>
+
+            <!-- ✅ Hover tooltip -->
+            <div id="globeTip" style="
+              position:fixed;
+              z-index:9999;
+              pointer-events:none;
+              display:none;
+              padding:10px 12px;
+              border-radius:12px;
+              border:1px solid rgba(255,255,255,.14);
+              background: rgba(10,10,12,.86);
+              backdrop-filter: blur(10px);
+              box-shadow: 0 20px 60px rgba(0,0,0,.55);
+              font-size:12px;
+              letter-spacing:.06em;
+              color: rgba(255,255,255,.92);
+            ">
+              <b id="globeTipName" style="display:block;font-family:Oswald, sans-serif;letter-spacing:.08em;"></b>
+              <span id="globeTipMeta" style="display:block;margin-top:4px;color:rgba(255,255,255,.65);"></span>
+            </div>
+
             <p class="globeHint">
-              Zobrazuje orientačne, odkiaľ dodávatelia idú. Klik na bod = vyber dodávateľa.
-              (Je to “light” globe, nech je stránka rýchla.)
+              Klik na bod = detail dodávateľa. Červené linky sú smer objednávok (RACEM → dodávateľ).
             </p>
           </div>
         </div>
@@ -619,16 +667,13 @@
         <div class="card controls">
           <div class="field">
             <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-            <input id="q" type="text" placeholder="napr. CSR, Streetfighter, Japan..." autocomplete="off" />
+            <input id="q" type="text" placeholder="napr. CSR, SFXLA, Germany..." autocomplete="off" />
           </div>
 
           <select id="region" class="select" title="Filter región">
             <option value="all">Všetky regióny</option>
             <option value="EU">EU</option>
-            <option value="UK">UK</option>
-            <option value="JP">JP</option>
             <option value="US">US</option>
-            <option value="AE">AE</option>
           </select>
 
           <select id="speed" class="select" title="Filter dodania">
@@ -643,34 +688,21 @@
         </div>
 
         <div style="height:12px"></div>
-
         <div class="supplierGrid" id="grid"></div>
       </section>
 
       <section id="how" class="block">
         <div class="sectionTitle">
           <h2>Ako to funguje</h2>
-          <p>Jednoduchý flow – bez sľubov. Len reálny proces a info, ktoré potrebuje zákazník.</p>
+          <p>Jednoduchý flow – bez omáčky. Reálny proces, ktorý sedí ku dielom a dodávkam.</p>
         </div>
 
         <div class="card" style="padding:14px;">
           <div class="kv">
-            <div class="item">
-              <b>1) Výber</b>
-              <span>Vyber dodávateľa a značku, pozri dodacie doby a materiály.</span>
-            </div>
-            <div class="item">
-              <b>2) Dopyt / objednávka</b>
-              <span>Pošleš SKU / link / fotku – my potvrdíme dostupnosť a cenu.</span>
-            </div>
-            <div class="item">
-              <b>3) Platba</b>
-              <span>Karta / prevod / dobierka podľa typu produktu a dodávateľa.</span>
-            </div>
-            <div class="item">
-              <b>4) Doručenie</b>
-              <span>Kuriér / Zásielkovňa / pošta – podľa rozmerov a kategórie.</span>
-            </div>
+            <div class="item"><b>1) Výber</b><span>Vyber dodávateľa a pozri dodacie doby / materiály.</span></div>
+            <div class="item"><b>2) Dopyt</b><span>Pošli SKU / link / fotku. Potvrdíme cenu a dostupnosť.</span></div>
+            <div class="item"><b>3) Platba</b><span>Karta / prevod / dobierka podľa typu tovaru.</span></div>
+            <div class="item"><b>4) Doručenie</b><span>Kuriér / paleta podľa rozmerov.</span></div>
           </div>
         </div>
       </section>
@@ -678,37 +710,25 @@
       <section id="faq" class="block">
         <div class="sectionTitle">
           <h2>FAQ</h2>
-          <p>Najčastejšie otázky okolo dodania, reklamácií, skladovosti a materiálov.</p>
+          <p>Najčastejšie otázky okolo dodania, materiálov a reklamácií.</p>
         </div>
 
         <div class="faq">
           <details>
             <summary>Prečo sa dodacia doba líši podľa produktu?</summary>
-            <p>
-              Každý dodávateľ má iný sklad a výrobu. Niečo je “in stock”, niečo ide na objednávku a výroba trvá.
-              Preto vždy pri konkrétnom produkte potvrdzujeme reálny termín.
-            </p>
+            <p>Niečo je skladom, niečo sa vyrába na objednávku. Pri každom dopyte potvrdzujeme reálny termín.</p>
           </details>
-
           <details>
             <summary>Viete zohnať len časť kitu (napr. zadné lemy)?</summary>
-            <p>
-              Áno – pri viacerých značkách sa dá riešiť diel po diely. Záleží na dostupnosti a tom, či výrobca predáva samostatne.
-            </p>
+            <p>Často áno, ale závisí od dodávateľa a konkrétneho dielu. Overíme pri dopyte.</p>
           </details>
-
           <details>
             <summary>Materiály: ABS vs FRP vs Carbon?</summary>
-            <p>
-              ABS = odolné, presné, vhodné na daily. FRP = ľahšie a “race”, vyžaduje viac práce pri montáži. Carbon = top vzhľad/váha, vyššia cena.
-            </p>
+            <p>ABS = odolné a presné. FRP = race, vyžaduje viac práce pri fittingu. Carbon = top váha/vzhľad.</p>
           </details>
-
           <details>
             <summary>Reklamácie a vrátenie?</summary>
-            <p>
-              Štandardné zákonné lehoty, ale pri dieloch “na objednávku” môžu byť špecifiká. Vždy riešime férovo podľa typu produktu a dodávateľa.
-            </p>
+            <p>Štandardné lehoty, pri tovare na objednávku môžu byť špecifiká. Riešime férovo podľa situácie.</p>
           </details>
         </div>
       </section>
@@ -716,7 +736,7 @@
       <section id="gallery" class="block">
         <div class="sectionTitle">
           <h2>Galéria</h2>
-          <p>Ukážky dodávateľov / značiek. (Sem si môžeš pchať aj event fotky alebo montáže.)</p>
+          <p>Ak nemáš obrázky, nič sa nerozbije — galéria sa jednoducho nezobrazí.</p>
         </div>
 
         <div class="card" style="padding:14px;">
@@ -763,50 +783,108 @@
 
   <script>
     // =========================
-    // DEMO DATA (prepíš na svoje)
+    // DATA (2 active + 3 locked)
     // =========================
-   const SUPPLIERS = [
-  {
-    id: "csr",
-    name: "CSR Automotive",
-    region: "EU",
-    country: "Nemecko",
-    tags: ["Bodykits", "Aero", "ABS"],
-    leadTimeDays: [7, 14],
-    stock: "mix",
-    shipping: "Kuriér / paleta",
-    payment: "Karta / prevod",
-    website: "",
-    desc: "Bodykity a aero diely. Stabilný EU dodávateľ.",
-    heroImg: "img/suppliers/csr.jpg",
-    gallery: [],
-    faq: [],
-    // 🇩🇪 Nemecko
-    lat: 51.1657,
-    lon: 10.4515
-  },
+    const SUPPLIERS = [
+      {
+        id: "csr",
+        name: "CSR Automotive",
+        region: "EU",
+        country: "Nemecko",
+        tags: ["Bodykits", "Aero", "ABS"],
+        leadTimeDays: [7, 14],
+        stock: "mix",
+        shipping: "Kuriér / paleta",
+        payment: "Karta / prevod",
+        website: "",
+        desc: "Bodykity a aero diely. Stabilný EU dodávateľ.",
+        heroImg: "img/suppliers/csr.jpg",
+        gallery: [],
+        faq: [],
+        status: "ACTIVE",
+        locked: false,
+        // 🇩🇪 Germany
+        lat: 51.1657,
+        lon: 10.4515
+      },
+      {
+        id: "sfxla",
+        name: "SFXLA",
+        region: "US",
+        country: "USA",
+        tags: ["Widebody", "Race", "FRP"],
+        leadTimeDays: [18, 35],
+        stock: "made_to_order",
+        shipping: "Air / Sea freight",
+        payment: "Prevod",
+        website: "",
+        desc: "Widebody a race diely. Väčšina na objednávku.",
+        heroImg: "img/suppliers/sfxla.jpg",
+        gallery: [],
+        faq: [],
+        status: "ACTIVE",
+        locked: false,
+        // 🇺🇸 USA
+        lat: 39.8283,
+        lon: -98.5795
+      },
 
-  {
-    id: "sfxla",
-    name: "SFXLA",
-    region: "US",
-    country: "USA",
-    tags: ["Widebody", "Race", "FRP"],
-    leadTimeDays: [18, 35],
-    stock: "made_to_order",
-    shipping: "Air / Sea freight",
-    payment: "Prevod",
-    website: "",
-    desc: "Widebody a race diely. Väčšina na objednávku.",
-    heroImg: "img/suppliers/sfxla.jpg",
-    gallery: [],
-    faq: [],
-    // 🇺🇸 USA
-    lat: 39.8283,
-    lon: -98.5795
-  }
-];
-
+      // Locked suppliers (preview)
+      {
+        id: "locked-1",
+        name: "Locked Supplier #1",
+        region: "EU",
+        country: "—",
+        tags: ["COMING", "SOON"],
+        leadTimeDays: [0, 0],
+        stock: "mix",
+        shipping: "—",
+        payment: "—",
+        website: "",
+        desc: "Pridávame čoskoro.",
+        heroImg: "",
+        gallery: [],
+        faq: [],
+        status: "LOCKED",
+        locked: true
+      },
+      {
+        id: "locked-2",
+        name: "Locked Supplier #2",
+        region: "EU",
+        country: "—",
+        tags: ["COMING", "SOON"],
+        leadTimeDays: [0, 0],
+        stock: "mix",
+        shipping: "—",
+        payment: "—",
+        website: "",
+        desc: "Pridávame čoskoro.",
+        heroImg: "",
+        gallery: [],
+        faq: [],
+        status: "LOCKED",
+        locked: true
+      },
+      {
+        id: "locked-3",
+        name: "Locked Supplier #3",
+        region: "EU",
+        country: "—",
+        tags: ["COMING", "SOON"],
+        leadTimeDays: [0, 0],
+        stock: "mix",
+        shipping: "—",
+        payment: "—",
+        website: "",
+        desc: "Pridávame čoskoro.",
+        heroImg: "",
+        gallery: [],
+        faq: [],
+        status: "LOCKED",
+        locked: true
+      },
+    ];
 
     // =========================
     // Helpers
@@ -818,9 +896,7 @@
     const speed = $("#speed");
     const reset = $("#reset");
 
-    function leadLabel([a,b]){
-      return a === b ? `${a} dní` : `${a}–${b} dní`;
-    }
+    function leadLabel([a,b]){ return a === b ? `${a} dní` : `${a}–${b} dní`; }
     function speedBucket([a,b]){
       const max = Math.max(a,b);
       if (max <= 5) return "fast";
@@ -833,22 +909,40 @@
       return "Mix";
     }
 
-    function renderStats(list){
-  // štatistiky sú ručne nastavené
-}
+    function statusClass(s){
+      if(s === "ACTIVE") return "active";
+      if(s === "LOCKED") return "locked";
+      return "soon";
+    }
+    function statusLabel(s){
+      if(s === "ACTIVE") return "ACTIVE";
+      if(s === "LOCKED") return "LOCKED";
+      return "COMING SOON";
+    }
+
+    function escapeHTML(s){
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
+    }
+
+    // ✅ stats sú ručne v HTML
+    function renderStats(){}
 
     function cardHTML(x){
-      const tags = x.tags.slice(0,3).map(t => `<span class="badge">${t}</span>`).join("");
-      const t2 = `<span class="badge red">${x.region}</span>`;
-      const img = x.heroImg ? `<img src="${x.heroImg}" alt="${x.name}" onerror="this.remove()">` : "";
+      const tags = (x.tags||[]).slice(0,3).map(t => `<span class="badge">${escapeHTML(t)}</span>`).join("");
+      const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
+      const statusBadge = `<span class="badge status ${statusClass(x.status)}">${statusLabel(x.status)}</span>`;
+      const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
+
       return `
-        <div class="card supplier" data-id="${x.id}">
+        <div class="card supplier ${x.locked ? "locked" : ""}" data-id="${x.id}">
           <div class="supplierTop">
             <div class="supplierName">
-              <b title="${x.name}">${x.name}</b>
-              <span>${x.country} • ${x.region} • ${stockLabel(x.stock)}</span>
+              <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
+              <span>${escapeHTML(x.country)} • ${escapeHTML(x.region)} • ${stockLabel(x.stock)}</span>
             </div>
-            <div class="badges">${t2}${tags}</div>
+            <div class="badges">${statusBadge}${regionBadge}${tags}</div>
           </div>
 
           <div class="supplierThumb">
@@ -859,15 +953,25 @@
           <div class="supplierMeta">
             <div class="metaItem">
               <b>Dodanie</b>
-              <span>${leadLabel(x.leadTimeDays)}</span>
+              <span>${x.locked ? "—" : leadLabel(x.leadTimeDays)}</span>
             </div>
             <div class="metaItem">
               <b>Doprava</b>
-              <span>${x.shipping}</span>
+              <span>${x.locked ? "—" : escapeHTML(x.shipping)}</span>
             </div>
           </div>
 
-          <p class="supplierDesc">${x.desc}</p>
+          <p class="supplierDesc">${escapeHTML(x.desc)}</p>
+
+          ${x.locked ? `
+            <div class="lockOverlay">
+              <div>
+                <b>Locked</b><br>
+                <span>Pridávame čoskoro</span>
+              </div>
+              <div class="lockPill">COMING SOON</div>
+            </div>
+          ` : ``}
         </div>
       `;
     }
@@ -885,7 +989,7 @@
 
         const okQ = !qs || hay.includes(qs);
         const okR = (r === "all") || (x.region === r);
-        const okS = (s === "all") || (speedBucket(x.leadTimeDays) === s);
+        const okS = (s === "all") || (x.locked ? true : (speedBucket(x.leadTimeDays) === s));
         return okQ && okR && okS;
       });
 
@@ -893,10 +997,13 @@
       renderStats(out);
 
       grid.querySelectorAll(".supplier").forEach(el => {
-        el.addEventListener("click", () => openModal(el.dataset.id));
+        el.addEventListener("click", () => {
+          const s = SUPPLIERS.find(x => x.id === el.dataset.id);
+          if(!s || s.locked) return;
+          openModal(el.dataset.id);
+        });
       });
 
-      // refresh globe selection visibility (simple)
       globeState.filteredIds = new Set(out.map(x => x.id));
     }
 
@@ -914,6 +1021,7 @@
       $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)}`;
 
       const kv = [
+        ["Status", x.status || "—"],
         ["Dodacie doby", leadLabel(x.leadTimeDays)],
         ["Sklad", stockLabel(x.stock)],
         ["Doprava", x.shipping],
@@ -924,7 +1032,7 @@
 
       $("#mKV").innerHTML = kv.map(([k,v]) => `
         <div class="item">
-          <b>${k}</b>
+          <b>${escapeHTML(k)}</b>
           <span>${escapeHTML(v)}</span>
         </div>
       `).join("");
@@ -944,7 +1052,7 @@
       modalBack.style.display = "flex";
       document.body.style.overflow = "hidden";
 
-      globeState.selectedId = id; // sync highlight
+      globeState.selectedId = id;
     }
 
     function closeModal(){
@@ -956,14 +1064,8 @@
     modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
-    function escapeHTML(s){
-      return String(s ?? "").replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
-    }
-
     // =========================
-    // Global Gallery (mix)
+    // Global Gallery
     // =========================
     function renderGlobalGallery(){
       const all = SUPPLIERS.flatMap(s => (s.gallery||[]).map(src => ({src, name:s.name})));
@@ -974,7 +1076,7 @@
     }
 
     // =========================
-    // Globe (simple canvas)
+    // Globe (canvas) + continents + hover + red links
     // =========================
     const canvas = document.getElementById("globe");
     const ctx = canvas.getContext("2d");
@@ -988,30 +1090,39 @@
       selectedId: null
     };
 
-    function resizeCanvas(){
-      // keep internal size fixed for quality, but fit via CSS
-      // (canvas has width/height set in HTML)
-    }
+    const tip = document.getElementById("globeTip");
+    const tipName = document.getElementById("globeTipName");
+    const tipMeta = document.getElementById("globeTipMeta");
+
+    // RACEM origin (SK - orientačne)
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
 
     function latLonToXYZ(lat, lon){
       const la = lat * Math.PI/180;
       const lo = lon * Math.PI/180;
-      const x = Math.cos(la) * Math.cos(lo);
-      const y = Math.sin(la);
-      const z = Math.cos(la) * Math.sin(lo);
-      return {x,y,z};
+      return {
+        x: Math.cos(la) * Math.cos(lo),
+        y: Math.sin(la),
+        z: Math.cos(la) * Math.sin(lo)
+      };
     }
 
     function project(p, rot){
-      // rotate around Y axis
       const x = p.x * Math.cos(rot) + p.z * Math.sin(rot);
       const z = -p.x * Math.sin(rot) + p.z * Math.cos(rot);
       const y = p.y;
-
-      // perspective
       const scale = 1 / (1.6 - z);
       return { x, y, z, sx: x*scale, sy: y*scale, scale };
     }
+
+    // stylized continents (light)
+    const CONTINENTS = [
+      [[72,-168],[60,-150],[50,-125],[30,-115],[15,-95],[20,-75],[35,-70],[50,-80],[60,-105],[72,-130],[72,-168]],
+      [[12,-82],[5,-76],[-10,-74],[-25,-70],[-40,-66],[-55,-72],[-50,-60],[-30,-52],[-10,-50],[5,-60],[12,-82]],
+      [[72,-10],[60,10],[55,30],[45,40],[35,32],[30,20],[25,10],[10,10],[-10,20],[-35,20],[-35,10],[-10,0],[10,-10],[35,-10],[45,0],[55,-5],[72,-10]],
+      [[75,35],[65,60],[60,90],[55,120],[45,140],[30,150],[15,135],[10,110],[5,90],[10,70],[20,55],[35,45],[55,45],[75,35]],
+      [[-10,112],[-20,115],[-30,120],[-36,135],[-30,150],[-20,154],[-12,145],[-10,112]],
+    ];
 
     function drawGlobe(){
       const w = canvas.width, h = canvas.height;
@@ -1030,8 +1141,32 @@
       ctx.arc(cx, cy, R, 0, Math.PI*2);
       ctx.fill();
 
+      // continents
+      ctx.fillStyle = "rgba(255,255,255,0.06)";
+      ctx.strokeStyle = "rgba(255,255,255,0.09)";
+      ctx.lineWidth = 1;
+
+      for(const poly of CONTINENTS){
+        ctx.beginPath();
+        let started = false;
+        for(const [lat, lon] of poly){
+          const p = latLonToXYZ(lat, lon);
+          const pr = project(p, globeState.rot);
+          if(pr.z < 0.0) continue;
+          const x = cx + pr.sx * R;
+          const y = cy - pr.sy * R;
+          if(!started){ ctx.moveTo(x,y); started = true; }
+          else ctx.lineTo(x,y);
+        }
+        if(started){
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
+      }
+
       // grid lines (light)
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.strokeStyle = "rgba(255,255,255,0.07)";
       ctx.lineWidth = 1;
 
       for(let lat=-60; lat<=60; lat+=30){
@@ -1046,37 +1181,63 @@
         ctx.stroke();
       }
 
-      for(let lon=-150; lon<=150; lon+=30){
+      // origin + links
+      const o = latLonToXYZ(RACEM_ORIGIN.lat, RACEM_ORIGIN.lon);
+      const opr = project(o, globeState.rot);
+      const ox = cx + opr.sx * R;
+      const oy = cy - opr.sy * R;
+
+      if(opr.z >= 0.0){
         ctx.beginPath();
-        for(let lat=-85; lat<=85; lat+=6){
-          const p = latLonToXYZ(lat, lon);
-          const pr = project(p, globeState.rot);
-          const x = cx + pr.sx * R;
-          const y = cy - pr.sy * R;
-          if(lat === -85) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
+        ctx.fillStyle = "rgba(255,43,47,0.90)";
+        ctx.arc(ox, oy, 5.5, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(255,43,47,0.14)";
+        ctx.arc(ox, oy, 14, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "rgba(255,43,47,0.45)";
+      ctx.lineWidth = 1.6;
+
+      for(const s of SUPPLIERS){
+        if(s.locked || s.status !== "ACTIVE") continue;
+        if(typeof s.lat !== "number" || typeof s.lon !== "number") continue;
+
+        const p = latLonToXYZ(s.lat, s.lon);
+        const pr = project(p, globeState.rot);
+        if(pr.z < 0.0 || opr.z < 0.0) continue;
+
+        const sx = cx + pr.sx * R;
+        const sy = cy - pr.sy * R;
+        const mx = (ox + sx) / 2;
+        const my = (oy + sy) / 2 - 22;
+
+        ctx.beginPath();
+        ctx.moveTo(ox, oy);
+        ctx.quadraticCurveTo(mx, my, sx, sy);
         ctx.stroke();
       }
 
-      // supplier points
+      // supplier points (only those with lat/lon)
       const pts = SUPPLIERS
         .filter(s => globeState.filteredIds.has(s.id))
+        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
         .map(s => {
           const p = latLonToXYZ(s.lat, s.lon);
           const pr = project(p, globeState.rot);
           return { s, pr };
         })
-        // draw far first
         .sort((a,b) => a.pr.z - b.pr.z);
 
       for(const it of pts){
         const {s, pr} = it;
-        const x = cx + pr.sx * R;
-        const y = cy - pr.sy * R;
-
-        // only show front-ish hemisphere
         if(pr.z < 0.0) continue;
 
+        const x = cx + pr.sx * R;
+        const y = cy - pr.sy * R;
         const isSel = globeState.selectedId === s.id;
 
         ctx.beginPath();
@@ -1084,14 +1245,12 @@
         ctx.arc(x, y, isSel ? 7 : 5, 0, Math.PI*2);
         ctx.fill();
 
-        // halo
         ctx.beginPath();
         ctx.fillStyle = isSel ? "rgba(255,43,47,0.18)" : "rgba(179,31,36,0.14)";
         ctx.arc(x, y, isSel ? 16 : 12, 0, Math.PI*2);
         ctx.fill();
       }
 
-      // label
       ctx.fillStyle = "rgba(255,255,255,0.60)";
       ctx.font = "12px Oxanium, Arial";
       ctx.fillText("RACEM SUPPLIERS", 18, 26);
@@ -1103,7 +1262,6 @@
       requestAnimationFrame(tick);
     }
 
-    // hit test points
     function pickSupplierAt(mx, my){
       const rect = canvas.getBoundingClientRect();
       const x0 = (mx - rect.left) * (canvas.width / rect.width);
@@ -1112,9 +1270,9 @@
       const cx = canvas.width/2, cy = canvas.height/2 + 20;
       const R = Math.min(canvas.width, canvas.height)*0.34;
 
-      // compute points front hemisphere
       const pts = SUPPLIERS
         .filter(s => globeState.filteredIds.has(s.id))
+        .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
         .map(s => {
           const p = latLonToXYZ(s.lat, s.lon);
           const pr = project(p, globeState.rot);
@@ -1127,8 +1285,7 @@
           return { s: it.s, sx, sy };
         });
 
-      let best = null;
-      let bestD = 999999;
+      let best = null, bestD = 999999;
 
       for(const p of pts){
         const dx = p.sx - x0, dy = p.sy - y0;
@@ -1144,7 +1301,24 @@
 
     canvas.addEventListener("mousemove", (e) => {
       const s = pickSupplierAt(e.clientX, e.clientY);
-      canvas.style.cursor = s ? "pointer" : "grab";
+      if(s){
+        canvas.style.cursor = "pointer";
+        tip.style.display = "block";
+        tip.style.left = (e.clientX + 14) + "px";
+        tip.style.top  = (e.clientY + 14) + "px";
+        tipName.textContent = s.name;
+        tipMeta.textContent = `${s.country} • ${s.region} • ${s.status || "—"}`;
+        globeState.selectedId = s.id;
+      } else {
+        canvas.style.cursor = globeState.drag ? "grabbing" : "grab";
+        tip.style.display = "none";
+        globeState.selectedId = null;
+      }
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      tip.style.display = "none";
+      globeState.selectedId = null;
     });
 
     canvas.addEventListener("mousedown", (e) => {
@@ -1167,7 +1341,7 @@
 
     canvas.addEventListener("click", (e) => {
       const s = pickSupplierAt(e.clientX, e.clientY);
-      if(s) openModal(s.id);
+      if(s && !s.locked) openModal(s.id);
     });
 
     // =========================
@@ -1184,15 +1358,12 @@
       applyFilters();
     });
 
-    $("#openFAQ").addEventListener("click", () => {
-      location.hash = "#faq";
-    });
+    $("#openFAQ").addEventListener("click", () => { location.hash = "#faq"; });
 
     // init
     $("#year").textContent = new Date().getFullYear();
     renderGlobalGallery();
     applyFilters();
-    resizeCanvas();
     tick();
   </script>
 </body>
