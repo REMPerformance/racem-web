@@ -183,46 +183,71 @@
       opacity:.9;
       pointer-events:none;
     }
-    .statTop{
-      position:relative;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-    }
-    .statTitle{
-      min-width:0;
-      display:flex; flex-direction:column; gap:6px;
-      padding-right:8px;
-    }
-    .statTitle b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color: rgba(255,255,255,.86);
-      line-height:1.05;
-    }
-    .statTitle span{
-      color: rgba(255,255,255,.58);
-      font-size:12px;
-      letter-spacing:.06em;
-      line-height:1.35;
-      max-width: 26ch;
-    }
+/* FIX: stat layout - žiadne prekrývanie textov */
+.statTop{
+  position:relative;
+  display:grid;
+  grid-template-columns: 1fr auto; /* title vľavo, hodnota vpravo */
+  align-items:start;
+  gap:12px;
+}
 
-    .statValue{
-      position:relative;
-      display:flex; flex-direction:column; align-items:flex-end; gap:8px;
-      flex: 0 0 auto;
-      min-width: 110px; /* aby sa to nerozbíjalo */
-    }
+.statTitle{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-    .statValue .big{
-      font-family: Oswald, sans-serif;
-      font-size:30px;
-      letter-spacing:.06em;
-      text-shadow: 0 12px 30px rgba(0,0,0,.6);
-      line-height:1;
-      font-variant-numeric: tabular-nums; /* čísla rovnaká šírka */
-    }
+.statTitle b{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:12px;
+  color: rgba(255,255,255,.86);
+  line-height:1.05;
+}
+
+.statTitle span{
+  color: rgba(255,255,255,.58);
+  font-size:12px;
+  letter-spacing:.06em;
+  line-height:1.35;
+  max-width: 30ch; /* viac miesta, ale kontrolovane */
+}
+
+.statValue{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+  min-width: 120px; /* aby sa veľké čísla netlačili do textu */
+}
+
+.statValue .big{
+  font-family: Oswald, sans-serif;
+  font-size:28px;          /* o trochu menšie, stabilnejšie */
+  letter-spacing:.06em;
+  line-height:1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 12px 30px rgba(0,0,0,.6);
+}
+
+/* keď je tam text (napr. SFXLA), nech sa nerozleje */
+#statPick{
+  font-family: Oswald, sans-serif;
+  font-size:20px;
+  letter-spacing:.06em;
+  line-height:1.1;
+  max-width: 160px;
+  text-align:right;
+  display:-webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow:hidden;
+}
+
 
     /* Top supplier – nech to nie je obrovský “blob” text */
     #statTopSupplier{
@@ -813,48 +838,52 @@
             </p>
 
             <div class="heroStats">
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Aktívni dodávatelia</b>
-                    <span>pripravení na objednávky</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statActive">0</div>
-                    <div class="liveRow"><span class="livePip"></span><span>LIVE</span></div>
-                  </div>
-                </div>
-                <div class="statBar"><i id="barActive" style="width:60%"></i></div>
-              </div>
+  <!-- 1) Autorizované značky -->
+  <div class="stat">
+    <div class="statTop">
+      <div class="statTitle">
+        <b>Autorizované značky</b>
+        <span>aktívni partneri pripravení na objednávky</span>
+      </div>
+      <div class="statValue">
+        <div class="big" id="statBrands">0</div>
+        <div class="liveRow"><span class="livePip"></span><span>LIVE</span></div>
+      </div>
+    </div>
+    <div class="statBar"><i id="barBrands" style="width:60%"></i></div>
+  </div>
 
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Produkty v katalógoch</b>
-                    <span>len aktívni dodávatelia</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statProducts">0</div>
-                    <div class="liveRow"><span class="livePip warn"></span><span>SYNC</span></div>
-                  </div>
-                </div>
-                <div class="statBar"><i id="barProducts" style="width:42%"></i></div>
-              </div>
+  <!-- 2) Produkty v katalógoch -->
+  <div class="stat">
+    <div class="statTop">
+      <div class="statTitle">
+        <b>Produkty v katalógoch</b>
+        <span>spolu zo všetkých aktívnych dodávateľov</span>
+      </div>
+      <div class="statValue">
+        <div class="big" id="statProducts">0</div>
+        <div class="liveRow"><span class="livePip warn"></span><span>SYNC</span></div>
+      </div>
+    </div>
+    <div class="statBar"><i id="barProducts" style="width:42%"></i></div>
+  </div>
 
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Najsilnejší dodávateľ</b>
-                    <span id="statTopSupplierLabel">podľa počtu produktov</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statTopSupplier">—</div>
-                    <div class="liveRow"><span class="livePip red"></span><span>RANK</span></div>
-                  </div>
-                </div>
-                <div class="statBar"><i id="barTop" style="width:48%"></i></div>
-              </div>
-            </div>
+  <!-- 3) Náš výber -->
+  <div class="stat">
+    <div class="statTop">
+      <div class="statTitle">
+        <b>Náš výber</b>
+        <span id="statPickLabel">widebody &amp; race diely</span>
+      </div>
+      <div class="statValue">
+        <div class="big" id="statPick">SFXLA</div>
+        <div class="liveRow"><span class="livePip red"></span><span>RACEM</span></div>
+      </div>
+    </div>
+    <div class="statBar"><i id="barPick" style="width:48%"></i></div>
+  </div>
+</div>
+
 
             <div style="height:12px"></div>
 
@@ -1286,16 +1315,35 @@
     }
 
     function computeStats(){
-      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
-      const locked = SUPPLIERS.filter(s => s.locked || s.status === "LOCKED");
+  const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
+  const locked = SUPPLIERS.filter(s => s.locked || s.status === "LOCKED");
 
-      const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
+  // 1) autorizované značky = počet aktívnych dodávateľov
+  const brandsCount = active.length;
 
-      let top = null;
-      for (const s of active){
-        const c = (typeof s.productsCount === "number" ? s.productsCount : 0);
-        if(!top || c > top.c) top = { name: s.name, c };
-      }
+  // 2) produkty spolu (len aktívni)
+  const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
+
+  // 3) náš výber (fixne SFXLA)
+  const pickName = "SFXLA";
+
+  $("#statBrands").textContent = String(brandsCount);
+  $("#statProducts").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
+  $("#statPick").textContent = pickName;
+
+  // progress bary - len aby to vyzeralo “živé”, ale stabilné
+  const pct = (n, d) => d ? Math.max(8, Math.min(100, Math.round((n/d)*100))) : 12;
+  const totalSuppliers = Math.max(1, active.length + locked.length);
+
+  $("#barBrands").style.width = `${pct(brandsCount, totalSuppliers)}%`;
+
+  const maxProducts = Math.max(1, ...active.map(s => (typeof s.productsCount === "number" ? s.productsCount : 0)));
+  $("#barProducts").style.width = `${pct(totalProducts, maxProducts * Math.max(1, active.length))}%`;
+
+  // pick bar nech je vždy “isté”
+  $("#barPick").style.width = `62%`;
+}
+
 
       $("#statActive").textContent = String(active.length);
       $("#statProducts").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
