@@ -49,7 +49,6 @@
     a{color:inherit; text-decoration:none}
     .wrap{max-width:var(--wrap); margin:0 auto; padding:0 18px}
 
-    /* Header */
     header{
       position:sticky; top:0; z-index:50;
       backdrop-filter: var(--glass);
@@ -99,7 +98,6 @@
       background: linear-gradient(180deg, rgba(179,31,36,.25), rgba(179,31,36,.10));
     }
 
-    /* Hero */
     .hero{padding: 32px 0 18px;}
     .heroGrid{
       display:grid;
@@ -155,7 +153,9 @@
       max-width: 62ch;
     }
 
-    /* Live status stats */
+    /* =========================
+       HERO STATS (FIX SCREENSHOT)
+       ========================= */
     .heroStats{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -172,7 +172,7 @@
       border: 1px solid rgba(255,255,255,.10);
       box-shadow: 0 18px 50px rgba(0,0,0,.45);
       overflow:hidden;
-      min-height: 92px;
+      min-height: 110px; /* viac vzduchu */
     }
     .stat:before{
       content:"";
@@ -185,46 +185,67 @@
     }
     .statTop{
       position:relative;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
     }
     .statTitle{
       min-width:0;
       display:flex; flex-direction:column; gap:6px;
+      padding-right:8px;
     }
     .statTitle b{
       font-family: Oswald, sans-serif;
-      letter-spacing:.12em;
+      letter-spacing:.14em;
       text-transform:uppercase;
       font-size:12px;
-      color: rgba(255,255,255,.82);
+      color: rgba(255,255,255,.86);
+      line-height:1.05;
     }
     .statTitle span{
-      color: rgba(255,255,255,.60);
+      color: rgba(255,255,255,.58);
       font-size:12px;
       letter-spacing:.06em;
       line-height:1.35;
+      max-width: 26ch;
     }
+
     .statValue{
       position:relative;
-      display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+      display:flex; flex-direction:column; align-items:flex-end; gap:8px;
       flex: 0 0 auto;
+      min-width: 110px; /* aby sa to nerozbíjalo */
     }
+
     .statValue .big{
       font-family: Oswald, sans-serif;
-      font-size:28px;
+      font-size:30px;
       letter-spacing:.06em;
       text-shadow: 0 12px 30px rgba(0,0,0,.6);
       line-height:1;
+      font-variant-numeric: tabular-nums; /* čísla rovnaká šírka */
     }
+
+    /* Top supplier – nech to nie je obrovský “blob” text */
+    #statTopSupplier{
+      font-family: Oswald, sans-serif;
+      font-size:18px;
+      letter-spacing:.04em;
+      line-height:1.15;
+      max-width: 160px;
+      text-align:right;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+
     .liveRow{
       display:flex; align-items:center; gap:8px;
       font-size:11px;
       letter-spacing:.12em;
       text-transform:uppercase;
-      color: rgba(255,255,255,.62);
+      color: rgba(255,255,255,.60);
       white-space:nowrap;
     }
-    /* pôvodné bodky (bez pulzu) */
     .livePip{
       width:8px; height:8px;
       border-radius:999px;
@@ -236,7 +257,7 @@
 
     .statBar{
       position:relative;
-      margin-top:10px;
+      margin-top:12px;
       height:2px;
       border-radius: 99px;
       background: rgba(255,255,255,.10);
@@ -248,6 +269,28 @@
       width:46%;
       background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.65));
       border-radius: 99px;
+    }
+
+    /* Live status box (pod statmi) - jemne dočistiť */
+    .liveBox{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      border-radius: 16px;
+      padding:12px;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.6;
+    }
+    .liveBox b{
+      font-family:Oswald, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.90);
+    }
+    .liveBox .subline{
+      margin-top:6px;
+      color:rgba(255,255,255,.62);
     }
 
     /* Globe */
@@ -278,14 +321,7 @@
         rgba(0,0,0,.15);
       display:block;
     }
-    .globeHint{
-      margin:0;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.5;
-    }
 
-    /* Globe side info */
     .globeInfo{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -322,13 +358,6 @@
       border-color: rgba(179,31,36,.45);
       transform: translateY(-1px);
     }
-    .miniItem.activeFocus{
-      border-color: rgba(179,31,36,.65);
-      box-shadow: 0 18px 55px rgba(0,0,0,.55);
-      background:
-        radial-gradient(520px 200px at 15% 0%, rgba(179,31,36,.20), transparent 55%),
-        rgba(0,0,0,.16);
-    }
     .miniLeft{display:flex; flex-direction:column; gap:6px; min-width:0;}
     .miniLeft b{
       font-family: Oswald, sans-serif;
@@ -361,7 +390,6 @@
     }
     .miniBadge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
     .miniBadge.lock{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
-    /* pôvodná bodka (bez pulzu) */
     .miniDot{
       width:8px; height:8px;
       border-radius:999px;
@@ -436,7 +464,6 @@
       gap:12px;
     }
 
-    /* “na polovicu” – menšie karty + viac života */
     .supplier{
       padding: 10px;
       display:flex;
@@ -448,17 +475,6 @@
       transition:.18s ease;
       isolation:isolate;
     }
-    .supplier:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background:
-        radial-gradient(520px 220px at 20% 0%, rgba(179,31,36,.10), transparent 55%),
-        radial-gradient(520px 220px at 90% 30%, rgba(255,43,47,.07), transparent 60%);
-      opacity:.95;
-      pointer-events:none;
-      z-index:0;
-    }
-    .supplier > *{position:relative; z-index:1;}
     .supplier:hover{
       border-color: rgba(179,31,36,.50);
       transform: translateY(-1px);
@@ -518,7 +534,6 @@
       background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
     }
 
-    /* Meta */
     .supplierMeta{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -538,87 +553,6 @@
       line-height:1.6;
     }
 
-    /* “Databáza” – prehľadnejšia, 3 riadky, jasné hodnoty */
-    .dbPanel{
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(520px 220px at 15% 0%, rgba(179,31,36,.12), transparent 55%),
-        rgba(0,0,0,.14);
-      padding:10px;
-      display:grid;
-      gap:10px;
-    }
-    .dbHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .dbHead b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    .dbHead .live{
-      display:flex; align-items:center; gap:8px;
-      color: rgba(255,255,255,.62);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .dbGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:8px;
-    }
-    .dbBox{
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      padding:10px;
-      min-width:0;
-    }
-    .dbBox b{
-      display:block;
-      color:var(--muted);
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-    .dbBox span{
-      display:block;
-      margin-top:6px;
-      font-size:16px;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      line-height:1.1;
-      text-shadow: 0 12px 30px rgba(0,0,0,.55);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .dbFoot{
-      display:flex; flex-wrap:wrap; gap:8px;
-      align-items:center; justify-content:space-between;
-    }
-    .dbChips{display:flex; gap:6px; flex-wrap:wrap;}
-    .dbChip{
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      padding:6px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.80);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .dbChip.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
-    .dbChip.warn{border-color: rgba(241,196,15,.35); background: rgba(241,196,15,.10)}
-    .dbChip.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-
-    /* Locked */
     .supplier.locked{
       cursor:not-allowed;
       filter: blur(0.6px) saturate(.85);
@@ -657,7 +591,6 @@
       text-transform:uppercase;
     }
 
-    /* Sections */
     section.block{padding: 14px 0 26px}
     .sectionTitle{
       display:flex; align-items:end; justify-content:space-between;
@@ -678,7 +611,6 @@
       max-width: 60ch;
     }
 
-    /* FAQ */
     .faq{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -705,7 +637,6 @@
       line-height:1.6;
     }
 
-    /* Modal */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(0,0,0,.62);
@@ -825,11 +756,11 @@
       letter-spacing:.06em;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .heroGrid{grid-template-columns: 1fr; }
       .supplierGrid{grid-template-columns: repeat(2, 1fr); }
       .modalBody{grid-template-columns: 1fr; }
+      #statTopSupplier{max-width: 220px;}
     }
     @media (max-width: 560px){
       h1{font-size:28px}
@@ -837,7 +768,9 @@
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
       .heroStats{grid-template-columns: repeat(2, 1fr);}
-      .dbGrid{grid-template-columns: 1fr;}
+      .stat{min-height: 112px;}
+      .statValue{min-width: 96px;}
+      .statValue .big{font-size:28px;}
     }
   </style>
 </head>
@@ -925,20 +858,9 @@
 
             <div style="height:12px"></div>
 
-            <div style="
-              border:1px solid rgba(255,255,255,.10);
-              background: rgba(0,0,0,.14);
-              border-radius: 16px;
-              padding:12px;
-              color: rgba(255,255,255,.72);
-              font-size:12px;
-              letter-spacing:.06em;
-              line-height:1.6;
-            ">
-              <b style="font-family:Oswald, sans-serif;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.88);">
-                Live status
-              </b>
-              <div style="margin-top:6px;color:rgba(255,255,255,.62);">
+            <div class="liveBox">
+              <b>Live status</b>
+              <div class="subline">
                 Štatistiky a “top” metriky sú odvodené z feedu katalógov (produkty + rozdelenie podľa značiek) a z databázy dodávateľov.
               </div>
             </div>
@@ -947,7 +869,7 @@
           <div class="card heroRight">
             <div class="globeTop">
               <b>Zemeguľa dodávateľov</b>
-              <span>auto rotate • drag rotate • click supplier → focus</span>
+              <span>auto rotate • drag rotate • krátky focus</span>
             </div>
 
             <canvas id="globe" aria-label="Zemeguľa"></canvas>
@@ -960,8 +882,8 @@
 
               <div class="miniList" id="miniList"></div>
 
-              <p class="globeHint" style="margin-top:2px;">
-                Klikni na dodávateľa v mini zozname alebo v mriežke – zemeguľa sa zameria na jeho polohu a ostane tam.
+              <p class="globeHint" style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
+                Klik → krátko zameria dodávateľa, potom pokračuje rotácia (žiadne “zaseknutie”).
               </p>
             </div>
           </div>
@@ -1097,12 +1019,9 @@
     // =========================
     // LIVE CATALOG FEEDS
     // =========================
-    // Oprava: SFXLA berie produkty z main/sfxla-products.json
-    // Pozn.: Ak sú feedy obrovské, toto si cachuješ / prepočty robíš serverom.
-    // Tu to robíme “ľahko” a bezpečne: rátame len počet položiek + rozdelenie podľa make/manufacturer ak existuje.
     const CATALOG_FEEDS = {
-      csr:  "csr-cars/manifest.json",       // CSR: nechávam ako tvoj existujúci base (manifest vieš neskôr prerobiť na agregát)
-      sfxla:"main/sfxla-products.json"      // ✅ fix
+      csr:  "csr-cars/manifest.json",
+      sfxla:"main/sfxla-products.json" // ✅ fix
     };
 
     async function safeFetchJSON(url){
@@ -1116,24 +1035,18 @@
       }
     }
 
-    function normalizeMake(x){
-      const s = String(x||"").trim();
-      if(!s) return "";
-      // jemná normalizácia, aby to nebolo “BMW ” / “Bmw”
-      return s.toUpperCase() === "BMW" ? "BMW" : (s[0].toUpperCase() + s.slice(1));
-    }
-
     function extractItemsFromAnyJSON(data){
-      // podpora rôznych formátov:
-      // - array
-      // - { products: [] }
-      // - { items: [] }
-      // - { data: [] }
       if(Array.isArray(data)) return data;
       if(data && Array.isArray(data.products)) return data.products;
       if(data && Array.isArray(data.items)) return data.items;
       if(data && Array.isArray(data.data)) return data.data;
       return [];
+    }
+
+    function normalizeMake(x){
+      const s = String(x||"").trim();
+      if(!s) return "";
+      return s.toUpperCase() === "BMW" ? "BMW" : (s[0].toUpperCase() + s.slice(1));
     }
 
     function computeTopMakesFromItems(items, limit=3){
@@ -1150,7 +1063,7 @@
     }
 
     // =========================
-    // DATA: SUPPLIERS (base)
+    // DATA: SUPPLIERS
     // =========================
     const SUPPLIERS = [
       {
@@ -1176,7 +1089,6 @@
         lat: 51.1657,
         lon: 10.4515,
 
-        // fallback (ak feed nejde)
         productsCount: 15240,
         topMakes: [
           { make:"BMW", count: 4120 },
@@ -1209,7 +1121,6 @@
         lat: 39.8283,
         lon: -98.5795,
 
-        // fallback (ak feed nejde)
         productsCount: 980,
         topMakes: [
           { make:"BMW", count: 280 },
@@ -1243,60 +1154,29 @@
         topMakes: [],
         bestFor: [],
         productFocus: { aero: 0, widebody: 0, interior: 0, exhaust: 0 },
-      },
-      {
-        id: "locked-2",
-        name: "Locked Supplier #2",
-        region: "JP",
-        country: "Japonsko",
-        tags: ["COMING", "SOON"],
-        leadTimeDays: [0, 0],
-        stock: "mix",
-        shipping: "—",
-        payment: "—",
-        website: "",
-        desc: "Pridávame čoskoro. Zatiaľ len interný záznam.",
-        heroImg: "",
-        gallery: [],
-        faq: [],
-        status: "LOCKED",
-        locked: true,
-        lat: 35.6762,
-        lon: 139.6503,
-
-        productsCount: 0,
-        topMakes: [],
-        bestFor: [],
-        productFocus: { aero: 0, widebody: 0, interior: 0, exhaust: 0 },
-      },
-      {
-        id: "locked-3",
-        name: "Locked Supplier #3",
-        region: "AE",
-        country: "UAE",
-        tags: ["COMING", "SOON"],
-        leadTimeDays: [0, 0],
-        stock: "mix",
-        shipping: "—",
-        payment: "—",
-        website: "",
-        desc: "Pridávame čoskoro. Zatiaľ len interný záznam.",
-        heroImg: "",
-        gallery: [],
-        faq: [],
-        status: "LOCKED",
-        locked: true,
-        lat: 25.2048,
-        lon: 55.2708,
-
-        productsCount: 0,
-        topMakes: [],
-        bestFor: [],
-        productFocus: { aero: 0, widebody: 0, interior: 0, exhaust: 0 },
       }
     ];
 
     window.SUPPLIERS = SUPPLIERS;
+
+    // =========================
+    // Globe focus: BEZ LOCKU
+    // =========================
+    window.__globeFocus = {
+      focusLat: null,
+      focusLon: null,
+      freezeUntil: 0,
+      focusFor: (lat, lon, ms=2800) => {
+        window.__globeFocus.focusLat = lat;
+        window.__globeFocus.focusLon = lon;
+        window.__globeFocus.freezeUntil = Date.now() + ms;
+      },
+      clear: () => {
+        window.__globeFocus.focusLat = null;
+        window.__globeFocus.focusLon = null;
+        window.__globeFocus.freezeUntil = 0;
+      }
+    };
 
     // =========================
     // Helpers
@@ -1307,33 +1187,6 @@
     const region = $("#region");
     const speed = $("#speed");
     const reset = $("#reset");
-
-    // Globe focus control shared with module (set later)
-    window.__globeFocus = {
-      focusSupplierId: null,
-      focusLat: null,
-      focusLon: null,
-      freezeUntil: 0,
-      setFocusById: (id) => {
-        const s = (window.SUPPLIERS||[]).find(x => x.id === id);
-        if(!s || typeof s.lat !== "number" || typeof s.lon !== "number") return;
-        window.__globeFocus.focusSupplierId = id;
-        window.__globeFocus.focusLat = s.lat;
-        window.__globeFocus.focusLon = s.lon;
-        window.__globeFocus.freezeUntil = Date.now() + 99999999; // “zostane tam”
-        // vizuálne zvýraznenie mini listu
-        document.querySelectorAll(".miniItem").forEach(el => {
-          el.classList.toggle("activeFocus", el.dataset.id === id);
-        });
-      },
-      clearFocus: () => {
-        window.__globeFocus.focusSupplierId = null;
-        window.__globeFocus.focusLat = null;
-        window.__globeFocus.focusLon = null;
-        window.__globeFocus.freezeUntil = 0;
-        document.querySelectorAll(".miniItem").forEach(el => el.classList.remove("activeFocus"));
-      }
-    };
 
     function leadLabel([a,b]){
       if (!Array.isArray([a,b]) || (a === 0 && b === 0)) return "—";
@@ -1350,7 +1203,6 @@
       if (s === "made_to_order") return "Na objednávku";
       return "Mix";
     }
-
     function statusClass(s){
       if(s === "ACTIVE") return "active";
       if(s === "LOCKED") return "locked";
@@ -1361,25 +1213,21 @@
       if(s === "LOCKED") return "LOCKED";
       return "COMING SOON";
     }
-
     function escapeHTML(s){
       return String(s ?? "").replace(/[&<>"']/g, c => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[c]));
     }
-
     function topMakeLabel(x){
       const t = (x.topMakes || []).slice(0,1)[0];
       if(!t) return "—";
       return `${t.make} (${t.count})`;
     }
-
     function bestForLabel(x){
       const arr = (x.bestFor || []).filter(Boolean);
       if(!arr.length) return "—";
       return arr.slice(0,3).join(", ");
     }
-
     function focusPick(x){
       const f = x.productFocus || {};
       const entries = Object.entries(f).filter(([,v]) => typeof v === "number" && v > 0);
@@ -1390,30 +1238,14 @@
       return map[k] || k;
     }
 
-    function approxTierFromLeadTime(x){
-      // len “živší” signál, nie pulz: rýchlosť ~ servis
-      if(x.locked) return "—";
-      const max = Math.max(...x.leadTimeDays);
-      if(max <= 7) return "Rýchle";
-      if(max <= 14) return "Stred";
-      return "Dlhšie";
-    }
-
     function cardHTML(x){
       const tags = (x.tags||[]).slice(0,3).map(t => `<span class="badge">${escapeHTML(t)}</span>`).join("");
       const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
       const statusBadge = `<span class="badge status ${statusClass(x.status)}">${statusLabel(x.status)}</span>`;
       const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
 
-      const isLocked = x.locked || x.status === "LOCKED";
-      const products = (isLocked ? "—" : (typeof x.productsCount === "number" ? x.productsCount.toLocaleString("sk-SK") : "—"));
-      const topMake = (isLocked ? "—" : topMakeLabel(x));
-      const bestFor = (isLocked ? "—" : bestForLabel(x));
-      const primary = (isLocked ? "—" : focusPick(x));
-      const tier = (isLocked ? "—" : approxTierFromLeadTime(x));
-
       return `
-        <div class="card supplier ${isLocked ? "locked" : ""}" data-id="${x.id}">
+        <div class="card supplier ${x.locked ? "locked" : ""}" data-id="${x.id}">
           <div class="supplierTop">
             <div class="supplierName">
               <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
@@ -1430,53 +1262,17 @@
           <div class="supplierMeta">
             <div class="metaItem">
               <b>Dodanie</b>
-              <span>${isLocked ? "—" : leadLabel(x.leadTimeDays)}</span>
+              <span>${x.locked ? "—" : leadLabel(x.leadTimeDays)}</span>
             </div>
             <div class="metaItem">
               <b>Doprava</b>
-              <span>${isLocked ? "—" : escapeHTML(x.shipping)}</span>
-            </div>
-          </div>
-
-          <!-- Prehľadná “databáza” -->
-          <div class="dbPanel" aria-label="Databáza dodávateľa">
-            <div class="dbHead">
-              <b>Databáza / katalóg</b>
-              <div class="live">
-                <span class="livePip ${isLocked ? "red" : "warn"}"></span>
-                <span>${isLocked ? "NO DATA" : "LIVE DATA"}</span>
-              </div>
-            </div>
-
-            <div class="dbGrid">
-              <div class="dbBox">
-                <b>Produkty</b>
-                <span title="${escapeHTML(products)}">${escapeHTML(products)}</span>
-              </div>
-              <div class="dbBox">
-                <b>Najviac pre</b>
-                <span title="${escapeHTML(topMake)}">${escapeHTML(topMake)}</span>
-              </div>
-              <div class="dbBox">
-                <b>Primárny fokus</b>
-                <span title="${escapeHTML(primary)}">${escapeHTML(primary)}</span>
-              </div>
-            </div>
-
-            <div class="dbFoot">
-              <div class="dbChips">
-                <span class="dbChip ${isLocked ? "" : "ok"}">${escapeHTML(isLocked ? "—" : tier)}</span>
-                <span class="dbChip ${isLocked ? "" : "red"}">${escapeHTML(isLocked ? "—" : bestFor)}</span>
-              </div>
-              <span style="color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.10em;text-transform:uppercase;">
-                click → detail + globe focus
-              </span>
+              <span>${x.locked ? "—" : escapeHTML(x.shipping)}</span>
             </div>
           </div>
 
           <p class="supplierDesc">${escapeHTML(x.desc)}</p>
 
-          ${isLocked ? `
+          ${x.locked ? `
             <div class="lockOverlay">
               <div>
                 <b>Locked</b><br>
@@ -1539,10 +1335,11 @@
           const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
           if(!sup || sup.locked) return;
 
-          // ✅ focus globe and “zostane tam”
-          window.__globeFocus.setFocusById(sup.id);
+          // ✅ krátky focus, bez locku
+          if(typeof sup.lat === "number" && typeof sup.lon === "number"){
+            window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
+          }
 
-          // modal
           openModal(el.dataset.id);
         });
       });
@@ -1550,9 +1347,7 @@
       renderMiniList(out);
     }
 
-    // =========================
     // Modal
-    // =========================
     const modalBack = $("#modalBack");
     const closeBtn = $("#close");
 
@@ -1623,9 +1418,7 @@
     modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
-    // =========================
     // Global Gallery
-    // =========================
     function renderGlobalGallery(){
       const all = SUPPLIERS.flatMap(s => (s.gallery||[]).map(src => ({src, name:s.name})));
       const pick = all.slice(0,12);
@@ -1634,9 +1427,6 @@
       `).join("");
     }
 
-    // =========================
-    // Mini list (vedľa globe)
-    // =========================
     function miniRowHTML(sup){
       const isLocked = sup.locked || sup.status === "LOCKED";
       const badge = isLocked ? `<span class="miniBadge lock">LOCKED</span>` : `<span class="miniBadge ok">ACTIVE</span>`;
@@ -1646,7 +1436,7 @@
       const best = isLocked ? "—" : focusPick(sup);
 
       return `
-        <div class="miniItem" data-id="${sup.id}" title="Klikni pre focus zemegule">
+        <div class="miniItem" data-id="${sup.id}">
           <div class="miniLeft">
             <b>${escapeHTML(sup.name)}</b>
             <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • produkty ${escapeHTML(products)} • fokus ${escapeHTML(best)}</span>
@@ -1668,13 +1458,16 @@
 
       $("#miniList").innerHTML = sorted.map(miniRowHTML).join("");
 
-      // ✅ click → focus globe + nech to ostane
       $("#miniList").querySelectorAll(".miniItem").forEach(el => {
         el.addEventListener("click", () => {
           const id = el.dataset.id;
           const sup = SUPPLIERS.find(x => x.id === id);
           if(!sup || sup.locked) return;
-          window.__globeFocus.setFocusById(id);
+
+          // ✅ krátky focus, bez locku
+          if(typeof sup.lat === "number" && typeof sup.lon === "number"){
+            window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
+          }
         });
       });
     }
@@ -1685,9 +1478,6 @@
       $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} • status feed`;
     }
 
-    // =========================
-    // LIVE DATA: hydrate suppliers from feeds
-    // =========================
     async function hydrateLiveCatalogData(){
       const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE" && CATALOG_FEEDS[s.id]);
       if(!active.length) return;
@@ -1702,17 +1492,12 @@
         if(!r.data) continue;
 
         const items = extractItemsFromAnyJSON(r.data);
-
-        // produktyCount
         const count = items.length || 0;
-
-        // top makes
         const topMakes = computeTopMakesFromItems(items, 3);
 
         const sup = SUPPLIERS.find(s => s.id === r.id);
         if(!sup) continue;
 
-        // len keď to dáva zmysel – neprepisuj 0 ak feed je prázdny kvôli chybe
         if(count > 0) sup.productsCount = count;
         if(topMakes.length) sup.topMakes = topMakes;
       }
@@ -1721,9 +1506,7 @@
       applyFilters();
     }
 
-    // =========================
     // Wire UI
-    // =========================
     q.addEventListener("input", applyFilters);
     region.addEventListener("change", applyFilters);
     speed.addEventListener("change", applyFilters);
@@ -1745,12 +1528,10 @@
     updateTime();
     setInterval(updateTime, 1000);
 
-    // live feeds now + refresh každé 5 min (ak chceš, zmeň)
     hydrateLiveCatalogData();
     setInterval(hydrateLiveCatalogData, 5 * 60 * 1000);
   </script>
 
-  <!-- ===== COBE Globe (bez pulzných ringov, len marker bodky) ===== -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
@@ -1779,12 +1560,7 @@
       return nodes;
     }
 
-    // Prepočet: lat/lon -> phi/theta (heuristika)
-    // Cobe používa phi (rotácia okolo Y) a theta (naklonenie).
-    // Tu robíme praktické “zameranie”: nastavíme phi,theta tak aby marker bol približne v strede.
     function latLonToPhiTheta(lat, lon){
-      // phi: lon (záporné = west) -> rotácia
-      // theta: lat -> tilt (kladné = sever)
       const phi = (lon * Math.PI) / 180;
       const theta = (lat * Math.PI) / 180;
       return { phi, theta };
@@ -1797,7 +1573,7 @@
     let dragStartX = 0;
     let dragPhiStart = 0;
 
-    const globe = createGlobe(canvas, {
+    createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: canvas.width,
       height: canvas.height,
@@ -1820,25 +1596,23 @@
         state.width = canvas.width;
         state.height = canvas.height;
 
-        // Ak je focus nastavený → zamier a drž
-        const hasFocus = (focus && typeof focus.focusLat === "number" && typeof focus.focusLon === "number");
+        const now = Date.now();
+        const hasFocus = focus && typeof focus.focusLat === "number" && typeof focus.focusLon === "number" && now < focus.freezeUntil;
 
         if(hasFocus){
           const t = latLonToPhiTheta(focus.focusLat, focus.focusLon);
-
-          // “Zamierenie”: chceme lon dostať dopredu, tak dáme mínus
-          // Jemný easing aby to nebol trhanec.
           const targetPhi = -t.phi;
-          const targetTheta = Math.max(-1.2, Math.min(1.2, t.theta * 0.55)); // menej agresívny tilt
+          const targetTheta = Math.max(-1.2, Math.min(1.2, t.theta * 0.55));
 
-          currentPhi += (targetPhi - currentPhi) * 0.06;
-          currentTheta += (targetTheta - currentTheta) * 0.06;
+          currentPhi += (targetPhi - currentPhi) * 0.07;
+          currentTheta += (targetTheta - currentTheta) * 0.07;
 
-          // pri focuse stopni autorotate
           state.phi = currentPhi;
           state.theta = currentTheta;
         } else {
-          // default: autorotate, theta fix
+          // keď focus expiroval, nech sa to “odlepí” samo
+          if(focus && now >= focus.freezeUntil) focus.clear();
+
           if (!dragging) currentPhi += 0.0022;
           state.phi = currentPhi;
           state.theta = currentTheta;
@@ -1848,7 +1622,6 @@
       }
     });
 
-    // Drag rotate
     canvas.style.cursor = "grab";
     canvas.addEventListener("pointerdown", (e) => {
       dragging = true;
@@ -1856,8 +1629,7 @@
       canvas.style.cursor = "grabbing";
       dragStartX = e.clientX;
       dragPhiStart = currentPhi;
-      // keď user draguje, zruš focus (aby to nebojovalo)
-      if(window.__globeFocus) window.__globeFocus.clearFocus();
+      if(window.__globeFocus) window.__globeFocus.clear();
     });
     canvas.addEventListener("pointerup", () => {
       dragging = false;
@@ -1871,11 +1643,6 @@
       if (!dragging) return;
       const dx = e.clientX - dragStartX;
       currentPhi = dragPhiStart + dx * 0.006;
-    });
-
-    // Optional: click on globe to clear focus
-    canvas.addEventListener("dblclick", () => {
-      if(window.__globeFocus) window.__globeFocus.clearFocus();
     });
   </script>
 </body>
