@@ -30,6 +30,12 @@
       --glass: blur(12px);
       --radius: 18px;
       --wrap: 1200px;
+
+      --glass2: rgba(255,255,255,.045);
+      --glass3: rgba(255,255,255,.03);
+      --stroke2: rgba(255,255,255,.14);
+      --glowRed: 0 0 22px rgba(255,43,47,.22);
+      --glowRed2: 0 0 44px rgba(179,31,36,.18);
     }
 
     *{box-sizing:border-box}
@@ -60,7 +66,6 @@
       display:flex; align-items:center; justify-content:space-between;
       gap:16px;
     }
-
     .brand{display:flex; align-items:center; gap:12px}
     .brand img{
       height:36px;
@@ -69,6 +74,7 @@
       filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
     }
 
+    /* ===== TOP MENU ===== */
     .navlinks{
       display:flex;
       align-items:center;
@@ -110,15 +116,11 @@
       border-radius:99px;
       box-shadow: 0 0 18px rgba(255,43,47,.28);
     }
-    .navlinks a:hover{
-      opacity:1;
-      text-shadow: 0 0 14px rgba(255,43,47,.22);
-    }
+    .navlinks a:hover{opacity:1;text-shadow: 0 0 14px rgba(255,43,47,.22);}
     .navlinks a:hover:before{opacity:1}
     .navlinks a:hover:after{width:100%}
     .navlinks a.active{opacity:1}
     .navlinks a.active:after{width:100%}
-
     .navlinks .cta{
       padding: 10px 12px;
       border-radius: 999px;
@@ -186,6 +188,171 @@
       max-width: 70ch;
     }
 
+    /* ===== HERO STATS v2 (živšie, SK) ===== */
+    .statsWrap{ margin-top:14px; display:grid; gap:12px; }
+    .statsHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+    }
+    .statsHead b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(255,255,255,.86);
+    }
+    .statsHead span{
+      color: rgba(255,255,255,.60);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.35;
+      max-width: 64ch;
+    }
+    .statsGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+    }
+    .statCard{
+      position:relative;
+      border-radius: 16px;
+      border:1px solid var(--stroke2);
+      background:
+        radial-gradient(520px 220px at 12% 0%, rgba(179,31,36,.18), transparent 58%),
+        radial-gradient(520px 220px at 92% 20%, rgba(255,43,47,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      padding: 12px 12px 11px;
+      overflow:hidden;
+      box-shadow: 0 18px 55px rgba(0,0,0,.48);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      isolation:isolate;
+    }
+    .statCard:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(90deg, rgba(255,43,47,.0), rgba(255,43,47,.08), rgba(255,43,47,.0));
+      transform: translateX(-60%);
+      animation: statShine 5.6s ease-in-out infinite;
+      opacity:.7;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes statShine{
+      0%, 55% { transform: translateX(-60%); opacity:.0; }
+      70%     { opacity:.8; }
+      100%    { transform: translateX(60%); opacity:.0; }
+    }
+    .statCard:after{
+      content:"";
+      position:absolute;
+      left:0; top:0;
+      width:100%; height:2px;
+      background: linear-gradient(90deg, rgba(255,43,47,.9), rgba(179,31,36,.55));
+      opacity:.9;
+      z-index:1;
+      pointer-events:none;
+    }
+    .statCard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(179,31,36,.45);
+      box-shadow: 0 26px 80px rgba(0,0,0,.62);
+    }
+    .statTopRow{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .statLabel{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .statIcon{
+      width:34px; height:34px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      display:grid;
+      place-items:center;
+      box-shadow: var(--glowRed2);
+      flex:0 0 auto;
+    }
+    .statIcon svg{ width:18px; height:18px; opacity:.9; filter: drop-shadow(var(--glowRed)); }
+    .statTitle{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .statTitle b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-size:11px;
+      color: rgba(255,255,255,.84);
+    }
+    .statTitle span{
+      color: rgba(255,255,255,.60);
+      font-size:11px;
+      letter-spacing:.06em;
+      line-height:1.25;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 34ch;
+    }
+    .statValue{
+      font-family: Oswald, sans-serif;
+      font-size:26px;
+      letter-spacing:.06em;
+      line-height:1;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 14px 34px rgba(0,0,0,.7);
+      text-align:right;
+      white-space:nowrap;
+    }
+    .statSub{
+      position:relative;
+      z-index:2;
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-top:10px;
+      border-top: 1px dashed rgba(255,255,255,.12);
+      color: rgba(255,255,255,.62);
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+    .statHint{ display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+    .statPip{
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(46,204,113,.10);
+    }
+    .statPip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
+    .statPip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+    .statWide{ grid-column: 1 / -1; }
+    .vehicleChips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .vChip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      color: rgba(255,255,255,.86);
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      user-select:none;
+    }
+    .vChip i{
+      font-style:normal;
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--red2);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
+    }
+
     .liveStrip{
       display:flex;
       gap:10px;
@@ -231,7 +398,6 @@
       border-radius:999px;
       position:relative;
       flex:0 0 auto;
-      margin-right:6px;
     }
     .liveDot.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
     .liveDot.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
@@ -246,7 +412,7 @@
       font-size:12px;
       letter-spacing:.06em;
       line-height:1.6;
-      margin-top:10px;
+      margin-top:12px;
     }
     .liveBox b{
       font-family:Oswald, sans-serif;
@@ -256,6 +422,7 @@
     }
     .liveBox .subline{margin-top:6px;color:rgba(255,255,255,.62)}
 
+    /* ===== Globe panel ===== */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -271,8 +438,17 @@
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
     }
-    .globeTop b{font-size:12px; letter-spacing:.16em; text-transform:uppercase}
-    .globeTop span{font-size:12px; color:var(--muted)}
+    .globeTop b{
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .globeTop span{
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
     canvas#globe{
       width:100%;
       height: 290px;
@@ -283,7 +459,6 @@
         rgba(0,0,0,.15);
       display:block;
     }
-
     .globeInfo{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -301,6 +476,13 @@
       text-transform:uppercase;
       font-size:12px;
     }
+    .globeInfoTop span{
+      color: var(--muted);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
 
     .miniList{display:grid; gap:8px;}
     .miniItem{
@@ -312,10 +494,7 @@
       cursor:pointer;
       transition: .18s ease;
     }
-    .miniItem:hover{
-      border-color: rgba(179,31,36,.45);
-      transform: translateY(-1px);
-    }
+    .miniItem:hover{ border-color: rgba(179,31,36,.45); transform: translateY(-1px); }
     .miniLeft{display:flex; flex-direction:column; gap:6px; min-width:0;}
     .miniLeft b{
       font-family: Oswald, sans-serif;
@@ -338,12 +517,11 @@
       text-transform:uppercase;
       padding:6px 8px;
       border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.80);
+      border:1px solid rgba(46,204,113,.35);
+      background: rgba(46,204,113,.10);
+      color: rgba(255,255,255,.86);
       white-space:nowrap;
     }
-    .miniBadge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
     .miniDot{
       width:8px; height:8px;
       border-radius:999px;
@@ -352,59 +530,7 @@
       margin-top:2px;
     }
 
-    .techStats{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:10px;
-      margin-top: 6px;
-    }
-    .techStats .t{
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.10));
-      border-radius: 14px;
-      padding: 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      overflow:hidden;
-      position:relative;
-    }
-    .techStats .t:before{
-      content:"";
-      position:absolute;
-      left:-30%;
-      top:-80%;
-      width:120%;
-      height:180%;
-      background: radial-gradient(260px 120px at 50% 50%, rgba(179,31,36,.16), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
-      transform: rotate(10deg);
-    }
-    .techStats .t > *{position:relative}
-
-    .techStats .t.wide{ grid-column: 1 / -1; }
-    .techStats .t b{
-      display:block;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: rgba(255,255,255,.70);
-      margin-bottom:6px;
-      font-family: Oswald, sans-serif;
-    }
-    .techStats .t span{
-      display:block;
-      font-family: Oswald, sans-serif;
-      font-size:18px;
-      letter-spacing:.06em;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 12px 28px rgba(0,0,0,.6);
-      text-align:right;
-      white-space:nowrap;
-    }
-
+    /* Controls */
     .controls{
       padding: 12px;
       display:flex;
@@ -462,12 +588,12 @@
     }
     .btn.ghost:hover{box-shadow:none; transform:none}
 
+    /* Grid */
     .supplierGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
     }
-
     .supplier{
       padding: 12px;
       display:flex;
@@ -656,6 +782,7 @@
       line-height:1.6;
     }
 
+    /* Modal */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(0,0,0,.66);
@@ -828,227 +955,9 @@
       .supplierGrid{grid-template-columns: 1fr; }
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
-      .techStats{grid-template-columns: 1fr;}
+      .statsGrid{ grid-template-columns: 1fr; }
+      .statValue{ font-size:24px; }
     }
-
-    /* ===== HERO STATS: RACEM v2 (živšie, SK) ===== */
-:root{
-  --glass2: rgba(255,255,255,.045);
-  --glass3: rgba(255,255,255,.03);
-  --stroke2: rgba(255,255,255,.14);
-  --glowRed: 0 0 22px rgba(255,43,47,.22);
-  --glowRed2: 0 0 44px rgba(179,31,36,.18);
-}
-
-.statsWrap{
-  margin-top:14px;
-  display:grid;
-  gap:12px;
-}
-
-.statsHead{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:12px;
-}
-.statsHead b{
-  font-family: Oswald, sans-serif;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  font-size:12px;
-  color: rgba(255,255,255,.86);
-}
-.statsHead span{
-  color: rgba(255,255,255,.60);
-  font-size:12px;
-  letter-spacing:.06em;
-  line-height:1.35;
-  max-width: 64ch;
-}
-
-.statsGrid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:10px;
-}
-
-.statCard{
-  position:relative;
-  border-radius: 16px;
-  border:1px solid var(--stroke2);
-  background:
-    radial-gradient(520px 220px at 12% 0%, rgba(179,31,36,.18), transparent 58%),
-    radial-gradient(520px 220px at 92% 20%, rgba(255,43,47,.10), transparent 62%),
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-  padding: 12px 12px 11px;
-  overflow:hidden;
-  box-shadow: 0 18px 55px rgba(0,0,0,.48);
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-  isolation:isolate;
-}
-
-.statCard:before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background:
-    linear-gradient(90deg, rgba(255,43,47,.0), rgba(255,43,47,.08), rgba(255,43,47,.0));
-  transform: translateX(-60%);
-  animation: statShine 5.6s ease-in-out infinite;
-  opacity:.7;
-  pointer-events:none;
-  z-index:0;
-}
-@keyframes statShine{
-  0%, 55% { transform: translateX(-60%); opacity:.0; }
-  70%     { opacity:.8; }
-  100%    { transform: translateX(60%); opacity:.0; }
-}
-
-.statCard:after{
-  content:"";
-  position:absolute;
-  left:0; top:0;
-  width:100%; height:2px;
-  background: linear-gradient(90deg, rgba(255,43,47,.9), rgba(179,31,36,.55));
-  opacity:.9;
-  z-index:1;
-  pointer-events:none;
-}
-
-.statCard:hover{
-  transform: translateY(-1px);
-  border-color: rgba(179,31,36,.45);
-  box-shadow: 0 26px 80px rgba(0,0,0,.62);
-}
-
-.statTopRow{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.statLabel{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
-.statIcon{
-  width:34px; height:34px;
-  border-radius: 12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.18);
-  display:grid;
-  place-items:center;
-  box-shadow: var(--glowRed2);
-}
-.statIcon svg{
-  width:18px; height:18px;
-  opacity:.9;
-  filter: drop-shadow(var(--glowRed));
-}
-
-.statTitle{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.statTitle b{
-  font-family: Oswald, sans-serif;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  font-size:11px;
-  color: rgba(255,255,255,.84);
-}
-.statTitle span{
-  color: rgba(255,255,255,.60);
-  font-size:11px;
-  letter-spacing:.06em;
-  line-height:1.25;
-}
-
-.statValue{
-  font-family: Oswald, sans-serif;
-  font-size:26px;
-  letter-spacing:.06em;
-  line-height:1;
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 14px 34px rgba(0,0,0,.7);
-  text-align:right;
-  white-space:nowrap;
-}
-
-.statSub{
-  position:relative;
-  z-index:2;
-  margin-top:10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding-top:10px;
-  border-top: 1px dashed rgba(255,255,255,.12);
-  color: rgba(255,255,255,.62);
-  font-size:11px;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-}
-
-.statHint{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  white-space:nowrap;
-}
-.statPip{
-  width:8px; height:8px;
-  border-radius:999px;
-  background: var(--ok);
-  box-shadow: 0 0 0 6px rgba(46,204,113,.10);
-}
-.statPip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
-.statPip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
-
-.statWide{
-  grid-column: 1 / -1;
-}
-
-.vehicleChips{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.vChip{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius: 999px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.16);
-  color: rgba(255,255,255,.86);
-  font-size:11px;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-}
-.vChip i{
-  font-style:normal;
-  width:8px; height:8px;
-  border-radius:999px;
-  background: var(--red2);
-  box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-}
-
-@media (max-width: 560px){
-  .statsGrid{ grid-template-columns: 1fr; }
-  .statValue{ font-size:24px; }
-}
-
   </style>
 </head>
 
@@ -1072,8 +981,10 @@
 
   <main>
     <div class="wrap">
+      <!-- HERO -->
       <section class="hero">
         <div class="heroGrid">
+          <!-- LEFT -->
           <div class="card heroLeft">
             <div class="kicker"><span class="dot"></span> suppliers hub • technický prehľad</div>
             <h1>Dodávatelia, dodacie doby a reálne čísla</h1>
@@ -1082,146 +993,190 @@
               dodacie doby, certifikáty a štatistiky katalógu.
             </p>
 
-           <div class="statsWrap">
-  <div class="statsHead">
-    <div>
-      <b>RACEM prehľad katalógov</b>
-      <span>Rýchle čísla, ktoré majú povedať “kto má najväčší katalóg” a na čo sa ľudia najčastejšie pýtajú.</span>
-    </div>
-  </div>
+            <div class="statsWrap">
+              <div class="statsHead">
+                <div>
+                  <b>RACEM prehľad katalógov</b><br>
+                  <span>Rýchle čísla bez “loading” drámy. CSR je natvrdo, SFXLA sa môže hydratovať (ak feed ide).</span>
+                </div>
+              </div>
 
-  <div class="statsGrid" aria-label="Štatistiky dodávateľov">
-    <!-- Active brands -->
-    <div class="statCard">
-      <div class="statTopRow">
-        <div class="statLabel">
-          <div class="statIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 14c2.2-2.8 5-4 8-4s5.8 1.2 8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M6.5 17c1.4-1.7 3.2-2.5 5.5-2.5s4.1.8 5.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M12 20h0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-            </svg>
+              <div class="statsGrid" aria-label="Štatistiky dodávateľov">
+                <div class="statCard">
+                  <div class="statTopRow">
+                    <div class="statLabel">
+                      <div class="statIcon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M4 14c2.2-2.8 5-4 8-4s5.8 1.2 8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M6.5 17c1.4-1.7 3.2-2.5 5.5-2.5s4.1.8 5.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M12 20h0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="statTitle">
+                        <b>Aktívne značky</b>
+                        <span>Autorizované kanály</span>
+                      </div>
+                    </div>
+                    <div class="statValue" id="miniActive">2</div>
+                  </div>
+                  <div class="statSub">
+                    <span class="statHint"><span class="statPip"></span>online</span>
+                    <span>RACEM HUB</span>
+                  </div>
+                </div>
+
+                <div class="statCard">
+                  <div class="statTopRow">
+                    <div class="statLabel">
+                      <div class="statIcon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
+                          <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
+                        </svg>
+                      </div>
+                      <div class="statTitle">
+                        <b>Produkty spolu</b>
+                        <span>CSR + SFXLA (fallback)</span>
+                      </div>
+                    </div>
+                    <div class="statValue" id="miniTotal">—</div>
+                  </div>
+                  <div class="statSub">
+                    <span class="statHint"><span class="statPip warn"></span>mix</span>
+                    <span>FEEDS</span>
+                  </div>
+                </div>
+
+                <div class="statCard">
+                  <div class="statTopRow">
+                    <div class="statLabel">
+                      <div class="statIcon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <div class="statTitle">
+                        <b>Najväčší dodávateľ</b>
+                        <span>Top katalóg v sieti</span>
+                      </div>
+                    </div>
+                    <div class="statValue" id="miniTopSupplier">CSR (14 684)</div>
+                  </div>
+                  <div class="statSub">
+                    <span class="statHint"><span class="statPip red"></span>dominant</span>
+                    <span>EU</span>
+                  </div>
+                </div>
+
+                <div class="statCard">
+                  <div class="statTopRow">
+                    <div class="statLabel">
+                      <div class="statIcon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 16l3-8h4l3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M6 16h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                        </svg>
+                      </div>
+                      <div class="statTitle">
+                        <b>Najviac dielov na</b>
+                        <span>Najsilnejšia značka</span>
+                      </div>
+                    </div>
+                    <div class="statValue" id="miniTopMake">BMW</div>
+                  </div>
+                  <div class="statSub">
+                    <span class="statHint"><span class="statPip"></span>priorita</span>
+                    <span>PLATFORMY</span>
+                  </div>
+                </div>
+
+                <div class="statCard statWide">
+                  <div class="statTopRow">
+                    <div class="statLabel">
+                      <div class="statIcon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M5 16l1-4 2-2h8l2 2 1 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M7 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M13 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="statTitle">
+                        <b>Top platformy</b>
+                        <span>Najžiadanejšie podvozky v katalógu</span>
+                      </div>
+                    </div>
+
+                    <div class="statValue" style="font-size:18px" id="miniTopVehicles">BMW E36, BMW E46, VW Golf</div>
+                  </div>
+
+                  <div style="position:relative; z-index:2; margin-top:10px;">
+                    <div class="vehicleChips">
+                      <span class="vChip"><i></i>BMW E36</span>
+                      <span class="vChip"><i></i>BMW E46</span>
+                      <span class="vChip"><i></i>VW Golf</span>
+                    </div>
+                  </div>
+
+                  <div class="statSub" style="margin-top:12px;">
+                    <span class="statHint"><span class="statPip red"></span>hot</span>
+                    <span>VÝBER DIELOV</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="liveBox">
+                <b>Live status</b>
+                <div class="subline">
+                  CSR čísla sú natvrdo (stabilita). SFXLA sa skúša hydratovať z feedu – keď to padne, stránka ide ďalej a len to ukáže “offline”.
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="statTitle">
-            <b>Aktívne značky</b>
-            <span>Autorizované kanály</span>
+
+          <!-- RIGHT (GLOBE) -->
+          <div class="card heroRight">
+            <div class="globeTop">
+              <b>Mapa dodávateľov</b>
+              <span id="globeInfoTime">--:--:-- • stav systému</span>
+            </div>
+
+            <canvas id="globe" aria-label="RACEM Globe"></canvas>
+
+            <div class="globeInfo">
+              <div class="globeInfoTop">
+                <b>Živý stav</b>
+                <span id="syncText">SYNC: —</span>
+              </div>
+
+              <div class="liveStrip" style="margin-top:0">
+                <div class="liveChip">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="liveDot warn" id="feedDot"></span>
+                    <b>FEED</b>
+                  </div>
+                  <span id="feedStatus">offline</span>
+                </div>
+
+                <div class="liveChip">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="liveDot ok"></span>
+                    <b>CSR</b>
+                  </div>
+                  <span>hard</span>
+                </div>
+              </div>
+
+              <div class="miniList" id="miniList"></div>
+
+              <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
+                Tip: klikni na dodávateľa v zozname → globus ho krátko “zameria”.
+              </p>
+            </div>
           </div>
         </div>
-        <div class="statValue" id="miniActive">2</div>
-      </div>
-      <div class="statSub">
-        <span class="statHint"><span class="statPip"></span>online</span>
-        <span>RACEM hub</span>
-      </div>
-    </div>
-
-    <!-- Total products -->
-    <div class="statCard">
-      <div class="statTopRow">
-        <div class="statLabel">
-          <div class="statIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
-              <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
-            </svg>
-          </div>
-          <div class="statTitle">
-            <b>Produkty spolu</b>
-            <span>Natvrdo + live doplnky</span>
-          </div>
-        </div>
-        <div class="statValue" id="miniTotal">—</div>
-      </div>
-      <div class="statSub">
-        <span class="statHint"><span class="statPip warn"></span>mix</span>
-        <span>CSR + SFXLA</span>
-      </div>
-    </div>
-
-    <!-- Top supplier -->
-    <div class="statCard">
-      <div class="statTopRow">
-        <div class="statLabel">
-          <div class="statIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="statTitle">
-            <b>Najväčší dodávateľ</b>
-            <span>Top katalóg v sieti</span>
-          </div>
-        </div>
-        <div class="statValue" id="miniTopSupplier">CSR (14 684)</div>
-      </div>
-      <div class="statSub">
-        <span class="statHint"><span class="statPip red"></span>dominant</span>
-        <span>EU</span>
-      </div>
-    </div>
-
-    <!-- Top make -->
-    <div class="statCard">
-      <div class="statTopRow">
-        <div class="statLabel">
-          <div class="statIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M7 16l3-8h4l3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M6 16h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-            </svg>
-          </div>
-          <div class="statTitle">
-            <b>Najviac dielov na</b>
-            <span>Najsilnejšia značka</span>
-          </div>
-        </div>
-        <div class="statValue" id="miniTopMake">BMW</div>
-      </div>
-      <div class="statSub">
-        <span class="statHint"><span class="statPip"></span>priorita</span>
-        <span>platformy</span>
-      </div>
-    </div>
-
-    <!-- Top vehicles -->
-    <div class="statCard statWide">
-      <div class="statTopRow">
-        <div class="statLabel">
-          <div class="statIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M5 16l1-4 2-2h8l2 2 1 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M13 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="statTitle">
-            <b>Top platformy</b>
-            <span>Najžiadanejšie podvozky v katalógu</span>
-          </div>
-        </div>
-
-        <!-- nechávame textový fallback, ale hlavne budú chipy -->
-        <div class="statValue" style="font-size:18px" id="miniTopVehicles">BMW E36, BMW E46, VW Golf</div>
-      </div>
-
-      <div style="position:relative; z-index:2; margin-top:10px;">
-        <div class="vehicleChips">
-          <span class="vChip"><i></i>BMW E36</span>
-          <span class="vChip"><i></i>BMW E46</span>
-          <span class="vChip"><i></i>VW Golf</span>
-        </div>
-      </div>
-
-      <div class="statSub" style="margin-top:12px;">
-        <span class="statHint"><span class="statPip red"></span>hot</span>
-        <span>výber dielov</span>
-      </div>
-    </div>
-  </div>
-</div>
-
       </section>
 
+      <!-- SUPPLIERS GRID -->
       <section id="suppliers" class="block">
         <div class="card controls">
           <div class="field">
@@ -1250,6 +1205,7 @@
         <div class="supplierGrid" id="grid"></div>
       </section>
 
+      <!-- FAQ -->
       <section id="faq" class="block">
         <div class="sectionTitle">
           <h2>FAQ</h2>
@@ -1335,13 +1291,14 @@
     // =========================
     const HARD = {
       authorizedBrands: 2,
-      topSupplier: { id: "csr", label: "CSR", count: 14684 },
+      csrCount: 14684,
+      topSupplierLabel: "CSR",
       topMake: "BMW",
       topVehicles: ["BMW E36", "BMW E46", "VW Golf"]
     };
 
     // =========================
-    // FEEDS (len pre SFXLA / status, CSR držíme natvrdo)
+    // FEEDS (len SFXLA / status)
     // =========================
     const CATALOG_FEEDS = {
       sfxla: "/sfxla-products.json"
@@ -1384,16 +1341,9 @@
         heroImg: "img/suppliers/csr.jpg",
         gallery: [],
         storeUrl: "csr-automotive.html",
-
-        // natvrdo
-        productsCount: HARD.topSupplier.count,
-        topMakes: [{ make: "BMW", count: 0 }],
-        topModels: [
-          { model: "BMW E36", count: 0 },
-          { model: "BMW E46", count: 0 },
-          { model: "VW Golf", count: 0 }
-        ],
-
+        productsCount: HARD.csrCount,
+        topMakes: [{ make: HARD.topMake, count: 0 }],
+        topModels: HARD.topVehicles.map(v => ({ model: v, count: 0 })),
         faq: [
           { q:"Sú k dielom certifikáty?", a:"Pri časti sortimentu áno. Konkrétny produkt overíme podľa SKU." },
           { q:"Viete poslať len lipu / prahy / difúzor?", a:"Vo väčšine prípadov áno – závisí od dostupnosti a balenia." }
@@ -1415,12 +1365,9 @@
         heroImg: "img/suppliers/sfxla.jpg",
         gallery: [],
         storeUrl: "streetfighter-la.html",
-
-        // fallback, neskôr sa môže hydratovať
-        productsCount: 980,
+        productsCount: 980, // fallback (ak feed padne)
         topMakes: [{ make:"BMW", count: 0 }],
         topModels: [{ model:"BMW E36", count: 0 }, { model:"BMW E92", count: 0 }, { model:"350Z", count: 0 }],
-
         faq: [
           { q:"Air vs Sea – čo odporúčate?", a:"Ak chceš rýchlo, air. Ak je to veľký kit a ideš rozumne s cenou dopravy, sea. Spravíme kalkuláciu oboch." },
           { q:"Ako je to s fittingom FRP?", a:"Pri race kitoch je normálne, že sa doladzuje. Odporúčame skúšanie nasucho + úpravy pred lakom." }
@@ -1432,6 +1379,9 @@
 
     window.SUPPLIERS = SUPPLIERS;
 
+    // =========================
+    // Globe focus: SHORT FOCUS
+    // =========================
     window.__globeFocus = {
       focusLat: null,
       focusLon: null,
@@ -1448,6 +1398,9 @@
       }
     };
 
+    // =========================
+    // Helpers
+    // =========================
     const $ = (s) => document.querySelector(s);
     const grid = $("#grid");
     const q = $("#q");
@@ -1489,13 +1442,50 @@
       return a.slice(0,3).map(x => `${x[key]}${x.count ? ` (${x.count})` : ""}`).join(", ");
     }
 
+    function setFeedUI(ok, msg){
+      const dot = document.getElementById("feedDot");
+      const txt = document.getElementById("feedStatus");
+      const syncText = document.getElementById("syncText");
+
+      if(dot){
+        dot.classList.remove("ok","warn","red");
+        dot.classList.add(ok ? "ok" : "warn");
+      }
+      if(txt) txt.textContent = msg;
+      if(syncText) syncText.textContent = `SYNC: ${msg}`;
+    }
+
+    function applyHardStats(sfxlaCountMaybe){
+      const csrCount = HARD.csrCount;
+      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
+      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0)
+        ? sfxlaCountMaybe
+        : (sfxla?.productsCount || 0);
+
+      const total = csrCount + sfxlaCount;
+
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = val;
+      };
+
+      setText("miniActive", String(HARD.authorizedBrands));
+      setText("miniTotal", total.toLocaleString("sk-SK"));
+      setText("miniTopSupplier", `${HARD.topSupplierLabel} (${csrCount.toLocaleString("sk-SK")})`);
+      setText("miniTopMake", HARD.topMake);
+      setText("miniTopVehicles", HARD.topVehicles.join(", "));
+
+      // CSR držíme natvrdo
+      const csr = SUPPLIERS.find(s=>s.id==="csr");
+      if(csr) csr.productsCount = csrCount;
+    }
+
     function cardHTML(x){
       const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
       const useBadges = (x.use||[]).slice(0,3).map(t => `<span class="badge use">${escapeHTML(t)}</span>`).join("");
       const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
-      const countBadge = `<span class="badge count">${escapeHTML(products)} PRODUCTS</span>`;
+      const countBadge = `<span class="badge count">${escapeHTML(products)} PRODUKTOV</span>`;
       const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
-
       const ship = (x.shippingModes||[]).join(" / ") || "—";
 
       return `
@@ -1542,36 +1532,6 @@
       `;
     }
 
-    function setFeedUI(ok, msg){
-      const dot = document.getElementById("feedDot");
-      const txt = document.getElementById("feedStatus");
-      if(dot){
-        dot.classList.remove("ok","warn","red");
-        dot.classList.add(ok ? "ok" : "warn");
-      }
-      if(txt) txt.textContent = msg;
-      const syncText = document.getElementById("syncText");
-      if(syncText) syncText.textContent = `SYNC: ${msg}`;
-    }
-
-    function applyHardStats(sfxlaCountMaybe){
-      const csrCount = HARD.topSupplier.count;
-      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0) ? sfxlaCountMaybe : (SUPPLIERS.find(s=>s.id==="sfxla")?.productsCount || 0);
-      const total = csrCount + sfxlaCount;
-
-      const setText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-
-      setText("miniActive", String(HARD.authorizedBrands));
-      setText("miniTotal", total.toLocaleString("sk-SK"));
-      setText("miniTopSupplier", `${HARD.topSupplier.label} (${csrCount.toLocaleString("sk-SK")})`);
-      setText("miniTopMake", HARD.topMake);
-      setText("miniTopVehicles", HARD.topVehicles.join(", "));
-
-      // udrž natvrdo CSR
-      const csr = SUPPLIERS.find(s=>s.id==="csr");
-      if(csr) csr.productsCount = csrCount;
-    }
-
     function applyFilters(){
       const qs = (q.value || "").trim().toLowerCase();
       const r = region.value;
@@ -1608,6 +1568,9 @@
       renderMiniList(out);
     }
 
+    // =========================
+    // Modal
+    // =========================
     const modalBack = $("#modalBack");
     const closeBtn = $("#close");
 
@@ -1642,8 +1605,8 @@
 
       const cat = [
         ["Produkty", products],
-        ["Top make", HARD.topMake],
-        ["Top 3 vehicles", HARD.topVehicles.join(", ")],
+        ["Najsilnejšia značka", HARD.topMake],
+        ["Top platformy", HARD.topVehicles.join(", ")],
         ["Región", x.region],
       ];
 
@@ -1655,8 +1618,8 @@
       `).join("");
 
       const fallbackFAQ = [
-        { q:"Ako prebieha objednávka?", a:"Po kliknutí na RACEM SHOP vyberieš produkt alebo nám pošleš dopyt. Potvrdíme cenu, dopravu a termín." },
-        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je to vždy podľa rozmerov – dáme kalkuláciu." }
+        { q:"Ako prebieha objednávka?", a:"Klikni na RACEM SHOP → vyber produkt alebo pošli dopyt. Potvrdíme cenu, dopravu a termín." },
+        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je doprava podľa rozmerov – dáme kalkuláciu." }
       ];
 
       $("#mFAQ").innerHTML = ( (x.faq && x.faq.length) ? x.faq : fallbackFAQ ).map(f => `
@@ -1683,18 +1646,20 @@
     modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
+    // =========================
+    // Mini list (right panel)
+    // =========================
     function miniRowHTML(sup){
       const products = (typeof sup.productsCount === "number") ? sup.productsCount.toLocaleString("sk-SK") : "—";
       const lt = leadLabel(sup.leadTimeDays);
-
       return `
         <div class="miniItem" data-id="${sup.id}">
           <div class="miniLeft">
             <b>${escapeHTML(sup.name)}</b>
-            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} products</span>
+            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} produktov</span>
           </div>
           <div class="miniRight">
-            <span class="miniBadge ok">ACTIVE</span>
+            <span class="miniBadge">ACTIVE</span>
             <span class="miniDot"></span>
           </div>
         </div>
@@ -1702,10 +1667,13 @@
     }
 
     function renderMiniList(list){
-      const sorted = [...list].slice(0,4);
-      $("#miniList").innerHTML = sorted.map(miniRowHTML).join("");
+      const box = document.getElementById("miniList");
+      if(!box) return;
 
-      $("#miniList").querySelectorAll(".miniItem").forEach(el => {
+      const sorted = [...list].slice(0,4);
+      box.innerHTML = sorted.map(miniRowHTML).join("");
+
+      box.querySelectorAll(".miniItem").forEach(el => {
         el.addEventListener("click", () => {
           const id = el.dataset.id;
           const sup = SUPPLIERS.find(x => x.id === id);
@@ -1724,7 +1692,7 @@
       const pad = (n) => String(n).padStart(2,"0");
       const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
       const el = document.getElementById("globeInfoTime");
-      if(el) el.textContent = t;
+      if(el) el.textContent = `${t} • stav systému`;
     }
 
     async function hydrateSfxlaOnly(){
@@ -1752,21 +1720,33 @@
       applyFilters();
     }
 
-    // init
-    document.getElementById("globeInfoTime").textContent = `${t} • stav systému`;
+    // Wire UI
+    q.addEventListener("input", applyFilters);
+    region.addEventListener("change", applyFilters);
+    speed.addEventListener("change", applyFilters);
 
-    // natvrdo stats hneď
+    reset.addEventListener("click", () => {
+      q.value = "";
+      region.value = "all";
+      speed.value = "all";
+      applyFilters();
+    });
+
+    $("#openFAQ").addEventListener("click", () => { location.hash = "#faq"; });
+
+    // init
+    $("#year").textContent = new Date().getFullYear();
     applyHardStats(null);
     applyFilters();
 
     updateTime();
     setInterval(updateTime, 1000);
 
-    // SFXLA hydratácia (ak pôjde)
     hydrateSfxlaOnly();
     setInterval(hydrateSfxlaOnly, 5 * 60 * 1000);
   </script>
 
+  <!-- ===== COBE Globe ===== -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
@@ -1781,7 +1761,7 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 }; // SK
     const SUPPLIERS = window.SUPPLIERS || [];
     const focus = window.__globeFocus;
 
@@ -1810,7 +1790,7 @@
       return { phi, theta };
     }
 
-    let currentPhi = -1.25;
+    let currentPhi = -1.25; // start so EU+US are visible
     let currentTheta = 0.20;
 
     let dragging = false;
