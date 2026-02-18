@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
   <title>RACEM | Dodávatelia</title>
-  <meta name="description" content="RACEM dodávatelia – dodacie doby, informácie, FAQ a galérie. Objavuj partnerov a značky." />
+  <meta name="description" content="RACEM dodávatelia – dodacie doby, sklad / objednávka, doprava (air/sea), štatistiky a katalógy. Klikni a otvor detail dodávateľa." />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -27,7 +27,7 @@
       --ok: #2ecc71;
       --warn:#f1c40f;
       --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --glass: blur(10px);
+      --glass: blur(12px);
       --radius: 18px;
       --wrap: 1200px;
     }
@@ -52,50 +52,85 @@
     header{
       position:sticky; top:0; z-index:50;
       backdrop-filter: var(--glass);
-      background: rgba(5,5,6,.62);
+      background: rgba(5,5,6,.68);
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
     .nav{
-      height:64px;
+      height:66px;
       display:flex; align-items:center; justify-content:space-between;
-      gap:14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      letter-spacing:.08em;
-    }
-    .brand img{height:34px; width:auto; display:block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6));}
-    .brand .txt{display:flex; flex-direction:column; line-height:1.05;}
-    .brand .txt b{font-family: Oswald, sans-serif; font-weight:600; letter-spacing:.12em}
-    .brand .txt span{font-size:12px; color:var(--muted); letter-spacing:.14em}
-    .brand .txt b{position:relative;}
-    .brand .txt b:after{
-      content:"";
-      display:block;
-      width:34px;
-      height:2px;
-      margin-top:6px;
-      background: var(--red);
-      border-radius: 99px;
-      opacity:.9;
+      gap:16px;
     }
 
-    .navlinks{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-    .chip{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding:9px 12px;
-      border-radius: 999px;
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      transition: .18s ease;
-      user-select:none;
+    /* Logo only */
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand img{
+      height:36px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
     }
-    .chip:hover{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.10)}
-    .chip.primary{
-      border-color: rgba(179,31,36,.65);
-      background: linear-gradient(180deg, rgba(179,31,36,.25), rgba(179,31,36,.10));
+
+    /* ===== TOP MENU: tech/race style ===== */
+    .navlinks{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .navlinks a{
+      position:relative;
+      padding:10px 2px;
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      opacity:.84;
+      transition: .22s ease;
+      user-select:none;
+      outline:none;
+    }
+    .navlinks a:before{
+      content:"";
+      position:absolute;
+      inset:-6px -10px;
+      border-radius: 999px;
+      background: radial-gradient(120px 28px at 50% 55%, rgba(179,31,36,.20), transparent 60%);
+      opacity:0;
+      transition:.22s ease;
+      pointer-events:none;
+      filter: blur(1px);
+    }
+    .navlinks a:after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      height:2px;
+      width:0%;
+      background: linear-gradient(90deg, rgba(255,43,47,.95), rgba(179,31,36,.80));
+      transition: .22s ease;
+      border-radius:99px;
+      box-shadow: 0 0 18px rgba(255,43,47,.28);
+    }
+    .navlinks a:hover{
+      opacity:1;
+      text-shadow: 0 0 14px rgba(255,43,47,.22);
+    }
+    .navlinks a:hover:before{opacity:1}
+    .navlinks a:hover:after{width:100%}
+    .navlinks a.active{opacity:1}
+    .navlinks a.active:after{width:100%}
+
+    .navlinks .cta{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(179,31,36,.55);
+      background: linear-gradient(180deg, rgba(179,31,36,.30), rgba(179,31,36,.10));
+    }
+    .navlinks .cta:after{display:none}
+    .navlinks .cta:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 50px rgba(179,31,36,.22);
     }
 
     .hero{padding: 32px 0 18px;}
@@ -121,22 +156,22 @@
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(700px 280px at 10% 10%, rgba(179,31,36,.25), transparent 60%),
-        radial-gradient(700px 280px at 85% 20%, rgba(255,43,47,.12), transparent 60%);
-      opacity:.9;
+        radial-gradient(720px 300px at 10% 10%, rgba(179,31,36,.26), transparent 62%),
+        radial-gradient(720px 300px at 85% 20%, rgba(255,43,47,.12), transparent 62%);
+      opacity:.95;
       pointer-events:none;
     }
     .heroLeft > *{position:relative}
     .kicker{
       display:inline-flex; align-items:center; gap:10px;
       font-size:12px; color:var(--muted);
-      letter-spacing:.16em;
+      letter-spacing:.18em;
       text-transform:uppercase;
     }
     .dot{
       width:10px; height:10px; border-radius:50%;
-      background: var(--red);
-      box-shadow: 0 0 0 6px rgba(179,31,36,.18);
+      background: var(--red2);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.14);
     }
     h1{
       margin:10px 0 8px;
@@ -150,58 +185,63 @@
       color: var(--muted);
       font-size:14px;
       line-height:1.6;
-      max-width: 62ch;
+      max-width: 70ch;
     }
 
-    /* =========================
-       HERO STATS (no overlap)
-       ========================= */
+    /* ===== HERO STATS: vertical, more technical ===== */
     .heroStats{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
+      grid-template-columns: 1fr;
+      gap:10px;
       margin-top:12px;
     }
     .stat{
       position:relative;
-      padding:14px 14px 12px;
+      padding:16px 16px 14px;
       border-radius: 16px;
-      background:
-        radial-gradient(520px 180px at 12% 0%, rgba(179,31,36,.16), transparent 55%),
-        rgba(255,255,255,.04);
+      background: linear-gradient(180deg, rgba(11,11,13,.85), rgba(5,5,6,.75));
       border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+      box-shadow: 0 18px 55px rgba(0,0,0,.45);
       overflow:hidden;
-      min-height: 110px;
+      min-height: 96px;
     }
     .stat:before{
       content:"";
-      position:absolute; inset:0;
-      background:
-        linear-gradient(120deg, rgba(179,31,36,.14), transparent 35%),
-        linear-gradient(0deg, rgba(0,0,0,.0), rgba(0,0,0,.25));
+      position:absolute;
+      top:0; left:0; right:0;
+      height:2px;
+      background: linear-gradient(90deg, rgba(255,43,47,.95), rgba(179,31,36,.75));
       opacity:.9;
+    }
+    .stat:after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(520px 160px at 12% 10%, rgba(179,31,36,.18), transparent 55%),
+        radial-gradient(520px 160px at 88% 40%, rgba(255,43,47,.10), transparent 55%);
+      opacity:.75;
       pointer-events:none;
     }
+    .stat > *{position:relative}
     .statTop{
-      position:relative;
-      display:grid;
-      grid-template-columns: 1fr auto;
-      align-items:start;
-      gap:12px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
     }
     .statTitle{
-      min-width:0;
       display:flex;
       flex-direction:column;
       gap:6px;
+      min-width:0;
     }
     .statTitle b{
       font-family: Oswald, sans-serif;
-      letter-spacing:.14em;
+      letter-spacing:.16em;
       text-transform:uppercase;
       font-size:12px;
-      color: rgba(255,255,255,.86);
+      color: rgba(255,255,255,.88);
       line-height:1.05;
     }
     .statTitle span{
@@ -209,15 +249,14 @@
       font-size:12px;
       letter-spacing:.06em;
       line-height:1.35;
-      max-width: 30ch;
+      max-width: 55ch;
     }
     .statValue{
-      position:relative;
       display:flex;
       flex-direction:column;
       align-items:flex-end;
       gap:8px;
-      min-width: 120px;
+      min-width: 160px;
     }
     .statValue .big{
       font-family: Oswald, sans-serif;
@@ -226,50 +265,40 @@
       line-height:1;
       font-variant-numeric: tabular-nums;
       text-shadow: 0 12px 30px rgba(0,0,0,.6);
-    }
-    #statPick{
-      font-family: Oswald, sans-serif;
-      font-size:20px;
-      letter-spacing:.06em;
-      line-height:1.1;
-      max-width: 160px;
       text-align:right;
-      display:-webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
     }
-
-    .liveRow{
-      display:flex; align-items:center; gap:8px;
+    .tinyLine{
       font-size:11px;
-      letter-spacing:.12em;
+      letter-spacing:.14em;
       text-transform:uppercase;
       color: rgba(255,255,255,.60);
+      display:flex;
+      align-items:center;
+      gap:8px;
       white-space:nowrap;
     }
-    .livePip{
+    .pip{
       width:8px; height:8px;
       border-radius:999px;
       background: var(--ok);
       box-shadow: 0 0 0 6px rgba(46,204,113,.10);
     }
-    .livePip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
-    .livePip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
+    .pip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+    .pip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
 
     .statBar{
-      position:relative;
       margin-top:12px;
       height:2px;
       border-radius: 99px;
       background: rgba(255,255,255,.10);
       overflow:hidden;
+      position:relative;
     }
     .statBar > i{
       display:block;
       height:100%;
       width:46%;
-      background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.65));
+      background: linear-gradient(90deg, rgba(255,43,47,.92), rgba(179,31,36,.70));
       border-radius: 99px;
     }
 
@@ -289,12 +318,9 @@
       text-transform:uppercase;
       color:rgba(255,255,255,.90);
     }
-    .liveBox .subline{
-      margin-top:6px;
-      color:rgba(255,255,255,.62);
-    }
+    .liveBox .subline{margin-top:6px;color:rgba(255,255,255,.62)}
 
-    /* Globe */
+    /* ===== Globe ===== */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -318,7 +344,7 @@
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.10);
       background:
-        radial-gradient(500px 220px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,.25)),
+        radial-gradient(520px 240px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,.25)),
         rgba(0,0,0,.15);
       display:block;
     }
@@ -340,12 +366,9 @@
       text-transform:uppercase;
       font-size:12px;
     }
-    .globeInfoTop span{
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-    }
+    .globeInfoTop span{color: var(--muted); font-size:12px; letter-spacing:.08em;}
 
+    /* mini list */
     .miniList{display:grid; gap:8px;}
     .miniItem{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
@@ -375,10 +398,7 @@
       text-transform:uppercase;
       line-height:1.35;
     }
-    .miniRight{
-      display:flex; flex-direction:column; align-items:flex-end; gap:8px;
-      flex:0 0 auto;
-    }
+    .miniRight{display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex:0 0 auto;}
     .miniBadge{
       font-size:11px;
       letter-spacing:.10em;
@@ -391,7 +411,6 @@
       white-space:nowrap;
     }
     .miniBadge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
-    .miniBadge.lock{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
     .miniDot{
       width:8px; height:8px;
       border-radius:999px;
@@ -399,9 +418,57 @@
       box-shadow: 0 0 0 6px rgba(255,43,47,.10);
       margin-top:2px;
     }
-    .miniDot.locked{
-      background: rgba(255,255,255,.55);
-      box-shadow: 0 0 0 6px rgba(255,255,255,.08);
+
+    /* globe tech stats */
+    .techStats{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top: 6px;
+    }
+    .techStats .t{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.10));
+      border-radius: 14px;
+      padding: 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      overflow:hidden;
+      position:relative;
+    }
+    .techStats .t:before{
+      content:"";
+      position:absolute;
+      left:-30%;
+      top:-80%;
+      width:120%;
+      height:180%;
+      background: radial-gradient(260px 120px at 50% 50%, rgba(179,31,36,.16), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+      transform: rotate(10deg);
+    }
+    .techStats .t > *{position:relative}
+    .techStats .t b{
+      display:block;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.70);
+      margin-bottom:6px;
+      font-family: Oswald, sans-serif;
+    }
+    .techStats .t span{
+      display:block;
+      font-family: Oswald, sans-serif;
+      font-size:18px;
+      letter-spacing:.06em;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 12px 28px rgba(0,0,0,.6);
+      text-align:right;
+      white-space:nowrap;
     }
 
     /* Controls */
@@ -451,13 +518,16 @@
       text-transform:uppercase;
       font-size:12px;
       cursor:pointer;
+      transition:.18s ease;
     }
+    .btn:hover{box-shadow: 0 18px 50px rgba(179,31,36,.20); transform: translateY(-1px);}
     .btn:active{transform: translateY(1px)}
     .btn.ghost{
       border-color: rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
       font-weight:600;
     }
+    .btn.ghost:hover{box-shadow:none; transform:none}
 
     /* Grid */
     .supplierGrid{
@@ -467,10 +537,10 @@
     }
 
     .supplier{
-      padding: 10px;
+      padding: 12px;
       display:flex;
       flex-direction:column;
-      gap:9px;
+      gap:10px;
       position:relative;
       overflow:hidden;
       cursor:pointer;
@@ -480,7 +550,19 @@
     .supplier:hover{
       border-color: rgba(179,31,36,.50);
       transform: translateY(-1px);
+      box-shadow: 0 26px 80px rgba(0,0,0,.62);
     }
+    .supplier:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 180px at 10% 10%, rgba(179,31,36,.18), transparent 60%),
+        radial-gradient(520px 180px at 90% 40%, rgba(255,43,47,.10), transparent 60%);
+      opacity:.65;
+      pointer-events:none;
+      z-index:0;
+    }
+    .supplier > *{position:relative; z-index:1}
 
     .supplierTop{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
@@ -488,12 +570,18 @@
     .supplierName{display:flex; flex-direction:column; gap:6px; min-width:0;}
     .supplierName b{
       font-family: Oswald, sans-serif;
-      font-size:17px;
+      font-size:18px;
       letter-spacing:.06em;
       white-space:normal;
       overflow:visible;
     }
-    .supplierName span{color:var(--muted); font-size:12px; letter-spacing:.10em; text-transform:uppercase; line-height:1.35}
+    .supplierName span{
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      line-height:1.35
+    }
 
     .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
     .badge{
@@ -504,22 +592,20 @@
       border-radius: 999px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.80);
+      color: rgba(255,255,255,.82);
       user-select:none;
       white-space:nowrap;
     }
     .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-    .badge.status{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
-    .badge.status.active{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
-    .badge.status.locked{border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04)}
-    .badge.status.soon{border-color: rgba(179,31,36,.45); background: rgba(179,31,36,.10)}
+    .badge.count{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
+    .badge.use{border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.16)}
 
     .supplierThumb{
-      height: 90px;
+      height: 96px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
       background:
-        radial-gradient(500px 180px at 30% 30%, rgba(179,31,36,.18), transparent 60%),
+        radial-gradient(520px 200px at 30% 30%, rgba(179,31,36,.18), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.20));
       overflow:hidden;
       position:relative;
@@ -528,25 +614,37 @@
       width:100%; height:100%;
       object-fit:cover;
       display:block;
-      opacity:.9;
-      filter: contrast(1.02) saturate(1.02);
+      opacity:.92;
+      filter: contrast(1.02) saturate(1.05);
     }
     .supplierThumb .overlay{
       position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55));
+      background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.60));
     }
 
     .supplierMeta{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:8px;
-      padding: 9px;
+      padding: 10px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
     }
-    .metaItem b{display:block; font-size:11px; letter-spacing:.10em; text-transform:uppercase; color:var(--muted)}
-    .metaItem span{display:block; margin-top:5px; font-size:13px; letter-spacing:.04em; line-height:1.25}
+    .metaItem b{
+      display:block;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted)
+    }
+    .metaItem span{
+      display:block;
+      margin-top:6px;
+      font-size:13px;
+      letter-spacing:.04em;
+      line-height:1.25
+    }
 
     .supplierDesc{
       margin:0;
@@ -555,42 +653,29 @@
       line-height:1.6;
     }
 
-    .supplier.locked{
-      cursor:not-allowed;
-      filter: blur(0.6px) saturate(.85);
-      opacity:.78;
-    }
-    .lockOverlay{
-      position:absolute;
-      inset:0;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.62));
+    .supplierFoot{
       display:flex;
-      align-items:flex-end;
+      align-items:center;
       justify-content:space-between;
-      padding:12px;
-      pointer-events:none;
-      z-index:2;
+      gap:10px;
+      border-radius: 14px;
+      padding: 10px 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
     }
-    .lockOverlay b{
+    .supplierFoot span{
+      color: rgba(255,255,255,.70);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .supplierFoot i{
+      font-style:normal;
       font-family: Oswald, sans-serif;
       letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:13px;
-    }
-    .lockOverlay span{
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-    }
-    .lockPill{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      padding:8px 10px;
-      border-radius: 999px;
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 12px 28px rgba(0,0,0,.6);
     }
 
     section.block{padding: 14px 0 26px}
@@ -610,7 +695,7 @@
       color:var(--muted);
       font-size:13px;
       line-height:1.5;
-      max-width: 60ch;
+      max-width: 62ch;
     }
 
     .faq{
@@ -639,10 +724,11 @@
       line-height:1.6;
     }
 
+    /* Modal */
     .modalBack{
       position:fixed; inset:0;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,.66);
+      backdrop-filter: blur(10px);
       display:none;
       align-items:center;
       justify-content:center;
@@ -650,18 +736,18 @@
       padding: 18px;
     }
     .modal{
-      width:min(980px, 100%);
+      width:min(1040px, 100%);
       max-height: 88vh;
       overflow:auto;
       border-radius: 18px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(10,10,12,.72);
+      background: rgba(10,10,12,.78);
       box-shadow: 0 30px 90px rgba(0,0,0,.7);
     }
     .modalHeader{
       position:sticky; top:0;
-      background: rgba(10,10,12,.85);
-      backdrop-filter: blur(10px);
+      background: rgba(10,10,12,.88);
+      backdrop-filter: blur(12px);
       border-bottom:1px solid rgba(255,255,255,.10);
       padding: 14px 14px;
       display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
@@ -681,6 +767,30 @@
       margin-top:4px;
       line-height:1.35;
     }
+    .modalHeader .right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .shopBtn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border:1px solid rgba(179,31,36,.55);
+      background: linear-gradient(90deg, rgba(255,43,47,.90), rgba(179,31,36,.78));
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      box-shadow: 0 20px 60px rgba(179,31,36,.22);
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+    .shopBtn:hover{transform: translateY(-1px); box-shadow: 0 24px 80px rgba(179,31,36,.30);}
     .close{
       border:1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.04);
@@ -768,10 +878,8 @@
       .supplierGrid{grid-template-columns: 1fr; }
       .faq{grid-template-columns: 1fr; }
       .gallery{grid-template-columns: repeat(2, 1fr); }
-      .heroStats{grid-template-columns: repeat(2, 1fr);}
-      .stat{min-height: 112px;}
-      .statValue{min-width: 96px;}
-      .statValue .big{font-size:28px;}
+      .techStats{grid-template-columns: 1fr;}
+      .statValue{min-width: 140px;}
     }
   </style>
 </head>
@@ -780,22 +888,19 @@
   <header>
     <div class="wrap">
       <div class="nav">
-        <a class="brand" href="index.html" aria-label="RACEM Group">
-          <img src="rmgroup.png" alt="RACEM Group logo"
-               style="height:36px;width:auto;display:block;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6));"
-               onerror="this.style.display='none'">
-          <div class="txt">
-            <b>RACEM Group</b>
-            <span>Suppliers / Brands</span>
-          </div>
+        <!-- LEFT: RACEM logo only -->
+        <a class="brand" href="index.html" aria-label="RACEM">
+          <img src="racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
         </a>
 
-        <nav class="navlinks">
-          <a class="chip" href="index.html">Domov</a>
-          <a class="chip primary" href="#suppliers">Dodávatelia</a>
-          <a class="chip" href="#faq">FAQ</a>
-          <a class="chip" href="#how">Ako to funguje</a>
-          <a class="chip" href="#gallery">Galéria</a>
+        <!-- RIGHT: improved menu -->
+        <nav class="navlinks" aria-label="Menu">
+          <a href="index.html">Domov</a>
+          <a class="active" href="#suppliers">Dodávatelia</a>
+          <a href="#how">Ako to funguje</a>
+          <a href="#faq">FAQ</a>
+          <a href="#gallery">Galéria</a>
+          <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">RACEM SHOP</a>
         </nav>
       </div>
     </div>
@@ -806,11 +911,11 @@
       <section class="hero">
         <div class="heroGrid">
           <div class="card heroLeft">
-            <div class="kicker"><span class="dot"></span> databáza dodávateľov RACEM</div>
-            <h1>Objavuj partnerov, značky a reálne dodacie doby</h1>
+            <div class="kicker"><span class="dot"></span> suppliers hub • technický prehľad</div>
+            <h1>Dodávatelia, dodacie doby a reálne čísla</h1>
             <p class="sub">
-              Prehľad dodávateľov, s ktorými vieme riešiť objednávky: značky, skladovosť, odhad dodania, doprava a rýchle FAQ.
-              Klikni na dodávateľa a máš všetko na jednom mieste.
+              Klikni na dodávateľa → otvorí sa detail (popup) s info pre objednávky: sklad / objednávka, doprava (air/sea),
+              dodacie doby, certifikáty a štatistiky katalógu (najviac výrobcov a modelov).
             </p>
 
             <div class="heroStats">
@@ -819,44 +924,44 @@
                 <div class="statTop">
                   <div class="statTitle">
                     <b>Autorizované značky</b>
-                    <span>aktívni partneri pripravení na objednávky</span>
+                    <span>aktuálne potvrdení partneri (ACTIVE)</span>
                   </div>
                   <div class="statValue">
-                    <div class="big" id="statBrands">0</div>
-                    <div class="liveRow"><span class="livePip"></span><span>LIVE</span></div>
+                    <div class="big" id="statAuth">2</div>
+                    <div class="tinyLine"><span class="pip"></span><span>LIVE</span></div>
                   </div>
                 </div>
-                <div class="statBar"><i id="barBrands" style="width:60%"></i></div>
+                <div class="statBar"><i id="barAuth" style="width:70%"></i></div>
               </div>
 
-              <!-- 2) Produkty v katalógoch -->
+              <!-- 2) Top výrobca + model -->
               <div class="stat">
                 <div class="statTop">
                   <div class="statTitle">
-                    <b>Produkty v katalógoch</b>
-                    <span>spolu zo všetkých aktívnych dodávateľov</span>
+                    <b>Najviac produktov</b>
+                    <span>top výrobca + top model naprieč katalógmi</span>
+                  </div>
+                  <div class="statValue">
+                    <div class="big" id="statTopPair">—</div>
+                    <div class="tinyLine"><span class="pip warn"></span><span>SYNC</span></div>
+                  </div>
+                </div>
+                <div class="statBar"><i id="barTopPair" style="width:44%"></i></div>
+              </div>
+
+              <!-- 3) Produkty spolu -->
+              <div class="stat">
+                <div class="statTop">
+                  <div class="statTitle">
+                    <b>Produkty spolu</b>
+                    <span>zo všetkých aktívnych dodávateľov</span>
                   </div>
                   <div class="statValue">
                     <div class="big" id="statProducts">0</div>
-                    <div class="liveRow"><span class="livePip warn"></span><span>SYNC</span></div>
+                    <div class="tinyLine"><span class="pip red"></span><span>RACEM</span></div>
                   </div>
                 </div>
-                <div class="statBar"><i id="barProducts" style="width:42%"></i></div>
-              </div>
-
-              <!-- 3) Náš výber -->
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Náš výber</b>
-                    <span id="statPickLabel">widebody &amp; race diely</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statPick">SFXLA</div>
-                    <div class="liveRow"><span class="livePip red"></span><span>RACEM</span></div>
-                  </div>
-                </div>
-                <div class="statBar"><i id="barPick" style="width:48%"></i></div>
+                <div class="statBar"><i id="barProducts" style="width:38%"></i></div>
               </div>
             </div>
 
@@ -865,7 +970,8 @@
             <div class="liveBox">
               <b>Live status</b>
               <div class="subline">
-                Štatistiky sú odvodené z feedu katalógov (produkty + rozdelenie podľa značiek) a z databázy dodávateľov.
+                Štatistiky sa hydrujú z feedov katalógov (manifest / JSON). Keď feed nejde, stránka sa nezrúti – len sa použijú
+                posledné lokálne hodnoty.
               </div>
             </div>
           </div>
@@ -886,8 +992,36 @@
 
               <div class="miniList" id="miniList"></div>
 
+              <!-- under globe: extra technical stats -->
+              <div class="techStats" aria-label="Mini štatistiky">
+                <div class="t">
+                  <div>
+                    <b>Active brands</b>
+                    <span id="miniActive">2</span>
+                  </div>
+                </div>
+                <div class="t">
+                  <div>
+                    <b>Total products</b>
+                    <span id="miniTotal">0</span>
+                  </div>
+                </div>
+                <div class="t">
+                  <div>
+                    <b>Top make</b>
+                    <span id="miniTopMake">—</span>
+                  </div>
+                </div>
+                <div class="t">
+                  <div>
+                    <b>Top model</b>
+                    <span id="miniTopModel">—</span>
+                  </div>
+                </div>
+              </div>
+
               <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
-                Klik → krátko zameria dodávateľa, potom pokračuje rotácia (žiadne “zaseknutie”).
+                Klik → krátko zameria dodávateľa, potom pokračuje rotácia.
               </p>
             </div>
           </div>
@@ -898,16 +1032,13 @@
         <div class="card controls">
           <div class="field">
             <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-            <input id="q" type="text" placeholder="napr. CSR, SFXLA, Germany..." autocomplete="off" />
+            <input id="q" type="text" placeholder="napr. CSR, SFXLA, BMW, E46..." autocomplete="off" />
           </div>
 
           <select id="region" class="select" title="Filter región">
             <option value="all">Všetky regióny</option>
             <option value="EU">EU</option>
             <option value="US">US</option>
-            <option value="UK">UK</option>
-            <option value="JP">JP</option>
-            <option value="AE">AE</option>
           </select>
 
           <select id="speed" class="select" title="Filter dodania">
@@ -928,15 +1059,15 @@
       <section id="how" class="block">
         <div class="sectionTitle">
           <h2>Ako to funguje</h2>
-          <p>Jednoduchý flow – bez omáčky. Reálny proces, ktorý sedí ku dielom a dodávkam.</p>
+          <p>Reálny proces pri bodykitoch / aero dieloch – bez výhovoriek. Platba a logistika podľa typu tovaru.</p>
         </div>
 
         <div class="card" style="padding:14px;">
           <div class="kv">
-            <div class="item"><b>1) Výber</b><span>Vyber dodávateľa a pozri dodacie doby, kategórie, najviac pokryté autá.</span></div>
-            <div class="item"><b>2) Dopyt</b><span>Pošli SKU, link alebo fotku. Potvrdíme cenu, dostupnosť a reálny termín.</span></div>
-            <div class="item"><b>3) Platba</b><span>Karta, prevod alebo dobierka podľa typu tovaru a logistiky.</span></div>
-            <div class="item"><b>4) Doručenie</b><span>Kuriér alebo paleta podľa rozmerov. Pri veľkých dieloch riešime balenie individuálne.</span></div>
+            <div class="item"><b>1) Výber</b><span>Vyber dodávateľa a pozri sklad/objednávku, dopravu (air/sea) a dodacie doby.</span></div>
+            <div class="item"><b>2) Dopyt</b><span>Pošli SKU/názov alebo fotku. Potvrdíme cenu, dostupnosť a reálny termín + clo/DPH pri US.</span></div>
+            <div class="item"><b>3) Platba</b><span>Do 180€ karta. Nad 180€ prevod. Pri tovare na objednávku vždy prevod.</span></div>
+            <div class="item"><b>4) Doručenie</b><span>Menšie diely kuriér. Veľké diely paleta. US: air alebo sea freight podľa rozmerov.</span></div>
           </div>
         </div>
       </section>
@@ -944,25 +1075,33 @@
       <section id="faq" class="block">
         <div class="sectionTitle">
           <h2>FAQ</h2>
-          <p>Najčastejšie otázky okolo dodania, materiálov a reklamácií.</p>
+          <p>Najčastejšie otázky okolo dodania, air/sea dopravy, cla/DPH a fittingu.</p>
         </div>
 
         <div class="faq">
           <details>
-            <summary>Prečo sa dodacia doba líši podľa produktu?</summary>
-            <p>Niečo je skladom, niečo sa vyrába na objednávku. Pri každom dopyte potvrdzujeme reálny termín aj typ dopravy.</p>
+            <summary>Ako sa líši sklad vs. objednávka?</summary>
+            <p>Sklad = ide hneď (zvyčajne 1–14 dní podľa regiónu). Objednávka = výroba alebo kompletácia – termín potvrdíme pri dopyte a platba je prevodom.</p>
           </details>
           <details>
-            <summary>Viete zohnať len časť kitu (napr. zadné lemy)?</summary>
-            <p>Často áno, ale závisí od dodávateľa a konkrétneho dielu. Overíme to pri dopyte a rovno povieme aj cenu dopravy.</p>
+            <summary>Air vs. Sea freight – kedy čo dáva zmysel?</summary>
+            <p>Air = rýchlejšie, drahšie (typicky 7–14 dní US→EU podľa rozmerov). Sea = lacnejšie pri veľkých dieloch, ale pomalšie (typicky 4–8 týždňov). Pri každom dopyte dáme obe alternatívy, ak sú možné.</p>
           </details>
           <details>
-            <summary>Materiály: ABS vs FRP vs Carbon?</summary>
-            <p>ABS je odolné a presné. FRP je “race” charakter, často vyžaduje viac práce pri fittingu. Carbon rieši váhu a vzhľad, ale je citlivý na manipuláciu a balenie.</p>
+            <summary>US dovoz: clo a DPH riešite vy alebo ja?</summary>
+            <p>Keď sa dováža z USA, môže vzniknúť clo a DPH podľa typu tovaru. Pri potvrdení objednávky povieme, či je to riešené v cene dopravy alebo sa platí pri colnom konaní.</p>
           </details>
           <details>
-            <summary>Reklamácie a vrátenie?</summary>
-            <p>Štandardné lehoty, pri tovare na objednávku môžu byť špecifiká. Riešime férovo podľa situácie a stavu tovaru.</p>
+            <summary>Fitting: ABS vs FRP/kompozit – čo mám čakať?</summary>
+            <p>ABS (EU dodávatelia) býva presnejšie. FRP/kompozit (race/widebody) často vyžaduje úpravy, doladenie hrán a skúšanie nasucho. Je to normálne pri agresívnych kitoch.</p>
+          </details>
+          <details>
+            <summary>Viete dodať len časť kitu (napr. lemy)?</summary>
+            <p>Závisí od dodávateľa a konkrétneho kitu. V detaile dodávateľa uvidíš, čo typicky vedia rozdeliť. Najistejšie je poslať názov kitu + čo presne chceš.</p>
+          </details>
+          <details>
+            <summary>Reklamácie pri veľkých dieloch?</summary>
+            <p>Pri veľkých dieloch je kľúčové prevzatie: fotky balenia a poškodenia hneď pri doručení. Potom sa to rieši výrazne rýchlejšie. Pomôžeme ti s postupom.</p>
           </details>
         </div>
       </section>
@@ -993,13 +1132,17 @@
             <b id="mName">—</b>
             <span id="mMeta">—</span>
           </div>
-          <button class="close" id="close">Close</button>
+          <div class="right">
+            <a class="shopBtn" id="mShopBtn" href="#" target="_blank" rel="noreferrer">Otvoriť v RACEM SHOP →</a>
+            <button class="close" id="close">Close</button>
+          </div>
         </div>
 
         <div class="modalBody">
           <div class="modalPanel">
             <h3>Info</h3>
             <div class="kv" id="mKV"></div>
+
             <div style="height:12px"></div>
 
             <h3>Prehľad katalógu</h3>
@@ -1025,7 +1168,7 @@
     // =========================
     const CATALOG_FEEDS = {
       csr:  "csr-cars/manifest.json",
-      sfxla:"main/sfxla-products.json" // ✅ SFXLA fix
+      sfxla:"main/sfxla-products.json"
     };
 
     async function safeFetchJSON(url){
@@ -1052,18 +1195,46 @@
       if(!s) return "";
       return s.toUpperCase() === "BMW" ? "BMW" : (s[0].toUpperCase() + s.slice(1));
     }
+    function normalizeModel(x){
+      const s = String(x||"").trim();
+      if(!s) return "";
+      // keep it short-ish
+      return s.replace(/\s+/g," ").replace(/\(.*?\)/g,"").trim();
+    }
 
-    function computeTopMakesFromItems(items, limit=3){
+    function computeTopCounts(items, getters, limit=3){
       const counts = new Map();
       for(const it of items){
-        const makeRaw = it.make || it.manufacturer || it.brand || it.carMake || it.vehicleMake;
-        const make = normalizeMake(makeRaw);
-        if(!make) continue;
-        counts.set(make, (counts.get(make)||0) + 1);
+        const raw = getters.map(fn => fn(it)).find(v => v !== undefined && v !== null && String(v).trim() !== "");
+        const key = String(raw||"").trim();
+        if(!key) continue;
+        counts.set(key, (counts.get(key)||0) + 1);
       }
-      const arr = [...counts.entries()].map(([make,count]) => ({make,count}));
+      const arr = [...counts.entries()].map(([k,count]) => ({k, count}));
       arr.sort((a,b) => b.count - a.count);
       return arr.slice(0, limit);
+    }
+
+    function computeTopMakesFromItems(items, limit=3){
+      const arr = computeTopCounts(items, [
+        it => normalizeMake(it.make),
+        it => normalizeMake(it.manufacturer),
+        it => normalizeMake(it.brand),
+        it => normalizeMake(it.carMake),
+        it => normalizeMake(it.vehicleMake)
+      ], limit).map(x => ({ make: x.k, count: x.count }));
+      return arr;
+    }
+
+    function computeTopModelsFromItems(items, limit=3){
+      const arr = computeTopCounts(items, [
+        it => normalizeModel(it.model),
+        it => normalizeModel(it.carModel),
+        it => normalizeModel(it.vehicleModel),
+        it => normalizeModel(it.platform),
+        it => normalizeModel(it.chassis)
+      ], limit).map(x => ({ model: x.k, count: x.count }));
+      return arr;
     }
 
     // =========================
@@ -1075,86 +1246,65 @@
         name: "CSR Automotive",
         region: "EU",
         country: "Nemecko",
-        tags: ["Bodykits", "Aero", "ABS"],
+        about: "Bodykity a aero diely (EU). Veľké pokrytie OEM značiek, rýchlejšie dodania, stabilná kvalita pre street aj show buildy.",
         leadTimeDays: [7, 14],
-        stock: "mix",
-        shipping: "Kuriér / paleta",
-        payment: "Karta / prevod",
-        website: "",
-        desc: "Bodykity a aero diely. Stabilný EU dodávateľ s veľkým pokrytím OEM značiek.",
+        stock: "mix", // in_stock / made_to_order / mix
+        shippingModes: ["Kuriér", "Paleta"], // EU
+        certificates: true,
+        use: ["Street", "Show", "Track"],
         heroImg: "img/suppliers/csr.jpg",
         gallery: [],
-        faq: [
-          { q:"Máte ABS diely aj s TÜV?", a:"Pri časti sortimentu áno. Konkrétny produkt overíme podľa SKU." },
-          { q:"Viete riešiť len prednú lipu bez zvyšku kitu?", a:"Vo väčšine prípadov áno, podľa dostupnosti a balenia." }
-        ],
-        status: "ACTIVE",
-        locked: false,
-        lat: 51.1657,
-        lon: 10.4515,
+        storeUrl: "csr-automotive.html",
         productsCount: 15240,
         topMakes: [
           { make:"BMW", count: 4120 },
           { make:"Audi", count: 2380 },
           { make:"VW", count: 2190 }
         ],
-        bestFor: ["Aero", "Bodykits", "ABS presnosť"],
-        productFocus: { aero: 0.85, widebody: 0.35, interior: 0.20, exhaust: 0.10 },
+        topModels: [
+          { model:"E46", count: 980 },
+          { model:"E90", count: 740 },
+          { model:"Golf", count: 610 }
+        ],
+        faq: [
+          { q:"Sú k dielom certifikáty?", a:"Pri časti sortimentu áno. Konkrétny produkt overíme podľa SKU." },
+          { q:"Viete poslať len lipu / prahy / difúzor?", a:"Vo väčšine prípadov áno – závisí od dostupnosti a balenia." }
+        ],
+        lat: 51.1657,
+        lon: 10.4515
       },
       {
         id: "sfxla",
         name: "SFXLA",
         region: "US",
-        country: "USA",
-        tags: ["Widebody", "Race", "FRP"],
+        country: "Kalifornia (USA)",
+        about: "Widebody a race diely. Väčšina na objednávku – agresívny fitment, kompozit/FRP a veľké diely riešené air/sea freight.",
         leadTimeDays: [18, 35],
         stock: "made_to_order",
-        shipping: "Air / Sea freight",
-        payment: "Prevod",
-        website: "",
-        desc: "Widebody a race diely. Väčšina na objednávku, ale top na agresívne fitmenty.",
+        shippingModes: ["Air", "Sea"],
+        certificates: false,
+        use: ["Drift", "Track", "Race"],
         heroImg: "img/suppliers/sfxla.jpg",
         gallery: [],
-        faq: [
-          { q:"Viete poslať len zadné lemy?", a:"Závisí od konkrétneho kitu. Overíme dostupnosť samostatných dielov." },
-          { q:"Ako je to s balením a shippingom?", a:"Pri veľkých dieloch je bežná paleta alebo sea freight. Dáme presnú kalkuláciu." }
-        ],
-        status: "ACTIVE",
-        locked: false,
-        lat: 39.8283,
-        lon: -98.5795,
+        storeUrl: "streetfighter-la.html",
         productsCount: 980,
         topMakes: [
           { make:"BMW", count: 280 },
           { make:"Nissan", count: 190 },
           { make:"Toyota", count: 145 }
         ],
-        bestFor: ["Widebody", "Race diely", "FRP/kompozit"],
-        productFocus: { aero: 0.55, widebody: 0.95, interior: 0.05, exhaust: 0.00 },
-      },
-      {
-        id: "locked-1",
-        name: "Locked Supplier #1",
-        region: "UK",
-        country: "UK",
-        tags: ["COMING", "SOON"],
-        leadTimeDays: [0, 0],
-        stock: "mix",
-        shipping: "—",
-        payment: "—",
-        website: "",
-        desc: "Pridávame čoskoro. Zatiaľ len interný záznam.",
-        heroImg: "",
-        gallery: [],
-        faq: [],
-        status: "LOCKED",
-        locked: true,
-        lat: 51.5072,
-        lon: -0.1276,
-        productsCount: 0,
-        topMakes: [],
-        bestFor: [],
-        productFocus: { aero: 0, widebody: 0, interior: 0, exhaust: 0 },
+        topModels: [
+          { model:"E36", count: 120 },
+          { model:"E92", count: 95 },
+          { model:"350Z", count: 70 }
+        ],
+        faq: [
+          { q:"Air vs Sea – čo odporúčate?", a:"Ak chceš rýchlo, air. Ak je to veľký kit a ideš rozumne s cenou dopravy, sea. Spravíme kalkuláciu oboch." },
+          { q:"Ako je to s fittingom FRP?", a:"Pri race kitoch je normálne, že sa doladzuje. Odporúčame skúšanie nasucho + úpravy pred lakom." }
+        ],
+        // California focus (Los Angeles)
+        lat: 34.0522,
+        lon: -118.2437
       }
     ];
 
@@ -1190,7 +1340,7 @@
     const reset = $("#reset");
 
     function leadLabel([a,b]){
-      if (!Array.isArray([a,b]) || (a === 0 && b === 0)) return "—";
+      if(!Array.isArray([a,b]) || (a === 0 && b === 0)) return "—";
       return a === b ? `${a} dní` : `${a}–${b} dní`;
     }
     function speedBucket([a,b]){
@@ -1204,50 +1354,46 @@
       if (s === "made_to_order") return "Na objednávku";
       return "Mix";
     }
-    function statusClass(s){
-      if(s === "ACTIVE") return "active";
-      if(s === "LOCKED") return "locked";
-      return "soon";
+    function yesNo(x){ return x ? "Áno" : "Nie"; }
+
+    function paymentLabel(stock){
+      // requested rules:
+      // - karta do 180€
+      // - prevod nad 180€
+      // - prevod ak je to na objednávku
+      if(stock === "made_to_order") return "Prevod (objednávka)";
+      return "Karta do 180€ / Prevod nad 180€";
     }
-    function statusLabel(s){
-      if(s === "ACTIVE") return "ACTIVE";
-      if(s === "LOCKED") return "LOCKED";
-      return "COMING SOON";
-    }
+
     function escapeHTML(s){
       return String(s ?? "").replace(/[&<>"']/g, c => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[c]));
     }
-    function bestForLabel(x){
-      const arr = (x.bestFor || []).filter(Boolean);
-      if(!arr.length) return "—";
-      return arr.slice(0,3).join(", ");
-    }
-    function focusPick(x){
-      const f = x.productFocus || {};
-      const entries = Object.entries(f).filter(([,v]) => typeof v === "number" && v > 0);
-      if(!entries.length) return "—";
-      entries.sort((a,b) => b[1]-a[1]);
-      const k = entries[0][0];
-      const map = { aero:"Aero", widebody:"Widebody", interior:"Interiér", exhaust:"Výfuky" };
-      return map[k] || k;
+
+    function topListLabel(arr, key){
+      const a = (arr||[]).filter(Boolean);
+      if(!a.length) return "—";
+      return a.slice(0,3).map(x => `${x[key]} (${x.count})`).join(", ");
     }
 
     function cardHTML(x){
-      const tags = (x.tags||[]).slice(0,3).map(t => `<span class="badge">${escapeHTML(t)}</span>`).join("");
+      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
+      const useBadges = (x.use||[]).slice(0,3).map(t => `<span class="badge use">${escapeHTML(t)}</span>`).join("");
       const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
-      const statusBadge = `<span class="badge status ${statusClass(x.status)}">${statusLabel(x.status)}</span>`;
+      const countBadge = `<span class="badge count">${escapeHTML(products)} PRODUCTS</span>`;
       const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
 
+      const ship = (x.shippingModes||[]).join(" / ") || "—";
+
       return `
-        <div class="card supplier ${x.locked ? "locked" : ""}" data-id="${x.id}">
+        <div class="card supplier" data-id="${x.id}">
           <div class="supplierTop">
             <div class="supplierName">
               <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
               <span>${escapeHTML(x.country)} • ${escapeHTML(x.region)} • ${stockLabel(x.stock)}</span>
             </div>
-            <div class="badges">${statusBadge}${regionBadge}${tags}</div>
+            <div class="badges">${countBadge}${regionBadge}${useBadges}</div>
           </div>
 
           <div class="supplierThumb">
@@ -1258,54 +1404,74 @@
           <div class="supplierMeta">
             <div class="metaItem">
               <b>Dodanie</b>
-              <span>${x.locked ? "—" : leadLabel(x.leadTimeDays)}</span>
+              <span>${leadLabel(x.leadTimeDays)}</span>
             </div>
             <div class="metaItem">
               <b>Doprava</b>
-              <span>${x.locked ? "—" : escapeHTML(x.shipping)}</span>
+              <span>${escapeHTML(ship)}</span>
+            </div>
+            <div class="metaItem">
+              <b>Certifikát</b>
+              <span>${yesNo(!!x.certificates)}</span>
+            </div>
+            <div class="metaItem">
+              <b>Platba</b>
+              <span>${escapeHTML(paymentLabel(x.stock))}</span>
             </div>
           </div>
 
-          <p class="supplierDesc">${escapeHTML(x.desc)}</p>
+          <p class="supplierDesc">${escapeHTML(x.about)}</p>
 
-          ${x.locked ? `
-            <div class="lockOverlay">
-              <div>
-                <b>Locked</b><br>
-                <span>Pridávame čoskoro</span>
-              </div>
-              <div class="lockPill">COMING SOON</div>
-            </div>
-          ` : ``}
+          <div class="supplierFoot">
+            <span>klikni pre detail</span>
+            <i>OPEN →</i>
+          </div>
         </div>
       `;
     }
 
-    // ✅ FIXED computeStats: NO old leftovers, no missing IDs
-    function computeStats(){
-      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
-      const locked = SUPPLIERS.filter(s => s.locked || s.status === "LOCKED");
+    function computeGlobalStats(){
+      // fixed "autorizované značky = 2"
+      const activeCount = 2;
+      $("#statAuth").textContent = String(activeCount);
+      $("#miniActive").textContent = String(activeCount);
 
-      const brandsCount = active.length;
-      const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
-      const pickName = "SFXLA";
+      const totalProducts = SUPPLIERS.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
+      $("#statProducts").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
+      $("#miniTotal").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
 
-      const setText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-      const setBar  = (id, val) => { const el = document.getElementById(id); if(el) el.style.width = val; };
+      // top make/model across suppliers (from their hydrated lists if available)
+      const makeCounts = new Map();
+      const modelCounts = new Map();
 
-      setText("statBrands", String(brandsCount));
-      setText("statProducts", totalProducts ? totalProducts.toLocaleString("sk-SK") : "0");
-      setText("statPick", pickName);
+      for(const s of SUPPLIERS){
+        for(const m of (s.topMakes||[])){
+          if(!m.make) continue;
+          makeCounts.set(m.make, (makeCounts.get(m.make)||0) + (m.count||0));
+        }
+        for(const m of (s.topModels||[])){
+          if(!m.model) continue;
+          modelCounts.set(m.model, (modelCounts.get(m.model)||0) + (m.count||0));
+        }
+      }
+      const topMake = [...makeCounts.entries()].sort((a,b)=>b[1]-a[1])[0];
+      const topModel = [...modelCounts.entries()].sort((a,b)=>b[1]-a[1])[0];
 
-      const pct = (n, d) => d ? Math.max(8, Math.min(100, Math.round((n/d)*100))) : 12;
-      const totalSuppliers = Math.max(1, active.length + locked.length);
+      const topMakeLabel = topMake ? `${topMake[0]}` : "—";
+      const topModelLabel = topModel ? `${topModel[0]}` : "—";
 
-      setBar("barBrands", `${pct(brandsCount, totalSuppliers)}%`);
+      $("#miniTopMake").textContent = topMakeLabel;
+      $("#miniTopModel").textContent = topModelLabel;
 
-      const maxProducts = Math.max(1, ...active.map(s => (typeof s.productsCount === "number" ? s.productsCount : 0)));
-      setBar("barProducts", `${pct(totalProducts, maxProducts * Math.max(1, active.length))}%`);
+      const pair = (topMake && topModel) ? `${topMake[0]} • ${topModel[0]}` : "—";
+      $("#statTopPair").textContent = pair;
 
-      setBar("barPick", `62%`);
+      // bars (simple visual)
+      $("#barAuth").style.width = "70%";
+      const maxP = Math.max(1, ...SUPPLIERS.map(s => (typeof s.productsCount === "number" ? s.productsCount : 0)));
+      const pctProducts = Math.max(12, Math.min(100, Math.round((totalProducts / (maxP * SUPPLIERS.length)) * 100)));
+      $("#barProducts").style.width = `${pctProducts}%`;
+      $("#barTopPair").style.width = "52%";
     }
 
     function applyFilters(){
@@ -1315,14 +1481,15 @@
 
       const out = SUPPLIERS.filter(x => {
         const hay = [
-          x.name, x.region, x.country, x.desc,
-          ...(x.tags||[]),
-          ...(x.bestFor||[])
+          x.name, x.region, x.country, x.about,
+          ...(x.use||[]),
+          ...(x.topMakes||[]).map(t => t.make),
+          ...(x.topModels||[]).map(t => t.model)
         ].join(" ").toLowerCase();
 
         const okQ = !qs || hay.includes(qs);
         const okR = (r === "all") || (x.region === r);
-        const okS = (s === "all") || (x.locked ? true : (speedBucket(x.leadTimeDays) === s));
+        const okS = (s === "all") || (speedBucket(x.leadTimeDays) === s);
         return okQ && okR && okS;
       });
 
@@ -1331,12 +1498,11 @@
       grid.querySelectorAll(".supplier").forEach(el => {
         el.addEventListener("click", () => {
           const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
-          if(!sup || sup.locked) return;
+          if(!sup) return;
 
           if(typeof sup.lat === "number" && typeof sup.lon === "number"){
             window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
           }
-
           openModal(el.dataset.id);
         });
       });
@@ -1357,15 +1523,20 @@
       $("#mName").textContent = x.name;
       $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)}`;
 
+      const ship = (x.shippingModes||[]).join(" / ") || "—";
+      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
+
+      // main CTA button
+      const btn = $("#mShopBtn");
+      btn.href = x.storeUrl || "https://www.racem.sk";
+
       const kv = [
-        ["Status", x.status || "—"],
+        ["Sklad / objednávka", stockLabel(x.stock)],
+        ["Doprava", ship],
         ["Dodacie doby", leadLabel(x.leadTimeDays)],
-        ["Sklad", stockLabel(x.stock)],
-        ["Doprava", x.shipping || "—"],
-        ["Platba", x.payment || "—"],
-        ["Web", x.website ? x.website : "—"],
-        ["Značky/kategórie", (x.tags||[]).join(", ") || "—"],
-        ["Najlepšie pre", bestForLabel(x)],
+        ["Platba", paymentLabel(x.stock)],
+        ["Certifikát", yesNo(!!x.certificates)],
+        ["Použitie", (x.use||[]).join(", ") || "—"],
       ];
 
       $("#mKV").innerHTML = kv.map(([k,v]) => `
@@ -1375,11 +1546,12 @@
         </div>
       `).join("");
 
+      // catalog overview: keep products + top makes/models
       const cat = [
-        ["Produkty", (typeof x.productsCount === "number" ? x.productsCount.toLocaleString("sk-SK") : "—")],
-        ["Primárny fokus", focusPick(x)],
-        ["Najlepšie pre", bestForLabel(x)],
-        ["Región", x.region]
+        ["Produkty", products],
+        ["Top výrobcovia", topListLabel(x.topMakes, "make")],
+        ["Top modely", topListLabel(x.topModels, "model")],
+        ["Región", x.region],
       ];
 
       $("#mCAT").innerHTML = cat.map(([k,v]) => `
@@ -1389,7 +1561,13 @@
         </div>
       `).join("");
 
-      $("#mFAQ").innerHTML = (x.faq||[]).map(f => `
+      // supplier FAQ (more direct)
+      const fallbackFAQ = [
+        { q:"Ako prebieha objednávka?", a:"Po kliknutí na RACEM SHOP vyberieš produkt alebo nám pošleš dopyt. Potvrdíme cenu, dopravu a termín." },
+        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je to vždy podľa rozmerov – dáme kalkuláciu." }
+      ];
+
+      $("#mFAQ").innerHTML = ( (x.faq && x.faq.length) ? x.faq : fallbackFAQ ).map(f => `
         <details>
           <summary>${escapeHTML(f.q)}</summary>
           <p>${escapeHTML(f.a)}</p>
@@ -1428,45 +1606,39 @@
     // Mini list (right panel)
     // =========================
     function miniRowHTML(sup){
-      const isLocked = sup.locked || sup.status === "LOCKED";
-      const badge = isLocked ? `<span class="miniBadge lock">LOCKED</span>` : `<span class="miniBadge ok">ACTIVE</span>`;
-      const dot = isLocked ? `<span class="miniDot locked"></span>` : `<span class="miniDot"></span>`;
-      const lt = isLocked ? "—" : leadLabel(sup.leadTimeDays);
-      const products = (!isLocked && typeof sup.productsCount === "number") ? sup.productsCount.toLocaleString("sk-SK") : "—";
-      const best = isLocked ? "—" : focusPick(sup);
+      const products = (typeof sup.productsCount === "number") ? sup.productsCount.toLocaleString("sk-SK") : "—";
+      const lt = leadLabel(sup.leadTimeDays);
+      const topMake = (sup.topMakes && sup.topMakes[0]) ? sup.topMakes[0].make : "—";
+      const topModel = (sup.topModels && sup.topModels[0]) ? sup.topModels[0].model : "—";
 
       return `
         <div class="miniItem" data-id="${sup.id}">
           <div class="miniLeft">
             <b>${escapeHTML(sup.name)}</b>
-            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • produkty ${escapeHTML(products)} • fokus ${escapeHTML(best)}</span>
+            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} products • top ${escapeHTML(topMake)} / ${escapeHTML(topModel)}</span>
           </div>
           <div class="miniRight">
-            ${badge}
-            ${dot}
+            <span class="miniBadge ok">ACTIVE</span>
+            <span class="miniDot"></span>
           </div>
         </div>
       `;
     }
 
     function renderMiniList(list){
-      const sorted = [...list].sort((a,b) => {
-        const al = (a.locked || a.status === "LOCKED") ? 1 : 0;
-        const bl = (b.locked || b.status === "LOCKED") ? 1 : 0;
-        return al - bl;
-      }).slice(0,4);
-
+      const sorted = [...list].slice(0,4);
       $("#miniList").innerHTML = sorted.map(miniRowHTML).join("");
 
       $("#miniList").querySelectorAll(".miniItem").forEach(el => {
         el.addEventListener("click", () => {
           const id = el.dataset.id;
           const sup = SUPPLIERS.find(x => x.id === id);
-          if(!sup || sup.locked) return;
+          if(!sup) return;
 
           if(typeof sup.lat === "number" && typeof sup.lon === "number"){
             window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
           }
+          openModal(id);
         });
       });
     }
@@ -1474,11 +1646,11 @@
     function updateTime(){
       const d = new Date();
       const pad = (n) => String(n).padStart(2,"0");
-      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} • status feed`;
+      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} • feed`;
     }
 
     async function hydrateLiveCatalogData(){
-      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE" && CATALOG_FEEDS[s.id]);
+      const active = SUPPLIERS.filter(s => CATALOG_FEEDS[s.id]);
       if(!active.length) return;
 
       const results = await Promise.all(active.map(async (sup) => {
@@ -1493,15 +1665,17 @@
         const items = extractItemsFromAnyJSON(r.data);
         const count = items.length || 0;
         const topMakes = computeTopMakesFromItems(items, 3);
+        const topModels = computeTopModelsFromItems(items, 3);
 
         const sup = SUPPLIERS.find(s => s.id === r.id);
         if(!sup) continue;
 
         if(count > 0) sup.productsCount = count;
         if(topMakes.length) sup.topMakes = topMakes;
+        if(topModels.length) sup.topModels = topModels;
       }
 
-      computeStats();
+      computeGlobalStats();
       applyFilters();
     }
 
@@ -1522,7 +1696,7 @@
     // init
     $("#year").textContent = new Date().getFullYear();
     renderGlobalGallery();
-    computeStats();
+    computeGlobalStats();
     applyFilters();
     updateTime();
     setInterval(updateTime, 1000);
@@ -1546,7 +1720,7 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 }; // SK
     const SUPPLIERS = window.SUPPLIERS || [];
     const focus = window.__globeFocus;
 
@@ -1555,7 +1729,7 @@
         { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.10 },
         ...SUPPLIERS
           .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-          .map(s => ({ location: [s.lat, s.lon], size: (s.locked || s.status === "LOCKED") ? 0.055 : 0.085 }))
+          .map(s => ({ location: [s.lat, s.lon], size: 0.085 }))
       ];
     }
 
