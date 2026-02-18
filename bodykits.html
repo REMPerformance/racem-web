@@ -302,6 +302,101 @@
       border-radius: 99px;
     }
 
+
+    /* =========================
+       HERO STATS v2 (stacked / tech)
+       ========================= */
+    .heroStatsV{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .statV{
+      position:relative;
+      padding:14px 14px 12px;
+      border-radius: 16px;
+      background:
+        radial-gradient(520px 180px at 12% 0%, rgba(179,31,36,.18), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.14));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+      overflow:hidden;
+    }
+    .statV:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(120deg, rgba(179,31,36,.18), transparent 35%),
+        linear-gradient(0deg, rgba(0,0,0,.00), rgba(0,0,0,.30));
+      opacity:.9;
+      pointer-events:none;
+    }
+    .statV:after{
+      content:"";
+      position:absolute; left:0; top:0;
+      width:100%; height:2px;
+      background: linear-gradient(90deg, rgba(255,43,47,.85), rgba(179,31,36,.55));
+      opacity:.9;
+      pointer-events:none;
+    }
+    .statVTop{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .statVLabel{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(255,255,255,.86);
+    }
+    .statVValue{
+      position:relative;
+      font-family: Oswald, sans-serif;
+      font-size:30px;
+      letter-spacing:.06em;
+      line-height:1;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 12px 30px rgba(0,0,0,.6);
+      max-width: 60%;
+      text-align:right;
+    }
+    .statVValue.small{
+      font-size:16px;
+      line-height:1.25;
+      letter-spacing:.06em;
+      opacity:.95;
+      max-width: 68%;
+    }
+    .statVSub{
+      position:relative;
+      margin-top:8px;
+      color: rgba(255,255,255,.62);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.45;
+    }
+    .statVLine{
+      position:relative;
+      margin-top:12px;
+      height:2px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .statVLine > i{
+      display:block;
+      height:100%;
+      width:40%;
+      background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.65));
+      border-radius: 99px;
+    }
+
+
     .liveBox{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.14);
@@ -451,6 +546,8 @@
       transform: rotate(10deg);
     }
     .techStats .t > *{position:relative}
+
+    .techStats .t.wide{ grid-column: 1 / -1; }
     .techStats .t b{
       display:block;
       font-size:11px;
@@ -827,10 +924,29 @@
       gap:10px;
     }
     .kv .item{
+      position:relative;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
+      background:
+        radial-gradient(280px 120px at 15% 0%, rgba(179,31,36,.10), transparent 60%),
+        rgba(0,0,0,.18);
       border-radius: 14px;
-      padding: 10px;
+      padding: 12px 12px 11px;
+      overflow:hidden;
+      transition: .18s ease;
+    }
+    .kv .item:before{
+      content:"";
+      position:absolute;
+      left:10px; top:10px;
+      width:9px; height:9px;
+      border-radius:3px;
+      background: rgba(255,43,47,.75);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
+      opacity:.75;
+    }
+    .kv .item:hover{
+      border-color: rgba(179,31,36,.45);
+      transform: translateY(-1px);
     }
     .kv .item b{
       display:block;
@@ -918,54 +1034,47 @@
               dodacie doby, certifikáty a štatistiky katalógu (najviac výrobcov a modelov).
             </p>
 
-            <div class="heroStats">
-              <!-- 1) Autorizované značky -->
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Autorizované značky</b>
-                    <span>aktuálne potvrdení partneri (ACTIVE)</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statAuth">2</div>
-                    <div class="tinyLine"><span class="pip"></span><span>LIVE</span></div>
-                  </div>
+            
+            <div class="heroStatsV" aria-label="Štatistiky">
+              <div class="statV">
+                <div class="statVTop">
+                  <div class="statVLabel">AUTORIZOVANÉ ZNAČKY</div>
+                  <div class="statVValue" id="statAuth">2</div>
                 </div>
-                <div class="statBar"><i id="barAuth" style="width:70%"></i></div>
+                <div class="statVSub">aktuálne aktívni partneri</div>
+                <div class="statVLine"><i id="barAuth" style="width:60%"></i></div>
               </div>
 
-              <!-- 2) Top výrobca + model -->
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Najviac produktov</b>
-                    <span>top výrobca + top model naprieč katalógmi</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statTopPair">—</div>
-                    <div class="tinyLine"><span class="pip warn"></span><span>SYNC</span></div>
-                  </div>
+              <div class="statV">
+                <div class="statVTop">
+                  <div class="statVLabel">NAJVIAC PRODUKTOV</div>
+                  <div class="statVValue" id="statTopMake">—</div>
                 </div>
-                <div class="statBar"><i id="barTopPair" style="width:44%"></i></div>
+                <div class="statVSub">top výrobca podľa katalógov</div>
+                <div class="statVLine"><i id="barTopMake" style="width:44%"></i></div>
               </div>
 
-              <!-- 3) Produkty spolu -->
-              <div class="stat">
-                <div class="statTop">
-                  <div class="statTitle">
-                    <b>Produkty spolu</b>
-                    <span>zo všetkých aktívnych dodávateľov</span>
-                  </div>
-                  <div class="statValue">
-                    <div class="big" id="statProducts">0</div>
-                    <div class="tinyLine"><span class="pip red"></span><span>RACEM</span></div>
-                  </div>
+              <div class="statV">
+                <div class="statVTop">
+                  <div class="statVLabel">PRODUKTY SPOLU</div>
+                  <div class="statVValue" id="statTotalProducts">0</div>
                 </div>
-                <div class="statBar"><i id="barProducts" style="width:38%"></i></div>
+                <div class="statVSub">súčet aktívnych katalógov</div>
+                <div class="statVLine"><i id="barTotalProducts" style="width:52%"></i></div>
+              </div>
+
+              <div class="statV">
+                <div class="statVTop">
+                  <div class="statVLabel">TOP 3 VOZIDLÁ</div>
+                  <div class="statVValue small" id="statTopVehicles">—</div>
+                </div>
+                <div class="statVSub">modely s najväčším počtom produktov</div>
+                <div class="statVLine"><i id="barTopVehicles" style="width:40%"></i></div>
               </div>
             </div>
 
             <div style="height:12px"></div>
+
 
             <div class="liveBox">
               <b>Live status</b>
@@ -1016,6 +1125,12 @@
                   <div>
                     <b>Top model</b>
                     <span id="miniTopModel">—</span>
+                  </div>
+                
+                <div class="t wide">
+                  <div>
+                    <b>Top 3 vehicles</b>
+                    <span id="miniTopVehicles">—</span>
                   </div>
                 </div>
               </div>
@@ -1431,47 +1546,58 @@
     }
 
     function computeGlobalStats(){
-      // fixed "autorizované značky = 2"
-      const activeCount = 2;
-      $("#statAuth").textContent = String(activeCount);
-      $("#miniActive").textContent = String(activeCount);
+      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
 
-      const totalProducts = SUPPLIERS.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
-      $("#statProducts").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
-      $("#miniTotal").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
+      // požiadavka: autorizované značky = 2
+      const authorized = 2;
+      const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
 
-      // top make/model across suppliers (from their hydrated lists if available)
-      const makeCounts = new Map();
-      const modelCounts = new Map();
-
-      for(const s of SUPPLIERS){
-        for(const m of (s.topMakes||[])){
-          if(!m.make) continue;
-          makeCounts.set(m.make, (makeCounts.get(m.make)||0) + (m.count||0));
-        }
-        for(const m of (s.topModels||[])){
-          if(!m.model) continue;
-          modelCounts.set(m.model, (modelCounts.get(m.model)||0) + (m.count||0));
+      // aggregate TOP MAKE
+      const makeAgg = new Map();
+      for(const s of active){
+        for(const tm of (s.topMakes || [])){
+          if(!tm || !tm.make) continue;
+          makeAgg.set(tm.make, (makeAgg.get(tm.make)||0) + (tm.count||0));
         }
       }
-      const topMake = [...makeCounts.entries()].sort((a,b)=>b[1]-a[1])[0];
-      const topModel = [...modelCounts.entries()].sort((a,b)=>b[1]-a[1])[0];
-
+      const topMake = [...makeAgg.entries()].sort((a,b)=>b[1]-a[1])[0];
       const topMakeLabel = topMake ? `${topMake[0]}` : "—";
-      const topModelLabel = topModel ? `${topModel[0]}` : "—";
 
-      $("#miniTopMake").textContent = topMakeLabel;
-      $("#miniTopModel").textContent = topModelLabel;
+      // aggregate TOP VEHICLES (make + model)
+      const vehAgg = new Map();
+      for(const s of active){
+        for(const tv of (s.topModels || [])){
+          const key = tv.vehicle || tv.model || "";
+          if(!key) continue;
+          vehAgg.set(key, (vehAgg.get(key)||0) + (tv.count||0));
+        }
+      }
+      const topVehicles = [...vehAgg.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3)
+        .map(([k,v]) => `${k} (${v})`);
+      const topVehiclesLabel = topVehicles.length ? topVehicles.join(", ") : "—";
 
-      const pair = (topMake && topModel) ? `${topMake[0]} • ${topModel[0]}` : "—";
-      $("#statTopPair").textContent = pair;
+      // DOM
+      const setText = (sel, val) => { const el = document.querySelector(sel); if(el) el.textContent = val; };
+      const setBar  = (id, pct) => { const el = document.getElementById(id); if(el) el.style.width = `${pct}%`; };
 
-      // bars (simple visual)
-      $("#barAuth").style.width = "70%";
-      const maxP = Math.max(1, ...SUPPLIERS.map(s => (typeof s.productsCount === "number" ? s.productsCount : 0)));
-      const pctProducts = Math.max(12, Math.min(100, Math.round((totalProducts / (maxP * SUPPLIERS.length)) * 100)));
-      $("#barProducts").style.width = `${pctProducts}%`;
-      $("#barTopPair").style.width = "52%";
+      setText("#statAuth", String(authorized));
+      setText("#statTopMake", topMakeLabel);
+      setText("#statTotalProducts", totalProducts ? totalProducts.toLocaleString("sk-SK") : "0");
+      setText("#statTopVehicles", topVehiclesLabel);
+
+      // mini under globe
+      setText("#miniActive", String(authorized));
+      setText("#miniTotal", totalProducts ? totalProducts.toLocaleString("sk-SK") : "0");
+      setText("#miniTopMake", topMakeLabel);
+      setText("#miniTopModel", topVehicles.length ? topVehicles[0] : "—");
+      setText("#miniTopVehicles", topVehiclesLabel);
+
+      // bars (vizuálne)
+      const clamp = (x) => Math.max(10, Math.min(100, x));
+      setBar("barAuth", clamp((authorized/Math.max(1, active.length||authorized))*100));
+      setBar("barTopMake", clamp(topMake ? (topMake[1] / Math.max(1, totalProducts)) * 120 : 18));
+      setBar("barTotalProducts", clamp(totalProducts ? 64 : 18));
+      setBar("barTopVehicles", clamp(topVehicles.length ? 56 : 18));
     }
 
     function applyFilters(){
@@ -1777,8 +1903,8 @@
 
         if(hasFocus){
           const t = latLonToPhiTheta(focus.focusLat, focus.focusLon);
-          const targetPhi = -t.phi;
-          const targetTheta = Math.max(-1.2, Math.min(1.2, t.theta * 0.55));
+          const targetPhi = t.phi;
+          const targetTheta = Math.max(-1.2, Math.min(1.2, -t.theta * 0.55));
 
           currentPhi += (targetPhi - currentPhi) * 0.07;
           currentTheta += (targetTheta - currentTheta) * 0.07;
