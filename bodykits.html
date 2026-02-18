@@ -1118,7 +1118,7 @@
                   <div class="statVLabel">NAJVIAC PRODUKTOV</div>
                   <div class="statVValue" id="statTopMake">—</div>
                 </div>
-                <div class="statVSub">top dodávateľ podľa katalógov</div>
+                <div class="statVSub">top výrobca podľa katalógov</div>
                 <div class="statVLine"><i id="barTopMake" style="width:44%"></i></div>
               </div>
 
@@ -1145,8 +1145,18 @@
 
 
             
-            
+            <div class="liveStrip" aria-label="Live indikátory">
+              <div class="liveChip"><span class="liveDot ok"></span><b>LIVE</b><span>status</span></div>
+              <div class="liveChip"><span class="liveDot warn"></span><b>SYNC</b><span>feed</span></div>
+              <div class="liveChip"><span class="liveDot red"></span><b>ALERT</b><span>logistika</span></div>
+            </div>
 
+<div class="liveBox">
+              <b>Live status</b>
+              <div class="subline">
+                Štatistiky sa hydrujú z feedov katalógov (manifest / JSON). Keď feed nejde, stránka sa nezrúti – len sa použijú
+                posledné lokálne hodnoty.
+              </div>
             </div>
           </div>
 
@@ -1156,21 +1166,12 @@
               <span>auto rotate • drag rotate • krátky focus</span>
             </div>
 
-<div class="liveStrip" aria-label="Live indikátory (globe)">
-  <div class="liveChip"><span class="liveDot ok" id="liveDot"></span><b>LIVE</b><span id="liveStatus">ready</span></div>
-  <div class="liveChip"><span class="liveDot warn" id="feedDot"></span><b>FEED</b><span id="feedStatus">loading</span></div>
-</div>
-
             <canvas id="globe" aria-label="Zemeguľa"></canvas>
 
             <div class="globeInfo">
               <div class="globeInfoTop">
                 <b>Uzly / rýchly prehľad</b>
                 <span id="globeInfoTime">—</span>
-                <span style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;letter-spacing:.08em;">
-                  <span class="liveDot warn" id="syncDot" style="width:8px;height:8px;box-shadow:none;"></span>
-                  <span id="syncStatus">sync…</span>
-                </span>
               </div>
 
               <div class="miniList" id="miniList"></div>
@@ -1191,7 +1192,7 @@
                 </div>
                 <div class="t">
                   <div>
-                    <b>Top supplier</b>
+                    <b>Top make</b>
                     <span id="miniTopMake">—</span>
                   </div>
                 </div>
@@ -1200,8 +1201,7 @@
                     <b>Top model</b>
                     <span id="miniTopModel">—</span>
                   </div>
-                </div>
-
+                
                 <div class="t wide">
                   <div>
                     <b>Top 3 vehicles</b>
@@ -1328,8 +1328,8 @@
     // LIVE CATALOG FEEDS
     // =========================
     const CATALOG_FEEDS = {
-      csr:  "/csr-projects/manifest.json",
-      sfxla:"/sfxla-products.json"
+      csr:  "csr-cars/manifest.json",
+      sfxla:"main/sfxla-products.json"
     };
 
     async function safeFetchJSON(url){
@@ -1591,47 +1591,20 @@
       `;
     }
 
-    function computeGlobalStats(globalCatalog){
-  // globalCatalog: { totalProducts, topSupplier, topVehicles, topMake, suppliers }
-  const authorized = (globalCatalog?.suppliers?.length) || SUPPLIERS.length || 0;
-  const totalProducts = globalCatalog?.totalProducts ?? SUPPLIERS.reduce((sum,s)=>sum+(s.productsCount||0),0);
+    function computeGlobalStats(){
+      const active = SUPPLIERS.filter(s => !s.locked && s.status === "ACTIVE");
 
-  const topSupplier = globalCatalog?.topSupplier || (() => {
-    const sorted = [...SUPPLIERS].sort((a,b)=> (b.productsCount||0) - (a.productsCount||0));
-    return sorted[0] ? { name: sorted[0].name, count: (sorted[0].productsCount||0) } : null;
-  })();
+      // požiadavka: autorizované značky = 2
+      const authorized = 2;
+      const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
 
-  const topSupplierLabel = topSupplier ? `${topSupplier.name} (${(topSupplier.count||0).toLocaleString("sk-SK")})` : "—";
-  const topVehiclesLabel = (globalCatalog?.topVehicles && globalCatalog.topVehicles.length)
-    ? globalCatalog.topVehicles.map(v => `${v.key} (${v.count})`).join(", ")
-    : "—";
-  const topMakeLabel = globalCatalog?.topMake ? `${globalCatalog.topMake.key} (${globalCatalog.topMake.count})` : "—";
-
-  const setText = (sel, val) => { const el = document.querySelector(sel); if(el) el.textContent = val; };
-  const setBar  = (id, pct) => { const el = document.getElementById(id); if(el) el.style.width = `${pct}%`; };
-
-  setText("#statAuth", String(authorized));
-  setText("#statTopMake", topSupplierLabel);
-  setText("#statTotalProducts", totalProducts ? totalProducts.toLocaleString("sk-SK") : "0");
-  setText("#statTopVehicles", topVehiclesLabel);
-
-  // mini under globe
-  setText("#miniActive", String(authorized));
-  setText("#miniTotal", totalProducts ? totalProducts.toLocaleString("sk-SK") : "0");
-  setText("#miniTopMake", topSupplierLabel);
-  setText("#miniTopModel", (globalCatalog?.topVehicles?.[0]) ? `${globalCatalog.topVehicles[0].key} (${globalCatalog.topVehicles[0].count})` : "—");
-  setText("#miniTopVehicles", topVehiclesLabel);
-
-  // optional extra (not visible by default but handy)
-  const elTopMake = document.getElementById("miniTopMakeReal");
-  if(elTopMake) elTopMake.textContent = topMakeLabel;
-
-  const clamp = (x) => Math.max(10, Math.min(100, x));
-  setBar("barAuth", clamp((authorized/Math.max(1, authorized))*100));
-  setBar("barTopMake", clamp(topSupplier ? 70 : 18));
-  setBar("barTotalProducts", clamp(totalProducts ? 64 : 18));
-  setBar("barTopVehicles", clamp((globalCatalog?.topVehicles?.length||0) ? 56 : 18));
-}
+      // aggregate TOP MAKE
+      const makeAgg = new Map();
+      for(const s of active){
+        for(const tm of (s.topMakes || [])){
+          if(!tm || !tm.make) continue;
+          makeAgg.set(tm.make, (makeAgg.get(tm.make)||0) + (tm.count||0));
+        }
       }
       const topMake = [...makeAgg.entries()].sort((a,b)=>b[1]-a[1])[0];
       const topMakeLabel = topMake ? `${topMake[0]}` : "—";
@@ -1834,182 +1807,18 @@
     function updateTime(){
       const d = new Date();
       const pad = (n) => String(n).padStart(2,"0");
-      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} • feed`;
     }
 
     async function hydrateLiveCatalogData(){
-  // Status UI
-  const setLive = (liveOk, feedOk, syncText) => {
-    const ld = document.getElementById("liveDot");
-    const ls = document.getElementById("liveStatus");
-    const fd = document.getElementById("feedDot");
-    const fs = document.getElementById("feedStatus");
-    const sd = document.getElementById("syncDot");
-    const ss = document.getElementById("syncStatus");
-    if(ls) ls.textContent = liveOk ? "ready" : "degraded";
-    if(ld){
-      ld.classList.remove("ok","warn","red");
-      ld.classList.add(liveOk ? "ok" : "warn");
-    }
-    if(fs) fs.textContent = feedOk ? "ok" : "offline";
-    if(fd){
-      fd.classList.remove("ok","warn","red");
-      fd.classList.add(feedOk ? "ok" : "warn");
-    }
-    if(ss) ss.textContent = syncText || "—";
-    if(sd){
-      sd.classList.remove("ok","warn","red");
-      sd.classList.add(feedOk ? "ok" : "warn");
-    }
-  };
+      const active = SUPPLIERS.filter(s => CATALOG_FEEDS[s.id]);
+      if(!active.length) return;
 
-  setLive(true, false, "sync…");
-
-  // -------- helpers for manifest + counting --------
-  const normalizeManifest = (m) => {
-    if(!m) return [];
-    if(Array.isArray(m)) return m;
-    if(Array.isArray(m.files)) return m.files;
-    if(Array.isArray(m.parts)) return m.parts;
-    if(Array.isArray(m.jsons)) return m.jsons;
-    if(Array.isArray(m.items)) return m.items;
-    return [];
-  };
-
-  const guessMake = (it) => normalizeMake(it.make || it.manufacturer || it.brand || it.carMake || it.vehicleMake);
-  const guessModel = (it) => normalizeModel(it.model || it.carModel || it.vehicleModel || it.platform || it.chassis);
-
-  const addCount = (map, key, n=1) => {
-    if(!key) return;
-    map.set(key, (map.get(key)||0) + n);
-  };
-
-  const fetchManyBatched = async (urls, batchSize=6) => {
-    const out = [];
-    for(let i=0;i<urls.length;i+=batchSize){
-      const batch = urls.slice(i, i+batchSize);
-      const res = await Promise.all(batch.map(u => safeFetchJSON(u).then(data => ({u,data})) ));
-      out.push(...res);
-    }
-    return out;
-  };
-
-  // -------- load per supplier --------
-  const globalMakeCounts = new Map();
-  const globalVehicleCounts = new Map();
-  let globalTotal = 0;
-
-  const supplierResults = [];
-
-  for(const sup of SUPPLIERS){
-    const feed = CATALOG_FEEDS[sup.id];
-    if(!feed){
-      supplierResults.push({ id: sup.id, ok: false });
-      continue;
-    }
-
-    if(sup.id === "csr"){
-      // CSR: manifest -> list of JSON parts inside /csr-projects/
-      const manifest = await safeFetchJSON(feed);
-      const files = normalizeManifest(manifest).map(x => {
-        const s = String(x||"").trim();
-        if(!s) return "";
-        // allow either absolute paths or file names
-        if(s.startsWith("/")) return s;
-        if(s.startsWith("csr-projects/")) return "/" + s;
-        return "/csr-projects/" + s.replace(/^\.?\//,"");
-      }).filter(Boolean);
-
-      if(!files.length){
-        console.warn("[csr] manifest empty or missing files:", manifest);
-      }
-
-      let count = 0;
-      const makeCounts = new Map();
-      const modelCounts = new Map();
-      const vehicleCounts = new Map();
-
-      const parts = await fetchManyBatched(files, 6);
-      for(const p of parts){
-        const items = p.data ? extractItemsFromAnyJSON(p.data) : [];
-        count += items.length || 0;
-        for(const it of items){
-          const mk = guessMake(it);
-          const md = guessModel(it);
-          if(mk) addCount(makeCounts, mk, 1);
-          if(md) addCount(modelCounts, md, 1);
-          if(mk && md) addCount(vehicleCounts, `${mk} ${md}`, 1);
-        }
-      }
-
-      sup.productsCount = count;
-      sup.topMakes = [...makeCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3).map(([make,count])=>({make,count}));
-      sup.topModels = [...modelCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3).map(([model,count])=>({model,count}));
-
-      // global aggregate
-      globalTotal += count;
-      for(const [k,v] of makeCounts) addCount(globalMakeCounts, k, v);
-      for(const [k,v] of vehicleCounts) addCount(globalVehicleCounts, k, v);
-
-      supplierResults.push({ id: sup.id, ok: true });
-
-    } else {
-      // SFXLA (single JSON)
-      const data = await safeFetchJSON(feed);
-      const items = data ? extractItemsFromAnyJSON(data) : [];
-
-      const makeCounts = new Map();
-      const modelCounts = new Map();
-      const vehicleCounts = new Map();
-
-      for(const it of items){
-        const mk = guessMake(it);
-        const md = guessModel(it);
-        if(mk) addCount(makeCounts, mk, 1);
-        if(md) addCount(modelCounts, md, 1);
-        if(mk && md) addCount(vehicleCounts, `${mk} ${md}`, 1);
-      }
-
-      sup.productsCount = items.length || 0;
-      sup.topMakes = [...makeCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3).map(([make,count])=>({make,count}));
-      sup.topModels = [...modelCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3).map(([model,count])=>({model,count}));
-
-      globalTotal += (items.length || 0);
-      for(const [k,v] of makeCounts) addCount(globalMakeCounts, k, v);
-      for(const [k,v] of vehicleCounts) addCount(globalVehicleCounts, k, v);
-
-      supplierResults.push({ id: sup.id, ok: !!data });
-    }
-  }
-
-  // -------- compute global top lists --------
-  const topSupplier = (() => {
-    const sorted = [...SUPPLIERS].sort((a,b)=> (b.productsCount||0) - (a.productsCount||0));
-    return sorted[0] ? { name: sorted[0].name, count: (sorted[0].productsCount||0) } : null;
-  })();
-
-  const topVehicles = [...globalVehicleCounts.entries()]
-    .sort((a,b)=>b[1]-a[1]).slice(0,3)
-    .map(([key,count]) => ({ key, count }));
-
-  const topMake = [...globalMakeCounts.entries()].sort((a,b)=>b[1]-a[1])[0];
-  const topMakeObj = topMake ? { key: topMake[0], count: topMake[1] } : null;
-
-  const ok = supplierResults.every(x => x.ok);
-  setLive(true, ok, ok ? "synced" : "partial");
-
-  // Update UI everywhere
-  computeGlobalStats({
-    totalProducts: globalTotal,
-    topSupplier,
-    topVehicles,
-    topMake: topMakeObj,
-    suppliers: SUPPLIERS
-  });
-
-  // re-render cards + mini list with new numbers
-  applyFilters();
-}));
+      const results = await Promise.all(active.map(async (sup) => {
+        const url = CATALOG_FEEDS[sup.id];
+        const data = await safeFetchJSON(url);
+        return { id: sup.id, url, data };
+      }));
 
       for(const r of results){
         if(!r.data) continue;
