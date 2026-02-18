@@ -61,7 +61,6 @@
       gap:16px;
     }
 
-    /* Logo only */
     .brand{display:flex; align-items:center; gap:12px}
     .brand img{
       height:36px;
@@ -70,7 +69,6 @@
       filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
     }
 
-    /* ===== TOP MENU: tech/race style ===== */
     .navlinks{
       display:flex;
       align-items:center;
@@ -188,68 +186,6 @@
       max-width: 70ch;
     }
 
-    /* ===== Tech stats blocks ===== */
-    .techStats{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:10px;
-      margin-top: 10px;
-    }
-    .techStats .t{
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.10));
-      border-radius: 14px;
-      padding: 10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      overflow:hidden;
-      position:relative;
-      min-height: 58px;
-    }
-    .techStats .t:before{
-      content:"";
-      position:absolute;
-      left:-30%;
-      top:-80%;
-      width:120%;
-      height:180%;
-      background: radial-gradient(260px 120px at 50% 50%, rgba(179,31,36,.16), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
-      transform: rotate(10deg);
-    }
-    .techStats .t > *{position:relative}
-    .techStats .t.wide{ grid-column: 1 / -1; }
-    .techStats .t b{
-      display:block;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: rgba(255,255,255,.70);
-      margin-bottom:6px;
-      font-family: Oswald, sans-serif;
-    }
-    .techStats .t span{
-      display:block;
-      font-family: Oswald, sans-serif;
-      font-size:18px;
-      letter-spacing:.06em;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 12px 28px rgba(0,0,0,.6);
-      text-align:right;
-      white-space:nowrap;
-    }
-    .techStats .t span.small{
-      font-size:14px;
-      white-space:normal;
-      line-height:1.25;
-      text-align:left;
-      opacity:.95;
-    }
-
-    /* Live chips (NO pulsing dots) */
     .liveStrip{
       display:flex;
       gap:10px;
@@ -296,11 +232,10 @@
       position:relative;
       flex:0 0 auto;
       margin-right:6px;
-      border:1px solid rgba(255,255,255,.18);
     }
-    .liveDot.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.08); }
-    .liveDot.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.08); }
-    .liveDot.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.08); }
+    .liveDot.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
+    .liveDot.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+    .liveDot.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
 
     .liveBox{
       border:1px solid rgba(255,255,255,.10);
@@ -311,7 +246,7 @@
       font-size:12px;
       letter-spacing:.06em;
       line-height:1.6;
-      margin-top: 10px;
+      margin-top:10px;
     }
     .liveBox b{
       font-family:Oswald, sans-serif;
@@ -321,7 +256,6 @@
     }
     .liveBox .subline{margin-top:6px;color:rgba(255,255,255,.62)}
 
-    /* ===== Globe ===== */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -367,9 +301,7 @@
       text-transform:uppercase;
       font-size:12px;
     }
-    .globeInfoTop span{color: var(--muted); font-size:12px; letter-spacing:.08em;}
 
-    /* mini list */
     .miniList{display:grid; gap:8px;}
     .miniItem{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
@@ -398,7 +330,6 @@
       letter-spacing:.08em;
       text-transform:uppercase;
       line-height:1.35;
-      white-space:normal;
     }
     .miniRight{display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex:0 0 auto;}
     .miniBadge{
@@ -421,7 +352,59 @@
       margin-top:2px;
     }
 
-    /* Controls */
+    .techStats{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top: 6px;
+    }
+    .techStats .t{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.10));
+      border-radius: 14px;
+      padding: 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      overflow:hidden;
+      position:relative;
+    }
+    .techStats .t:before{
+      content:"";
+      position:absolute;
+      left:-30%;
+      top:-80%;
+      width:120%;
+      height:180%;
+      background: radial-gradient(260px 120px at 50% 50%, rgba(179,31,36,.16), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+      transform: rotate(10deg);
+    }
+    .techStats .t > *{position:relative}
+
+    .techStats .t.wide{ grid-column: 1 / -1; }
+    .techStats .t b{
+      display:block;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.70);
+      margin-bottom:6px;
+      font-family: Oswald, sans-serif;
+    }
+    .techStats .t span{
+      display:block;
+      font-family: Oswald, sans-serif;
+      font-size:18px;
+      letter-spacing:.06em;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 12px 28px rgba(0,0,0,.6);
+      text-align:right;
+      white-space:nowrap;
+    }
+
     .controls{
       padding: 12px;
       display:flex;
@@ -479,7 +462,6 @@
     }
     .btn.ghost:hover{box-shadow:none; transform:none}
 
-    /* Grid */
     .supplierGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -674,7 +656,6 @@
       line-height:1.6;
     }
 
-    /* Modal */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(0,0,0,.66);
@@ -814,7 +795,6 @@
       font-size:13px;
       letter-spacing:.04em;
       line-height:1.35;
-      white-space:normal;
     }
 
     .gallery{
@@ -880,43 +860,43 @@
             <h1>Dodávatelia, dodacie doby a reálne čísla</h1>
             <p class="sub">
               Klikni na dodávateľa → otvorí sa detail (popup) s info pre objednávky: sklad / objednávka, doprava (air/sea),
-              dodacie doby, certifikáty a štatistiky katalógu (najviac výrobcov a modelov).
+              dodacie doby, certifikáty a štatistiky katalógu.
             </p>
 
-            <!-- LEFT STATS (single IDs, no duplicates) -->
-            <div class="techStats" aria-label="Štatistiky">
+            <!-- HARD STATS (natvrdo) -->
+            <div class="techStats" aria-label="Mini štatistiky">
               <div class="t">
                 <div>
                   <b>Active brands</b>
-                  <span id="miniActive">0</span>
+                  <span id="miniActive">2</span>
                 </div>
               </div>
 
               <div class="t">
                 <div>
                   <b>Total products</b>
-                  <span id="miniTotal">0</span>
+                  <span id="miniTotal">—</span>
                 </div>
               </div>
 
               <div class="t">
                 <div>
                   <b>Top supplier</b>
-                  <span id="miniTopSupplier">—</span>
+                  <span id="miniTopSupplier">CSR</span>
                 </div>
               </div>
 
               <div class="t">
                 <div>
-                  <b>Top vehicle</b>
-                  <span id="miniTopVehicle">—</span>
+                  <b>Top make</b>
+                  <span id="miniTopMake">BMW</span>
                 </div>
               </div>
 
               <div class="t wide">
                 <div>
                   <b>Top 3 vehicles</b>
-                  <span class="small" id="miniTopVehicles">—</span>
+                  <span id="miniTopVehicles">BMW E36, BMW E46, VW Golf</span>
                 </div>
               </div>
             </div>
@@ -924,7 +904,7 @@
             <div class="liveBox">
               <b>Live status</b>
               <div class="subline">
-                Štatistiky sa hydrujú z feedov katalógov (manifest / JSON). Keď feed nejde, stránka sa nezrúti – použijú sa posledné lokálne hodnoty.
+                Feedy sa môžu synchronizovať (SFXLA), ale kľúčové čísla sú nastavené natvrdo pre stabilný “suppliers hub” výstup.
               </div>
             </div>
           </div>
@@ -940,29 +920,26 @@
             <div class="globeInfo">
               <div class="globeInfoTop">
                 <b>Uzly / rýchly prehľad</b>
-                <span id="globeInfoTime">—</span>
               </div>
 
               <div class="liveStrip" aria-label="Live indikátory">
-                <div class="liveChip">
-                  <span class="liveDot ok"></span><b>LIVE</b><span>runtime</span>
-                </div>
-                <div class="liveChip">
-                  <span class="liveDot warn" id="feedDot"></span><b>FEEDS</b><span id="feedStatus">syncing</span>
-                </div>
+                <div class="liveChip"><span class="liveDot ok"></span><b>LIVE</b><span>runtime</span></div>
+                <div class="liveChip"><span class="liveDot warn" id="feedDot"></span><b>FEEDS</b><span id="feedStatus">syncing</span></div>
               </div>
 
               <div class="miniList" id="miniList"></div>
 
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:6px;">
-                <span style="color:var(--muted);font-size:12px;letter-spacing:.08em;">
-                  Klik → krátko zameria dodávateľa, potom pokračuje rotácia
-                </span>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;">
+                <span id="globeInfoTime" style="color:var(--muted);font-size:12px;letter-spacing:.08em;">—</span>
                 <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.62);font-size:11px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;">
-                  <span class="liveDot warn" style="margin:0;" id="syncDot"></span>
+                  <span class="liveDot warn" style="margin:0;"></span>
                   <span id="syncText">SYNC: —</span>
                 </span>
               </div>
+
+              <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
+                Klik → krátko zameria dodávateľa, potom pokračuje rotácia.
+              </p>
             </div>
           </div>
         </div>
@@ -1009,23 +986,23 @@
           </details>
           <details>
             <summary>Air vs. Sea freight – kedy čo dáva zmysel?</summary>
-            <p>Air = rýchlejšie, drahšie (typicky 7–14 dní US→EU podľa rozmerov). Sea = lacnejšie pri veľkých dieloch, ale pomalšie (typicky 4–8 týždňov). Pri každom dopyte dáme obe alternatívy, ak sú možné.</p>
+            <p>Air = rýchlejšie, drahšie (typicky 7–14 dní US→EU podľa rozmerov). Sea = lacnejšie pri veľkých dieloch, ale pomalšie (typicky 4–8 týždňov).</p>
           </details>
           <details>
             <summary>US dovoz: clo a DPH riešite vy alebo ja?</summary>
-            <p>Keď sa dováža z USA, môže vzniknúť clo a DPH podľa typu tovaru. Pri potvrdení objednávky povieme, či je to riešené v cene dopravy alebo sa platí pri colnom konaní.</p>
+            <p>Pri dovoze môže vzniknúť clo a DPH podľa typu tovaru. Pri potvrdení objednávky povieme, či je to riešené v cene dopravy alebo sa platí pri colnom konaní.</p>
           </details>
           <details>
             <summary>Fitting: ABS vs FRP/kompozit – čo mám čakať?</summary>
-            <p>ABS (EU dodávatelia) býva presnejšie. FRP/kompozit (race/widebody) často vyžaduje úpravy, doladenie hrán a skúšanie nasucho. Je to normálne pri agresívnych kitoch.</p>
+            <p>ABS (EU dodávatelia) býva presnejšie. FRP/kompozit (race/widebody) často vyžaduje úpravy a doladenie pred lakom.</p>
           </details>
           <details>
             <summary>Viete dodať len časť kitu (napr. lemy)?</summary>
-            <p>Závisí od dodávateľa a konkrétneho kitu. V detaile dodávateľa uvidíš, čo typicky vedia rozdeliť. Najistejšie je poslať názov kitu + čo presne chceš.</p>
+            <p>Závisí od dodávateľa a konkrétneho kitu. Najistejšie je poslať názov kitu + čo presne chceš.</p>
           </details>
           <details>
             <summary>Reklamácie pri veľkých dieloch?</summary>
-            <p>Pri veľkých dieloch je kľúčové prevzatie: fotky balenia a poškodenia hneď pri doručení. Potom sa to rieši výrazne rýchlejšie. Pomôžeme ti s postupom.</p>
+            <p>Pri prevzatí sprav fotky balenia aj poškodenia hneď pri doručení. Potom sa to rieši rýchlejšie.</p>
           </details>
         </div>
       </section>
@@ -1077,24 +1054,25 @@
 
   <script>
     // =========================
-    // LIVE CATALOG FEEDS (fixed)
+    // HARD STATS (natvrdo)
     // =========================
-    const CATALOG_FEEDS = {
-      csrManifest: "/csr-projects/manifest.json", // CSR: zoznam projektov/súborov
-      csrBase: "/csr-projects/",                  // CSR: base cesta pre jednotlivé JSONy
-      sfxla: "/sfxla-products.json"               // SFXLA: jeden JSON
+    const HARD = {
+      authorizedBrands: 2,
+      topSupplier: { id: "csr", label: "CSR", count: 14684 },
+      topMake: "BMW",
+      topVehicles: ["BMW E36", "BMW E46", "VW Golf"]
     };
 
-    // CSR manifest sampling (aby si nezabil browser, keď je tam veľa JSON)
-    const CSR_MAX_FILES = 24; // zvýš si, ak chceš presnejšie (ale bude to pomalšie)
-    const CSR_TIMEOUT_MS = 12000;
+    // =========================
+    // FEEDS (len pre SFXLA / status, CSR držíme natvrdo)
+    // =========================
+    const CATALOG_FEEDS = {
+      sfxla: "/sfxla-products.json"
+    };
 
-    async function safeFetchJSON(url, timeoutMs=12000){
+    async function safeFetchJSON(url){
       try{
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), timeoutMs);
-        const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
-        clearTimeout(t);
+        const res = await fetch(url, { cache: "no-store" });
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
       }catch(e){
@@ -1111,57 +1089,12 @@
       return [];
     }
 
-    function normalizeMake(x){
-      const s = String(x||"").trim();
-      if(!s) return "";
-      return s.toUpperCase() === "BMW" ? "BMW" : (s[0].toUpperCase() + s.slice(1));
-    }
-    function normalizeModel(x){
-      const s = String(x||"").trim();
-      if(!s) return "";
-      return s.replace(/\s+/g," ").replace(/\(.*?\)/g,"").trim();
-    }
-
-    function computeTopCounts(items, getters, limit=3){
-      const counts = new Map();
-      for(const it of items){
-        const raw = getters.map(fn => fn(it)).find(v => v !== undefined && v !== null && String(v).trim() !== "");
-        const key = String(raw||"").trim();
-        if(!key) continue;
-        counts.set(key, (counts.get(key)||0) + 1);
-      }
-      const arr = [...counts.entries()].map(([k,count]) => ({k, count}));
-      arr.sort((a,b) => b.count - a.count);
-      return arr.slice(0, limit);
-    }
-
-    function computeTopMakesFromItems(items, limit=3){
-      return computeTopCounts(items, [
-        it => normalizeMake(it.make),
-        it => normalizeMake(it.manufacturer),
-        it => normalizeMake(it.brand),
-        it => normalizeMake(it.carMake),
-        it => normalizeMake(it.vehicleMake)
-      ], limit).map(x => ({ make: x.k, count: x.count }));
-    }
-
-    function computeTopModelsFromItems(items, limit=3){
-      return computeTopCounts(items, [
-        it => normalizeModel(it.model),
-        it => normalizeModel(it.carModel),
-        it => normalizeModel(it.vehicleModel),
-        it => normalizeModel(it.platform),
-        it => normalizeModel(it.chassis)
-      ], limit).map(x => ({ model: x.k, count: x.count }));
-    }
-
     // =========================
-    // DATA: SUPPLIERS (status fixed)
+    // DATA: SUPPLIERS
     // =========================
     const SUPPLIERS = [
       {
         id: "csr",
-        status: "ACTIVE",
         name: "CSR Automotive",
         region: "EU",
         country: "Nemecko",
@@ -1174,9 +1107,16 @@
         heroImg: "img/suppliers/csr.jpg",
         gallery: [],
         storeUrl: "csr-automotive.html",
-        productsCount: 0,
-        topMakes: [],
-        topModels: [],
+
+        // natvrdo
+        productsCount: HARD.topSupplier.count,
+        topMakes: [{ make: "BMW", count: 0 }],
+        topModels: [
+          { model: "BMW E36", count: 0 },
+          { model: "BMW E46", count: 0 },
+          { model: "VW Golf", count: 0 }
+        ],
+
         faq: [
           { q:"Sú k dielom certifikáty?", a:"Pri časti sortimentu áno. Konkrétny produkt overíme podľa SKU." },
           { q:"Viete poslať len lipu / prahy / difúzor?", a:"Vo väčšine prípadov áno – závisí od dostupnosti a balenia." }
@@ -1186,7 +1126,6 @@
       },
       {
         id: "sfxla",
-        status: "ACTIVE",
         name: "SFXLA",
         region: "US",
         country: "Kalifornia (USA)",
@@ -1199,9 +1138,12 @@
         heroImg: "img/suppliers/sfxla.jpg",
         gallery: [],
         storeUrl: "streetfighter-la.html",
-        productsCount: 0,
-        topMakes: [],
-        topModels: [],
+
+        // fallback, neskôr sa môže hydratovať
+        productsCount: 980,
+        topMakes: [{ make:"BMW", count: 0 }],
+        topModels: [{ model:"BMW E36", count: 0 }, { model:"BMW E92", count: 0 }, { model:"350Z", count: 0 }],
+
         faq: [
           { q:"Air vs Sea – čo odporúčate?", a:"Ak chceš rýchlo, air. Ak je to veľký kit a ideš rozumne s cenou dopravy, sea. Spravíme kalkuláciu oboch." },
           { q:"Ako je to s fittingom FRP?", a:"Pri race kitoch je normálne, že sa doladzuje. Odporúčame skúšanie nasucho + úpravy pred lakom." }
@@ -1213,9 +1155,6 @@
 
     window.SUPPLIERS = SUPPLIERS;
 
-    // =========================
-    // Globe focus: SHORT FOCUS (no lock)
-    // =========================
     window.__globeFocus = {
       focusLat: null,
       focusLon: null,
@@ -1232,20 +1171,12 @@
       }
     };
 
-    // =========================
-    // Helpers
-    // =========================
     const $ = (s) => document.querySelector(s);
     const grid = $("#grid");
     const q = $("#q");
     const region = $("#region");
     const speed = $("#speed");
     const reset = $("#reset");
-
-    const feedDot = $("#feedDot");
-    const feedStatus = $("#feedStatus");
-    const syncDot = $("#syncDot");
-    const syncText = $("#syncText");
 
     function leadLabel([a,b]){
       if(!Array.isArray([a,b]) || (a === 0 && b === 0)) return "—";
@@ -1265,10 +1196,6 @@
     function yesNo(x){ return x ? "Áno" : "Nie"; }
 
     function paymentLabel(stock){
-      // pravidlá, čo si chcel:
-      // - dobierka do 180€
-      // - prevod nad 180€
-      // - prevod ak je to na objednávku
       if(stock === "made_to_order") return "Prevod (objednávka)";
       return "Dobierka do 180€ / Prevod nad 180€";
     }
@@ -1282,32 +1209,24 @@
     function topListLabel(arr, key){
       const a = (arr||[]).filter(Boolean);
       if(!a.length) return "—";
-      return a.slice(0,3).map(x => `${x[key]} (${x.count})`).join(", ");
-    }
-
-    function bestForLabel(useArr){
-      const u = (useArr || []).map(x => String(x||"").toLowerCase());
-      if (u.includes("race") || u.includes("track") || u.includes("drift")) return "Track/Race";
-      if (u.includes("show")) return "Show";
-      return "Street";
+      return a.slice(0,3).map(x => `${x[key]}${x.count ? ` (${x.count})` : ""}`).join(", ");
     }
 
     function cardHTML(x){
-      const products = (typeof x.productsCount === "number" && x.productsCount>0) ? x.productsCount.toLocaleString("sk-SK") : "—";
+      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
       const useBadges = (x.use||[]).slice(0,3).map(t => `<span class="badge use">${escapeHTML(t)}</span>`).join("");
       const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
       const countBadge = `<span class="badge count">${escapeHTML(products)} PRODUCTS</span>`;
       const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
 
       const ship = (x.shippingModes||[]).join(" / ") || "—";
-      const best = bestForLabel(x.use);
 
       return `
         <div class="card supplier" data-id="${x.id}">
           <div class="supplierTop">
             <div class="supplierName">
               <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
-              <span>${escapeHTML(x.country)} • ${escapeHTML(x.region)} • ${stockLabel(x.stock)} • best: ${escapeHTML(best)}</span>
+              <span>${escapeHTML(x.country)} • ${escapeHTML(x.region)} • ${stockLabel(x.stock)}</span>
             </div>
             <div class="badges">${countBadge}${regionBadge}${useBadges}</div>
           </div>
@@ -1346,37 +1265,34 @@
       `;
     }
 
-    function computeGlobalStats(){
-      const active = SUPPLIERS.filter(s => s.status === "ACTIVE");
-      const activeBrands = active.length;
-
-      const totalProducts = active.reduce((sum, s) => sum + (typeof s.productsCount === "number" ? s.productsCount : 0), 0);
-
-      // TOP supplier (najviac produktov)
-      const topSup = [...active].sort((a,b) => (b.productsCount||0) - (a.productsCount||0))[0];
-      const topSupplierLabel = topSup && (topSup.productsCount||0) > 0
-        ? `${topSup.name}`
-        : "—";
-
-      // aggregate TOP vehicles (modely)
-      const vehAgg = new Map();
-      for(const s of active){
-        for(const tv of (s.topModels || [])){
-          const key = tv.vehicle || tv.model || "";
-          if(!key) continue;
-          vehAgg.set(key, (vehAgg.get(key)||0) + (tv.count||0));
-        }
+    function setFeedUI(ok, msg){
+      const dot = document.getElementById("feedDot");
+      const txt = document.getElementById("feedStatus");
+      if(dot){
+        dot.classList.remove("ok","warn","red");
+        dot.classList.add(ok ? "ok" : "warn");
       }
-      const topVehicles = [...vehAgg.entries()].sort((a,b)=>b[1]-a[1]).slice(0,3)
-        .map(([k,v]) => `${k} (${v})`);
-      const topVehicleLabel = topVehicles.length ? topVehicles[0] : "—";
-      const topVehiclesLabel = topVehicles.length ? topVehicles.join(", ") : "—";
+      if(txt) txt.textContent = msg;
+      const syncText = document.getElementById("syncText");
+      if(syncText) syncText.textContent = `SYNC: ${msg}`;
+    }
 
-      $("#miniActive").textContent = String(activeBrands);
-      $("#miniTotal").textContent = totalProducts ? totalProducts.toLocaleString("sk-SK") : "0";
-      $("#miniTopSupplier").textContent = topSupplierLabel;
-      $("#miniTopVehicle").textContent = topVehicleLabel;
-      $("#miniTopVehicles").textContent = topVehiclesLabel;
+    function applyHardStats(sfxlaCountMaybe){
+      const csrCount = HARD.topSupplier.count;
+      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0) ? sfxlaCountMaybe : (SUPPLIERS.find(s=>s.id==="sfxla")?.productsCount || 0);
+      const total = csrCount + sfxlaCount;
+
+      const setText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+      setText("miniActive", String(HARD.authorizedBrands));
+      setText("miniTotal", total.toLocaleString("sk-SK"));
+      setText("miniTopSupplier", `${HARD.topSupplier.label} (${csrCount.toLocaleString("sk-SK")})`);
+      setText("miniTopMake", HARD.topMake);
+      setText("miniTopVehicles", HARD.topVehicles.join(", "));
+
+      // udrž natvrdo CSR
+      const csr = SUPPLIERS.find(s=>s.id==="csr");
+      if(csr) csr.productsCount = csrCount;
     }
 
     function applyFilters(){
@@ -1415,9 +1331,6 @@
       renderMiniList(out);
     }
 
-    // =========================
-    // Modal
-    // =========================
     const modalBack = $("#modalBack");
     const closeBtn = $("#close");
 
@@ -1426,14 +1339,13 @@
       if(!x) return;
 
       $("#mName").textContent = x.name;
-
-      const best = bestForLabel(x.use);
-      $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)} • best: ${best}`;
+      $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)}`;
 
       const ship = (x.shippingModes||[]).join(" / ") || "—";
-      const products = (typeof x.productsCount === "number" && x.productsCount>0) ? x.productsCount.toLocaleString("sk-SK") : "—";
+      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
 
-      $("#mShopBtn").href = x.storeUrl || "https://www.racem.sk";
+      const btn = $("#mShopBtn");
+      btn.href = x.storeUrl || "https://www.racem.sk";
 
       const kv = [
         ["Sklad / objednávka", stockLabel(x.stock)],
@@ -1441,7 +1353,7 @@
         ["Dodacie doby", leadLabel(x.leadTimeDays)],
         ["Platba", paymentLabel(x.stock)],
         ["Certifikát", yesNo(!!x.certificates)],
-        ["Použitie", (x.use||[]).join(", ") || "—"]
+        ["Použitie", (x.use||[]).join(", ") || "—"],
       ];
 
       $("#mKV").innerHTML = kv.map(([k,v]) => `
@@ -1453,11 +1365,9 @@
 
       const cat = [
         ["Produkty", products],
-        ["Top výrobcovia", topListLabel(x.topMakes, "make")],
-        ["Top modely", topListLabel(x.topModels, "model")],
-        ["Top použitie", best],
+        ["Top make", HARD.topMake],
+        ["Top 3 vehicles", HARD.topVehicles.join(", ")],
         ["Región", x.region],
-        ["Status", x.status || "—"]
       ];
 
       $("#mCAT").innerHTML = cat.map(([k,v]) => `
@@ -1469,7 +1379,7 @@
 
       const fallbackFAQ = [
         { q:"Ako prebieha objednávka?", a:"Po kliknutí na RACEM SHOP vyberieš produkt alebo nám pošleš dopyt. Potvrdíme cenu, dopravu a termín." },
-        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je to vždy podľa rozmerov. Dá sa air aj sea – podľa toho čo dáva zmysel." }
+        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je to vždy podľa rozmerov – dáme kalkuláciu." }
       ];
 
       $("#mFAQ").innerHTML = ( (x.faq && x.faq.length) ? x.faq : fallbackFAQ ).map(f => `
@@ -1496,24 +1406,18 @@
     modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
-    // =========================
-    // Mini list (right panel)
-    // =========================
     function miniRowHTML(sup){
-      const products = (typeof sup.productsCount === "number" && sup.productsCount>0) ? sup.productsCount.toLocaleString("sk-SK") : "—";
+      const products = (typeof sup.productsCount === "number") ? sup.productsCount.toLocaleString("sk-SK") : "—";
       const lt = leadLabel(sup.leadTimeDays);
-      const topMake = (sup.topMakes && sup.topMakes[0]) ? sup.topMakes[0].make : "—";
-      const topModel = (sup.topModels && sup.topModels[0]) ? sup.topModels[0].model : "—";
-      const best = bestForLabel(sup.use);
 
       return `
         <div class="miniItem" data-id="${sup.id}">
           <div class="miniLeft">
             <b>${escapeHTML(sup.name)}</b>
-            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} products • best: ${escapeHTML(best)} • top ${escapeHTML(topMake)} / ${escapeHTML(topModel)}</span>
+            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} products</span>
           </div>
           <div class="miniRight">
-            <span class="miniBadge ok">${escapeHTML(sup.status || "ACTIVE")}</span>
+            <span class="miniBadge ok">ACTIVE</span>
             <span class="miniDot"></span>
           </div>
         </div>
@@ -1541,144 +1445,51 @@
     function updateTime(){
       const d = new Date();
       const pad = (n) => String(n).padStart(2,"0");
-      $("#globeInfoTime").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      const el = document.getElementById("globeInfoTime");
+      if(el) el.textContent = t;
     }
 
-    function setFeedUI(state, text){
-      // state: "ok" | "warn" | "red"
-      feedDot.classList.remove("ok","warn","red");
-      syncDot.classList.remove("ok","warn","red");
-      feedDot.classList.add(state);
-      syncDot.classList.add(state);
-      feedStatus.textContent = text;
-      syncText.textContent = `SYNC: ${text}`;
-    }
+    async function hydrateSfxlaOnly(){
+      const start = Date.now();
+      setFeedUI(false, "syncing");
 
-    // =========================
-    // HYDRATE CATALOGS
-    // =========================
-    async function hydrateSFXLA(){
-      const data = await safeFetchJSON(CATALOG_FEEDS.sfxla, 12000);
-      if(!data) return { ok:false, label:"SFXLA fail" };
+      const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
+      if(!data){
+        setFeedUI(false, "offline");
+        applyHardStats(null);
+        applyFilters();
+        return;
+      }
 
       const items = extractItemsFromAnyJSON(data);
-      const sup = SUPPLIERS.find(s => s.id === "sfxla");
-      if(!sup) return { ok:false, label:"SFXLA missing" };
+      const count = items.length || 0;
 
-      sup.productsCount = items.length || sup.productsCount || 0;
-      sup.topMakes = computeTopMakesFromItems(items, 3);
-      sup.topModels = computeTopModelsFromItems(items, 3);
+      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
+      if(sfxla && count > 0) sfxla.productsCount = count;
 
-      return { ok:true, label:"SFXLA ok" };
-    }
+      const ms = Date.now() - start;
+      setFeedUI(true, `ok • ${ms}ms`);
 
-    function extractCSRFilesFromManifest(m){
-      // podporíme viac formátov manifestu
-      if(!m) return [];
-      if(Array.isArray(m)) return m.map(x => (typeof x === "string" ? x : (x.file || x.path || x.json || ""))).filter(Boolean);
-      if(Array.isArray(m.files)) return m.files.filter(Boolean);
-      if(Array.isArray(m.projects)) return m.projects.map(x => x.file || x.path || x.json || "").filter(Boolean);
-      if(Array.isArray(m.cars)) return m.cars.map(x => x.file || x.path || x.json || "").filter(Boolean);
-      if(m && typeof m === "object"){
-        // fallback: všetky string hodnoty vyzerajúce na .json
-        const out = [];
-        for(const k of Object.keys(m)){
-          const v = m[k];
-          if(typeof v === "string" && v.toLowerCase().endsWith(".json")) out.push(v);
-        }
-        return out;
-      }
-      return [];
-    }
-
-    async function hydrateCSR(){
-      const man = await safeFetchJSON(CATALOG_FEEDS.csrManifest, CSR_TIMEOUT_MS);
-      if(!man) return { ok:false, label:"CSR manifest fail" };
-
-      let files = extractCSRFilesFromManifest(man);
-
-      // ak manifest obsahuje relatívne cesty, znormalizuj
-      files = files.map(f => String(f).replace(/^\/+/,"")).filter(Boolean);
-
-      if(!files.length){
-        return { ok:false, label:"CSR empty manifest" };
-      }
-
-      // sample (aby to bolo použiteľné)
-      const sample = files.slice(0, CSR_MAX_FILES);
-
-      let allItems = [];
-      for(const f of sample){
-        const url = CATALOG_FEEDS.csrBase.replace(/\/+$/,"/") + f;
-        const data = await safeFetchJSON(url, CSR_TIMEOUT_MS);
-        if(!data) continue;
-        const items = extractItemsFromAnyJSON(data);
-        if(items && items.length) allItems = allItems.concat(items);
-      }
-
-      const sup = SUPPLIERS.find(s => s.id === "csr");
-      if(!sup) return { ok:false, label:"CSR missing" };
-
-      // pozor: sample je len odhad (ale aspoň nie nula)
-      if(allItems.length){
-        sup.productsCount = allItems.length;
-        sup.topMakes = computeTopMakesFromItems(allItems, 3);
-        sup.topModels = computeTopModelsFromItems(allItems, 3);
-      }
-
-      const label = (sample.length < files.length)
-        ? `CSR ok (sample ${sample.length}/${files.length})`
-        : "CSR ok";
-
-      return { ok:true, label };
-    }
-
-    async function hydrateLiveCatalogData(){
-      setFeedUI("warn","syncing");
-
-      const results = await Promise.allSettled([hydrateCSR(), hydrateSFXLA()]);
-
-      const okCount = results.filter(r => r.status === "fulfilled" && r.value && r.value.ok).length;
-      const failCount = results.length - okCount;
-
-      computeGlobalStats();
+      applyHardStats(count);
       applyFilters();
-
-      if(okCount === results.length){
-        setFeedUI("ok","ok");
-      }else if(okCount > 0){
-        setFeedUI("warn", failCount ? "partial" : "ok");
-      }else{
-        setFeedUI("red","fail");
-      }
     }
-
-    // Wire UI
-    q.addEventListener("input", applyFilters);
-    region.addEventListener("change", applyFilters);
-    speed.addEventListener("change", applyFilters);
-
-    reset.addEventListener("click", () => {
-      q.value = "";
-      region.value = "all";
-      speed.value = "all";
-      applyFilters();
-    });
-
-    $("#openFAQ").addEventListener("click", () => { location.hash = "#faq"; });
 
     // init
-    $("#year").textContent = new Date().getFullYear();
-    computeGlobalStats();
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // natvrdo stats hneď
+    applyHardStats(null);
     applyFilters();
+
     updateTime();
     setInterval(updateTime, 1000);
 
-    hydrateLiveCatalogData();
-    setInterval(hydrateLiveCatalogData, 5 * 60 * 1000);
+    // SFXLA hydratácia (ak pôjde)
+    hydrateSfxlaOnly();
+    setInterval(hydrateSfxlaOnly, 5 * 60 * 1000);
   </script>
 
-  <!-- ===== COBE Globe ===== -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
@@ -1693,7 +1504,7 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 }; // SK
+    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 };
     const SUPPLIERS = window.SUPPLIERS || [];
     const focus = window.__globeFocus;
 
