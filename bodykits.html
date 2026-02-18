@@ -397,7 +397,77 @@
     }
 
 
-    .liveBox{
+    
+    .liveStrip{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .liveChip{
+      flex:1 1 180px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(0,0,0,.16), rgba(255,255,255,.02));
+      position:relative;
+      overflow:hidden;
+    }
+    .liveChip:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(280px 120px at 18% 10%, rgba(179,31,36,.16), transparent 60%);
+      opacity:.7;
+      pointer-events:none;
+    }
+    .liveChip b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .liveChip span{
+      color: rgba(255,255,255,.62);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .liveDot{
+      width:9px; height:9px;
+      border-radius:999px;
+      position:relative;
+      flex:0 0 auto;
+      margin-right:6px;
+    }
+    .liveDot.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
+    .liveDot.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+    .liveDot.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
+    .liveDot:after{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      opacity:.0;
+      transform: scale(.7);
+      animation: pulse 1.8s ease-out infinite;
+    }
+    .liveDot.warn:after{ animation-duration: 2.2s; }
+    .liveDot.red:after{ animation-duration: 2.0s; }
+    @keyframes pulse{
+      0%{ opacity:.0; transform: scale(.6); }
+      25%{ opacity:.22; }
+      70%{ opacity:0; transform: scale(1.25); }
+      100%{ opacity:0; transform: scale(1.35); }
+    }
+
+.liveBox{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.14);
       border-radius: 16px;
@@ -1013,9 +1083,7 @@
         <nav class="navlinks" aria-label="Menu">
           <a href="index.html">Domov</a>
           <a class="active" href="#suppliers">Dodávatelia</a>
-          <a href="#how">Ako to funguje</a>
           <a href="#faq">FAQ</a>
-          <a href="#gallery">Galéria</a>
           <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">RACEM SHOP</a>
         </nav>
       </div>
@@ -1076,7 +1144,14 @@
             <div style="height:12px"></div>
 
 
-            <div class="liveBox">
+            
+            <div class="liveStrip" aria-label="Live indikátory">
+              <div class="liveChip"><span class="liveDot ok"></span><b>LIVE</b><span>status</span></div>
+              <div class="liveChip"><span class="liveDot warn"></span><b>SYNC</b><span>feed</span></div>
+              <div class="liveChip"><span class="liveDot red"></span><b>ALERT</b><span>logistika</span></div>
+            </div>
+
+<div class="liveBox">
               <b>Live status</b>
               <div class="subline">
                 Štatistiky sa hydrujú z feedov katalógov (manifest / JSON). Keď feed nejde, stránka sa nezrúti – len sa použijú
@@ -1170,24 +1245,7 @@
         <div style="height:12px"></div>
         <div class="supplierGrid" id="grid"></div>
       </section>
-
-      <section id="how" class="block">
-        <div class="sectionTitle">
-          <h2>Ako to funguje</h2>
-          <p>Reálny proces pri bodykitoch / aero dieloch – bez výhovoriek. Platba a logistika podľa typu tovaru.</p>
-        </div>
-
-        <div class="card" style="padding:14px;">
-          <div class="kv">
-            <div class="item"><b>1) Výber</b><span>Vyber dodávateľa a pozri sklad/objednávku, dopravu (air/sea) a dodacie doby.</span></div>
-            <div class="item"><b>2) Dopyt</b><span>Pošli SKU/názov alebo fotku. Potvrdíme cenu, dostupnosť a reálny termín + clo/DPH pri US.</span></div>
-            <div class="item"><b>3) Platba</b><span>Do 180€ karta. Nad 180€ prevod. Pri tovare na objednávku vždy prevod.</span></div>
-            <div class="item"><b>4) Doručenie</b><span>Menšie diely kuriér. Veľké diely paleta. US: air alebo sea freight podľa rozmerov.</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="faq" class="block">
+<section id="faq" class="block">
         <div class="sectionTitle">
           <h2>FAQ</h2>
           <p>Najčastejšie otázky okolo dodania, air/sea dopravy, cla/DPH a fittingu.</p>
@@ -1220,19 +1278,7 @@
           </details>
         </div>
       </section>
-
-      <section id="gallery" class="block">
-        <div class="sectionTitle">
-          <h2>Galéria</h2>
-          <p>Ak nemáš obrázky, nič sa nerozbije — galéria sa jednoducho nezobrazí.</p>
-        </div>
-
-        <div class="card" style="padding:14px;">
-          <div class="gallery" id="globalGallery"></div>
-        </div>
-      </section>
-
-      <footer>
+<footer>
         <div class="wrap">
           © <span id="year"></span> RACEM / REM Performance — suppliers hub
         </div>
@@ -1477,7 +1523,7 @@
       // - prevod nad 180€
       // - prevod ak je to na objednávku
       if(stock === "made_to_order") return "Prevod (objednávka)";
-      return "Karta do 180€ / Prevod nad 180€";
+      return "Dobierka do 180€ / Prevod nad 180€";
     }
 
     function escapeHTML(s){
@@ -1718,17 +1764,6 @@
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
     // =========================
-    // Global Gallery
-    // =========================
-    function renderGlobalGallery(){
-      const all = SUPPLIERS.flatMap(s => (s.gallery||[]).map(src => ({src, name:s.name})));
-      const pick = all.slice(0,12);
-      $("#globalGallery").innerHTML = pick.map(x => `
-        <img src="${x.src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
-      `).join("");
-    }
-
-    // =========================
     // Mini list (right panel)
     // =========================
     function miniRowHTML(sup){
@@ -1821,7 +1856,6 @@
 
     // init
     $("#year").textContent = new Date().getFullYear();
-    renderGlobalGallery();
     computeGlobalStats();
     applyFilters();
     updateTime();
@@ -1850,12 +1884,24 @@
     const SUPPLIERS = window.SUPPLIERS || [];
     const focus = window.__globeFocus;
 
-    function buildMarkers() {
+    function buildMarkers(now=Date.now()) {
+      const pulse = (base, amp, speed) => base + (Math.sin(now / speed) * amp);
       return [
-        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.10 },
+        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.095 },
         ...SUPPLIERS
           .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-          .map(s => ({ location: [s.lat, s.lon], size: 0.085 }))
+          .map(s => {
+            const sid = String(s.id || "").toLowerCase();
+            // make SFXLA (California) clearly visible
+            if(sid === "sfxla"){
+              return { location: [s.lat, s.lon], size: pulse(0.135, 0.028, 240) };
+            }
+            // CSR (Germany)
+            if(sid === "csr"){
+              return { location: [s.lat, s.lon], size: pulse(0.100, 0.012, 420) };
+            }
+            return { location: [s.lat, s.lon], size: 0.085 };
+          })
       ];
     }
 
@@ -1865,8 +1911,8 @@
       return { phi, theta };
     }
 
-    let currentPhi = 0;
-    let currentTheta = 0.25;
+    let currentPhi = -1.25; // start over Atlantic so EU+US are visible
+    let currentTheta = 0.20;
 
     let dragging = false;
     let dragStartX = 0;
@@ -1889,7 +1935,7 @@
       markerColor: [1.0, 0.17, 0.19],
       backgroundColor: [0, 0, 0, 0],
 
-      markers: buildMarkers(),
+      markers: buildMarkers(Date.now()),
 
       onRender: (state) => {
         state.width = canvas.width;
@@ -1918,7 +1964,7 @@
           state.theta = currentTheta;
         }
 
-        state.markers = buildMarkers();
+        state.markers = buildMarkers(now);
       }
     });
 
