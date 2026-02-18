@@ -830,6 +830,225 @@
       .gallery{grid-template-columns: repeat(2, 1fr); }
       .techStats{grid-template-columns: 1fr;}
     }
+
+    /* ===== HERO STATS: RACEM v2 (živšie, SK) ===== */
+:root{
+  --glass2: rgba(255,255,255,.045);
+  --glass3: rgba(255,255,255,.03);
+  --stroke2: rgba(255,255,255,.14);
+  --glowRed: 0 0 22px rgba(255,43,47,.22);
+  --glowRed2: 0 0 44px rgba(179,31,36,.18);
+}
+
+.statsWrap{
+  margin-top:14px;
+  display:grid;
+  gap:12px;
+}
+
+.statsHead{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+}
+.statsHead b{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:12px;
+  color: rgba(255,255,255,.86);
+}
+.statsHead span{
+  color: rgba(255,255,255,.60);
+  font-size:12px;
+  letter-spacing:.06em;
+  line-height:1.35;
+  max-width: 64ch;
+}
+
+.statsGrid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+}
+
+.statCard{
+  position:relative;
+  border-radius: 16px;
+  border:1px solid var(--stroke2);
+  background:
+    radial-gradient(520px 220px at 12% 0%, rgba(179,31,36,.18), transparent 58%),
+    radial-gradient(520px 220px at 92% 20%, rgba(255,43,47,.10), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+  padding: 12px 12px 11px;
+  overflow:hidden;
+  box-shadow: 0 18px 55px rgba(0,0,0,.48);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  isolation:isolate;
+}
+
+.statCard:before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    linear-gradient(90deg, rgba(255,43,47,.0), rgba(255,43,47,.08), rgba(255,43,47,.0));
+  transform: translateX(-60%);
+  animation: statShine 5.6s ease-in-out infinite;
+  opacity:.7;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes statShine{
+  0%, 55% { transform: translateX(-60%); opacity:.0; }
+  70%     { opacity:.8; }
+  100%    { transform: translateX(60%); opacity:.0; }
+}
+
+.statCard:after{
+  content:"";
+  position:absolute;
+  left:0; top:0;
+  width:100%; height:2px;
+  background: linear-gradient(90deg, rgba(255,43,47,.9), rgba(179,31,36,.55));
+  opacity:.9;
+  z-index:1;
+  pointer-events:none;
+}
+
+.statCard:hover{
+  transform: translateY(-1px);
+  border-color: rgba(179,31,36,.45);
+  box-shadow: 0 26px 80px rgba(0,0,0,.62);
+}
+
+.statTopRow{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.statLabel{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+.statIcon{
+  width:34px; height:34px;
+  border-radius: 12px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  display:grid;
+  place-items:center;
+  box-shadow: var(--glowRed2);
+}
+.statIcon svg{
+  width:18px; height:18px;
+  opacity:.9;
+  filter: drop-shadow(var(--glowRed));
+}
+
+.statTitle{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.statTitle b{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-size:11px;
+  color: rgba(255,255,255,.84);
+}
+.statTitle span{
+  color: rgba(255,255,255,.60);
+  font-size:11px;
+  letter-spacing:.06em;
+  line-height:1.25;
+}
+
+.statValue{
+  font-family: Oswald, sans-serif;
+  font-size:26px;
+  letter-spacing:.06em;
+  line-height:1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 14px 34px rgba(0,0,0,.7);
+  text-align:right;
+  white-space:nowrap;
+}
+
+.statSub{
+  position:relative;
+  z-index:2;
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding-top:10px;
+  border-top: 1px dashed rgba(255,255,255,.12);
+  color: rgba(255,255,255,.62);
+  font-size:11px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+
+.statHint{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+.statPip{
+  width:8px; height:8px;
+  border-radius:999px;
+  background: var(--ok);
+  box-shadow: 0 0 0 6px rgba(46,204,113,.10);
+}
+.statPip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
+.statPip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+
+.statWide{
+  grid-column: 1 / -1;
+}
+
+.vehicleChips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.vChip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  color: rgba(255,255,255,.86);
+  font-size:11px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+.vChip i{
+  font-style:normal;
+  width:8px; height:8px;
+  border-radius:999px;
+  background: var(--red2);
+  box-shadow: 0 0 0 6px rgba(255,43,47,.10);
+}
+
+@media (max-width: 560px){
+  .statsGrid{ grid-template-columns: 1fr; }
+  .statValue{ font-size:24px; }
+}
+
   </style>
 </head>
 
@@ -863,86 +1082,144 @@
               dodacie doby, certifikáty a štatistiky katalógu.
             </p>
 
-            <!-- HARD STATS (natvrdo) -->
-            <div class="techStats" aria-label="Mini štatistiky">
-              <div class="t">
-                <div>
-                  <b>Active brands</b>
-                  <span id="miniActive">2</span>
-                </div>
-              </div>
+           <div class="statsWrap">
+  <div class="statsHead">
+    <div>
+      <b>RACEM prehľad katalógov</b>
+      <span>Rýchle čísla, ktoré majú povedať “kto má najväčší katalóg” a na čo sa ľudia najčastejšie pýtajú.</span>
+    </div>
+  </div>
 
-              <div class="t">
-                <div>
-                  <b>Total products</b>
-                  <span id="miniTotal">—</span>
-                </div>
-              </div>
-
-              <div class="t">
-                <div>
-                  <b>Top supplier</b>
-                  <span id="miniTopSupplier">CSR</span>
-                </div>
-              </div>
-
-              <div class="t">
-                <div>
-                  <b>Top make</b>
-                  <span id="miniTopMake">BMW</span>
-                </div>
-              </div>
-
-              <div class="t wide">
-                <div>
-                  <b>Top 3 vehicles</b>
-                  <span id="miniTopVehicles">BMW E36, BMW E46, VW Golf</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="liveBox">
-              <b>Live status</b>
-              <div class="subline">
-                Feedy sa môžu synchronizovať (SFXLA), ale kľúčové čísla sú nastavené natvrdo pre stabilný “suppliers hub” výstup.
-              </div>
-            </div>
+  <div class="statsGrid" aria-label="Štatistiky dodávateľov">
+    <!-- Active brands -->
+    <div class="statCard">
+      <div class="statTopRow">
+        <div class="statLabel">
+          <div class="statIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 14c2.2-2.8 5-4 8-4s5.8 1.2 8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M6.5 17c1.4-1.7 3.2-2.5 5.5-2.5s4.1.8 5.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 20h0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            </svg>
           </div>
-
-          <div class="card heroRight">
-            <div class="globeTop">
-              <b>Zemeguľa dodávateľov</b>
-              <span>auto rotate • drag rotate • krátky focus</span>
-            </div>
-
-            <canvas id="globe" aria-label="Zemeguľa"></canvas>
-
-            <div class="globeInfo">
-              <div class="globeInfoTop">
-                <b>Uzly / rýchly prehľad</b>
-              </div>
-
-              <div class="liveStrip" aria-label="Live indikátory">
-                <div class="liveChip"><span class="liveDot ok"></span><b>LIVE</b><span>runtime</span></div>
-                <div class="liveChip"><span class="liveDot warn" id="feedDot"></span><b>FEEDS</b><span id="feedStatus">syncing</span></div>
-              </div>
-
-              <div class="miniList" id="miniList"></div>
-
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;">
-                <span id="globeInfoTime" style="color:var(--muted);font-size:12px;letter-spacing:.08em;">—</span>
-                <span style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.62);font-size:11px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;">
-                  <span class="liveDot warn" style="margin:0;"></span>
-                  <span id="syncText">SYNC: —</span>
-                </span>
-              </div>
-
-              <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
-                Klik → krátko zameria dodávateľa, potom pokračuje rotácia.
-              </p>
-            </div>
+          <div class="statTitle">
+            <b>Aktívne značky</b>
+            <span>Autorizované kanály</span>
           </div>
         </div>
+        <div class="statValue" id="miniActive">2</div>
+      </div>
+      <div class="statSub">
+        <span class="statHint"><span class="statPip"></span>online</span>
+        <span>RACEM hub</span>
+      </div>
+    </div>
+
+    <!-- Total products -->
+    <div class="statCard">
+      <div class="statTopRow">
+        <div class="statLabel">
+          <div class="statIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
+              <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
+            </svg>
+          </div>
+          <div class="statTitle">
+            <b>Produkty spolu</b>
+            <span>Natvrdo + live doplnky</span>
+          </div>
+        </div>
+        <div class="statValue" id="miniTotal">—</div>
+      </div>
+      <div class="statSub">
+        <span class="statHint"><span class="statPip warn"></span>mix</span>
+        <span>CSR + SFXLA</span>
+      </div>
+    </div>
+
+    <!-- Top supplier -->
+    <div class="statCard">
+      <div class="statTopRow">
+        <div class="statLabel">
+          <div class="statIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="statTitle">
+            <b>Najväčší dodávateľ</b>
+            <span>Top katalóg v sieti</span>
+          </div>
+        </div>
+        <div class="statValue" id="miniTopSupplier">CSR (14 684)</div>
+      </div>
+      <div class="statSub">
+        <span class="statHint"><span class="statPip red"></span>dominant</span>
+        <span>EU</span>
+      </div>
+    </div>
+
+    <!-- Top make -->
+    <div class="statCard">
+      <div class="statTopRow">
+        <div class="statLabel">
+          <div class="statIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 16l3-8h4l3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M6 16h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+            </svg>
+          </div>
+          <div class="statTitle">
+            <b>Najviac dielov na</b>
+            <span>Najsilnejšia značka</span>
+          </div>
+        </div>
+        <div class="statValue" id="miniTopMake">BMW</div>
+      </div>
+      <div class="statSub">
+        <span class="statHint"><span class="statPip"></span>priorita</span>
+        <span>platformy</span>
+      </div>
+    </div>
+
+    <!-- Top vehicles -->
+    <div class="statCard statWide">
+      <div class="statTopRow">
+        <div class="statLabel">
+          <div class="statIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 16l1-4 2-2h8l2 2 1 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="statTitle">
+            <b>Top platformy</b>
+            <span>Najžiadanejšie podvozky v katalógu</span>
+          </div>
+        </div>
+
+        <!-- nechávame textový fallback, ale hlavne budú chipy -->
+        <div class="statValue" style="font-size:18px" id="miniTopVehicles">BMW E36, BMW E46, VW Golf</div>
+      </div>
+
+      <div style="position:relative; z-index:2; margin-top:10px;">
+        <div class="vehicleChips">
+          <span class="vChip"><i></i>BMW E36</span>
+          <span class="vChip"><i></i>BMW E46</span>
+          <span class="vChip"><i></i>VW Golf</span>
+        </div>
+      </div>
+
+      <div class="statSub" style="margin-top:12px;">
+        <span class="statHint"><span class="statPip red"></span>hot</span>
+        <span>výber dielov</span>
+      </div>
+    </div>
+  </div>
+</div>
+
       </section>
 
       <section id="suppliers" class="block">
@@ -1476,7 +1753,7 @@
     }
 
     // init
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("globeInfoTime").textContent = `${t} • stav systému`;
 
     // natvrdo stats hneď
     applyHardStats(null);
