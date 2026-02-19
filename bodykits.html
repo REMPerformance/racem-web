@@ -4,15 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-  <title>RACEM GROUP | Mapa siete</title>
-  <meta name="description" content="RACEM GROUP – dodávatelia, značky, jazdci, garáže a eventy. Všetko na jednej mape + prehľad a detaily." />
+  <title>RACEM GROUP | Network Hub</title>
+  <meta name="description" content="RACEM GROUP – eventy, jazdci, dodávatelia. Každá sekcia má vlastnú mapu: EU eventy, SK jazdci, globálna zemeguľa dodávateľov." />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet (EU + SK mapy) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     :root{
@@ -20,20 +23,18 @@
       --panel: rgba(255,255,255,.06);
       --panel2: rgba(255,255,255,.04);
       --stroke: rgba(255,255,255,.12);
+      --stroke2: rgba(255,255,255,.14);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.62);
       --red:#b31f24;
       --red2:#ff2b2f;
-      --ok: #2ecc71;
+      --ok:#2ecc71;
       --warn:#f1c40f;
       --shadow: 0 20px 60px rgba(0,0,0,.55);
       --glass: blur(12px);
       --radius: 18px;
-      --wrap: 1200px;
+      --wrap: 1240px;
 
-      --glass2: rgba(255,255,255,.045);
-      --glass3: rgba(255,255,255,.03);
-      --stroke2: rgba(255,255,255,.14);
       --glowRed: 0 0 22px rgba(255,43,47,.22);
       --glowRed2: 0 0 44px rgba(179,31,36,.18);
     }
@@ -52,34 +53,29 @@
       overflow-x:hidden;
     }
 
-    a{color:inherit; text-decoration:none}
+    a{color:inherit;text-decoration:none}
     .wrap{max-width:var(--wrap); margin:0 auto; padding:0 18px}
 
     header{
       position:sticky; top:0; z-index:50;
       backdrop-filter: var(--glass);
       background: rgba(5,5,6,.68);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
     .nav{
       height:66px;
       display:flex; align-items:center; justify-content:space-between;
       gap:16px;
     }
-    .brand{display:flex; align-items:center; gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
     .brand img{
       height:36px;
       width:auto;
       display:block;
       filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
     }
-
     .navlinks{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
+      display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:flex-end;
     }
     .navlinks a{
       position:relative;
@@ -88,19 +84,16 @@
       letter-spacing:.18em;
       text-transform:uppercase;
       opacity:.84;
-      transition: .22s ease;
+      transition:.22s ease;
       user-select:none;
-      outline:none;
     }
     .navlinks a:after{
       content:"";
       position:absolute;
-      left:0;
-      bottom:0;
-      height:2px;
-      width:0%;
+      left:0; bottom:0;
+      height:2px; width:0%;
       background: linear-gradient(90deg, rgba(255,43,47,.95), rgba(179,31,36,.80));
-      transition: .22s ease;
+      transition:.22s ease;
       border-radius:99px;
       box-shadow: 0 0 18px rgba(255,43,47,.28);
     }
@@ -109,24 +102,15 @@
     .navlinks a.active{opacity:1}
     .navlinks a.active:after{width:100%}
     .navlinks .cta{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(179,31,36,.55);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(179,31,36,.55);
       background: linear-gradient(180deg, rgba(179,31,36,.30), rgba(179,31,36,.10));
     }
     .navlinks .cta:after{display:none}
-    .navlinks .cta:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 18px 50px rgba(179,31,36,.22);
-    }
+    .navlinks .cta:hover{transform:translateY(-1px); box-shadow: 0 18px 50px rgba(179,31,36,.22);}
 
-    .hero{padding: 32px 0 18px;}
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:stretch;
-    }
+    /* Generic cards */
     .card{
       background: var(--panel);
       border: 1px solid var(--stroke);
@@ -135,7 +119,15 @@
       backdrop-filter: var(--glass);
     }
 
-    /* ===== LEFT (clean stack) ===== */
+    .hero{
+      padding: 26px 0 10px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+      align-items:stretch;
+    }
     .heroLeft{
       padding: 18px 18px 16px;
       position:relative;
@@ -163,7 +155,7 @@
       box-shadow: 0 0 0 6px rgba(255,43,47,.14);
     }
     h1{
-      margin:10px 0 8px;
+      margin:10px 0 10px;
       font-family: Oswald, sans-serif;
       letter-spacing:.06em;
       font-size: 34px;
@@ -174,29 +166,26 @@
       color: var(--muted);
       font-size:14px;
       line-height:1.6;
-      max-width: 70ch;
+      max-width: 80ch;
     }
 
-    .stack{
-      display:grid;
-      gap:10px;
-      margin-top: 12px;
-    }
+    /* Clean overview stack */
+    .stack{display:grid; gap:10px; margin-top:12px;}
     .rowCard{
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.12);
       background:
         radial-gradient(520px 220px at 10% 0%, rgba(179,31,36,.16), transparent 62%),
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      padding: 12px 12px;
+      padding: 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
     }
-    .rowLeft{display:flex; align-items:center; gap:10px; min-width:0;}
+    .rowLeft{display:flex;align-items:center;gap:10px;min-width:0;}
     .ico{
-      width:34px; height:34px; border-radius: 12px;
+      width:34px;height:34px;border-radius:12px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.18);
       display:grid; place-items:center;
@@ -204,7 +193,7 @@
       flex:0 0 auto;
     }
     .ico svg{width:18px;height:18px;opacity:.92;filter: drop-shadow(var(--glowRed));}
-    .rowTitle{display:flex; flex-direction:column; gap:4px; min-width:0;}
+    .rowTitle{display:flex;flex-direction:column;gap:4px;min-width:0;}
     .rowTitle b{
       font-family: Oswald, sans-serif;
       letter-spacing:.16em;
@@ -220,7 +209,7 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 46ch;
+      max-width: 55ch;
     }
     .rowValue{
       font-family: Oswald, sans-serif;
@@ -230,178 +219,99 @@
       white-space:nowrap;
       text-shadow: 0 14px 34px rgba(0,0,0,.7);
     }
-    .hintLine{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .hintPill{
-      display:inline-flex; align-items:center; gap:9px;
-      padding:9px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.16);
-      color: rgba(255,255,255,.74);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .pip{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--ok);
-      box-shadow: 0 0 0 6px rgba(46,204,113,.10);
-    }
-    .pip.red{background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10);}
-    .pip.warn{background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10);}
-    .pip.gray{background: rgba(255,255,255,.35); box-shadow: 0 0 0 6px rgba(255,255,255,.08);}
 
-    /* ===== RIGHT (GLOBE) ===== */
     .heroRight{
       padding: 14px;
       display:flex;
       flex-direction:column;
       gap:10px;
       overflow:hidden;
-      position:relative;
     }
-    .globeTop{
+    .rightTop{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding:10px 12px;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
     }
-    .globeTop b{
+    .rightTop b{
       font-size:12px;
       letter-spacing:.16em;
       text-transform:uppercase;
     }
-    .globeTop span{
+    .rightTop span{
       font-size:12px;
       color:var(--muted);
       letter-spacing:.08em;
       white-space:nowrap;
     }
-    canvas#globe{
-      width:100%;
-      height: 410px; /* bigger so it's actually visible */
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(520px 240px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,.25)),
-        rgba(0,0,0,.15);
-      display:block;
-    }
-    .mapHint{
-      margin-top:-2px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      color: rgba(255,255,255,.70);
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-    .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
+
     .legend{
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+      background: rgba(0,0,0,.14);
       border-radius: 16px;
       padding: 12px;
       display:flex;
       gap:8px;
       flex-wrap:wrap;
       align-items:center;
-    }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
       color: rgba(255,255,255,.80);
       font-size:11px;
       letter-spacing:.12em;
       text-transform:uppercase;
+    }
+    .tag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
       user-select:none;
       white-space:nowrap;
     }
-    .tag .k{
-      width:10px;height:10px;border-radius:3px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-    }
-    .tag .k.blue{background:#4aa3ff; box-shadow: 0 0 0 6px rgba(74,163,255,.10);}
-    .tag .k.green{background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10);}
-    .tag .k.yellow{background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10);}
-    .tag .k.gray{background: rgba(255,255,255,.35); box-shadow: 0 0 0 6px rgba(255,255,255,.08);}
+    .k{width:10px;height:10px;border-radius:3px;background:var(--red2);box-shadow:0 0 0 6px rgba(255,43,47,.10);}
+    .k.green{background:var(--ok);box-shadow:0 0 0 6px rgba(46,204,113,.10);}
+    .k.yellow{background:var(--warn);box-shadow:0 0 0 6px rgba(241,196,15,.10);}
+    .k.gray{background:rgba(255,255,255,.35);box-shadow:0 0 0 6px rgba(255,255,255,.08);}
 
-    .miniList{display:grid; gap:8px;}
-    .miniItem{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      padding:10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      cursor:pointer;
-      transition: .18s ease;
+    section.block{padding: 14px 0 26px;}
+    .sectionTitle{
+      display:flex; align-items:end; justify-content:space-between;
+      gap:12px;
+      margin: 4px 0 10px;
     }
-    .miniItem:hover{ border-color: rgba(179,31,36,.45); transform: translateY(-1px); }
-    .miniLeft{display:flex; flex-direction:column; gap:6px; min-width:0;}
-    .miniLeft b{
+    .sectionTitle h2{
+      margin:0;
       font-family: Oswald, sans-serif;
-      letter-spacing:.08em;
-      font-size:14px;
-      white-space:normal;
-      overflow:visible;
+      letter-spacing:.06em;
+      font-size:22px;
     }
-    .miniLeft span{
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      line-height:1.35;
+    .sectionTitle p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      max-width: 70ch;
     }
-    .miniRight{display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex:0 0 auto;}
-    .miniBadge{
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      padding:6px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(46,204,113,.35);
-      background: rgba(46,204,113,.10);
-      color: rgba(255,255,255,.86);
-      white-space:nowrap;
-    }
-    .miniDot{
-      width:8px; height:8px;
-      border-radius:999px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-      margin-top:2px;
+
+    /* Section layout: left list + right map */
+    .secGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+      align-items:stretch;
     }
 
     /* Controls */
     .controls{
-      padding: 12px;
+      padding:12px;
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
     }
     .field{
-      flex: 1 1 220px;
+      flex:1 1 220px;
       display:flex; align-items:center; gap:10px;
       padding: 11px 12px;
       border-radius: 14px;
@@ -418,7 +328,7 @@
       letter-spacing:.06em;
     }
     .select{
-      flex: 0 0 240px;
+      flex:0 0 260px;
       padding: 11px 12px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
@@ -442,7 +352,6 @@
       transition:.18s ease;
     }
     .btn:hover{box-shadow: 0 18px 50px rgba(179,31,36,.20); transform: translateY(-1px);}
-    .btn:active{transform: translateY(1px)}
     .btn.ghost{
       border-color: rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
@@ -450,60 +359,47 @@
     }
     .btn.ghost:hover{box-shadow:none; transform:none}
 
-    /* Grid */
-    .entityGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    .entity{
+    /* Lists (clean, not chaotic) */
+    .list{
       padding: 12px;
-      display:flex;
-      flex-direction:column;
+      display:grid;
       gap:10px;
+    }
+    .item{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      padding: 12px;
+      cursor:pointer;
+      transition: .18s ease;
       position:relative;
       overflow:hidden;
-      cursor:pointer;
-      transition:.18s ease;
-      isolation:isolate;
     }
-    .entity:hover{
-      border-color: rgba(179,31,36,.50);
+    .item:hover{
+      border-color: rgba(179,31,36,.45);
       transform: translateY(-1px);
       box-shadow: 0 26px 80px rgba(0,0,0,.62);
     }
-    .entity:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(520px 180px at 10% 10%, rgba(179,31,36,.18), transparent 60%),
-        radial-gradient(520px 180px at 90% 40%, rgba(255,43,47,.10), transparent 60%);
-      opacity:.65;
-      pointer-events:none;
-      z-index:0;
+    .itemTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
     }
-    .entity > *{position:relative; z-index:1}
-
-    .entityTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-    }
-    .entityName{display:flex; flex-direction:column; gap:6px; min-width:0;}
-    .entityName b{
+    .itemTop b{
       font-family: Oswald, sans-serif;
-      font-size:18px;
       letter-spacing:.06em;
-      white-space:normal;
-      overflow:visible;
+      font-size:18px;
     }
-    .entityName span{
-      color:var(--muted);
+    .itemTop .meta{
+      color: var(--muted);
       font-size:12px;
       letter-spacing:.10em;
       text-transform:uppercase;
-      line-height:1.35
+      line-height:1.35;
+      margin-top:6px;
     }
-
-    .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+    .badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
     .badge{
       font-size:11px;
       letter-spacing:.10em;
@@ -517,161 +413,94 @@
       white-space:nowrap;
     }
     .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-    .badge.count{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
-    .badge.use{border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.16)}
-    .badge.gray{border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.18); color: rgba(255,255,255,.72);}
-
-    .entityThumb{
-      height: 96px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(520px 200px at 30% 30%, rgba(179,31,36,.18), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.20));
-      overflow:hidden;
-      position:relative;
-    }
-    .entityThumb img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-      opacity:.92;
-      filter: contrast(1.02) saturate(1.05);
-    }
-    .entityThumb .overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.60));
-    }
-
-    .entityMeta{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px;
-      padding: 10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-    }
-    .metaItem b{
-      display:block;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted)
-    }
-    .metaItem span{
-      display:block;
-      margin-top:6px;
-      font-size:13px;
-      letter-spacing:.04em;
-      line-height:1.25
-    }
-
-    .entityDesc{
-      margin:0;
+    .badge.green{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
+    .badge.yellow{border-color: rgba(241,196,15,.35); background: rgba(241,196,15,.10)}
+    .badge.gray{border-color: rgba(255,255,255,.14); background: rgba(0,0,0,.16); color: rgba(255,255,255,.72)}
+    .desc{
+      margin:10px 0 0;
       color: var(--muted);
       font-size:13px;
       line-height:1.6;
     }
 
-    .entityFoot{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-radius: 14px;
-      padding: 10px 10px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .entityFoot span{
-      color: rgba(255,255,255,.70);
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .entityFoot i{
-      font-style:normal;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.10em;
-      color: rgba(255,255,255,.92);
-      text-shadow: 0 12px 28px rgba(0,0,0,.6);
-    }
-
-    section.block{padding: 14px 0 26px}
-    .sectionTitle{
-      display:flex; align-items:end; justify-content:space-between;
-      gap:12px;
-      margin: 4px 0 10px;
-    }
-    .sectionTitle h2{
-      margin:0;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:22px;
-    }
-    .sectionTitle p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-      max-width: 62ch;
-    }
-
-    /* Events participation */
-    .twoCols{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .listBox{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+    /* Map containers */
+    .mapCard{padding: 12px; display:grid; gap:10px;}
+    .mapBox{
       border-radius: 16px;
-      padding: 12px;
-    }
-    .listBox h3{
-      margin:0 0 10px;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:14px;
-    }
-    .li{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.14);
-      border-radius: 14px;
-      padding: 10px 10px;
+      overflow:hidden;
+      position:relative;
+    }
+    .mapHint{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
       gap:10px;
-      margin-top:8px;
-    }
-    .li b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-    }
-    .li span{
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.06em;
-      line-height:1.35;
-    }
-    .li .pill{
-      border:1px solid rgba(255,255,255,.12);
+      flex-wrap:wrap;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
-      border-radius: 999px;
-      padding:6px 8px;
+      color: rgba(255,255,255,.70);
       font-size:11px;
       letter-spacing:.10em;
       text-transform:uppercase;
-      white-space:nowrap;
     }
-    .li .pill.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-    .li .pill.green{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
-    .li .pill.yellow{border-color: rgba(241,196,15,.35); background: rgba(241,196,15,.10)}
+    .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
+
+    /* Sizes */
+    #globeSuppliers{height: 520px; display:block; width:100%;}
+    #mapEurope{height: 520px;}
+    #mapSlovakia{height: 520px;}
+
+    /* Leaflet theming */
+    .leaflet-container{
+      background: #0b0b0d;
+      font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+    .leaflet-control-zoom a{
+      background: rgba(10,10,12,.78) !important;
+      color: rgba(255,255,255,.88) !important;
+      border: 1px solid rgba(255,255,255,.14) !important;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    .leaflet-control-zoom a:hover{
+      background: rgba(179,31,36,.18) !important;
+      border-color: rgba(179,31,36,.45) !important;
+    }
+    .leaflet-control-attribution{
+      background: rgba(0,0,0,.35) !important;
+      color: rgba(255,255,255,.60) !important;
+      border-radius: 10px;
+      margin: 0 10px 10px 0 !important;
+      padding: 4px 8px !important;
+      border: 1px solid rgba(255,255,255,.10) !important;
+    }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+      background: rgba(10,10,12,.88);
+      color: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 30px 90px rgba(0,0,0,.7);
+    }
+    .popTitle{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size:16px;
+      margin:0 0 6px;
+    }
+    .popMeta{
+      color: rgba(255,255,255,.65);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .popDesc{
+      color: rgba(255,255,255,.70);
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+    }
 
     footer{
       padding: 22px 0 40px;
@@ -680,170 +509,15 @@
       letter-spacing:.06em;
     }
 
-    /* Modal */
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.66);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:200;
-      padding: 18px;
-    }
-    .modal{
-      width:min(1040px, 100%);
-      max-height: 88vh;
-      overflow:auto;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(10,10,12,.78);
-      box-shadow: 0 30px 90px rgba(0,0,0,.7);
-    }
-    .modalHeader{
-      position:sticky; top:0;
-      background: rgba(10,10,12,.88);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid rgba(255,255,255,.10);
-      padding: 14px 14px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-    }
-    .modalHeader .left b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:22px;
-      display:block;
-    }
-    .modalHeader .left span{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      margin-top:4px;
-      line-height:1.35;
-    }
-    .modalHeader .right{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .shopBtn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border:1px solid rgba(179,31,36,.55);
-      background: linear-gradient(90deg, rgba(255,43,47,.90), rgba(179,31,36,.78));
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:12px;
-      box-shadow: 0 20px 60px rgba(179,31,36,.22);
-      transition:.18s ease;
-      white-space:nowrap;
-    }
-    .shopBtn:hover{transform: translateY(-1px); box-shadow: 0 24px 80px rgba(179,31,36,.30);}
-    .close{
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor:pointer;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      font-weight:700;
-    }
-    .modalBody{
-      padding: 14px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .modalPanel{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 16px;
-      padding: 12px;
-    }
-    .modalPanel h3{
-      margin:0 0 10px;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:18px;
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    .kv .item{
-      position:relative;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(280px 120px at 15% 0%, rgba(179,31,36,.10), transparent 60%),
-        rgba(0,0,0,.18);
-      border-radius: 14px;
-      padding: 12px 12px 11px;
-      overflow:hidden;
-      transition: .18s ease;
-    }
-    .kv .item:before{
-      content:"";
-      position:absolute;
-      left:10px; top:10px;
-      width:9px; height:9px;
-      border-radius:3px;
-      background: rgba(255,43,47,.75);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-      opacity:.75;
-    }
-    .kv .item b{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .kv .item span{
-      display:block;
-      margin-top:6px;
-      font-size:13px;
-      letter-spacing:.04em;
-      line-height:1.35;
-    }
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-    .gallery img{
-      width:100%;
-      height: 140px;
-      object-fit:cover;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-    }
-
     @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr; }
-      .entityGrid{grid-template-columns: repeat(2, 1fr); }
-      .modalBody{grid-template-columns: 1fr; }
-      canvas#globe{height: 380px;}
-      .twoCols{grid-template-columns: 1fr;}
+      .heroGrid{grid-template-columns: 1fr;}
+      .secGrid{grid-template-columns: 1fr;}
+      #globeSuppliers, #mapEurope, #mapSlovakia{height: 420px;}
     }
     @media (max-width: 560px){
       h1{font-size:28px}
-      .entityGrid{grid-template-columns: 1fr; }
-      .gallery{grid-template-columns: repeat(2, 1fr); }
-      canvas#globe{height: 340px;}
       .select{flex: 1 1 220px;}
+      #globeSuppliers, #mapEurope, #mapSlovakia{height: 360px;}
     }
   </style>
 </head>
@@ -857,8 +531,9 @@
         </a>
 
         <nav class="navlinks" aria-label="Menu">
-          <a class="active" href="#network">RACEM Group</a>
-          <a href="#participation">Akcie</a>
+          <a class="active" href="#eventy">Eventy</a>
+          <a href="#jazdci">Jazdci</a>
+          <a href="#dodavatelia">Dodávatelia</a>
           <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">Domov</a>
         </nav>
       </div>
@@ -871,21 +546,21 @@
       <!-- HERO -->
       <section class="hero">
         <div class="heroGrid">
-
-          <!-- LEFT -->
+          <!-- LEFT: clean overview -->
           <div class="card heroLeft">
-            <div class="kicker"><span class="dot"></span> RACEM GROUP • mapa siete</div>
+            <div class="kicker"><span class="dot"></span> RACEM GROUP • network hub</div>
 
-            <h1>
-              <img src="assets/rmgroup.png" alt="RACEM Group" style="max-height:88px; width:auto;" onerror="this.remove()">
-              <span style="display:block;margin-top:4px;">RACEM GROUP</span>
+            <h1 style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <img src="assets/rmgroup.png" alt="RACEM Group" style="max-height:80px; width:auto;" onerror="this.remove()">
+              <span>RACEM GROUP</span>
             </h1>
 
             <p class="sub">
-              Jedna stránka pre dodávateľov, značky, jazdcov a eventy. Klikni na kartu alebo položku vpravo – globus sa zameria.
+              3 sekcie, 3 mapy. Eventy = Európa (priblížené), Jazdci = Slovensko, Dodávatelia = globálna rotujúca zemeguľa.
+              Každá karta vľavo “fokusne” mapu vpravo.
             </p>
 
-            <div class="stack" aria-label="Prehľad">
+            <div class="stack">
               <div class="rowCard">
                 <div class="rowLeft">
                   <div class="ico" aria-hidden="true">
@@ -895,11 +570,44 @@
                     </svg>
                   </div>
                   <div class="rowTitle">
-                    <b>Entity spolu</b>
-                    <span>dodávatelia • značky • jazdci • eventy • hub</span>
+                    <b>Hub</b>
+                    <span>Bratislava + uzamknutý bod (Dunajská Lužná)</span>
                   </div>
                 </div>
-                <div class="rowValue" id="statTotalEntities">—</div>
+                <div class="rowValue" id="statHub">2</div>
+              </div>
+
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M5 16l1-4 2-2h8l2 2 1 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M7 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M13 16a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="rowTitle">
+                    <b>Eventy</b>
+                    <span>zúčastníme sa • plánujeme • tipy (príklady)</span>
+                  </div>
+                </div>
+                <div class="rowValue" id="statEvents">—</div>
+              </div>
+
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="rowTitle">
+                    <b>Jazdci</b>
+                    <span>Rado Panák (Trenčín) + miesto pre ďalších</span>
+                  </div>
+                </div>
+                <div class="rowValue" id="statDrivers">—</div>
               </div>
 
               <div class="rowCard">
@@ -911,164 +619,178 @@
                     </svg>
                   </div>
                   <div class="rowTitle">
-                    <b>Produkty spolu</b>
-                    <span>CSR (hard) + SFXLA (feed/fallback)</span>
+                    <b>Dodávatelia</b>
+                    <span>CSR (hard) + SFXLA (feed/fallback) + brand partners</span>
                   </div>
                 </div>
-                <div class="rowValue" id="statProductsTotal">—</div>
+                <div class="rowValue" id="statSuppliers">—</div>
               </div>
-
-              <div class="rowCard">
-                <div class="rowLeft">
-                  <div class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <div class="rowTitle">
-                    <b>Top platformy</b>
-                    <span>najžiadanejšie v katalógu</span>
-                  </div>
-                </div>
-                <div class="rowValue" style="font-size:16px" id="statTopPlatforms">—</div>
-              </div>
-            </div>
-
-            <div class="hintLine" style="margin-top:12px;">
-              <span class="hintPill"><span class="pip"></span>online</span>
-              <span class="hintPill"><span class="pip warn"></span>feed (SFXLA)</span>
-              <span class="hintPill"><span class="pip gray"></span>uzamknuté</span>
             </div>
           </div>
 
-          <!-- RIGHT -->
+          <!-- RIGHT: quick status + mini legend -->
           <div class="card heroRight">
-            <div class="globeTop">
-              <b>Mapa siete</b>
-              <span id="globeInfoTime">--:--:-- • stav systému</span>
+            <div class="rightTop">
+              <b>Legenda</b>
+              <span id="clock">--:--:--</span>
             </div>
 
-            <canvas id="globe" aria-label="RACEM Globe"></canvas>
-
-            <div class="mapHint">
-              <span><b>Zoom:</b> koliesko myši</span>
-              <span><b>Rotate:</b> ťah myšou</span>
-              <span><b>Focus:</b> klik na kartu</span>
-            </div>
-
-            <!-- SIMPLE legend -->
-            <div class="legend" aria-label="Legenda">
-              <span class="tag"><span class="k red"></span> Dodávateľ</span>
-              <span class="tag"><span class="k blue"></span> Značka</span>
-              <span class="tag"><span class="k green"></span> Jazdec / Garáž</span>
+            <div class="legend">
               <span class="tag"><span class="k yellow"></span> Event</span>
+              <span class="tag"><span class="k green"></span> Jazdec</span>
+              <span class="tag"><span class="k"></span> Dodávateľ</span>
               <span class="tag"><span class="k gray"></span> Uzamknuté</span>
             </div>
 
-            <div class="miniList" id="miniList"></div>
+            <div class="card" style="padding:12px; box-shadow:none;">
+              <div style="color:rgba(255,255,255,.85); font-size:12px; letter-spacing:.14em; text-transform:uppercase;">
+                Ovládanie máp
+              </div>
+              <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
+                EU/SK mapy: zoom + drag (klasika).<br>
+                Dodávatelia: globus rotuje, zoom kolieskom, drag otáča.
+              </div>
+            </div>
 
-            <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
-              Tip: ak niečo nevidíš, priblíž (koliesko) a zatoč globus.
-            </p>
+            <div class="card" style="padding:12px; box-shadow:none;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div style="color:rgba(255,255,255,.85); font-size:12px; letter-spacing:.14em; text-transform:uppercase;">
+                  Produkty spolu
+                </div>
+                <div style="font-family:Oswald,sans-serif; font-size:20px; letter-spacing:.06em;" id="statProducts">—</div>
+              </div>
+              <div style="margin-top:8px;color:var(--muted);font-size:12px;line-height:1.55;letter-spacing:.06em;">
+                CSR je natvrdo. SFXLA sa skúša hydratovať z feedu; ak padne, ide fallback.
+              </div>
+            </div>
           </div>
-
         </div>
       </section>
 
-      <!-- NETWORK GRID -->
-      <section id="network" class="block">
-        <div class="card controls">
-          <div class="field">
-            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-            <input id="q" type="text" placeholder="napr. CSR, SFXLA, Wisefab, Sadka..." autocomplete="off" />
-          </div>
-
-          <select id="type" class="select" title="Filter typ">
-            <option value="all">Všetky typy</option>
-            <option value="supplier">Dodávatelia</option>
-            <option value="brand">Značky</option>
-            <option value="driver">Jazdci</option>
-            <option value="event">Eventy</option>
-            <option value="hub">RACEM Hub</option>
-            <option value="locked">Uzamknuté</option>
-          </select>
-
-          <select id="region" class="select" title="Filter región">
-            <option value="all">Všetky regióny</option>
-            <option value="SK">SK</option>
-            <option value="EU">EU</option>
-            <option value="US">US</option>
-            <option value="UK">UK</option>
-          </select>
-
-          <button class="btn ghost" id="reset">Reset</button>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="entityGrid" id="grid"></div>
-      </section>
-
-      <!-- PARTICIPATION -->
-      <section id="participation" class="block">
+      <!-- EVENTY -->
+      <section id="eventy" class="block">
         <div class="sectionTitle">
-          <h2>Akcie – účasť</h2>
-          <p>Rozdelené na oficiálne (plánované/brandované) a neoficiálne (spontánne výjazdy, support, scouting).</p>
+          <h2>Eventy (Európa)</h2>
+          <p>
+            Zúčastníme sa / plánujeme sa zúčastniť. Mapa je “EU priblížená” – nech je to prehľadné.
+          </p>
         </div>
 
-        <div class="twoCols">
-          <div class="listBox card" style="box-shadow:none;">
-            <h3>Oficiálne</h3>
-
-            <div class="li">
-              <div>
-                <b>SADKA Prievidza – drift tréning</b><br>
-                <span>RACEM banner / support • obsah: reels + fotky • meet-up</span>
+        <div class="secGrid">
+          <!-- LEFT: list -->
+          <div class="card">
+            <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
+              <div class="field">
+                <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
+                <input id="qEvents" type="text" placeholder="napr. Sadka, Trenčín, trackday..." autocomplete="off" />
               </div>
-              <div class="pill green">OFFICIAL</div>
+              <select id="fEvents" class="select" title="Filter">
+                <option value="all">Všetko</option>
+                <option value="attend">Zúčastníme sa</option>
+                <option value="plan">Plánujeme</option>
+              </select>
+              <button class="btn ghost" id="resetEvents">Reset</button>
             </div>
 
-            <div class="li">
-              <div>
-                <b>PowerFest Trenčín (príklad)</b><br>
-                <span>promo stánok • merch / polepy • showcase build</span>
-              </div>
-              <div class="pill green">OFFICIAL</div>
-            </div>
-
-            <div class="li">
-              <div>
-                <b>Drift day / trackday (príklad)</b><br>
-                <span>test dielov • feedback • partner shoutouts</span>
-              </div>
-              <div class="pill green">OFFICIAL</div>
-            </div>
+            <div class="list" id="listEvents"></div>
           </div>
 
-          <div class="listBox card" style="box-shadow:none;">
-            <h3>Neoficiálne</h3>
+          <!-- RIGHT: map europe -->
+          <div class="card mapCard">
+            <div class="rightTop">
+              <b>Mapa Európy</b>
+              <span>zoom + drag</span>
+            </div>
+            <div class="mapBox">
+              <div id="mapEurope"></div>
+            </div>
+            <div class="mapHint">
+              <span><b>Tip:</b> klik na event vľavo → mapa sa zameria</span>
+              <span><b>Stav:</b> priblížené na EU</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div class="li">
-              <div>
-                <b>Local meet (BA/TT) – spontánne</b><br>
-                <span>networking • scouting garáží/jazdcov • content</span>
+      <!-- JAZDCI -->
+      <section id="jazdci" class="block">
+        <div class="sectionTitle">
+          <h2>Jazdci (Slovensko)</h2>
+          <p>
+            Len Slovensko – rýchly prehľad, kde kto je. Vľavo karty, vpravo mapa SR.
+          </p>
+        </div>
+
+        <div class="secGrid">
+          <div class="card">
+            <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
+              <div class="field">
+                <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
+                <input id="qDrivers" type="text" placeholder="napr. Rado, Trenčín..." autocomplete="off" />
               </div>
-              <div class="pill yellow">UNOFFICIAL</div>
+              <button class="btn ghost" id="resetDrivers">Reset</button>
+            </div>
+            <div class="list" id="listDrivers"></div>
+          </div>
+
+          <div class="card mapCard">
+            <div class="rightTop">
+              <b>Mapa Slovenska</b>
+              <span>zoom + drag</span>
+            </div>
+            <div class="mapBox">
+              <div id="mapSlovakia"></div>
+            </div>
+            <div class="mapHint">
+              <span><b>Tip:</b> klik na jazdca → fokus</span>
+              <span><b>Rozsah:</b> SR</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DODÁVATELIA -->
+      <section id="dodavatelia" class="block">
+        <div class="sectionTitle">
+          <h2>Dodávatelia (Zemeguľa)</h2>
+          <p>
+            Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Klik na kartu vľavo → fokus na bod.
+          </p>
+        </div>
+
+        <div class="secGrid">
+          <div class="card">
+            <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
+              <div class="field">
+                <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
+                <input id="qSup" type="text" placeholder="napr. CSR, SFXLA, Darkside..." autocomplete="off" />
+              </div>
+              <select id="fSup" class="select" title="Filter">
+                <option value="all">Všetko</option>
+                <option value="supplier">Dodávatelia</option>
+                <option value="brand">Brand partners</option>
+                <option value="hub">Hub / lokality</option>
+                <option value="locked">Uzamknuté</option>
+              </select>
+              <button class="btn ghost" id="resetSup">Reset</button>
+            </div>
+            <div class="list" id="listSuppliers"></div>
+          </div>
+
+          <div class="card mapCard">
+            <div class="rightTop">
+              <b>Zemeguľa dodávateľov</b>
+              <span>zoom + rotate</span>
             </div>
 
-            <div class="li">
-              <div>
-                <b>EU výjazd (CZ/AT/HU) – príklad</b><br>
-                <span>návšteva dodávateľa • preprava dielov • deal talk</span>
-              </div>
-              <div class="pill yellow">UNOFFICIAL</div>
+            <div class="mapBox">
+              <canvas id="globeSuppliers" aria-label="RACEM Suppliers Globe"></canvas>
             </div>
 
-            <div class="li">
-              <div>
-                <b>Test fit / montáž u garáže</b><br>
-                <span>pomoc s fittingom • real fotky pre shop</span>
-              </div>
-              <div class="pill yellow">UNOFFICIAL</div>
+            <div class="mapHint">
+              <span><b>Zoom:</b> koliesko myši (min/max)</span>
+              <span><b>Rotate:</b> ťah myšou</span>
+              <span><b>Auto:</b> rotuje keď nepohybuješ</span>
             </div>
           </div>
         </div>
@@ -1076,69 +798,183 @@
 
       <footer>
         <div class="wrap">
-          © <span id="year"></span> RACEM / REM Performance — RACEM GROUP map hub
+          © <span id="year"></span> RACEM / REM Performance — RACEM GROUP Hub
         </div>
       </footer>
 
-    </div>
-
-    <!-- MODAL -->
-    <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Detail">
-      <div class="modal" id="modal">
-        <div class="modalHeader">
-          <div class="left">
-            <b id="mName">—</b>
-            <span id="mMeta">—</span>
-          </div>
-          <div class="right">
-            <a class="shopBtn" id="mShopBtn" href="#" target="_blank" rel="noreferrer">Otvoriť →</a>
-            <button class="close" id="close">Close</button>
-          </div>
-        </div>
-
-        <div class="modalBody">
-          <div class="modalPanel">
-            <h3>Info</h3>
-            <div class="kv" id="mKV"></div>
-
-            <div style="height:12px"></div>
-
-            <h3>Poznámky</h3>
-            <div id="mNotes" style="color:var(--muted);font-size:13px;line-height:1.65;">
-              —
-            </div>
-          </div>
-
-          <div class="modalPanel">
-            <h3>Galéria</h3>
-            <div class="gallery" id="mGallery"></div>
-          </div>
-        </div>
-      </div>
     </div>
   </main>
 
   <script>
     // =========================
-    // HARD STATS (natvrdo)
+    // DATA
     // =========================
-    const HARD = {
-      csrCount: 14684,
-      topPlatforms: ["BMW E36","BMW E46","VW Golf"]
-    };
 
-    // =========================
-    // FEEDS (SFXLA)
-    // =========================
+    // HUB / lock (globus + prehľad)
+    const HUB_POINTS = [
+      {
+        id:"hub-ba",
+        type:"hub",
+        name:"RACEM HUB",
+        where:"Bratislava (SK)",
+        region:"SK",
+        lat: 48.148598,
+        lon: 17.107748,
+        about:"Centrála / hub – koordinácia objednávok, partnerov, obsahu a logistiky."
+      },
+      {
+        id:"locked-dl",
+        type:"locked",
+        name:"Dunajská Lužná (uzamknuté)",
+        where:"Dunajská Lužná (SK)",
+        region:"SK",
+        lat: 48.0849246,
+        lon: 17.2590955,
+        about:"Interné / pripravované. Zatiaľ bez verejných detailov."
+      }
+    ];
+
+    // EVENTY – EU mapa (príklady + tvoj Sadka)
+    const EVENTS = [
+      {
+        id:"sadka-pd",
+        status:"attend", // attend | plan
+        name:"SADKA Prievidza",
+        where:"Prievidza (SK)",
+        lat: 48.7745206,
+        lon: 18.6245383,
+        about:"Drift / slalom day. Lokálna scéna + tréning.",
+        tag:"Zúčastníme sa"
+      },
+      {
+        id:"powerfest-tn",
+        status:"plan",
+        name:"PowerFest Trenčín (príklad)",
+        where:"Trenčín (SK)",
+        lat: 48.8945,
+        lon: 18.0444,
+        about:"Showcase + promo. (Príklad – uprav podľa reality.)",
+        tag:"Plánujeme"
+      },
+      {
+        id:"cz-trackday",
+        status:"plan",
+        name:"Trackday CZ (príklad)",
+        where:"Česko (CZ)",
+        lat: 49.8038,
+        lon: 15.4749,
+        about:"Test dielov + content. (Príklad.)",
+        tag:"Plánujeme"
+      }
+    ];
+
+    // JAZDCI – SK mapa
+    const DRIVERS = [
+      {
+        id:"rado-panak",
+        name:"Rado Panák",
+        where:"Trenčín (SK)",
+        lat: 48.8945,
+        lon: 18.0444,
+        about:"Drift jazdec – spolupráca / obsah / promo.",
+        car:"—"
+      }
+    ];
+
+    // DODÁVATELIA / BRAND partners (globus)
+    const HARD = { csrCount: 14684 };
     const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
 
+    const SUPPLIERS = [
+      {
+        id:"csr",
+        type:"supplier",
+        status:"hard",
+        name:"CSR Automotive",
+        where:"Nemecko (DE)",
+        region:"EU",
+        lat: 51.1657,
+        lon: 10.4515,
+        productsCount: HARD.csrCount,
+        about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť."
+      },
+      {
+        id:"sfxla",
+        type:"supplier",
+        status:"feed",
+        name:"SFXLA",
+        where:"Kalifornia (USA)",
+        region:"US",
+        lat: 34.0522,
+        lon: -118.2437,
+        productsCount: 980, // fallback
+        about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight."
+      }
+    ];
+
+    const BRAND_PARTNERS = [
+      { id:"skidnation", type:"brand", name:"SkidNation", where:"Bratislava (SK)", region:"SK", lat:48.148598, lon:17.107748, about:"Performance diely (MX-5/Miata). EU shipping base." },
+      { id:"wisefab", type:"brand", name:"Wisefab", where:"Tallinn (EE)", region:"EU", lat:59.436962, lon:24.753574, about:"Drift/race suspension. Angle kits, ramená, geometry." },
+      { id:"odesacnc", type:"brand", name:"Odesa CNC", where:"Wodzisław Śląski (PL)", region:"EU", lat:50.001, lon:18.463, about:"CNC drift diely: angle kity, ramená, hardware." },
+      { id:"darkside", type:"brand", name:"Darkside Developments", where:"Barnsley (UK)", region:"UK", lat:53.571788, lon:-1.382466, about:"Performance diesel tuning (hardware + servis)." },
+      { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
+    ];
+
+    // =========================
+    // UTIL
+    // =========================
+    const $ = (s) => document.querySelector(s);
+
+    function escapeHTML(s){
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
+    }
+
+    function popHTML(title, meta, desc){
+      return `
+        <div>
+          <div class="popTitle">${escapeHTML(title)}</div>
+          <div class="popMeta">${escapeHTML(meta)}</div>
+          <p class="popDesc">${escapeHTML(desc)}</p>
+        </div>
+      `;
+    }
+
+    function badge(status){
+      if(status === "attend") return `<span class="badge green">ZÚČASTNÍME SA</span>`;
+      if(status === "plan") return `<span class="badge yellow">PLÁNUJEME</span>`;
+      if(status === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
+      if(status === "hard") return `<span class="badge red">HARD</span>`;
+      if(status === "feed") return `<span class="badge yellow">FEED</span>`;
+      return `<span class="badge">ACTIVE</span>`;
+    }
+
+    // =========================
+    // STATS
+    // =========================
+    function updateStats(){
+      $("#statEvents").textContent = String(EVENTS.length);
+      $("#statDrivers").textContent = String(DRIVERS.length);
+      $("#statSuppliers").textContent = String(SUPPLIERS.length + BRAND_PARTNERS.length);
+    }
+
+    function updateClock(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2,"0");
+      $("#clock").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    // =========================
+    // FEED hydrate (SFXLA)
+    // =========================
     async function safeFetchJSON(url){
       try{
-        const res = await fetch(url, { cache: "no-store" });
+        const res = await fetch(url, { cache:"no-store" });
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
       }catch(e){
-        console.warn("[feed] fetch failed:", url, e);
+        console.warn("[feed] fetch failed", url, e);
         return null;
       }
     }
@@ -1150,197 +986,317 @@
       return [];
     }
 
-    // =========================
-    // ENTITIES (requested set)
-    // =========================
-    const ENTITIES = [
-      // HUB
-      {
-        id:"racem-hub",
-        type:"hub",
-        name:"RACEM HUB",
-        region:"SK",
-        country:"Bratislava (SK)",
-        about:"Centrála / hub – koordinácia objednávok, dodávateľov, partnerov a brandingu.",
-        status:"online",
-        lat: 48.148598,
-        lon: 17.107748,
-        heroImg:"img/network/racemhub.jpg",
-        url:"https://www.racem.sk",
-        notes:"Toto je domovský bod. Všetko sa točí okolo tohto uzla."
-      },
-
-      // Locked
-      {
-        id:"dl-locked",
-        type:"locked",
-        name:"Dunajská Lužná (uzamknuté)",
-        region:"SK",
-        country:"Dunajská Lužná (SK)",
-        about:"Uzamknuté – interná vec / pripravované. Zatiaľ bez verejných detailov.",
-        status:"locked",
-        lat: 48.0849246,
-        lon: 17.2590955,
-        heroImg:"img/network/locked.jpg",
-        url:"#",
-        notes:"Sem si neskôr vieš dať napr. sklad, výrobu, showroom alebo čokoľvek – teraz to len drží miesto."
-      },
-
-      // SUPPLIERS
-      {
-        id:"csr",
-        type:"supplier",
-        name:"CSR Automotive",
-        region:"EU",
-        country:"Nemecko",
-        about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť, street/show.",
-        status:"hard",
-        leadTimeDays:[7,14],
-        shippingModes:["Kuriér","Paleta"],
-        certificates:true,
-        stock:"mix",
-        productsCount: HARD.csrCount,
-        lat: 51.1657,
-        lon: 10.4515,
-        heroImg:"img/suppliers/csr.jpg",
-        url:"csr-automotive.html",
-        notes:"CSR držíme natvrdo (hard)."
-      },
-      {
-        id:"sfxla",
-        type:"supplier",
-        name:"SFXLA",
-        region:"US",
-        country:"Kalifornia (USA)",
-        about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight podľa rozmerov.",
-        status:"feed",
-        leadTimeDays:[18,35],
-        shippingModes:["Air","Sea"],
-        certificates:false,
-        stock:"made_to_order",
-        productsCount: 980, // fallback
-        lat: 34.0522,
-        lon: -118.2437,
-        heroImg:"img/suppliers/sfxla.jpg",
-        url:"streetfighter-la.html",
-        notes:"SFXLA sa hydratuje z feedu. Keď padne, ide fallback."
-      },
-
-      // BRANDS
-      {
-        id:"skidnation",
-        type:"brand",
-        name:"SkidNation",
-        region:"SK",
-        country:"Bratislava (SK)",
-        about:"Performance diely (MX-5/Miata komunita). EU shipping base.",
-        status:"active",
-        lat: 48.148598,
-        lon: 17.107748,
-        heroImg:"img/brands/skidnation.jpg",
-        url:"#",
-        notes:"Značka (nie dodávateľ bodykitov)."
-      },
-      {
-        id:"wisefab",
-        type:"brand",
-        name:"Wisefab",
-        region:"EU",
-        country:"Tallinn (EE)",
-        about:"Drift/race suspension. Angle kits, ramená, geometry.",
-        status:"active",
-        lat: 59.436962,
-        lon: 24.753574,
-        heroImg:"img/brands/wisefab.jpg",
-        url:"#",
-        notes:"Primár: drift/track podvozok."
-      },
-      {
-        id:"odesacnc",
-        type:"brand",
-        name:"Odesa CNC",
-        region:"EU",
-        country:"Wodzisław Śląski (PL)",
-        about:"Angle kity, ramená, CNC diely pre drift platformy.",
-        status:"active",
-        lat: 50.001, // približný centroid mesta (nepotrebujeme mm presnosť)
-        lon: 18.463,
-        heroImg:"img/brands/odesacnc.jpg",
-        url:"#",
-        notes:"PL drift hardware."
-      },
-      {
-        id:"darkside",
-        type:"brand",
-        name:"Darkside Developments",
-        region:"UK",
-        country:"Barnsley (UK)",
-        about:"Performance diesel tuning / VAG, BMW, MINI. Hardware + servis.",
-        status:"active",
-        lat: 53.571788,
-        lon: -1.382466,
-        heroImg:"img/brands/darkside.jpg",
-        url:"#",
-        notes:"UK partner (diesel performance)."
-      },
-      {
-        id:"cybul",
-        type:"brand",
-        name:"CYBUL",
-        region:"EU",
-        country:"Legionowo (PL)",
-        about:"Motorsport diely: ramená, rollbary, swapy, uchytenia.",
-        status:"active",
-        lat: 52.401, // približne Legionowo
-        lon: 20.926,
-        heroImg:"img/brands/cybul.jpg",
-        url:"#",
-        notes:"PL motorsport parts."
-      },
-
-      // DRIVER
-      {
-        id:"rado-panak",
-        type:"driver",
-        name:"Rado Panák",
-        region:"SK",
-        country:"Trenčín (SK)",
-        about:"Jazdec – drift. Lokálna spolupráca / content / promo.",
-        status:"active",
-        lat: 48.8945,
-        lon: 18.0444,
-        heroImg:"img/drivers/rado-panak.jpg",
-        url:"#",
-        notes:"Sem si vieš doplniť triedu, auto, výsledky atď."
-      },
-
-      // EVENT
-      {
-        id:"sadka-prievidza",
-        type:"event",
-        name:"SADKA Events",
-        region:"SK",
-        country:"Prievidza (SK)",
-        about:"Slalom & drift eventy / tréningy. Lokálna scéna + track days.",
-        status:"active",
-        lat: 48.7745206,
-        lon: 18.6245383,
-        heroImg:"img/events/sadka.jpg",
-        url:"#",
-        notes:"Ak chceš, doplníme sem najbližší termín a link na registráciu."
+    async function hydrateSfxla(){
+      const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
+      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
+      if(!sfxla){
+        refreshProductTotal();
+        return;
       }
+      if(!data){
+        refreshProductTotal();
+        return;
+      }
+      const items = extractItemsFromAnyJSON(data);
+      const count = items.length || 0;
+      if(count > 0) sfxla.productsCount = count;
+      refreshProductTotal();
+      renderSuppliers(); // refresh list counts
+    }
+
+    function refreshProductTotal(){
+      const csr = SUPPLIERS.find(s=>s.id==="csr");
+      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
+      const total = (csr?.productsCount||0) + (sfxla?.productsCount||0);
+      $("#statProducts").textContent = total ? total.toLocaleString("sk-SK") : "—";
+    }
+
+    // =========================
+    // EVENTS LIST + EU MAP
+    // =========================
+    let mapEU, euLayer, euMarkers = new Map();
+
+    function initEuropeMap(){
+      mapEU = L.map("mapEurope", {
+        zoomControl:true,
+        scrollWheelZoom:true
+      });
+
+      // EU-focused view
+      mapEU.setView([50.5, 13.5], 5);
+
+      euLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(mapEU);
+
+      renderEuropeMarkers();
+    }
+
+    function markerIcon(color){
+      // Simple div icon to fit your vibe
+      return L.divIcon({
+        className: "",
+        html: `
+          <div style="
+            width:14px;height:14px;border-radius:4px;
+            background:${color};
+            box-shadow: 0 0 0 6px rgba(255,255,255,.08), 0 0 24px rgba(0,0,0,.55);
+            border:1px solid rgba(255,255,255,.18);
+          "></div>
+        `,
+        iconSize: [14,14],
+        iconAnchor: [7,7]
+      });
+    }
+
+    function renderEuropeMarkers(){
+      euMarkers.forEach(m => m.remove());
+      euMarkers.clear();
+
+      EVENTS.forEach(ev => {
+        const color = (ev.status === "attend") ? "rgba(46,204,113,.95)" : "rgba(241,196,15,.95)";
+        const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
+        m.bindPopup(popHTML(ev.name, `${ev.where} • ${ev.tag}`, ev.about), { closeButton:true });
+        euMarkers.set(ev.id, m);
+      });
+    }
+
+    function renderEvents(){
+      const q = ($("#qEvents").value || "").trim().toLowerCase();
+      const f = $("#fEvents").value;
+
+      const out = EVENTS.filter(ev => {
+        const hay = [ev.name, ev.where, ev.about].join(" ").toLowerCase();
+        const okQ = !q || hay.includes(q);
+        const okF = (f === "all") || (ev.status === f);
+        return okQ && okF;
+      });
+
+      $("#listEvents").innerHTML = out.map(ev => `
+        <div class="item" data-id="${escapeHTML(ev.id)}">
+          <div class="itemTop">
+            <div>
+              <b>${escapeHTML(ev.name)}</b>
+              <div class="meta">${escapeHTML(ev.where)} • Európa</div>
+            </div>
+            <div class="badges">${badge(ev.status)}</div>
+          </div>
+          <p class="desc">${escapeHTML(ev.about)}</p>
+        </div>
+      `).join("");
+
+      $("#listEvents").querySelectorAll(".item").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-id");
+          const ev = EVENTS.find(x => x.id === id);
+          if(!ev) return;
+          mapEU.setView([ev.lat, ev.lon], Math.max(mapEU.getZoom(), 7), { animate:true });
+          const m = euMarkers.get(id);
+          if(m) m.openPopup();
+        });
+      });
+    }
+
+    // =========================
+    // DRIVERS LIST + SK MAP
+    // =========================
+    let mapSK, skLayer, skMarkers = new Map();
+
+    function initSlovakiaMap(){
+      mapSK = L.map("mapSlovakia", {
+        zoomControl:true,
+        scrollWheelZoom:true
+      });
+
+      // Slovakia-focused view
+      mapSK.setView([48.75, 19.50], 8);
+
+      skLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(mapSK);
+
+      renderSlovakiaMarkers();
+    }
+
+    function renderSlovakiaMarkers(){
+      skMarkers.forEach(m => m.remove());
+      skMarkers.clear();
+
+      DRIVERS.forEach(d => {
+        const m = L.marker([d.lat, d.lon], { icon: markerIcon("rgba(46,204,113,.95)") }).addTo(mapSK);
+        m.bindPopup(popHTML(d.name, `${d.where} • jazdec`, d.about), { closeButton:true });
+        skMarkers.set(d.id, m);
+      });
+    }
+
+    function renderDrivers(){
+      const q = ($("#qDrivers").value || "").trim().toLowerCase();
+
+      const out = DRIVERS.filter(d => {
+        const hay = [d.name, d.where, d.about].join(" ").toLowerCase();
+        return !q || hay.includes(q);
+      });
+
+      $("#listDrivers").innerHTML = out.map(d => `
+        <div class="item" data-id="${escapeHTML(d.id)}">
+          <div class="itemTop">
+            <div>
+              <b>${escapeHTML(d.name)}</b>
+              <div class="meta">${escapeHTML(d.where)} • Slovensko</div>
+            </div>
+            <div class="badges"><span class="badge green">JAZDEC</span></div>
+          </div>
+          <p class="desc">${escapeHTML(d.about)}</p>
+        </div>
+      `).join("");
+
+      $("#listDrivers").querySelectorAll(".item").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-id");
+          const d = DRIVERS.find(x => x.id === id);
+          if(!d) return;
+          mapSK.setView([d.lat, d.lon], Math.max(mapSK.getZoom(), 10), { animate:true });
+          const m = skMarkers.get(id);
+          if(m) m.openPopup();
+        });
+      });
+    }
+
+    // =========================
+    // SUPPLIERS LIST + GLOBE
+    // =========================
+    const ALL_SUP = [
+      ...HUB_POINTS.map(x => ({...x})),
+      ...SUPPLIERS.map(x => ({...x})),
+      ...BRAND_PARTNERS.map(x => ({...x}))
     ];
 
-    window.ENTITIES = ENTITIES;
+    function renderSuppliers(){
+      const q = ($("#qSup").value || "").trim().toLowerCase();
+      const f = $("#fSup").value;
+
+      const out = ALL_SUP.filter(x => {
+        const hay = [x.name, x.where, x.about, x.type, x.region].join(" ").toLowerCase();
+        const okQ = !q || hay.includes(q);
+        const okF = (f === "all") || (x.type === f);
+        return okQ && okF;
+      });
+
+      $("#listSuppliers").innerHTML = out.map(x => {
+        const rightBadges = [];
+        if(x.type === "supplier") rightBadges.push(badge(x.status));
+        if(x.type === "brand") rightBadges.push(`<span class="badge">BRAND</span>`);
+        if(x.type === "hub") rightBadges.push(`<span class="badge red">HUB</span>`);
+        if(x.type === "locked") rightBadges.push(badge("locked"));
+        if(x.type === "supplier") rightBadges.push(`<span class="badge gray">${(x.productsCount||0).toLocaleString("sk-SK")} PRODUKTOV</span>`);
+
+        return `
+          <div class="item" data-id="${escapeHTML(x.id)}">
+            <div class="itemTop">
+              <div>
+                <b>${escapeHTML(x.name)}</b>
+                <div class="meta">${escapeHTML(x.where)} • ${escapeHTML(x.region || "—")}</div>
+              </div>
+              <div class="badges">${rightBadges.join("")}</div>
+            </div>
+            <p class="desc">${escapeHTML(x.about)}</p>
+          </div>
+        `;
+      }).join("");
+
+      $("#listSuppliers").querySelectorAll(".item").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-id");
+          const x = ALL_SUP.find(a => a.id === id);
+          if(!x || typeof x.lat !== "number" || typeof x.lon !== "number") return;
+          if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3400);
+        });
+      });
+    }
 
     // =========================
-    // Globe focus helper
+    // WIRE UI
     // =========================
+    function wireUI(){
+      // Events
+      $("#qEvents").addEventListener("input", renderEvents);
+      $("#fEvents").addEventListener("change", renderEvents);
+      $("#resetEvents").addEventListener("click", () => {
+        $("#qEvents").value = "";
+        $("#fEvents").value = "all";
+        renderEvents();
+      });
+
+      // Drivers
+      $("#qDrivers").addEventListener("input", renderDrivers);
+      $("#resetDrivers").addEventListener("click", () => {
+        $("#qDrivers").value = "";
+        renderDrivers();
+      });
+
+      // Suppliers
+      $("#qSup").addEventListener("input", renderSuppliers);
+      $("#fSup").addEventListener("change", renderSuppliers);
+      $("#resetSup").addEventListener("click", () => {
+        $("#qSup").value = "";
+        $("#fSup").value = "all";
+        renderSuppliers();
+      });
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    document.addEventListener("DOMContentLoaded", () => {
+      $("#year").textContent = new Date().getFullYear();
+
+      updateStats();
+      refreshProductTotal();
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Leaflet maps
+      initEuropeMap();
+      initSlovakiaMap();
+
+      // lists
+      wireUI();
+      renderEvents();
+      renderDrivers();
+      renderSuppliers();
+
+      // feed hydrate
+      hydrateSfxla();
+      setInterval(hydrateSfxla, 5 * 60 * 1000);
+    });
+  </script>
+
+  <!-- =========================
+       COBE Globe (Suppliers)
+       ========================= -->
+  <script type="module">
+    import createGlobe from "https://cdn.skypack.dev/cobe";
+
+    const canvas = document.getElementById("globeSuppliers");
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function fitCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    fitCanvas();
+    window.addEventListener("resize", fitCanvas);
+
+    // focus helper
     window.__globeFocus = {
       focusLat: null,
       focusLon: null,
       freezeUntil: 0,
-      focusFor: (lat, lon, ms=2800) => {
+      focusFor: (lat, lon, ms=3200) => {
         window.__globeFocus.focusLat = lat;
         window.__globeFocus.focusLon = lon;
         window.__globeFocus.freezeUntil = Date.now() + ms;
@@ -1352,393 +1308,74 @@
       }
     };
 
-    // =========================
-    // Helpers
-    // =========================
-    const $ = (s) => document.querySelector(s);
-    const grid = $("#grid");
-    const q = $("#q");
-    const type = $("#type");
-    const region = $("#region");
-    const reset = $("#reset");
+    const ALL = (window.ALL_SUP || null); // not used; we’ll read from DOM script context below
 
-    function escapeHTML(s){
-      return String(s ?? "").replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
-    }
+    // Pull data from the non-module script scope (safe)
+    const HUB_POINTS = (window.HUB_POINTS || []);
+    const SUPPLIERS = (window.SUPPLIERS || []);
+    const BRAND_PARTNERS = (window.BRAND_PARTNERS || []);
 
-    function leadLabel(arr){
-      if(!Array.isArray(arr) || arr.length<2) return "—";
-      const [a,b] = arr;
-      if(!Number.isFinite(a) || !Number.isFinite(b)) return "—";
-      return a===b ? `${a} dní` : `${a}–${b} dní`;
-    }
+    // If those aren’t on window (because of script scope), we reconstruct from DOM via fallback:
+    // (In most browsers, top-level consts are not on window; so we hard-fallback with inline extraction)
+    // We’ll instead read markers from dataset on body if needed. For now, we define a lightweight fallback list:
+    const FALLBACK = [
+      { id:"hub-ba", type:"hub", lat:48.148598, lon:17.107748 },
+      { id:"locked-dl", type:"locked", lat:48.0849246, lon:17.2590955 },
+      { id:"csr", type:"supplier", lat:51.1657, lon:10.4515 },
+      { id:"sfxla", type:"supplier", lat:34.0522, lon:-118.2437 },
+      { id:"skidnation", type:"brand", lat:48.148598, lon:17.107748 },
+      { id:"wisefab", type:"brand", lat:59.436962, lon:24.753574 },
+      { id:"odesacnc", type:"brand", lat:50.001, lon:18.463 },
+      { id:"darkside", type:"brand", lat:53.571788, lon:-1.382466 },
+      { id:"cybul", type:"brand", lat:52.401, lon:20.926 }
+    ];
 
-    function stockLabel(s){
-      if (s === "in_stock") return "Skladom";
-      if (s === "made_to_order") return "Na objednávku";
-      return "Mix";
-    }
+    const ENT = (Array.isArray(HUB_POINTS) && HUB_POINTS.length ? HUB_POINTS : [])
+      .concat(Array.isArray(SUPPLIERS) && SUPPLIERS.length ? SUPPLIERS : [])
+      .concat(Array.isArray(BRAND_PARTNERS) && BRAND_PARTNERS.length ? BRAND_PARTNERS : []);
 
-    function paymentLabel(entity){
-      // jednoduché pravidlo podľa tvojich požiadaviek:
-      if(entity.type === "supplier" && entity.stock === "made_to_order") return "Prevod (objednávka)";
-      if(entity.type === "supplier") return "Dobierka do 180€ / Prevod nad 180€";
-      return "—";
-    }
+    const ENTITIES = (ENT && ENT.length) ? ENT : FALLBACK;
 
-    function typeLabel(t){
-      return ({
-        supplier:"Dodávateľ",
-        brand:"Značka",
-        driver:"Jazdec",
-        event:"Event",
-        hub:"Hub",
-        locked:"Uzamknuté"
-      }[t] || "—");
-    }
-
-    function badgeForType(t){
-      // len vizuálne: dodávateľ červený, locked šedý, ostatné normálne
-      if(t === "supplier") return `<span class="badge red">DODÁVATEĽ</span>`;
-      if(t === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
-      if(t === "hub") return `<span class="badge count">HUB</span>`;
-      if(t === "event") return `<span class="badge count">EVENT</span>`;
-      if(t === "driver") return `<span class="badge count">JAZDEC</span>`;
-      return `<span class="badge count">ZNAČKA</span>`;
-    }
-
-    function statusBadge(x){
-      if(x.status === "feed") return `<span class="badge use">FEED</span>`;
-      if(x.status === "hard") return `<span class="badge use">HARD</span>`;
-      if(x.status === "locked") return `<span class="badge use">LOCK</span>`;
-      return `<span class="badge use">ACTIVE</span>`;
-    }
-
-    function cardHTML(x){
-      const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
-
-      let meta = [];
-      if(x.type === "supplier"){
-        meta = [
-          ["Dodanie", leadLabel(x.leadTimeDays)],
-          ["Doprava", (x.shippingModes||[]).join(" / ") || "—"],
-          ["Certifikát", x.certificates ? "Áno" : "Nie"],
-          ["Platba", paymentLabel(x)]
-        ];
-      }else if(x.type === "event"){
-        meta = [
-          ["Miesto", x.country || "—"],
-          ["Typ", "Slalom / Drift"],
-          ["Status", "Aktívne"],
-          ["Platba", "—"]
-        ];
-      }else{
-        meta = [
-          ["Typ", typeLabel(x.type)],
-          ["Región", x.region || "—"],
-          ["Báza", x.country || "—"],
-          ["Status", (x.status || "active").toUpperCase()]
-        ];
-      }
-
-      return `
-        <div class="card entity" data-id="${x.id}">
-          <div class="entityTop">
-            <div class="entityName">
-              <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
-              <span>${escapeHTML(typeLabel(x.type))} • ${escapeHTML(x.country || "—")} • ${escapeHTML(x.region || "—")}</span>
-            </div>
-            <div class="badges">
-              ${badgeForType(x.type)}
-              ${statusBadge(x)}
-              ${x.type === "supplier" ? `<span class="badge count">${(x.productsCount||0).toLocaleString("sk-SK")} PRODUKTOV</span>` : ``}
-            </div>
-          </div>
-
-          <div class="entityThumb">
-            ${img}
-            <div class="overlay"></div>
-          </div>
-
-          <div class="entityMeta">
-            ${meta.map(([k,v]) => `
-              <div class="metaItem">
-                <b>${escapeHTML(k)}</b>
-                <span>${escapeHTML(v)}</span>
-              </div>
-            `).join("")}
-          </div>
-
-          <p class="entityDesc">${escapeHTML(x.about)}</p>
-
-          <div class="entityFoot">
-            <span>klikni pre detail</span>
-            <i>OPEN →</i>
-          </div>
-        </div>
-      `;
-    }
-
-    function applyFilters(){
-      const qs = (q.value || "").trim().toLowerCase();
-      const t = type.value;
-      const r = region.value;
-
-      const out = ENTITIES.filter(x => {
-        const hay = [x.name, x.type, x.region, x.country, x.about].join(" ").toLowerCase();
-        const okQ = !qs || hay.includes(qs);
-        const okT = (t === "all") || (x.type === t);
-        const okR = (r === "all") || (x.region === r);
-        return okQ && okT && okR;
-      });
-
-      grid.innerHTML = out.map(cardHTML).join("");
-
-      grid.querySelectorAll(".entity").forEach(el => {
-        el.addEventListener("click", () => {
-          const ent = ENTITIES.find(x => x.id === el.dataset.id);
-          if(!ent) return;
-
-          if(typeof ent.lat === "number" && typeof ent.lon === "number"){
-            window.__globeFocus.focusFor(ent.lat, ent.lon, 3200);
-          }
-          openModal(ent.id);
-        });
-      });
-
-      renderMiniList(out);
-    }
-
-    // =========================
-    // Mini list (right panel)
-    // =========================
-    function miniRowHTML(x){
-      const sub = `${typeLabel(x.type)} • ${x.country || "—"} • ${x.region || "—"}`;
-      return `
-        <div class="miniItem" data-id="${x.id}">
-          <div class="miniLeft">
-            <b>${escapeHTML(x.name)}</b>
-            <span>${escapeHTML(sub)}</span>
-          </div>
-          <div class="miniRight">
-            <span class="miniBadge">${escapeHTML((x.status || "active").toUpperCase())}</span>
-            <span class="miniDot"></span>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMiniList(list){
-      const box = document.getElementById("miniList");
-      if(!box) return;
-
-      const sorted = [...list].slice(0,6);
-      box.innerHTML = sorted.map(miniRowHTML).join("");
-
-      box.querySelectorAll(".miniItem").forEach(el => {
-        el.addEventListener("click", () => {
-          const id = el.dataset.id;
-          const ent = ENTITIES.find(x => x.id === id);
-          if(!ent) return;
-
-          if(typeof ent.lat === "number" && typeof ent.lon === "number"){
-            window.__globeFocus.focusFor(ent.lat, ent.lon, 3200);
-          }
-          openModal(id);
-        });
-      });
-    }
-
-    // =========================
-    // Modal
-    // =========================
-    const modalBack = $("#modalBack");
-    const closeBtn = $("#close");
-
-    function openModal(id){
-      const x = ENTITIES.find(e => e.id === id);
-      if(!x) return;
-
-      $("#mName").textContent = x.name;
-      $("#mMeta").textContent = `${typeLabel(x.type)} • ${x.country || "—"} • ${x.region || "—"}`;
-
-      const btn = $("#mShopBtn");
-      btn.href = (x.url && x.url !== "#") ? x.url : "https://www.racem.sk";
-      btn.textContent = (x.url && x.url !== "#") ? "Otvoriť →" : "Otvoriť RACEM →";
-
-      const kv = [];
-      kv.push(["Typ", typeLabel(x.type)]);
-      kv.push(["Región", x.region || "—"]);
-      kv.push(["Báza", x.country || "—"]);
-      kv.push(["Status", (x.status || "active").toUpperCase()]);
-
-      if(x.type === "supplier"){
-        kv.push(["Produkty", (x.productsCount||0).toLocaleString("sk-SK")]);
-        kv.push(["Dodanie", leadLabel(x.leadTimeDays)]);
-        kv.push(["Doprava", (x.shippingModes||[]).join(" / ") || "—"]);
-        kv.push(["Sklad/obj.", stockLabel(x.stock)]);
-        kv.push(["Platba", paymentLabel(x)]);
-        kv.push(["Certifikát", x.certificates ? "Áno" : "Nie"]);
-      }
-
-      $("#mKV").innerHTML = kv.map(([k,v]) => `
-        <div class="item">
-          <b>${escapeHTML(k)}</b>
-          <span>${escapeHTML(v)}</span>
-        </div>
-      `).join("");
-
-      $("#mNotes").textContent = x.notes || "—";
-
-      const g = $("#mGallery");
-      const pics = (x.gallery||[]).slice(0,6);
-      g.innerHTML = pics.map(src => `<img src="${src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">`).join("");
-      if(!pics.length){
-        g.innerHTML = `<div style="color:var(--muted);font-size:13px;line-height:1.6;">Galéria zatiaľ nie je doplnená.</div>`;
-      }
-
-      modalBack.style.display = "flex";
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(){
-      modalBack.style.display = "none";
-      document.body.style.overflow = "";
-    }
-    closeBtn.addEventListener("click", closeModal);
-    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
-    window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
-
-    // =========================
-    // Stats + time
-    // =========================
-    function updateTime(){
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2,"0");
-      const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-      const el = document.getElementById("globeInfoTime");
-      if(el) el.textContent = `${t} • stav systému`;
-    }
-
-    function applyTopStats(sfxlaCountMaybe){
-      const sfxla = ENTITIES.find(e => e.id === "sfxla");
-      const csr = ENTITIES.find(e => e.id === "csr");
-      if(csr) csr.productsCount = HARD.csrCount;
-
-      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0)
-        ? sfxlaCountMaybe
-        : (sfxla?.productsCount || 0);
-
-      if(sfxla && sfxlaCount > 0) sfxla.productsCount = sfxlaCount;
-
-      const totalEntities = ENTITIES.length;
-      const totalProducts = HARD.csrCount + sfxlaCount;
-
-      $("#statTotalEntities").textContent = String(totalEntities);
-      $("#statProductsTotal").textContent = totalProducts.toLocaleString("sk-SK");
-      $("#statTopPlatforms").textContent = HARD.topPlatforms.join(", ");
-    }
-
-    async function hydrateSfxlaOnly(){
-      const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
-      if(!data){
-        applyTopStats(null);
-        applyFilters();
-        return;
-      }
-      const items = extractItemsFromAnyJSON(data);
-      const count = items.length || 0;
-      applyTopStats(count);
-      applyFilters();
-    }
-
-    // Wire UI
-    q.addEventListener("input", applyFilters);
-    type.addEventListener("change", applyFilters);
-    region.addEventListener("change", applyFilters);
-
-    reset.addEventListener("click", () => {
-      q.value = "";
-      type.value = "all";
-      region.value = "all";
-      applyFilters();
-    });
-
-    // init
-    $("#year").textContent = new Date().getFullYear();
-    applyTopStats(null);
-    applyFilters();
-
-    updateTime();
-    setInterval(updateTime, 1000);
-
-    hydrateSfxlaOnly();
-    setInterval(hydrateSfxlaOnly, 5 * 60 * 1000);
-  </script>
-
-  <!-- ===== COBE Globe (zoom + focus) ===== -->
-  <script type="module">
-    import createGlobe from "https://cdn.skypack.dev/cobe";
-
-    const canvas = document.getElementById("globe");
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    function fitCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-    }
-    fitCanvas();
-    window.addEventListener("resize", fitCanvas);
-
-    const ENTITIES = window.ENTITIES || [];
-    const focus = window.__globeFocus;
-
-    // Zoom (scale)
-    let globeScale = 1.08;        // default zoom
-    const minScale = 0.92;
-    const maxScale = 1.65;
+    // Zoom (complete wheel zoom)
+    let globeScale = 1.12;
+    const minScale = 0.85;
+    const maxScale = 1.85;
 
     canvas.addEventListener("wheel", (e) => {
       e.preventDefault();
       const delta = Math.sign(e.deltaY);
-      globeScale += (delta > 0 ? -0.07 : 0.07);
+      globeScale += (delta > 0 ? -0.08 : 0.08);
       globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
     }, { passive:false });
 
-    // Marker colors per type (normalized RGB 0..1)
+    // Marker styling
     const COLORS = {
-      supplier: [1.0, 0.17, 0.19],       // red
-      brand:    [0.29, 0.64, 1.00],      // blue
-      driver:   [0.18, 0.86, 0.52],      // green
-      event:    [0.95, 0.78, 0.06],      // yellow
-      hub:      [1.0, 0.17, 0.19],       // red (hub = racem)
-      locked:   [0.65, 0.65, 0.65]       // gray
+      supplier: [1.0, 0.17, 0.19],
+      brand:    [0.95, 0.78, 0.06], // yellow-ish for partners
+      hub:      [1.0, 0.17, 0.19],
+      locked:   [0.65, 0.65, 0.65]
     };
 
     function sizeByType(t){
-      if(t === "hub") return 0.14;
-      if(t === "supplier") return 0.12;
-      if(t === "event") return 0.105;
+      if(t === "hub") return 0.145;
+      if(t === "supplier") return 0.125;
       if(t === "locked") return 0.095;
       return 0.095;
     }
 
-    function buildMarkers(now=Date.now()) {
-      // jemné pulzy len pre hub + supplier, nech to nevyzerá ako disco
+    function buildMarkers(now=Date.now()){
       const pulse = (base, amp, speed) => base + (Math.sin(now / speed) * amp);
 
       return ENTITIES
         .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
         .map(e => {
-          let s = sizeByType(e.type);
-          if(e.type === "hub") s = pulse(s, 0.020, 260);
-          if(e.type === "supplier") s = pulse(s, 0.012, 420);
+          let size = sizeByType(e.type);
+          if(e.type === "hub") size = pulse(size, 0.020, 260);
+          if(e.type === "supplier") size = pulse(size, 0.012, 420);
+
           return {
             location: [e.lat, e.lon],
-            size: s,
+            size,
             color: COLORS[e.type] || COLORS.brand
           };
         });
@@ -1750,14 +1387,17 @@
       return { phi, theta };
     }
 
-    let currentPhi = -1.25; // start so EU+US are visible
-    let currentTheta = 0.20;
+    // Default angle so EU is nicely visible, US still in reach by rotate
+    let currentPhi = -1.18;
+    let currentTheta = 0.18;
 
+    // Drag rotate
     let dragging = false;
     let dragStartX = 0;
     let dragPhiStart = 0;
 
-    // NOTE: markerColor is global fallback, but each marker can have `color`.
+    const focus = window.__globeFocus;
+
     createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: canvas.width,
@@ -1773,7 +1413,7 @@
 
       baseColor: [0.08, 0.09, 0.10],
       glowColor: [0.70, 0.10, 0.12],
-      markerColor: [1.0, 0.17, 0.19],
+      markerColor: [1.0, 0.17, 0.19], // fallback
       backgroundColor: [0, 0, 0, 0],
 
       markers: buildMarkers(Date.now()),
@@ -1781,29 +1421,28 @@
       onRender: (state) => {
         state.width = canvas.width;
         state.height = canvas.height;
-
-        // apply zoom
         state.scale = globeScale;
 
         const now = Date.now();
-        const hasFocus = focus
-          && typeof focus.focusLat === "number"
-          && typeof focus.focusLon === "number"
-          && now < focus.freezeUntil;
+        const hasFocus =
+          focus &&
+          typeof focus.focusLat === "number" &&
+          typeof focus.focusLon === "number" &&
+          now < focus.freezeUntil;
 
         if(hasFocus){
           const t = latLonToPhiTheta(focus.focusLat, focus.focusLon);
           const targetPhi = t.phi;
           const targetTheta = Math.max(-1.2, Math.min(1.2, -t.theta * 0.55));
 
-          currentPhi += (targetPhi - currentPhi) * 0.07;
-          currentTheta += (targetTheta - currentTheta) * 0.07;
+          currentPhi += (targetPhi - currentPhi) * 0.08;
+          currentTheta += (targetTheta - currentTheta) * 0.08;
 
           state.phi = currentPhi;
           state.theta = currentTheta;
-        } else {
+        }else{
           if(focus && now >= focus.freezeUntil) focus.clear();
-          if (!dragging) currentPhi += 0.0022;
+          if(!dragging) currentPhi += 0.0022; // smooth auto-rotate
           state.phi = currentPhi;
           state.theta = currentTheta;
         }
@@ -1830,10 +1469,19 @@
       canvas.style.cursor = "grab";
     });
     canvas.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
+      if(!dragging) return;
       const dx = e.clientX - dragStartX;
       currentPhi = dragPhiStart + dx * 0.006;
     });
+  </script>
+
+  <!-- expose data to module if you want (optional) -->
+  <script>
+    // Optional: put arrays on window so the module can use exact data (instead of fallback)
+    window.HUB_POINTS = window.HUB_POINTS || (typeof HUB_POINTS !== "undefined" ? HUB_POINTS : []);
+    window.SUPPLIERS  = window.SUPPLIERS  || (typeof SUPPLIERS !== "undefined" ? SUPPLIERS : []);
+    window.BRAND_PARTNERS = window.BRAND_PARTNERS || (typeof BRAND_PARTNERS !== "undefined" ? BRAND_PARTNERS : []);
+    window.ALL_SUP = window.ALL_SUP || (typeof ALL_SUP !== "undefined" ? ALL_SUP : []);
   </script>
 </body>
 </html>
