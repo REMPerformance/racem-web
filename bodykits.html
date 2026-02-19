@@ -224,26 +224,13 @@
       flex-direction:column;
       gap:10px;
       overflow:hidden;
-      position:relative;
     }
-    /* lepší "vpravo" look: jemný gradient + top border line */
-    .heroRight:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 320px at 80% 0%, rgba(255,43,47,.14), transparent 62%),
-        radial-gradient(520px 260px at 30% 30%, rgba(179,31,36,.14), transparent 62%);
-      pointer-events:none;
-      opacity:.95;
-    }
-    .heroRight > *{position:relative;}
-
     .rightTop{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       padding:10px 12px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18));
+      background: rgba(255,255,255,.04);
     }
     .rightTop b{
       font-size:12px;
@@ -260,12 +247,23 @@
     /* CTA box */
     .ctaBox{
       border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(700px 260px at 20% 0%, rgba(179,31,36,.20), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.22));
+      background: radial-gradient(600px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%), rgba(0,0,0,.14);
       border-radius: 16px;
       padding: 14px;
+      position:relative;
+      overflow:hidden;
     }
+    .ctaBox:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 340px at 70% 20%, rgba(255,43,47,.12), transparent 62%),
+        radial-gradient(700px 300px at 10% 80%, rgba(179,31,36,.12), transparent 62%);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .ctaBox > *{ position:relative; }
+
     .ctaBox h3{
       margin:0 0 8px;
       font-family: Oswald, sans-serif;
@@ -334,84 +332,6 @@
     }
     .btn2.ghost:hover{transform:none; border-color: rgba(179,31,36,.45);}
 
-    /* CONTACT MODAL */
-    .modal{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.62);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:9999;
-    }
-    .modal.open{display:flex;}
-    .modalCard{
-      width:min(760px, 100%);
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(900px 360px at 10% 0%, rgba(179,31,36,.20), transparent 60%),
-        rgba(10,10,12,.88);
-      box-shadow: 0 30px 120px rgba(0,0,0,.75);
-      backdrop-filter: blur(14px);
-      overflow:hidden;
-    }
-    .modalHead{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      padding:14px 14px 10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .modalHead b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:14px;
-    }
-    .xbtn{
-      width:38px;height:38px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.88);
-      cursor:pointer;
-      display:grid; place-items:center;
-    }
-    .xbtn:hover{border-color: rgba(179,31,36,.55)}
-    .modalBody{padding:14px;}
-    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
-    .in{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      padding: 12px 12px;
-      outline:none;
-      font-size:13px;
-      letter-spacing:.06em;
-    }
-    textarea.in{min-height:120px; resize:vertical;}
-    .help{
-      margin-top:10px;
-      color: rgba(255,255,255,.62);
-      font-size:12px;
-      line-height:1.55;
-    }
-    .modalActions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-      padding: 0 14px 14px;
-    }
-    .mini{
-      color: rgba(255,255,255,.60);
-      font-size:12px;
-      letter-spacing:.06em;
-      margin-right:auto;
-    }
-
     section.block{padding: 14px 0 26px;}
     .sectionTitle{
       display:flex; align-items:end; justify-content:space-between;
@@ -454,7 +374,7 @@
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
     }
-    .field input{
+    .field input, .field textarea{
       width:100%;
       background:transparent;
       border:0;
@@ -462,6 +382,7 @@
       color:var(--text);
       font-size:13px;
       letter-spacing:.06em;
+      resize:none;
     }
     .select{
       flex:0 0 260px;
@@ -556,6 +477,7 @@
       color: var(--muted);
       font-size:13px;
       line-height:1.6;
+      white-space:pre-line;
     }
 
     .mapCard{padding: 12px; display:grid; gap:10px;}
@@ -628,7 +550,9 @@
         0 0 0 8px rgba(255,255,255,.07),
         0 0 30px rgba(255,43,47,.20);
     }
-    .gpt:active{transform: translate(-50%, -50%) scale(0.98);}
+    .gpt:active{
+      transform: translate(-50%, -50%) scale(0.98);
+    }
     .gpt .core{
       width: 10px;
       height: 10px;
@@ -655,7 +579,9 @@
       background: #0b0b0d;
       font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
-    .leaflet-tile{filter: contrast(1.08) saturate(1.05) brightness(0.95);}
+    .leaflet-tile{
+      filter: contrast(1.08) saturate(1.05) brightness(0.95);
+    }
     .leaflet-control-zoom a{
       background: rgba(10,10,12,.78) !important;
       color: rgba(255,255,255,.88) !important;
@@ -680,9 +606,27 @@
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: 0 30px 90px rgba(0,0,0,.7);
     }
-    .popTitle{font-family: Oswald, sans-serif; letter-spacing:.06em; font-size:16px; margin:0 0 6px;}
-    .popMeta{color: rgba(255,255,255,.65); font-size:12px; letter-spacing:.10em; text-transform:uppercase; margin-bottom:8px;}
-    .popDesc{color: rgba(255,255,255,.70); font-size:13px; line-height:1.55; margin:0;}
+    .popTitle{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.06em;
+      font-size:16px;
+      margin:0 0 6px;
+    }
+    .popMeta{
+      color: rgba(255,255,255,.65);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      white-space:pre-line;
+    }
+    .popDesc{
+      color: rgba(255,255,255,.70);
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      white-space:pre-line;
+    }
 
     footer{
       padding: 22px 0 40px;
@@ -691,11 +635,60 @@
       letter-spacing:.06em;
     }
 
+    /* Contact modal */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.68);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .modalBack[data-open="1"]{display:flex;}
+    .modal{
+      width:min(760px, 100%);
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(800px 320px at 20% 0%, rgba(179,31,36,.20), transparent 62%),
+        rgba(10,10,12,.92);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 40px 120px rgba(0,0,0,.75);
+      overflow:hidden;
+    }
+    .modalHead{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .modalHead b{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:14px;
+    }
+    .xBtn{
+      width:38px;height:38px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.85);
+      cursor:pointer;
+    }
+    .xBtn:hover{border-color: rgba(179,31,36,.45)}
+    .modalBody{padding:14px; display:grid; gap:10px;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    .helperNote{
+      color: rgba(255,255,255,.62);
+      font-size:12px;
+      line-height:1.5;
+      letter-spacing:.04em;
+    }
+
     @media (max-width: 980px){
       .heroGrid{grid-template-columns: 1fr;}
       .secGrid{grid-template-columns: 1fr;}
       #globeWrap, #mapEurope, #mapSlovakia{height: 420px;}
-      .grid2{grid-template-columns: 1fr;}
     }
     @media (max-width: 560px){
       h1{font-size:28px}
@@ -703,6 +696,7 @@
       #globeWrap, #mapEurope, #mapSlovakia{height: 360px;}
       .gpt{width:28px;height:28px;}
       .gpt .core{width:9px;height:9px;}
+      .grid2{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -731,7 +725,7 @@
       <!-- HERO -->
       <section class="hero">
         <div class="heroGrid">
-          <!-- LEFT -->
+          <!-- LEFT: clean overview -->
           <div class="card heroLeft">
             <div class="kicker"><span class="dot"></span> RACEM GROUP • network hub</div>
 
@@ -756,10 +750,10 @@
                   </div>
                   <div class="rowTitle">
                     <b>Hub</b>
-                    <span>Bratislava + Piešťany (uzamknuté)</span>
+                    <span>Bratislava + Piešťany</span>
                   </div>
                 </div>
-                <div class="rowValue" id="statHub">2</div>
+                <div class="rowValue" id="statHub">—</div>
               </div>
 
               <div class="rowCard">
@@ -789,7 +783,7 @@
                   </div>
                   <div class="rowTitle">
                     <b>Eventy</b>
-                    <span>názov • dátum • mesto • ľudia (auto-mapa)</span>
+                    <span>eventy + automatická účasť jazdcov (mesto + dátum)</span>
                   </div>
                 </div>
                 <div class="rowValue" id="statEvents">—</div>
@@ -813,7 +807,7 @@
             </div>
           </div>
 
-          <!-- RIGHT -->
+          <!-- RIGHT: Membership / contact CTA -->
           <div class="card heroRight">
             <div class="rightTop">
               <b>Členstvo v RACEM GROUP</b>
@@ -823,13 +817,13 @@
             <div class="ctaBox">
               <h3>Chceš byť v sieti?</h3>
               <p>
-                Ak chceš byť <b>viditeľný na Slovensku, v Európe aj vo svete</b>, pridáme ťa do siete:
-                mapy, profil, obsah z akcií a reálne prepojenie na dopyty.
-                Pre <b>garáže</b>, <b>jazdcov</b>, <b>eventy</b>, <b>značky</b> aj <b>dodávateľov</b>.
+                Ak si <b>garáž</b>, <b>jazdec</b>, <b>dodávateľ</b>, <b>event</b> alebo <b>značka</b> a chceš
+                <b>byť viditeľný v Európe aj vo svete</b> (mapy, prezentácie, obsah),
+                ozvi sa. Zaradíme ťa do RACEM GROUP a navrhneme spoluprácu podľa možností.
               </p>
 
               <div class="ctaActions">
-                <span class="pill"><i></i> Garáž / Workshop</span>
+                <span class="pill"><i></i> Garaz / Workshop</span>
                 <span class="pill"><i></i> Jazdec</span>
                 <span class="pill"><i></i> Dodávateľ</span>
                 <span class="pill"><i></i> Event</span>
@@ -838,13 +832,13 @@
 
               <div class="ctaActions" style="margin-top:14px;">
                 <button class="btn2" id="openContact">
-                  Kontaktovať → otvorí formulár
+                  Kontaktovať → formulár
                 </button>
                 <a class="btn2 ghost" href="#dodavatelia">Pozrieť sieť →</a>
               </div>
 
               <div style="margin-top:12px;color:rgba(255,255,255,.60);font-size:12px;line-height:1.55;letter-spacing:.04em;">
-                Tip: stačí IG/web + mesto + čo robíš + čo chceš riešiť. My navrhneme formu spolupráce.
+                Tip: pošli krátko čo robíš + IG/web + lokalitu + čo chceš propagovať / predávať. My ti navrhneme formu spolupráce.
               </div>
             </div>
 
@@ -853,10 +847,10 @@
                 Čo vieme priniesť
               </div>
               <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
-                • Viditeľnosť na eventoch + v RACEM mapách (EU / SK / World)<br>
-                • Väčšia šanca na predaj (dopyty, prelink, promo)<br>
-                • Obsah z akcií: foto/video, prezdielanie, reels<br>
-                • Spolupráce a sponzoring podľa dohody a možností
+                • Viditeľnosť v RACEM mapách (EU / SK / World)<br>
+                • Produktová prezentácia + prelink na shop / dopyt<br>
+                • Obsah z akcií, reálne autá, reálne použitie dielov<br>
+                • Spolupráce: jazdci, garáže, eventy, dodávatelia (podľa dohody)
               </div>
             </div>
           </div>
@@ -867,7 +861,7 @@
       <section id="eventy" class="block">
         <div class="sectionTitle">
           <h2>Eventy (Európa)</h2>
-          <p>Pridáš event do poľa → automaticky sa zobrazí v liste aj na mape podľa mesta.</p>
+          <p>Eventy + automatické „Zúčastnia sa“ podľa zhody (mesto + dátum). Mapa je uzamknutá len na Európu.</p>
         </div>
 
         <div class="secGrid">
@@ -875,7 +869,7 @@
             <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
               <div class="field">
                 <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-                <input id="qEvents" type="text" placeholder="napr. Piešťany, drift, trackday..." autocomplete="off" />
+                <input id="qEvents" type="text" placeholder="napr. Prievidza, Trenčín, trackday..." autocomplete="off" />
               </div>
               <select id="fEvents" class="select" title="Filter">
                 <option value="all">Všetko</option>
@@ -908,7 +902,7 @@
       <section id="jazdci" class="block">
         <div class="sectionTitle">
           <h2>Jazdci (Slovensko)</h2>
-          <p>Pridáš jazdca s mestom → automaticky sa ukáže na mape SR.</p>
+          <p>Jazdci + ich eventy (automaticky napojené). Mapa je uzamknutá na hranice SR.</p>
         </div>
 
         <div class="secGrid">
@@ -997,32 +991,50 @@
   </main>
 
   <!-- CONTACT MODAL -->
-  <div class="modal" id="contactModal" aria-hidden="true">
-    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Kontaktovať RACEM GROUP">
+  <div class="modalBack" id="contactModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Kontakt formulár">
       <div class="modalHead">
         <b>Kontakt • RACEM GROUP</b>
-        <button class="xbtn" id="closeContact" aria-label="Zavrieť">✕</button>
+        <button class="xBtn" id="closeContact" aria-label="Zavrieť">✕</button>
       </div>
+
       <div class="modalBody">
         <div class="grid2">
-          <input class="in" id="cType" placeholder="Typ (garáž / jazdec / dodávateľ / event / značka)" />
-          <input class="in" id="cCity" placeholder="Mesto / krajina (napr. Piešťany, Bratislava, Praha…)" />
+          <div class="field">
+            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Meno</span>
+            <input id="cName" type="text" placeholder="Tvoje meno / názov" autocomplete="off" />
+          </div>
+          <div class="field">
+            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Typ</span>
+            <input id="cType" type="text" placeholder="garáž / jazdec / dodávateľ / event / značka" autocomplete="off" />
+          </div>
         </div>
-        <div class="grid2" style="margin-top:10px;">
-          <input class="in" id="cName" placeholder="Názov / meno" />
-          <input class="in" id="cLink" placeholder="IG / web link" />
-        </div>
-        <textarea class="in" id="cMsg" style="margin-top:10px;" placeholder="Stručne: čo robíš a čo chceš riešiť (predaj, promo, výroba, event…)"></textarea>
 
-        <div class="help">
-          Odoslanie je spravené cez mailto (aby to fungovalo všade bez backendu). Ak chceš neskôr,
-          spravím to na Formspree / Netlify Forms / vlastný endpoint.
+        <div class="grid2">
+          <div class="field">
+            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Mesto</span>
+            <input id="cCity" type="text" placeholder="napr. Trenčín" autocomplete="off" />
+          </div>
+          <div class="field">
+            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">IG / Web</span>
+            <input id="cLink" type="text" placeholder="https://..." autocomplete="off" />
+          </div>
         </div>
-      </div>
-      <div class="modalActions">
-        <div class="mini">Email: info@remperformance.sk</div>
-        <button class="btn2 ghost" id="copyEmail">Kopírovať email</button>
-        <button class="btn2" id="sendContact">Odoslať</button>
+
+        <div class="field" style="align-items:flex-start;">
+          <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase; padding-top:2px;">Správa</span>
+          <textarea id="cMsg" rows="5" placeholder="Čo robíš, čo chceš propagovať/predávať, aký je cieľ spolupráce..."></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div class="helperNote">
+            Odoslanie otvorí e-mail s predvyplneným obsahom na <b>info@remperformance.sk</b>.
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn ghost" id="contactClear">Vyčistiť</button>
+            <button class="btn" id="contactSend">Odoslať</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1035,79 +1047,89 @@
     const DARK_ATTR  = "&copy; OpenStreetMap contributors &copy; CARTO";
 
     // =========================
-    // DATA (pridávaj sem a mapa sa spraví sama)
+    // DATA (Dodávatelia nechávam ako máš)
     // =========================
-
-    // HUB: Bratislava + Piešťany (ako si chcel)
     const HUB_POINTS = [
       {
         id:"hub-ba",
         type:"hub",
         name:"RACEM HUB",
         where:"Bratislava (SK)",
-        city:"Bratislava, Slovakia",
         region:"SK",
-        lat: null,
-        lon: null,
-        about:"Centrála / hub – koordinácia partnerov, obsahu, objednávok a logistiky."
+        city:"Bratislava, Slovakia",
+        lat: 48.148598,
+        lon: 17.107748,
+        about:"Centrála / hub – koordinácia objednávok, partnerov, obsahu a logistiky."
       },
       {
         id:"hub-pn",
         type:"hub",
         name:"RACEM HUB",
         where:"Piešťany (SK)",
-        city:"Piešťany, Slovakia",
         region:"SK",
-        lat: null,
-        lon: null,
-        about:"Lokálny hub pre content, autá, eventy a komunitu."
+        city:"Piešťany, Slovakia",
+        lat: 48.5904,
+        lon: 17.8320,
+        about:"Hub / zázemie – content, stretnutia, logistika podľa potreby."
       }
     ];
 
-    // EVENTY: pridaj len city + date + people, súradnice sa dopočítajú
-    const EVENTS = [
+    // =========================
+    // EDITUJ IBA TOTO (DB)
+    // =========================
+
+    // Jazdci: meno, mesto, auto, číslo, bio, účasť (mesto + dátum alebo eventId)
+    const JAZDCI_DB = [
       {
-        id:"sadka-pd",
-        status:"attend",
-        name:"SADKA Prievidza",
-        where:"Prievidza (SK)",
-        city:"Prievidza, Slovakia",
-        date:"2026-04-12",
-        people:120,
-        lat: null,
-        lon: null,
-        about:"Drift / slalom day. Lokálna scéna + tréning.",
-        tag:"Zúčastníme sa"
+        id: "rado-panak",
+        meno: "Rado Panák",
+        mesto: "Trenčín, Slovakia",
+        auto: "BMW E36",
+        cislo: "46",
+        bio: "Drift jazdec – spolupráca / obsah / promo.",
+        ucast: [
+          { mesto: "Prievidza, Slovakia", datum: "2026-04-12" },
+          { mesto: "Trenčín, Slovakia", datum: "2026-06-21" }
+        ]
+      }
+      // ďalší jazdci:
+      // { id:"...", meno:"...", mesto:"...", auto:"...", cislo:"...", bio:"...", ucast:[{mesto:"...", datum:"YYYY-MM-DD"}] }
+    ];
+
+    // Eventy: názov, miesto, mesto (na párovanie), dátum, popis
+    const EVENTS_DB = [
+      {
+        id: "sadka-pd",
+        status: "attend",
+        nazov: "SADKA Prievidza",
+        miesto: "Prievidza (SK)",
+        mesto: "Prievidza, Slovakia",
+        datum: "2026-04-12",
+        popis: "Drift / slalom day. Lokálna scéna + tréning."
       },
       {
-        id:"powerfest-tn",
-        status:"plan",
-        name:"PowerFest Trenčín",
-        where:"Trenčín (SK)",
-        city:"Trenčín, Slovakia",
-        date:"2026-06-21",
-        people:800,
-        lat: null,
-        lon: null,
-        about:"Showcase + promo. (Uprav dátum/desc podľa reality.)",
-        tag:"Plánujeme"
-      }
-    ];
-
-    // JAZDCI: zatiaľ len Rado Panák
-    const DRIVERS = [
+        id: "powerfest-tn",
+        status: "plan",
+        nazov: "PowerFest Trenčín",
+        miesto: "Trenčín (SK)",
+        mesto: "Trenčín, Slovakia",
+        datum: "2026-06-21",
+        popis: "Showcase + promo. (Uprav podľa reality.)"
+      },
       {
-        id:"rado-panak",
-        name:"Rado Panák",
-        where:"Trenčín (SK)",
-        city:"Trenčín, Slovakia",
-        lat: null,
-        lon: null,
-        about:"Drift jazdec – spolupráca / obsah / promo.",
-        car:"—"
+        id:"cz-trackday",
+        status:"plan",
+        nazov:"Trackday CZ (príklad)",
+        miesto:"Česko (CZ)",
+        mesto:"Czech Republic",
+        datum:"2026-08-10",
+        popis:"Test dielov + content. (Príklad.)"
       }
     ];
 
+    // =========================
+    // Dodávatelia (nezmenené)
+    // =========================
     const HARD = { csrCount: 14684 };
     const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
 
@@ -1191,104 +1213,17 @@
       return d.toLocaleDateString("sk-SK", { year:"numeric", month:"2-digit", day:"2-digit" });
     }
 
-    // =========================
-    // CONTACT MODAL logic
-    // =========================
-    function openModal(){
-      const m = $("#contactModal");
-      m.classList.add("open");
-      m.setAttribute("aria-hidden", "false");
-    }
-    function closeModal(){
-      const m = $("#contactModal");
-      m.classList.remove("open");
-      m.setAttribute("aria-hidden", "true");
-    }
-    function buildMailto(){
-      const type = ($("#cType").value||"").trim();
-      const city = ($("#cCity").value||"").trim();
-      const name = ($("#cName").value||"").trim();
-      const link = ($("#cLink").value||"").trim();
-      const msg  = ($("#cMsg").value||"").trim();
-
-      const subject = `RACEM GROUP – členstvo / spolupráca (${type || "—"})`;
-      const body = [
-        `Ahoj,`,
-        ``,
-        `Mám záujem o členstvo / spoluprácu v RACEM GROUP.`,
-        ``,
-        `Typ: ${type || "—"}`,
-        `Mesto: ${city || "—"}`,
-        `Názov/Meno: ${name || "—"}`,
-        `IG/Web: ${link || "—"}`,
-        ``,
-        `Správa:`,
-        msg || "—",
-        ``,
-        `Ďakujem`
-      ].join("\n");
-
-      return `mailto:info@remperformance.sk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
-
-    // =========================
-    // GEO: auto lat/lon podľa mesta (OSM Nominatim)
-    // =========================
-    const GEO_CACHE = new Map(); // key -> {lat,lon}
-    const GEO_INFLIGHT = new Map();
-
-    async function geocodeCity(city){
-      const key = (city||"").trim().toLowerCase();
-      if(!key) return null;
-      if(GEO_CACHE.has(key)) return GEO_CACHE.get(key);
-      if(GEO_INFLIGHT.has(key)) return GEO_INFLIGHT.get(key);
-
-      const p = (async ()=>{
-        try{
-          const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(city)}`;
-          const res = await fetch(url, {
-            headers: { "Accept":"application/json" }
-          });
-          if(!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          if(!Array.isArray(data) || !data[0]) return null;
-          const out = { lat: Number(data[0].lat), lon: Number(data[0].lon) };
-          if(Number.isFinite(out.lat) && Number.isFinite(out.lon)){
-            GEO_CACHE.set(key, out);
-            return out;
-          }
-          return null;
-        }catch(e){
-          console.warn("[geocode] failed", city, e);
-          return null;
-        }finally{
-          GEO_INFLIGHT.delete(key);
-        }
-      })();
-
-      GEO_INFLIGHT.set(key, p);
-      return p;
-    }
-
-    async function ensureCoords(arr, defaultCountryHint){
-      // defaultCountryHint len pre text (nepoužívam do query, nech si to riešiš explicitne v city stringu)
-      const tasks = arr.map(async (x) => {
-        if(typeof x.lat === "number" && typeof x.lon === "number") return x;
-        if(!x.city) return x;
-        const r = await geocodeCity(x.city);
-        if(r){
-          x.lat = r.lat;
-          x.lon = r.lon;
-        }
-        return x;
-      });
-      await Promise.all(tasks);
+    function normKeyCityDate(city, date){
+      const c = String(city||"").trim().toLowerCase().replace(/\s+/g," ");
+      const d = String(date||"").trim();
+      return `${c}__${d}`;
     }
 
     // =========================
     // STATS
     // =========================
     function updateStats(){
+      $("#statHub").textContent = String(HUB_POINTS.length);
       $("#statEvents").textContent = String(EVENTS.length);
       $("#statDrivers").textContent = String(DRIVERS.length);
       $("#statSuppliers").textContent = String(SUPPLIERS.length + BRAND_PARTNERS.length);
@@ -1301,7 +1236,54 @@
     }
 
     // =========================
-    // FEED hydrate (SFXLA)
+    // CONTACT MODAL (mailto builder)
+    // =========================
+    function openModal(){
+      const m = $("#contactModal");
+      m.setAttribute("data-open","1");
+      m.setAttribute("aria-hidden","false");
+    }
+    function closeModal(){
+      const m = $("#contactModal");
+      m.removeAttribute("data-open");
+      m.setAttribute("aria-hidden","true");
+    }
+    function clearContact(){
+      $("#cName").value = "";
+      $("#cType").value = "";
+      $("#cCity").value = "";
+      $("#cLink").value = "";
+      $("#cMsg").value = "";
+    }
+    function sendContact(){
+      const name = ($("#cName").value||"").trim();
+      const type = ($("#cType").value||"").trim();
+      const city = ($("#cCity").value||"").trim();
+      const link = ($("#cLink").value||"").trim();
+      const msg  = ($("#cMsg").value||"").trim();
+
+      const subject = `RACEM GROUP – členstvo / spolupráca (${type || "info"})`;
+      const body =
+`Ahoj,
+
+Mám záujem o členstvo/spoluprácu v RACEM GROUP.
+
+Meno / názov: ${name || "—"}
+Typ: ${type || "—"}
+Mesto: ${city || "—"}
+IG / Web: ${link || "—"}
+
+Správa:
+${msg || "—"}
+
+Ďakujem.`;
+
+      const mailto = `mailto:info@remperformance.sk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    }
+
+    // =========================
+    // FEED hydrate (SFXLA) – nezmenené
     // =========================
     async function safeFetchJSON(url){
       try{
@@ -1337,6 +1319,134 @@
     }
 
     // =========================
+    // GEO: lokálny cache + fallback na Nominatim (len ak mesto nemáš v tabuľke)
+    // =========================
+    const CITY_COORDS = {
+      "bratislava, slovakia": { lat:48.148598, lon:17.107748 },
+      "piešťany, slovakia":   { lat:48.5904,   lon:17.8320   },
+      "piestany, slovakia":   { lat:48.5904,   lon:17.8320   },
+      "trenčín, slovakia":    { lat:48.8945,   lon:18.0444   },
+      "trencin, slovakia":    { lat:48.8945,   lon:18.0444   },
+      "prievidza, slovakia":  { lat:48.7745206,lon:18.6245383}
+    };
+
+    const GEO_CACHE = new Map();
+    const GEO_INFLIGHT = new Map();
+
+    async function geocodeCity(city){
+      const keyRaw = String(city||"").trim().toLowerCase().replace(/\s+/g," ");
+      if(!keyRaw) return null;
+
+      // 1) lokálna tabuľka
+      if(CITY_COORDS[keyRaw]) return CITY_COORDS[keyRaw];
+
+      // 2) cache
+      if(GEO_CACHE.has(keyRaw)) return GEO_CACHE.get(keyRaw);
+      if(GEO_INFLIGHT.has(keyRaw)) return GEO_INFLIGHT.get(keyRaw);
+
+      // 3) fallback: Nominatim
+      const p = (async ()=>{
+        try{
+          const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(city)}`;
+          const res = await fetch(url, { headers: { "Accept":"application/json" } });
+          if(!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if(!Array.isArray(data) || !data[0]) return null;
+          const out = { lat: Number(data[0].lat), lon: Number(data[0].lon) };
+          if(Number.isFinite(out.lat) && Number.isFinite(out.lon)){
+            GEO_CACHE.set(keyRaw, out);
+            return out;
+          }
+          return null;
+        }catch(e){
+          console.warn("[geocode] failed", city, e);
+          return null;
+        }finally{
+          GEO_INFLIGHT.delete(keyRaw);
+        }
+      })();
+
+      GEO_INFLIGHT.set(keyRaw, p);
+      return p;
+    }
+
+    // =========================
+    // BUILD MODEL: Jazdci + Eventy + auto matching
+    // =========================
+    let DRIVERS = [];
+    let EVENTS  = [];
+
+    function buildModels(){
+      DRIVERS = JAZDCI_DB.map(d => ({
+        id: d.id,
+        name: d.meno,
+        city: d.mesto,
+        where: d.mesto.includes("Slovakia") ? d.mesto.replace(", Slovakia"," (SK)") : d.mesto,
+        car: d.auto,
+        number: d.cislo,
+        about: d.bio || "",
+        ucast: Array.isArray(d.ucast) ? d.ucast : [],
+        lat: (typeof d.lat === "number") ? d.lat : null,
+        lon: (typeof d.lon === "number") ? d.lon : null
+      }));
+
+      EVENTS = EVENTS_DB.map(e => ({
+        id: e.id,
+        status: e.status,
+        name: e.nazov,
+        where: e.miesto,
+        city: e.mesto,
+        date: e.datum,
+        about: e.popis || "",
+        tag: (e.status === "attend") ? "Zúčastníme sa" : "Plánujeme",
+        lat: (typeof e.lat === "number") ? e.lat : null,
+        lon: (typeof e.lon === "number") ? e.lon : null,
+        participants: []
+      }));
+
+      const idxCityDate = new Map();
+      const idxEventId  = new Map();
+
+      DRIVERS.forEach(d => {
+        d.ucast.forEach(u => {
+          if(u && u.eventId){
+            const arr = idxEventId.get(u.eventId) || [];
+            arr.push(d);
+            idxEventId.set(u.eventId, arr);
+          } else if(u && u.mesto && u.datum){
+            const k = normKeyCityDate(u.mesto, u.datum);
+            const arr = idxCityDate.get(k) || [];
+            arr.push(d);
+            idxCityDate.set(k, arr);
+          }
+        });
+      });
+
+      EVENTS.forEach(ev => {
+        const a = idxEventId.get(ev.id) || [];
+        const b = idxCityDate.get(normKeyCityDate(ev.city, ev.date)) || [];
+        const merged = new Map();
+        [...a, ...b].forEach(d => merged.set(d.id, d));
+        ev.participants = [...merged.values()];
+      });
+    }
+
+    async function ensureCoordsForModels(){
+      await Promise.all([
+        ...EVENTS.map(async (e) => {
+          if(typeof e.lat === "number" && typeof e.lon === "number") return;
+          const r = await geocodeCity(e.city);
+          if(r){ e.lat = r.lat; e.lon = r.lon; }
+        }),
+        ...DRIVERS.map(async (d) => {
+          if(typeof d.lat === "number" && typeof d.lon === "number") return;
+          const r = await geocodeCity(d.city);
+          if(r){ d.lat = r.lat; d.lon = r.lon; }
+        })
+      ]);
+    }
+
+    // =========================
     // EVENTS LIST + EU MAP (LOCKED)
     // =========================
     let mapEU, euMarkers = new Map();
@@ -1358,9 +1468,7 @@
       });
 
       mapEU.fitBounds(EU_BOUNDS);
-
       L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapEU);
-      renderEuropeMarkers();
     }
 
     function markerIcon(color){
@@ -1389,9 +1497,14 @@
           const color = (ev.status === "attend") ? "rgba(46,204,113,.95)" : "rgba(241,196,15,.95)";
           const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
 
-          const meta = `${ev.where} • ${ev.tag} • ${fmtDateISO(ev.date)} • ${Number(ev.people||0).toLocaleString("sk-SK")} ľudí`;
-          m.bindPopup(popHTML(ev.name, meta, ev.about), { closeButton:true });
+          const driversLine = (ev.participants && ev.participants.length)
+            ? ev.participants.map(d => `${d.name} • ${d.car} #${d.number}`).join(" | ")
+            : "—";
 
+          const meta = `${ev.where} • ${ev.tag} • ${fmtDateISO(ev.date)}`;
+          const desc = `${ev.about}\n\nZúčastnia sa: ${driversLine}`;
+
+          m.bindPopup(popHTML(ev.name, meta, desc), { closeButton:true });
           euMarkers.set(ev.id, m);
         });
     }
@@ -1401,24 +1514,41 @@
       const f = $("#fEvents").value;
 
       const out = EVENTS.filter(ev => {
-        const hay = [ev.name, ev.where, ev.city, ev.about, ev.date].join(" ").toLowerCase();
+        const hay = [
+          ev.name, ev.where, ev.city, ev.about, ev.date,
+          ...(ev.participants||[]).map(d => `${d.name} ${d.car} ${d.number}`)
+        ].join(" ").toLowerCase();
+
         const okQ = !q || hay.includes(q);
         const okF = (f === "all") || (ev.status === f);
         return okQ && okF;
       });
 
-      $("#listEvents").innerHTML = out.map(ev => `
-        <div class="item" data-id="${escapeHTML(ev.id)}">
-          <div class="itemTop">
-            <div>
-              <b>${escapeHTML(ev.name)}</b>
-              <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDateISO(ev.date))} • ${Number(ev.people||0).toLocaleString("sk-SK")} ľudí</div>
+      $("#listEvents").innerHTML = out.map(ev => {
+        const p = (ev.participants||[]);
+        const partBadge = `<span class="badge gray">${p.length} JAZDCI</span>`;
+
+        const partLine = p.length
+          ? p.map(d => `${escapeHTML(d.name)} • ${escapeHTML(d.car)} #${escapeHTML(d.number)}`).join("<br>")
+          : `<span style="opacity:.75">Zatiaľ bez priradených jazdcov (podľa mesta + dátumu).</span>`;
+
+        return `
+          <div class="item" data-id="${escapeHTML(ev.id)}">
+            <div class="itemTop">
+              <div>
+                <b>${escapeHTML(ev.name)}</b>
+                <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDateISO(ev.date))}</div>
+              </div>
+              <div class="badges">${badge(ev.status)}${partBadge}</div>
             </div>
-            <div class="badges">${badge(ev.status)}</div>
+            <p class="desc">${escapeHTML(ev.about)}</p>
+            <div class="desc" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.10);">
+              <b style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; font-size:12px; color:rgba(255,255,255,.82);">Zúčastnia sa</b><br>
+              ${partLine}
+            </div>
           </div>
-          <p class="desc">${escapeHTML(ev.about)}</p>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
       $("#listEvents").querySelectorAll(".item").forEach(el => {
         el.addEventListener("click", () => {
@@ -1454,9 +1584,16 @@
       });
 
       mapSK.fitBounds(SK_BOUNDS);
-
       L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapSK);
-      renderSlovakiaMarkers();
+    }
+
+    function driverUpcomingLines(d){
+      const evs = EVENTS.filter(ev => (ev.participants||[]).some(p => p.id === d.id));
+      if(!evs.length) return "—";
+      return evs
+        .sort((a,b)=> String(a.date).localeCompare(String(b.date)))
+        .map(ev => `${ev.name} • ${fmtDateISO(ev.date)} • ${ev.where}`)
+        .join("\n");
     }
 
     function renderSlovakiaMarkers(){
@@ -1467,8 +1604,11 @@
         .filter(d => typeof d.lat === "number" && typeof d.lon === "number")
         .forEach(d => {
           const m = L.marker([d.lat, d.lon], { icon: markerIcon("rgba(46,204,113,.95)") }).addTo(mapSK);
-          const meta = `${d.where} • jazdec`;
-          m.bindPopup(popHTML(d.name, meta, d.about), { closeButton:true });
+
+          const meta = `${d.where} • ${d.car} #${d.number}`;
+          const desc = `${d.about}\n\nZúčastní sa:\n${driverUpcomingLines(d)}`;
+
+          m.bindPopup(popHTML(d.name, meta, desc), { closeButton:true });
           skMarkers.set(d.id, m);
         });
     }
@@ -1477,22 +1617,40 @@
       const q = ($("#qDrivers").value || "").trim().toLowerCase();
 
       const out = DRIVERS.filter(d => {
-        const hay = [d.name, d.where, d.city, d.about].join(" ").toLowerCase();
+        const evs = EVENTS.filter(ev => (ev.participants||[]).some(p => p.id === d.id));
+        const hay = [
+          d.name, d.where, d.city, d.about, d.car, d.number,
+          ...evs.map(ev => `${ev.name} ${ev.date} ${ev.where}`)
+        ].join(" ").toLowerCase();
         return !q || hay.includes(q);
       });
 
-      $("#listDrivers").innerHTML = out.map(d => `
-        <div class="item" data-id="${escapeHTML(d.id)}">
-          <div class="itemTop">
-            <div>
-              <b>${escapeHTML(d.name)}</b>
-              <div class="meta">${escapeHTML(d.where)} • Slovensko</div>
+      $("#listDrivers").innerHTML = out.map(d => {
+        const evs = EVENTS
+          .filter(ev => (ev.participants||[]).some(p => p.id === d.id))
+          .sort((a,b)=> String(a.date).localeCompare(String(b.date)));
+
+        const evLine = evs.length
+          ? evs.map(ev => `${escapeHTML(ev.name)} • ${escapeHTML(fmtDateISO(ev.date))} • ${escapeHTML(ev.where)}`).join("<br>")
+          : `<span style="opacity:.75">Zatiaľ bez napojených eventov (podľa mesta + dátumu).</span>`;
+
+        return `
+          <div class="item" data-id="${escapeHTML(d.id)}">
+            <div class="itemTop">
+              <div>
+                <b>${escapeHTML(d.name)}</b>
+                <div class="meta">${escapeHTML(d.where)} • ${escapeHTML(d.car)} #${escapeHTML(d.number)}</div>
+              </div>
+              <div class="badges"><span class="badge green">JAZDEC</span></div>
             </div>
-            <div class="badges"><span class="badge green">JAZDEC</span></div>
+            <p class="desc">${escapeHTML(d.about)}</p>
+            <div class="desc" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.10);">
+              <b style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; font-size:12px; color:rgba(255,255,255,.82);">Zúčastní sa</b><br>
+              ${evLine}
+            </div>
           </div>
-          <p class="desc">${escapeHTML(d.about)}</p>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
       $("#listDrivers").querySelectorAll(".item").forEach(el => {
         el.addEventListener("click", () => {
@@ -1507,7 +1665,7 @@
     }
 
     // =========================
-    // SUPPLIERS LIST
+    // SUPPLIERS LIST (nezmenené)
     // =========================
     function renderSuppliers(){
       const q = ($("#qSup").value || "").trim().toLowerCase();
@@ -1582,30 +1740,14 @@
       // contact modal
       $("#openContact").addEventListener("click", openModal);
       $("#closeContact").addEventListener("click", closeModal);
-      $("#contactModal").addEventListener("click", (e)=>{
+      $("#contactModal").addEventListener("click", (e) => {
         if(e.target && e.target.id === "contactModal") closeModal();
       });
-      document.addEventListener("keydown", (e)=>{
+      document.addEventListener("keydown", (e) => {
         if(e.key === "Escape") closeModal();
       });
-
-      $("#sendContact").addEventListener("click", ()=>{
-        const mailto = buildMailto();
-        window.location.href = mailto;
-      });
-      $("#copyEmail").addEventListener("click", async ()=>{
-        try{
-          await navigator.clipboard.writeText("info@remperformance.sk");
-        }catch(e){
-          // fallback
-          const ta = document.createElement("textarea");
-          ta.value = "info@remperformance.sk";
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          ta.remove();
-        }
-      });
+      $("#contactClear").addEventListener("click", clearContact);
+      $("#contactSend").addEventListener("click", sendContact);
     }
 
     // =========================
@@ -1614,14 +1756,12 @@
     document.addEventListener("DOMContentLoaded", async () => {
       $("#year").textContent = new Date().getFullYear();
 
+      buildModels();
+      await ensureCoordsForModels();
+
       updateStats();
       updateClock();
       setInterval(updateClock, 1000);
-
-      // auto coords for hubs/drivers/events (len ak sú null)
-      await ensureCoords(HUB_POINTS);
-      await ensureCoords(DRIVERS);
-      await ensureCoords(EVENTS);
 
       initEuropeMap();
       initSlovakiaMap();
@@ -1925,9 +2065,9 @@
       });
     });
 
-    // default select hub (Bratislava)
+    // default select hub
     const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
-    if(defaultSel && typeof defaultSel.lat === "number"){
+    if(defaultSel){
       window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
       selectEntity(defaultSel.id);
     }
