@@ -187,10 +187,10 @@
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.18);
       display:grid; place-items:center;
-      box-shadow: var(--glowRed2);
+      box-shadow: 0 0 44px rgba(179,31,36,.18);
       flex:0 0 auto;
     }
-    .ico svg{width:18px;height:18px;opacity:.92;filter: drop-shadow(var(--glowRed));}
+    .ico svg{width:18px;height:18px;opacity:.92;filter: drop-shadow(0 0 22px rgba(255,43,47,.22));}
     .rowTitle{display:flex;flex-direction:column;gap:4px;min-width:0;}
     .rowTitle b{
       font-family: Oswald, sans-serif;
@@ -244,33 +244,80 @@
       white-space:nowrap;
     }
 
-    .legend{
+    /* CTA box */
+    .ctaBox{
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
+      background: radial-gradient(600px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%), rgba(0,0,0,.14);
       border-radius: 16px;
-      padding: 12px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: rgba(255,255,255,.80);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+      padding: 14px;
     }
-    .tag{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;
+    .ctaBox h3{
+      margin:0 0 8px;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:16px;
+    }
+    .ctaBox p{
+      margin:0;
+      color: rgba(255,255,255,.70);
+      font-size:13px;
+      line-height:1.6;
+    }
+    .ctaActions{
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
       border-radius: 999px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.86);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
       user-select:none;
       white-space:nowrap;
     }
-    .k{width:10px;height:10px;border-radius:3px;background:var(--red2);box-shadow:0 0 0 6px rgba(255,43,47,.10);}
-    .k.green{background:var(--ok);box-shadow:0 0 0 6px rgba(46,204,113,.10);}
-    .k.yellow{background:var(--warn);box-shadow:0 0 0 6px rgba(241,196,15,.10);}
-    .k.gray{background:rgba(255,255,255,.35);box-shadow:0 0 0 6px rgba(255,255,255,.08);}
+    .pill i{
+      width:10px;height:10px;border-radius:3px;
+      background: rgba(255,43,47,.92);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
+      flex:0 0 auto;
+    }
+    .btn2{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border:1px solid rgba(179,31,36,.60);
+      background: linear-gradient(90deg, rgba(255,43,47,.92), rgba(179,31,36,.78));
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:12px;
+      box-shadow: 0 20px 60px rgba(179,31,36,.22);
+      transition:.18s ease;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+    .btn2:hover{transform:translateY(-1px); box-shadow: 0 24px 80px rgba(179,31,36,.30);}
+    .btn2.ghost{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.14);
+      box-shadow:none;
+      font-weight:800;
+    }
+    .btn2.ghost:hover{transform:none; border-color: rgba(179,31,36,.45);}
 
     section.block{padding: 14px 0 26px;}
     .sectionTitle{
@@ -620,8 +667,8 @@
             </h1>
 
             <p class="sub">
-              3 sekcie, 3 mapy. Eventy = Európa (uzamknuté hranice), Jazdci = Slovensko (uzamknuté hranice),
-              Dodávatelia = globálna rotujúca zemeguľa (zoom kolieskom + drag). Body na glóbuse sú klikateľné.
+              Eventy = Európa (uzamknuté hranice), Jazdci = Slovensko (uzamknuté hranice),
+              Dodávatelia = globálna rotujúca zemeguľa (zoom + drag). Klik na položku = fokus + detail na mape.
             </p>
 
             <div class="stack">
@@ -635,10 +682,26 @@
                   </div>
                   <div class="rowTitle">
                     <b>Hub</b>
-                    <span>Bratislava + uzamknutý bod (Dunajská Lužná)</span>
+                    <span>Bratislava + Dunajská Lužná (uzamknuté)</span>
                   </div>
                 </div>
                 <div class="rowValue" id="statHub">2</div>
+              </div>
+
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="rowTitle">
+                    <b>Jazdci</b>
+                    <span>Rado Panák (Trenčín) + priestor pre ďalších</span>
+                  </div>
+                </div>
+                <div class="rowValue" id="statDrivers">—</div>
               </div>
 
               <div class="rowCard">
@@ -662,29 +725,13 @@
                 <div class="rowLeft">
                   <div class="ico" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2"/>
-                      <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </div>
-                  <div class="rowTitle">
-                    <b>Jazdci</b>
-                    <span>Rado Panák (Trenčín) + miesto pre ďalších</span>
-                  </div>
-                </div>
-                <div class="rowValue" id="statDrivers">—</div>
-              </div>
-
-              <div class="rowCard">
-                <div class="rowLeft">
-                  <div class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
                       <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
                       <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
                     </svg>
                   </div>
                   <div class="rowTitle">
-                    <b>Dodávatelia</b>
-                    <span>CSR (hard) + SFXLA (feed/fallback) + brand partners</span>
+                    <b>Dodávatelia & partners</b>
+                    <span>CSR, SFXLA, SkidNation, Wisefab, Odesa CNC, Darkside, CYBUL…</span>
                   </div>
                 </div>
                 <div class="rowValue" id="statSuppliers">—</div>
@@ -692,39 +739,50 @@
             </div>
           </div>
 
-          <!-- RIGHT: quick status + mini legend -->
+          <!-- RIGHT: Membership / contact CTA -->
           <div class="card heroRight">
             <div class="rightTop">
-              <b>Legenda</b>
+              <b>Členstvo v RACEM GROUP</b>
               <span id="clock">--:--:--</span>
             </div>
 
-            <div class="legend">
-              <span class="tag"><span class="k yellow"></span> Brand</span>
-              <span class="tag"><span class="k"></span> Dodávateľ</span>
-              <span class="tag"><span class="k gray"></span> Uzamknuté</span>
-              <span class="tag"><span class="k green"></span> Jazdec</span>
+            <div class="ctaBox">
+              <h3>Chceš byť v sieti?</h3>
+              <p>
+                Ak si <b>garáž</b>, <b>jazdec</b>, <b>dodávateľ</b>, <b>event</b> alebo <b>značka</b> a chceš
+                <b>zvýšiť predaje</b>, dostať sa k publiku a byť viditeľný v našich mapách + prezentáciách,
+                napíš nám. Získaš priestor v RACEM GROUP (web, IG, obsah, spolupráce).
+              </p>
+
+              <div class="ctaActions">
+                <span class="pill"><i></i> Garaz / Workshop</span>
+                <span class="pill"><i></i> Jazdec</span>
+                <span class="pill"><i></i> Dodávateľ</span>
+                <span class="pill"><i></i> Event</span>
+                <span class="pill"><i></i> Značka</span>
+              </div>
+
+              <div class="ctaActions" style="margin-top:14px;">
+                <a class="btn2" href="mailto:info@remperformance.sk?subject=RACEM%20GROUP%20-%20clenstvo%20%2F%20spolupraca&body=Ahoj%2C%0A%0AMam%20zaujem%20o%20clenstvo%20v%20RACEM%20GROUP.%0A%0ATyp%3A%20(garaz%20%2F%20jazdec%20%2F%20dodavatel%20%2F%20event%20%2F%20znacka)%0ALokalita%3A%0AWeb%2FIG%3A%0ACo%20ponukam%3A%0AAko%20chcem%20rast%20(kratko)%3A%0A%0ADakujem%2C">
+                  Kontaktovať → info@remperformance.sk
+                </a>
+                <a class="btn2 ghost" href="#dodavatelia">Pozrieť sieť →</a>
+              </div>
+
+              <div style="margin-top:12px;color:rgba(255,255,255,.60);font-size:12px;line-height:1.55;letter-spacing:.04em;">
+                Tip: pošli krátko čo robíš + link na IG/web + čo chceš predávať / propagovať. My ti navrhneme formu spolupráce.
+              </div>
             </div>
 
             <div class="card" style="padding:12px; box-shadow:none;">
               <div style="color:rgba(255,255,255,.85); font-size:12px; letter-spacing:.14em; text-transform:uppercase;">
-                Ovládanie máp
+                Čo vieme priniesť
               </div>
               <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
-                EU/SK mapy: zoom + drag (ale zamknuté na hranice).<br>
-                Dodávatelia: globus rotuje, zoom kolieskom, drag otáča. Klikni na bod = fokus + detail.
-              </div>
-            </div>
-
-            <div class="card" style="padding:12px; box-shadow:none;">
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                <div style="color:rgba(255,255,255,.85); font-size:12px; letter-spacing:.14em; text-transform:uppercase;">
-                  Produkty spolu
-                </div>
-                <div style="font-family:Oswald,sans-serif; font-size:20px; letter-spacing:.06em;" id="statProducts">—</div>
-              </div>
-              <div style="margin-top:8px;color:var(--muted);font-size:12px;line-height:1.55;letter-spacing:.06em;">
-                CSR je natvrdo. SFXLA sa skúša hydratovať z feedu; ak padne, ide fallback.
+                • Viditeľnosť v RACEM mapách (EU / SK / World)<br>
+                • Produktová prezentácia + prelink na shop / dopyt<br>
+                • Obsah z akcií, reálne autá, reálne použitie dielov<br>
+                • Spolupráce: jazdci, garáže, eventy, dodávatelia
               </div>
             </div>
           </div>
@@ -811,7 +869,7 @@
       <section id="dodavatelia" class="block">
         <div class="sectionTitle">
           <h2>Dodávatelia (Zemeguľa)</h2>
-          <p>Rotuje + zoom. Body sú vizuálne “premium” + všetky sú klikateľné (focus + detail).</p>
+          <p>Rotuje + zoom. Body sú klikateľné (focus + detail). Žiadna legenda – čistý vizuál.</p>
         </div>
 
         <div class="secGrid">
@@ -847,8 +905,8 @@
             </div>
 
             <div class="mapHint">
-              <span><b>Zoom:</b> koliesko myši (min/max)</span>
-              <span><b>Rotate:</b> ťah myšou</span>
+              <span><b>Zoom:</b> koliesko</span>
+              <span><b>Rotate:</b> ťah</span>
               <span><b>Click:</b> fokus + detail</span>
             </div>
           </div>
@@ -980,7 +1038,7 @@
       { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
     ];
 
-    // ✅ DÔLEŽITÉ: toto musí existovať skôr než sa načíta globe module
+    // ✅ MUST exist before globe module loads
     const ALL_SUP = [
       ...HUB_POINTS.map(x => ({...x})),
       ...SUPPLIERS.map(x => ({...x})),
@@ -1057,34 +1115,22 @@
     async function hydrateSfxla(){
       const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
       const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
-      if(!sfxla){
-        refreshProductTotal();
-        return;
-      }
-      if(!data){
-        refreshProductTotal();
-        return;
-      }
-      const items = extractItemsFromAnyJSON(data);
-      const count = items.length || 0;
-      if(count > 0) sfxla.productsCount = count;
-      refreshProductTotal();
-      renderSuppliers();
-      // ak je už globe pripravený, refresh overlay
-      if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
-    }
+      if(!sfxla) return;
 
-    function refreshProductTotal(){
-      const csr = SUPPLIERS.find(s=>s.id==="csr");
-      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
-      const total = (csr?.productsCount||0) + (sfxla?.productsCount||0);
-      $("#statProducts").textContent = total ? total.toLocaleString("sk-SK") : "—";
+      if(data){
+        const items = extractItemsFromAnyJSON(data);
+        const count = items.length || 0;
+        if(count > 0) sfxla.productsCount = count;
+      }
+
+      renderSuppliers();
+      if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
     }
 
     // =========================
     // EVENTS LIST + EU MAP (LOCKED)
     // =========================
-    let mapEU, euLayer, euMarkers = new Map();
+    let mapEU, euMarkers = new Map();
 
     function initEuropeMap(){
       const EU_BOUNDS = L.latLngBounds(
@@ -1104,12 +1150,7 @@
 
       mapEU.fitBounds(EU_BOUNDS);
 
-      euLayer = L.tileLayer(DARK_TILES, {
-        maxZoom: 19,
-        attribution: DARK_ATTR,
-        noWrap: true
-      }).addTo(mapEU);
-
+      L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapEU);
       renderEuropeMarkers();
     }
 
@@ -1180,7 +1221,7 @@
     // =========================
     // DRIVERS LIST + SK MAP (LOCKED)
     // =========================
-    let mapSK, skLayer, skMarkers = new Map();
+    let mapSK, skMarkers = new Map();
 
     function initSlovakiaMap(){
       const SK_BOUNDS = L.latLngBounds(
@@ -1200,12 +1241,7 @@
 
       mapSK.fitBounds(SK_BOUNDS);
 
-      skLayer = L.tileLayer(DARK_TILES, {
-        maxZoom: 19,
-        attribution: DARK_ATTR,
-        noWrap: true
-      }).addTo(mapSK);
-
+      L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapSK);
       renderSlovakiaMarkers();
     }
 
@@ -1334,7 +1370,6 @@
       $("#year").textContent = new Date().getFullYear();
 
       updateStats();
-      refreshProductTotal();
 
       updateClock();
       setInterval(updateClock, 1000);
@@ -1405,8 +1440,7 @@
     const focus = window.__globeFocus;
 
     // =========================
-    // Projection (orthographic-ish) for overlay points
-    // Matches our phi/theta convention below.
+    // Projection for overlay points
     // =========================
     const toRad = (d) => (d * Math.PI) / 180;
 
@@ -1426,23 +1460,17 @@
       return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
     }
 
-    // returns {x,y,visible,depth}
     function project(lat, lon, state){
       const w = state.width / dpr;
       const h = state.height / dpr;
 
-      // base unit vector
       let v = latLonToVec(lat, lon);
-
-      // rotate by current phi/theta
       v = rotateY(v, state.phi);
       v = rotateX(v, state.theta);
 
-      // behind globe
       if(v.z <= 0) return { visible:false, x:0, y:0, depth:v.z };
 
-      // orthographic projection
-      const r = Math.min(w, h) * 0.46 * state.scale; // radius factor
+      const r = Math.min(w, h) * 0.46 * state.scale;
       const x = (w/2) + (v.x * r);
       const y = (h/2) - (v.y * r);
 
@@ -1450,10 +1478,9 @@
     }
 
     // =========================
-    // Overlay DOM points (pre-create)
+    // Overlay DOM points
     // =========================
-    const pointEls = new Map(); // id -> element
-    const screenCache = new Map(); // id -> {x,y,visible,depth}
+    const pointEls = new Map();
 
     function typeClass(t){
       if(t === "supplier") return "t-supplier";
@@ -1468,21 +1495,17 @@
       el.className = `gpt ${typeClass(e.type)}`;
       el.setAttribute("data-id", e.id);
 
-      // inner core
       const core = document.createElement("div");
       core.className = "core";
       el.appendChild(core);
 
-      // click = focus + highlight
       el.addEventListener("click", (evt) => {
         evt.stopPropagation();
         if(window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
         selectEntity(e.id, true);
       });
 
-      // hover tooltip via title (simple, no modal)
       el.title = `${e.name} — ${e.where}`;
-
       overlay.appendChild(el);
       pointEls.set(e.id, el);
     }
@@ -1491,13 +1514,11 @@
       .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
       .forEach(makePoint);
 
-    // selected state
     let selectedId = null;
 
     function selectEntity(id, scrollList=false){
       selectedId = id;
 
-      // add subtle emphasis to selected point
       pointEls.forEach((el, key) => {
         if(key === id){
           el.style.borderColor = "rgba(179,31,36,.70)";
@@ -1509,7 +1530,6 @@
         }
       });
 
-      // optional: scroll list item into view
       if(scrollList){
         const list = document.getElementById("listSuppliers");
         if(list){
@@ -1528,54 +1548,16 @@
     }
 
     window.__globeSelect = selectEntity;
+    window.__globeOverlayRefresh = () => { /* overlay driven by render */ };
 
     // =========================
-    // Update overlay positions each render
-    // =========================
-    function updateOverlay(state){
-      screenCache.clear();
-
-      ENTITIES
-        .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-        .forEach(e => {
-          const p = project(e.lat, e.lon, state);
-          screenCache.set(e.id, p);
-
-          const el = pointEls.get(e.id);
-          if(!el) return;
-
-          if(!p.visible){
-            el.setAttribute("data-hidden", "1");
-            return;
-          }
-
-          el.setAttribute("data-hidden", "0");
-          el.style.left = `${p.x}px`;
-          el.style.top  = `${p.y}px`;
-
-          // depth: reduce opacity slightly as it goes to edge
-          const op = Math.max(0.65, Math.min(0.98, 0.55 + p.depth * 0.55));
-          el.style.opacity = String(op);
-        });
-    }
-
-    // allow external refresh (when feed updates counts etc.)
-    window.__globeOverlayRefresh = () => {
-      // no-op; overlay is driven by onRender
-    };
-
-    // =========================
-    // Focus math (fix so click always becomes visible)
+    // Focus targets
     // =========================
     function focusTargets(lat, lon){
-      // with our latLonToVec + rotate convention:
-      // set phi to -lon to bring that longitude to the front
-      // set theta to lat tilt to bring latitude toward center
       const lo = toRad(lon);
       const la = toRad(lat);
 
       const targetPhi = -lo;
-      // mild tilt; clamp
       const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
       return { targetPhi, targetTheta };
     }
@@ -1624,10 +1606,8 @@
 
         if(hasFocus){
           const t = focusTargets(focus.focusLat, focus.focusLon);
-
           currentPhi   += (t.targetPhi - currentPhi) * 0.09;
           currentTheta += (t.targetTheta - currentTheta) * 0.09;
-
           state.phi = currentPhi;
           state.theta = currentTheta;
         }else{
@@ -1637,8 +1617,26 @@
           state.theta = currentTheta;
         }
 
-        // ✅ this drives clickable points
-        updateOverlay(state);
+        // update overlay positions
+        ENTITIES
+          .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+          .forEach(e => {
+            const p = project(e.lat, e.lon, state);
+            const el = pointEls.get(e.id);
+            if(!el) return;
+
+            if(!p.visible){
+              el.setAttribute("data-hidden", "1");
+              return;
+            }
+
+            el.setAttribute("data-hidden", "0");
+            el.style.left = `${p.x}px`;
+            el.style.top  = `${p.y}px`;
+
+            const op = Math.max(0.65, Math.min(0.98, 0.55 + p.depth * 0.55));
+            el.style.opacity = String(op);
+          });
       }
     });
 
@@ -1666,7 +1664,7 @@
       currentPhi = dragPhiStart + dx * 0.006;
     });
 
-    // click on empty space clears selection
+    // click empty = clear selection
     overlay.addEventListener("click", () => {
       selectedId = null;
       pointEls.forEach((el) => {
@@ -1675,7 +1673,7 @@
       });
     });
 
-    // auto select hub on load (optional)
+    // default select hub
     const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
     if(defaultSel){
       window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
