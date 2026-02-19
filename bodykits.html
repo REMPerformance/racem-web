@@ -119,9 +119,7 @@
       backdrop-filter: var(--glass);
     }
 
-    .hero{
-      padding: 26px 0 10px;
-    }
+    .hero{ padding: 26px 0 10px; }
     .heroGrid{
       display:grid;
       grid-template-columns: 1.05fr .95fr;
@@ -294,7 +292,6 @@
       max-width: 70ch;
     }
 
-    /* Section layout: left list + right map */
     .secGrid{
       display:grid;
       grid-template-columns: 1.05fr .95fr;
@@ -302,7 +299,6 @@
       align-items:stretch;
     }
 
-    /* Controls */
     .controls{
       padding:12px;
       display:flex;
@@ -359,7 +355,6 @@
     }
     .btn.ghost:hover{box-shadow:none; transform:none}
 
-    /* Lists (clean, not chaotic) */
     .list{
       padding: 12px;
       display:grid;
@@ -423,7 +418,6 @@
       line-height:1.6;
     }
 
-    /* Map containers */
     .mapCard{padding: 12px; display:grid; gap:10px;}
     .mapBox{
       border-radius: 16px;
@@ -448,7 +442,6 @@
     }
     .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
 
-    /* Sizes */
     #globeSuppliers{height: 520px; display:block; width:100%;}
     #mapEurope{height: 520px;}
     #mapSlovakia{height: 520px;}
@@ -457,6 +450,10 @@
     .leaflet-container{
       background: #0b0b0d;
       font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+    .leaflet-tile{
+      /* jemný “RACEM dark” look */
+      filter: contrast(1.08) saturate(1.05) brightness(0.95);
     }
     .leaflet-control-zoom a{
       background: rgba(10,10,12,.78) !important;
@@ -477,7 +474,7 @@
       border: 1px solid rgba(255,255,255,.10) !important;
     }
     .leaflet-popup-content-wrapper, .leaflet-popup-tip{
-      background: rgba(10,10,12,.88);
+      background: rgba(10,10,12,.92);
       color: rgba(255,255,255,.92);
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: 0 30px 90px rgba(0,0,0,.7);
@@ -671,13 +668,10 @@
       <section id="eventy" class="block">
         <div class="sectionTitle">
           <h2>Eventy (Európa)</h2>
-          <p>
-            Zúčastníme sa / plánujeme sa zúčastniť. Mapa je “EU priblížená” – nech je to prehľadné.
-          </p>
+          <p>Zúčastníme sa / plánujeme sa zúčastniť. Mapa je “EU priblížená” – nech je to prehľadné.</p>
         </div>
 
         <div class="secGrid">
-          <!-- LEFT: list -->
           <div class="card">
             <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
               <div class="field">
@@ -695,7 +689,6 @@
             <div class="list" id="listEvents"></div>
           </div>
 
-          <!-- RIGHT: map europe -->
           <div class="card mapCard">
             <div class="rightTop">
               <b>Mapa Európy</b>
@@ -706,7 +699,7 @@
             </div>
             <div class="mapHint">
               <span><b>Tip:</b> klik na event vľavo → mapa sa zameria</span>
-              <span><b>Stav:</b> priblížené na EU</span>
+              <span><b>Stav:</b> dark tiles</span>
             </div>
           </div>
         </div>
@@ -716,9 +709,7 @@
       <section id="jazdci" class="block">
         <div class="sectionTitle">
           <h2>Jazdci (Slovensko)</h2>
-          <p>
-            Len Slovensko – rýchly prehľad, kde kto je. Vľavo karty, vpravo mapa SR.
-          </p>
+          <p>Len Slovensko – rýchly prehľad, kde kto je. Vľavo karty, vpravo mapa SR.</p>
         </div>
 
         <div class="secGrid">
@@ -743,7 +734,7 @@
             </div>
             <div class="mapHint">
               <span><b>Tip:</b> klik na jazdca → fokus</span>
-              <span><b>Rozsah:</b> SR</span>
+              <span><b>Stav:</b> dark tiles</span>
             </div>
           </div>
         </div>
@@ -753,9 +744,7 @@
       <section id="dodavatelia" class="block">
         <div class="sectionTitle">
           <h2>Dodávatelia (Zemeguľa)</h2>
-          <p>
-            Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Klik na kartu vľavo → fokus na bod.
-          </p>
+          <p>Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Klik na kartu vľavo → fokus na bod.</p>
         </div>
 
         <div class="secGrid">
@@ -807,10 +796,14 @@
 
   <script>
     // =========================
+    // DARK TILES (Leaflet)
+    // =========================
+    const DARK_TILES = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+    const DARK_ATTR  = "&copy; OpenStreetMap contributors &copy; CARTO";
+
+    // =========================
     // DATA
     // =========================
-
-    // HUB / lock (globus + prehľad)
     const HUB_POINTS = [
       {
         id:"hub-ba",
@@ -834,11 +827,10 @@
       }
     ];
 
-    // EVENTY – EU mapa (príklady + tvoj Sadka)
     const EVENTS = [
       {
         id:"sadka-pd",
-        status:"attend", // attend | plan
+        status:"attend",
         name:"SADKA Prievidza",
         where:"Prievidza (SK)",
         lat: 48.7745206,
@@ -868,7 +860,6 @@
       }
     ];
 
-    // JAZDCI – SK mapa
     const DRIVERS = [
       {
         id:"rado-panak",
@@ -881,7 +872,6 @@
       }
     ];
 
-    // DODÁVATELIA / BRAND partners (globus)
     const HARD = { csrCount: 14684 };
     const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
 
@@ -907,7 +897,7 @@
         region:"US",
         lat: 34.0522,
         lon: -118.2437,
-        productsCount: 980, // fallback
+        productsCount: 980,
         about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight."
       }
     ];
@@ -918,6 +908,12 @@
       { id:"odesacnc", type:"brand", name:"Odesa CNC", where:"Wodzisław Śląski (PL)", region:"EU", lat:50.001, lon:18.463, about:"CNC drift diely: angle kity, ramená, hardware." },
       { id:"darkside", type:"brand", name:"Darkside Developments", where:"Barnsley (UK)", region:"UK", lat:53.571788, lon:-1.382466, about:"Performance diesel tuning (hardware + servis)." },
       { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
+    ];
+
+    const ALL_SUP = [
+      ...HUB_POINTS.map(x => ({...x})),
+      ...SUPPLIERS.map(x => ({...x})),
+      ...BRAND_PARTNERS.map(x => ({...x}))
     ];
 
     // =========================
@@ -1001,7 +997,7 @@
       const count = items.length || 0;
       if(count > 0) sfxla.productsCount = count;
       refreshProductTotal();
-      renderSuppliers(); // refresh list counts
+      renderSuppliers();
     }
 
     function refreshProductTotal(){
@@ -1012,7 +1008,7 @@
     }
 
     // =========================
-    // EVENTS LIST + EU MAP
+    // EVENTS LIST + EU MAP (DARK)
     // =========================
     let mapEU, euLayer, euMarkers = new Map();
 
@@ -1025,16 +1021,16 @@
       // EU-focused view
       mapEU.setView([50.5, 13.5], 5);
 
-      euLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        attribution: "&copy; OpenStreetMap contributors"
+      // ✅ DARK tiles
+      euLayer = L.tileLayer(DARK_TILES, {
+        maxZoom: 19,
+        attribution: DARK_ATTR
       }).addTo(mapEU);
 
       renderEuropeMarkers();
     }
 
     function markerIcon(color){
-      // Simple div icon to fit your vibe
       return L.divIcon({
         className: "",
         html: `
@@ -1099,7 +1095,7 @@
     }
 
     // =========================
-    // DRIVERS LIST + SK MAP
+    // DRIVERS LIST + SK MAP (DARK)
     // =========================
     let mapSK, skLayer, skMarkers = new Map();
 
@@ -1112,9 +1108,10 @@
       // Slovakia-focused view
       mapSK.setView([48.75, 19.50], 8);
 
-      skLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        attribution: "&copy; OpenStreetMap contributors"
+      // ✅ DARK tiles
+      skLayer = L.tileLayer(DARK_TILES, {
+        maxZoom: 19,
+        attribution: DARK_ATTR
       }).addTo(mapSK);
 
       renderSlovakiaMarkers();
@@ -1167,12 +1164,6 @@
     // =========================
     // SUPPLIERS LIST + GLOBE
     // =========================
-    const ALL_SUP = [
-      ...HUB_POINTS.map(x => ({...x})),
-      ...SUPPLIERS.map(x => ({...x})),
-      ...BRAND_PARTNERS.map(x => ({...x}))
-    ];
-
     function renderSuppliers(){
       const q = ($("#qSup").value || "").trim().toLowerCase();
       const f = $("#fSup").value;
@@ -1220,7 +1211,6 @@
     // WIRE UI
     // =========================
     function wireUI(){
-      // Events
       $("#qEvents").addEventListener("input", renderEvents);
       $("#fEvents").addEventListener("change", renderEvents);
       $("#resetEvents").addEventListener("click", () => {
@@ -1229,14 +1219,12 @@
         renderEvents();
       });
 
-      // Drivers
       $("#qDrivers").addEventListener("input", renderDrivers);
       $("#resetDrivers").addEventListener("click", () => {
         $("#qDrivers").value = "";
         renderDrivers();
       });
 
-      // Suppliers
       $("#qSup").addEventListener("input", renderSuppliers);
       $("#fSup").addEventListener("change", renderSuppliers);
       $("#resetSup").addEventListener("click", () => {
@@ -1258,20 +1246,23 @@
       updateClock();
       setInterval(updateClock, 1000);
 
-      // Leaflet maps
       initEuropeMap();
       initSlovakiaMap();
 
-      // lists
       wireUI();
       renderEvents();
       renderDrivers();
       renderSuppliers();
 
-      // feed hydrate
       hydrateSfxla();
       setInterval(hydrateSfxla, 5 * 60 * 1000);
     });
+
+    // expose to module (globe)
+    window.HUB_POINTS = HUB_POINTS;
+    window.SUPPLIERS = SUPPLIERS;
+    window.BRAND_PARTNERS = BRAND_PARTNERS;
+    window.ALL_SUP = ALL_SUP;
   </script>
 
   <!-- =========================
@@ -1291,7 +1282,6 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    // focus helper
     window.__globeFocus = {
       focusLat: null,
       focusLon: null,
@@ -1308,17 +1298,7 @@
       }
     };
 
-    const ALL = (window.ALL_SUP || null); // not used; we’ll read from DOM script context below
-
-    // Pull data from the non-module script scope (safe)
-    const HUB_POINTS = (window.HUB_POINTS || []);
-    const SUPPLIERS = (window.SUPPLIERS || []);
-    const BRAND_PARTNERS = (window.BRAND_PARTNERS || []);
-
-    // If those aren’t on window (because of script scope), we reconstruct from DOM via fallback:
-    // (In most browsers, top-level consts are not on window; so we hard-fallback with inline extraction)
-    // We’ll instead read markers from dataset on body if needed. For now, we define a lightweight fallback list:
-    const FALLBACK = [
+    const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [
       { id:"hub-ba", type:"hub", lat:48.148598, lon:17.107748 },
       { id:"locked-dl", type:"locked", lat:48.0849246, lon:17.2590955 },
       { id:"csr", type:"supplier", lat:51.1657, lon:10.4515 },
@@ -1330,13 +1310,7 @@
       { id:"cybul", type:"brand", lat:52.401, lon:20.926 }
     ];
 
-    const ENT = (Array.isArray(HUB_POINTS) && HUB_POINTS.length ? HUB_POINTS : [])
-      .concat(Array.isArray(SUPPLIERS) && SUPPLIERS.length ? SUPPLIERS : [])
-      .concat(Array.isArray(BRAND_PARTNERS) && BRAND_PARTNERS.length ? BRAND_PARTNERS : []);
-
-    const ENTITIES = (ENT && ENT.length) ? ENT : FALLBACK;
-
-    // Zoom (complete wheel zoom)
+    // wheel zoom
     let globeScale = 1.12;
     const minScale = 0.85;
     const maxScale = 1.85;
@@ -1348,10 +1322,9 @@
       globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
     }, { passive:false });
 
-    // Marker styling
     const COLORS = {
       supplier: [1.0, 0.17, 0.19],
-      brand:    [0.95, 0.78, 0.06], // yellow-ish for partners
+      brand:    [0.95, 0.78, 0.06],
       hub:      [1.0, 0.17, 0.19],
       locked:   [0.65, 0.65, 0.65]
     };
@@ -1387,11 +1360,9 @@
       return { phi, theta };
     }
 
-    // Default angle so EU is nicely visible, US still in reach by rotate
     let currentPhi = -1.18;
     let currentTheta = 0.18;
 
-    // Drag rotate
     let dragging = false;
     let dragStartX = 0;
     let dragPhiStart = 0;
@@ -1413,7 +1384,7 @@
 
       baseColor: [0.08, 0.09, 0.10],
       glowColor: [0.70, 0.10, 0.12],
-      markerColor: [1.0, 0.17, 0.19], // fallback
+      markerColor: [1.0, 0.17, 0.19],
       backgroundColor: [0, 0, 0, 0],
 
       markers: buildMarkers(Date.now()),
@@ -1442,7 +1413,7 @@
           state.theta = currentTheta;
         }else{
           if(focus && now >= focus.freezeUntil) focus.clear();
-          if(!dragging) currentPhi += 0.0022; // smooth auto-rotate
+          if(!dragging) currentPhi += 0.0022;
           state.phi = currentPhi;
           state.theta = currentTheta;
         }
@@ -1473,15 +1444,6 @@
       const dx = e.clientX - dragStartX;
       currentPhi = dragPhiStart + dx * 0.006;
     });
-  </script>
-
-  <!-- expose data to module if you want (optional) -->
-  <script>
-    // Optional: put arrays on window so the module can use exact data (instead of fallback)
-    window.HUB_POINTS = window.HUB_POINTS || (typeof HUB_POINTS !== "undefined" ? HUB_POINTS : []);
-    window.SUPPLIERS  = window.SUPPLIERS  || (typeof SUPPLIERS !== "undefined" ? SUPPLIERS : []);
-    window.BRAND_PARTNERS = window.BRAND_PARTNERS || (typeof BRAND_PARTNERS !== "undefined" ? BRAND_PARTNERS : []);
-    window.ALL_SUP = window.ALL_SUP || (typeof ALL_SUP !== "undefined" ? ALL_SUP : []);
   </script>
 </body>
 </html>
