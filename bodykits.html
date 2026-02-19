@@ -1,12 +1,11 @@
-<!-- bodykits.html -->
 <!DOCTYPE html>
 <html lang="sk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-  <title>RACEM GROUP | Hub</title>
-  <meta name="description" content="RACEM Group hub – značky, spolupráce, jazdci, garáže, dodávatelia a produkty. Interaktívna mapa + detailné karty." />
+  <title>RACEM GROUP | Mapa siete</title>
+  <meta name="description" content="RACEM GROUP – dodávatelia, značky, jazdci, garáže a eventy. Všetko na jednej mape + prehľad a detaily." />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -33,6 +32,7 @@
       --wrap: 1200px;
 
       --glass2: rgba(255,255,255,.045);
+      --glass3: rgba(255,255,255,.03);
       --stroke2: rgba(255,255,255,.14);
       --glowRed: 0 0 22px rgba(255,43,47,.22);
       --glowRed2: 0 0 44px rgba(179,31,36,.18);
@@ -74,7 +74,6 @@
       filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
     }
 
-    /* ===== TOP MENU ===== */
     .navlinks{
       display:flex;
       align-items:center;
@@ -93,17 +92,6 @@
       user-select:none;
       outline:none;
     }
-    .navlinks a:before{
-      content:"";
-      position:absolute;
-      inset:-6px -10px;
-      border-radius: 999px;
-      background: radial-gradient(120px 28px at 50% 55%, rgba(179,31,36,.20), transparent 60%);
-      opacity:0;
-      transition:.22s ease;
-      pointer-events:none;
-      filter: blur(1px);
-    }
     .navlinks a:after{
       content:"";
       position:absolute;
@@ -117,7 +105,6 @@
       box-shadow: 0 0 18px rgba(255,43,47,.28);
     }
     .navlinks a:hover{opacity:1;text-shadow: 0 0 14px rgba(255,43,47,.22);}
-    .navlinks a:hover:before{opacity:1}
     .navlinks a:hover:after{width:100%}
     .navlinks a.active{opacity:1}
     .navlinks a.active:after{width:100%}
@@ -148,7 +135,7 @@
       backdrop-filter: var(--glass);
     }
 
-    /* ===== LEFT: prehľad (upratané, pod seba) ===== */
+    /* ===== LEFT (clean stack) ===== */
     .heroLeft{
       padding: 18px 18px 16px;
       position:relative;
@@ -190,108 +177,88 @@
       max-width: 70ch;
     }
 
-    .overviewStack{display:grid; gap:12px; margin-top:12px;}
-    .ovSection{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
+    .stack{
+      display:grid;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .rowCard{
       border-radius: 16px;
-      padding:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(520px 220px at 10% 0%, rgba(179,31,36,.16), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
-    .ovHead{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-      margin-bottom:10px;
+    .rowLeft{display:flex; align-items:center; gap:10px; min-width:0;}
+    .ico{
+      width:34px; height:34px; border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      display:grid; place-items:center;
+      box-shadow: var(--glowRed2);
+      flex:0 0 auto;
     }
-    .ovHead b{
+    .ico svg{width:18px;height:18px;opacity:.92;filter: drop-shadow(var(--glowRed));}
+    .rowTitle{display:flex; flex-direction:column; gap:4px; min-width:0;}
+    .rowTitle b{
       font-family: Oswald, sans-serif;
-      letter-spacing:.14em;
+      letter-spacing:.16em;
       text-transform:uppercase;
-      font-size:12px;
-      color: rgba(255,255,255,.88);
-    }
-    .ovHead span{
-      color: rgba(255,255,255,.60);
       font-size:11px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      white-space:nowrap;
+      color: rgba(255,255,255,.86);
     }
-
-    .ovRows{display:grid; gap:8px;}
-    .ovRow{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:10px 10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .ovRow .l{
-      display:flex; align-items:center; gap:10px; min-width:0;
-      color: rgba(255,255,255,.82);
+    .rowTitle span{
+      color: rgba(255,255,255,.62);
       font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
+      letter-spacing:.06em;
+      line-height:1.25;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      max-width: 46ch;
     }
-    .ovRow .r{
+    .rowValue{
       font-family: Oswald, sans-serif;
-      font-size:18px;
+      font-size:22px;
       letter-spacing:.06em;
       font-variant-numeric: tabular-nums;
       white-space:nowrap;
+      text-shadow: 0 14px 34px rgba(0,0,0,.7);
     }
-    .ovPip{
-      width:10px; height:10px; border-radius:999px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-      flex:0 0 auto;
+    .hintLine{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
     }
-    .ovPip.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
-    .ovPip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
-
-    .chipsLine{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 10px;
+    .hintPill{
+      display:inline-flex; align-items:center; gap:9px;
+      padding:9px 10px;
       border-radius: 999px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.16);
-      color: rgba(255,255,255,.86);
+      color: rgba(255,255,255,.74);
       font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      user-select:none;
-    }
-    .chip i{
-      font-style:normal;
-      width:8px; height:8px;
-      border-radius:999px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-    }
-
-    .liveBox{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      border-radius: 16px;
-      padding:12px;
-      color: rgba(255,255,255,.72);
-      font-size:12px;
-      letter-spacing:.06em;
-      line-height:1.6;
-    }
-    .liveBox b{
-      font-family:Oswald, sans-serif;
       letter-spacing:.12em;
       text-transform:uppercase;
-      color:rgba(255,255,255,.90);
+      user-select:none;
+      white-space:nowrap;
     }
-    .liveBox .subline{margin-top:6px;color:rgba(255,255,255,.62)}
+    .pip{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(46,204,113,.10);
+    }
+    .pip.red{background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10);}
+    .pip.warn{background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10);}
+    .pip.gray{background: rgba(255,255,255,.35); box-shadow: 0 0 0 6px rgba(255,255,255,.08);}
 
-    /* ===== RIGHT: Globe (väčší) + jednoduchá legenda ===== */
+    /* ===== RIGHT (GLOBE) ===== */
     .heroRight{
       padding: 14px;
       display:flex;
@@ -318,10 +285,9 @@
       letter-spacing:.08em;
       white-space:nowrap;
     }
-
     canvas#globe{
       width:100%;
-      height: 410px; /* ✅ zväčšené */
+      height: 410px; /* bigger so it's actually visible */
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.10);
       background:
@@ -329,115 +295,56 @@
         rgba(0,0,0,.15);
       display:block;
     }
-
-    .legend{
+    .mapHint{
+      margin-top:-2px;
       display:flex;
+      justify-content:space-between;
+      gap:10px;
       flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
       padding: 10px 12px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .legend b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:11px;
-      color: rgba(255,255,255,.78);
-      margin-right:6px;
-    }
-    .legItem{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.14);
+      color: rgba(255,255,255,.70);
       font-size:11px;
       letter-spacing:.10em;
       text-transform:uppercase;
-      color: rgba(255,255,255,.86);
-      user-select:none;
-      white-space:nowrap;
     }
-    .legDot{
-      width:10px; height:10px;
-      border-radius:999px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-    }
-    .legDot.hq{ width:12px; height:12px; box-shadow: 0 0 0 7px rgba(255,43,47,.12); }
-    .legDot.partner{ background: rgba(255,255,255,.86); box-shadow: 0 0 0 6px rgba(255,255,255,.10); }
-    .legDot.team{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
-
-    .globeInfo{
+    .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
+    .legend{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       border-radius: 16px;
       padding: 12px;
-      display:grid;
-      gap:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
     }
-    .globeInfoTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .globeInfoTop b{
-      font-family: Oswald, sans-serif;
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      color: rgba(255,255,255,.80);
+      font-size:11px;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:12px;
-    }
-    .globeInfoTop span{
-      color: var(--muted);
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
+      user-select:none;
       white-space:nowrap;
     }
-
-    .liveStrip{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 0;
+    .tag .k{
+      width:10px;height:10px;border-radius:3px;
+      background: var(--red2);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
     }
-    .liveChip{
-      flex:1 1 220px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,0,0,.16), rgba(255,255,255,.02));
-      position:relative;
-      overflow:hidden;
-    }
-    .liveChip b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    .liveChip span{
-      color: rgba(255,255,255,.62);
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .liveDot{
-      width:9px; height:9px;
-      border-radius:999px;
-      position:relative;
-      flex:0 0 auto;
-    }
-    .liveDot.ok{ background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10); }
-    .liveDot.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
+    .tag .k.blue{background:#4aa3ff; box-shadow: 0 0 0 6px rgba(74,163,255,.10);}
+    .tag .k.green{background: var(--ok); box-shadow: 0 0 0 6px rgba(46,204,113,.10);}
+    .tag .k.yellow{background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10);}
+    .tag .k.gray{background: rgba(255,255,255,.35); box-shadow: 0 0 0 6px rgba(255,255,255,.08);}
 
     .miniList{display:grid; gap:8px;}
     .miniItem{
@@ -511,7 +418,7 @@
       letter-spacing:.06em;
     }
     .select{
-      flex: 0 0 220px;
+      flex: 0 0 240px;
       padding: 11px 12px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
@@ -544,12 +451,12 @@
     .btn.ghost:hover{box-shadow:none; transform:none}
 
     /* Grid */
-    .supplierGrid{
+    .entityGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
     }
-    .supplier{
+    .entity{
       padding: 12px;
       display:flex;
       flex-direction:column;
@@ -560,12 +467,12 @@
       transition:.18s ease;
       isolation:isolate;
     }
-    .supplier:hover{
+    .entity:hover{
       border-color: rgba(179,31,36,.50);
       transform: translateY(-1px);
       box-shadow: 0 26px 80px rgba(0,0,0,.62);
     }
-    .supplier:before{
+    .entity:before{
       content:"";
       position:absolute; inset:-2px;
       background:
@@ -575,20 +482,20 @@
       pointer-events:none;
       z-index:0;
     }
-    .supplier > *{position:relative; z-index:1}
+    .entity > *{position:relative; z-index:1}
 
-    .supplierTop{
+    .entityTop{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
-    .supplierName{display:flex; flex-direction:column; gap:6px; min-width:0;}
-    .supplierName b{
+    .entityName{display:flex; flex-direction:column; gap:6px; min-width:0;}
+    .entityName b{
       font-family: Oswald, sans-serif;
       font-size:18px;
       letter-spacing:.06em;
       white-space:normal;
       overflow:visible;
     }
-    .supplierName span{
+    .entityName span{
       color:var(--muted);
       font-size:12px;
       letter-spacing:.10em;
@@ -612,8 +519,9 @@
     .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
     .badge.count{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
     .badge.use{border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.16)}
+    .badge.gray{border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.18); color: rgba(255,255,255,.72);}
 
-    .supplierThumb{
+    .entityThumb{
       height: 96px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
@@ -623,19 +531,19 @@
       overflow:hidden;
       position:relative;
     }
-    .supplierThumb img{
+    .entityThumb img{
       width:100%; height:100%;
       object-fit:cover;
       display:block;
       opacity:.92;
       filter: contrast(1.02) saturate(1.05);
     }
-    .supplierThumb .overlay{
+    .entityThumb .overlay{
       position:absolute; inset:0;
       background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.60));
     }
 
-    .supplierMeta{
+    .entityMeta{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:8px;
@@ -659,14 +567,14 @@
       line-height:1.25
     }
 
-    .supplierDesc{
+    .entityDesc{
       margin:0;
       color: var(--muted);
       font-size:13px;
       line-height:1.6;
     }
 
-    .supplierFoot{
+    .entityFoot{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -676,14 +584,14 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
     }
-    .supplierFoot span{
+    .entityFoot span{
       color: rgba(255,255,255,.70);
       font-size:11px;
       letter-spacing:.14em;
       text-transform:uppercase;
       white-space:nowrap;
     }
-    .supplierFoot i{
+    .entityFoot i{
       font-style:normal;
       font-family: Oswald, sans-serif;
       letter-spacing:.10em;
@@ -711,30 +619,65 @@
       max-width: 62ch;
     }
 
-    .faq{
+    /* Events participation */
+    .twoCols{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
     }
-    details{
-      background: rgba(255,255,255,.04);
+    .listBox{
       border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       border-radius: 16px;
-      padding: 12px 12px;
+      padding: 12px;
     }
-    summary{
-      cursor:pointer;
-      list-style:none;
-      font-weight:700;
+    .listBox h3{
+      margin:0 0 10px;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:14px;
+    }
+    .li{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      border-radius: 14px;
+      padding: 10px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:8px;
+    }
+    .li b{
+      font-family: Oswald, sans-serif;
       letter-spacing:.06em;
-      font-size:13px;
     }
-    summary::-webkit-details-marker{display:none}
-    details p{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
+    .li span{
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.35;
+    }
+    .li .pill{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      padding:6px 8px;
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .li .pill.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
+    .li .pill.green{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
+    .li .pill.yellow{border-color: rgba(241,196,15,.35); background: rgba(241,196,15,.10)}
+
+    footer{
+      padding: 22px 0 40px;
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.06em;
     }
 
     /* Modal */
@@ -819,7 +762,7 @@
     .modalBody{
       padding: 14px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1fr 1fr;
       gap:12px;
     }
     .modalPanel{
@@ -860,10 +803,6 @@
       box-shadow: 0 0 0 6px rgba(255,43,47,.10);
       opacity:.75;
     }
-    .kv .item:hover{
-      border-color: rgba(179,31,36,.45);
-      transform: translateY(-1px);
-    }
     .kv .item b{
       display:block;
       color:var(--muted);
@@ -878,7 +817,6 @@
       letter-spacing:.04em;
       line-height:1.35;
     }
-
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -893,25 +831,19 @@
       background: rgba(0,0,0,.18);
     }
 
-    footer{
-      padding: 22px 0 40px;
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.06em;
-    }
-
     @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr;}
-      .supplierGrid{grid-template-columns: repeat(2, 1fr);}
-      .modalBody{grid-template-columns: 1fr;}
-      canvas#globe{height: 420px;}
+      .heroGrid{grid-template-columns: 1fr; }
+      .entityGrid{grid-template-columns: repeat(2, 1fr); }
+      .modalBody{grid-template-columns: 1fr; }
+      canvas#globe{height: 380px;}
+      .twoCols{grid-template-columns: 1fr;}
     }
     @media (max-width: 560px){
       h1{font-size:28px}
-      .supplierGrid{grid-template-columns: 1fr;}
-      .faq{grid-template-columns: 1fr;}
-      .gallery{grid-template-columns: repeat(2, 1fr);}
-      canvas#globe{height: 360px;}
+      .entityGrid{grid-template-columns: 1fr; }
+      .gallery{grid-template-columns: repeat(2, 1fr); }
+      canvas#globe{height: 340px;}
+      .select{flex: 1 1 220px;}
     }
   </style>
 </head>
@@ -925,8 +857,8 @@
         </a>
 
         <nav class="navlinks" aria-label="Menu">
-          <a class="active" href="#suppliers">Hub</a>
-          <a href="#faq">FAQ</a>
+          <a class="active" href="#network">RACEM Group</a>
+          <a href="#participation">Akcie</a>
           <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">Domov</a>
         </nav>
       </div>
@@ -935,62 +867,81 @@
 
   <main>
     <div class="wrap">
+
       <!-- HERO -->
       <section class="hero">
         <div class="heroGrid">
+
           <!-- LEFT -->
           <div class="card heroLeft">
-            <div class="kicker"><span class="dot"></span> racem group • prehľad siete</div>
+            <div class="kicker"><span class="dot"></span> RACEM GROUP • mapa siete</div>
 
             <h1>
-              <img src="assets/rmgroup.png" alt="RACEM Group" style="max-height:86px; width:auto;" onerror="this.style.display='none'">
+              <img src="assets/rmgroup.png" alt="RACEM Group" style="max-height:88px; width:auto;" onerror="this.remove()">
+              <span style="display:block;margin-top:4px;">RACEM GROUP</span>
             </h1>
 
             <p class="sub">
-              Jedno miesto pre dodávateľov, značky, spolupráce, jazdcov a garáže. Klikaj, filtruj a otváraj detaily.
+              Jedna stránka pre dodávateľov, značky, jazdcov a eventy. Klikni na kartu alebo položku vpravo – globus sa zameria.
             </p>
 
-            <div class="overviewStack">
-              <div class="ovSection">
-                <div class="ovHead">
-                  <b>Katalóg a metriky</b>
-                  <span>RACEM HUB</span>
-                </div>
-
-                <div class="ovRows">
-                  <div class="ovRow">
-                    <div class="l"><span class="ovPip ok"></span>Aktívne značky</div>
-                    <div class="r" id="miniActive">—</div>
+            <div class="stack" aria-label="Prehľad">
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                    </svg>
                   </div>
-                  <div class="ovRow">
-                    <div class="l"><span class="ovPip warn"></span>Produkty spolu</div>
-                    <div class="r" id="miniTotal">—</div>
-                  </div>
-                  <div class="ovRow">
-                    <div class="l"><span class="ovPip"></span>Najväčší dodávateľ</div>
-                    <div class="r" id="miniTopSupplier">—</div>
-                  </div>
-                  <div class="ovRow">
-                    <div class="l"><span class="ovPip"></span>Najviac dielov na</div>
-                    <div class="r" id="miniTopMake">—</div>
+                  <div class="rowTitle">
+                    <b>Entity spolu</b>
+                    <span>dodávatelia • značky • jazdci • eventy • hub</span>
                   </div>
                 </div>
-
-                <div class="chipsLine" id="miniChips">
-                  <!-- doplní JS -->
-                </div>
+                <div class="rowValue" id="statTotalEntities">—</div>
               </div>
 
-              <div class="liveBox">
-                <b>Live status</b>
-                <div class="subline">
-                  CSR čísla sú natvrdo (stabilita). SFXLA sa ťahá z feedu – keď to padne, stránka ide ďalej a ukáže “offline”.
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
+                    </svg>
+                  </div>
+                  <div class="rowTitle">
+                    <b>Produkty spolu</b>
+                    <span>CSR (hard) + SFXLA (feed/fallback)</span>
+                  </div>
                 </div>
+                <div class="rowValue" id="statProductsTotal">—</div>
               </div>
+
+              <div class="rowCard">
+                <div class="rowLeft">
+                  <div class="ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="rowTitle">
+                    <b>Top platformy</b>
+                    <span>najžiadanejšie v katalógu</span>
+                  </div>
+                </div>
+                <div class="rowValue" style="font-size:16px" id="statTopPlatforms">—</div>
+              </div>
+            </div>
+
+            <div class="hintLine" style="margin-top:12px;">
+              <span class="hintPill"><span class="pip"></span>online</span>
+              <span class="hintPill"><span class="pip warn"></span>feed (SFXLA)</span>
+              <span class="hintPill"><span class="pip gray"></span>uzamknuté</span>
             </div>
           </div>
 
-          <!-- RIGHT (GLOBE) -->
+          <!-- RIGHT -->
           <div class="card heroRight">
             <div class="globeTop">
               <b>Mapa siete</b>
@@ -999,119 +950,136 @@
 
             <canvas id="globe" aria-label="RACEM Globe"></canvas>
 
-            <!-- ✅ jednoduchšia legenda -->
-            <div class="legend" aria-label="Legenda mapy">
-              <b>Legenda</b>
-              <span class="legItem" title="Základňa / HQ">
-                <span class="legDot hq"></span> HQ
-              </span>
-              <span class="legItem" title="Dodávateľ / značka (katalóg)">
-                <span class="legDot"></span> Dodávateľ
-              </span>
-              <span class="legItem" title="Partner / spolupráca (mimo katalógu)">
-                <span class="legDot partner"></span> Partner
-              </span>
-              <span class="legItem" title="Jazdec / garáž / tím">
-                <span class="legDot team"></span> Tím
-              </span>
+            <div class="mapHint">
+              <span><b>Zoom:</b> koliesko myši</span>
+              <span><b>Rotate:</b> ťah myšou</span>
+              <span><b>Focus:</b> klik na kartu</span>
             </div>
 
-            <div class="globeInfo">
-              <div class="globeInfoTop">
-                <b>Sync</b>
-                <span id="syncText">SYNC: —</span>
-              </div>
-
-              <!-- ✅ menej chaosu: necháme len FEED -->
-              <div class="liveStrip">
-                <div class="liveChip">
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="liveDot warn" id="feedDot"></span>
-                    <b>FEED</b>
-                  </div>
-                  <span id="feedStatus">offline</span>
-                </div>
-              </div>
-
-              <div class="miniList" id="miniList"></div>
-
-              <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
-                Tip: klikni na položku v zozname → globus ju krátko “zameria”.
-              </p>
+            <!-- SIMPLE legend -->
+            <div class="legend" aria-label="Legenda">
+              <span class="tag"><span class="k red"></span> Dodávateľ</span>
+              <span class="tag"><span class="k blue"></span> Značka</span>
+              <span class="tag"><span class="k green"></span> Jazdec / Garáž</span>
+              <span class="tag"><span class="k yellow"></span> Event</span>
+              <span class="tag"><span class="k gray"></span> Uzamknuté</span>
             </div>
+
+            <div class="miniList" id="miniList"></div>
+
+            <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
+              Tip: ak niečo nevidíš, priblíž (koliesko) a zatoč globus.
+            </p>
           </div>
+
         </div>
       </section>
 
-      <!-- GRID -->
-      <section id="suppliers" class="block">
+      <!-- NETWORK GRID -->
+      <section id="network" class="block">
         <div class="card controls">
           <div class="field">
             <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-            <input id="q" type="text" placeholder="napr. CSR, SFXLA, BMW, E46..." autocomplete="off" />
+            <input id="q" type="text" placeholder="napr. CSR, SFXLA, Wisefab, Sadka..." autocomplete="off" />
           </div>
+
+          <select id="type" class="select" title="Filter typ">
+            <option value="all">Všetky typy</option>
+            <option value="supplier">Dodávatelia</option>
+            <option value="brand">Značky</option>
+            <option value="driver">Jazdci</option>
+            <option value="event">Eventy</option>
+            <option value="hub">RACEM Hub</option>
+            <option value="locked">Uzamknuté</option>
+          </select>
 
           <select id="region" class="select" title="Filter región">
             <option value="all">Všetky regióny</option>
+            <option value="SK">SK</option>
             <option value="EU">EU</option>
             <option value="US">US</option>
-          </select>
-
-          <select id="speed" class="select" title="Filter dodania">
-            <option value="all">Všetky dodacie doby</option>
-            <option value="fast">1–5 dní</option>
-            <option value="mid">6–14 dní</option>
-            <option value="slow">15+ dní</option>
+            <option value="UK">UK</option>
           </select>
 
           <button class="btn ghost" id="reset">Reset</button>
-          <button class="btn" id="openFAQ">FAQ</button>
         </div>
 
         <div style="height:12px"></div>
-        <div class="supplierGrid" id="grid"></div>
+        <div class="entityGrid" id="grid"></div>
       </section>
 
-      <!-- FAQ -->
-      <section id="faq" class="block">
+      <!-- PARTICIPATION -->
+      <section id="participation" class="block">
         <div class="sectionTitle">
-          <h2>FAQ</h2>
-          <p>Najčastejšie otázky okolo dodania, air/sea dopravy, cla/DPH a fittingu.</p>
+          <h2>Akcie – účasť</h2>
+          <p>Rozdelené na oficiálne (plánované/brandované) a neoficiálne (spontánne výjazdy, support, scouting).</p>
         </div>
 
-        <div class="faq">
-          <details>
-            <summary>Ako sa líši sklad vs. objednávka?</summary>
-            <p>Sklad = ide hneď (zvyčajne 1–14 dní podľa regiónu). Objednávka = výroba alebo kompletácia – termín potvrdíme pri dopyte a platba je prevodom.</p>
-          </details>
-          <details>
-            <summary>Air vs. Sea freight – kedy čo dáva zmysel?</summary>
-            <p>Air = rýchlejšie, drahšie (typicky 7–14 dní US→EU podľa rozmerov). Sea = lacnejšie pri veľkých dieloch, ale pomalšie (typicky 4–8 týždňov).</p>
-          </details>
-          <details>
-            <summary>US dovoz: clo a DPH riešite vy alebo ja?</summary>
-            <p>Pri dovoze môže vzniknúť clo a DPH podľa typu tovaru. Pri potvrdení objednávky povieme, či je to riešené v cene dopravy alebo sa platí pri colnom konaní.</p>
-          </details>
-          <details>
-            <summary>Fitting: ABS vs FRP/kompozit – čo mám čakať?</summary>
-            <p>ABS (EU dodávatelia) býva presnejšie. FRP/kompozit (race/widebody) často vyžaduje úpravy a doladenie pred lakom.</p>
-          </details>
-          <details>
-            <summary>Viete dodať len časť kitu (napr. lemy)?</summary>
-            <p>Závisí od dodávateľa a konkrétneho kitu. Najistejšie je poslať názov kitu + čo presne chceš.</p>
-          </details>
-          <details>
-            <summary>Reklamácie pri veľkých dieloch?</summary>
-            <p>Pri prevzatí sprav fotky balenia aj poškodenia hneď pri doručení. Potom sa to rieši rýchlejšie.</p>
-          </details>
+        <div class="twoCols">
+          <div class="listBox card" style="box-shadow:none;">
+            <h3>Oficiálne</h3>
+
+            <div class="li">
+              <div>
+                <b>SADKA Prievidza – drift tréning</b><br>
+                <span>RACEM banner / support • obsah: reels + fotky • meet-up</span>
+              </div>
+              <div class="pill green">OFFICIAL</div>
+            </div>
+
+            <div class="li">
+              <div>
+                <b>PowerFest Trenčín (príklad)</b><br>
+                <span>promo stánok • merch / polepy • showcase build</span>
+              </div>
+              <div class="pill green">OFFICIAL</div>
+            </div>
+
+            <div class="li">
+              <div>
+                <b>Drift day / trackday (príklad)</b><br>
+                <span>test dielov • feedback • partner shoutouts</span>
+              </div>
+              <div class="pill green">OFFICIAL</div>
+            </div>
+          </div>
+
+          <div class="listBox card" style="box-shadow:none;">
+            <h3>Neoficiálne</h3>
+
+            <div class="li">
+              <div>
+                <b>Local meet (BA/TT) – spontánne</b><br>
+                <span>networking • scouting garáží/jazdcov • content</span>
+              </div>
+              <div class="pill yellow">UNOFFICIAL</div>
+            </div>
+
+            <div class="li">
+              <div>
+                <b>EU výjazd (CZ/AT/HU) – príklad</b><br>
+                <span>návšteva dodávateľa • preprava dielov • deal talk</span>
+              </div>
+              <div class="pill yellow">UNOFFICIAL</div>
+            </div>
+
+            <div class="li">
+              <div>
+                <b>Test fit / montáž u garáže</b><br>
+                <span>pomoc s fittingom • real fotky pre shop</span>
+              </div>
+              <div class="pill yellow">UNOFFICIAL</div>
+            </div>
+          </div>
         </div>
       </section>
 
       <footer>
         <div class="wrap">
-          © <span id="year"></span> RACEM / REM Performance — RACEM Group Hub
+          © <span id="year"></span> RACEM / REM Performance — RACEM GROUP map hub
         </div>
       </footer>
+
     </div>
 
     <!-- MODAL -->
@@ -1123,7 +1091,7 @@
             <span id="mMeta">—</span>
           </div>
           <div class="right">
-            <a class="shopBtn" id="mShopBtn" href="#" target="_blank" rel="noreferrer">Otvoriť v RACEM SHOP →</a>
+            <a class="shopBtn" id="mShopBtn" href="#" target="_blank" rel="noreferrer">Otvoriť →</a>
             <button class="close" id="close">Close</button>
           </div>
         </div>
@@ -1135,12 +1103,10 @@
 
             <div style="height:12px"></div>
 
-            <h3>Prehľad katalógu</h3>
-            <div class="kv" id="mCAT"></div>
-
-            <div style="height:12px"></div>
-            <h3>FAQ (dodávateľ)</h3>
-            <div id="mFAQ" style="display:grid;gap:10px;"></div>
+            <h3>Poznámky</h3>
+            <div id="mNotes" style="color:var(--muted);font-size:13px;line-height:1.65;">
+              —
+            </div>
           </div>
 
           <div class="modalPanel">
@@ -1157,19 +1123,14 @@
     // HARD STATS (natvrdo)
     // =========================
     const HARD = {
-      authorizedBrands: 2,
       csrCount: 14684,
-      topSupplierLabel: "CSR",
-      topMake: "BMW",
-      topVehicles: ["BMW E36", "BMW E46", "VW Golf"]
+      topPlatforms: ["BMW E36","BMW E46","VW Golf"]
     };
 
     // =========================
-    // FEEDS (len SFXLA / status)
+    // FEEDS (SFXLA)
     // =========================
-    const CATALOG_FEEDS = {
-      sfxla: "/sfxla-products.json"
-    };
+    const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
 
     async function safeFetchJSON(url){
       try{
@@ -1177,11 +1138,10 @@
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();
       }catch(e){
-        console.warn("[catalog] fetch failed:", url, e);
+        console.warn("[feed] fetch failed:", url, e);
         return null;
       }
     }
-
     function extractItemsFromAnyJSON(data){
       if(Array.isArray(data)) return data;
       if(data && Array.isArray(data.products)) return data.products;
@@ -1191,63 +1151,190 @@
     }
 
     // =========================
-    // DATA: (zatiaľ dodávatelia)
+    // ENTITIES (requested set)
     // =========================
-    const SUPPLIERS = [
+    const ENTITIES = [
+      // HUB
       {
-        id: "csr",
-        name: "CSR Automotive",
-        region: "EU",
-        country: "Nemecko",
-        about: "Bodykity a aero diely (EU). Veľké pokrytie OEM značiek, rýchlejšie dodania, stabilná kvalita pre street aj show buildy.",
-        leadTimeDays: [7, 14],
-        stock: "mix",
-        shippingModes: ["Kuriér", "Paleta"],
-        certificates: true,
-        use: ["Street", "Show", "Track"],
-        heroImg: "img/suppliers/csr.jpg",
-        gallery: [],
-        storeUrl: "csr-automotive.html",
+        id:"racem-hub",
+        type:"hub",
+        name:"RACEM HUB",
+        region:"SK",
+        country:"Bratislava (SK)",
+        about:"Centrála / hub – koordinácia objednávok, dodávateľov, partnerov a brandingu.",
+        status:"online",
+        lat: 48.148598,
+        lon: 17.107748,
+        heroImg:"img/network/racemhub.jpg",
+        url:"https://www.racem.sk",
+        notes:"Toto je domovský bod. Všetko sa točí okolo tohto uzla."
+      },
+
+      // Locked
+      {
+        id:"dl-locked",
+        type:"locked",
+        name:"Dunajská Lužná (uzamknuté)",
+        region:"SK",
+        country:"Dunajská Lužná (SK)",
+        about:"Uzamknuté – interná vec / pripravované. Zatiaľ bez verejných detailov.",
+        status:"locked",
+        lat: 48.0849246,
+        lon: 17.2590955,
+        heroImg:"img/network/locked.jpg",
+        url:"#",
+        notes:"Sem si neskôr vieš dať napr. sklad, výrobu, showroom alebo čokoľvek – teraz to len drží miesto."
+      },
+
+      // SUPPLIERS
+      {
+        id:"csr",
+        type:"supplier",
+        name:"CSR Automotive",
+        region:"EU",
+        country:"Nemecko",
+        about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť, street/show.",
+        status:"hard",
+        leadTimeDays:[7,14],
+        shippingModes:["Kuriér","Paleta"],
+        certificates:true,
+        stock:"mix",
         productsCount: HARD.csrCount,
-        topMakes: [{ make: HARD.topMake, count: 0 }],
-        topModels: HARD.topVehicles.map(v => ({ model: v, count: 0 })),
-        faq: [
-          { q:"Sú k dielom certifikáty?", a:"Pri časti sortimentu áno. Konkrétny produkt overíme podľa SKU." },
-          { q:"Viete poslať len lipu / prahy / difúzor?", a:"Vo väčšine prípadov áno – závisí od dostupnosti a balenia." }
-        ],
         lat: 51.1657,
-        lon: 10.4515
+        lon: 10.4515,
+        heroImg:"img/suppliers/csr.jpg",
+        url:"csr-automotive.html",
+        notes:"CSR držíme natvrdo (hard)."
       },
       {
-        id: "sfxla",
-        name: "SFXLA",
-        region: "US",
-        country: "Kalifornia (USA)",
-        about: "Widebody a race diely. Väčšina na objednávku – agresívny fitment, kompozit/FRP a veľké diely riešené air/sea freight.",
-        leadTimeDays: [18, 35],
-        stock: "made_to_order",
-        shippingModes: ["Air", "Sea"],
-        certificates: false,
-        use: ["Drift", "Track", "Race"],
-        heroImg: "img/suppliers/sfxla.jpg",
-        gallery: [],
-        storeUrl: "streetfighter-la.html",
+        id:"sfxla",
+        type:"supplier",
+        name:"SFXLA",
+        region:"US",
+        country:"Kalifornia (USA)",
+        about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight podľa rozmerov.",
+        status:"feed",
+        leadTimeDays:[18,35],
+        shippingModes:["Air","Sea"],
+        certificates:false,
+        stock:"made_to_order",
         productsCount: 980, // fallback
-        topMakes: [{ make:"BMW", count: 0 }],
-        topModels: [{ model:"BMW E36", count: 0 }, { model:"BMW E92", count: 0 }, { model:"350Z", count: 0 }],
-        faq: [
-          { q:"Air vs Sea – čo odporúčate?", a:"Ak chceš rýchlo, air. Ak je to veľký kit a ideš rozumne s cenou dopravy, sea. Spravíme kalkuláciu oboch." },
-          { q:"Ako je to s fittingom FRP?", a:"Pri race kitoch je normálne, že sa doladzuje. Odporúčame skúšanie nasucho + úpravy pred lakom." }
-        ],
         lat: 34.0522,
-        lon: -118.2437
+        lon: -118.2437,
+        heroImg:"img/suppliers/sfxla.jpg",
+        url:"streetfighter-la.html",
+        notes:"SFXLA sa hydratuje z feedu. Keď padne, ide fallback."
+      },
+
+      // BRANDS
+      {
+        id:"skidnation",
+        type:"brand",
+        name:"SkidNation",
+        region:"SK",
+        country:"Bratislava (SK)",
+        about:"Performance diely (MX-5/Miata komunita). EU shipping base.",
+        status:"active",
+        lat: 48.148598,
+        lon: 17.107748,
+        heroImg:"img/brands/skidnation.jpg",
+        url:"#",
+        notes:"Značka (nie dodávateľ bodykitov)."
+      },
+      {
+        id:"wisefab",
+        type:"brand",
+        name:"Wisefab",
+        region:"EU",
+        country:"Tallinn (EE)",
+        about:"Drift/race suspension. Angle kits, ramená, geometry.",
+        status:"active",
+        lat: 59.436962,
+        lon: 24.753574,
+        heroImg:"img/brands/wisefab.jpg",
+        url:"#",
+        notes:"Primár: drift/track podvozok."
+      },
+      {
+        id:"odesacnc",
+        type:"brand",
+        name:"Odesa CNC",
+        region:"EU",
+        country:"Wodzisław Śląski (PL)",
+        about:"Angle kity, ramená, CNC diely pre drift platformy.",
+        status:"active",
+        lat: 50.001, // približný centroid mesta (nepotrebujeme mm presnosť)
+        lon: 18.463,
+        heroImg:"img/brands/odesacnc.jpg",
+        url:"#",
+        notes:"PL drift hardware."
+      },
+      {
+        id:"darkside",
+        type:"brand",
+        name:"Darkside Developments",
+        region:"UK",
+        country:"Barnsley (UK)",
+        about:"Performance diesel tuning / VAG, BMW, MINI. Hardware + servis.",
+        status:"active",
+        lat: 53.571788,
+        lon: -1.382466,
+        heroImg:"img/brands/darkside.jpg",
+        url:"#",
+        notes:"UK partner (diesel performance)."
+      },
+      {
+        id:"cybul",
+        type:"brand",
+        name:"CYBUL",
+        region:"EU",
+        country:"Legionowo (PL)",
+        about:"Motorsport diely: ramená, rollbary, swapy, uchytenia.",
+        status:"active",
+        lat: 52.401, // približne Legionowo
+        lon: 20.926,
+        heroImg:"img/brands/cybul.jpg",
+        url:"#",
+        notes:"PL motorsport parts."
+      },
+
+      // DRIVER
+      {
+        id:"rado-panak",
+        type:"driver",
+        name:"Rado Panák",
+        region:"SK",
+        country:"Trenčín (SK)",
+        about:"Jazdec – drift. Lokálna spolupráca / content / promo.",
+        status:"active",
+        lat: 48.8945,
+        lon: 18.0444,
+        heroImg:"img/drivers/rado-panak.jpg",
+        url:"#",
+        notes:"Sem si vieš doplniť triedu, auto, výsledky atď."
+      },
+
+      // EVENT
+      {
+        id:"sadka-prievidza",
+        type:"event",
+        name:"SADKA Events",
+        region:"SK",
+        country:"Prievidza (SK)",
+        about:"Slalom & drift eventy / tréningy. Lokálna scéna + track days.",
+        status:"active",
+        lat: 48.7745206,
+        lon: 18.6245383,
+        heroImg:"img/events/sadka.jpg",
+        url:"#",
+        notes:"Ak chceš, doplníme sem najbližší termín a link na registráciu."
       }
     ];
 
-    window.SUPPLIERS = SUPPLIERS;
+    window.ENTITIES = ENTITIES;
 
     // =========================
-    // Globe focus
+    // Globe focus helper
     // =========================
     window.__globeFocus = {
       focusLat: null,
@@ -1271,31 +1358,9 @@
     const $ = (s) => document.querySelector(s);
     const grid = $("#grid");
     const q = $("#q");
+    const type = $("#type");
     const region = $("#region");
-    const speed = $("#speed");
     const reset = $("#reset");
-
-    function leadLabel([a,b]){
-      if(!Array.isArray([a,b]) || (a === 0 && b === 0)) return "—";
-      return a === b ? `${a} dní` : `${a}–${b} dní`;
-    }
-    function speedBucket([a,b]){
-      const max = Math.max(a,b);
-      if (max <= 5) return "fast";
-      if (max <= 14) return "mid";
-      return "slow";
-    }
-    function stockLabel(s){
-      if (s === "in_stock") return "Skladom";
-      if (s === "made_to_order") return "Na objednávku";
-      return "Mix";
-    }
-    function yesNo(x){ return x ? "Áno" : "Nie"; }
-
-    function paymentLabel(stock){
-      if(stock === "made_to_order") return "Prevod (objednávka)";
-      return "Dobierka do 180€ / Prevod nad 180€";
-    }
 
     function escapeHTML(s){
       return String(s ?? "").replace(/[&<>"']/g, c => ({
@@ -1303,98 +1368,112 @@
       }[c]));
     }
 
-    function setFeedUI(ok, msg){
-      const dot = document.getElementById("feedDot");
-      const txt = document.getElementById("feedStatus");
-      const syncText = document.getElementById("syncText");
-
-      if(dot){
-        dot.classList.remove("ok","warn");
-        dot.classList.add(ok ? "ok" : "warn");
-      }
-      if(txt) txt.textContent = msg;
-      if(syncText) syncText.textContent = `SYNC: ${msg}`;
+    function leadLabel(arr){
+      if(!Array.isArray(arr) || arr.length<2) return "—";
+      const [a,b] = arr;
+      if(!Number.isFinite(a) || !Number.isFinite(b)) return "—";
+      return a===b ? `${a} dní` : `${a}–${b} dní`;
     }
 
-    function applyHardStats(sfxlaCountMaybe){
-      const csrCount = HARD.csrCount;
-      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
-      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0)
-        ? sfxlaCountMaybe
-        : (sfxla?.productsCount || 0);
+    function stockLabel(s){
+      if (s === "in_stock") return "Skladom";
+      if (s === "made_to_order") return "Na objednávku";
+      return "Mix";
+    }
 
-      const total = csrCount + sfxlaCount;
+    function paymentLabel(entity){
+      // jednoduché pravidlo podľa tvojich požiadaviek:
+      if(entity.type === "supplier" && entity.stock === "made_to_order") return "Prevod (objednávka)";
+      if(entity.type === "supplier") return "Dobierka do 180€ / Prevod nad 180€";
+      return "—";
+    }
 
-      const setText = (id, val) => {
-        const el = document.getElementById(id);
-        if(el) el.textContent = val;
-      };
+    function typeLabel(t){
+      return ({
+        supplier:"Dodávateľ",
+        brand:"Značka",
+        driver:"Jazdec",
+        event:"Event",
+        hub:"Hub",
+        locked:"Uzamknuté"
+      }[t] || "—");
+    }
 
-      setText("miniActive", String(HARD.authorizedBrands));
-      setText("miniTotal", total.toLocaleString("sk-SK"));
-      setText("miniTopSupplier", `${HARD.topSupplierLabel} (${csrCount.toLocaleString("sk-SK")})`);
-      setText("miniTopMake", HARD.topMake);
+    function badgeForType(t){
+      // len vizuálne: dodávateľ červený, locked šedý, ostatné normálne
+      if(t === "supplier") return `<span class="badge red">DODÁVATEĽ</span>`;
+      if(t === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
+      if(t === "hub") return `<span class="badge count">HUB</span>`;
+      if(t === "event") return `<span class="badge count">EVENT</span>`;
+      if(t === "driver") return `<span class="badge count">JAZDEC</span>`;
+      return `<span class="badge count">ZNAČKA</span>`;
+    }
 
-      // chips (top platformy)
-      const chipBox = document.getElementById("miniChips");
-      if(chipBox){
-        chipBox.innerHTML = `
-          <span class="chip"><i></i>${escapeHTML(HARD.topVehicles[0])}</span>
-          <span class="chip"><i></i>${escapeHTML(HARD.topVehicles[1])}</span>
-          <span class="chip"><i></i>${escapeHTML(HARD.topVehicles[2])}</span>
-        `;
-      }
-
-      // CSR držíme natvrdo
-      const csr = SUPPLIERS.find(s=>s.id==="csr");
-      if(csr) csr.productsCount = csrCount;
+    function statusBadge(x){
+      if(x.status === "feed") return `<span class="badge use">FEED</span>`;
+      if(x.status === "hard") return `<span class="badge use">HARD</span>`;
+      if(x.status === "locked") return `<span class="badge use">LOCK</span>`;
+      return `<span class="badge use">ACTIVE</span>`;
     }
 
     function cardHTML(x){
-      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
-      const useBadges = (x.use||[]).slice(0,3).map(t => `<span class="badge use">${escapeHTML(t)}</span>`).join("");
-      const regionBadge = `<span class="badge red">${escapeHTML(x.region)}</span>`;
-      const countBadge = `<span class="badge count">${escapeHTML(products)} PRODUKTOV</span>`;
       const img = x.heroImg ? `<img src="${x.heroImg}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
-      const ship = (x.shippingModes||[]).join(" / ") || "—";
+
+      let meta = [];
+      if(x.type === "supplier"){
+        meta = [
+          ["Dodanie", leadLabel(x.leadTimeDays)],
+          ["Doprava", (x.shippingModes||[]).join(" / ") || "—"],
+          ["Certifikát", x.certificates ? "Áno" : "Nie"],
+          ["Platba", paymentLabel(x)]
+        ];
+      }else if(x.type === "event"){
+        meta = [
+          ["Miesto", x.country || "—"],
+          ["Typ", "Slalom / Drift"],
+          ["Status", "Aktívne"],
+          ["Platba", "—"]
+        ];
+      }else{
+        meta = [
+          ["Typ", typeLabel(x.type)],
+          ["Región", x.region || "—"],
+          ["Báza", x.country || "—"],
+          ["Status", (x.status || "active").toUpperCase()]
+        ];
+      }
 
       return `
-        <div class="card supplier" data-id="${x.id}">
-          <div class="supplierTop">
-            <div class="supplierName">
+        <div class="card entity" data-id="${x.id}">
+          <div class="entityTop">
+            <div class="entityName">
               <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
-              <span>${escapeHTML(x.country)} • ${escapeHTML(x.region)} • ${stockLabel(x.stock)}</span>
+              <span>${escapeHTML(typeLabel(x.type))} • ${escapeHTML(x.country || "—")} • ${escapeHTML(x.region || "—")}</span>
             </div>
-            <div class="badges">${countBadge}${regionBadge}${useBadges}</div>
+            <div class="badges">
+              ${badgeForType(x.type)}
+              ${statusBadge(x)}
+              ${x.type === "supplier" ? `<span class="badge count">${(x.productsCount||0).toLocaleString("sk-SK")} PRODUKTOV</span>` : ``}
+            </div>
           </div>
 
-          <div class="supplierThumb">
+          <div class="entityThumb">
             ${img}
             <div class="overlay"></div>
           </div>
 
-          <div class="supplierMeta">
-            <div class="metaItem">
-              <b>Dodanie</b>
-              <span>${leadLabel(x.leadTimeDays)}</span>
-            </div>
-            <div class="metaItem">
-              <b>Doprava</b>
-              <span>${escapeHTML(ship)}</span>
-            </div>
-            <div class="metaItem">
-              <b>Certifikát</b>
-              <span>${yesNo(!!x.certificates)}</span>
-            </div>
-            <div class="metaItem">
-              <b>Platba</b>
-              <span>${escapeHTML(paymentLabel(x.stock))}</span>
-            </div>
+          <div class="entityMeta">
+            ${meta.map(([k,v]) => `
+              <div class="metaItem">
+                <b>${escapeHTML(k)}</b>
+                <span>${escapeHTML(v)}</span>
+              </div>
+            `).join("")}
           </div>
 
-          <p class="supplierDesc">${escapeHTML(x.about)}</p>
+          <p class="entityDesc">${escapeHTML(x.about)}</p>
 
-          <div class="supplierFoot">
+          <div class="entityFoot">
             <span>klikni pre detail</span>
             <i>OPEN →</i>
           </div>
@@ -1404,37 +1483,72 @@
 
     function applyFilters(){
       const qs = (q.value || "").trim().toLowerCase();
+      const t = type.value;
       const r = region.value;
-      const s = speed.value;
 
-      const out = SUPPLIERS.filter(x => {
-        const hay = [
-          x.name, x.region, x.country, x.about,
-          ...(x.use||[]),
-          ...(x.topMakes||[]).map(t => t.make),
-          ...(x.topModels||[]).map(t => t.model)
-        ].join(" ").toLowerCase();
-
+      const out = ENTITIES.filter(x => {
+        const hay = [x.name, x.type, x.region, x.country, x.about].join(" ").toLowerCase();
         const okQ = !qs || hay.includes(qs);
+        const okT = (t === "all") || (x.type === t);
         const okR = (r === "all") || (x.region === r);
-        const okS = (s === "all") || (speedBucket(x.leadTimeDays) === s);
-        return okQ && okR && okS;
+        return okQ && okT && okR;
       });
 
       grid.innerHTML = out.map(cardHTML).join("");
 
-      grid.querySelectorAll(".supplier").forEach(el => {
+      grid.querySelectorAll(".entity").forEach(el => {
         el.addEventListener("click", () => {
-          const sup = SUPPLIERS.find(x => x.id === el.dataset.id);
-          if(!sup) return;
-          if(typeof sup.lat === "number" && typeof sup.lon === "number"){
-            window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
+          const ent = ENTITIES.find(x => x.id === el.dataset.id);
+          if(!ent) return;
+
+          if(typeof ent.lat === "number" && typeof ent.lon === "number"){
+            window.__globeFocus.focusFor(ent.lat, ent.lon, 3200);
           }
-          openModal(el.dataset.id);
+          openModal(ent.id);
         });
       });
 
       renderMiniList(out);
+    }
+
+    // =========================
+    // Mini list (right panel)
+    // =========================
+    function miniRowHTML(x){
+      const sub = `${typeLabel(x.type)} • ${x.country || "—"} • ${x.region || "—"}`;
+      return `
+        <div class="miniItem" data-id="${x.id}">
+          <div class="miniLeft">
+            <b>${escapeHTML(x.name)}</b>
+            <span>${escapeHTML(sub)}</span>
+          </div>
+          <div class="miniRight">
+            <span class="miniBadge">${escapeHTML((x.status || "active").toUpperCase())}</span>
+            <span class="miniDot"></span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMiniList(list){
+      const box = document.getElementById("miniList");
+      if(!box) return;
+
+      const sorted = [...list].slice(0,6);
+      box.innerHTML = sorted.map(miniRowHTML).join("");
+
+      box.querySelectorAll(".miniItem").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.dataset.id;
+          const ent = ENTITIES.find(x => x.id === id);
+          if(!ent) return;
+
+          if(typeof ent.lat === "number" && typeof ent.lon === "number"){
+            window.__globeFocus.focusFor(ent.lat, ent.lon, 3200);
+          }
+          openModal(id);
+        });
+      });
     }
 
     // =========================
@@ -1444,26 +1558,30 @@
     const closeBtn = $("#close");
 
     function openModal(id){
-      const x = SUPPLIERS.find(s => s.id === id);
+      const x = ENTITIES.find(e => e.id === id);
       if(!x) return;
 
       $("#mName").textContent = x.name;
-      $("#mMeta").textContent = `${x.country} • ${x.region} • ${leadLabel(x.leadTimeDays)} • ${stockLabel(x.stock)}`;
-
-      const ship = (x.shippingModes||[]).join(" / ") || "—";
-      const products = (typeof x.productsCount === "number") ? x.productsCount.toLocaleString("sk-SK") : "—";
+      $("#mMeta").textContent = `${typeLabel(x.type)} • ${x.country || "—"} • ${x.region || "—"}`;
 
       const btn = $("#mShopBtn");
-      btn.href = x.storeUrl || "https://www.racem.sk";
+      btn.href = (x.url && x.url !== "#") ? x.url : "https://www.racem.sk";
+      btn.textContent = (x.url && x.url !== "#") ? "Otvoriť →" : "Otvoriť RACEM →";
 
-      const kv = [
-        ["Sklad / objednávka", stockLabel(x.stock)],
-        ["Doprava", ship],
-        ["Dodacie doby", leadLabel(x.leadTimeDays)],
-        ["Platba", paymentLabel(x.stock)],
-        ["Certifikát", x.certificates ? "Áno" : "Nie"],
-        ["Použitie", (x.use||[]).join(", ") || "—"],
-      ];
+      const kv = [];
+      kv.push(["Typ", typeLabel(x.type)]);
+      kv.push(["Región", x.region || "—"]);
+      kv.push(["Báza", x.country || "—"]);
+      kv.push(["Status", (x.status || "active").toUpperCase()]);
+
+      if(x.type === "supplier"){
+        kv.push(["Produkty", (x.productsCount||0).toLocaleString("sk-SK")]);
+        kv.push(["Dodanie", leadLabel(x.leadTimeDays)]);
+        kv.push(["Doprava", (x.shippingModes||[]).join(" / ") || "—"]);
+        kv.push(["Sklad/obj.", stockLabel(x.stock)]);
+        kv.push(["Platba", paymentLabel(x)]);
+        kv.push(["Certifikát", x.certificates ? "Áno" : "Nie"]);
+      }
 
       $("#mKV").innerHTML = kv.map(([k,v]) => `
         <div class="item">
@@ -1472,36 +1590,14 @@
         </div>
       `).join("");
 
-      const cat = [
-        ["Produkty", products],
-        ["Najsilnejšia značka", HARD.topMake],
-        ["Top platformy", HARD.topVehicles.join(", ")],
-        ["Región", x.region],
-      ];
-
-      $("#mCAT").innerHTML = cat.map(([k,v]) => `
-        <div class="item">
-          <b>${escapeHTML(k)}</b>
-          <span>${escapeHTML(v)}</span>
-        </div>
-      `).join("");
-
-      const fallbackFAQ = [
-        { q:"Ako prebieha objednávka?", a:"Klikni na RACEM SHOP → vyber produkt alebo pošli dopyt. Potvrdíme cenu, dopravu a termín." },
-        { q:"Viete upresniť cenu dopravy?", a:"Áno. Pri veľkých dieloch je doprava podľa rozmerov – dáme kalkuláciu." }
-      ];
-
-      $("#mFAQ").innerHTML = ((x.faq && x.faq.length) ? x.faq : fallbackFAQ).map(f => `
-        <details>
-          <summary>${escapeHTML(f.q)}</summary>
-          <p>${escapeHTML(f.a)}</p>
-        </details>
-      `).join("");
+      $("#mNotes").textContent = x.notes || "—";
 
       const g = $("#mGallery");
-      g.innerHTML = (x.gallery||[]).slice(0,6).map(src => `
-        <img src="${src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
-      `).join("");
+      const pics = (x.gallery||[]).slice(0,6);
+      g.innerHTML = pics.map(src => `<img src="${src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">`).join("");
+      if(!pics.length){
+        g.innerHTML = `<div style="color:var(--muted);font-size:13px;line-height:1.6;">Galéria zatiaľ nie je doplnená.</div>`;
+      }
 
       modalBack.style.display = "flex";
       document.body.style.overflow = "hidden";
@@ -1516,46 +1612,8 @@
     window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
 
     // =========================
-    // Mini list (right panel)
+    // Stats + time
     // =========================
-    function miniRowHTML(sup){
-      const products = (typeof sup.productsCount === "number") ? sup.productsCount.toLocaleString("sk-SK") : "—";
-      const lt = leadLabel(sup.leadTimeDays);
-      return `
-        <div class="miniItem" data-id="${sup.id}">
-          <div class="miniLeft">
-            <b>${escapeHTML(sup.name)}</b>
-            <span>${escapeHTML(sup.country)} • ${escapeHTML(sup.region)} • ${escapeHTML(lt)} • ${escapeHTML(products)} produktov</span>
-          </div>
-          <div class="miniRight">
-            <span class="miniBadge">ACTIVE</span>
-            <span class="miniDot"></span>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMiniList(list){
-      const box = document.getElementById("miniList");
-      if(!box) return;
-
-      const sorted = [...list].slice(0,4);
-      box.innerHTML = sorted.map(miniRowHTML).join("");
-
-      box.querySelectorAll(".miniItem").forEach(el => {
-        el.addEventListener("click", () => {
-          const id = el.dataset.id;
-          const sup = SUPPLIERS.find(x => x.id === id);
-          if(!sup) return;
-
-          if(typeof sup.lat === "number" && typeof sup.lon === "number"){
-            window.__globeFocus.focusFor(sup.lat, sup.lon, 2800);
-          }
-          openModal(id);
-        });
-      });
-    }
-
     function updateTime(){
       const d = new Date();
       const pad = (n) => String(n).padStart(2,"0");
@@ -1564,48 +1622,53 @@
       if(el) el.textContent = `${t} • stav systému`;
     }
 
-    async function hydrateSfxlaOnly(){
-      const start = Date.now();
-      setFeedUI(false, "syncing");
+    function applyTopStats(sfxlaCountMaybe){
+      const sfxla = ENTITIES.find(e => e.id === "sfxla");
+      const csr = ENTITIES.find(e => e.id === "csr");
+      if(csr) csr.productsCount = HARD.csrCount;
 
+      const sfxlaCount = (typeof sfxlaCountMaybe === "number" && sfxlaCountMaybe > 0)
+        ? sfxlaCountMaybe
+        : (sfxla?.productsCount || 0);
+
+      if(sfxla && sfxlaCount > 0) sfxla.productsCount = sfxlaCount;
+
+      const totalEntities = ENTITIES.length;
+      const totalProducts = HARD.csrCount + sfxlaCount;
+
+      $("#statTotalEntities").textContent = String(totalEntities);
+      $("#statProductsTotal").textContent = totalProducts.toLocaleString("sk-SK");
+      $("#statTopPlatforms").textContent = HARD.topPlatforms.join(", ");
+    }
+
+    async function hydrateSfxlaOnly(){
       const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
       if(!data){
-        setFeedUI(false, "offline");
-        applyHardStats(null);
+        applyTopStats(null);
         applyFilters();
         return;
       }
-
       const items = extractItemsFromAnyJSON(data);
       const count = items.length || 0;
-
-      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
-      if(sfxla && count > 0) sfxla.productsCount = count;
-
-      const ms = Date.now() - start;
-      setFeedUI(true, `ok • ${ms}ms`);
-
-      applyHardStats(count);
+      applyTopStats(count);
       applyFilters();
     }
 
     // Wire UI
     q.addEventListener("input", applyFilters);
+    type.addEventListener("change", applyFilters);
     region.addEventListener("change", applyFilters);
-    speed.addEventListener("change", applyFilters);
 
     reset.addEventListener("click", () => {
       q.value = "";
+      type.value = "all";
       region.value = "all";
-      speed.value = "all";
       applyFilters();
     });
 
-    $("#openFAQ").addEventListener("click", () => { location.hash = "#faq"; });
-
     // init
     $("#year").textContent = new Date().getFullYear();
-    applyHardStats(null);
+    applyTopStats(null);
     applyFilters();
 
     updateTime();
@@ -1615,7 +1678,7 @@
     setInterval(hydrateSfxlaOnly, 5 * 60 * 1000);
   </script>
 
-  <!-- ===== COBE Globe ===== -->
+  <!-- ===== COBE Globe (zoom + focus) ===== -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
@@ -1630,27 +1693,55 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 }; // SK
-    const SUPPLIERS = window.SUPPLIERS || [];
+    const ENTITIES = window.ENTITIES || [];
     const focus = window.__globeFocus;
 
+    // Zoom (scale)
+    let globeScale = 1.08;        // default zoom
+    const minScale = 0.92;
+    const maxScale = 1.65;
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      globeScale += (delta > 0 ? -0.07 : 0.07);
+      globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
+    }, { passive:false });
+
+    // Marker colors per type (normalized RGB 0..1)
+    const COLORS = {
+      supplier: [1.0, 0.17, 0.19],       // red
+      brand:    [0.29, 0.64, 1.00],      // blue
+      driver:   [0.18, 0.86, 0.52],      // green
+      event:    [0.95, 0.78, 0.06],      // yellow
+      hub:      [1.0, 0.17, 0.19],       // red (hub = racem)
+      locked:   [0.65, 0.65, 0.65]       // gray
+    };
+
+    function sizeByType(t){
+      if(t === "hub") return 0.14;
+      if(t === "supplier") return 0.12;
+      if(t === "event") return 0.105;
+      if(t === "locked") return 0.095;
+      return 0.095;
+    }
+
     function buildMarkers(now=Date.now()) {
+      // jemné pulzy len pre hub + supplier, nech to nevyzerá ako disco
       const pulse = (base, amp, speed) => base + (Math.sin(now / speed) * amp);
-      return [
-        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: pulse(0.125, 0.015, 520) }, // HQ (väčšie)
-        ...SUPPLIERS
-          .filter(s => typeof s.lat === "number" && typeof s.lon === "number")
-          .map(s => {
-            const sid = String(s.id || "").toLowerCase();
-            if(sid === "sfxla"){
-              return { location: [s.lat, s.lon], size: pulse(0.155, 0.030, 240) };
-            }
-            if(sid === "csr"){
-              return { location: [s.lat, s.lon], size: pulse(0.115, 0.014, 420) };
-            }
-            return { location: [s.lat, s.lon], size: 0.095 };
-          })
-      ];
+
+      return ENTITIES
+        .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+        .map(e => {
+          let s = sizeByType(e.type);
+          if(e.type === "hub") s = pulse(s, 0.020, 260);
+          if(e.type === "supplier") s = pulse(s, 0.012, 420);
+          return {
+            location: [e.lat, e.lon],
+            size: s,
+            color: COLORS[e.type] || COLORS.brand
+          };
+        });
     }
 
     function latLonToPhiTheta(lat, lon){
@@ -1666,6 +1757,7 @@
     let dragStartX = 0;
     let dragPhiStart = 0;
 
+    // NOTE: markerColor is global fallback, but each marker can have `color`.
     createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: canvas.width,
@@ -1675,6 +1767,7 @@
       theta: 0.25,
       dark: 1.15,
       diffuse: 1.25,
+      scale: globeScale,
       mapSamples: 40000,
       mapBrightness: 6,
 
@@ -1688,6 +1781,9 @@
       onRender: (state) => {
         state.width = canvas.width;
         state.height = canvas.height;
+
+        // apply zoom
+        state.scale = globeScale;
 
         const now = Date.now();
         const hasFocus = focus
