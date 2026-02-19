@@ -452,7 +452,6 @@
       font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
     .leaflet-tile{
-      /* jemný “RACEM dark” look */
       filter: contrast(1.08) saturate(1.05) brightness(0.95);
     }
     .leaflet-control-zoom a{
@@ -553,8 +552,8 @@
             </h1>
 
             <p class="sub">
-              3 sekcie, 3 mapy. Eventy = Európa (priblížené), Jazdci = Slovensko, Dodávatelia = globálna rotujúca zemeguľa.
-              Každá karta vľavo “fokusne” mapu vpravo.
+              3 sekcie, 3 mapy. Eventy = Európa (uzamknuté hranice), Jazdci = Slovensko (uzamknuté hranice),
+              Dodávatelia = globálna rotujúca zemeguľa (zoom kolieskom + drag).
             </p>
 
             <div class="stack">
@@ -644,7 +643,7 @@
                 Ovládanie máp
               </div>
               <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
-                EU/SK mapy: zoom + drag (klasika).<br>
+                EU/SK mapy: zoom + drag (ale zamknuté na hranice).<br>
                 Dodávatelia: globus rotuje, zoom kolieskom, drag otáča.
               </div>
             </div>
@@ -668,7 +667,7 @@
       <section id="eventy" class="block">
         <div class="sectionTitle">
           <h2>Eventy (Európa)</h2>
-          <p>Zúčastníme sa / plánujeme sa zúčastniť. Mapa je “EU priblížená” – nech je to prehľadné.</p>
+          <p>Zúčastníme sa / plánujeme sa zúčastniť. Mapa je uzamknutá len na Európu.</p>
         </div>
 
         <div class="secGrid">
@@ -699,7 +698,7 @@
             </div>
             <div class="mapHint">
               <span><b>Tip:</b> klik na event vľavo → mapa sa zameria</span>
-              <span><b>Stav:</b> dark tiles</span>
+              <span><b>Lock:</b> EU bounds</span>
             </div>
           </div>
         </div>
@@ -709,7 +708,7 @@
       <section id="jazdci" class="block">
         <div class="sectionTitle">
           <h2>Jazdci (Slovensko)</h2>
-          <p>Len Slovensko – rýchly prehľad, kde kto je. Vľavo karty, vpravo mapa SR.</p>
+          <p>Len Slovensko – mapa je uzamknutá na hranice SR.</p>
         </div>
 
         <div class="secGrid">
@@ -734,7 +733,7 @@
             </div>
             <div class="mapHint">
               <span><b>Tip:</b> klik na jazdca → fokus</span>
-              <span><b>Stav:</b> dark tiles</span>
+              <span><b>Lock:</b> SK bounds</span>
             </div>
           </div>
         </div>
@@ -744,7 +743,7 @@
       <section id="dodavatelia" class="block">
         <div class="sectionTitle">
           <h2>Dodávatelia (Zemeguľa)</h2>
-          <p>Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Klik na kartu vľavo → fokus na bod.</p>
+          <p>Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Body sú zmenšené (jemný pulz).</p>
         </div>
 
         <div class="secGrid">
@@ -1008,23 +1007,34 @@
     }
 
     // =========================
-    // EVENTS LIST + EU MAP (DARK)
+    // EVENTS LIST + EU MAP (LOCKED)
     // =========================
     let mapEU, euLayer, euMarkers = new Map();
 
     function initEuropeMap(){
+      // EU bounds (approx) — zamknutie aby sa nedalo ísť mimo
+      const EU_BOUNDS = L.latLngBounds(
+        L.latLng(34.0, -12.5),  // SW
+        L.latLng(72.5, 40.5)    // NE
+      );
+
       mapEU = L.map("mapEurope", {
         zoomControl:true,
-        scrollWheelZoom:true
+        scrollWheelZoom:true,
+        maxBounds: EU_BOUNDS,
+        maxBoundsViscosity: 1.0,
+        worldCopyJump: false,
+        minZoom: 4,
+        maxZoom: 18
       });
 
-      // EU-focused view
-      mapEU.setView([50.5, 13.5], 5);
+      mapEU.fitBounds(EU_BOUNDS);
 
-      // ✅ DARK tiles
+      // ✅ DARK tiles + noWrap
       euLayer = L.tileLayer(DARK_TILES, {
         maxZoom: 19,
-        attribution: DARK_ATTR
+        attribution: DARK_ATTR,
+        noWrap: true
       }).addTo(mapEU);
 
       renderEuropeMarkers();
@@ -1095,23 +1105,34 @@
     }
 
     // =========================
-    // DRIVERS LIST + SK MAP (DARK)
+    // DRIVERS LIST + SK MAP (LOCKED)
     // =========================
     let mapSK, skLayer, skMarkers = new Map();
 
     function initSlovakiaMap(){
+      // SK bounds (approx) — zamknutie aby sa nedalo ísť mimo
+      const SK_BOUNDS = L.latLngBounds(
+        L.latLng(47.65, 16.75), // SW
+        L.latLng(49.65, 22.70)  // NE
+      );
+
       mapSK = L.map("mapSlovakia", {
         zoomControl:true,
-        scrollWheelZoom:true
+        scrollWheelZoom:true,
+        maxBounds: SK_BOUNDS,
+        maxBoundsViscosity: 1.0,
+        worldCopyJump: false,
+        minZoom: 8,
+        maxZoom: 18
       });
 
-      // Slovakia-focused view
-      mapSK.setView([48.75, 19.50], 8);
+      mapSK.fitBounds(SK_BOUNDS);
 
-      // ✅ DARK tiles
+      // ✅ DARK tiles + noWrap
       skLayer = L.tileLayer(DARK_TILES, {
         maxZoom: 19,
-        attribution: DARK_ATTR
+        attribution: DARK_ATTR,
+        noWrap: true
       }).addTo(mapSK);
 
       renderSlovakiaMarkers();
@@ -1298,17 +1319,7 @@
       }
     };
 
-    const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [
-      { id:"hub-ba", type:"hub", lat:48.148598, lon:17.107748 },
-      { id:"locked-dl", type:"locked", lat:48.0849246, lon:17.2590955 },
-      { id:"csr", type:"supplier", lat:51.1657, lon:10.4515 },
-      { id:"sfxla", type:"supplier", lat:34.0522, lon:-118.2437 },
-      { id:"skidnation", type:"brand", lat:48.148598, lon:17.107748 },
-      { id:"wisefab", type:"brand", lat:59.436962, lon:24.753574 },
-      { id:"odesacnc", type:"brand", lat:50.001, lon:18.463 },
-      { id:"darkside", type:"brand", lat:53.571788, lon:-1.382466 },
-      { id:"cybul", type:"brand", lat:52.401, lon:20.926 }
-    ];
+    const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
 
     // wheel zoom
     let globeScale = 1.12;
@@ -1329,11 +1340,12 @@
       locked:   [0.65, 0.65, 0.65]
     };
 
+    // ✅ MENŠIE BODY + JEMNÝ PULZ
     function sizeByType(t){
-      if(t === "hub") return 0.145;
-      if(t === "supplier") return 0.125;
-      if(t === "locked") return 0.095;
-      return 0.095;
+      if(t === "hub")      return 0.070;
+      if(t === "supplier") return 0.060;
+      if(t === "locked")   return 0.045;
+      return 0.045;
     }
 
     function buildMarkers(now=Date.now()){
@@ -1343,8 +1355,10 @@
         .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
         .map(e => {
           let size = sizeByType(e.type);
-          if(e.type === "hub") size = pulse(size, 0.020, 260);
-          if(e.type === "supplier") size = pulse(size, 0.012, 420);
+
+          // jemný pulz (už nie maják)
+          if(e.type === "hub")      size = pulse(size, 0.008, 260);
+          if(e.type === "supplier") size = pulse(size, 0.006, 420);
 
           return {
             location: [e.lat, e.lon],
