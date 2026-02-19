@@ -442,9 +442,75 @@
     }
     .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
 
-    #globeSuppliers{height: 520px; display:block; width:100%;}
     #mapEurope{height: 520px;}
     #mapSlovakia{height: 520px;}
+
+    /* Globe wrapper: canvas + overlay points */
+    #globeWrap{
+      position:relative;
+      width:100%;
+      height:520px;
+    }
+    #globeSuppliers{
+      position:absolute; inset:0;
+      display:block;
+      width:100%;
+      height:100%;
+      border-radius: 16px;
+    }
+    #globeOverlay{
+      position:absolute; inset:0;
+      pointer-events:auto;
+    }
+    .gpt{
+      position:absolute;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(0,0,0,.12));
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.55),
+        0 0 0 7px rgba(255,255,255,.06);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, opacity .12s ease;
+      opacity:0.96;
+    }
+    .gpt:hover{
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: rgba(179,31,36,.55);
+      box-shadow:
+        0 16px 60px rgba(0,0,0,.65),
+        0 0 0 8px rgba(255,255,255,.07),
+        0 0 30px rgba(255,43,47,.20);
+    }
+    .gpt:active{
+      transform: translate(-50%, -50%) scale(0.98);
+    }
+    .gpt .core{
+      width: 10px;
+      height: 10px;
+      border-radius: 4px;
+      background: rgba(255,43,47,.95);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.10), 0 0 22px rgba(255,43,47,.20);
+    }
+    .gpt.t-brand .core{
+      background: rgba(241,196,15,.95);
+      box-shadow: 0 0 0 6px rgba(241,196,15,.10), 0 0 22px rgba(241,196,15,.18);
+    }
+    .gpt.t-hub .core{
+      background: rgba(255,43,47,.95);
+      box-shadow: 0 0 0 6px rgba(255,43,47,.12), 0 0 22px rgba(255,43,47,.22);
+    }
+    .gpt.t-locked .core{
+      background: rgba(255,255,255,.40);
+      box-shadow: 0 0 0 6px rgba(255,255,255,.08), 0 0 22px rgba(255,255,255,.10);
+    }
+    .gpt[data-hidden="1"]{opacity:0; pointer-events:none;}
 
     /* Leaflet theming */
     .leaflet-container{
@@ -508,12 +574,14 @@
     @media (max-width: 980px){
       .heroGrid{grid-template-columns: 1fr;}
       .secGrid{grid-template-columns: 1fr;}
-      #globeSuppliers, #mapEurope, #mapSlovakia{height: 420px;}
+      #globeWrap, #mapEurope, #mapSlovakia{height: 420px;}
     }
     @media (max-width: 560px){
       h1{font-size:28px}
       .select{flex: 1 1 220px;}
-      #globeSuppliers, #mapEurope, #mapSlovakia{height: 360px;}
+      #globeWrap, #mapEurope, #mapSlovakia{height: 360px;}
+      .gpt{width:28px;height:28px;}
+      .gpt .core{width:9px;height:9px;}
     }
   </style>
 </head>
@@ -553,7 +621,7 @@
 
             <p class="sub">
               3 sekcie, 3 mapy. Eventy = Európa (uzamknuté hranice), Jazdci = Slovensko (uzamknuté hranice),
-              Dodávatelia = globálna rotujúca zemeguľa (zoom kolieskom + drag).
+              Dodávatelia = globálna rotujúca zemeguľa (zoom kolieskom + drag). Body na glóbuse sú klikateľné.
             </p>
 
             <div class="stack">
@@ -632,10 +700,10 @@
             </div>
 
             <div class="legend">
-              <span class="tag"><span class="k yellow"></span> Event</span>
-              <span class="tag"><span class="k green"></span> Jazdec</span>
+              <span class="tag"><span class="k yellow"></span> Brand</span>
               <span class="tag"><span class="k"></span> Dodávateľ</span>
               <span class="tag"><span class="k gray"></span> Uzamknuté</span>
+              <span class="tag"><span class="k green"></span> Jazdec</span>
             </div>
 
             <div class="card" style="padding:12px; box-shadow:none;">
@@ -644,7 +712,7 @@
               </div>
               <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
                 EU/SK mapy: zoom + drag (ale zamknuté na hranice).<br>
-                Dodávatelia: globus rotuje, zoom kolieskom, drag otáča.
+                Dodávatelia: globus rotuje, zoom kolieskom, drag otáča. Klikni na bod = fokus + detail.
               </div>
             </div>
 
@@ -743,7 +811,7 @@
       <section id="dodavatelia" class="block">
         <div class="sectionTitle">
           <h2>Dodávatelia (Zemeguľa)</h2>
-          <p>Veľká rotujúca zemeguľa + zoom kompletne kolieskom. Body sú zmenšené (jemný pulz).</p>
+          <p>Rotuje + zoom. Body sú vizuálne “premium” + všetky sú klikateľné (focus + detail).</p>
         </div>
 
         <div class="secGrid">
@@ -767,18 +835,21 @@
 
           <div class="card mapCard">
             <div class="rightTop">
-              <b>Zemeguľa dodávateľov</b>
+              <b>Zemeguľa</b>
               <span>zoom + rotate</span>
             </div>
 
             <div class="mapBox">
-              <canvas id="globeSuppliers" aria-label="RACEM Suppliers Globe"></canvas>
+              <div id="globeWrap">
+                <canvas id="globeSuppliers" aria-label="RACEM Suppliers Globe"></canvas>
+                <div id="globeOverlay" aria-label="Clickable points overlay"></div>
+              </div>
             </div>
 
             <div class="mapHint">
               <span><b>Zoom:</b> koliesko myši (min/max)</span>
               <span><b>Rotate:</b> ťah myšou</span>
-              <span><b>Auto:</b> rotuje keď nepohybuješ</span>
+              <span><b>Click:</b> fokus + detail</span>
             </div>
           </div>
         </div>
@@ -909,11 +980,13 @@
       { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
     ];
 
+    // ✅ DÔLEŽITÉ: toto musí existovať skôr než sa načíta globe module
     const ALL_SUP = [
       ...HUB_POINTS.map(x => ({...x})),
       ...SUPPLIERS.map(x => ({...x})),
       ...BRAND_PARTNERS.map(x => ({...x}))
     ];
+    window.ALL_SUP = ALL_SUP;
 
     // =========================
     // UTIL
@@ -997,6 +1070,8 @@
       if(count > 0) sfxla.productsCount = count;
       refreshProductTotal();
       renderSuppliers();
+      // ak je už globe pripravený, refresh overlay
+      if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
     }
 
     function refreshProductTotal(){
@@ -1012,7 +1087,6 @@
     let mapEU, euLayer, euMarkers = new Map();
 
     function initEuropeMap(){
-      // EU bounds (approx) — zamknutie aby sa nedalo ísť mimo
       const EU_BOUNDS = L.latLngBounds(
         L.latLng(34.0, -12.5),  // SW
         L.latLng(72.5, 40.5)    // NE
@@ -1030,7 +1104,6 @@
 
       mapEU.fitBounds(EU_BOUNDS);
 
-      // ✅ DARK tiles + noWrap
       euLayer = L.tileLayer(DARK_TILES, {
         maxZoom: 19,
         attribution: DARK_ATTR,
@@ -1110,7 +1183,6 @@
     let mapSK, skLayer, skMarkers = new Map();
 
     function initSlovakiaMap(){
-      // SK bounds (approx) — zamknutie aby sa nedalo ísť mimo
       const SK_BOUNDS = L.latLngBounds(
         L.latLng(47.65, 16.75), // SW
         L.latLng(49.65, 22.70)  // NE
@@ -1128,7 +1200,6 @@
 
       mapSK.fitBounds(SK_BOUNDS);
 
-      // ✅ DARK tiles + noWrap
       skLayer = L.tileLayer(DARK_TILES, {
         maxZoom: 19,
         attribution: DARK_ATTR,
@@ -1183,7 +1254,7 @@
     }
 
     // =========================
-    // SUPPLIERS LIST + GLOBE
+    // SUPPLIERS LIST
     // =========================
     function renderSuppliers(){
       const q = ($("#qSup").value || "").trim().toLowerCase();
@@ -1223,7 +1294,8 @@
           const id = el.getAttribute("data-id");
           const x = ALL_SUP.find(a => a.id === id);
           if(!x || typeof x.lat !== "number" || typeof x.lon !== "number") return;
-          if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3400);
+          if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3600);
+          if(window.__globeSelect) window.__globeSelect(x.id);
         });
       });
     }
@@ -1278,21 +1350,17 @@
       hydrateSfxla();
       setInterval(hydrateSfxla, 5 * 60 * 1000);
     });
-
-    // expose to module (globe)
-    window.HUB_POINTS = HUB_POINTS;
-    window.SUPPLIERS = SUPPLIERS;
-    window.BRAND_PARTNERS = BRAND_PARTNERS;
-    window.ALL_SUP = ALL_SUP;
   </script>
 
   <!-- =========================
-       COBE Globe (Suppliers)
+       COBE Globe + CUSTOM CLICKABLE POINTS (overlay)
        ========================= -->
   <script type="module">
     import createGlobe from "https://cdn.skypack.dev/cobe";
 
     const canvas = document.getElementById("globeSuppliers");
+    const overlay = document.getElementById("globeOverlay");
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     function fitCanvas() {
@@ -1303,11 +1371,25 @@
     fitCanvas();
     window.addEventListener("resize", fitCanvas);
 
+    // =========================
+    // Globe controls
+    // =========================
+    let globeScale = 1.14;
+    const minScale = 0.88;
+    const maxScale = 1.95;
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      globeScale += (delta > 0 ? -0.08 : 0.08);
+      globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
+    }, { passive:false });
+
     window.__globeFocus = {
       focusLat: null,
       focusLon: null,
       freezeUntil: 0,
-      focusFor: (lat, lon, ms=3200) => {
+      focusFor: (lat, lon, ms=3400) => {
         window.__globeFocus.focusLat = lat;
         window.__globeFocus.focusLon = lon;
         window.__globeFocus.freezeUntil = Date.now() + ms;
@@ -1320,68 +1402,193 @@
     };
 
     const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
+    const focus = window.__globeFocus;
 
-    // wheel zoom
-    let globeScale = 1.12;
-    const minScale = 0.85;
-    const maxScale = 1.85;
+    // =========================
+    // Projection (orthographic-ish) for overlay points
+    // Matches our phi/theta convention below.
+    // =========================
+    const toRad = (d) => (d * Math.PI) / 180;
 
-    canvas.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      const delta = Math.sign(e.deltaY);
-      globeScale += (delta > 0 ? -0.08 : 0.08);
-      globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
-    }, { passive:false });
-
-    const COLORS = {
-      supplier: [1.0, 0.17, 0.19],
-      brand:    [0.95, 0.78, 0.06],
-      hub:      [1.0, 0.17, 0.19],
-      locked:   [0.65, 0.65, 0.65]
-    };
-
-    // ✅ MENŠIE BODY + JEMNÝ PULZ
-    function sizeByType(t){
-      if(t === "hub")      return 0.070;
-      if(t === "supplier") return 0.060;
-      if(t === "locked")   return 0.045;
-      return 0.045;
+    function rotateY(v, a){
+      const ca = Math.cos(a), sa = Math.sin(a);
+      return { x: v.x*ca + v.z*sa, y: v.y, z: -v.x*sa + v.z*ca };
+    }
+    function rotateX(v, a){
+      const ca = Math.cos(a), sa = Math.sin(a);
+      return { x: v.x, y: v.y*ca - v.z*sa, z: v.y*sa + v.z*ca };
     }
 
-    function buildMarkers(now=Date.now()){
-      const pulse = (base, amp, speed) => base + (Math.sin(now / speed) * amp);
+    function latLonToVec(lat, lon){
+      const la = toRad(lat);
+      const lo = toRad(lon);
+      const cl = Math.cos(la);
+      return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
+    }
 
-      return ENTITIES
+    // returns {x,y,visible,depth}
+    function project(lat, lon, state){
+      const w = state.width / dpr;
+      const h = state.height / dpr;
+
+      // base unit vector
+      let v = latLonToVec(lat, lon);
+
+      // rotate by current phi/theta
+      v = rotateY(v, state.phi);
+      v = rotateX(v, state.theta);
+
+      // behind globe
+      if(v.z <= 0) return { visible:false, x:0, y:0, depth:v.z };
+
+      // orthographic projection
+      const r = Math.min(w, h) * 0.46 * state.scale; // radius factor
+      const x = (w/2) + (v.x * r);
+      const y = (h/2) - (v.y * r);
+
+      return { visible:true, x, y, depth:v.z };
+    }
+
+    // =========================
+    // Overlay DOM points (pre-create)
+    // =========================
+    const pointEls = new Map(); // id -> element
+    const screenCache = new Map(); // id -> {x,y,visible,depth}
+
+    function typeClass(t){
+      if(t === "supplier") return "t-supplier";
+      if(t === "brand") return "t-brand";
+      if(t === "hub") return "t-hub";
+      if(t === "locked") return "t-locked";
+      return "t-brand";
+    }
+
+    function makePoint(e){
+      const el = document.createElement("div");
+      el.className = `gpt ${typeClass(e.type)}`;
+      el.setAttribute("data-id", e.id);
+
+      // inner core
+      const core = document.createElement("div");
+      core.className = "core";
+      el.appendChild(core);
+
+      // click = focus + highlight
+      el.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        if(window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
+        selectEntity(e.id, true);
+      });
+
+      // hover tooltip via title (simple, no modal)
+      el.title = `${e.name} — ${e.where}`;
+
+      overlay.appendChild(el);
+      pointEls.set(e.id, el);
+    }
+
+    ENTITIES
+      .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+      .forEach(makePoint);
+
+    // selected state
+    let selectedId = null;
+
+    function selectEntity(id, scrollList=false){
+      selectedId = id;
+
+      // add subtle emphasis to selected point
+      pointEls.forEach((el, key) => {
+        if(key === id){
+          el.style.borderColor = "rgba(179,31,36,.70)";
+          el.style.boxShadow =
+            "0 18px 70px rgba(0,0,0,.70), 0 0 0 9px rgba(255,255,255,.08), 0 0 34px rgba(255,43,47,.26)";
+        }else{
+          el.style.borderColor = "rgba(255,255,255,.18)";
+          el.style.boxShadow = "0 10px 40px rgba(0,0,0,.55), 0 0 0 7px rgba(255,255,255,.06)";
+        }
+      });
+
+      // optional: scroll list item into view
+      if(scrollList){
+        const list = document.getElementById("listSuppliers");
+        if(list){
+          const node = list.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+          if(node){
+            node.scrollIntoView({ behavior:"smooth", block:"center" });
+            node.style.borderColor = "rgba(179,31,36,.55)";
+            node.style.boxShadow = "0 26px 80px rgba(0,0,0,.62)";
+            setTimeout(() => {
+              node.style.borderColor = "";
+              node.style.boxShadow = "";
+            }, 1200);
+          }
+        }
+      }
+    }
+
+    window.__globeSelect = selectEntity;
+
+    // =========================
+    // Update overlay positions each render
+    // =========================
+    function updateOverlay(state){
+      screenCache.clear();
+
+      ENTITIES
         .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-        .map(e => {
-          let size = sizeByType(e.type);
+        .forEach(e => {
+          const p = project(e.lat, e.lon, state);
+          screenCache.set(e.id, p);
 
-          // jemný pulz (už nie maják)
-          if(e.type === "hub")      size = pulse(size, 0.008, 260);
-          if(e.type === "supplier") size = pulse(size, 0.006, 420);
+          const el = pointEls.get(e.id);
+          if(!el) return;
 
-          return {
-            location: [e.lat, e.lon],
-            size,
-            color: COLORS[e.type] || COLORS.brand
-          };
+          if(!p.visible){
+            el.setAttribute("data-hidden", "1");
+            return;
+          }
+
+          el.setAttribute("data-hidden", "0");
+          el.style.left = `${p.x}px`;
+          el.style.top  = `${p.y}px`;
+
+          // depth: reduce opacity slightly as it goes to edge
+          const op = Math.max(0.65, Math.min(0.98, 0.55 + p.depth * 0.55));
+          el.style.opacity = String(op);
         });
     }
 
-    function latLonToPhiTheta(lat, lon){
-      const phi = (lon * Math.PI) / 180;
-      const theta = (lat * Math.PI) / 180;
-      return { phi, theta };
+    // allow external refresh (when feed updates counts etc.)
+    window.__globeOverlayRefresh = () => {
+      // no-op; overlay is driven by onRender
+    };
+
+    // =========================
+    // Focus math (fix so click always becomes visible)
+    // =========================
+    function focusTargets(lat, lon){
+      // with our latLonToVec + rotate convention:
+      // set phi to -lon to bring that longitude to the front
+      // set theta to lat tilt to bring latitude toward center
+      const lo = toRad(lon);
+      const la = toRad(lat);
+
+      const targetPhi = -lo;
+      // mild tilt; clamp
+      const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
+      return { targetPhi, targetTheta };
     }
 
-    let currentPhi = -1.18;
+    // =========================
+    // Globe creation (no markers; overlay does points)
+    // =========================
+    let currentPhi = -1.05;
     let currentTheta = 0.18;
 
     let dragging = false;
     let dragStartX = 0;
     let dragPhiStart = 0;
-
-    const focus = window.__globeFocus;
 
     createGlobe(canvas, {
       devicePixelRatio: dpr,
@@ -1390,10 +1597,10 @@
 
       phi: 0,
       theta: 0.25,
-      dark: 1.15,
+      dark: 1.18,
       diffuse: 1.25,
       scale: globeScale,
-      mapSamples: 40000,
+      mapSamples: 42000,
       mapBrightness: 6,
 
       baseColor: [0.08, 0.09, 0.10],
@@ -1401,7 +1608,7 @@
       markerColor: [1.0, 0.17, 0.19],
       backgroundColor: [0, 0, 0, 0],
 
-      markers: buildMarkers(Date.now()),
+      markers: [],
 
       onRender: (state) => {
         state.width = canvas.width;
@@ -1416,26 +1623,26 @@
           now < focus.freezeUntil;
 
         if(hasFocus){
-          const t = latLonToPhiTheta(focus.focusLat, focus.focusLon);
-          const targetPhi = t.phi;
-          const targetTheta = Math.max(-1.2, Math.min(1.2, -t.theta * 0.55));
+          const t = focusTargets(focus.focusLat, focus.focusLon);
 
-          currentPhi += (targetPhi - currentPhi) * 0.08;
-          currentTheta += (targetTheta - currentTheta) * 0.08;
+          currentPhi   += (t.targetPhi - currentPhi) * 0.09;
+          currentTheta += (t.targetTheta - currentTheta) * 0.09;
 
           state.phi = currentPhi;
           state.theta = currentTheta;
         }else{
           if(focus && now >= focus.freezeUntil) focus.clear();
-          if(!dragging) currentPhi += 0.0022;
+          if(!dragging) currentPhi += 0.0020;
           state.phi = currentPhi;
           state.theta = currentTheta;
         }
 
-        state.markers = buildMarkers(now);
+        // ✅ this drives clickable points
+        updateOverlay(state);
       }
     });
 
+    // drag rotate
     canvas.style.cursor = "grab";
     canvas.addEventListener("pointerdown", (e) => {
       dragging = true;
@@ -1458,6 +1665,22 @@
       const dx = e.clientX - dragStartX;
       currentPhi = dragPhiStart + dx * 0.006;
     });
+
+    // click on empty space clears selection
+    overlay.addEventListener("click", () => {
+      selectedId = null;
+      pointEls.forEach((el) => {
+        el.style.borderColor = "rgba(255,255,255,.18)";
+        el.style.boxShadow = "0 10px 40px rgba(0,0,0,.55), 0 0 0 7px rgba(255,255,255,.06)";
+      });
+    });
+
+    // auto select hub on load (optional)
+    const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
+    if(defaultSel){
+      window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
+      selectEntity(defaultSel.id);
+    }
   </script>
 </body>
 </html>
