@@ -1275,6 +1275,111 @@
   0%{ left:-30%; }
   100%{ left:130%; }
 }
+
+    /* =========================
+   RACEM PRODUCT PROGRESS (clean HUD row)
+   ========================= */
+.rowCard.prodRow{
+  padding: 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.prodTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.prodLeft{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.prodIco{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  box-shadow: 0 0 44px rgba(179,31,36,.16);
+}
+
+.prodTitle{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-size:12px;
+  color: rgba(255,255,255,.92);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.prodRight{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  white-space:nowrap;
+}
+
+.prodPct{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.10em;
+  font-size:14px;
+  color:#fff;
+}
+
+.prodNums{
+  font-size:11px;
+  letter-spacing:.12em;
+  color: rgba(255,255,255,.66);
+}
+
+/* BAR from icon to the end (full width of the card) */
+.prodBarFull{
+  width:100%;
+  height:14px;
+  border-radius:999px;
+  background: rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.12);
+  overflow:hidden;
+  position:relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.25),
+    0 10px 40px rgba(0,0,0,.45);
+}
+
+.prodFill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background: linear-gradient(90deg,
+    rgba(179,31,36,.55) 0%,
+    rgba(179,31,36,.92) 55%,
+    rgba(255,43,47,.95) 100%
+  );
+  box-shadow:
+    0 0 20px rgba(179,31,36,.35),
+    0 0 45px rgba(255,43,47,.18);
+  transition: width .5s ease;
+  position:relative;
+  min-width: 10px;
+}
+
+/* racing shine */
+.prodFill::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  left:-30%;
+  width:30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+  animation: racemBarMove 3s linear infinite;
+  opacity:.30;
+}
   </style>
 </head>
 
@@ -1433,38 +1538,32 @@
   Dodávatelia = globálna rotujúca zemeguľa (zoom + drag). Klik na položku = fokus + detail na mape.
 </p>
 
-<div class="stack">
-  <div class="rowCard">
-    <div class="rowLeft">
-      <div class="ico" aria-hidden="true">
+<div class="rowCard prodRow">
+  <div class="prodTop">
+    <div class="prodLeft">
+      <div class="ico prodIco" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M4 7h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".8"/>
           <path d="M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
         </svg>
       </div>
-      <div class="rowTitle">
-        <b>Doplňanie produktov</b>
-        <span>škála 0 → 100 000 • aktuálne = CSR + SFXLA</span>
-      </div>
+
+      <div class="prodTitle">Doplňanie produktov</div>
     </div>
 
-  <div class="progressWrap">
-  
-  <div class="progressHeader">
-    <div class="progressLeft">
-      <div class="progressTitle">Doplňanie produktov</div>
-      <div class="progressSub">škála 0 → 100 000 • aktuálne = CSR + SFXLA</div>
-    </div>
-
-    <div class="progressRight">
-      <div class="progressPct" id="prodPct">0%</div>
-      <div class="progressNums">
+    <div class="prodRight">
+      <div class="prodPct" id="prodPct">0%</div>
+      <div class="prodNums">
         <span id="prodNow">0</span> / <span id="prodGoal">100 000</span>
       </div>
     </div>
   </div>
 
+  <div class="prodBarFull">
+    <div class="prodFill" id="prodFill"></div>
+  </div>
+</div>
   <!-- FULL WIDTH BAR -->
   <div class="progressBarFull">
     <div class="progressFill" id="prodFill"></div>
