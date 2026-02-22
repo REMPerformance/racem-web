@@ -162,27 +162,27 @@
 
     /* Racing stats strip */
     .raceStrip{
-      margin-top:10px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+  margin-top:10px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+  padding: 12px;
+
+  display:flex;
+  flex-direction:column;     /* ✅ pod seba */
+  align-items:stretch;       /* ✅ plná šírka */
+  gap:10px;
+}
     .raceBadge{
       display:flex; align-items:center; gap:10px;
       padding: 10px 12px;
       border-radius: 14px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.14);
-      min-width: 210px;
-      flex: 1 1 210px;
+  min-width: 0;
+  flex: 0 0 auto;
       overflow:hidden;
       position:relative;
     }
@@ -1330,40 +1330,7 @@
               Dodávatelia = globálna rotujúca zemeguľa (zoom + drag). Klik na položku = fokus + detail na mape.
             </p>
 
-            <div class="stack">
-              <div class="rowCard">
-                <div class="rowLeft">
-                  <div class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                      <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                    </svg>
-                  </div>
-                  <div class="rowTitle">
-                    <b>Core</b>
-                    <span>Mapy, sieť, content, partnerstvá</span>
-                  </div>
-                </div>
-                <div class="rowValue">LIVE</div>
-              </div>
-
-              <div class="rowCard">
-                <div class="rowLeft">
-                  <div class="ico" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M4 16l4-4 3 3 6-6 3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-                    </svg>
-                  </div>
-                  <div class="rowTitle">
-                    <b>Viditeľnosť</b>
-                    <span>Eventy, reálne autá, reálne použitie dielov</span>
-                  </div>
-                </div>
-                <div class="rowValue">+↑</div>
-              </div>
-            </div>
-          </div>
+            
 
           <!-- RIGHT -->
           <div class="card heroRight">
