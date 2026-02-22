@@ -1874,22 +1874,26 @@
     // STATS (with trends)
     // =========================
     function updateStats(){
-      const eventsNow = EVENTS.length;
-      const driversNow = DRIVERS.length;
-      const supNow = (SUPPLIERS.length + BRAND_PARTNERS.length);
+  // pevné čísla (podľa tvojho zadania)
+  const eventsNow  = 4; // eventy dokopy
+  const driversNow = 4; // sponzoring dokopy
+  const supNow     = 6; // sieť dokopy
 
-      $("#statEvents").textContent = String(eventsNow);
-      $("#statDrivers").textContent = String(driversNow);
-      $("#statSuppliers").textContent = String(supNow);
+  $("#statEvents").textContent   = String(eventsNow);
+  $("#statDrivers").textContent  = String(driversNow);
+  $("#statSuppliers").textContent= String(supNow);
 
-      const prevE = trendFromStorage("racem_prev_events", eventsNow);
-      const prevD = trendFromStorage("racem_prev_drivers", driversNow);
-      const prevS = trendFromStorage("racem_prev_supnet", supNow);
+  // pevné trendy (zelené + šípka hore)
+  const setUp = (trendEl, plus) => {
+    trendEl.dataset.trend = "up";
+    trendEl.querySelector(".arr").textContent = "↑";
+    trendEl.querySelector(".delta").textContent = `+${plus}`;
+  };
 
-      trendApply($("#trendEvents"), prevE, eventsNow);
-      trendApply($("#trendDrivers"), prevD, driversNow);
-      trendApply($("#trendSuppliers"), prevS, supNow);
-    }
+  setUp($("#trendEvents"), 4);    // Eventy +4
+  setUp($("#trendDrivers"), 3);   // Sponzoring +3
+  setUp($("#trendSuppliers"), 2); // Sieť +2
+}
 
     // =========================
     // CLOCK + Reach demo
