@@ -1161,57 +1161,120 @@
     .raceTrend[data-trend="na"]{
       color: rgba(255,255,255,.70);
     }
-    /* Produkty progress */
 
-    .progressWrap{
-  width: 260px;
-  max-width: 52vw;
+    .heroGrid{ grid-template-columns: 1.05fr .95fr !important; }
+.secGrid{ grid-template-columns: 1.05fr .95fr !important; }
+
+
+    /* =========================
+   Produkty progress (RACEM)
+   ========================= */
+
+/* ===== RACEM PRODUCT PROGRESS ===== */
+
+.progressWrap{
+  width:100%;
   display:flex;
   flex-direction:column;
-  gap:7px;
-  align-items:flex-end;
+  gap:12px;
+  margin-top:6px;
 }
-.progressTop{
+
+.progressHeader{
   display:flex;
-  gap:10px;
-  align-items:baseline;
-  justify-content:flex-end;
-  width:100%;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
 }
-.progressPct{
+
+.progressLeft{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.progressTitle{
   font-family: Oswald, sans-serif;
-  letter-spacing:.10em;
-  font-size:14px;
-  color: rgba(255,255,255,.86);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:13px;
+  color:#fff;
 }
+
+.progressSub{
+  font-size:11px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.55);
+}
+
+.progressRight{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+}
+
+.progressPct{
+  font-family: Oswald;
+  font-size:15px;
+  letter-spacing:.08em;
+  color:#fff;
+}
+
 .progressNums{
   font-size:11px;
   letter-spacing:.12em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.62);
-  white-space:nowrap;
+  color: rgba(255,255,255,.65);
 }
-.progressBar{
+
+/* FULL WIDTH BAR */
+.progressBarFull{
   width:100%;
-  height:10px;
+  height:14px;
   border-radius:999px;
+  background: rgba(0,0,0,.35);
   border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.18);
   overflow:hidden;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+  position:relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.25),
+    0 10px 40px rgba(0,0,0,.45);
 }
+
+/* RACEM RED BAR */
 .progressFill{
   height:100%;
   width:0%;
   border-radius:999px;
-  background: linear-gradient(90deg, rgba(0,210,255,.90), rgba(179,31,36,.92));
-  box-shadow: 0 0 24px rgba(0,210,255,.14), 0 0 24px rgba(179,31,36,.12);
-  transition: width .35s ease;
+  background: linear-gradient(90deg,
+    #3a0c0c 0%,
+    #7a1619 30%,
+    #b31f24 60%,
+    #ff2b2f 100%
+  );
+  box-shadow:
+    0 0 20px rgba(179,31,36,.35),
+    0 0 45px rgba(255,43,47,.18);
+  transition: width .5s ease;
+  position:relative;
 }
 
-    .heroGrid{ grid-template-columns: 1.05fr .95fr !important; }
-.secGrid{ grid-template-columns: 1.05fr .95fr !important; }
-    
+/* jemný racing shine */
+.progressFill::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  left:-30%;
+  width:30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  animation: racemBarMove 3s linear infinite;
+  opacity:.35;
+}
+
+@keyframes racemBarMove{
+  0%{ left:-30%; }
+  100%{ left:130%; }
+}
   </style>
 </head>
 
@@ -1386,17 +1449,28 @@
       </div>
     </div>
 
-    <div class="progressWrap">
-      <div class="progressTop">
-        <div class="progressPct" id="prodPct">0%</div>
-        <div class="progressNums">
-          <span id="prodNow">0</span> / <span id="prodGoal">100 000</span>
-        </div>
-      </div>
-      <div class="progressBar" aria-label="Progress dopĺňania produktov">
-        <div class="progressFill" id="prodFill"></div>
+  <div class="progressWrap">
+  
+  <div class="progressHeader">
+    <div class="progressLeft">
+      <div class="progressTitle">Doplňanie produktov</div>
+      <div class="progressSub">škála 0 → 100 000 • aktuálne = CSR + SFXLA</div>
+    </div>
+
+    <div class="progressRight">
+      <div class="progressPct" id="prodPct">0%</div>
+      <div class="progressNums">
+        <span id="prodNow">0</span> / <span id="prodGoal">100 000</span>
       </div>
     </div>
+  </div>
+
+  <!-- FULL WIDTH BAR -->
+  <div class="progressBarFull">
+    <div class="progressFill" id="prodFill"></div>
+  </div>
+
+</div>
   </div>
 </div>
 </div>
