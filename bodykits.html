@@ -160,7 +160,7 @@
       max-width: 80ch;
     }
 
-    /* Racing stats strip (replaces big RACEM GROUP header) */
+    /* Racing stats strip */
     .raceStrip{
       margin-top:10px;
       border-radius: 16px;
@@ -239,7 +239,7 @@
       box-shadow: 0 0 20px rgba(255,43,47,.18);
     }
 
-    /* Clean overview stack (kept, but now below strip) */
+    /* Clean overview stack */
     .stack{display:grid; gap:10px; margin-top:12px;}
     .rowCard{
       border-radius: 16px;
@@ -403,7 +403,7 @@
     }
     .btn2.primary:hover{ box-shadow: 0 20px 70px rgba(179,31,36,.28); }
 
-    /* NEW: better “Kontaktovať formulár” button (not dark-on-red) */
+    /* Kontaktovať formulár */
     .btn2.contact{
       border:1px solid rgba(255,255,255,.16);
       background:
@@ -533,7 +533,7 @@
       box-shadow: 0 26px 80px rgba(0,0,0,.62);
     }
 
-    /* NEW: list item with thumbnail */
+    /* list item with thumbnail */
     .itemGrid{
       display:grid;
       grid-template-columns: 84px 1fr;
@@ -606,7 +606,7 @@
       line-height:1.6;
     }
 
-    /* NEW: expand area */
+    /* expand area */
     .expand{
       max-height:0;
       overflow:hidden;
@@ -759,7 +759,7 @@
       white-space:pre-line;
     }
 
-    /* NEW: map marker with activatable pulse */
+    /* map marker with activatable pulse */
     .mk{
       width:14px;height:14px;border-radius:6px;
       border:1px solid rgba(255,255,255,.20);
@@ -904,7 +904,7 @@
       position:absolute; inset:0;
       pointer-events:auto;
     }
-    /* NEW: cleaner globe points (no pulse) */
+    /* cleaner globe points */
     .gpt{
       position:absolute;
       transform: translate(-50%, -50%);
@@ -994,6 +994,7 @@
       .itemGrid{grid-template-columns: 74px 1fr;}
       .gallery{grid-template-columns: 1fr;}
       .thumbs{grid-template-columns: repeat(4, 1fr);}
+      .navRight{flex: 1 1 auto;}
     }
     @media (max-width: 560px){
       .select{flex: 1 1 220px;}
@@ -1002,28 +1003,153 @@
       .gpt .core{width:7px;height:7px;}
       .thumbs{grid-template-columns: repeat(3, 1fr);}
       .kv{grid-template-columns: 1fr;}
+      .hud{width:100%; justify-content:space-between;}
+      .hudReach{display:none;}
     }
+
+    /* kicker logo tweaks */
     .kicker{ gap:10px; }
-.kLogo{
-  height:18px;
-  width:auto;
-  display:block;
-  filter: drop-shadow(0 12px 24px rgba(0,0,0,.65));
-  opacity:.95;
-}
-.kicker{
-  display:flex;
-  align-items:center;
-  margin-bottom:14px;
-}
+    .kLogo{
+      height:54px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.7));
+      opacity:.95;
+    }
+    .kicker{
+      display:flex;
+      align-items:center;
+      margin-bottom:14px;
+    }
 
-.kLogo{
-  height:54px; /* cca 3x pôvodná veľkosť */
-  width:auto;
-  display:block;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,.7));
-}
+    /* =========================
+       NEW: Header HUD + Trends
+       ========================= */
 
+    .navRight{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .hud{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: var(--glass);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+
+    .hudClock{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-right:10px;
+      border-right:1px solid rgba(255,255,255,.10);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hudClock #clock{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      font-size:13px;
+      color: rgba(255,255,255,.92);
+    }
+
+    .hudLive{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.78);
+    }
+    .hudLive i{
+      width:8px; height:8px; border-radius:99px;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(46,204,113,.12), 0 0 18px rgba(46,204,113,.22);
+    }
+
+    .hudReach{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-left:2px;
+      color: rgba(255,255,255,.86);
+    }
+    .reachLbl{
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.70);
+    }
+    .reachSpark{
+      width:58px;
+      height:18px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(255,170,0,.95);
+      filter: drop-shadow(0 0 18px rgba(255,170,0,.18));
+    }
+    .reachVal{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      font-size:12px;
+      color: rgba(255,170,0,.92);
+    }
+
+    /* trends on raceStrip */
+    .raceRight{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-left:10px;
+      border-left: 1px solid rgba(255,255,255,.10);
+    }
+
+    .raceTrend{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      min-width: 68px;
+      justify-content:center;
+    }
+
+    .raceTrend .arr{
+      font-family: Oswald, sans-serif;
+      font-size:14px;
+      line-height:1;
+    }
+
+    .raceTrend[data-trend="up"]{
+      border-color: rgba(46,204,113,.35);
+      background: rgba(46,204,113,.08);
+      color: rgba(46,204,113,.95);
+    }
+    .raceTrend[data-trend="down"]{
+      border-color: rgba(255,43,47,.45);
+      background: rgba(255,43,47,.10);
+      color: rgba(255,43,47,.95);
+    }
+    .raceTrend[data-trend="na"]{
+      color: rgba(255,255,255,.70);
+    }
   </style>
 </head>
 
@@ -1035,12 +1161,33 @@
           <img src="racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
         </a>
 
-        <nav class="navlinks" aria-label="Menu">
-          <a class="active" href="#eventy">Eventy</a>
-          <a href="#jazdci">Koho sponzorujeme?</a>
-          <a href="#dodavatelia">Dodávatelia</a>
-          <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">Domov</a>
-        </nav>
+        <div class="navRight">
+          <nav class="navlinks" aria-label="Menu">
+            <a class="active" href="#eventy">Eventy</a>
+            <a href="#jazdci">Koho sponzorujeme?</a>
+            <a href="#dodavatelia">Dodávatelia</a>
+            <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">Domov</a>
+          </nav>
+
+          <div class="hud" aria-label="Status HUD">
+            <div class="hudClock">
+              <span id="clock">--:--:--</span>
+              <span class="hudLive"><i></i> LIVE</span>
+            </div>
+
+            <div class="hudReach" title="Dosah (demo)">
+              <span class="reachLbl">DOSAH</span>
+              <span class="reachSpark" aria-hidden="true">
+                <svg viewBox="0 0 64 20" fill="none">
+                  <path d="M2 16 C 12 10, 18 12, 26 8 S 40 6, 50 4 S 58 6, 62 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M62 2 L58 3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M62 2 L60.6 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="reachVal" id="reachVal">+12%</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -1102,27 +1249,25 @@
         <div class="heroGrid">
           <!-- LEFT -->
           <div class="card heroLeft">
-          <div class="kicker">
-  <img class="kLogo" src="/assets/racem-logo.png" alt="RACEM">
-</div>
+            <div class="kicker">
+              <img class="kLogo" src="/assets/racem-logo.png" alt="RACEM">
+            </div>
 
-
-            <!-- REPLACED: big RACEM GROUP title -> racing stats strip -->
+            <!-- ✅ Updated: NO HUB + Trends -->
             <div class="raceStrip" aria-label="RACEM GROUP quick stats">
-              <div class="raceBadge">
-                <div class="raceLbl">
-                  <b>Hub</b>
-                  <span>Bratislava + Piešťany</span>
-                </div>
-                <div class="raceVal" id="statHub">2</div>
-              </div>
 
               <div class="raceBadge">
                 <div class="raceLbl">
                   <b>Eventy</b>
                   <span>EU kalendár</span>
                 </div>
-                <div class="raceVal" id="statEvents">—</div>
+                <div class="raceRight">
+                  <div class="raceVal" id="statEvents">—</div>
+                  <div class="raceTrend" id="trendEvents" data-trend="na">
+                    <span class="arr">•</span>
+                    <span class="delta">—</span>
+                  </div>
+                </div>
               </div>
 
               <div class="raceBadge">
@@ -1130,7 +1275,13 @@
                   <b>Sponzoring</b>
                   <span>jazdci / projekty</span>
                 </div>
-                <div class="raceVal" id="statDrivers">—</div>
+                <div class="raceRight">
+                  <div class="raceVal" id="statDrivers">—</div>
+                  <div class="raceTrend" id="trendDrivers" data-trend="na">
+                    <span class="arr">•</span>
+                    <span class="delta">—</span>
+                  </div>
+                </div>
               </div>
 
               <div class="raceBadge">
@@ -1141,8 +1292,15 @@
                     <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip hot"></span><span class="pip hot"></span>
                   </div>
                 </div>
-                <div class="raceVal" id="statSuppliers">—</div>
+                <div class="raceRight">
+                  <div class="raceVal" id="statSuppliers">—</div>
+                  <div class="raceTrend" id="trendSuppliers" data-trend="na">
+                    <span class="arr">•</span>
+                    <span class="delta">—</span>
+                  </div>
+                </div>
               </div>
+
             </div>
 
             <p class="sub">
@@ -1189,7 +1347,7 @@
           <div class="card heroRight">
             <div class="rightTop">
               <b>Členstvo v RACEM GROUP</b>
-              <span id="clock">--:--:--</span>
+              <span>Online</span>
             </div>
 
             <div class="ctaBox">
@@ -1384,9 +1542,6 @@
     // =========================
     // EDIT ZONE (JEDNO MIESTO NA ÚPRAVY)
     // =========================
-    // DÁTUM: "YYYY-MM-DD"
-    // MESTO: rovnaký zápis v CITY_COORDS
-    //
     const CITY_COORDS = {
       // Slovensko
       "Bratislava|SK": { lat:48.148598, lon:17.107748 },
@@ -1406,10 +1561,6 @@
       "UK|UK":        { lat:53.571788, lon:-1.382466 }
     };
 
-    // NEW EVENTS INPUT:
-    // mode: "drift" | "static" | "" (ak prázdne, badge sa vôbec nezobrazí)
-    // img: malý obrázok (thumbnail)
-    // details: rozšírené info po kliknutí
     const EVENTS_INPUT = [
       {
         id:"sadka-pd",
@@ -1464,8 +1615,6 @@
       }
     ];
 
-    // NEW DRIVERS INPUT (sponzorujeme):
-    // photos: array obrázkov (klik = prepne hlavný obrázok v tom istom boxe)
     const DRIVERS_INPUT = [
       {
         id:"rado-panak",
@@ -1488,7 +1637,7 @@
     ];
 
     // =========================
-    // HUB / SUPPLIERS (ponechané)
+    // HUB / SUPPLIERS
     // =========================
     const HUB_POINTS = [
       {
@@ -1564,8 +1713,6 @@
       if(hit2) return hit2;
       return null;
     }
-    function normCity(s){ return String(s||"").trim().toLowerCase(); }
-    function normCountry(s){ return String(s||"").trim().toLowerCase(); }
 
     const DRIVERS = DRIVERS_INPUT.map(d => {
       const coords = pickCoords(d.city, d.country);
@@ -1600,14 +1747,14 @@
         lat: coords ? coords.lat : null,
         lon: coords ? coords.lon : null,
         about: ev.about || "",
-        mode: (ev.mode || "").trim().toLowerCase(), // drift/static/empty
+        mode: (ev.mode || "").trim().toLowerCase(),
         img: ev.img || "",
         details: ev.details || {},
         tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
       };
     });
 
-    // ✅ MUST exist before globe module loads
+    // MUST exist before globe module loads
     const ALL_SUP = [
       ...HUB_POINTS.map(x => ({...x})),
       ...SUPPLIERS.map(x => ({...x})),
@@ -1658,30 +1805,91 @@
       return `${m[3]}.${m[2]}.${m[1]}`;
     }
 
-    function navUrl(lat, lon, label=""){
+    function navUrl(lat, lon){
       if(typeof lat !== "number" || typeof lon !== "number") return "#";
-      // Google Maps directions
       return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + "," + lon)}&travelmode=driving`;
     }
 
     // =========================
-    // STATS
+    // NEW: Trends (localStorage)
     // =========================
-    function updateStats(){
-      $("#statEvents").textContent = String(EVENTS.length);
-      $("#statDrivers").textContent = String(DRIVERS.length);
-      $("#statSuppliers").textContent = String(SUPPLIERS.length + BRAND_PARTNERS.length);
-      // hub is hardcoded 2 (BA + PN), keep as set in HTML
+    function trendApply(trendEl, prev, curr){
+      const arr = trendEl.querySelector(".arr");
+      const deltaEl = trendEl.querySelector(".delta");
+
+      if(typeof prev !== "number"){
+        trendEl.dataset.trend = "na";
+        arr.textContent = "•";
+        deltaEl.textContent = "—";
+        return;
+      }
+
+      const diff = curr - prev;
+
+      if(diff > 0){
+        trendEl.dataset.trend = "up";
+        arr.textContent = "↑";
+        deltaEl.textContent = `+${diff}`;
+      }else if(diff < 0){
+        trendEl.dataset.trend = "down";
+        arr.textContent = "↓";
+        deltaEl.textContent = `${diff}`;
+      }else{
+        trendEl.dataset.trend = "na";
+        arr.textContent = "•";
+        deltaEl.textContent = "0";
+      }
     }
 
+    function trendFromStorage(key, curr){
+      const raw = localStorage.getItem(key);
+      const prev = raw !== null ? Number(raw) : null;
+      localStorage.setItem(key, String(curr));
+      return (typeof prev === "number" && !Number.isNaN(prev)) ? prev : null;
+    }
+
+    // =========================
+    // STATS (with trends)
+    // =========================
+    function updateStats(){
+      const eventsNow = EVENTS.length;
+      const driversNow = DRIVERS.length;
+      const supNow = (SUPPLIERS.length + BRAND_PARTNERS.length);
+
+      $("#statEvents").textContent = String(eventsNow);
+      $("#statDrivers").textContent = String(driversNow);
+      $("#statSuppliers").textContent = String(supNow);
+
+      const prevE = trendFromStorage("racem_prev_events", eventsNow);
+      const prevD = trendFromStorage("racem_prev_drivers", driversNow);
+      const prevS = trendFromStorage("racem_prev_supnet", supNow);
+
+      trendApply($("#trendEvents"), prevE, eventsNow);
+      trendApply($("#trendDrivers"), prevD, driversNow);
+      trendApply($("#trendSuppliers"), prevS, supNow);
+    }
+
+    // =========================
+    // CLOCK + Reach demo
+    // =========================
     function updateClock(){
       const d = new Date();
       const pad = n => String(n).padStart(2,"0");
       $("#clock").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
     }
 
+    // tiny fake reach drift (purely visual)
+    let __reach = 12;
+    function tickReach(){
+      const n = (Math.random() * 2 - 0.7);
+      __reach = Math.max(-30, Math.min(99, __reach + n));
+      const sign = __reach >= 0 ? "+" : "";
+      const el = $("#reachVal");
+      if(el) el.textContent = `${sign}${Math.round(__reach)}%`;
+    }
+
     // =========================
-    // CONTACT MODAL (opens form, sends as mailto)
+    // CONTACT MODAL (mailto)
     // =========================
     function openContact(){
       const m = $("#contactModal");
@@ -1766,6 +1974,9 @@ ${msg || "—"}
 
       renderSuppliers();
       if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
+
+      // refresh stats/trends if counts changed by feed
+      updateStats();
     }
 
     // =========================
@@ -1815,7 +2026,6 @@ ${msg || "—"}
       L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapEU);
       renderEuropeMarkers();
 
-      // ensure dom nodes exist for marker elements (Leaflet creates on add)
       setTimeout(() => {
         if(EVENTS[0]) setEventMarkerActive(EVENTS[0].id);
       }, 250);
@@ -1852,10 +2062,7 @@ ${msg || "—"}
           { closeButton:true }
         );
 
-        m.on("click", () => {
-          setEventMarkerActive(ev.id);
-        });
-
+        m.on("click", () => setEventMarkerActive(ev.id));
         euMarkers.set(ev.id, m);
       });
     }
@@ -1969,7 +2176,6 @@ ${msg || "—"}
         };
 
         el.addEventListener("click", (e) => {
-          // If click on a button inside, ignore container toggle here (button handles)
           if(e.target && (e.target.closest && e.target.closest("button"))) return;
 
           const isOpen = el.getAttribute("data-open") === "1";
@@ -1983,7 +2189,7 @@ ${msg || "—"}
           navBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             doFocus();
-            const url = navUrl(ev.lat, ev.lon, ev.name);
+            const url = navUrl(ev.lat, ev.lon);
             if(url && url !== "#") window.open(url, "_blank", "noopener,noreferrer");
           });
         }
@@ -2129,8 +2335,6 @@ ${msg || "—"}
 
       const list = $("#listDrivers");
 
-      function closeAll(){ closeAllItems(list); }
-
       list.querySelectorAll(".item").forEach(el => {
         const id = el.getAttribute("data-id");
         const d = DRIVERS.find(x => x.id === id);
@@ -2149,7 +2353,7 @@ ${msg || "—"}
           if(e.target && (e.target.closest && e.target.closest(".tmb"))) return;
 
           const isOpen = el.getAttribute("data-open") === "1";
-          closeAll();
+          closeAllItems(list);
           toggleItemOpen(el, !isOpen);
           doFocus();
         });
@@ -2162,7 +2366,6 @@ ${msg || "—"}
           });
         }
 
-        // gallery thumbs
         const mainImg = el.querySelector("img[data-main='1']");
         el.querySelectorAll(".tmb").forEach(t => {
           t.addEventListener("click", (e) => {
@@ -2176,7 +2379,7 @@ ${msg || "—"}
     }
 
     // =========================
-    // SUPPLIERS LIST (ponechané)
+    // SUPPLIERS LIST
     // =========================
     function renderSuppliers(){
       const q = ($("#qSup").value || "").trim().toLowerCase();
@@ -2259,6 +2462,9 @@ ${msg || "—"}
 
       updateClock();
       setInterval(updateClock, 1000);
+
+      tickReach();
+      setInterval(tickReach, 1600);
 
       wireContact();
 
