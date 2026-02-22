@@ -161,31 +161,49 @@
     }
 
     /* Racing stats strip */
-    .raceStrip{
-      margin-top:10px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .raceBadge{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
-      min-width: 210px;
-      flex: 1 1 210px;
-      overflow:hidden;
-      position:relative;
-    }
+   /* ===== FIX: raceStrip nech je 3x vedľa seba (desktop) ===== */
+.raceStrip{
+  margin-top:10px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+  padding: 12px;
+
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:10px;
+}
+
+/* badge už nesmie mať min-width/flex čo núti wrap */
+.raceBadge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.14);
+  overflow:hidden;
+  position:relative;
+
+  min-width:0;     /* dôležité */
+}
+
+/* aby text vedel skrátiť a nerozbíjal layout */
+.raceLbl{ min-width:0; }
+.raceLbl span{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width: 100%;
+}
+
+/* ===== Mobile: nech sa to skladá pod seba ===== */
+@media (max-width: 820px){
+  .raceStrip{ grid-template-columns: 1fr; }
+}
     .raceBadge:before{
       content:"";
       position:absolute; inset:-2px;
