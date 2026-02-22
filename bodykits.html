@@ -120,12 +120,19 @@
     }
 
     .hero{ padding: 26px 0 10px; }
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:stretch;
-    }
+   .raceStrip{
+  margin-top:10px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+  padding:12px;
+
+  display:flex;
+  flex-direction:column;   /* pod sebou */
+  gap:10px;
+}
     .heroLeft{
       padding: 18px 18px 16px;
       position:relative;
@@ -176,16 +183,10 @@
   gap:10px;
 }
     .raceBadge{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
-  min-width: 0;
-  flex: 0 0 auto;
-      overflow:hidden;
-      position:relative;
-    }
+  width:100%;
+  min-width:0;
+  flex:0 0 auto;
+}
     .raceBadge:before{
       content:"";
       position:absolute; inset:-2px;
@@ -987,7 +988,10 @@
     .tmb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr;}
+     .heroGrid{
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+}
       .secGrid{grid-template-columns: 1fr;}
       #globeWrap, #mapEurope, #mapSlovakia{height: 420px;}
       .grid2{grid-template-columns: 1fr;}
