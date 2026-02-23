@@ -1863,6 +1863,178 @@ select:focus{
   transform: translateY(-1px);
   box-shadow: 0 18px 60px rgba(0,0,0,.55);
 }
+
+    /* ===== EVENT INFO HUD (popup + left detail) ===== */
+.eHdr{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.eHdrLeft{min-width:0}
+.eTitle{
+  margin:0;
+  font-family: Oswald, sans-serif;
+  letter-spacing:.08em;
+  font-size:16px;
+  line-height:1.2;
+}
+.eSub{
+  margin-top:6px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  color: rgba(255,255,255,.70);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.eSub .chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  white-space:nowrap;
+}
+.eSub .chip i{
+  width:8px;height:8px;border-radius:99px;
+  background: rgba(255,255,255,.55);
+  box-shadow: 0 0 0 5px rgba(255,255,255,.06);
+}
+.eSub .chip.green{ border-color: rgba(46,204,113,.35); }
+.eSub .chip.green i{ background: rgba(46,204,113,.95); box-shadow: 0 0 0 6px rgba(46,204,113,.14); }
+.eSub .chip.yellow{ border-color: rgba(241,196,15,.35); }
+.eSub .chip.yellow i{ background: rgba(241,196,15,.95); box-shadow: 0 0 0 6px rgba(241,196,15,.14); }
+
+.eBody{display:grid; gap:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.10);}
+
+.eNote{
+  margin:0;
+  color: rgba(255,255,255,.80);
+  font-size:13px;
+  line-height:1.55;
+}
+
+.eGrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:8px;
+}
+
+.eTile{
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(620px 180px at 10% 0%, rgba(179,31,36,.10), transparent 65%),
+    rgba(255,255,255,.03);
+  border-radius: 14px;
+  padding:10px 11px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-height:72px;
+}
+
+.eLbl{
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.60);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.eLbl .miniDot{
+  width:7px;height:7px;border-radius:99px;
+  background: rgba(255,43,47,.85);
+  box-shadow: 0 0 0 5px rgba(255,43,47,.10);
+}
+.eVal{
+  font-size:13px;
+  color: rgba(255,255,255,.92);
+  line-height:1.35;
+}
+.eVal strong{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.08em;
+  font-weight:700;
+}
+
+.eSplit{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:8px;
+}
+
+.eSection{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.14);
+  border-radius: 14px;
+  padding:10px 11px;
+}
+.eSection h5{
+  margin:0 0 8px;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.72);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.eSection h5 .miniDot{
+  width:7px;height:7px;border-radius:99px;
+  background: rgba(46,204,113,.85);
+  box-shadow: 0 0 0 5px rgba(46,204,113,.10);
+}
+.eList{
+  margin:0;
+  padding-left: 16px;
+  color: rgba(255,255,255,.82);
+  font-size:13px;
+  line-height:1.5;
+}
+.eList li{ margin: 3px 0; }
+
+.eLinks{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.eLinkBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.14);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+  text-decoration:none;
+}
+.eLinkBtn:hover{
+  border-color: rgba(179,31,36,.55);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+  transform: translateY(-1px);
+}
+.eLinkBtn.primary{
+  border-color: rgba(179,31,36,.55);
+  background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.70));
+}
+
+/* popup: trochu viac priestoru a “pro” */
+.leaflet-popup-content{ margin: 12px 14px !important; }
+.leaflet-popup-content-wrapper{ border-radius: 18px !important; overflow:hidden; }
   </style>
 </head>
 
@@ -2463,62 +2635,105 @@ select:focus{
       }[c]));
     }
 
-    function popEventHTML(ev){
-  const d = ev.details || {};
-  const statusChip = (ev.status === "attend")
-    ? `<span class="popChip green"><i></i>ZÚČASTNÍME SA</span>`
-    : `<span class="popChip yellow"><i></i>PLÁNUJEME</span>`;
+    function arrList(a){
+  return Array.isArray(a) ? a.filter(Boolean) : [];
+}
+function safeLink(u){
+  const s = String(u || "").trim();
+  if(!s) return "";
+  // allow http(s) only
+  if(/^https?:\/\//i.test(s)) return s;
+  return "";
+}
 
-  const dateChip = `<span class="popChip"><i></i>${escapeHTML(fmtDate(ev.date))}</span>`;
-  const placeChip = `<span class="popChip"><i></i>${escapeHTML(ev.city)} (${escapeHTML(ev.country)})</span>`;
+  function popEventHTML(ev){
+  const d = ev.details || {};
+
+  const statusChip = (ev.status === "attend")
+    ? `<span class="chip green"><i></i>ZÚČASTNÍME SA</span>`
+    : `<span class="chip yellow"><i></i>PLÁNUJEME</span>`;
+
+  const dateChip  = `<span class="chip"><i></i>${escapeHTML(fmtDate(ev.date))}</span>`;
+  const placeChip = `<span class="chip"><i></i>${escapeHTML(ev.city)} (${escapeHTML(ev.country)})</span>`;
+  const typeChip  = ev.mode ? `<span class="chip"><i></i>${escapeHTML(ev.mode.toUpperCase())}</span>` : ``;
 
   const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
-  const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(", ") : "—";
+  const ourCars   = (arrList(d.ourCars).length) ? arrList(d.ourCars).join(", ") : "—";
   const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
 
-  const url = navUrl(ev.lat, ev.lon);
+  const mission   = arrList(d.mission);
+  const attendees = arrList(d.attendees);
+
+  const linkEvent   = safeLink(d?.links?.event);
+  const linkIG      = safeLink(d?.links?.ig);
+  const linkTickets = safeLink(d?.links?.tickets);
+
+  const nav = navUrl(ev.lat, ev.lon);
 
   return `
     <div class="racemPop">
-      <div class="racemPopTop">
-        <h4 class="racemPopTitle">${escapeHTML(ev.name)}</h4>
-        <div class="racemPopMeta">
-          ${statusChip}
-          ${dateChip}
-          ${placeChip}
+      <div class="eHdr">
+        <div class="eHdrLeft">
+          <h4 class="eTitle">${escapeHTML(ev.name)}</h4>
+          <div class="eSub">
+            ${statusChip}
+            ${dateChip}
+            ${placeChip}
+            ${typeChip}
+          </div>
         </div>
       </div>
 
-      <div class="racemPopBody">
-        <p class="popText">${escapeHTML(ev.about || "—")}</p>
+      <div class="eBody">
+        <p class="eNote">${escapeHTML(ev.about || "—")}</p>
 
-        <div class="popGrid">
-          <div class="popBox">
-            <b>Typ</b>
-            <span>${escapeHTML(ev.mode ? ev.mode.toUpperCase() : "—")}</span>
+        <!-- 4 “bubliny” = skutočne prehľadné tiles -->
+        <div class="eGrid">
+          <div class="eTile">
+            <div class="eLbl"><span class="miniDot"></span>AUTÁ (ODHAD)</div>
+            <div class="eVal"><strong>${escapeHTML(carsCount)}</strong></div>
           </div>
-          <div class="popBox">
-            <b>Autá</b>
-            <span>${escapeHTML(carsCount)}</span>
+          <div class="eTile">
+            <div class="eLbl"><span class="miniDot"></span>DRIFT TAXI</div>
+            <div class="eVal"><strong>${escapeHTML(driftTaxi)}</strong></div>
           </div>
-          <div class="popBox">
-            <b>Naše autá</b>
-            <span>${escapeHTML(ourCars)}</span>
+          <div class="eTile">
+            <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
+            <div class="eVal">${escapeHTML(ourCars)}</div>
           </div>
-          <div class="popBox">
-            <b>Drift taxi</b>
-            <span>${escapeHTML(driftTaxi)}</span>
+          <div class="eTile">
+            <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
+            <div class="eVal">${escapeHTML(d.extra || "—")}</div>
           </div>
         </div>
 
-        <div class="popActions">
-          ${url !== "#" ? `<a class="popBtn" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Navigovať</a>` : ``}
+        <!-- Sekcie navyše (čistejšie než ďalšie kv boxy) -->
+        <div class="eSplit">
+          ${(mission.length ? `
+            <div class="eSection">
+              <h5><span class="miniDot"></span>MISIA</h5>
+              <ul class="eList">${mission.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+            </div>
+          ` : ``)}
+
+          ${(attendees.length ? `
+            <div class="eSection">
+              <h5><span class="miniDot"></span>KTO IDE</h5>
+              <ul class="eList">${attendees.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+            </div>
+          ` : ``)}
+        </div>
+
+        <div class="eLinks">
+          ${(nav && nav !== "#") ? `<a class="eLinkBtn primary" href="${escapeHTML(nav)}" target="_blank" rel="noopener noreferrer">Navigovať</a>` : ``}
+          ${linkEvent ? `<a class="eLinkBtn" href="${escapeHTML(linkEvent)}" target="_blank" rel="noopener noreferrer">Event</a>` : ``}
+          ${linkIG ? `<a class="eLinkBtn" href="${escapeHTML(linkIG)}" target="_blank" rel="noopener noreferrer">IG</a>` : ``}
+          ${linkTickets ? `<a class="eLinkBtn" href="${escapeHTML(linkTickets)}" target="_blank" rel="noopener noreferrer">Tickets</a>` : ``}
         </div>
       </div>
     </div>
   `;
 }
-
     function badge(status){
       if(status === "attend") return `<span class="badge green pulse">ZÚČASTNÍME SA</span>`;
       if(status === "plan")   return `<span class="badge yellow pulse">PLÁNUJEME</span>`;
@@ -3066,24 +3281,45 @@ const out = EVENTS.filter(ev => {
                 <div class="expand">
                   <div class="expandInner">
                   ${ev.mode ? `<div class="badges">${modeBadge(ev.mode)}</div>` : ``}
-                    <div class="kv">
-                      <div class="box">
-                        <b>Autá (odhad)</b>
-                        <span>${escapeHTML(carsCount)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Naše autá</b>
-                        <span>${escapeHTML(ourCars)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Drift taxi</b>
-                        <span>${escapeHTML(driftTaxi)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Extra</b>
-                        <span>${escapeHTML(d.extra || "—")}</span>
-                      </div>
-                    </div>
+                    <div class="eBody" style="border-top:none; padding-top:0;">
+
+  <div class="eGrid">
+    <div class="eTile">
+      <div class="eLbl"><span class="miniDot"></span>AUTÁ (ODHAD)</div>
+      <div class="eVal"><strong>${escapeHTML(carsCount)}</strong></div>
+    </div>
+
+    <div class="eTile">
+      <div class="eLbl"><span class="miniDot"></span>DRIFT TAXI</div>
+      <div class="eVal"><strong>${escapeHTML(driftTaxi)}</strong></div>
+    </div>
+
+    <div class="eTile">
+      <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
+      <div class="eVal">${escapeHTML(ourCars)}</div>
+    </div>
+
+    <div class="eTile">
+      <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
+      <div class="eVal">${escapeHTML(d.extra || "—")}</div>
+    </div>
+  </div>
+
+  ${Array.isArray(d.mission) && d.mission.length ? `
+    <div class="eSection">
+      <h5><span class="miniDot"></span>MISIA</h5>
+      <ul class="eList">${d.mission.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+    </div>
+  ` : ``}
+
+  ${Array.isArray(d.attendees) && d.attendees.length ? `
+    <div class="eSection">
+      <h5><span class="miniDot"></span>KTO IDE</h5>
+      <ul class="eList">${d.attendees.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+    </div>
+  ` : ``}
+
+</div>
 
                     <div class="actionsRow">
                       <button class="miniBtn primary" data-nav="1" type="button">
