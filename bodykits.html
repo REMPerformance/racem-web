@@ -1570,6 +1570,32 @@ header .hud{
     0 6px 18px rgba(179,31,36,.4),
     inset 0 2px 6px rgba(0,0,0,.4);
 }
+
+    /* ===== DARK DROPDOWN ===== */
+select{
+  background:#0b0b0b !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;
+  padding:14px;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  font-family:inherit;
+}
+
+/* options v dropdown */
+select option{
+  background:#0b0b0b;
+  color:#fff;
+}
+
+/* focus */
+select:focus{
+  outline:none;
+  border:1px solid #b31f24;
+  box-shadow:0 0 0 1px rgba(179,31,36,.35);
+}
   </style>
 </head>
 
@@ -1620,44 +1646,53 @@ header .hud{
         <button class="xBtn" id="closeContact">Zavrieť</button>
       </div>
 
-      <div class="modalBody">
-        <div class="grid2">
-          <div class="fRow">
-            <label>Meno / Názov</label>
-            <input id="cName" type="text" placeholder="napr. Garage X / Jano Novák">
-          </div>
-          <div class="fRow">
-            <label>Typ</label>
-            <select id="cType">
-              <option value="garaz">Garáž / Workshop</option>
-              <option value="jazdec">Jazdec</option>
-              <option value="dodavatel">Dodávateľ</option>
-              <option value="event">Event</option>
-              <option value="znacka">Značka</option>
-            </select>
-          </div>
-          <div class="fRow">
-            <label>Lokalita</label>
-            <input id="cCity" type="text" placeholder="mesto + krajina (napr. Trenčín, SK)">
-          </div>
-          <div class="fRow">
-            <label>IG / Web</label>
-            <input id="cLink" type="text" placeholder="@profil alebo https://...">
-          </div>
-        </div>
-
-        <div class="fRow" style="margin-top:10px;">
-          <label>Správa</label>
-          <textarea id="cMsg" placeholder="Krátko: čo robíš, čo chceš propagovať/predávať, cieľ a typ spolupráce."></textarea>
-        </div>
-
-        <div class="modalFoot">
-          <div class="hint">
-            Toto tlačidlo otvorí email s predvyplneným textom na <b>info@remperformance.sk</b>.
-          </div>
-          <button class="btn2 primary" id="sendMail">Odoslať → Email</button>
-        </div>
+     <div class="modalBody">
+  <form id="contactForm" action="https://formspree.io/f/mgolppvy" method="POST">
+    <div class="grid2">
+      <div class="fRow">
+        <label>Meno / Názov</label>
+        <input name="name" id="cName" type="text" placeholder="napr. Garage X / Jano Novák" required>
       </div>
+
+      <div class="fRow">
+        <label>Typ</label>
+        <select name="type" id="cType" required>
+          <option value="Garáž / Workshop">Garáž / Workshop</option>
+          <option value="Jazdec">Jazdec</option>
+          <option value="Dodávateľ">Dodávateľ</option>
+          <option value="Event">Event</option>
+          <option value="Značka">Značka</option>
+        </select>
+      </div>
+
+      <div class="fRow">
+        <label>Lokalita</label>
+        <input name="city" id="cCity" type="text" placeholder="mesto + krajina (napr. Trenčín, SK)" required>
+      </div>
+
+      <div class="fRow">
+        <label>IG / Web</label>
+        <input name="link" id="cLink" type="text" placeholder="@profil alebo https://...">
+      </div>
+    </div>
+
+    <div class="fRow" style="margin-top:10px;">
+      <label>Správa</label>
+      <textarea name="message" id="cMsg" placeholder="Krátko: čo robíš, čo chceš propagovať/predávať, cieľ a typ spolupráce." required></textarea>
+    </div>
+
+    <!-- voliteľné: predmet -->
+    <input type="hidden" name="_subject" value="RACEM GROUP – Kontakt z webu">
+
+    <div class="modalFoot">
+      <div class="hint" id="formHint">
+        Správa sa odošle priamo cez formulár.
+      </div>
+
+      <button class="btn2 primary" id="sendMail" type="submit">Odoslať →</button>
+    </div>
+  </form>
+</div>
     </div>
   </div>
 
@@ -2331,34 +2366,40 @@ function tickReach(){
         if(e.key === "Escape") closeContact();
       });
 
-      $("#sendMail").addEventListener("click", () => {
-        const name = ($("#cName").value || "").trim();
-        const type = ($("#cType").value || "").trim();
-        const city = ($("#cCity").value || "").trim();
-        const link = ($("#cLink").value || "").trim();
-        const msg  = ($("#cMsg").value || "").trim();
+    const form = document.getElementById("contactForm");
+if(form){
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        const subject = `RACEM GROUP - členstvo / spolupráca (${type || "kontakt"})`;
-        const body =
-`Ahoj,
+    const hint = document.getElementById("formHint");
+    const btn = document.getElementById("sendMail");
+    btn.disabled = true;
+    btn.style.opacity = "0.8";
+    if(hint) hint.textContent = "Odosielam…";
 
-Mám záujem o členstvo/spoluprácu v RACEM GROUP.
-
-Meno/Názov: ${name || "—"}
-Typ: ${type || "—"}
-Lokalita: ${city || "—"}
-IG/Web: ${link || "—"}
-
-Správa:
-${msg || "—"}
-
-Ďakujem,
-`;
-
-        const url = `mailto:info@remperformance.sk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = url;
+    try{
+      const fd = new FormData(form);
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: fd,
+        headers: { "Accept": "application/json" }
       });
+
+      if(res.ok){
+        if(hint) hint.textContent = "Hotovo. Správa bola odoslaná ✅";
+        form.reset();
+        setTimeout(() => closeContact(), 900);
+      }else{
+        if(hint) hint.textContent = "Chyba pri odoslaní. Skús ešte raz.";
+      }
+    }catch(err){
+      if(hint) hint.textContent = "Sieťová chyba. Skús ešte raz.";
+    }finally{
+      btn.disabled = false;
+      btn.style.opacity = "";
     }
+  });
+}
 
     // =========================
     // FEED hydrate (SFXLA)
