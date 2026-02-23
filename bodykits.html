@@ -1475,6 +1475,37 @@ header .hud{
 .raceStrip{
   grid-template-columns: 1fr !important;
 }
+
+    /* ===== Bigger typography for HERO stats strip ===== */
+.raceLbl b{
+  font-size: 13px !important;     /* bolo 11px */
+  letter-spacing: .16em !important;
+}
+
+.raceLbl span{
+  font-size: 13px !important;     /* bolo 12px */
+  opacity: .82 !important;
+  letter-spacing: .05em !important;
+  line-height: 1.25 !important;
+  white-space: normal !important; /* dovolí 2 riadky */
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: 100% !important;
+}
+
+.raceVal{
+  font-size: 28px !important;     /* bolo 24px */
+}
+
+/* nech badge vyzerá viac “pro” pri dlhšom texte */
+.raceBadge{
+  padding: 12px 14px !important;
+  align-items: center !important;
+}
+
+.raceRight{
+  gap: 12px !important;
+}
   </style>
 </head>
 
@@ -1582,49 +1613,50 @@ header .hud{
             <div class="raceStrip" aria-label="RACEM GROUP quick stats">
 
               <div class="raceBadge">
-                <div class="raceLbl">
-                  <b>Eventy</b>
-                  <span>EU kalendár</span>
-                </div>
-                <div class="raceRight">
-                  <div class="raceVal" id="statEvents">—</div>
-                  <div class="raceTrend" id="trendEvents" data-trend="na">
-                    <span class="arr">•</span>
-                    <span class="delta">—</span>
-                  </div>
-                </div>
-              </div>
+  <div class="raceLbl">
+    <b>Eventy</b>
+    <span>Eventy, ktorých sa zúčastníme alebo plánujeme zúčastniť</span>
+  </div>
+  <div class="raceRight">
+    <div class="raceVal" id="statEvents">—</div>
+    <div class="raceTrend" id="trendEvents" data-trend="na">
+      <span class="arr">•</span>
+      <span class="delta">—</span>
+    </div>
+  </div>
+</div>
 
-              <div class="raceBadge">
-                <div class="raceLbl">
-                  <b>Sponzoring</b>
-                  <span>jazdci / projekty</span>
-                </div>
-                <div class="raceRight">
-                  <div class="raceVal" id="statDrivers">—</div>
-                  <div class="raceTrend" id="trendDrivers" data-trend="na">
-                    <span class="arr">•</span>
-                    <span class="delta">—</span>
-                  </div>
-                </div>
-              </div>
+<div class="raceBadge">
+  <div class="raceLbl">
+    <b>Sponzoring</b>
+    <span>Talenty, ktoré aktívne sponzorujeme</span>
+  </div>
+  <div class="raceRight">
+    <div class="raceVal" id="statDrivers">—</div>
+    <div class="raceTrend" id="trendDrivers" data-trend="na">
+      <span class="arr">•</span>
+      <span class="delta">—</span>
+    </div>
+  </div>
+</div>
 
-              <div class="raceBadge">
-                <div class="raceLbl">
-                  <b>Sieť</b>
-                  <span>dodávatelia + brand</span>
-                  <div class="rpmPips" aria-hidden="true" style="margin-top:6px">
-                    <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip hot"></span><span class="pip hot"></span>
-                  </div>
-                </div>
-                <div class="raceRight">
-                  <div class="raceVal" id="statSuppliers">—</div>
-                  <div class="raceTrend" id="trendSuppliers" data-trend="na">
-                    <span class="arr">•</span>
-                    <span class="delta">—</span>
-                  </div>
-                </div>
-              </div>
+<div class="raceBadge">
+  <div class="raceLbl">
+    <b>Dodávatelia</b>
+    <span>Dodávatelia, vďaka ktorým vám prinášame tie najlepšie produkty na trhu</span>
+
+    <div class="rpmPips" aria-hidden="true" style="margin-top:8px">
+      <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip hot"></span><span class="pip hot"></span>
+    </div>
+  </div>
+  <div class="raceRight">
+    <div class="raceVal" id="statSuppliers">—</div>
+    <div class="raceTrend" id="trendSuppliers" data-trend="na">
+      <span class="arr">•</span>
+      <span class="delta">—</span>
+    </div>
+  </div>
+</div>
 
             </div>
 
