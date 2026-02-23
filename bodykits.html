@@ -1401,6 +1401,47 @@
   animation: racemBarMove 3s linear infinite;
   opacity:.30;
 }
+
+    .nav{
+  height:66px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  flex-wrap:nowrap;          /* ✅ desktop nikdy neláme */
+}
+
+.brand{ 
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:0 0 auto;             /* ✅ logo si drží svoju šírku */
+}
+
+.navRight{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:14px;
+
+  flex:1 1 auto;             /* ✅ zoberie zvyšok miesta */
+  min-width:0;
+  flex-wrap:nowrap;          /* ✅ desktop nikdy neláme */
+}
+
+.navlinks{
+  display:flex;
+  align-items:center;
+  gap:18px;
+
+  flex-wrap:nowrap;          /* ✅ neláme na 2 riadky */
+  white-space:nowrap;        /* ✅ text neláme */
+  min-width:0;
+}
+
+.navlinks a{ white-space:nowrap; }
+.hud{ flex:0 0 auto; }       /* ✅ HUD sa nesnaží “zobrať” layout */
   </style>
 </head>
 
