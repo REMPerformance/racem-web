@@ -1729,6 +1729,13 @@ select:focus{
 }
 .badge.green.pulse{ color: rgba(46,204,113,.95); }
 .badge.yellow.pulse{ color: rgba(241,196,15,.95); }
+/* EVENTY: odstráň header box look */
+#eventsSide .rightTop{ display:none !important; } /* keby tam niečo ostalo */
+#eventsSide{ gap:12px; }
+#eventsSide .eventHud{
+  margin: 0;
+}
+    
   </style>
 </head>
 
@@ -1985,56 +1992,42 @@ select:focus{
             <div class="list" id="listEvents"></div>
           </div>
 
-          <div class="card mapCard">
-            <div class="rightTop">
-              <div class="eventHud" aria-label="RACEM EVENT STATUS">
-  <div class="eventHudTop">
-    <b>RACEM EVENT STATUS</b>
-    <span class="ehLive"><i></i> LIVE</span>
+         <div class="card mapCard" id="eventsSide">
+  <div class="eventHud" aria-label="RACEM EVENT STATUS">
+    <div class="eventHudTop">
+      <b>RACEM EVENT STATUS</b>
+      <span class="ehLive"><i></i> LIVE</span>
+    </div>
+
+    <div class="eventHudGrid">
+      <div class="ehTile">
+        <span>Aktívne eventy</span>
+        <b id="ehActive">—</b>
+      </div>
+      <div class="ehTile">
+        <span>Tento mesiac</span>
+        <b id="ehMonth">—</b>
+      </div>
+      <div class="ehTile">
+        <span>Krajiny</span>
+        <b id="ehCountries">—</b>
+      </div>
+      <div class="ehTile">
+        <span>Najbližší</span>
+        <b id="ehNext">—</b>
+      </div>
+    </div>
   </div>
 
-  <div class="eventHudGrid">
-    <div class="ehTile">
-      <span>Aktívne eventy</span>
-      <b id="ehActive">—</b>
-    </div>
-    <div class="ehTile">
-      <span>Tento mesiac</span>
-      <b id="ehMonth">—</b>
-    </div>
-    <div class="ehTile">
-      <span>Krajiny</span>
-      <b id="ehCountries">—</b>
-    </div>
-    <div class="ehTile">
-      <span>Najbližší</span>
-      <b id="ehNext">—</b>
-    </div>
+  <div class="mapBox">
+    <div id="mapEurope"></div>
+  </div>
+
+  <div class="mapHint">
+    <span><b>Tip:</b> klik na event vľavo → automaticky fokus + pulz</span>
+    <span><b>Click:</b> marker → otvorí event</span>
   </div>
 </div>
-              <b>Mapa Európy</b>
-              <span>zoom + drag</span>
-            </div>
-            <div class="mapBox">
-              <div id="mapEurope"></div>
-            </div>
-            <div class="mapHint">
-              <span><b>Tip:</b> klik na event vľavo → pulz + fokus</span>
-              <span><b>Lock:</b> EU bounds</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SPONZORING -->
-      <section id="jazdci" class="block">
-        <div class="sectionTitle">
-          <h2>Koho sponzorujeme?</h2>
-          <p>
-            Každý jazdec: meno, odkiaľ je, auto, číslo, kde sa plánuje zúčastniť + fotky.
-            Klik na jazdca → otvorí sa detail v tom istom boxe (galéria sa dá preklikávať).
-          </p>
-        </div>
 
         <div class="secGrid">
           <div class="card">
@@ -2843,13 +2836,14 @@ const out = EVENTS.filter(ev => {
                     <b>${escapeHTML(ev.name)}</b>
                     <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDate(ev.date))} • Európa</div>
                   </div>
-                  <div class="badges">${badge(ev.status)}${modeBadge(ev.mode)}</div>
+                  <div class="badges">${badge(ev.status)}</div>
                 </div>
 
                 <p class="desc">${escapeHTML(ev.about)}</p>
 
                 <div class="expand">
                   <div class="expandInner">
+                  ${ev.mode ? `<div class="badges">${modeBadge(ev.mode)}</div>` : ``}
                     <div class="kv">
                       <div class="box">
                         <b>Autá (odhad)</b>
@@ -2876,13 +2870,6 @@ const out = EVENTS.filter(ev => {
                           <path d="M12 10l7-3-3 7-2-3-2 2-1-3z" fill="currentColor" opacity=".85"/>
                         </svg>
                         Navigovať
-                      </button>
-                      <button class="miniBtn" data-focus="1" type="button">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                        </svg>
-                        Fokus na mape
                       </button>
                       <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">
                         Klik ešte raz → zavrieť
@@ -2929,14 +2916,6 @@ const out = EVENTS.filter(ev => {
             doFocus();
             const url = navUrl(ev.lat, ev.lon);
             if(url && url !== "#") window.open(url, "_blank", "noopener,noreferrer");
-          });
-        }
-
-        const focusBtn = el.querySelector("button[data-focus='1']");
-        if(focusBtn){
-          focusBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            doFocus();
           });
         }
       });
