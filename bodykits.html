@@ -2819,57 +2819,64 @@ function tickReach(){
 updateProductProgress();
     }
 
-async function loadEventsFromJSON(){
-  const data = await safeFetchJSON("/events.json"); // ak treba relatívne, daj "./events.json"
+function normalizeEvent(evRaw){
+  const ev = evRaw || {};
 
+  // status: attend | plan (fallback = plan)
+  const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
+
+  // mode: drift/show/trackday/static (fallback = "")
+  const mode = String(ev.mode || "").trim().toLowerCase();
+
+  // prefer lat/lon from JSON, otherwise use CITY_COORDS lookup
+  let lat = (typeof ev.lat === "number") ? ev.lat : null;
+  let lon = (typeof ev.lon === "number") ? ev.lon : null;
+
+  if(lat === null || lon === null){
+    const coords = pickCoords(ev.city, ev.country);
+    if(coords){
+      lat = coords.lat;
+      lon = coords.lon;
+    }
+  }
+
+  if(lat === null || lon === null){
+    console.warn("[events.json] missing coords for", ev.city, ev.country, "→ doplň CITY_COORDS alebo daj lat/lon do events.json");
+  }
+
+  return {
+    id: String(ev.id || crypto.randomUUID()),
+    status,
+    name: String(ev.name || "Unnamed event"),
+    city: String(ev.city || "—"),
+    country: String(ev.country || "—"),
+    date: String(ev.date || ""),                 // očakávame YYYY-MM-DD
+    where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
+    lat,
+    lon,
+    about: String(ev.about || ""),
+    mode,
+    img: String(ev.img || ""),
+    details: (ev.details && typeof ev.details === "object") ? ev.details : {},
+    tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
+  };
+}
+
+async function loadEventsFromJSON(){
+  // Dôležité: root-relative /events.json funguje na custom doméne aj GitHub Pages (ak je súbor v root-e)
+  // Ak to máš v podpriečinku, zmeň na "./events.json"
+  const data = await safeFetchJSON("/events.json");
+
+  // fallback na EVENTS_INPUT, aby stránka nikdy "nezomrela"
   if(!data){
-    // fallback na natvrdo EVENTS_INPUT, aby stránka žila aj keď JSON spadne
-    EVENTS = EVENTS_INPUT.map(ev => {
-      const coords = pickCoords(ev.city, ev.country);
-      if(!coords) console.warn("[events] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
-      return {
-        id: ev.id,
-        status: ev.status,
-        name: ev.name,
-        city: ev.city,
-        country: ev.country,
-        date: ev.date,
-        where: `${ev.city} (${ev.country})`,
-        lat: coords ? coords.lat : null,
-        lon: coords ? coords.lon : null,
-        about: ev.about || "",
-        mode: (ev.mode || "").trim().toLowerCase(),
-        img: ev.img || "",
-        details: ev.details || {},
-        tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
-      };
-    });
+    EVENTS = EVENTS_INPUT.map(normalizeEvent);
     return;
   }
 
-  // data môže byť buď priamo array, alebo {events:[...]}
+  // podpor: [ ... ] alebo { events:[ ... ] }
   const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
 
-  EVENTS = arr.map(ev => {
-    const coords = pickCoords(ev.city, ev.country);
-    if(!coords) console.warn("[events.json] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
-    return {
-      id: ev.id,
-      status: ev.status,              // "attend" | "plan"
-      name: ev.name,
-      city: ev.city,
-      country: ev.country,
-      date: ev.date,                  // "YYYY-MM-DD"
-      where: `${ev.city} (${ev.country})`,
-      lat: coords ? coords.lat : null,
-      lon: coords ? coords.lon : null,
-      about: ev.about || "",
-      mode: (ev.mode || "").trim().toLowerCase(),
-      img: ev.img || "",
-      details: ev.details || {},
-      tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
-    };
-  });
+  EVENTS = arr.map(normalizeEvent);
 }
     // =========================
 // PRODUCTS PROGRESS (0 -> 100 000)
