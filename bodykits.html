@@ -1411,10 +1411,6 @@ header .hud{
     radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
     linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
   padding: 12px;
-
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ vždy 3 vedľa seba */
-  gap:10px;
 }
 
 .raceBadge{
@@ -1935,7 +1931,6 @@ select:focus{
   </div>
 </div> <!-- /rowCard.prodRow -->
 
-</div> <!-- ✅ /div.card.heroLeft (TOTO TI CHÝBALO) -->
 
 <!-- RIGHT -->
 <div class="card heroRight">
@@ -2706,6 +2701,7 @@ select:focus{
   // =========================
   let mapEU, euMarkers = new Map();
   let activeEventId = null;
+  let activeEventType = "all";
 
   function markerIcon(color){
     return L.divIcon({
@@ -2802,12 +2798,12 @@ select:focus{
 
   function renderEvents(){
     const q = ($("#qEvents").value || "").trim().toLowerCase();
-    const f = $("#fEvents").value;
+    const f = activeEventType;
 
     const out = EVENTS.filter(ev => {
       const hay = [ev.name, ev.where, ev.about, ev.date, ev.mode].join(" ").toLowerCase();
       const okQ = !q || hay.includes(q);
-      const okF = (f === "all") || (ev.status === f);
+      const okF = (f === "all") || (ev.mode === f);
       return okQ && okF;
     });
 
@@ -3128,12 +3124,23 @@ select:focus{
   // =========================
   function wireUI(){
     $("#qEvents").addEventListener("input", renderEvents);
-    $("#fEvents").addEventListener("change", renderEvents);
-    $("#resetEvents").addEventListener("click", () => {
-      $("#qEvents").value = "";
-      $("#fEvents").value = "all";
-      renderEvents();
-    });
+   $("#resetEvents").addEventListener("click", () => {
+  $("#qEvents").value = "";
+  activeEventType = "all";
+  document.querySelectorAll("#eventTypePills .fpill").forEach(x => x.classList.remove("active"));
+  document.querySelector('#eventTypePills .fpill[data-type="all"]').classList.add("active");
+  renderEvents();
+  updateEventDashboard();
+});
+
+    document.querySelectorAll("#eventTypePills .fpill").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#eventTypePills .fpill").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    activeEventType = btn.dataset.type || "all";
+    renderEvents();
+    updateEventDashboard(); // ak spravíš dashboard funkciu (nižšie)
+  });
 
     $("#qDrivers").addEventListener("input", renderDrivers);
     $("#resetDrivers").addEventListener("click", () => {
