@@ -1735,7 +1735,134 @@ select:focus{
 #eventsSide .eventHud{
   margin: 0;
 }
-    
+    /* ===== LEAFLET POPUP: RACEM HUD ===== */
+.leaflet-popup-content{ margin: 12px 14px !important; }
+.leaflet-popup-content-wrapper{
+  border-radius: 18px !important;
+  overflow:hidden;
+}
+
+.racemPop{
+  min-width: 260px;
+  max-width: 360px;
+}
+
+.racemPopTop{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+.racemPopTitle{
+  font-family: Oswald, sans-serif;
+  letter-spacing:.08em;
+  font-size:16px;
+  margin:0;
+}
+
+.racemPopMeta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  color: rgba(255,255,255,.70);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.popChip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  white-space:nowrap;
+}
+.popChip i{
+  width:8px;height:8px;border-radius:99px;
+  background: rgba(255,255,255,.65);
+  box-shadow: 0 0 0 5px rgba(255,255,255,.06);
+}
+.popChip.green{ border-color: rgba(46,204,113,.35); }
+.popChip.green i{ background: rgba(46,204,113,.95); box-shadow: 0 0 0 6px rgba(46,204,113,.14); }
+.popChip.yellow{ border-color: rgba(241,196,15,.35); }
+.popChip.yellow i{ background: rgba(241,196,15,.95); box-shadow: 0 0 0 6px rgba(241,196,15,.14); }
+
+.racemPopBody{
+  padding-top:10px;
+  display:grid;
+  gap:10px;
+}
+
+.popText{
+  color: rgba(255,255,255,.78);
+  font-size:13px;
+  line-height:1.55;
+  margin:0;
+}
+
+.popGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:8px;
+}
+
+.popBox{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 14px;
+  padding: 9px 10px;
+}
+.popBox b{
+  display:block;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.62);
+  margin-bottom:6px;
+}
+.popBox span{
+  font-size:12.5px;
+  color: rgba(255,255,255,.90);
+  line-height:1.35;
+}
+
+.popActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+
+.popBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(179,31,36,.55);
+  background: linear-gradient(90deg, rgba(179,31,36,.85), rgba(255,43,47,.70));
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+  user-select:none;
+  text-decoration:none;
+}
+.popBtn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+}
   </style>
 </head>
 
@@ -2315,26 +2442,7 @@ select:focus{
       };
     });
 
-    const EVENTS = EVENTS_INPUT.map(ev => {
-      const coords = pickCoords(ev.city, ev.country);
-      if(!coords) console.warn("[events] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
-      return {
-        id: ev.id,
-        status: ev.status,
-        name: ev.name,
-        city: ev.city,
-        country: ev.country,
-        date: ev.date,
-        where: `${ev.city} (${ev.country})`,
-        lat: coords ? coords.lat : null,
-        lon: coords ? coords.lon : null,
-        about: ev.about || "",
-        mode: (ev.mode || "").trim().toLowerCase(),
-        img: ev.img || "",
-        details: ev.details || {},
-        tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
-      };
-    });
+   let EVENTS = [];
 
     // MUST exist before globe module loads
     const ALL_SUP = [
@@ -2355,15 +2463,61 @@ select:focus{
       }[c]));
     }
 
-    function popHTML(title, meta, desc){
-      return `
-        <div>
-          <div class="popTitle">${escapeHTML(title)}</div>
-          <div class="popMeta">${escapeHTML(meta)}</div>
-          <p class="popDesc">${escapeHTML(desc)}</p>
+    function popEventHTML(ev){
+  const d = ev.details || {};
+  const statusChip = (ev.status === "attend")
+    ? `<span class="popChip green"><i></i>ZÚČASTNÍME SA</span>`
+    : `<span class="popChip yellow"><i></i>PLÁNUJEME</span>`;
+
+  const dateChip = `<span class="popChip"><i></i>${escapeHTML(fmtDate(ev.date))}</span>`;
+  const placeChip = `<span class="popChip"><i></i>${escapeHTML(ev.city)} (${escapeHTML(ev.country)})</span>`;
+
+  const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
+  const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(", ") : "—";
+  const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
+
+  const url = navUrl(ev.lat, ev.lon);
+
+  return `
+    <div class="racemPop">
+      <div class="racemPopTop">
+        <h4 class="racemPopTitle">${escapeHTML(ev.name)}</h4>
+        <div class="racemPopMeta">
+          ${statusChip}
+          ${dateChip}
+          ${placeChip}
         </div>
-      `;
-    }
+      </div>
+
+      <div class="racemPopBody">
+        <p class="popText">${escapeHTML(ev.about || "—")}</p>
+
+        <div class="popGrid">
+          <div class="popBox">
+            <b>Typ</b>
+            <span>${escapeHTML(ev.mode ? ev.mode.toUpperCase() : "—")}</span>
+          </div>
+          <div class="popBox">
+            <b>Autá</b>
+            <span>${escapeHTML(carsCount)}</span>
+          </div>
+          <div class="popBox">
+            <b>Naše autá</b>
+            <span>${escapeHTML(ourCars)}</span>
+          </div>
+          <div class="popBox">
+            <b>Drift taxi</b>
+            <span>${escapeHTML(driftTaxi)}</span>
+          </div>
+        </div>
+
+        <div class="popActions">
+          ${url !== "#" ? `<a class="popBtn" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Navigovať</a>` : ``}
+        </div>
+      </div>
+    </div>
+  `;
+}
 
     function badge(status){
       if(status === "attend") return `<span class="badge green pulse">ZÚČASTNÍME SA</span>`;
@@ -2665,7 +2819,58 @@ function tickReach(){
 updateProductProgress();
     }
 
+async function loadEventsFromJSON(){
+  const data = await safeFetchJSON("/events.json"); // ak treba relatívne, daj "./events.json"
 
+  if(!data){
+    // fallback na natvrdo EVENTS_INPUT, aby stránka žila aj keď JSON spadne
+    EVENTS = EVENTS_INPUT.map(ev => {
+      const coords = pickCoords(ev.city, ev.country);
+      if(!coords) console.warn("[events] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
+      return {
+        id: ev.id,
+        status: ev.status,
+        name: ev.name,
+        city: ev.city,
+        country: ev.country,
+        date: ev.date,
+        where: `${ev.city} (${ev.country})`,
+        lat: coords ? coords.lat : null,
+        lon: coords ? coords.lon : null,
+        about: ev.about || "",
+        mode: (ev.mode || "").trim().toLowerCase(),
+        img: ev.img || "",
+        details: ev.details || {},
+        tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
+      };
+    });
+    return;
+  }
+
+  // data môže byť buď priamo array, alebo {events:[...]}
+  const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
+
+  EVENTS = arr.map(ev => {
+    const coords = pickCoords(ev.city, ev.country);
+    if(!coords) console.warn("[events.json] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
+    return {
+      id: ev.id,
+      status: ev.status,              // "attend" | "plan"
+      name: ev.name,
+      city: ev.city,
+      country: ev.country,
+      date: ev.date,                  // "YYYY-MM-DD"
+      where: `${ev.city} (${ev.country})`,
+      lat: coords ? coords.lat : null,
+      lon: coords ? coords.lon : null,
+      about: ev.about || "",
+      mode: (ev.mode || "").trim().toLowerCase(),
+      img: ev.img || "",
+      details: ev.details || {},
+      tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
+    };
+  });
+}
     // =========================
 // PRODUCTS PROGRESS (0 -> 100 000)
 // =========================
@@ -2778,14 +2983,7 @@ function updateProductProgress(){
           `Navigovať: ${navUrl(ev.lat, ev.lon)}`
         ].join("\n");
 
-        m.bindPopup(
-          popHTML(
-            ev.name,
-            `${ev.where} • ${fmtDate(ev.date)} • ${ev.tag}${ev.mode ? " • " + ev.mode.toUpperCase() : ""}`,
-            lines
-          ),
-          { closeButton:true }
-        );
+      m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 380, className: "racemPopWrap" });
 
         m.on("click", () => setEventMarkerActive(ev.id));
         euMarkers.set(ev.id, m);
@@ -3197,10 +3395,9 @@ function wireUI(){
     // =========================
     // INIT
     // =========================
-    document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener("DOMContentLoaded", async () => {
   $("#year").textContent = new Date().getFullYear();
 
-  // tieto veci sú nezávislé od Leafletu
   updateStats();
   updateProductProgress();
 
@@ -3213,20 +3410,20 @@ function wireUI(){
   wireContact();
   wireUI();
 
-  // ✅ Render zoznamov sprav hneď, aj keby mapy ešte nešli
+  // ✅ NAJPRV načítaj JSON eventy
+  await loadEventsFromJSON();
+
+  // ✅ potom render zoznamov
   renderEvents();
   renderDrivers();
   renderSuppliers();
+  updateEventHud();
 
-  // ✅ počkaj na Leaflet (aby “nezmizlo všetko” keď je CDN pomalé)
+  // ✅ potom mapy
   await waitForLeaflet(4000);
-
-  // mapy inicializuj až keď L existuje
   if (window.L) {
     try { initEuropeMap(); } catch(e){ console.warn("EU map init failed:", e); }
     try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed:", e); }
-  } else {
-    console.warn("Leaflet sa nenačítal (L je undefined). Mapy budú vypnuté.");
   }
 
   // feed
