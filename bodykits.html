@@ -3163,35 +3163,57 @@ const out = EVENTS.filter(ev => {
       });
     }
 
-    // =========================
-    // WIRE UI
-    // =========================
-    $("#qEvents").addEventListener("input", renderEvents);
-$("#fEvents").addEventListener("change", renderEvents);
-$("#sEvents").addEventListener("change", renderEvents);
+   // =========================
+// WIRE UI (FIXED)
+// =========================
+function wireUI(){
+  // EVENTS
+  const qEvents = document.getElementById("qEvents");
+  const fEvents = document.getElementById("fEvents");
+  const sEvents = document.getElementById("sEvents");
+  const resetEvents = document.getElementById("resetEvents");
 
-$("#resetEvents").addEventListener("click", () => {
-  $("#qEvents").value = "";
-  $("#fEvents").value = "all";
-  $("#sEvents").value = "all";
-  renderEvents();
-  updateEventHud();
-});
+  if(qEvents) qEvents.addEventListener("input", () => { renderEvents(); updateEventHud(); });
+  if(fEvents) fEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
+  if(sEvents) sEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
 
-      $("#qDrivers").addEventListener("input", renderDrivers);
-      $("#resetDrivers").addEventListener("click", () => {
-        $("#qDrivers").value = "";
-        renderDrivers();
-      });
+  if(resetEvents){
+    resetEvents.addEventListener("click", () => {
+      if(qEvents) qEvents.value = "";
+      if(fEvents) fEvents.value = "all";
+      if(sEvents) sEvents.value = "all";
+      renderEvents();
+      updateEventHud();
+    });
+  }
 
-      $("#qSup").addEventListener("input", renderSuppliers);
-      $("#fSup").addEventListener("change", renderSuppliers);
-      $("#resetSup").addEventListener("click", () => {
-        $("#qSup").value = "";
-        $("#fSup").value = "all";
-        renderSuppliers();
-      });
-    }
+  // DRIVERS
+  const qDrivers = document.getElementById("qDrivers");
+  const resetDrivers = document.getElementById("resetDrivers");
+
+  if(qDrivers) qDrivers.addEventListener("input", renderDrivers);
+  if(resetDrivers){
+    resetDrivers.addEventListener("click", () => {
+      if(qDrivers) qDrivers.value = "";
+      renderDrivers();
+    });
+  }
+
+  // SUPPLIERS
+  const qSup = document.getElementById("qSup");
+  const fSup = document.getElementById("fSup");
+  const resetSup = document.getElementById("resetSup");
+
+  if(qSup) qSup.addEventListener("input", renderSuppliers);
+  if(fSup) fSup.addEventListener("change", renderSuppliers);
+  if(resetSup){
+    resetSup.addEventListener("click", () => {
+      if(qSup) qSup.value = "";
+      if(fSup) fSup.value = "all";
+      renderSuppliers();
+    });
+  }
+}
 
     // =========================
     // INIT
