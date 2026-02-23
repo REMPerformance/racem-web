@@ -1411,6 +1411,10 @@ header .hud{
     radial-gradient(820px 260px at 20% 0%, rgba(179,31,36,.18), transparent 62%),
     linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
   padding: 12px;
+
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ vždy 3 vedľa seba */
+  gap:10px;
 }
 
 .raceBadge{
@@ -1591,153 +1595,6 @@ select:focus{
   outline:none;
   border:1px solid #b31f24;
   box-shadow:0 0 0 1px rgba(179,31,36,.35);
-}
-
-    /* ===== EVENTS: filter pills ===== */
-.filterPills{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-
-.fpill{
-  padding: 10px 12px;
-  border-radius: 999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.14);
-  color: rgba(255,255,255,.84);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  cursor:pointer;
-  transition:.16s ease;
-  user-select:none;
-  white-space:nowrap;
-}
-.fpill:hover{
-  border-color: rgba(179,31,36,.55);
-  box-shadow: 0 18px 60px rgba(0,0,0,.45);
-  transform: translateY(-1px);
-}
-.fpill.active{
-  border-color: rgba(179,31,36,.60);
-  background: linear-gradient(90deg, rgba(179,31,36,.65), rgba(255,43,47,.35));
-  color:#fff;
-  box-shadow: 0 0 26px rgba(255,43,47,.14);
-}
-
-/* ===== EVENTS: live dashboard ===== */
-.evDash{
-  border-radius: 16px;
-  border:1px solid rgba(255,255,255,.10);
-  background:
-    radial-gradient(760px 260px at 15% 0%, rgba(179,31,36,.18), transparent 62%),
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-  padding: 12px;
-}
-
-.evDashTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding-bottom:10px;
-  border-bottom:1px solid rgba(255,255,255,.10);
-}
-
-.evDashTitle{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.evDashTitle b{
-  font-family: Oswald, sans-serif;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  font-size:12px;
-}
-
-.evDashLive{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.78);
-}
-.evDashLive i{
-  width:8px;height:8px;border-radius:99px;
-  background: var(--ok);
-  box-shadow: 0 0 0 6px rgba(46,204,113,.14), 0 0 18px rgba(46,204,113,.28);
-  position: relative;
-  animation: livePulse 1.05s ease-out infinite;
-}
-.evDashLive i::after{
-  content:"";
-  position:absolute;
-  inset:-10px;
-  border-radius:999px;
-  border:1px solid rgba(46,204,113,.22);
-  animation: liveRing 1.05s ease-out infinite;
-}
-
-.evDashRight{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.evDashMini{
-  font-size:11px;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.70);
-  white-space:nowrap;
-}
-
-.evDashGrid{
-  display:grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
-  gap:10px;
-  padding-top:10px;
-}
-.evDashBox{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.14);
-  border-radius: 14px;
-  padding:10px 12px;
-  overflow:hidden;
-}
-.evDashBox b{
-  display:block;
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.68);
-  margin-bottom:6px;
-}
-.evDashBox span{
-  font-family: Oswald, sans-serif;
-  font-size:18px;
-  letter-spacing:.08em;
-  font-variant-numeric: tabular-nums;
-  color:#fff;
-  text-shadow: 0 14px 34px rgba(0,0,0,.7);
-}
-
-.evDashFoot{
-  padding-top:10px;
-  margin-top:10px;
-  border-top:1px solid rgba(255,255,255,.10);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.62);
-}
-
-@media (max-width: 820px){
-  .evDashGrid{ grid-template-columns: 1fr 1fr; }
 }
   </style>
 </head>
@@ -1931,6 +1788,7 @@ select:focus{
   </div>
 </div> <!-- /rowCard.prodRow -->
 
+</div> <!-- ✅ /div.card.heroLeft (TOTO TI CHÝBALO) -->
 
 <!-- RIGHT -->
 <div class="card heroRight">
@@ -1962,92 +1820,43 @@ select:focus{
       </section>
 
       <!-- EVENTY -->
-<section id="eventy" class="block">
-  <div class="sectionTitle">
-    <h2>Eventy (Európa)</h2>
-    <p>
-      Zoznam + mapa. Klik na event → otvor detail, pulz markeru a fokus na mape.
-      Filter je podľa typu eventu (drift/show/trackday/static).
-    </p>
-  </div>
-
-  <div class="secGrid">
-    <!-- LEFT: LIST -->
-    <div class="card">
-      <div class="controls">
-        <div class="field">
-          <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-          <input id="qEvents" type="text" placeholder="napr. Trenčín, drift, show..." autocomplete="off" />
+      <section id="eventy" class="block">
+        <div class="sectionTitle">
         </div>
 
-        <div class="filterPills" id="eventTypePills" aria-label="Filter typu eventu">
-          <button class="fpill active" data-type="all" type="button">All</button>
-          <button class="fpill" data-type="drift" type="button">Drift</button>
-          <button class="fpill" data-type="show" type="button">Show</button>
-          <button class="fpill" data-type="trackday" type="button">Trackday</button>
-          <button class="fpill" data-type="static" type="button">Static</button>
-        </div>
+        <div class="secGrid">
+          <div class="card">
+            <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
+              <div class="field">
+                <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
+                <input id="qEvents" type="text" placeholder="napr. Trenčín, drift, show..." autocomplete="off" />
+              </div>
+              <select id="fEvents" class="select" title="Filter">
+                <option value="all">Všetko</option>
+                <option value="attend">Zúčastníme sa</option>
+                <option value="plan">Plánujeme</option>
+              </select>
+              <button class="btn ghost" id="resetEvents">Reset</button>
+            </div>
 
-        <button class="btn ghost" id="resetEvents" type="button">Reset</button>
-      </div>
+            <div class="list" id="listEvents"></div>
+          </div>
 
-      <div class="list" id="listEvents"></div>
-    </div>
-
-    <!-- RIGHT: MAP + DASH -->
-    <div class="card mapCard">
-      <div class="rightTop">
-        <b>Mapa Európy</b>
-        <span>zoom + drag</span>
-      </div>
-
-      <!-- LIVE DASHBOARD -->
-      <div class="evDash" id="evDash">
-        <div class="evDashTop">
-          <div class="evDashTitle">
-            <b>RACEM EVENT STATUS</b>
-            <span class="evDashLive"><i></i> LIVE</span>
-          </div>
-          <div class="evDashRight">
-            <span class="evDashMini" id="evDashNext">Najbližší: —</span>
-          </div>
-        </div>
-
-        <div class="evDashGrid">
-          <div class="evDashBox">
-            <b>Aktívne</b>
-            <span id="evDashActive">—</span>
-          </div>
-          <div class="evDashBox">
-            <b>Zúčastníme sa</b>
-            <span id="evDashAttend">—</span>
-          </div>
-          <div class="evDashBox">
-            <b>Plánujeme</b>
-            <span id="evDashPlan">—</span>
-          </div>
-          <div class="evDashBox">
-            <b>Krajiny</b>
-            <span id="evDashCountries">—</span>
+          <div class="card mapCard">
+            <div class="rightTop">
+              <b>Mapa Európy</b>
+              <span>zoom + drag</span>
+            </div>
+            <div class="mapBox">
+              <div id="mapEurope"></div>
+            </div>
+            <div class="mapHint">
+              <span><b>Tip:</b> klik na event vľavo → pulz + fokus</span>
+              <span><b>Lock:</b> EU bounds</span>
+            </div>
           </div>
         </div>
-
-        <div class="evDashFoot">
-          <span id="evDashTypes">DRIFT: — • SHOW: — • TRACKDAY: — • STATIC: —</span>
-        </div>
-      </div>
-
-      <div class="mapBox">
-        <div id="mapEurope"></div>
-      </div>
-
-      <div class="mapHint">
-        <span><b>Tip:</b> klik na event vľavo → pulz + fokus</span>
-        <span><b>Lock:</b> EU bounds</span>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       <!-- SPONZORING -->
       <section id="jazdci" class="block">
@@ -2144,495 +1953,210 @@ select:focus{
     </div>
   </main>
 
- <script>
-  // =========================
-  // DARK TILES (Leaflet)
-  // =========================
-  const DARK_TILES = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-  const DARK_ATTR  = "&copy; OpenStreetMap contributors &copy; CARTO";
+  <script>
+    // =========================
+    // DARK TILES (Leaflet)
+    // =========================
+    const DARK_TILES = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+    const DARK_ATTR  = "&copy; OpenStreetMap contributors &copy; CARTO";
 
-  // =========================
-  // EDIT ZONE (JEDNO MIESTO NA ÚPRAVY)
-  // =========================
-  const CITY_COORDS = {
-    // Slovensko
-    "Bratislava|SK": { lat:48.148598, lon:17.107748 },
-    "Piešťany|SK":  { lat:48.59479,  lon:17.82532  },
-    "Trenčín|SK":   { lat:48.8945,   lon:18.0444   },
-    "Prievidza|SK": { lat:48.7745206, lon:18.6245383 },
+    // =========================
+    // EDIT ZONE (JEDNO MIESTO NA ÚPRAVY)
+    // =========================
+    const CITY_COORDS = {
+      // Slovensko
+      "Bratislava|SK": { lat:48.148598, lon:17.107748 },
+      "Piešťany|SK":  { lat:48.59479,  lon:17.82532  },
+      "Trenčín|SK":   { lat:48.8945,   lon:18.0444   },
+      "Prievidza|SK": { lat:48.7745206, lon:18.6245383 },
 
-    // CZ / EU
-    "Praha|CZ":     { lat:50.0755, lon:14.4378 },
-    "Brno|CZ":      { lat:49.1951, lon:16.6068 },
+      // CZ / EU
+      "Praha|CZ":     { lat:50.0755, lon:14.4378 },
+      "Brno|CZ":      { lat:49.1951, lon:16.6068 },
 
-    // fallback krajiny (keď nie je mesto)
-    "Česko|CZ":     { lat:49.8038, lon:15.4749 },
-    "Nemecko|DE":   { lat:51.1657, lon:10.4515 },
-    "Estónsko|EE":  { lat:59.436962, lon:24.753574 },
-    "Poľsko|PL":    { lat:52.2297, lon:21.0122 },
-    "UK|UK":        { lat:53.571788, lon:-1.382466 }
-  };
-
-  // Ak chceš, vieš eventy držať v /data/events.json (odporúčam).
-  const EVENTS_FEED = "/data/events.json";
-
-  // =========================
-  // INPUT (fallback, keď feed nejde)
-  // =========================
-  const EVENTS_INPUT = [
-    {
-      id:"sadka-pd",
-      status:"attend",
-      name:"SADKA Prievidza",
-      city:"Prievidza",
-      country:"SK",
-      date:"2026-03-14",
-      about:"Drift / slalom day. Lokálna scéna + tréning.",
-      mode:"drift",
-      img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=360&q=70",
-      details:{
-        carsCount: 2,
-        ourCars: ["BMW E46 (drift)", "BMW E36 (static)"],
-        driftTaxi: true,
-        extra:"Miesto na promo fotky + krátke reels. Ak bude čas, spravíme aj mini stánok s merch/QR."
-      }
-    },
-    {
-      id:"powerfest-tn",
-      status:"plan",
-      name:"PowerFest Trenčín",
-      city:"Trenčín",
-      country:"SK",
-      date:"2026-05-10",
-      about:"Showcase + promo. Uprav podľa reality.",
-      mode:"static",
-      img:"https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=360&q=70",
-      details:{
-        carsCount: 1,
-        ourCars: ["BMW (show build)"],
-        driftTaxi: false,
-        extra:"Cieľ: získať nové kontakty (garáže, jazdci, dodávatelia). QR na katalógy + IG story coverage."
-      }
-    },
-    {
-      id:"cz-trackday",
-      status:"plan",
-      name:"Trackday CZ",
-      city:"Praha",
-      country:"CZ",
-      date:"2026-06-02",
-      about:"Test dielov + content. Uprav podľa reality.",
-      mode:"",
-      img:"https://images.unsplash.com/photo-1511910849309-0dffb878d0c5?auto=format&fit=crop&w=360&q=70",
-      details:{
-        carsCount: 1,
-        ourCars: ["Test car (setup day)"],
-        driftTaxi: false,
-        extra:"Primár: content + test. Sekundár: B2B stretnutia s partnermi v CZ."
-      }
-    }
-  ];
-
-  const DRIVERS_INPUT = [
-    {
-      id:"rado-panak",
-      name:"Rado Panák",
-      city:"Trenčín",
-      country:"SK",
-      car:"BMW (drift)",
-      number:"86",
-      about:"Drift jazdec – spolupráca / obsah / promo. Priorita: viditeľnosť + content z jázd.",
-      plans: [
-        { where:"Trenčín (SK)", date:"2026-05-10", note:"PowerFest (plán)" }
-      ],
-      photos:[
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=70",
-        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=70",
-        "https://images.unsplash.com/photo-1511910849309-0dffb878d0c5?auto=format&fit=crop&w=900&q=70",
-        "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=900&q=70"
-      ]
-    }
-  ];
-
-  // =========================
-  // HUB / SUPPLIERS
-  // =========================
-  const HUB_POINTS = [
-    {
-      id:"hub-ba",
-      type:"hub",
-      name:"RACEM HUB",
-      where:"Bratislava (SK)",
-      region:"SK",
-      lat: 48.148598,
-      lon: 17.107748,
-      about:"Centrála / hub – koordinácia objednávok, partnerov, obsahu a logistiky."
-    },
-    {
-      id:"locked-pn",
-      type:"locked",
-      name:"Piešťany (uzamknuté)",
-      where:"Piešťany (SK)",
-      region:"SK",
-      lat: 48.59479,
-      lon: 17.82532,
-      about:"Interné / pripravované. Zatiaľ bez verejných detailov."
-    }
-  ];
-
-  const HARD = { csrCount: 14684 };
-  const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
-
-  const SUPPLIERS = [
-    {
-      id:"csr",
-      type:"supplier",
-      status:"hard",
-      name:"CSR Automotive",
-      where:"Nemecko (DE)",
-      region:"EU",
-      lat: 51.1657,
-      lon: 10.4515,
-      productsCount: HARD.csrCount,
-      about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť."
-    },
-    {
-      id:"sfxla",
-      type:"supplier",
-      status:"feed",
-      name:"SFXLA",
-      where:"Kalifornia (USA)",
-      region:"US",
-      lat: 34.0522,
-      lon: -118.2437,
-      productsCount: 980,
-      about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight."
-    }
-  ];
-
-  const BRAND_PARTNERS = [
-    { id:"skidnation", type:"brand", name:"SkidNation", where:"Bratislava (SK)", region:"SK", lat:48.148598, lon:17.107748, about:"Performance diely (MX-5/Miata). EU shipping base." },
-    { id:"wisefab", type:"brand", name:"Wisefab", where:"Tallinn (EE)", region:"EU", lat:59.436962, lon:24.753574, about:"Drift/race suspension. Angle kits, ramená, geometry." },
-    { id:"odesacnc", type:"brand", name:"Odesa CNC", where:"Wodzisław Śląski (PL)", region:"EU", lat:50.001, lon:18.463, about:"CNC drift diely: angle kity, ramená, hardware." },
-    { id:"darkside", type:"brand", name:"Darkside Developments", where:"Barnsley (UK)", region:"UK", lat:53.571788, lon:-1.382466, about:"Performance diesel tuning (hardware + servis)." },
-    { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
-  ];
-
-  // =========================
-  // BUILD: coords for events & drivers
-  // =========================
-  function keyCity(city, country){ return `${String(city||"").trim()}|${String(country||"").trim()}`; }
-
-  function pickCoords(city, country){
-    const k = keyCity(city, country);
-    const hit = CITY_COORDS[k];
-    if(hit) return hit;
-
-    // fallback: krajina ako kľúč (napr. "Nemecko|DE")
-    const k2 = keyCity(country, country);
-    const hit2 = CITY_COORDS[k2];
-    if(hit2) return hit2;
-
-    return null;
-  }
-
-  // Z FEED-u: ak v /data/events.json existuje, nahradí EVENTS_INPUT
-  async function loadEventsFeed(){
-    const data = await safeFetchJSON(EVENTS_FEED);
-    if(!data) return null;
-    if(Array.isArray(data)) return data;
-    if(data && Array.isArray(data.events)) return data.events;
-    return null;
-  }
-
-  // DRIVERS (z inputu)
-  const DRIVERS = DRIVERS_INPUT.map(d => {
-    const coords = pickCoords(d.city, d.country);
-    if(!coords) console.warn("[drivers] missing coords for", d.city, d.country, "→ doplň do CITY_COORDS");
-    return {
-      id: d.id,
-      name: d.name,
-      where: `${d.city} (${d.country})`,
-      city: d.city,
-      country: d.country,
-      lat: coords ? coords.lat : null,
-      lon: coords ? coords.lon : null,
-      about: d.about || "",
-      car: d.car || "—",
-      number: d.number || "—",
-      plans: Array.isArray(d.plans) ? d.plans : [],
-      photos: Array.isArray(d.photos) ? d.photos : []
-    };
-  });
-
-  // EVENTS (najprv z inputu; neskôr sa môžu prepísať feedom)
-  let EVENTS = EVENTS_INPUT.map(ev => {
-    const coords = pickCoords(ev.city, ev.country);
-    if(!coords) console.warn("[events] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
-    return {
-      id: ev.id,
-      status: ev.status,
-      name: ev.name,
-      city: ev.city,
-      country: ev.country,
-      date: ev.date,
-      where: `${ev.city} (${ev.country})`,
-      lat: coords ? coords.lat : null,
-      lon: coords ? coords.lon : null,
-      about: ev.about || "",
-      mode: (ev.mode || "").trim().toLowerCase(),
-      img: ev.img || "",
-      details: ev.details || {},
-      tag: (ev.status === "attend") ? "Zúčastníme sa" : "Plánujeme"
-    };
-  });
-
-  // MUST exist before globe module loads
-  const ALL_SUP = [
-    ...HUB_POINTS.map(x => ({...x})),
-    ...SUPPLIERS.map(x => ({...x})),
-    ...BRAND_PARTNERS.map(x => ({...x}))
-  ];
-  window.ALL_SUP = ALL_SUP;
-
-  // =========================
-  // UTIL
-  // =========================
-  const $ = (s) => document.querySelector(s);
-
-  function escapeHTML(s){
-    return String(s ?? "").replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[c]));
-  }
-
-  function popHTML(title, meta, desc){
-    return `
-      <div>
-        <div class="popTitle">${escapeHTML(title)}</div>
-        <div class="popMeta">${escapeHTML(meta)}</div>
-        <p class="popDesc">${escapeHTML(desc)}</p>
-      </div>
-    `;
-  }
-
-  function badge(status){
-    if(status === "attend") return `<span class="badge green">ZÚČASTNÍME SA</span>`;
-    if(status === "plan") return `<span class="badge yellow">PLÁNUJEME</span>`;
-    if(status === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
-    if(status === "hard") return `<span class="badge red">HARD</span>`;
-    if(status === "feed") return `<span class="badge yellow">FEED</span>`;
-    return `<span class="badge">ACTIVE</span>`;
-  }
-
-  function modeBadge(mode){
-    const m = String(mode||"").trim().toLowerCase();
-    if(m === "drift") return `<span class="badge red">DRIFT</span>`;
-    if(m === "static") return `<span class="badge gray">STATIC</span>`;
-    return ``;
-  }
-
-  function fmtDate(iso){
-    const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(!m) return iso || "—";
-    return `${m[3]}.${m[2]}.${m[1]}`;
-  }
-
-  function navUrl(lat, lon){
-    if(typeof lat !== "number" || typeof lon !== "number") return "#";
-    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + "," + lon)}&travelmode=driving`;
-  }
-
-  // =========================
-  // STATS (pevné podľa tvojho zadania)
-  // =========================
-  function updateStats(){
-    // pevné čísla
-    const eventsNow  = 4; // eventy dokopy
-    const driversNow = 4; // sponzoring dokopy
-    const supNow     = 6; // sieť dokopy
-
-    $("#statEvents").textContent   = String(eventsNow);
-    $("#statDrivers").textContent  = String(driversNow);
-    $("#statSuppliers").textContent= String(supNow);
-
-    // pevné trendy (zelené + šípka hore)
-    const setUp = (trendEl, plus) => {
-      trendEl.dataset.trend = "up";
-      trendEl.querySelector(".arr").textContent = "↑";
-      trendEl.querySelector(".delta").textContent = `+${plus}`;
+      // fallback krajiny
+      "Česko|CZ":     { lat:49.8038, lon:15.4749 },
+      "Nemecko|DE":   { lat:51.1657, lon:10.4515 },
+      "Estónsko|EE":  { lat:59.436962, lon:24.753574 },
+      "Poľsko|PL":    { lat:52.2297, lon:21.0122 },
+      "UK|UK":        { lat:53.571788, lon:-1.382466 }
     };
 
-    setUp($("#trendEvents"), 4);
-    setUp($("#trendDrivers"), 3);
-    setUp($("#trendSuppliers"), 2);
-  }
-
-  // =========================
-  // CLOCK + Reach demo (+1% weekly)
-  // =========================
-  function updateClock(){
-    const d = new Date();
-    const pad = n => String(n).padStart(2,"0");
-    $("#clock").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-
-  const REACH_KEY = "racem_reach_weekly_v1";
-
-  function getWeekId(d=new Date()){
-    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    const dayNum = date.getUTCDay() || 7;
-    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
-    const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-    return `${date.getUTCFullYear()}-${String(weekNo).padStart(2,"0")}`;
-  }
-
-  function tickReach(){
-    const el = $("#reachVal");
-    if(!el) return;
-
-    const weekId = getWeekId();
-    const raw = localStorage.getItem(REACH_KEY);
-
-    if(!raw){
-      const start = 22; // štart +22%
-      localStorage.setItem(REACH_KEY, JSON.stringify({ weekId, val: start }));
-      el.textContent = `+${start}%`;
-      return;
-    }
-
-    const st = JSON.parse(raw);
-    let val = Number(st.val || 0);
-
-    if(st.weekId !== weekId){
-      val = Math.min(99, val + 1);
-      localStorage.setItem(REACH_KEY, JSON.stringify({ weekId, val }));
-    }
-
-    el.textContent = `+${val}%`;
-  }
-
-  // =========================
-  // CONTACT MODAL (Formspree)
-  // =========================
-  function openContact(){
-    const m = $("#contactModal");
-    m.setAttribute("data-open","1");
-    m.setAttribute("aria-hidden","false");
-  }
-  function closeContact(){
-    const m = $("#contactModal");
-    m.removeAttribute("data-open");
-    m.setAttribute("aria-hidden","true");
-  }
-
-  function wireContact(){
-    const openBtn = document.getElementById("openContact");
-    const closeBtn = document.getElementById("closeContact");
-    const modal = document.getElementById("contactModal");
-    const form = document.getElementById("contactForm");
-
-    if(openBtn) openBtn.addEventListener("click", openContact);
-    if(closeBtn) closeBtn.addEventListener("click", closeContact);
-
-    if(modal){
-      modal.addEventListener("click", (e) => {
-        if(e.target === modal) closeContact();
-      });
-    }
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "Escape") closeContact();
-    });
-
-    if(form){
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const hint = document.getElementById("formHint");
-        const btn = document.getElementById("sendMail");
-
-        if(btn){
-          btn.disabled = true;
-          btn.style.opacity = "0.8";
+    const EVENTS_INPUT = [
+      {
+        id:"sadka-pd",
+        status:"attend",
+        name:"SADKA Prievidza",
+        city:"Prievidza",
+        country:"SK",
+        date:"2026-03-14",
+        about:"Drift / slalom day. Lokálna scéna + tréning.",
+        mode:"drift",
+        img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=360&q=70",
+        details:{
+          carsCount: 2,
+          ourCars: ["BMW E46 (drift)", "BMW E36 (static)"],
+          driftTaxi: true,
+          extra:"Miesto na promo fotky + krátke reels. Ak bude čas, spravíme aj mini stánok s merch/QR."
         }
-        if(hint) hint.textContent = "Odosielam…";
-
-        try{
-          const fd = new FormData(form);
-          const res = await fetch(form.action, {
-            method: "POST",
-            body: fd,
-            headers: { "Accept": "application/json" }
-          });
-
-          if(res.ok){
-            if(hint) hint.textContent = "Hotovo. Správa bola odoslaná ✅";
-            form.reset();
-            setTimeout(closeContact, 900);
-          }else{
-            if(hint) hint.textContent = "Chyba pri odoslaní. Skús ešte raz.";
-          }
-        }catch(err){
-          if(hint) hint.textContent = "Sieťová chyba. Skús ešte raz.";
-        }finally{
-          if(btn){
-            btn.disabled = false;
-            btn.style.opacity = "";
-          }
+      },
+      {
+        id:"powerfest-tn",
+        status:"plan",
+        name:"PowerFest Trenčín",
+        city:"Trenčín",
+        country:"SK",
+        date:"2026-05-10",
+        about:"Showcase + promo. Uprav podľa reality.",
+        mode:"static",
+        img:"https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=360&q=70",
+        details:{
+          carsCount: 1,
+          ourCars: ["BMW (show build)"],
+          driftTaxi: false,
+          extra:"Cieľ: získať nové kontakty (garáže, jazdci, dodávatelia). QR na katalógy + IG story coverage."
         }
-      });
-    }
-  }
+      },
+      {
+        id:"cz-trackday",
+        status:"plan",
+        name:"Trackday CZ",
+        city:"Praha",
+        country:"CZ",
+        date:"2026-06-02",
+        about:"Test dielov + content. Uprav podľa reality.",
+        mode:"",
+        img:"https://images.unsplash.com/photo-1511910849309-0dffb878d0c5?auto=format&fit=crop&w=360&q=70",
+        details:{
+          carsCount: 1,
+          ourCars: ["Test car (setup day)"],
+          driftTaxi: false,
+          extra:"Primár: content + test. Sekundár: B2B stretnutia s partnermi v CZ."
+        }
+      }
+    ];
 
-  // =========================
-  // FEED hydrate (SFXLA + events feed)
-  // =========================
-  async function safeFetchJSON(url){
-    try{
-      const res = await fetch(url, { cache:"no-store" });
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    }catch(e){
-      console.warn("[feed] fetch failed", url, e);
+    const DRIVERS_INPUT = [
+      {
+        id:"rado-panak",
+        name:"Rado Panák",
+        city:"Trenčín",
+        country:"SK",
+        car:"BMW (drift)",
+        number:"86",
+        about:"Drift jazdec – spolupráca / obsah / promo. Priorita: viditeľnosť + content z jázd.",
+        plans: [
+          { where:"Trenčín (SK)", date:"2026-05-10", note:"PowerFest (plán)" }
+        ],
+        photos:[
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=70",
+          "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=70",
+          "https://images.unsplash.com/photo-1511910849309-0dffb878d0c5?auto=format&fit=crop&w=900&q=70",
+          "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=900&q=70"
+        ]
+      }
+    ];
+
+    // =========================
+    // HUB / SUPPLIERS
+    // =========================
+    const HUB_POINTS = [
+      {
+        id:"hub-ba",
+        type:"hub",
+        name:"RACEM HUB",
+        where:"Bratislava (SK)",
+        region:"SK",
+        lat: 48.148598,
+        lon: 17.107748,
+        about:"Centrála / hub – koordinácia objednávok, partnerov, obsahu a logistiky."
+      },
+      {
+        id:"locked-pn",
+        type:"locked",
+        name:"Piešťany (uzamknuté)",
+        where:"Piešťany (SK)",
+        region:"SK",
+        lat: 48.59479,
+        lon: 17.82532,
+        about:"Interné / pripravované. Zatiaľ bez verejných detailov."
+      }
+    ];
+
+    const HARD = { csrCount: 14684 };
+    const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
+
+    const SUPPLIERS = [
+      {
+        id:"csr",
+        type:"supplier",
+        status:"hard",
+        name:"CSR Automotive",
+        where:"Nemecko (DE)",
+        region:"EU",
+        lat: 51.1657,
+        lon: 10.4515,
+        productsCount: HARD.csrCount,
+        about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť."
+      },
+      {
+        id:"sfxla",
+        type:"supplier",
+        status:"feed",
+        name:"SFXLA",
+        where:"Kalifornia (USA)",
+        region:"US",
+        lat: 34.0522,
+        lon: -118.2437,
+        productsCount: 980,
+        about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight."
+      }
+    ];
+
+    const BRAND_PARTNERS = [
+      { id:"skidnation", type:"brand", name:"SkidNation", where:"Bratislava (SK)", region:"SK", lat:48.148598, lon:17.107748, about:"Performance diely (MX-5/Miata). EU shipping base." },
+      { id:"wisefab", type:"brand", name:"Wisefab", where:"Tallinn (EE)", region:"EU", lat:59.436962, lon:24.753574, about:"Drift/race suspension. Angle kits, ramená, geometry." },
+      { id:"odesacnc", type:"brand", name:"Odesa CNC", where:"Wodzisław Śląski (PL)", region:"EU", lat:50.001, lon:18.463, about:"CNC drift diely: angle kity, ramená, hardware." },
+      { id:"darkside", type:"brand", name:"Darkside Developments", where:"Barnsley (UK)", region:"UK", lat:53.571788, lon:-1.382466, about:"Performance diesel tuning (hardware + servis)." },
+      { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
+    ];
+
+    // =========================
+    // BUILD: coords for events & drivers
+    // =========================
+    function keyCity(city, country){ return `${String(city||"").trim()}|${String(country||"").trim()}`; }
+    function pickCoords(city, country){
+      const k = keyCity(city, country);
+      const hit = CITY_COORDS[k];
+      if(hit) return hit;
+      const k2 = keyCity(country, country);
+      const hit2 = CITY_COORDS[k2];
+      if(hit2) return hit2;
       return null;
     }
-  }
-  function extractItemsFromAnyJSON(data){
-    if(Array.isArray(data)) return data;
-    if(data && Array.isArray(data.products)) return data.products;
-    if(data && Array.isArray(data.items)) return data.items;
-    if(data && Array.isArray(data.data)) return data.data;
-    return [];
-  }
 
-  async function hydrateSfxla(){
-    const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
-    const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
-    if(!sfxla) return;
+    const DRIVERS = DRIVERS_INPUT.map(d => {
+      const coords = pickCoords(d.city, d.country);
+      if(!coords) console.warn("[drivers] missing coords for", d.city, d.country, "→ doplň do CITY_COORDS");
+      return {
+        id: d.id,
+        name: d.name,
+        where: `${d.city} (${d.country})`,
+        city: d.city,
+        country: d.country,
+        lat: coords ? coords.lat : null,
+        lon: coords ? coords.lon : null,
+        about: d.about || "",
+        car: d.car || "—",
+        number: d.number || "—",
+        plans: Array.isArray(d.plans) ? d.plans : [],
+        photos: Array.isArray(d.photos) ? d.photos : []
+      };
+    });
 
-    if(data){
-      const items = extractItemsFromAnyJSON(data);
-      const count = items.length || 0;
-      if(count > 0) sfxla.productsCount = count;
-    }
-
-    renderSuppliers();
-    if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
-
-    updateStats();
-    updateProductProgress();
-  }
-
-  async function hydrateEventsFeed(){
-    const feedEvents = await loadEventsFeed();
-    if(!feedEvents) return;
-
-    // rebuild EVENTS z feedu
-    EVENTS = feedEvents.map(ev => {
+    const EVENTS = EVENTS_INPUT.map(ev => {
       const coords = pickCoords(ev.city, ev.country);
-      if(!coords) console.warn("[events feed] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
+      if(!coords) console.warn("[events] missing coords for", ev.city, ev.country, "→ doplň do CITY_COORDS");
       return {
         id: ev.id,
         status: ev.status,
@@ -2651,851 +2175,1137 @@ select:focus{
       };
     });
 
-    // refresh UI + markers, ak mapy existujú
-    renderEvents();
-    if(window.L && mapEU){
-      renderEuropeMarkers();
-    }
-  }
-
-  // =========================
-  // PRODUCTS PROGRESS (0 -> 100 000)
-  // =========================
-  const PRODUCTS_GOAL = 100000;
-
-  function fmtSk(n){
-    return Number(n || 0).toLocaleString("sk-SK");
-  }
-
-  function getSupplierCountById(id){
-    const s = (Array.isArray(SUPPLIERS) ? SUPPLIERS : []).find(x => x.id === id);
-    const n = Number(s?.productsCount || 0);
-    return Number.isFinite(n) ? n : 0;
-  }
-
-  function calcProductsNow(){
-    const csr  = getSupplierCountById("csr");
-    const sfxla= getSupplierCountById("sfxla");
-    return csr + sfxla;
-  }
-
-  function updateProductProgress(){
-    const now = calcProductsNow();
-    const goal = PRODUCTS_GOAL;
-
-    const pct = goal > 0 ? Math.max(0, Math.min(100, (now / goal) * 100)) : 0;
-
-    const nowEl = document.getElementById("prodNow");
-    const goalEl = document.getElementById("prodGoal");
-    const pctEl  = document.getElementById("prodPct");
-    const fillEl = document.getElementById("prodFill");
-
-    if(nowEl) nowEl.textContent = fmtSk(now);
-    if(goalEl) goalEl.textContent = fmtSk(goal);
-    if(pctEl) pctEl.textContent = `${Math.round(pct)}%`;
-    if(fillEl) fillEl.style.width = `${pct.toFixed(2)}%`;
-  }
-
-  // =========================
-  // EVENTS LIST + EU MAP
-  // =========================
-  let mapEU, euMarkers = new Map();
-  let activeEventId = null;
-  let activeEventType = "all";
-
-  function markerIcon(color){
-    return L.divIcon({
-      className: "",
-      html: `<div class="mk" style="background:${color};"></div>`,
-      iconSize: [14,14],
-      iconAnchor: [7,7]
-    });
-  }
-
-  function setEventMarkerActive(id){
-    activeEventId = id;
-    euMarkers.forEach((m, key) => {
-      const el = m.getElement && m.getElement();
-      if(!el) return;
-      const mk = el.querySelector(".mk");
-      if(!mk) return;
-      if(key === id) mk.classList.add("mk-active");
-      else mk.classList.remove("mk-active");
-    });
-  }
-
-  function initEuropeMap(){
-    const EU_BOUNDS = L.latLngBounds(
-      L.latLng(34.0, -12.5),
-      L.latLng(72.5, 40.5)
-    );
-
-    mapEU = L.map("mapEurope", {
-      zoomControl:true,
-      scrollWheelZoom:true,
-      maxBounds: EU_BOUNDS,
-      maxBoundsViscosity: 1.0,
-      worldCopyJump: false,
-      minZoom: 4,
-      maxZoom: 18
-    });
-
-    mapEU.fitBounds(EU_BOUNDS);
-    L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapEU);
-    renderEuropeMarkers();
-
-    setTimeout(() => {
-      if(EVENTS[0]) setEventMarkerActive(EVENTS[0].id);
-    }, 250);
-  }
-
-  function renderEuropeMarkers(){
-    if(!mapEU) return;
-
-    euMarkers.forEach(m => m.remove());
-    euMarkers.clear();
-
-    EVENTS.forEach(ev => {
-      if(typeof ev.lat !== "number" || typeof ev.lon !== "number") return;
-
-      const color = (ev.status === "attend") ? "rgba(46,204,113,.95)" : "rgba(241,196,15,.95)";
-      const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
-
-      const d = ev.details || {};
-      const lines = [
-        ev.about || "—",
-        "",
-        `Typ: ${ev.mode ? ev.mode.toUpperCase() : "—"}`,
-        `Autá: ${typeof d.carsCount === "number" ? d.carsCount : "—"}`,
-        `Naše autá: ${(d.ourCars && d.ourCars.length) ? d.ourCars.join(", ") : "—"}`,
-        `Drift taxi: ${d.driftTaxi ? "Áno" : "Nie"}`,
-        "",
-        `Navigovať: ${navUrl(ev.lat, ev.lon)}`
-      ].join("\n");
-
-      m.bindPopup(
-        popHTML(
-          ev.name,
-          `${ev.where} • ${fmtDate(ev.date)} • ${ev.tag}${ev.mode ? " • " + ev.mode.toUpperCase() : ""}`,
-          lines
-        ),
-        { closeButton:true }
-      );
-
-      m.on("click", () => setEventMarkerActive(ev.id));
-      euMarkers.set(ev.id, m);
-    });
-  }
-
-  function toggleItemOpen(el, open){
-    if(open) el.setAttribute("data-open","1");
-    else el.removeAttribute("data-open");
-  }
-
-  function closeAllItems(listEl){
-    listEl.querySelectorAll(".item[data-open='1']").forEach(x => x.removeAttribute("data-open"));
-  }
-
-  function renderEvents(){
-    const q = ($("#qEvents").value || "").trim().toLowerCase();
-    const f = activeEventType;
-
-    const out = EVENTS.filter(ev => {
-      const hay = [ev.name, ev.where, ev.about, ev.date, ev.mode].join(" ").toLowerCase();
-      const okQ = !q || hay.includes(q);
-      const okF = (f === "all") || (ev.mode === f);
-      return okQ && okF;
-    });
-
-    $("#listEvents").innerHTML = out.map(ev => {
-      const d = ev.details || {};
-      const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(" • ") : "—";
-      const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
-      const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
-      const img = ev.img ? `<img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" />` : "";
-
-      return `
-        <div class="item" data-id="${escapeHTML(ev.id)}" role="button" aria-label="Event ${escapeHTML(ev.name)}">
-          <div class="itemGrid">
-            <div class="thumb">${img}</div>
-
-            <div>
-              <div class="itemTop">
-                <div>
-                  <b>${escapeHTML(ev.name)}</b>
-                  <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDate(ev.date))} • Európa</div>
-                </div>
-                <div class="badges">${badge(ev.status)}${modeBadge(ev.mode)}</div>
-              </div>
-
-              <p class="desc">${escapeHTML(ev.about)}</p>
-
-              <div class="expand">
-                <div class="expandInner">
-                  <div class="kv">
-                    <div class="box"><b>Autá (odhad)</b><span>${escapeHTML(carsCount)}</span></div>
-                    <div class="box"><b>Naše autá</b><span>${escapeHTML(ourCars)}</span></div>
-                    <div class="box"><b>Drift taxi</b><span>${escapeHTML(driftTaxi)}</span></div>
-                    <div class="box"><b>Extra</b><span>${escapeHTML(d.extra || "—")}</span></div>
-                  </div>
-
-                  <div class="actionsRow">
-                    <button class="miniBtn primary" data-nav="1" type="button">
-                      <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 10l7-3-3 7-2-3-2 2-1-3z" fill="currentColor" opacity=".85"/>
-                      </svg>
-                      Navigovať
-                    </button>
-                    <button class="miniBtn" data-focus="1" type="button">
-                      <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                      </svg>
-                      Fokus na mape
-                    </button>
-                    <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">Klik ešte raz → zavrieť</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    const list = $("#listEvents");
-
-    list.querySelectorAll(".item").forEach(el => {
-      const id = el.getAttribute("data-id");
-      const ev = EVENTS.find(x => x.id === id);
-      if(!ev) return;
-
-      const doFocus = () => {
-        if(window.L && mapEU && typeof ev.lat === "number" && typeof ev.lon === "number"){
-          mapEU.setView([ev.lat, ev.lon], Math.max(mapEU.getZoom(), 7), { animate:true });
-          const m = euMarkers.get(id);
-          if(m) m.openPopup();
-          setEventMarkerActive(id);
-        }
-      };
-
-      el.addEventListener("click", (e) => {
-        if(e.target && (e.target.closest && e.target.closest("button"))) return;
-
-        const isOpen = el.getAttribute("data-open") === "1";
-        closeAllItems(list);
-        toggleItemOpen(el, !isOpen);
-        doFocus();
-      });
-
-      const navBtn = el.querySelector("button[data-nav='1']");
-      if(navBtn){
-        navBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          doFocus();
-          const url = navUrl(ev.lat, ev.lon);
-          if(url && url !== "#") window.open(url, "_blank", "noopener,noreferrer");
-        });
-      }
-
-      const focusBtn = el.querySelector("button[data-focus='1']");
-      if(focusBtn){
-        focusBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          doFocus();
-        });
-      }
-    });
-  }
-
-  // =========================
-  // DRIVERS LIST + SK MAP
-  // =========================
-  let mapSK, skMarkers = new Map();
-
-  function initSlovakiaMap(){
-    const SK_BOUNDS = L.latLngBounds(
-      L.latLng(47.65, 16.75),
-      L.latLng(49.65, 22.70)
-    );
-
-    mapSK = L.map("mapSlovakia", {
-      zoomControl:true,
-      scrollWheelZoom:true,
-      maxBounds: SK_BOUNDS,
-      maxBoundsViscosity: 1.0,
-      worldCopyJump: false,
-      minZoom: 8,
-      maxZoom: 18
-    });
-
-    mapSK.fitBounds(SK_BOUNDS);
-    L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapSK);
-    renderSlovakiaMarkers();
-  }
-
-  function renderSlovakiaMarkers(){
-    if(!mapSK) return;
-
-    skMarkers.forEach(m => m.remove());
-    skMarkers.clear();
-
-    DRIVERS.forEach(d => {
-      if(typeof d.lat !== "number" || typeof d.lon !== "number") return;
-
-      const m = L.marker([d.lat, d.lon], { icon: markerIcon("rgba(46,204,113,.95)") }).addTo(mapSK);
-
-      const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
-      const extra = plans ? `Plán: ${plans}` : "Plán: —";
-
-      m.bindPopup(popHTML(d.name, `${d.where} • #${d.number} • ${d.car}`, `${d.about}\n\n${extra}`), { closeButton:true });
-      skMarkers.set(d.id, m);
-    });
-  }
-
-  function renderDrivers(){
-    const q = ($("#qDrivers").value || "").trim().toLowerCase();
-
-    const out = DRIVERS.filter(d => {
-      const hay = [d.name, d.where, d.about, d.car, d.number].join(" ").toLowerCase();
-      return !q || hay.includes(q);
-    });
-
-    $("#listDrivers").innerHTML = out.map(d => {
-      const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
-      const main = (d.photos && d.photos.length) ? d.photos[0] : "";
-      const thumbs = (d.photos || []).slice(0, 6).map((src, idx) => `
-        <div class="tmb" data-src="${escapeHTML(src)}" data-idx="${idx}">
-          <img src="${escapeHTML(src)}" alt="${escapeHTML(d.name)} foto ${idx+1}" loading="lazy"/>
-        </div>
-      `).join("");
-
-      return `
-        <div class="item" data-id="${escapeHTML(d.id)}">
-          <div class="itemGrid">
-            <div class="thumb">
-              ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ""}
-            </div>
-
-            <div>
-              <div class="itemTop">
-                <div>
-                  <b>${escapeHTML(d.name)}</b>
-                  <div class="meta">${escapeHTML(d.where)} • ${escapeHTML(d.car)} • #${escapeHTML(d.number)}</div>
-                </div>
-                <div class="badges"><span class="badge green">SPONZORING</span></div>
-              </div>
-
-              <p class="desc">${escapeHTML(d.about)}<br><br><span style="color:rgba(255,255,255,.74)">Plán:</span> ${escapeHTML(plans || "—")}</p>
-
-              <div class="expand">
-                <div class="expandInner">
-                  <div class="kv">
-                    <div class="box"><b>Odkiaľ</b><span>${escapeHTML(d.where)}</span></div>
-                    <div class="box"><b>Auto</b><span>${escapeHTML(d.car)}</span></div>
-                    <div class="box"><b>Číslo</b><span>#${escapeHTML(d.number)}</span></div>
-                    <div class="box"><b>Kde sa plánuje zúčastniť</b><span>${escapeHTML(plans || "—")}</span></div>
-                  </div>
-
-                  <div class="gallery">
-                    <div class="mainShot">
-                      ${main ? `<img data-main="1" src="${escapeHTML(main)}" alt="${escapeHTML(d.name)} main" />` : `<div style="padding:14px;color:rgba(255,255,255,.65)">Pridaj fotky do <b>photos[]</b>.</div>`}
-                    </div>
-                    <div class="thumbs" data-thumbs="1">
-                      ${thumbs || `<div style="color:rgba(255,255,255,.65);font-size:12px">Žiadne fotky.</div>`}
-                    </div>
-                  </div>
-
-                  <div class="actionsRow">
-                    <button class="miniBtn" data-focus="1" type="button">
-                      <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                      </svg>
-                      Fokus na mape
-                    </button>
-                    <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">Klik ešte raz → zavrieť</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    const list = $("#listDrivers");
-
-    list.querySelectorAll(".item").forEach(el => {
-      const id = el.getAttribute("data-id");
-      const d = DRIVERS.find(x => x.id === id);
-      if(!d) return;
-
-      const doFocus = () => {
-        if(window.L && mapSK && typeof d.lat === "number" && typeof d.lon === "number"){
-          mapSK.setView([d.lat, d.lon], Math.max(mapSK.getZoom(), 10), { animate:true });
-          const m = skMarkers.get(id);
-          if(m) m.openPopup();
-        }
-      };
-
-      el.addEventListener("click", (e) => {
-        if(e.target && (e.target.closest && e.target.closest("button"))) return;
-        if(e.target && (e.target.closest && e.target.closest(".tmb"))) return;
-
-        const isOpen = el.getAttribute("data-open") === "1";
-        closeAllItems(list);
-        toggleItemOpen(el, !isOpen);
-        doFocus();
-      });
-
-      const focusBtn = el.querySelector("button[data-focus='1']");
-      if(focusBtn){
-        focusBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          doFocus();
-        });
-      }
-
-      const mainImg = el.querySelector("img[data-main='1']");
-      el.querySelectorAll(".tmb").forEach(t => {
-        t.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if(!mainImg) return;
-          const src = t.getAttribute("data-src");
-          if(src) mainImg.src = src;
-        });
-      });
-    });
-  }
-
-  // =========================
-  // SUPPLIERS LIST
-  // =========================
-  function renderSuppliers(){
-    const q = ($("#qSup").value || "").trim().toLowerCase();
-    const f = $("#fSup").value;
-
-    const out = ALL_SUP.filter(x => {
-      const hay = [x.name, x.where, x.about, x.type, x.region].join(" ").toLowerCase();
-      const okQ = !q || hay.includes(q);
-      const okF = (f === "all") || (x.type === f);
-      return okQ && okF;
-    });
-
-    $("#listSuppliers").innerHTML = out.map(x => {
-      const rightBadges = [];
-      if(x.type === "supplier") rightBadges.push(badge(x.status));
-      if(x.type === "brand") rightBadges.push(`<span class="badge">BRAND</span>`);
-      if(x.type === "hub") rightBadges.push(`<span class="badge red">HUB</span>`);
-      if(x.type === "locked") rightBadges.push(badge("locked"));
-      if(x.type === "supplier") rightBadges.push(`<span class="badge gray">${(x.productsCount||0).toLocaleString("sk-SK")} PRODUKTOV</span>`);
-
-      return `
-        <div class="item" data-id="${escapeHTML(x.id)}">
-          <div class="itemTop">
-            <div>
-              <b>${escapeHTML(x.name)}</b>
-              <div class="meta">${escapeHTML(x.where)} • ${escapeHTML(x.region || "—")}</div>
-            </div>
-            <div class="badges">${rightBadges.join("")}</div>
-          </div>
-          <p class="desc">${escapeHTML(x.about)}</p>
-        </div>
-      `;
-    }).join("");
-
-    $("#listSuppliers").querySelectorAll(".item").forEach(el => {
-      el.addEventListener("click", () => {
-        const id = el.getAttribute("data-id");
-        const x = ALL_SUP.find(a => a.id === id);
-        if(!x || typeof x.lat !== "number" || typeof x.lon !== "number") return;
-        if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3600);
-        if(window.__globeSelect) window.__globeSelect(x.id);
-      });
-    });
-  }
-
-  // =========================
-  // WIRE UI
-  // =========================
-  function wireUI(){
-    $("#qEvents").addEventListener("input", renderEvents);
-   $("#resetEvents").addEventListener("click", () => {
-  $("#qEvents").value = "";
-  activeEventType = "all";
-  document.querySelectorAll("#eventTypePills .fpill").forEach(x => x.classList.remove("active"));
-  document.querySelector('#eventTypePills .fpill[data-type="all"]').classList.add("active");
-  renderEvents();
-  updateEventDashboard();
-});
-
-    document.querySelectorAll("#eventTypePills .fpill").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll("#eventTypePills .fpill").forEach(x => x.classList.remove("active"));
-    btn.classList.add("active");
-    activeEventType = btn.dataset.type || "all";
-    renderEvents();
-    updateEventDashboard(); // ak spravíš dashboard funkciu (nižšie)
-  });
-
-    $("#qDrivers").addEventListener("input", renderDrivers);
-    $("#resetDrivers").addEventListener("click", () => {
-      $("#qDrivers").value = "";
-      renderDrivers();
-    });
-
-    $("#qSup").addEventListener("input", renderSuppliers);
-    $("#fSup").addEventListener("change", renderSuppliers);
-    $("#resetSup").addEventListener("click", () => {
-      $("#qSup").value = "";
-      $("#fSup").value = "all";
-      renderSuppliers();
-    });
-  }
-
-  // helper: počkaj na Leaflet (aby CDN nezabil stránku)
-  function waitForLeaflet(timeoutMs=3000){
-    return new Promise((resolve) => {
-      const start = Date.now();
-      const t = setInterval(() => {
-        if (window.L) { clearInterval(t); resolve(true); }
-        if (Date.now() - start > timeoutMs) { clearInterval(t); resolve(false); }
-      }, 50);
-    });
-  }
-
-  // =========================
-  // INIT
-  // =========================
-  document.addEventListener("DOMContentLoaded", async () => {
-    $("#year").textContent = new Date().getFullYear();
-
-    updateStats();
-    updateProductProgress();
-
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    tickReach();
-    setInterval(tickReach, 60 * 1000);
-
-    wireContact();
-    wireUI();
-
-    // render listy hneď
-    renderEvents();
-    renderDrivers();
-    renderSuppliers();
-
-    // počkaj na Leaflet
-    await waitForLeaflet(4000);
-
-    if (window.L) {
-      try { initEuropeMap(); } catch(e){ console.warn("EU map init failed:", e); }
-      try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed:", e); }
-    } else {
-      console.warn("Leaflet sa nenačítal (L je undefined). Mapy budú vypnuté.");
+    // MUST exist before globe module loads
+    const ALL_SUP = [
+      ...HUB_POINTS.map(x => ({...x})),
+      ...SUPPLIERS.map(x => ({...x})),
+      ...BRAND_PARTNERS.map(x => ({...x}))
+    ];
+    window.ALL_SUP = ALL_SUP;
+
+    // =========================
+    // UTIL
+    // =========================
+    const $ = (s) => document.querySelector(s);
+
+    function escapeHTML(s){
+      return String(s ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
     }
 
-    // feed-y
-    hydrateSfxla();
-    setInterval(hydrateSfxla, 5 * 60 * 1000);
-
-    hydrateEventsFeed();
-    setInterval(hydrateEventsFeed, 5 * 60 * 1000);
-  });
-</script>
-
-<!-- =========================
-     COBE Globe + CUSTOM CLICKABLE POINTS (overlay)
-     ========================= -->
-<script type="module">
-  import createGlobe from "https://cdn.skypack.dev/cobe";
-
-  const canvas = document.getElementById("globeSuppliers");
-  const overlay = document.getElementById("globeOverlay");
-
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-  function fitCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = Math.round(rect.width * dpr);
-    canvas.height = Math.round(rect.height * dpr);
-  }
-  fitCanvas();
-  window.addEventListener("resize", fitCanvas);
-
-  // =========================
-  // Globe controls
-  // =========================
-  let globeScale = 1.14;
-  const minScale = 0.88;
-  const maxScale = 1.95;
-
-  canvas.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    const delta = Math.sign(e.deltaY);
-    globeScale += (delta > 0 ? -0.08 : 0.08);
-    globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
-  }, { passive:false });
-
-  window.__globeFocus = {
-    focusLat: null,
-    focusLon: null,
-    freezeUntil: 0,
-    focusFor: (lat, lon, ms=3400) => {
-      window.__globeFocus.focusLat = lat;
-      window.__globeFocus.focusLon = lon;
-      window.__globeFocus.freezeUntil = Date.now() + ms;
-    },
-    clear: () => {
-      window.__globeFocus.focusLat = null;
-      window.__globeFocus.focusLon = null;
-      window.__globeFocus.freezeUntil = 0;
+    function popHTML(title, meta, desc){
+      return `
+        <div>
+          <div class="popTitle">${escapeHTML(title)}</div>
+          <div class="popMeta">${escapeHTML(meta)}</div>
+          <p class="popDesc">${escapeHTML(desc)}</p>
+        </div>
+      `;
     }
+
+    function badge(status){
+      if(status === "attend") return `<span class="badge green">ZÚČASTNÍME SA</span>`;
+      if(status === "plan") return `<span class="badge yellow">PLÁNUJEME</span>`;
+      if(status === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
+      if(status === "hard") return `<span class="badge red">HARD</span>`;
+      if(status === "feed") return `<span class="badge yellow">FEED</span>`;
+      return `<span class="badge">ACTIVE</span>`;
+    }
+
+    function modeBadge(mode){
+      const m = String(mode||"").trim().toLowerCase();
+      if(m === "drift") return `<span class="badge red">DRIFT</span>`;
+      if(m === "static") return `<span class="badge gray">STATIC</span>`;
+      return ``;
+    }
+
+    function fmtDate(iso){
+      const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(!m) return iso || "—";
+      return `${m[3]}.${m[2]}.${m[1]}`;
+    }
+
+    function navUrl(lat, lon){
+      if(typeof lat !== "number" || typeof lon !== "number") return "#";
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + "," + lon)}&travelmode=driving`;
+    }
+
+    // =========================
+    // NEW: Trends (localStorage)
+    // =========================
+    function trendApply(trendEl, prev, curr){
+      const arr = trendEl.querySelector(".arr");
+      const deltaEl = trendEl.querySelector(".delta");
+
+      if(typeof prev !== "number"){
+        trendEl.dataset.trend = "na";
+        arr.textContent = "•";
+        deltaEl.textContent = "—";
+        return;
+      }
+
+      const diff = curr - prev;
+
+      if(diff > 0){
+        trendEl.dataset.trend = "up";
+        arr.textContent = "↑";
+        deltaEl.textContent = `+${diff}`;
+      }else if(diff < 0){
+        trendEl.dataset.trend = "down";
+        arr.textContent = "↓";
+        deltaEl.textContent = `${diff}`;
+      }else{
+        trendEl.dataset.trend = "na";
+        arr.textContent = "•";
+        deltaEl.textContent = "0";
+      }
+    }
+
+    function trendFromStorage(key, curr){
+      const raw = localStorage.getItem(key);
+      const prev = raw !== null ? Number(raw) : null;
+      localStorage.setItem(key, String(curr));
+      return (typeof prev === "number" && !Number.isNaN(prev)) ? prev : null;
+    }
+
+    // =========================
+    // STATS (with trends)
+    // =========================
+    function updateStats(){
+  // pevné čísla (podľa tvojho zadania)
+  const eventsNow  = 4; // eventy dokopy
+  const driversNow = 4; // sponzoring dokopy
+  const supNow     = 6; // sieť dokopy
+
+  $("#statEvents").textContent   = String(eventsNow);
+  $("#statDrivers").textContent  = String(driversNow);
+  $("#statSuppliers").textContent= String(supNow);
+
+  // pevné trendy (zelené + šípka hore)
+  const setUp = (trendEl, plus) => {
+    trendEl.dataset.trend = "up";
+    trendEl.querySelector(".arr").textContent = "↑";
+    trendEl.querySelector(".delta").textContent = `+${plus}`;
   };
 
-  const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
-  const focus = window.__globeFocus;
+  setUp($("#trendEvents"), 4);    // Eventy +4
+  setUp($("#trendDrivers"), 3);   // Sponzoring +3
+  setUp($("#trendSuppliers"), 2); // Sieť +2
+}
 
-  // =========================
-  // Projection for overlay points
-  // =========================
-  const toRad = (d) => (d * Math.PI) / 180;
+    // =========================
+    // CLOCK + Reach demo
+    // =========================
+    function updateClock(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2,"0");
+      $("#clock").textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
 
-  function rotateY(v, a){
-    const ca = Math.cos(a), sa = Math.sin(a);
-    return { x: v.x*ca + v.z*sa, y: v.y, z: -v.x*sa + v.z*ca };
-  }
-  function rotateX(v, a){
-    const ca = Math.cos(a), sa = Math.sin(a);
-    return { x: v.x, y: v.y*ca - v.z*sa, z: v.y*sa + v.z*ca };
-  }
+    // Reach: +1% per week (persisted)
+const REACH_KEY = "racem_reach_weekly_v1";
 
-  function latLonToVec(lat, lon){
-    const la = toRad(lat);
-    const lo = toRad(lon);
-    const cl = Math.cos(la);
-    return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
-  }
+function getWeekId(d=new Date()){
+  // ISO-like week id: YYYY-WW (simple, stable enough for UI)
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  return `${date.getUTCFullYear()}-${String(weekNo).padStart(2,"0")}`;
+}
 
-  function project(lat, lon, state){
-    const w = state.width / dpr;
-    const h = state.height / dpr;
+function tickReach(){
+  const el = $("#reachVal");
+  if(!el) return;
 
-    let v = latLonToVec(lat, lon);
-    v = rotateY(v, state.phi);
-    v = rotateX(v, state.theta);
+  const weekId = getWeekId();
+  const raw = localStorage.getItem(REACH_KEY);
 
-    if(v.z <= 0) return { visible:false, x:0, y:0, depth:v.z };
+  // init
+  if(!raw){
+  const start = 22; // nový štart +22%
+  localStorage.setItem(REACH_KEY, JSON.stringify({ weekId, val: start }));
+  el.textContent = `+${start}%`;
+  return;
+}
 
-    const r = Math.min(w, h) * 0.46 * state.scale;
-    const x = (w/2) + (v.x * r);
-    const y = (h/2) - (v.y * r);
+  const st = JSON.parse(raw);
+  let val = Number(st.val || 0);
 
-    return { visible:true, x, y, depth:v.z };
-  }
-
-  // =========================
-  // Overlay DOM points
-  // =========================
-  const pointEls = new Map();
-
-  function typeClass(t){
-    if(t === "supplier") return "t-supplier";
-    if(t === "brand") return "t-brand";
-    if(t === "hub") return "t-hub";
-    if(t === "locked") return "t-locked";
-    return "t-brand";
+  // only +1 once per new week
+  if(st.weekId !== weekId){
+    val = Math.min(99, val + 1);
+    localStorage.setItem(REACH_KEY, JSON.stringify({ weekId, val }));
   }
 
-  function makePoint(e){
-    const el = document.createElement("div");
-    el.className = `gpt ${typeClass(e.type)}`;
-    el.setAttribute("data-id", e.id);
+  el.textContent = `+${val}%`;
+}
 
-    const core = document.createElement("div");
-    core.className = "core";
-    el.appendChild(core);
+    // =========================
+    // CONTACT MODAL (mailto)
+    // =========================
+    function openContact(){
+      const m = $("#contactModal");
+      m.setAttribute("data-open","1");
+      m.setAttribute("aria-hidden","false");
+    }
+    function closeContact(){
+      const m = $("#contactModal");
+      m.removeAttribute("data-open");
+      m.setAttribute("aria-hidden","true");
+    }
+    function wireContact(){
+  const openBtn = document.getElementById("openContact");
+  const closeBtn = document.getElementById("closeContact");
+  const modal = document.getElementById("contactModal");
+  const form = document.getElementById("contactForm");
 
-    el.addEventListener("click", (evt) => {
-      evt.stopPropagation();
-      if(window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
-      selectEntity(e.id, true);
+  if(openBtn) openBtn.addEventListener("click", openContact);
+  if(closeBtn) closeBtn.addEventListener("click", closeContact);
+
+  if(modal){
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) closeContact();
     });
-
-    el.title = `${e.name} — ${e.where}`;
-    overlay.appendChild(el);
-    pointEls.set(e.id, el);
   }
 
-  ENTITIES
-    .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-    .forEach(makePoint);
+  window.addEventListener("keydown", (e) => {
+    if(e.key === "Escape") closeContact();
+  });
 
-  function selectEntity(id, scrollList=false){
-    pointEls.forEach((el, key) => {
-      if(key === id){
-        el.style.borderColor = "rgba(179,31,36,.70)";
-        el.style.boxShadow =
-          "0 18px 70px rgba(0,0,0,.70), 0 0 0 8px rgba(255,255,255,.08), 0 0 34px rgba(255,43,47,.18)";
-      }else{
-        el.style.borderColor = "rgba(255,255,255,.18)";
-        el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
+  // Formspree submit (bez reloadu)
+  if(form){
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const hint = document.getElementById("formHint");
+      const btn = document.getElementById("sendMail");
+
+      if(btn){
+        btn.disabled = true;
+        btn.style.opacity = "0.8";
+      }
+      if(hint) hint.textContent = "Odosielam…";
+
+      try{
+        const fd = new FormData(form);
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: fd,
+          headers: { "Accept": "application/json" }
+        });
+
+        if(res.ok){
+          if(hint) hint.textContent = "Hotovo. Správa bola odoslaná ✅";
+          form.reset();
+          setTimeout(closeContact, 900);
+        }else{
+          if(hint) hint.textContent = "Chyba pri odoslaní. Skús ešte raz.";
+        }
+      }catch(err){
+        if(hint) hint.textContent = "Sieťová chyba. Skús ešte raz.";
+      }finally{
+        if(btn){
+          btn.disabled = false;
+          btn.style.opacity = "";
+        }
       }
     });
+  }
+}
+    // =========================
+    // FEED hydrate (SFXLA)
+    // =========================
+    async function safeFetchJSON(url){
+      try{
+        const res = await fetch(url, { cache:"no-store" });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      }catch(e){
+        console.warn("[feed] fetch failed", url, e);
+        return null;
+      }
+    }
+    function extractItemsFromAnyJSON(data){
+      if(Array.isArray(data)) return data;
+      if(data && Array.isArray(data.products)) return data.products;
+      if(data && Array.isArray(data.items)) return data.items;
+      if(data && Array.isArray(data.data)) return data.data;
+      return [];
+    }
 
-    if(scrollList){
-      const list = document.getElementById("listSuppliers");
-      if(list){
-        const node = list.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
-        if(node){
-          node.scrollIntoView({ behavior:"smooth", block:"center" });
-          node.style.borderColor = "rgba(179,31,36,.55)";
-          node.style.boxShadow = "0 26px 80px rgba(0,0,0,.62)";
-          setTimeout(() => {
-            node.style.borderColor = "";
-            node.style.boxShadow = "";
-          }, 1200);
+    async function hydrateSfxla(){
+      const data = await safeFetchJSON(CATALOG_FEEDS.sfxla);
+      const sfxla = SUPPLIERS.find(s=>s.id==="sfxla");
+      if(!sfxla) return;
+
+      if(data){
+        const items = extractItemsFromAnyJSON(data);
+        const count = items.length || 0;
+        if(count > 0) sfxla.productsCount = count;
+      }
+
+      renderSuppliers();
+      if(window.__globeOverlayRefresh) window.__globeOverlayRefresh();
+
+      // refresh stats/trends if counts changed by feed
+      updateStats();
+updateProductProgress();
+    }
+
+
+    // =========================
+// PRODUCTS PROGRESS (0 -> 100 000)
+// =========================
+const PRODUCTS_GOAL = 100000;
+
+function fmtSk(n){
+  return Number(n || 0).toLocaleString("sk-SK");
+}
+
+function getSupplierCountById(id){
+  const s = (Array.isArray(SUPPLIERS) ? SUPPLIERS : []).find(x => x.id === id);
+  const n = Number(s?.productsCount || 0);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function calcProductsNow(){
+  const csr  = getSupplierCountById("csr");   // HARD.csrCount
+  const sfxla= getSupplierCountById("sfxla"); // z feedu sa môže prepísať
+  return csr + sfxla;
+}
+
+function updateProductProgress(){
+  const now = calcProductsNow();
+  const goal = PRODUCTS_GOAL;
+
+  const pct = goal > 0 ? Math.max(0, Math.min(100, (now / goal) * 100)) : 0;
+
+  const nowEl = document.getElementById("prodNow");
+  const goalEl = document.getElementById("prodGoal");
+  const pctEl  = document.getElementById("prodPct");
+  const fillEl = document.getElementById("prodFill");
+
+  if(nowEl) nowEl.textContent = fmtSk(now);
+  if(goalEl) goalEl.textContent = fmtSk(goal);
+  if(pctEl) pctEl.textContent = `${Math.round(pct)}%`;
+  if(fillEl) fillEl.style.width = `${pct.toFixed(2)}%`;
+}
+
+    // =========================
+    // EVENTS LIST + EU MAP (LOCKED)
+    // =========================
+    let mapEU, euMarkers = new Map();
+    let activeEventId = null;
+
+    function markerIcon(color){
+      return L.divIcon({
+        className: "",
+        html: `<div class="mk" style="background:${color};"></div>`,
+        iconSize: [14,14],
+        iconAnchor: [7,7]
+      });
+    }
+
+    function setEventMarkerActive(id){
+      activeEventId = id;
+      euMarkers.forEach((m, key) => {
+        const el = m.getElement && m.getElement();
+        if(!el) return;
+        const mk = el.querySelector(".mk");
+        if(!mk) return;
+        if(key === id) mk.classList.add("mk-active");
+        else mk.classList.remove("mk-active");
+      });
+    }
+
+    function initEuropeMap(){
+      const EU_BOUNDS = L.latLngBounds(
+        L.latLng(34.0, -12.5),
+        L.latLng(72.5, 40.5)
+      );
+
+      mapEU = L.map("mapEurope", {
+        zoomControl:true,
+        scrollWheelZoom:true,
+        maxBounds: EU_BOUNDS,
+        maxBoundsViscosity: 1.0,
+        worldCopyJump: false,
+        minZoom: 4,
+        maxZoom: 18
+      });
+
+      mapEU.fitBounds(EU_BOUNDS);
+      L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapEU);
+      renderEuropeMarkers();
+
+      setTimeout(() => {
+        if(EVENTS[0]) setEventMarkerActive(EVENTS[0].id);
+      }, 250);
+    }
+
+    function renderEuropeMarkers(){
+      euMarkers.forEach(m => m.remove());
+      euMarkers.clear();
+
+      EVENTS.forEach(ev => {
+        if(typeof ev.lat !== "number" || typeof ev.lon !== "number") return;
+
+        const color = (ev.status === "attend") ? "rgba(46,204,113,.95)" : "rgba(241,196,15,.95)";
+        const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
+
+        const d = ev.details || {};
+        const lines = [
+          ev.about || "—",
+          "",
+          `Typ: ${ev.mode ? ev.mode.toUpperCase() : "—"}`,
+          `Autá: ${typeof d.carsCount === "number" ? d.carsCount : "—"}`,
+          `Naše autá: ${(d.ourCars && d.ourCars.length) ? d.ourCars.join(", ") : "—"}`,
+          `Drift taxi: ${d.driftTaxi ? "Áno" : "Nie"}`,
+          "",
+          `Navigovať: ${navUrl(ev.lat, ev.lon)}`
+        ].join("\n");
+
+        m.bindPopup(
+          popHTML(
+            ev.name,
+            `${ev.where} • ${fmtDate(ev.date)} • ${ev.tag}${ev.mode ? " • " + ev.mode.toUpperCase() : ""}`,
+            lines
+          ),
+          { closeButton:true }
+        );
+
+        m.on("click", () => setEventMarkerActive(ev.id));
+        euMarkers.set(ev.id, m);
+      });
+    }
+
+    function toggleItemOpen(el, open){
+      if(open) el.setAttribute("data-open","1");
+      else el.removeAttribute("data-open");
+    }
+
+    function closeAllItems(listEl){
+      listEl.querySelectorAll(".item[data-open='1']").forEach(x => x.removeAttribute("data-open"));
+    }
+
+    function renderEvents(){
+      const q = ($("#qEvents").value || "").trim().toLowerCase();
+      const f = $("#fEvents").value;
+
+      const out = EVENTS.filter(ev => {
+        const hay = [ev.name, ev.where, ev.about, ev.date, ev.mode].join(" ").toLowerCase();
+        const okQ = !q || hay.includes(q);
+        const okF = (f === "all") || (ev.status === f);
+        return okQ && okF;
+      });
+
+      $("#listEvents").innerHTML = out.map(ev => {
+        const d = ev.details || {};
+        const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(" • ") : "—";
+        const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
+        const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
+        const img = ev.img ? `<img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" />` : "";
+
+        return `
+          <div class="item" data-id="${escapeHTML(ev.id)}" role="button" aria-label="Event ${escapeHTML(ev.name)}">
+            <div class="itemGrid">
+              <div class="thumb">${img}</div>
+
+              <div>
+                <div class="itemTop">
+                  <div>
+                    <b>${escapeHTML(ev.name)}</b>
+                    <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDate(ev.date))} • Európa</div>
+                  </div>
+                  <div class="badges">${badge(ev.status)}${modeBadge(ev.mode)}</div>
+                </div>
+
+                <p class="desc">${escapeHTML(ev.about)}</p>
+
+                <div class="expand">
+                  <div class="expandInner">
+                    <div class="kv">
+                      <div class="box">
+                        <b>Autá (odhad)</b>
+                        <span>${escapeHTML(carsCount)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Naše autá</b>
+                        <span>${escapeHTML(ourCars)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Drift taxi</b>
+                        <span>${escapeHTML(driftTaxi)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Extra</b>
+                        <span>${escapeHTML(d.extra || "—")}</span>
+                      </div>
+                    </div>
+
+                    <div class="actionsRow">
+                      <button class="miniBtn primary" data-nav="1" type="button">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke="currentColor" stroke-width="2"/>
+                          <path d="M12 10l7-3-3 7-2-3-2 2-1-3z" fill="currentColor" opacity=".85"/>
+                        </svg>
+                        Navigovať
+                      </button>
+                      <button class="miniBtn" data-focus="1" type="button">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                        </svg>
+                        Fokus na mape
+                      </button>
+                      <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">
+                        Klik ešte raz → zavrieť
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const list = $("#listEvents");
+
+      list.querySelectorAll(".item").forEach(el => {
+        const id = el.getAttribute("data-id");
+        const ev = EVENTS.find(x => x.id === id);
+        if(!ev) return;
+
+        const doFocus = () => {
+          if(typeof ev.lat === "number" && typeof ev.lon === "number"){
+            mapEU.setView([ev.lat, ev.lon], Math.max(mapEU.getZoom(), 7), { animate:true });
+            const m = euMarkers.get(id);
+            if(m) m.openPopup();
+            setEventMarkerActive(id);
+          }
+        };
+
+        el.addEventListener("click", (e) => {
+          if(e.target && (e.target.closest && e.target.closest("button"))) return;
+
+          const isOpen = el.getAttribute("data-open") === "1";
+          closeAllItems(list);
+          toggleItemOpen(el, !isOpen);
+          doFocus();
+        });
+
+        const navBtn = el.querySelector("button[data-nav='1']");
+        if(navBtn){
+          navBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            doFocus();
+            const url = navUrl(ev.lat, ev.lon);
+            if(url && url !== "#") window.open(url, "_blank", "noopener,noreferrer");
+          });
+        }
+
+        const focusBtn = el.querySelector("button[data-focus='1']");
+        if(focusBtn){
+          focusBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            doFocus();
+          });
+        }
+      });
+    }
+
+    // =========================
+    // DRIVERS LIST + SK MAP (LOCKED)
+    // =========================
+    let mapSK, skMarkers = new Map();
+
+    function initSlovakiaMap(){
+      const SK_BOUNDS = L.latLngBounds(
+        L.latLng(47.65, 16.75),
+        L.latLng(49.65, 22.70)
+      );
+
+      mapSK = L.map("mapSlovakia", {
+        zoomControl:true,
+        scrollWheelZoom:true,
+        maxBounds: SK_BOUNDS,
+        maxBoundsViscosity: 1.0,
+        worldCopyJump: false,
+        minZoom: 8,
+        maxZoom: 18
+      });
+
+      mapSK.fitBounds(SK_BOUNDS);
+      L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapSK);
+      renderSlovakiaMarkers();
+    }
+
+    function renderSlovakiaMarkers(){
+      skMarkers.forEach(m => m.remove());
+      skMarkers.clear();
+
+      DRIVERS.forEach(d => {
+        if(typeof d.lat !== "number" || typeof d.lon !== "number") return;
+
+        const m = L.marker([d.lat, d.lon], { icon: markerIcon("rgba(46,204,113,.95)") }).addTo(mapSK);
+
+        const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
+        const extra = plans ? `Plán: ${plans}` : "Plán: —";
+
+        m.bindPopup(popHTML(d.name, `${d.where} • #${d.number} • ${d.car}`, `${d.about}\n\n${extra}`), { closeButton:true });
+        skMarkers.set(d.id, m);
+      });
+    }
+
+    function renderDrivers(){
+      const q = ($("#qDrivers").value || "").trim().toLowerCase();
+
+      const out = DRIVERS.filter(d => {
+        const hay = [d.name, d.where, d.about, d.car, d.number].join(" ").toLowerCase();
+        return !q || hay.includes(q);
+      });
+
+      $("#listDrivers").innerHTML = out.map(d => {
+        const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
+        const main = (d.photos && d.photos.length) ? d.photos[0] : "";
+        const thumbs = (d.photos || []).slice(0, 6).map((src, idx) => `
+          <div class="tmb" data-src="${escapeHTML(src)}" data-idx="${idx}">
+            <img src="${escapeHTML(src)}" alt="${escapeHTML(d.name)} foto ${idx+1}" loading="lazy"/>
+          </div>
+        `).join("");
+
+        return `
+          <div class="item" data-id="${escapeHTML(d.id)}">
+            <div class="itemGrid">
+              <div class="thumb">
+                ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ""}
+              </div>
+
+              <div>
+                <div class="itemTop">
+                  <div>
+                    <b>${escapeHTML(d.name)}</b>
+                    <div class="meta">${escapeHTML(d.where)} • ${escapeHTML(d.car)} • #${escapeHTML(d.number)}</div>
+                  </div>
+                  <div class="badges"><span class="badge green">SPONZORING</span></div>
+                </div>
+
+                <p class="desc">${escapeHTML(d.about)}<br><br><span style="color:rgba(255,255,255,.74)">Plán:</span> ${escapeHTML(plans || "—")}</p>
+
+                <div class="expand">
+                  <div class="expandInner">
+                    <div class="kv">
+                      <div class="box">
+                        <b>Odkiaľ</b>
+                        <span>${escapeHTML(d.where)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Auto</b>
+                        <span>${escapeHTML(d.car)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Číslo</b>
+                        <span>#${escapeHTML(d.number)}</span>
+                      </div>
+                      <div class="box">
+                        <b>Kde sa plánuje zúčastniť</b>
+                        <span>${escapeHTML(plans || "—")}</span>
+                      </div>
+                    </div>
+
+                    <div class="gallery">
+                      <div class="mainShot">
+                        ${main ? `<img data-main="1" src="${escapeHTML(main)}" alt="${escapeHTML(d.name)} main" />` : `<div style="padding:14px;color:rgba(255,255,255,.65)">Pridaj fotky do <b>photos[]</b>.</div>`}
+                      </div>
+                      <div class="thumbs" data-thumbs="1">
+                        ${thumbs || `<div style="color:rgba(255,255,255,.65);font-size:12px">Žiadne fotky.</div>`}
+                      </div>
+                    </div>
+
+                    <div class="actionsRow">
+                      <button class="miniBtn" data-focus="1" type="button">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+                        </svg>
+                        Fokus na mape
+                      </button>
+                      <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">
+                        Klik ešte raz → zavrieť
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const list = $("#listDrivers");
+
+      list.querySelectorAll(".item").forEach(el => {
+        const id = el.getAttribute("data-id");
+        const d = DRIVERS.find(x => x.id === id);
+        if(!d) return;
+
+        const doFocus = () => {
+          if(typeof d.lat === "number" && typeof d.lon === "number"){
+            mapSK.setView([d.lat, d.lon], Math.max(mapSK.getZoom(), 10), { animate:true });
+            const m = skMarkers.get(id);
+            if(m) m.openPopup();
+          }
+        };
+
+        el.addEventListener("click", (e) => {
+          if(e.target && (e.target.closest && e.target.closest("button"))) return;
+          if(e.target && (e.target.closest && e.target.closest(".tmb"))) return;
+
+          const isOpen = el.getAttribute("data-open") === "1";
+          closeAllItems(list);
+          toggleItemOpen(el, !isOpen);
+          doFocus();
+        });
+
+        const focusBtn = el.querySelector("button[data-focus='1']");
+        if(focusBtn){
+          focusBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            doFocus();
+          });
+        }
+
+        const mainImg = el.querySelector("img[data-main='1']");
+        el.querySelectorAll(".tmb").forEach(t => {
+          t.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if(!mainImg) return;
+            const src = t.getAttribute("data-src");
+            if(src) mainImg.src = src;
+          });
+        });
+      });
+    }
+
+    // =========================
+    // SUPPLIERS LIST
+    // =========================
+    function renderSuppliers(){
+      const q = ($("#qSup").value || "").trim().toLowerCase();
+      const f = $("#fSup").value;
+
+      const out = ALL_SUP.filter(x => {
+        const hay = [x.name, x.where, x.about, x.type, x.region].join(" ").toLowerCase();
+        const okQ = !q || hay.includes(q);
+        const okF = (f === "all") || (x.type === f);
+        return okQ && okF;
+      });
+
+      $("#listSuppliers").innerHTML = out.map(x => {
+        const rightBadges = [];
+        if(x.type === "supplier") rightBadges.push(badge(x.status));
+        if(x.type === "brand") rightBadges.push(`<span class="badge">BRAND</span>`);
+        if(x.type === "hub") rightBadges.push(`<span class="badge red">HUB</span>`);
+        if(x.type === "locked") rightBadges.push(badge("locked"));
+        if(x.type === "supplier") rightBadges.push(`<span class="badge gray">${(x.productsCount||0).toLocaleString("sk-SK")} PRODUKTOV</span>`);
+
+        return `
+          <div class="item" data-id="${escapeHTML(x.id)}">
+            <div class="itemTop">
+              <div>
+                <b>${escapeHTML(x.name)}</b>
+                <div class="meta">${escapeHTML(x.where)} • ${escapeHTML(x.region || "—")}</div>
+              </div>
+              <div class="badges">${rightBadges.join("")}</div>
+            </div>
+            <p class="desc">${escapeHTML(x.about)}</p>
+          </div>
+        `;
+      }).join("");
+
+      $("#listSuppliers").querySelectorAll(".item").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-id");
+          const x = ALL_SUP.find(a => a.id === id);
+          if(!x || typeof x.lat !== "number" || typeof x.lon !== "number") return;
+          if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3600);
+          if(window.__globeSelect) window.__globeSelect(x.id);
+        });
+      });
+    }
+
+    // =========================
+    // WIRE UI
+    // =========================
+    function wireUI(){
+      $("#qEvents").addEventListener("input", renderEvents);
+      $("#fEvents").addEventListener("change", renderEvents);
+      $("#resetEvents").addEventListener("click", () => {
+        $("#qEvents").value = "";
+        $("#fEvents").value = "all";
+        renderEvents();
+      });
+
+      $("#qDrivers").addEventListener("input", renderDrivers);
+      $("#resetDrivers").addEventListener("click", () => {
+        $("#qDrivers").value = "";
+        renderDrivers();
+      });
+
+      $("#qSup").addEventListener("input", renderSuppliers);
+      $("#fSup").addEventListener("change", renderSuppliers);
+      $("#resetSup").addEventListener("click", () => {
+        $("#qSup").value = "";
+        $("#fSup").value = "all";
+        renderSuppliers();
+      });
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    document.addEventListener("DOMContentLoaded", async () => {
+  $("#year").textContent = new Date().getFullYear();
+
+  // tieto veci sú nezávislé od Leafletu
+  updateStats();
+  updateProductProgress();
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  tickReach();
+  setInterval(tickReach, 60 * 1000);
+
+  wireContact();
+  wireUI();
+
+  // ✅ Render zoznamov sprav hneď, aj keby mapy ešte nešli
+  renderEvents();
+  renderDrivers();
+  renderSuppliers();
+
+  // ✅ počkaj na Leaflet (aby “nezmizlo všetko” keď je CDN pomalé)
+  await waitForLeaflet(4000);
+
+  // mapy inicializuj až keď L existuje
+  if (window.L) {
+    try { initEuropeMap(); } catch(e){ console.warn("EU map init failed:", e); }
+    try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed:", e); }
+  } else {
+    console.warn("Leaflet sa nenačítal (L je undefined). Mapy budú vypnuté.");
+  }
+
+  // feed
+  hydrateSfxla();
+  setInterval(hydrateSfxla, 5 * 60 * 1000);
+});
+
+// helper
+function waitForLeaflet(timeoutMs=3000){
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const t = setInterval(() => {
+      if (window.L) { clearInterval(t); resolve(true); }
+      if (Date.now() - start > timeoutMs) { clearInterval(t); resolve(false); }
+    }, 50);
+  });
+}
+  </script>
+
+  <!-- =========================
+       COBE Globe + CUSTOM CLICKABLE POINTS (overlay)
+       ========================= -->
+  <script type="module">
+    import createGlobe from "https://cdn.skypack.dev/cobe";
+
+    const canvas = document.getElementById("globeSuppliers");
+    const overlay = document.getElementById("globeOverlay");
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function fitCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    fitCanvas();
+    window.addEventListener("resize", fitCanvas);
+
+    // =========================
+    // Globe controls
+    // =========================
+    let globeScale = 1.14;
+    const minScale = 0.88;
+    const maxScale = 1.95;
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      globeScale += (delta > 0 ? -0.08 : 0.08);
+      globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
+    }, { passive:false });
+
+    window.__globeFocus = {
+      focusLat: null,
+      focusLon: null,
+      freezeUntil: 0,
+      focusFor: (lat, lon, ms=3400) => {
+        window.__globeFocus.focusLat = lat;
+        window.__globeFocus.focusLon = lon;
+        window.__globeFocus.freezeUntil = Date.now() + ms;
+      },
+      clear: () => {
+        window.__globeFocus.focusLat = null;
+        window.__globeFocus.focusLon = null;
+        window.__globeFocus.freezeUntil = 0;
+      }
+    };
+
+    const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
+    const focus = window.__globeFocus;
+
+    // =========================
+    // Projection for overlay points
+    // =========================
+    const toRad = (d) => (d * Math.PI) / 180;
+
+    function rotateY(v, a){
+      const ca = Math.cos(a), sa = Math.sin(a);
+      return { x: v.x*ca + v.z*sa, y: v.y, z: -v.x*sa + v.z*ca };
+    }
+    function rotateX(v, a){
+      const ca = Math.cos(a), sa = Math.sin(a);
+      return { x: v.x, y: v.y*ca - v.z*sa, z: v.y*sa + v.z*ca };
+    }
+
+    function latLonToVec(lat, lon){
+      const la = toRad(lat);
+      const lo = toRad(lon);
+      const cl = Math.cos(la);
+      return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
+    }
+
+    function project(lat, lon, state){
+      const w = state.width / dpr;
+      const h = state.height / dpr;
+
+      let v = latLonToVec(lat, lon);
+      v = rotateY(v, state.phi);
+      v = rotateX(v, state.theta);
+
+      if(v.z <= 0) return { visible:false, x:0, y:0, depth:v.z };
+
+      const r = Math.min(w, h) * 0.46 * state.scale;
+      const x = (w/2) + (v.x * r);
+      const y = (h/2) - (v.y * r);
+
+      return { visible:true, x, y, depth:v.z };
+    }
+
+    // =========================
+    // Overlay DOM points
+    // =========================
+    const pointEls = new Map();
+
+    function typeClass(t){
+      if(t === "supplier") return "t-supplier";
+      if(t === "brand") return "t-brand";
+      if(t === "hub") return "t-hub";
+      if(t === "locked") return "t-locked";
+      return "t-brand";
+    }
+
+    function makePoint(e){
+      const el = document.createElement("div");
+      el.className = `gpt ${typeClass(e.type)}`;
+      el.setAttribute("data-id", e.id);
+
+      const core = document.createElement("div");
+      core.className = "core";
+      el.appendChild(core);
+
+      el.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        if(window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
+        selectEntity(e.id, true);
+      });
+
+      el.title = `${e.name} — ${e.where}`;
+      overlay.appendChild(el);
+      pointEls.set(e.id, el);
+    }
+
+    ENTITIES
+      .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+      .forEach(makePoint);
+
+    function selectEntity(id, scrollList=false){
+      pointEls.forEach((el, key) => {
+        if(key === id){
+          el.style.borderColor = "rgba(179,31,36,.70)";
+          el.style.boxShadow =
+            "0 18px 70px rgba(0,0,0,.70), 0 0 0 8px rgba(255,255,255,.08), 0 0 34px rgba(255,43,47,.18)";
+        }else{
+          el.style.borderColor = "rgba(255,255,255,.18)";
+          el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
+        }
+      });
+
+      if(scrollList){
+        const list = document.getElementById("listSuppliers");
+        if(list){
+          const node = list.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+          if(node){
+            node.scrollIntoView({ behavior:"smooth", block:"center" });
+            node.style.borderColor = "rgba(179,31,36,.55)";
+            node.style.boxShadow = "0 26px 80px rgba(0,0,0,.62)";
+            setTimeout(() => {
+              node.style.borderColor = "";
+              node.style.boxShadow = "";
+            }, 1200);
+          }
         }
       }
     }
-  }
 
-  window.__globeSelect = selectEntity;
-  window.__globeOverlayRefresh = () => { /* overlay driven by render */ };
+    window.__globeSelect = selectEntity;
+    window.__globeOverlayRefresh = () => { /* overlay driven by render */ };
 
-  // =========================
-  // Focus targets
-  // =========================
-  function focusTargets(lat, lon){
-    const lo = toRad(lon);
-    const la = toRad(lat);
+    // =========================
+    // Focus targets
+    // =========================
+    function focusTargets(lat, lon){
+      const lo = toRad(lon);
+      const la = toRad(lat);
 
-    const targetPhi = -lo;
-    const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
-    return { targetPhi, targetTheta };
-  }
-
-  // =========================
-  // Globe creation (no markers; overlay does points)
-  // =========================
-  let currentPhi = -1.05;
-  let currentTheta = 0.18;
-
-  let dragging = false;
-  let dragStartX = 0;
-  let dragPhiStart = 0;
-
-  createGlobe(canvas, {
-    devicePixelRatio: dpr,
-    width: canvas.width,
-    height: canvas.height,
-
-    phi: 0,
-    theta: 0.25,
-    dark: 1.18,
-    diffuse: 1.25,
-    scale: globeScale,
-    mapSamples: 42000,
-    mapBrightness: 6,
-
-    baseColor: [0.08, 0.09, 0.10],
-    glowColor: [0.70, 0.10, 0.12],
-    markerColor: [1.0, 0.17, 0.19],
-    backgroundColor: [0, 0, 0, 0],
-
-    markers: [],
-
-    onRender: (state) => {
-      state.width = canvas.width;
-      state.height = canvas.height;
-      state.scale = globeScale;
-
-      const now = Date.now();
-      const hasFocus =
-        focus &&
-        typeof focus.focusLat === "number" &&
-        typeof focus.focusLon === "number" &&
-        now < focus.freezeUntil;
-
-      if(hasFocus){
-        const t = focusTargets(focus.focusLat, focus.focusLon);
-        currentPhi   += (t.targetPhi - currentPhi) * 0.09;
-        currentTheta += (t.targetTheta - currentTheta) * 0.09;
-        state.phi = currentPhi;
-        state.theta = currentTheta;
-      }else{
-        if(focus && now >= focus.freezeUntil) focus.clear();
-        if(!dragging) currentPhi += 0.0020;
-        state.phi = currentPhi;
-        state.theta = currentTheta;
-      }
-
-      ENTITIES
-        .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-        .forEach(e => {
-          const p = project(e.lat, e.lon, state);
-          const el = pointEls.get(e.id);
-          if(!el) return;
-
-          if(!p.visible){
-            el.setAttribute("data-hidden", "1");
-            return;
-          }
-
-          el.setAttribute("data-hidden", "0");
-          el.style.left = `${p.x}px`;
-          el.style.top  = `${p.y}px`;
-
-          const op = Math.max(0.70, Math.min(0.98, 0.60 + p.depth * 0.55));
-          el.style.opacity = String(op);
-        });
+      const targetPhi = -lo;
+      const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
+      return { targetPhi, targetTheta };
     }
-  });
 
-  // drag rotate
-  canvas.style.cursor = "grab";
-  canvas.addEventListener("pointerdown", (e) => {
-    dragging = true;
-    canvas.setPointerCapture(e.pointerId);
-    canvas.style.cursor = "grabbing";
-    dragStartX = e.clientX;
-    dragPhiStart = currentPhi;
-    if(window.__globeFocus) window.__globeFocus.clear();
-  });
-  canvas.addEventListener("pointerup", () => {
-    dragging = false;
-    canvas.style.cursor = "grab";
-  });
-  canvas.addEventListener("pointerout", () => {
-    dragging = false;
-    canvas.style.cursor = "grab";
-  });
-  canvas.addEventListener("pointermove", (e) => {
-    if(!dragging) return;
-    const dx = e.clientX - dragStartX;
-    currentPhi = dragPhiStart + dx * 0.006;
-  });
+    // =========================
+    // Globe creation (no markers; overlay does points)
+    // =========================
+    let currentPhi = -1.05;
+    let currentTheta = 0.18;
 
-  // click empty = clear selection
-  overlay.addEventListener("click", () => {
-    pointEls.forEach((el) => {
-      el.style.borderColor = "rgba(255,255,255,.18)";
-      el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
+    let dragging = false;
+    let dragStartX = 0;
+    let dragPhiStart = 0;
+
+    createGlobe(canvas, {
+      devicePixelRatio: dpr,
+      width: canvas.width,
+      height: canvas.height,
+
+      phi: 0,
+      theta: 0.25,
+      dark: 1.18,
+      diffuse: 1.25,
+      scale: globeScale,
+      mapSamples: 42000,
+      mapBrightness: 6,
+
+      baseColor: [0.08, 0.09, 0.10],
+      glowColor: [0.70, 0.10, 0.12],
+      markerColor: [1.0, 0.17, 0.19],
+      backgroundColor: [0, 0, 0, 0],
+
+      markers: [],
+
+      onRender: (state) => {
+        state.width = canvas.width;
+        state.height = canvas.height;
+        state.scale = globeScale;
+
+        const now = Date.now();
+        const hasFocus =
+          focus &&
+          typeof focus.focusLat === "number" &&
+          typeof focus.focusLon === "number" &&
+          now < focus.freezeUntil;
+
+        if(hasFocus){
+          const t = focusTargets(focus.focusLat, focus.focusLon);
+          currentPhi   += (t.targetPhi - currentPhi) * 0.09;
+          currentTheta += (t.targetTheta - currentTheta) * 0.09;
+          state.phi = currentPhi;
+          state.theta = currentTheta;
+        }else{
+          if(focus && now >= focus.freezeUntil) focus.clear();
+          if(!dragging) currentPhi += 0.0020;
+          state.phi = currentPhi;
+          state.theta = currentTheta;
+        }
+
+        // update overlay positions
+        ENTITIES
+          .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+          .forEach(e => {
+            const p = project(e.lat, e.lon, state);
+            const el = pointEls.get(e.id);
+            if(!el) return;
+
+            if(!p.visible){
+              el.setAttribute("data-hidden", "1");
+              return;
+            }
+
+            el.setAttribute("data-hidden", "0");
+            el.style.left = `${p.x}px`;
+            el.style.top  = `${p.y}px`;
+
+            const op = Math.max(0.70, Math.min(0.98, 0.60 + p.depth * 0.55));
+            el.style.opacity = String(op);
+          });
+      }
     });
-  });
 
-  // default select hub
-  const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
-  if(defaultSel){
-    window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
-    selectEntity(defaultSel.id);
-  }
-</script>
+    // drag rotate
+    canvas.style.cursor = "grab";
+    canvas.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.style.cursor = "grabbing";
+      dragStartX = e.clientX;
+      dragPhiStart = currentPhi;
+      if(window.__globeFocus) window.__globeFocus.clear();
+    });
+    canvas.addEventListener("pointerup", () => {
+      dragging = false;
+      canvas.style.cursor = "grab";
+    });
+    canvas.addEventListener("pointerout", () => {
+      dragging = false;
+      canvas.style.cursor = "grab";
+    });
+    canvas.addEventListener("pointermove", (e) => {
+      if(!dragging) return;
+      const dx = e.clientX - dragStartX;
+      currentPhi = dragPhiStart + dx * 0.006;
+    });
+
+    // click empty = clear selection
+    overlay.addEventListener("click", () => {
+      pointEls.forEach((el) => {
+        el.style.borderColor = "rgba(255,255,255,.18)";
+        el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
+      });
+    });
+
+    // default select hub
+    const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
+    if(defaultSel){
+      window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
+      selectEntity(defaultSel.id);
+    }
+  </script>
 </body>
 </html>
