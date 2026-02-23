@@ -2970,31 +2970,53 @@ function updateProductProgress(){
     // =========================
     // INIT
     // =========================
-    document.addEventListener("DOMContentLoaded", () => {
-      $("#year").textContent = new Date().getFullYear();
+    document.addEventListener("DOMContentLoaded", async () => {
+  $("#year").textContent = new Date().getFullYear();
 
-      updateStats();
-updateProductProgress();
+  // tieto veci sú nezávislé od Leafletu
+  updateStats();
+  updateProductProgress();
 
-      updateClock();
-      setInterval(updateClock, 1000);
+  updateClock();
+  setInterval(updateClock, 1000);
 
-      tickReach();
-setInterval(tickReach, 60 * 1000); // stačí raz za minútu kvôli refreshu UI
+  tickReach();
+  setInterval(tickReach, 60 * 1000);
 
-      wireContact();
+  wireContact();
+  wireUI();
 
-      initEuropeMap();
-      initSlovakiaMap();
+  // ✅ Render zoznamov sprav hneď, aj keby mapy ešte nešli
+  renderEvents();
+  renderDrivers();
+  renderSuppliers();
 
-      wireUI();
-      renderEvents();
-      renderDrivers();
-      renderSuppliers();
+  // ✅ počkaj na Leaflet (aby “nezmizlo všetko” keď je CDN pomalé)
+  await waitForLeaflet(4000);
 
-      hydrateSfxla();
-      setInterval(hydrateSfxla, 5 * 60 * 1000);
-    });
+  // mapy inicializuj až keď L existuje
+  if (window.L) {
+    try { initEuropeMap(); } catch(e){ console.warn("EU map init failed:", e); }
+    try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed:", e); }
+  } else {
+    console.warn("Leaflet sa nenačítal (L je undefined). Mapy budú vypnuté.");
+  }
+
+  // feed
+  hydrateSfxla();
+  setInterval(hydrateSfxla, 5 * 60 * 1000);
+});
+
+// helper
+function waitForLeaflet(timeoutMs=3000){
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const t = setInterval(() => {
+      if (window.L) { clearInterval(t); resolve(true); }
+      if (Date.now() - start > timeoutMs) { clearInterval(t); resolve(false); }
+    }, 50);
+  });
+}
   </script>
 
   <!-- =========================
