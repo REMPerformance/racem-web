@@ -1514,6 +1514,62 @@ header .hud{
   filter: drop-shadow(0 10px 25px rgba(0,0,0,.6));
   opacity:.95;
 }
+
+    /* ===== RACEM RED BUTTON ===== */
+.btn2.contact{
+  background: linear-gradient(180deg,#ff2d2d,#b31217);
+  color:#fff;
+  border:none;
+  padding:14px 26px;
+  font-family: Oswald, sans-serif;
+  letter-spacing:.14em;
+  font-size:13px;
+  text-transform:uppercase;
+  border-radius:14px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:.25s;
+  box-shadow:
+    0 10px 30px rgba(179,31,36,.35),
+    inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+/* glow */
+.btn2.contact::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);
+  opacity:0;
+  transition:.35s;
+}
+
+/* hover */
+.btn2.contact:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 45px rgba(179,31,36,.55),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.btn2.contact:hover::before{
+  opacity:1;
+  animation: racemBtnShine 1.2s linear;
+}
+
+@keyframes racemBtnShine{
+  0%{ transform:translateX(-120%); }
+  100%{ transform:translateX(120%); }
+}
+
+/* click */
+.btn2.contact:active{
+  transform: translateY(0px) scale(.98);
+  box-shadow:
+    0 6px 18px rgba(179,31,36,.4),
+    inset 0 2px 6px rgba(0,0,0,.4);
+}
   </style>
 </head>
 
@@ -1707,42 +1763,21 @@ header .hud{
 </div>
 
             <div class="ctaBox">
-              <h3>Chceš byť v sieti?</h3>
+              <h3>Chceš byť súčasťou RACEM Group?</h3>
               <p>
                 Ak si <b>garáž</b>, <b>jazdec</b>, <b>dodávateľ</b>, <b>event</b> alebo <b>značka</b> a chceš byť
-                viditeľný v Európe aj vo svete (mapy, prezentácie, obsah), ozvi sa.
-                Zaradíme ťa do RACEM GROUP a navrhneme formu spolupráce podľa možností.
+                viditeľný v Európe aj vo svete, ozvi sa.
+                Zaradíme ťa do RACEM GROUP a navrhneme formu spolupráce.
               </p>
-
-              <div class="ctaActions">
-                <span class="pill"><i></i> Garáž / Workshop</span>
-                <span class="pill"><i></i> Jazdec</span>
-                <span class="pill"><i></i> Dodávateľ</span>
-                <span class="pill"><i></i> Event</span>
-                <span class="pill"><i></i> Značka</span>
-              </div>
 
               <div class="proDivider"></div>
 
               <div class="ctaActions" style="margin-top:0;">
-                <button class="btn2 contact" id="openContact" type="button">Kontaktovať • formulár</button>
-                <a class="btn2 primary" href="#dodavatelia">Pozrieť sieť →</a>
+                <button class="btn2 contact" id="openContact" type="button"> Kontaktuj nás →</button>
               </div>
 
               <div style="margin-top:12px;color:rgba(255,255,255,.60);font-size:12px;line-height:1.55;letter-spacing:.04em;">
-                Tip: pošli krátko čo robíš + IG/web + lokalitu + čo chceš propagovať/predávať. My ti navrhneme spoluprácu.
-              </div>
-            </div>
-
-            <div class="card" style="padding:12px; box-shadow:none;">
-              <div style="color:rgba(255,255,255,.85); font-size:12px; letter-spacing:.14em; text-transform:uppercase;">
-                Čo vieme priniesť
-              </div>
-              <div style="margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6;">
-                • Viditeľnosť v RACEM mapách (EU / SK / World)<br>
-                • Produktová prezentácia + prelink na shop / dopyt<br>
-                • Obsah z akcií, reálne autá, reálne použitie dielov<br>
-                • Spolupráce: jazdci, garáže, eventy, dodávatelia (podľa dohody)
+                Tip: pošli krátko o sebe + IG/web + lokalitu + čo chceš propagovať.
               </div>
             </div>
           </div>
@@ -1752,11 +1787,6 @@ header .hud{
       <!-- EVENTY -->
       <section id="eventy" class="block">
         <div class="sectionTitle">
-          <h2>Eventy (Európa)</h2>
-          <p>
-            Každý event: názov, miesto, dátum, krátky popis, stav (<b>zúčastníme sa</b> / <b>plánujeme</b>) + voliteľne typ (<b>drift</b> / <b>static</b>).
-            Klik na event → roztiahne sa detail + na mape začne pulzovať ikonka + tlačidlo Navigovať.
-          </p>
         </div>
 
         <div class="secGrid">
