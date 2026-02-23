@@ -2589,26 +2589,22 @@ select:focus{
     // =========================
     // STATS (with trends)
     // =========================
-    function updateStats(){
-  // pevné čísla (podľa tvojho zadania)
-  const eventsNow  = 4; // eventy dokopy
-  const driversNow = 4; // sponzoring dokopy
-  const supNow     = 6; // sieť dokopy
+  function updateStats(){
+  const eventsNow  = Array.isArray(EVENTS) ? EVENTS.length : 0;
+  const driversNow = Array.isArray(DRIVERS) ? DRIVERS.length : 0;
+  const supNow     = Array.isArray(ALL_SUP) ? ALL_SUP.length : 0;
 
-  $("#statEvents").textContent   = String(eventsNow);
-  $("#statDrivers").textContent  = String(driversNow);
-  $("#statSuppliers").textContent= String(supNow);
+  $("#statEvents").textContent    = String(eventsNow);
+  $("#statDrivers").textContent   = String(driversNow);
+  $("#statSuppliers").textContent = String(supNow);
 
-  // pevné trendy (zelené + šípka hore)
-  const setUp = (trendEl, plus) => {
-    trendEl.dataset.trend = "up";
-    trendEl.querySelector(".arr").textContent = "↑";
-    trendEl.querySelector(".delta").textContent = `+${plus}`;
-  };
+  const prevE = trendFromStorage("trend_events_v1", eventsNow);
+  const prevD = trendFromStorage("trend_drivers_v1", driversNow);
+  const prevS = trendFromStorage("trend_sup_v1", supNow);
 
-  setUp($("#trendEvents"), 4);    // Eventy +4
-  setUp($("#trendDrivers"), 3);   // Sponzoring +3
-  setUp($("#trendSuppliers"), 2); // Sieť +2
+  trendApply($("#trendEvents"), prevE, eventsNow);
+  trendApply($("#trendDrivers"), prevD, driversNow);
+  trendApply($("#trendSuppliers"), prevS, supNow);
 }
 function startOfToday(){
   const d = new Date();
@@ -2825,10 +2821,10 @@ function normalizeEvent(evRaw){
   // status: attend | plan (fallback = plan)
   const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
 
-  // mode: drift/show/trackday/static (fallback = "")
-  const mode = String(ev.mode || "").trim().toLowerCase();
+  // TY V JSON MÁŠ "type", UI používa "mode" -> mapujeme
+  const mode = String(ev.type || ev.mode || "").trim().toLowerCase();
 
-  // prefer lat/lon from JSON, otherwise use CITY_COORDS lookup
+  // coords: preferuj z JSON, inak CITY_COORDS
   let lat = (typeof ev.lat === "number") ? ev.lat : null;
   let lon = (typeof ev.lon === "number") ? ev.lon : null;
 
@@ -2844,22 +2840,43 @@ function normalizeEvent(evRaw){
     console.warn("[events.json] missing coords for", ev.city, ev.country, "→ doplň CITY_COORDS alebo daj lat/lon do events.json");
   }
 
+  const details = (ev.details && typeof ev.details === "object") ? ev.details : {};
+
   return {
-    id: String(ev.id || crypto.randomUUID()),
+    id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
     status,
     name: String(ev.name || "Unnamed event"),
     city: String(ev.city || "—"),
     country: String(ev.country || "—"),
-    date: String(ev.date || ""),                 // očakávame YYYY-MM-DD
+    date: String(ev.date || ""),                 // YYYY-MM-DD
     where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
     lat,
     lon,
     about: String(ev.about || ""),
-    mode,
+    mode,                                        // ✅ teraz už filter/badge/popup funguje
     img: String(ev.img || ""),
-    details: (ev.details && typeof ev.details === "object") ? ev.details : {},
+    details,                                     // obsahuje mission/attendees/links...
     tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
   };
+}
+
+async function loadEventsFromJSON(){
+  // dôležité pre GitHub Pages:
+  // - ak máš custom doménu a súbor v root-e: "/events.json"
+  // - ak si v repozitári (username.github.io/repo/...): "./events.json"
+  const url = "./events.json";
+
+  const data = await safeFetchJSON(url);
+
+  if(!data){
+    // fallback, nech to nikdy nespadne
+    EVENTS = EVENTS_INPUT.map(normalizeEvent);
+    return;
+  }
+
+  // tvoj JSON je ARRAY
+  const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
+  EVENTS = arr.map(normalizeEvent);
 }
 
 async function loadEventsFromJSON(){
@@ -3418,7 +3435,8 @@ function wireUI(){
   wireUI();
 
   // ✅ NAJPRV načítaj JSON eventy
-  await loadEventsFromJSON();
+await loadEventsFromJSON();
+updateStats();
 
   // ✅ potom render zoznamov
   renderEvents();
