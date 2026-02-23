@@ -2357,50 +2357,64 @@ function tickReach(){
       m.setAttribute("aria-hidden","true");
     }
     function wireContact(){
-      $("#openContact").addEventListener("click", openContact);
-      $("#closeContact").addEventListener("click", closeContact);
-      $("#contactModal").addEventListener("click", (e) => {
-        if(e.target === $("#contactModal")) closeContact();
-      });
-      window.addEventListener("keydown", (e) => {
-        if(e.key === "Escape") closeContact();
-      });
+  const openBtn = document.getElementById("openContact");
+  const closeBtn = document.getElementById("closeContact");
+  const modal = document.getElementById("contactModal");
+  const form = document.getElementById("contactForm");
 
-    const form = document.getElementById("contactForm");
-if(form){
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if(openBtn) openBtn.addEventListener("click", openContact);
+  if(closeBtn) closeBtn.addEventListener("click", closeContact);
 
-    const hint = document.getElementById("formHint");
-    const btn = document.getElementById("sendMail");
-    btn.disabled = true;
-    btn.style.opacity = "0.8";
-    if(hint) hint.textContent = "Odosielam…";
+  if(modal){
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) closeContact();
+    });
+  }
 
-    try{
-      const fd = new FormData(form);
-      const res = await fetch(form.action, {
-        method: "POST",
-        body: fd,
-        headers: { "Accept": "application/json" }
-      });
-
-      if(res.ok){
-        if(hint) hint.textContent = "Hotovo. Správa bola odoslaná ✅";
-        form.reset();
-        setTimeout(() => closeContact(), 900);
-      }else{
-        if(hint) hint.textContent = "Chyba pri odoslaní. Skús ešte raz.";
-      }
-    }catch(err){
-      if(hint) hint.textContent = "Sieťová chyba. Skús ešte raz.";
-    }finally{
-      btn.disabled = false;
-      btn.style.opacity = "";
-    }
+  window.addEventListener("keydown", (e) => {
+    if(e.key === "Escape") closeContact();
   });
-}
 
+  // Formspree submit (bez reloadu)
+  if(form){
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const hint = document.getElementById("formHint");
+      const btn = document.getElementById("sendMail");
+
+      if(btn){
+        btn.disabled = true;
+        btn.style.opacity = "0.8";
+      }
+      if(hint) hint.textContent = "Odosielam…";
+
+      try{
+        const fd = new FormData(form);
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: fd,
+          headers: { "Accept": "application/json" }
+        });
+
+        if(res.ok){
+          if(hint) hint.textContent = "Hotovo. Správa bola odoslaná ✅";
+          form.reset();
+          setTimeout(closeContact, 900);
+        }else{
+          if(hint) hint.textContent = "Chyba pri odoslaní. Skús ešte raz.";
+        }
+      }catch(err){
+        if(hint) hint.textContent = "Sieťová chyba. Skús ešte raz.";
+      }finally{
+        if(btn){
+          btn.disabled = false;
+          btn.style.opacity = "";
+        }
+      }
+    });
+  }
+}
     // =========================
     // FEED hydrate (SFXLA)
     // =========================
