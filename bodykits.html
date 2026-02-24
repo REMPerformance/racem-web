@@ -2035,6 +2035,70 @@ select:focus{
 /* popup: trochu viac priestoru a “pro” */
 .leaflet-popup-content{ margin: 12px 14px !important; }
 .leaflet-popup-content-wrapper{ border-radius: 18px !important; overflow:hidden; }
+
+    /* ===== Our cars list (stacked) ===== */
+.eLines{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.eLine{
+  padding:6px 8px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  color: rgba(255,255,255,.92);
+  line-height:1.25;
+}
+
+/* ===== Drivers list ===== */
+.eList.clean{
+  list-style:none;
+  padding-left:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.eList.clean li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.14);
+}
+
+/* “number like on a car” */
+.driverNo{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:44px;
+  padding:6px 10px;
+  border-radius:12px;
+
+  font-family: "Oswald", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .10em;
+  font-variant-numeric: tabular-nums;
+
+  color:#fff;
+  background: linear-gradient(180deg, rgba(179,31,36,.95), rgba(255,43,47,.70));
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow: 0 10px 30px rgba(179,31,36,.25), inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.driverName{
+  color: rgba(255,255,255,.92);
+}
+
+/* Leaflet popup safety (vmestí sa lepšie) */
+.leaflet-popup{
+  max-width: min(92vw, 420px);
+}
   </style>
 </head>
 
@@ -2644,6 +2708,33 @@ function safeLink(u){
   // allow http(s) only
   if(/^https?:\/\//i.test(s)) return s;
   return "";
+}
+
+    function renderOurCars(d){
+  if(!d || !Array.isArray(d.ourCars) || !d.ourCars.length) return "—";
+  return `<div class="eLines">${d.ourCars.map(x => `<div class="eLine">${escapeHTML(x)}</div>`).join("")}</div>`;
+}
+
+function renderDriversList(d){
+  if(!d || !Array.isArray(d.attendees) || !d.attendees.length) return "";
+  // očakáva stringy typu "Rado Panák (313)" alebo len "RACEM crew"
+  const items = d.attendees.map(s => {
+    const str = String(s || "").trim();
+    const m = str.match(/^(.*?)(?:\s*\((\d+)\))\s*$/); // meno + (cislo)
+    if(m){
+      const name = (m[1] || "").trim() || "—";
+      const no = m[2];
+      return `<li><span class="driverNo">#${escapeHTML(no)}</span><span class="driverName">${escapeHTML(name)}</span></li>`;
+    }
+    return `<li><span class="driverNo">—</span><span class="driverName">${escapeHTML(str)}</span></li>`;
+  }).join("");
+
+  return `
+    <div class="eSection">
+      <h5><span class="miniDot"></span>ZÚČASTNENÍ JAZDCI</h5>
+      <ul class="eList clean">${items}</ul>
+    </div>
+  `;
 }
 
   function popEventHTML(ev){
@@ -3257,7 +3348,7 @@ const out = EVENTS.filter(ev => {
 
       $("#listEvents").innerHTML = out.map(ev => {
         const d = ev.details || {};
-        const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(" • ") : "—";
+       const ourCarsHTML = renderOurCars(d);
         const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
         const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
         const img = ev.img ? `<img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" />` : "";
