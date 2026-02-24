@@ -2744,25 +2744,53 @@ select:focus{
       return null;
     }
 
-    const DRIVERS = DRIVERS_INPUT.map(d => {
-      const coords = pickCoords(d.city, d.country);
-      if(!coords) console.warn("[drivers] missing coords for", d.city, d.country, "→ doplň do CITY_COORDS");
-      return {
-        id: d.id,
-        name: d.name,
-        where: `${d.city} (${d.country})`,
-        city: d.city,
-        country: d.country,
-        lat: coords ? coords.lat : null,
-        lon: coords ? coords.lon : null,
-        about: d.about || "",
-        car: d.car || "—",
-        number: d.number || "—",
-        plans: Array.isArray(d.plans) ? d.plans : [],
-        photos: Array.isArray(d.photos) ? d.photos : []
-      };
-    });
+   let DRIVERS = [];
+let CARS = [];
 
+// helper: auto label z cars.json
+function carLabel(c){
+  if(!c) return "—";
+  const make = String(c.make||"").trim();
+  const model = String(c.model||"").trim();
+  const engine = String(c.engine||"").trim();
+  const notes = String(c.notes||"").trim();
+  const parts = [];
+  if(make || model) parts.push(`${make} ${model}`.trim());
+  if(engine) parts.push(engine);
+  if(notes) parts.push(notes);
+  return parts.join(" • ") || "—";
+}
+
+// z drivers.json spravíme DRIVERS do tvojho formátu
+function buildDriversFromInput(driversInput){
+  const carsById = new Map((Array.isArray(CARS)?CARS:[]).map(c => [String(c.id), c]));
+  const arr = Array.isArray(driversInput) ? driversInput : [];
+
+  DRIVERS = arr.map(d => {
+    const coords = pickCoords(d.city, d.country);
+    if(!coords) console.warn("[drivers] missing coords for", d.city, d.country, "→ doplň do CITY_COORDS");
+
+    // drivers.json má "cars": ["e36m3_313"] → spravíme pekný text
+    const carIds = Array.isArray(d.cars) ? d.cars : [];
+    const carTexts = carIds.map(id => carLabel(carsById.get(String(id)))).filter(Boolean);
+    const mainCar = carTexts[0] || "—";
+
+    return {
+      id: String(d.id || ""),
+      name: String(d.name || "—"),
+      where: `${String(d.city || "—")} (${String(d.country || "—")})`,
+      city: String(d.city || "—"),
+      country: String(d.country || "—"),
+      lat: coords ? coords.lat : null,
+      lon: coords ? coords.lon : null,
+      about: String(d.about || ""),
+      car: mainCar,
+      number: String(d.number || "—"),
+      plans: Array.isArray(d.plans) ? d.plans : [],
+      photos: Array.isArray(d.photos) ? d.photos : []
+    };
+  });
+}
    let EVENTS = [];
 
     // MUST exist before globe module loads
@@ -3316,6 +3344,10 @@ function normalizeEvent(evRaw){
     about: String(ev.about || ""),
     mode,
     img: String(ev.img || ""),
+        // z events.json (IDčka) – uložíme si ich pre merge
+    carsIds: arrList(ev.cars),
+    driversIds: arrList(ev.drivers),
+
     details,
     tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
   };
@@ -3339,6 +3371,67 @@ const PRODUCTS_GOAL = 100000;
 
 function fmtSk(n){
   return Number(n || 0).toLocaleString("sk-SK");
+}
+
+    async function loadCarsFromJSON(){
+  const data = await safeFetchJSON("/cars.json");
+  if(!data){
+    CARS = []; // fallback: prázdne
+    return;
+  }
+  CARS = Array.isArray(data) ? data : (Array.isArray(data.cars) ? data.cars : []);
+}
+
+async function loadDriversFromJSON(){
+  const data = await safeFetchJSON("/drivers.json");
+  if(!data){
+    // fallback: použi DRIVERS_INPUT ak chceš (alebo nechaj prázdne)
+    buildDriversFromInput(DRIVERS_INPUT);
+    return;
+  }
+  const arr = Array.isArray(data) ? data : (Array.isArray(data.drivers) ? data.drivers : []);
+  buildDriversFromInput(arr);
+}
+
+// merge: EVENTS + (cars.json, drivers.json)
+function enrichEventsFromCarsDrivers(){
+  const carsById = new Map((Array.isArray(CARS)?CARS:[]).map(c => [String(c.id), c]));
+  const driversById = new Map((Array.isArray(DRIVERS)?DRIVERS:[]).map(d => [String(d.id), d]));
+
+  EVENTS = (Array.isArray(EVENTS)?EVENTS:[]).map(ev => {
+    const carsIds = Array.isArray(ev.carsIds) ? ev.carsIds : [];
+    const driversIds = Array.isArray(ev.driversIds) ? ev.driversIds : [];
+
+    // naše autá: z cars.json spravíme texty
+    const ourCars = carsIds
+      .map(id => carLabel(carsById.get(String(id))))
+      .filter(Boolean);
+
+    // naši jazdci: z drivers.json spravíme mená (formatAttendeeLabel doplní číslo)
+    const attendees = driversIds
+      .map(id => driversById.get(String(id)))
+      .filter(Boolean)
+      .map(d => d.name);
+
+    // zachovaj pôvodné details, ale doplň nové veci
+    const prev = (ev.details && typeof ev.details === "object") ? ev.details : {};
+
+    const mergedDetails = {
+      ...prev,
+
+      // keď neexistuje, doplň:
+      carsCount: (typeof prev.carsCount === "number") ? prev.carsCount : (ourCars.length || undefined),
+      ourCars: (Array.isArray(prev.ourCars) && prev.ourCars.length) ? prev.ourCars : ourCars,
+
+      // driftTaxi necháme ak existuje, inak false
+      driftTaxi: (typeof prev.driftTaxi === "boolean") ? prev.driftTaxi : false,
+
+      // attendees pre "NAŠI JAZDCI" sekciu v event karte
+      attendees: (Array.isArray(prev.attendees) && prev.attendees.length) ? prev.attendees : attendees
+    };
+
+    return { ...ev, details: mergedDetails };
+  });
 }
 
 function getSupplierCountById(id){
@@ -3915,9 +4008,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireContact();
   wireUI();
 
-  // ✅ NAJPRV načítaj JSON eventy
-  await loadEventsFromJSON();
-  await ensureEventsCoords(); // ✅ doplní chýbajúce lat/lon
+    // ✅ načítaj JSONy (cars + drivers + events) a sprav merge do EVENTS
+  await loadCarsFromJSON();
+  await loadDriversFromJSON();     // postaví DRIVERS z drivers.json (+ naviaže autá)
+  await loadEventsFromJSON();      // načíta EVENTS z events.json
+  enrichEventsFromCarsDrivers();   // doplní do EVENTS: details.ourCars + details.attendees
+
+  await ensureEventsCoords();      // doplní chýbajúce lat/lon (ak treba)
   updateStats();
 
   renderEvents();
