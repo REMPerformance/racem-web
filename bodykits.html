@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="sk">
 <head>
@@ -2745,7 +2744,25 @@ select:focus{
       return null;
     }
 
-   let DRIVERS = [];
+    const DRIVERS = DRIVERS_INPUT.map(d => {
+      const coords = pickCoords(d.city, d.country);
+      if(!coords) console.warn("[drivers] missing coords for", d.city, d.country, "→ doplň do CITY_COORDS");
+      return {
+        id: d.id,
+        name: d.name,
+        where: `${d.city} (${d.country})`,
+        city: d.city,
+        country: d.country,
+        lat: coords ? coords.lat : null,
+        lon: coords ? coords.lon : null,
+        about: d.about || "",
+        car: d.car || "—",
+        number: d.number || "—",
+        plans: Array.isArray(d.plans) ? d.plans : [],
+        photos: Array.isArray(d.photos) ? d.photos : []
+      };
+    });
+
    let EVENTS = [];
 
     // MUST exist before globe module loads
@@ -3254,153 +3271,54 @@ async function ensureEventsCoords(){
   }
 }
 
-// =========================
-// JSON LOADERS (events + drivers)
-// =========================
+function normalizeEvent(evRaw){
+  const ev = evRaw || {};
 
-function normalizeDriver(dRaw){
-  const d = dRaw || {};
-  const city = String(d.city || "").trim();
-  const country = String(d.country || "").trim();
+  const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
+  const mode = String(ev.type || ev.mode || "").trim().toLowerCase();
 
-  let lat = (typeof d.lat === "number") ? d.lat : null;
-  let lon = (typeof d.lon === "number") ? d.lon : null;
+  // ✅ nové JSON polia:
+  const dateStart = String(ev.dateStart || ev.date || "").trim();
+  const dateEnd   = String(ev.dateEnd || "").trim();
+
+  const loc = (ev.location && typeof ev.location === "object") ? ev.location : {};
+  const venue = String(loc.venue || "").trim();
+  const gmapsQuery = String(loc.gmapsQuery || "").trim();
+
+  let lat = (typeof ev.lat === "number") ? ev.lat : null;
+  let lon = (typeof ev.lon === "number") ? ev.lon : null;
 
   if(lat === null || lon === null){
-    const coords = pickCoords(city, country);
+    const coords = pickCoords(ev.city, ev.country);
     if(coords){ lat = coords.lat; lon = coords.lon; }
   }
 
+  const details = (ev.details && typeof ev.details === "object") ? ev.details : {};
+
   return {
-    id: String(d.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
-    name: String(d.name || "Unnamed driver"),
-    city,
-    country,
-    where: d.where ? String(d.where) : `${city || "—"} (${country || "—"})`,
+    id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
+    status,
+    name: String(ev.name || "Unnamed event"),
+    city: String(ev.city || "—"),
+    country: String(ev.country || "—"),
+    where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
+
+    // ✅ nové:
+    dateStart,
+    dateEnd,
+    venue,
+    gmapsQuery,
+
+    // kompatibilita so starým UI:
+    date: dateStart,           // aby ti fungoval filter/HUD bez prepisu 50 vecí
+
     lat, lon,
-    number: String(d.number || "—"),
-    about: String(d.about || ""),
-    // auto môže byť string alebo cars[]
-    car: String(d.car || ""),
-    cars: Array.isArray(d.cars) ? d.cars.filter(Boolean) : [],
-    plans: Array.isArray(d.plans) ? d.plans : [],
-    photos: Array.isArray(d.photos) ? d.photos : []
+    about: String(ev.about || ""),
+    mode,
+    img: String(ev.img || ""),
+    details,
+    tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
   };
-}
-
-async function loadDriversFromJSON(){
-  const data = await safeFetchJSON("/drivers.json");
-
-  // fallback: aby stránka nikdy nespadla
-  if(!data){
-    return DRIVERS_INPUT.map(normalizeDriver);
-  }
-
-  const arr = Array.isArray(data) ? data : (Array.isArray(data.drivers) ? data.drivers : []);
-  return arr.map(normalizeDriver);
-}
-
-async function loadEventsFromJSON(){
-  const data = await safeFetchJSON("/events.json");
-
-  // fallback: aby stránka nikdy nespadla
-  if(!data){
-    return EVENTS_INPUT.map(normalizeEvent);
-  }
-
-  const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
-  return arr.map(normalizeEvent);
-}
-
-// =========================
-// LINK DRIVERS -> EVENTS
-// =========================
-
-// pomocná: porovnanie dátumov (event môže mať dateStart/date)
-function isoDay(ev){
-  return String(ev?.dateStart || ev?.date || "").trim();
-}
-
-// tolerantná zhoda lokality: event city/country vs driver plan
-function planMatchesEvent(plan, ev){
-  if(!plan || !ev) return false;
-
-  const pDate = String(plan.date || "").trim();
-  if(pDate && isoDay(ev) && pDate !== isoDay(ev)) return false;
-
-  const pCity = String(plan.city || "").trim().toLowerCase();
-  const pCountry = String(plan.country || "").trim().toLowerCase();
-
-  const evCity = String(ev.city || "").trim().toLowerCase();
-  const evCountry = String(ev.country || "").trim().toLowerCase();
-
-  // ak má plan.city/plan.country, páruj presne
-  if(pCity || pCountry){
-    const okCity = !pCity || (pCity === evCity);
-    const okCountry = !pCountry || (pCountry === evCountry);
-    return okCity && okCountry;
-  }
-
-  // inak skús where text (napr. "Trenčín (SK)")
-  const where = String(plan.where || "").toLowerCase();
-  if(where){
-    const hitCity = evCity && where.includes(evCity);
-    const hitCountry = evCountry && where.includes(evCountry);
-    // stačí keď sedí mesto, krajina je bonus
-    return hitCity || (hitCity && hitCountry);
-  }
-
-  return false;
-}
-
-// doplní event.details.attendees + event.details.ourCars
-function injectDriversIntoEvents(events, drivers){
-  const byId = new Map((drivers || []).map(d => [String(d.id), d]));
-  const out = (events || []).map(ev => ({ ...ev }));
-
-  for(const ev of out){
-    const details = (ev.details && typeof ev.details === "object") ? { ...ev.details } : {};
-
-    // 1) explicitne: ev.drivers = ["rado-panak", ...]
-    const explicit = Array.isArray(ev.drivers) ? ev.drivers.map(String) : [];
-
-    const matchedDrivers = [];
-
-    for(const did of explicit){
-      const d = byId.get(did);
-      if(d) matchedDrivers.push(d);
-    }
-
-    // 2) automaticky podľa plans[]
-    for(const d of (drivers || [])){
-      const plans = Array.isArray(d.plans) ? d.plans : [];
-      if(plans.some(p => planMatchesEvent(p, ev))){
-        // nepridávaj duplicitne keď už bol explicit
-        if(!matchedDrivers.some(x => x.id === d.id)) matchedDrivers.push(d);
-      }
-    }
-
-    // attendees = mená (s číslom doplní tvoja formatAttendeeLabel)
-    const attendees = matchedDrivers.map(d => d.name).filter(Boolean);
-
-    // ourCars = zozbieraj autá
-    const cars = [];
-    for(const d of matchedDrivers){
-      if(Array.isArray(d.cars) && d.cars.length){
-        cars.push(...d.cars);
-      }else if(d.car){
-        cars.push(d.car);
-      }
-    }
-
-    // merge do details bez rozbitia tvojho existujúceho obsahu
-    details.attendees = attendees.length ? attendees : (Array.isArray(details.attendees) ? details.attendees : []);
-    details.ourCars = cars.length ? cars : (Array.isArray(details.ourCars) ? details.ourCars : details.ourCars ? [details.ourCars] : []);
-
-    ev.details = details;
-  }
-
-  return out;
 }
 async function loadEventsFromJSON(){
   const data = await safeFetchJSON("/events.json");
@@ -3923,6 +3841,9 @@ const out = EVENTS.filter(ev => {
       });
     }
 
+// =========================
+// WIRE UI (FIXED)
+// =========================
 function wireUI() {
   // EVENTS
   const qEvents = document.getElementById("qEvents");
@@ -3947,7 +3868,9 @@ function wireUI() {
   // DRIVERS
   const qDrivers = document.getElementById("qDrivers");
   const resetDrivers = document.getElementById("resetDrivers");
+
   if (qDrivers) qDrivers.addEventListener("input", renderDrivers);
+
   if (resetDrivers) {
     resetDrivers.addEventListener("click", () => {
       if (qDrivers) qDrivers.value = "";
@@ -3959,8 +3882,10 @@ function wireUI() {
   const qSup = document.getElementById("qSup");
   const fSup = document.getElementById("fSup");
   const resetSup = document.getElementById("resetSup");
+
   if (qSup) qSup.addEventListener("input", renderSuppliers);
   if (fSup) fSup.addEventListener("change", renderSuppliers);
+
   if (resetSup) {
     resetSup.addEventListener("click", () => {
       if (qSup) qSup.value = "";
@@ -4314,47 +4239,6 @@ function waitForLeaflet(timeoutMs = 3000) {
     window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
     selectEntity(defaultSel.id);
   }
-
-  async function initApp(){
-  // 1) load JSON
-  const [driversLoaded, eventsLoaded] = await Promise.all([
-    loadDriversFromJSON(),
-    loadEventsFromJSON()
-  ]);
-
-  DRIVERS = driversLoaded;
-  EVENTS = injectDriversIntoEvents(eventsLoaded, DRIVERS);
-
-  // 2) coords (ak nie sú)
-  await ensureEventsCoords();
-
-  // 3) UI + maps
-  wireContact();
-  wireUI();
-
-  initEuropeMap();
-  initSlovakiaMap();
-
-  renderEvents();
-  renderDrivers();
-  renderSuppliers();
-
-  updateStats();
-  updateEventHud();
-  updateProductProgress();
-
-  // 4) suppliers feed (ak chceš)
-  hydrateSfxla();
-
-  // 5) clock/hud
-  $("#year").textContent = String(new Date().getFullYear());
-  updateClock();
-  tickReach();
-  setInterval(updateClock, 250);
-  setInterval(tickReach, 2000);
-}
-
-document.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
 </html>
