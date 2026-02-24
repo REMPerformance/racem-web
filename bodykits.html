@@ -2765,91 +2765,41 @@ function carsListHTML(cars){
   }</div>`;
 }
 
-  function popEventHTML(ev){
+function popEventHTML(ev){
+  const statusText = (ev.status === "attend") ? "ZÚČASTNÍME SA" : "PLÁNUJEME";
+  const statusClass = (ev.status === "attend") ? "green" : "yellow";
+
+  const dateText = fmtDate(ev.date);
+
   const d = ev.details || {};
-
-  const statusChip = (ev.status === "attend")
-    ? `<span class="chip green"><i></i>ZÚČASTNÍME SA</span>`
-    : `<span class="chip yellow"><i></i>PLÁNUJEME</span>`;
-
-  const dateChip  = `<span class="chip"><i></i>${escapeHTML(fmtDate(ev.date))}</span>`;
-  const placeChip = `<span class="chip"><i></i>${escapeHTML(ev.city)} (${escapeHTML(ev.country)})</span>`;
-  const typeChip  = ev.mode ? `<span class="chip"><i></i>${escapeHTML(ev.mode.toUpperCase())}</span>` : ``;
-
-  const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
-  const ourCarsHTML = carsListHTML(d.ourCars);
-  const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
-
-  const mission   = arrList(d.mission);
-  const attendees = arrList(d.attendees);
-
-  const linkEvent   = safeLink(d?.links?.event);
-  const linkIG      = safeLink(d?.links?.ig);
-  const linkTickets = safeLink(d?.links?.tickets);
-
+  // link na stránku eventu (v events.json to odporúčam dávať sem: details.links.event)
+  const eventLink = safeLink(d?.links?.event || ev.link || ev.website || "");
   const nav = navUrl(ev.lat, ev.lon);
 
   return `
-    <div class="racemPop">
-      <div class="eHdr">
-        <div class="eHdrLeft">
-          <h4 class="eTitle">${escapeHTML(ev.name)}</h4>
-          <div class="eSub">
-            ${statusChip}
-            ${dateChip}
-            ${placeChip}
-            ${typeChip}
-          </div>
+    <div class="racemMini">
+      <div class="racemMiniTop">
+        <h4 class="racemMiniTitle">${escapeHTML(ev.name)}</h4>
+
+        <div class="racemMiniMeta">
+          <span class="popChip ${statusClass}"><i></i>${escapeHTML(statusText)}</span>
+          <span class="popChip"><i></i>${escapeHTML(dateText)}</span>
         </div>
       </div>
 
-      <div class="eBody">
-        <p class="eNote">${escapeHTML(ev.about || "—")}</p>
-
-        <!-- 4 “bubliny” = skutočne prehľadné tiles -->
-        <div class="eGrid">
-          <div class="eTile">
-            <div class="eLbl"><span class="miniDot"></span>AUTÁ (ODHAD)</div>
-            <div class="eVal"><strong>${escapeHTML(carsCount)}</strong></div>
-          </div>
-          <div class="eTile">
-            <div class="eLbl"><span class="miniDot"></span>DRIFT TAXI</div>
-            <div class="eVal"><strong>${escapeHTML(driftTaxi)}</strong></div>
-          </div>
-         <div class="eTile">
-  <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
-  <div class="eVal">${ourCarsHTML}</div>
-</div>
-          <div class="eTile">
-            <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
-            <div class="eVal">${escapeHTML(d.extra || "—")}</div>
-          </div>
-        </div>
-
-        <!-- Sekcie navyše (čistejšie než ďalšie kv boxy) -->
-        <div class="eSplit">
-          ${(mission.length ? `
-            <div class="eSection">
-              <h5><span class="miniDot"></span>MISIA</h5>
-              <ul class="eList">${mission.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
-            </div>
-          ` : ``)}
-
-          ${(attendees.length ? `
-            <div class="eSection">
-              <h5><span class="miniDot"></span>NAŠI JAZDCI</h5>
-<ul class="eList">${attendees.map(x => `<li>${escapeHTML(formatAttendeeLabel(x))}</li>`).join("")}</ul>
-            </div>
-          ` : ``)}
-        </div>
-
-        <div class="eLinks">
-          ${(nav && nav !== "#") ? `<a class="eLinkBtn primary" href="${escapeHTML(nav)}" target="_blank" rel="noopener noreferrer">Navigovať</a>` : ``}
-          ${linkEvent ? `<a class="eLinkBtn" href="${escapeHTML(linkEvent)}" target="_blank" rel="noopener noreferrer">Event</a>` : ``}
-          ${linkIG ? `<a class="eLinkBtn" href="${escapeHTML(linkIG)}" target="_blank" rel="noopener noreferrer">IG</a>` : ``}
-          ${linkTickets ? `<a class="eLinkBtn" href="${escapeHTML(linkTickets)}" target="_blank" rel="noopener noreferrer">Tickets</a>` : ``}
-        </div>
+      <div class="racemMiniActions">
+        ${(nav && nav !== "#")
+          ? `<a class="navMiniBtn" href="${escapeHTML(nav)}" target="_blank" rel="noopener noreferrer">Navigovať</a>`
+          : ``}
       </div>
+
+      ${eventLink
+        ? `<div style="margin-top:10px;">
+             <a class="eLinkBtn" style="width:100%;justify-content:center;" href="${escapeHTML(eventLink)}" target="_blank" rel="noopener noreferrer">
+               Stránka eventu
+             </a>
+           </div>`
+        : ``}
     </div>
   `;
 }
@@ -3341,7 +3291,7 @@ function updateProductProgress(){
           `Navigovať: ${navUrl(ev.lat, ev.lon)}`
         ].join("\n");
 
-      m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 380, className: "racemPopWrap" });
+      m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 300, className: "racemMiniWrap" });
 
         m.on("click", () => setEventMarkerActive(ev.id));
         euMarkers.set(ev.id, m);
