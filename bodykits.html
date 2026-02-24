@@ -2766,40 +2766,71 @@ function carsListHTML(cars){
 }
 
 function popEventHTML(ev){
-  const statusText = (ev.status === "attend") ? "ZÚČASTNÍME SA" : "PLÁNUJEME";
-  const statusClass = (ev.status === "attend") ? "green" : "yellow";
+
+  const statusText = (ev.status === "attend")
+    ? "Zúčastníme sa"
+    : "Plánujeme";
 
   const dateText = fmtDate(ev.date);
-
-  const d = ev.details || {};
-  // link na stránku eventu (v events.json to odporúčam dávať sem: details.links.event)
-  const eventLink = safeLink(d?.links?.event || ev.link || ev.website || "");
   const nav = navUrl(ev.lat, ev.lon);
 
   return `
-    <div class="racemMini">
-      <div class="racemMiniTop">
-        <h4 class="racemMiniTitle">${escapeHTML(ev.name)}</h4>
+    <div style="
+      min-width:230px;
+      max-width:260px;
+      font-family: Oxanium, sans-serif;
+      color:#fff;
+    ">
 
-        <div class="racemMiniMeta">
-          <span class="popChip ${statusClass}"><i></i>${escapeHTML(statusText)}</span>
-          <span class="popChip"><i></i>${escapeHTML(dateText)}</span>
+      <div style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:12px;">
+        <div style="
+          font-family: Teko, Oswald, sans-serif;
+          font-size:20px;
+          letter-spacing:.06em;
+          font-weight:700;
+          line-height:1.05;
+        ">
+          ${escapeHTML(ev.name)}
         </div>
       </div>
 
-      <div class="racemMiniActions">
-        ${(nav && nav !== "#")
-          ? `<a class="navMiniBtn" href="${escapeHTML(nav)}" target="_blank" rel="noopener noreferrer">Navigovať</a>`
-          : ``}
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+        <div style="font-size:13px;letter-spacing:.08em;color:rgba(255,255,255,.85);">
+          Účasť: <b style="color:#fff;">${escapeHTML(statusText)}</b>
+        </div>
+
+        <div style="font-size:13px;letter-spacing:.08em;color:rgba(255,255,255,.85);">
+          Dátum: <b style="color:#fff;">${escapeHTML(dateText)}</b>
+        </div>
       </div>
 
-      ${eventLink
-        ? `<div style="margin-top:10px;">
-             <a class="eLinkBtn" style="width:100%;justify-content:center;" href="${escapeHTML(eventLink)}" target="_blank" rel="noopener noreferrer">
-               Stránka eventu
-             </a>
-           </div>`
-        : ``}
+      ${(nav && nav !== "#") ? `
+      <a href="${escapeHTML(nav)}" target="_blank" rel="noopener noreferrer"
+        style="
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          width:100%;
+          padding:14px 12px;
+          border-radius:14px;
+          background:linear-gradient(180deg,#ff2d2d,#b31217);
+          color:#fff;
+          font-family:Teko, Oswald, sans-serif;
+          font-weight:700;
+          letter-spacing:.14em;
+          text-transform:uppercase;
+          font-size:17px;
+          text-decoration:none;
+          box-shadow:0 20px 60px rgba(0,0,0,.55);
+          border:1px solid rgba(255,255,255,.12);
+        "
+        onmouseover="this.style.transform='translateY(-1px)'"
+        onmouseout="this.style.transform='translateY(0)'"
+      >
+        Navigovať
+      </a>
+      ` : ``}
+
     </div>
   `;
 }
