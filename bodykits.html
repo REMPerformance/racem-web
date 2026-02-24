@@ -3333,10 +3333,6 @@ async function loadDriversFromJSON(){
     return DRIVERS_INPUT.map(normalizeDriver);
   }
 
-  const arr = Array.isArray(data) ? data : (Array.isArray(data.drivers) ? data.drivers : []);
-  return arr.map(normalizeDriver);
-}
-
 async function loadEventsFromJSON(){
   const data = await safeFetchJSON("/events.json");
 
@@ -4025,14 +4021,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireUI();
 
   // ✅ NAJPRV načítaj JSON eventy
-  await loadEventsFromJSON();
-  await ensureEventsCoords(); // ✅ doplní chýbajúce lat/lon
-  updateStats();
+ const driversLoaded = await loadDriversFromJSON();
+DRIVERS = driversLoaded;
 
-  renderEvents();
-  renderDrivers();
-  renderSuppliers();
-  updateEventHud();
+const eventsLoaded = await loadEventsFromJSON();
+EVENTS = injectDriversIntoEvents(eventsLoaded, DRIVERS);
+
+await ensureEventsCoords();
+updateStats();
+
+renderEvents();
+renderDrivers();
+renderSuppliers();
+updateEventHud();
 
   await waitForLeaflet(4000);
 
@@ -4349,46 +4350,6 @@ function waitForLeaflet(timeoutMs = 3000) {
     selectEntity(defaultSel.id);
   }
 
-  async function initApp(){
-  // 1) load JSON
-  const [driversLoaded, eventsLoaded] = await Promise.all([
-    loadDriversFromJSON(),
-    loadEventsFromJSON()
-  ]);
-
-  DRIVERS = driversLoaded;
-  EVENTS = injectDriversIntoEvents(eventsLoaded, DRIVERS);
-
-  // 2) coords (ak nie sú)
-  await ensureEventsCoords();
-
-  // 3) UI + maps
-  wireContact();
-  wireUI();
-
-  initEuropeMap();
-  initSlovakiaMap();
-
-  renderEvents();
-  renderDrivers();
-  renderSuppliers();
-
-  updateStats();
-  updateEventHud();
-  updateProductProgress();
-
-  // 4) suppliers feed (ak chceš)
-  hydrateSfxla();
-
-  // 5) clock/hud
-  $("#year").textContent = String(new Date().getFullYear());
-  updateClock();
-  tickReach();
-  setInterval(updateClock, 250);
-  setInterval(tickReach, 2000);
-}
-
-document.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
 </html>
