@@ -3446,9 +3446,9 @@ function updateProductProgress(){
 
       m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 300, className: "racemMiniWrap" });
 
-        m.on("click", () => {
+       m.on("click", () => {
   setEventMarkerActive(ev.id);
-  m.openPopup(); // ✅ explicitne
+  m.openPopup(); // explicitne otvorenie
 });
     }
 
@@ -3852,12 +3852,12 @@ function wireUI(){
   const resetDrivers = document.getElementById("resetDrivers");
 
   if(qDrivers) qDrivers.addEventListener("input", renderDrivers);
-  if(resetDrivers){
-    resetDrivers.addEventListener("click", () => {
-      if(qDrivers) qDrivers.value = "";
-      renderDrivers();
-    });
-  }
+ if(resetDrivers){
+  resetDrivers.addEventListener("click", () => {
+    if(qDrivers) qDrivers.value = "";
+    renderDrivers();
+  });
+}
 
   // SUPPLIERS
   const qSup = document.getElementById("qSup");
