@@ -2824,8 +2824,8 @@ function popEventHTML(ev){
     ? "Zúčastníme sa"
     : "Plánujeme";
 
-  const dateText = fmtDate(ev.date);
-  const nav = navUrl(ev.lat, ev.lon);
+ const dateText = fmtDateRange(ev.dateStart, ev.dateEnd);
+const nav = navUrlFromEvent(ev);
 
   return `
     <div style="
@@ -2906,15 +2906,41 @@ function popEventHTML(ev){
 }
 
     function fmtDate(iso){
-      const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      if(!m) return iso || "—";
-      return `${m[3]}.${m[2]}.${m[1]}`;
-    }
+  const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return iso || "—";
+  return `${m[3]}.${m[2]}.${m[1]}`;
+}
 
-    function navUrl(lat, lon){
-      if(typeof lat !== "number" || typeof lon !== "number") return "#";
-      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lat + "," + lon)}&travelmode=driving`;
-    }
+function fmtDateRange(startISO, endISO){
+  const a = String(startISO||"").trim();
+  const b = String(endISO||"").trim();
+  if(!a && !b) return "—";
+  if(a && !b) return fmtDate(a);
+  if(!a && b) return fmtDate(b);
+
+  // ak rovnaký deň, neduplikuj
+  if(a === b) return fmtDate(a);
+  return `${fmtDate(a)} – ${fmtDate(b)}`;
+}
+
+function parseISODate(iso){
+  const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+  dt.setHours(0,0,0,0);
+  return dt;
+}
+
+// Navigácia: preferuj gmapsQuery (venue + city), inak lat/lon
+function navUrlFromEvent(ev){
+  const q = String(ev?.location?.gmapsQuery || "").trim();
+  if(q) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+  if(typeof ev?.lat === "number" && typeof ev?.lon === "number"){
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ev.lat + "," + ev.lon)}&travelmode=driving`;
+  }
+  return "";
+}
 
     // =========================
     // NEW: Trends (localStorage)
@@ -3001,21 +3027,21 @@ function updateEventHud(){
   const thisYear  = today.getFullYear();
 
   const upcoming = EVENTS
-    .map(ev => ({ ev, dt: parseISODate(ev.date) }))
+    .map(ev => ({ ev, dt: parseISODate(ev.dateStart || ev.date) }))
     .filter(x => x.dt && x.dt >= today)
     .sort((a,b) => a.dt - b.dt);
 
   const activeCount = EVENTS.length;
 
   const inMonth = EVENTS.filter(ev => {
-    const dt = parseISODate(ev.date);
+    const dt = parseISODate(ev.dateStart || ev.date);
     return dt && dt.getFullYear() === thisYear && dt.getMonth() === thisMonth;
   }).length;
 
   const countries = Array.from(new Set(EVENTS.map(e => e.country).filter(Boolean))).join(" / ") || "—";
 
   const next = upcoming[0]?.ev;
-  const nextLabel = next ? `${next.city} (${fmtDate(next.date)})` : "—";
+  const nextLabel = next ? `${next.city} (${fmtDateRange(next.dateStart, next.dateEnd)})` : "—";
 
   activeEl.textContent = String(activeCount);
   monthEl.textContent  = String(inMonth);
@@ -3186,16 +3212,19 @@ updateProductProgress();
 function normalizeEvent(evRaw){
   const ev = evRaw || {};
 
-  // status: attend | plan (fallback = plan)
+  // status: attend | plan
   const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
 
-  // TY V JSON MÁŠ "type", UI používa "mode" -> mapujeme
-  const mode = String(ev.type || ev.mode || "").trim().toLowerCase();
+  // typ: v JSON máš "type" (drift/show/trackday/static)
+  const type = String(ev.type || ev.mode || "").trim().toLowerCase();
 
-  // coords: preferuj z JSON, inak CITY_COORDS
+  // dátumy: nový JSON má dateStart/dateEnd, starý mal date
+  const dateStart = String(ev.dateStart || ev.date || "").trim();
+  const dateEnd   = String(ev.dateEnd || ev.date || "").trim();
+
+  // coords: buď priamo v JSON (lat/lon), alebo z CITY_COORDS podľa city/country
   let lat = (typeof ev.lat === "number") ? ev.lat : null;
   let lon = (typeof ev.lon === "number") ? ev.lon : null;
-
   if(lat === null || lon === null){
     const coords = pickCoords(ev.city, ev.country);
     if(coords){
@@ -3204,63 +3233,59 @@ function normalizeEvent(evRaw){
     }
   }
 
-  if(lat === null || lon === null){
-    console.warn("[events.json] missing coords for", ev.city, ev.country, "→ doplň CITY_COORDS alebo daj lat/lon do events.json");
-  }
-
   const details = (ev.details && typeof ev.details === "object") ? ev.details : {};
+  const location = (ev.location && typeof ev.location === "object") ? ev.location : {};
 
   return {
     id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
     status,
+    type, // drift/show/trackday/static
     name: String(ev.name || "Unnamed event"),
     city: String(ev.city || "—"),
     country: String(ev.country || "—"),
-    date: String(ev.date || ""),                 // YYYY-MM-DD
     where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
-    lat,
-    lon,
+
+    // nové dátumy
+    dateStart,
+    dateEnd,
+
+    // kvôli spätnej kompatibilite (časť tvojho kódu ešte používa ev.date)
+    date: dateStart,
+
+    lat, lon,
     about: String(ev.about || ""),
-    mode,                                        // ✅ teraz už filter/badge/popup funguje
     img: String(ev.img || ""),
-    details,                                     // obsahuje mission/attendees/links...
+
+    location: {
+      venue: String(location.venue || ""),
+      gmapsQuery: String(location.gmapsQuery || "")
+    },
+
+    details: {
+      // nové polia
+      ourCars: Array.isArray(details.ourCars) ? details.ourCars : [],
+      attendees: Array.isArray(details.attendees) ? details.attendees : [],
+      links: (details.links && typeof details.links === "object") ? details.links : { event:"", ig:"", tickets:"" },
+
+      // fallbacky zo starého formátu (ak tam ešte niečo máš)
+      carsCount: (typeof details.carsCount === "number") ? details.carsCount : null,
+      driftTaxi: !!details.driftTaxi,
+      extra: String(details.extra || "")
+    },
+
     tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
   };
 }
-
 async function loadEventsFromJSON(){
-  // dôležité pre GitHub Pages:
-  // - ak máš custom doménu a súbor v root-e: "/events.json"
-  // - ak si v repozitári (username.github.io/repo/...): "./events.json"
-  const url = "./events.json";
-
-  const data = await safeFetchJSON(url);
-
-  if(!data){
-    // fallback, nech to nikdy nespadne
-    EVENTS = EVENTS_INPUT.map(normalizeEvent);
-    return;
-  }
-
-  // tvoj JSON je ARRAY
-  const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
-  EVENTS = arr.map(normalizeEvent);
-}
-
-async function loadEventsFromJSON(){
-  // Dôležité: root-relative /events.json funguje na custom doméne aj GitHub Pages (ak je súbor v root-e)
-  // Ak to máš v podpriečinku, zmeň na "./events.json"
   const data = await safeFetchJSON("/events.json");
 
-  // fallback na EVENTS_INPUT, aby stránka nikdy "nezomrela"
+  // fallback: aby stránka nikdy nespadla
   if(!data){
     EVENTS = EVENTS_INPUT.map(normalizeEvent);
     return;
   }
 
-  // podpor: [ ... ] alebo { events:[ ... ] }
   const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
-
   EVENTS = arr.map(normalizeEvent);
 }
     // =========================
@@ -3400,7 +3425,7 @@ const out = EVENTS.filter(ev => {
   const hay = [ev.name, ev.where, ev.about, ev.date, ev.mode].join(" ").toLowerCase();
   const okQ = !q || hay.includes(q);
 
-  const evType = (ev.mode || "").trim().toLowerCase();
+  const evType = (ev.type || ev.mode || "").trim().toLowerCase();
   const okType = (typeF === "all") || (evType === typeF);
 
   const okStat = (statF === "all") || (ev.status === statF);
@@ -3424,7 +3449,7 @@ const out = EVENTS.filter(ev => {
                 <div class="itemTop">
                   <div>
                     <b>${escapeHTML(ev.name)}</b>
-                    <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDate(ev.date))} • Európa</div>
+                    <div class="meta">${escapeHTML(ev.where)} • ${escapeHTML(fmtDateRange(ev.dateStart, ev.dateEnd))} • Európa</div>
                   </div>
                   <div class="badges">${badge(ev.status)}</div>
                 </div>
