@@ -2824,7 +2824,9 @@ function popEventHTML(ev){
     ? "Zúčastníme sa"
     : "Plánujeme";
 
- const dateText = fmtDateRange(ev.dateStart, ev.dateEnd);
+ const ds = ev.dateStart || ev.date || "";
+const de = ev.dateEnd || "";
+const dateText = de ? `${fmtDate(ds)} – ${fmtDate(de)}` : fmtDate(ds);
 const nav = navUrlFromEvent(ev);
 
   return `
@@ -3209,70 +3211,112 @@ function tickReach(){
 updateProductProgress();
     }
 
+    const GEO_CACHE_KEY = "racem_geo_cache_v1";
+
+function loadGeoCache(){
+  try{ return JSON.parse(localStorage.getItem(GEO_CACHE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveGeoCache(cache){
+  try{ localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(cache)); }catch(e){}
+}
+
+async function geocodeCity(city, country){
+  const c = String(city||"").trim();
+  const k = String(country||"").trim();
+  if(!c || !k) return null;
+
+  const cache = loadGeoCache();
+  const key = `${c}|${k}`.toLowerCase();
+  if(cache[key]) return cache[key];
+
+  // Nominatim (OSM) – slušne, s limitom
+  const q = encodeURIComponent(`${c}, ${k}`);
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${q}`;
+
+  try{
+    const res = await fetch(url, { headers: { "Accept":"application/json" } });
+    if(!res.ok) return null;
+    const arr = await res.json();
+    if(!Array.isArray(arr) || !arr[0]) return null;
+
+    const lat = Number(arr[0].lat);
+    const lon = Number(arr[0].lon);
+    if(!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+
+    const out = { lat, lon };
+    cache[key] = out;
+    saveGeoCache(cache);
+    return out;
+  }catch(e){
+    return null;
+  }
+}
+
+async function ensureEventsCoords(){
+  // doplní coords tým eventom, čo ich nemajú
+  for(const ev of EVENTS){
+    if(typeof ev.lat === "number" && typeof ev.lon === "number") continue;
+
+    // 1) skús CITY_COORDS znovu (ak si ho doplnil)
+    const hit = pickCoords(ev.city, ev.country);
+    if(hit){ ev.lat = hit.lat; ev.lon = hit.lon; continue; }
+
+    // 2) skús geocode
+    const g = await geocodeCity(ev.city, ev.country);
+    if(g){ ev.lat = g.lat; ev.lon = g.lon; }
+
+    // jemný delay aby si netlačil API
+    await new Promise(r => setTimeout(r, 250));
+  }
+}
+
 function normalizeEvent(evRaw){
   const ev = evRaw || {};
 
-  // status: attend | plan
   const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
+  const mode = String(ev.type || ev.mode || "").trim().toLowerCase();
 
-  // typ: v JSON máš "type" (drift/show/trackday/static)
-  const type = String(ev.type || ev.mode || "").trim().toLowerCase();
-
-  // dátumy: nový JSON má dateStart/dateEnd, starý mal date
+  // ✅ nové JSON polia:
   const dateStart = String(ev.dateStart || ev.date || "").trim();
-  const dateEnd   = String(ev.dateEnd || ev.date || "").trim();
+  const dateEnd   = String(ev.dateEnd || "").trim();
 
-  // coords: buď priamo v JSON (lat/lon), alebo z CITY_COORDS podľa city/country
+  const loc = (ev.location && typeof ev.location === "object") ? ev.location : {};
+  const venue = String(loc.venue || "").trim();
+  const gmapsQuery = String(loc.gmapsQuery || "").trim();
+
   let lat = (typeof ev.lat === "number") ? ev.lat : null;
   let lon = (typeof ev.lon === "number") ? ev.lon : null;
+
   if(lat === null || lon === null){
     const coords = pickCoords(ev.city, ev.country);
-    if(coords){
-      lat = coords.lat;
-      lon = coords.lon;
-    }
+    if(coords){ lat = coords.lat; lon = coords.lon; }
   }
 
   const details = (ev.details && typeof ev.details === "object") ? ev.details : {};
-  const location = (ev.location && typeof ev.location === "object") ? ev.location : {};
 
   return {
     id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
     status,
-    type, // drift/show/trackday/static
     name: String(ev.name || "Unnamed event"),
     city: String(ev.city || "—"),
     country: String(ev.country || "—"),
     where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
 
-    // nové dátumy
+    // ✅ nové:
     dateStart,
     dateEnd,
+    venue,
+    gmapsQuery,
 
-    // kvôli spätnej kompatibilite (časť tvojho kódu ešte používa ev.date)
-    date: dateStart,
+    // kompatibilita so starým UI:
+    date: dateStart,           // aby ti fungoval filter/HUD bez prepisu 50 vecí
 
     lat, lon,
     about: String(ev.about || ""),
+    mode,
     img: String(ev.img || ""),
-
-    location: {
-      venue: String(location.venue || ""),
-      gmapsQuery: String(location.gmapsQuery || "")
-    },
-
-    details: {
-      // nové polia
-      ourCars: Array.isArray(details.ourCars) ? details.ourCars : [],
-      attendees: Array.isArray(details.attendees) ? details.attendees : [],
-      links: (details.links && typeof details.links === "object") ? details.links : { event:"", ig:"", tickets:"" },
-
-      // fallbacky zo starého formátu (ak tam ešte niečo máš)
-      carsCount: (typeof details.carsCount === "number") ? details.carsCount : null,
-      driftTaxi: !!details.driftTaxi,
-      extra: String(details.extra || "")
-    },
-
+    details,
     tag: (status === "attend") ? "Zúčastníme sa" : "Plánujeme"
   };
 }
@@ -3402,9 +3446,10 @@ function updateProductProgress(){
 
       m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 300, className: "racemMiniWrap" });
 
-        m.on("click", () => setEventMarkerActive(ev.id));
-        euMarkers.set(ev.id, m);
-      });
+        m.on("click", () => {
+  setEventMarkerActive(ev.id);
+  m.openPopup(); // ✅ explicitne
+});
     }
 
     function toggleItemOpen(el, open){
@@ -3849,21 +3894,23 @@ function wireUI(){
   wireUI();
 
   // ✅ NAJPRV načítaj JSON eventy
-await loadEventsFromJSON();
+aawait loadEventsFromJSON();
+await ensureEventsCoords();          // ✅ doplní chýbajúce lat/lon
 updateStats();
 
-  // ✅ potom render zoznamov
-  renderEvents();
-  renderDrivers();
-  renderSuppliers();
-  updateEventHud();
+renderEvents();
+renderDrivers();
+renderSuppliers();
+updateEventHud();
 
-  // ✅ potom mapy
-  await waitForLeaflet(4000);
-  if (window.L) {
-    try { initEuropeMap(); } catch(e){ console.warn("EU map init failed:", e); }
-    try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed:", e); }
-  }
+await waitForLeaflet(4000);
+if (window.L) {
+  try { initEuropeMap(); } catch(e){ console.warn("EU map init failed", e); }
+  try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed", e); }
+
+  // ✅ ak mapa už existuje a eventy sa zmenili, vynúť re-render markerov:
+  try { renderEuropeMarkers(); } catch(e){}
+}
 
   // feed
   hydrateSfxla();
