@@ -2035,6 +2035,102 @@ select:focus{
 /* popup: trochu viac priestoru a “pro” */
 .leaflet-popup-content{ margin: 12px 14px !important; }
 .leaflet-popup-content-wrapper{ border-radius: 18px !important; overflow:hidden; }
+
+    /* ===== EVENTS: naše autá (list) + naši jazdci label ===== */
+.carsList{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.carItem{
+  padding-top:0;
+}
+
+.carItem + .carItem{
+  margin-top:6px;
+  padding-top:6px;
+  border-top: 1px solid rgba(179,31,36,.28); /* jemná červená čiara */
+}
+
+/* závodnejší font v eventoch */
+.eTitle,
+.itemTop b,
+.racemMiniTitle{
+  font-family: Teko, Oswald, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .06em !important;
+}
+
+.eLbl,
+.racemMiniMeta,
+.eSub,
+.popChip,
+.badge{
+  font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+/* ===== MINI POPUP NA MAPE (vpravo) ===== */
+.racemMini{
+  min-width: 240px;
+  max-width: 280px;
+}
+
+.racemMiniTop{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding-bottom:10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.racemMiniTitle{
+  margin:0;
+  font-size:18px;
+  line-height:1.05;
+}
+
+.racemMiniMeta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  color: rgba(255,255,255,.70);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.racemMiniActions{
+  padding-top:10px;
+  display:flex;
+}
+
+/* biele na červenom, výrazné */
+.navMiniBtn{
+  width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ff2d2d, #b31217);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+  font-family: Teko, Oswald, sans-serif;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-size:16px;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow: 0 16px 55px rgba(0,0,0,.55);
+}
+
+.navMiniBtn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 22px 70px rgba(0,0,0,.65);
+}
   </style>
 </head>
 
@@ -2646,6 +2742,29 @@ function safeLink(u){
   return "";
 }
 
+    function driverNumberByName(name){
+  const n = String(name||"").trim().toLowerCase();
+  const hit = (Array.isArray(DRIVERS) ? DRIVERS : []).find(d => String(d.name||"").trim().toLowerCase() === n);
+  return hit ? String(hit.number || "").trim() : "";
+}
+
+function formatAttendeeLabel(raw){
+  const s = String(raw||"").trim();
+  if(!s) return "";
+  // ak už má (123), nechaj
+  if(/\(\s*\d+\s*\)/.test(s)) return s;
+  const num = driverNumberByName(s);
+  return num ? `${s} (${num})` : s;
+}
+
+function carsListHTML(cars){
+  const arr = arrList(cars);
+  if(!arr.length) return `<div class="carsList"><div class="carItem">—</div></div>`;
+  return `<div class="carsList">${
+    arr.map(x => `<div class="carItem">${escapeHTML(x)}</div>`).join("")
+  }</div>`;
+}
+
   function popEventHTML(ev){
   const d = ev.details || {};
 
@@ -2658,7 +2777,7 @@ function safeLink(u){
   const typeChip  = ev.mode ? `<span class="chip"><i></i>${escapeHTML(ev.mode.toUpperCase())}</span>` : ``;
 
   const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
-  const ourCars   = (arrList(d.ourCars).length) ? arrList(d.ourCars).join(", ") : "—";
+  const ourCarsHTML = carsListHTML(d.ourCars);
   const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
 
   const mission   = arrList(d.mission);
@@ -2697,10 +2816,10 @@ function safeLink(u){
             <div class="eLbl"><span class="miniDot"></span>DRIFT TAXI</div>
             <div class="eVal"><strong>${escapeHTML(driftTaxi)}</strong></div>
           </div>
-          <div class="eTile">
-            <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
-            <div class="eVal">${escapeHTML(ourCars)}</div>
-          </div>
+         <div class="eTile">
+  <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
+  <div class="eVal">${ourCarsHTML}</div>
+</div>
           <div class="eTile">
             <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
             <div class="eVal">${escapeHTML(d.extra || "—")}</div>
@@ -2718,8 +2837,8 @@ function safeLink(u){
 
           ${(attendees.length ? `
             <div class="eSection">
-              <h5><span class="miniDot"></span>KTO IDE</h5>
-              <ul class="eList">${attendees.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+              <h5><span class="miniDot"></span>NAŠI JAZDCI</h5>
+<ul class="eList">${attendees.map(x => `<li>${escapeHTML(formatAttendeeLabel(x))}</li>`).join("")}</ul>
             </div>
           ` : ``)}
         </div>
@@ -3257,7 +3376,7 @@ const out = EVENTS.filter(ev => {
 
       $("#listEvents").innerHTML = out.map(ev => {
         const d = ev.details || {};
-        const ourCars = (d.ourCars && d.ourCars.length) ? d.ourCars.join(" • ") : "—";
+        const ourCarsHTML = carsListHTML(d.ourCars);
         const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
         const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
         const img = ev.img ? `<img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" />` : "";
@@ -3295,9 +3414,9 @@ const out = EVENTS.filter(ev => {
     </div>
 
     <div class="eTile">
-      <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
-      <div class="eVal">${escapeHTML(ourCars)}</div>
-    </div>
+  <div class="eLbl"><span class="miniDot"></span>NAŠE AUTÁ</div>
+  <div class="eVal">${ourCarsHTML}</div>
+</div>
 
     <div class="eTile">
       <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
@@ -3314,8 +3433,8 @@ const out = EVENTS.filter(ev => {
 
   ${Array.isArray(d.attendees) && d.attendees.length ? `
     <div class="eSection">
-      <h5><span class="miniDot"></span>KTO IDE</h5>
-      <ul class="eList">${d.attendees.map(x => `<li>${escapeHTML(x)}</li>`).join("")}</ul>
+     <h5><span class="miniDot"></span>NAŠI JAZDCI</h5>
+<ul class="eList">${d.attendees.map(x => `<li>${escapeHTML(formatAttendeeLabel(x))}</li>`).join("")}</ul>
     </div>
   ` : ``}
 
