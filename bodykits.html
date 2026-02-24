@@ -476,11 +476,16 @@
     }
     .btn.ghost:hover{box-shadow:none; transform:none}
 
-    .list{
-      padding: 12px;
-      display:grid;
-      gap:10px;
-    }
+  .list{
+  padding: 12px;
+  display:grid;
+  gap:10px;
+
+  /* ✅ scroll vo vnútri listu */
+  max-height: calc((84px * 4) + (10px * 3) + 24px); /* fallback */
+  overflow:auto;
+  overscroll-behavior: contain;
+}
     .item{
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.10);
@@ -2130,6 +2135,54 @@ select:focus{
 .navMiniBtn:hover{
   transform: translateY(-1px);
   box-shadow: 0 22px 70px rgba(0,0,0,.65);
+}
+
+    /* =========================
+   Scrollable lists (4 items visible)
+   ========================= */
+:root{
+  --listGap: 10px;
+  --listPad: 24px; /* 12px top + 12px bottom */
+}
+
+/* default (napr. suppliers) */
+.list{
+  overflow:auto;
+  overscroll-behavior: contain;
+  padding: 12px;
+  gap: var(--listGap);
+}
+
+/* Dodávatelia: nižšia karta */
+#dodavatelia .list{
+  --rowH: 118px; /* dolaď */
+  max-height: calc((var(--rowH) * 4) + (var(--listGap) * 3) + var(--listPad));
+}
+
+/* Jazdci: stredná karta (thumb + text) */
+#jazdci .list{
+  --rowH: 148px; /* dolaď */
+  max-height: calc((var(--rowH) * 4) + (var(--listGap) * 3) + var(--listPad));
+}
+
+/* Eventy: väčšia karta (máš mohutnejší look) */
+#eventy .list{
+  --rowH: 168px; /* dolaď */
+  max-height: calc((var(--rowH) * 4) + (var(--listGap) * 3) + var(--listPad));
+}
+
+    .list::-webkit-scrollbar{ width:10px; }
+.list::-webkit-scrollbar-track{
+  background: rgba(0,0,0,.22);
+  border-radius: 999px;
+}
+.list::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(179,31,36,.75), rgba(255,43,47,.55));
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 999px;
+}
+.list::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(180deg, rgba(255,43,47,.85), rgba(179,31,36,.65));
 }
   </style>
 </head>
