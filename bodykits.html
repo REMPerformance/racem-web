@@ -3461,6 +3461,24 @@ function updateProductProgress(){
       listEl.querySelectorAll(".item[data-open='1']").forEach(x => x.removeAttribute("data-open"));
     }
 
+    function popHTML(title, subtitle, body) {
+  return `
+    <div class="racemMini">
+      <div class="racemMiniTop">
+        <div class="racemMiniTitle">${escapeHTML(title)}</div>
+        <div class="racemMiniMeta">${escapeHTML(subtitle)}</div>
+      </div>
+      <div class="popText">${escapeHTML(body).replace(/\n/g, '<br>')}</div>
+    </div>
+  `;
+}
+
+
+function navUrl(lat, lon) {
+  if (!lat || !lon) return "#";
+  return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`;
+}
+
     function renderEvents(){
       const q = ($("#qEvents").value || "").trim().toLowerCase();
       const typeF = $("#fEvents").value;  // all/drift/show/trackday/static
