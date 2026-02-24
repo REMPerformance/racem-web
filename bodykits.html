@@ -3823,25 +3823,25 @@ const out = EVENTS.filter(ev => {
       });
     }
 
-   // =========================
+// =========================
 // WIRE UI (FIXED)
 // =========================
-function wireUI(){
+function wireUI() {
   // EVENTS
   const qEvents = document.getElementById("qEvents");
   const fEvents = document.getElementById("fEvents");
   const sEvents = document.getElementById("sEvents");
   const resetEvents = document.getElementById("resetEvents");
 
-  if(qEvents) qEvents.addEventListener("input", () => { renderEvents(); updateEventHud(); });
-  if(fEvents) fEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
-  if(sEvents) sEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
+  if (qEvents) qEvents.addEventListener("input", () => { renderEvents(); updateEventHud(); });
+  if (fEvents) fEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
+  if (sEvents) sEvents.addEventListener("change", () => { renderEvents(); updateEventHud(); });
 
-  if(resetEvents){
+  if (resetEvents) {
     resetEvents.addEventListener("click", () => {
-      if(qEvents) qEvents.value = "";
-      if(fEvents) fEvents.value = "all";
-      if(sEvents) sEvents.value = "all";
+      if (qEvents) qEvents.value = "";
+      if (fEvents) fEvents.value = "all";
+      if (sEvents) sEvents.value = "all";
       renderEvents();
       updateEventHud();
     });
@@ -3851,35 +3851,39 @@ function wireUI(){
   const qDrivers = document.getElementById("qDrivers");
   const resetDrivers = document.getElementById("resetDrivers");
 
-  if(qDrivers) qDrivers.addEventListener("input", renderDrivers);
- if(resetDrivers){
-  resetDrivers.addEventListener("click", () => {
-    if(qDrivers) qDrivers.value = "";
-    renderDrivers();
-  });
-}
+  if (qDrivers) qDrivers.addEventListener("input", renderDrivers);
+
+  if (resetDrivers) {
+    resetDrivers.addEventListener("click", () => {
+      if (qDrivers) qDrivers.value = "";
+      renderDrivers();
+    });
+  }
 
   // SUPPLIERS
   const qSup = document.getElementById("qSup");
   const fSup = document.getElementById("fSup");
   const resetSup = document.getElementById("resetSup");
 
-  if(qSup) qSup.addEventListener("input", renderSuppliers);
-  if(fSup) fSup.addEventListener("change", renderSuppliers);
-  if(resetSup){
+  if (qSup) qSup.addEventListener("input", renderSuppliers);
+  if (fSup) fSup.addEventListener("change", renderSuppliers);
+
+  if (resetSup) {
     resetSup.addEventListener("click", () => {
-      if(qSup) qSup.value = "";
-      if(fSup) fSup.value = "all";
+      if (qSup) qSup.value = "";
+      if (fSup) fSup.value = "all";
       renderSuppliers();
     });
   }
 }
 
-    // =========================
-    // INIT
-    // =========================
-  document.addEventListener("DOMContentLoaded", async () => {
-  $("#year").textContent = new Date().getFullYear();
+// =========================
+// INIT
+// =========================
+document.addEventListener("DOMContentLoaded", async () => {
+  // rok (bez jQuery fallback)
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   updateStats();
   updateProductProgress();
@@ -3894,23 +3898,24 @@ function wireUI(){
   wireUI();
 
   // ✅ NAJPRV načítaj JSON eventy
-aawait loadEventsFromJSON();
-await ensureEventsCoords();          // ✅ doplní chýbajúce lat/lon
-updateStats();
+  await loadEventsFromJSON();
+  await ensureEventsCoords(); // ✅ doplní chýbajúce lat/lon
+  updateStats();
 
-renderEvents();
-renderDrivers();
-renderSuppliers();
-updateEventHud();
+  renderEvents();
+  renderDrivers();
+  renderSuppliers();
+  updateEventHud();
 
-await waitForLeaflet(4000);
-if (window.L) {
-  try { initEuropeMap(); } catch(e){ console.warn("EU map init failed", e); }
-  try { initSlovakiaMap(); } catch(e){ console.warn("SK map init failed", e); }
+  await waitForLeaflet(4000);
 
-  // ✅ ak mapa už existuje a eventy sa zmenili, vynúť re-render markerov:
-  try { renderEuropeMarkers(); } catch(e){}
-}
+  if (window.L) {
+    try { initEuropeMap(); } catch (e) { console.warn("EU map init failed", e); }
+    try { initSlovakiaMap(); } catch (e) { console.warn("SK map init failed", e); }
+
+    // ✅ ak mapa už existuje a eventy sa zmenili, vynúť re-render markerov:
+    try { renderEuropeMarkers(); } catch (e) {}
+  }
 
   // feed
   hydrateSfxla();
@@ -3918,7 +3923,7 @@ if (window.L) {
 });
 
 // helper
-function waitForLeaflet(timeoutMs=3000){
+function waitForLeaflet(timeoutMs = 3000) {
   return new Promise((resolve) => {
     const start = Date.now();
     const t = setInterval(() => {
@@ -3927,295 +3932,295 @@ function waitForLeaflet(timeoutMs=3000){
     }, 50);
   });
 }
-  </script>
+</script>
 
-  <!-- =========================
-       COBE Globe + CUSTOM CLICKABLE POINTS (overlay)
-       ========================= -->
-  <script type="module">
-    import createGlobe from "https://cdn.skypack.dev/cobe";
+<!-- =========================
+     COBE Globe + CUSTOM CLICKABLE POINTS (overlay)
+     ========================= -->
+<script type="module">
+  import createGlobe from "https://cdn.skypack.dev/cobe";
 
-    const canvas = document.getElementById("globeSuppliers");
-    const overlay = document.getElementById("globeOverlay");
+  const canvas = document.getElementById("globeSuppliers");
+  const overlay = document.getElementById("globeOverlay");
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    function fitCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
+  function fitCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+  }
+  fitCanvas();
+  window.addEventListener("resize", fitCanvas);
+
+  // =========================
+  // Globe controls
+  // =========================
+  let globeScale = 1.14;
+  const minScale = 0.88;
+  const maxScale = 1.95;
+
+  canvas.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const delta = Math.sign(e.deltaY);
+    globeScale += (delta > 0 ? -0.08 : 0.08);
+    globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
+  }, { passive: false });
+
+  window.__globeFocus = {
+    focusLat: null,
+    focusLon: null,
+    freezeUntil: 0,
+    focusFor: (lat, lon, ms = 3400) => {
+      window.__globeFocus.focusLat = lat;
+      window.__globeFocus.focusLon = lon;
+      window.__globeFocus.freezeUntil = Date.now() + ms;
+    },
+    clear: () => {
+      window.__globeFocus.focusLat = null;
+      window.__globeFocus.focusLon = null;
+      window.__globeFocus.freezeUntil = 0;
     }
-    fitCanvas();
-    window.addEventListener("resize", fitCanvas);
+  };
 
-    // =========================
-    // Globe controls
-    // =========================
-    let globeScale = 1.14;
-    const minScale = 0.88;
-    const maxScale = 1.95;
+  const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
+  const focus = window.__globeFocus;
 
-    canvas.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      const delta = Math.sign(e.deltaY);
-      globeScale += (delta > 0 ? -0.08 : 0.08);
-      globeScale = Math.max(minScale, Math.min(maxScale, globeScale));
-    }, { passive:false });
+  // =========================
+  // Projection for overlay points
+  // =========================
+  const toRad = (d) => (d * Math.PI) / 180;
 
-    window.__globeFocus = {
-      focusLat: null,
-      focusLon: null,
-      freezeUntil: 0,
-      focusFor: (lat, lon, ms=3400) => {
-        window.__globeFocus.focusLat = lat;
-        window.__globeFocus.focusLon = lon;
-        window.__globeFocus.freezeUntil = Date.now() + ms;
-      },
-      clear: () => {
-        window.__globeFocus.focusLat = null;
-        window.__globeFocus.focusLon = null;
-        window.__globeFocus.freezeUntil = 0;
-      }
-    };
+  function rotateY(v, a) {
+    const ca = Math.cos(a), sa = Math.sin(a);
+    return { x: v.x * ca + v.z * sa, y: v.y, z: -v.x * sa + v.z * ca };
+  }
+  function rotateX(v, a) {
+    const ca = Math.cos(a), sa = Math.sin(a);
+    return { x: v.x, y: v.y * ca - v.z * sa, z: v.y * sa + v.z * ca };
+  }
 
-    const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
-    const focus = window.__globeFocus;
+  function latLonToVec(lat, lon) {
+    const la = toRad(lat);
+    const lo = toRad(lon);
+    const cl = Math.cos(la);
+    return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
+  }
 
-    // =========================
-    // Projection for overlay points
-    // =========================
-    const toRad = (d) => (d * Math.PI) / 180;
+  function project(lat, lon, state) {
+    const w = state.width / dpr;
+    const h = state.height / dpr;
 
-    function rotateY(v, a){
-      const ca = Math.cos(a), sa = Math.sin(a);
-      return { x: v.x*ca + v.z*sa, y: v.y, z: -v.x*sa + v.z*ca };
-    }
-    function rotateX(v, a){
-      const ca = Math.cos(a), sa = Math.sin(a);
-      return { x: v.x, y: v.y*ca - v.z*sa, z: v.y*sa + v.z*ca };
-    }
+    let v = latLonToVec(lat, lon);
+    v = rotateY(v, state.phi);
+    v = rotateX(v, state.theta);
 
-    function latLonToVec(lat, lon){
-      const la = toRad(lat);
-      const lo = toRad(lon);
-      const cl = Math.cos(la);
-      return { x: cl * Math.sin(lo), y: Math.sin(la), z: cl * Math.cos(lo) };
-    }
+    if (v.z <= 0) return { visible: false, x: 0, y: 0, depth: v.z };
 
-    function project(lat, lon, state){
-      const w = state.width / dpr;
-      const h = state.height / dpr;
+    const r = Math.min(w, h) * 0.46 * state.scale;
+    const x = (w / 2) + (v.x * r);
+    const y = (h / 2) - (v.y * r);
 
-      let v = latLonToVec(lat, lon);
-      v = rotateY(v, state.phi);
-      v = rotateX(v, state.theta);
+    return { visible: true, x, y, depth: v.z };
+  }
 
-      if(v.z <= 0) return { visible:false, x:0, y:0, depth:v.z };
+  // =========================
+  // Overlay DOM points
+  // =========================
+  const pointEls = new Map();
 
-      const r = Math.min(w, h) * 0.46 * state.scale;
-      const x = (w/2) + (v.x * r);
-      const y = (h/2) - (v.y * r);
+  function typeClass(t) {
+    if (t === "supplier") return "t-supplier";
+    if (t === "brand") return "t-brand";
+    if (t === "hub") return "t-hub";
+    if (t === "locked") return "t-locked";
+    return "t-brand";
+  }
 
-      return { visible:true, x, y, depth:v.z };
-    }
+  function makePoint(e) {
+    const el = document.createElement("div");
+    el.className = `gpt ${typeClass(e.type)}`;
+    el.setAttribute("data-id", e.id);
 
-    // =========================
-    // Overlay DOM points
-    // =========================
-    const pointEls = new Map();
+    const core = document.createElement("div");
+    core.className = "core";
+    el.appendChild(core);
 
-    function typeClass(t){
-      if(t === "supplier") return "t-supplier";
-      if(t === "brand") return "t-brand";
-      if(t === "hub") return "t-hub";
-      if(t === "locked") return "t-locked";
-      return "t-brand";
-    }
-
-    function makePoint(e){
-      const el = document.createElement("div");
-      el.className = `gpt ${typeClass(e.type)}`;
-      el.setAttribute("data-id", e.id);
-
-      const core = document.createElement("div");
-      core.className = "core";
-      el.appendChild(core);
-
-      el.addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        if(window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
-        selectEntity(e.id, true);
-      });
-
-      el.title = `${e.name} — ${e.where}`;
-      overlay.appendChild(el);
-      pointEls.set(e.id, el);
-    }
-
-    ENTITIES
-      .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-      .forEach(makePoint);
-
-    function selectEntity(id, scrollList=false){
-      pointEls.forEach((el, key) => {
-        if(key === id){
-          el.style.borderColor = "rgba(179,31,36,.70)";
-          el.style.boxShadow =
-            "0 18px 70px rgba(0,0,0,.70), 0 0 0 8px rgba(255,255,255,.08), 0 0 34px rgba(255,43,47,.18)";
-        }else{
-          el.style.borderColor = "rgba(255,255,255,.18)";
-          el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
-        }
-      });
-
-      if(scrollList){
-        const list = document.getElementById("listSuppliers");
-        if(list){
-          const node = list.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
-          if(node){
-            node.scrollIntoView({ behavior:"smooth", block:"center" });
-            node.style.borderColor = "rgba(179,31,36,.55)";
-            node.style.boxShadow = "0 26px 80px rgba(0,0,0,.62)";
-            setTimeout(() => {
-              node.style.borderColor = "";
-              node.style.boxShadow = "";
-            }, 1200);
-          }
-        }
-      }
-    }
-
-    window.__globeSelect = selectEntity;
-    window.__globeOverlayRefresh = () => { /* overlay driven by render */ };
-
-    // =========================
-    // Focus targets
-    // =========================
-    function focusTargets(lat, lon){
-      const lo = toRad(lon);
-      const la = toRad(lat);
-
-      const targetPhi = -lo;
-      const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
-      return { targetPhi, targetTheta };
-    }
-
-    // =========================
-    // Globe creation (no markers; overlay does points)
-    // =========================
-    let currentPhi = -1.05;
-    let currentTheta = 0.18;
-
-    let dragging = false;
-    let dragStartX = 0;
-    let dragPhiStart = 0;
-
-    createGlobe(canvas, {
-      devicePixelRatio: dpr,
-      width: canvas.width,
-      height: canvas.height,
-
-      phi: 0,
-      theta: 0.25,
-      dark: 1.18,
-      diffuse: 1.25,
-      scale: globeScale,
-      mapSamples: 42000,
-      mapBrightness: 6,
-
-      baseColor: [0.08, 0.09, 0.10],
-      glowColor: [0.70, 0.10, 0.12],
-      markerColor: [1.0, 0.17, 0.19],
-      backgroundColor: [0, 0, 0, 0],
-
-      markers: [],
-
-      onRender: (state) => {
-        state.width = canvas.width;
-        state.height = canvas.height;
-        state.scale = globeScale;
-
-        const now = Date.now();
-        const hasFocus =
-          focus &&
-          typeof focus.focusLat === "number" &&
-          typeof focus.focusLon === "number" &&
-          now < focus.freezeUntil;
-
-        if(hasFocus){
-          const t = focusTargets(focus.focusLat, focus.focusLon);
-          currentPhi   += (t.targetPhi - currentPhi) * 0.09;
-          currentTheta += (t.targetTheta - currentTheta) * 0.09;
-          state.phi = currentPhi;
-          state.theta = currentTheta;
-        }else{
-          if(focus && now >= focus.freezeUntil) focus.clear();
-          if(!dragging) currentPhi += 0.0020;
-          state.phi = currentPhi;
-          state.theta = currentTheta;
-        }
-
-        // update overlay positions
-        ENTITIES
-          .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
-          .forEach(e => {
-            const p = project(e.lat, e.lon, state);
-            const el = pointEls.get(e.id);
-            if(!el) return;
-
-            if(!p.visible){
-              el.setAttribute("data-hidden", "1");
-              return;
-            }
-
-            el.setAttribute("data-hidden", "0");
-            el.style.left = `${p.x}px`;
-            el.style.top  = `${p.y}px`;
-
-            const op = Math.max(0.70, Math.min(0.98, 0.60 + p.depth * 0.55));
-            el.style.opacity = String(op);
-          });
-      }
+    el.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      if (window.__globeFocus) window.__globeFocus.focusFor(e.lat, e.lon, 4200);
+      selectEntity(e.id, true);
     });
 
-    // drag rotate
-    canvas.style.cursor = "grab";
-    canvas.addEventListener("pointerdown", (e) => {
-      dragging = true;
-      canvas.setPointerCapture(e.pointerId);
-      canvas.style.cursor = "grabbing";
-      dragStartX = e.clientX;
-      dragPhiStart = currentPhi;
-      if(window.__globeFocus) window.__globeFocus.clear();
-    });
-    canvas.addEventListener("pointerup", () => {
-      dragging = false;
-      canvas.style.cursor = "grab";
-    });
-    canvas.addEventListener("pointerout", () => {
-      dragging = false;
-      canvas.style.cursor = "grab";
-    });
-    canvas.addEventListener("pointermove", (e) => {
-      if(!dragging) return;
-      const dx = e.clientX - dragStartX;
-      currentPhi = dragPhiStart + dx * 0.006;
-    });
+    el.title = `${e.name} — ${e.where}`;
+    overlay.appendChild(el);
+    pointEls.set(e.id, el);
+  }
 
-    // click empty = clear selection
-    overlay.addEventListener("click", () => {
-      pointEls.forEach((el) => {
+  ENTITIES
+    .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+    .forEach(makePoint);
+
+  function selectEntity(id, scrollList = false) {
+    pointEls.forEach((el, key) => {
+      if (key === id) {
+        el.style.borderColor = "rgba(179,31,36,.70)";
+        el.style.boxShadow =
+          "0 18px 70px rgba(0,0,0,.70), 0 0 0 8px rgba(255,255,255,.08), 0 0 34px rgba(255,43,47,.18)";
+      } else {
         el.style.borderColor = "rgba(255,255,255,.18)";
         el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
-      });
+      }
     });
 
-    // default select hub
-    const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
-    if(defaultSel){
-      window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
-      selectEntity(defaultSel.id);
+    if (scrollList) {
+      const list = document.getElementById("listSuppliers");
+      if (list) {
+        const node = list.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+        if (node) {
+          node.scrollIntoView({ behavior: "smooth", block: "center" });
+          node.style.borderColor = "rgba(179,31,36,.55)";
+          node.style.boxShadow = "0 26px 80px rgba(0,0,0,.62)";
+          setTimeout(() => {
+            node.style.borderColor = "";
+            node.style.boxShadow = "";
+          }, 1200);
+        }
+      }
     }
-  </script>
+  }
+
+  window.__globeSelect = selectEntity;
+  window.__globeOverlayRefresh = () => { /* overlay driven by render */ };
+
+  // =========================
+  // Focus targets
+  // =========================
+  function focusTargets(lat, lon) {
+    const lo = toRad(lon);
+    const la = toRad(lat);
+
+    const targetPhi = -lo;
+    const targetTheta = Math.max(-1.0, Math.min(1.0, la * 0.55));
+    return { targetPhi, targetTheta };
+  }
+
+  // =========================
+  // Globe creation (no markers; overlay does points)
+  // =========================
+  let currentPhi = -1.05;
+  let currentTheta = 0.18;
+
+  let dragging = false;
+  let dragStartX = 0;
+  let dragPhiStart = 0;
+
+  createGlobe(canvas, {
+    devicePixelRatio: dpr,
+    width: canvas.width,
+    height: canvas.height,
+
+    phi: 0,
+    theta: 0.25,
+    dark: 1.18,
+    diffuse: 1.25,
+    scale: globeScale,
+    mapSamples: 42000,
+    mapBrightness: 6,
+
+    baseColor: [0.08, 0.09, 0.10],
+    glowColor: [0.70, 0.10, 0.12],
+    markerColor: [1.0, 0.17, 0.19],
+    backgroundColor: [0, 0, 0, 0],
+
+    markers: [],
+
+    onRender: (state) => {
+      state.width = canvas.width;
+      state.height = canvas.height;
+      state.scale = globeScale;
+
+      const now = Date.now();
+      const hasFocus =
+        focus &&
+        typeof focus.focusLat === "number" &&
+        typeof focus.focusLon === "number" &&
+        now < focus.freezeUntil;
+
+      if (hasFocus) {
+        const t = focusTargets(focus.focusLat, focus.focusLon);
+        currentPhi += (t.targetPhi - currentPhi) * 0.09;
+        currentTheta += (t.targetTheta - currentTheta) * 0.09;
+        state.phi = currentPhi;
+        state.theta = currentTheta;
+      } else {
+        if (focus && now >= focus.freezeUntil) focus.clear();
+        if (!dragging) currentPhi += 0.0020;
+        state.phi = currentPhi;
+        state.theta = currentTheta;
+      }
+
+      // update overlay positions
+      ENTITIES
+        .filter(e => typeof e.lat === "number" && typeof e.lon === "number")
+        .forEach(e => {
+          const p = project(e.lat, e.lon, state);
+          const el = pointEls.get(e.id);
+          if (!el) return;
+
+          if (!p.visible) {
+            el.setAttribute("data-hidden", "1");
+            return;
+          }
+
+          el.setAttribute("data-hidden", "0");
+          el.style.left = `${p.x}px`;
+          el.style.top = `${p.y}px`;
+
+          const op = Math.max(0.70, Math.min(0.98, 0.60 + p.depth * 0.55));
+          el.style.opacity = String(op);
+        });
+    }
+  });
+
+  // drag rotate
+  canvas.style.cursor = "grab";
+  canvas.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = "grabbing";
+    dragStartX = e.clientX;
+    dragPhiStart = currentPhi;
+    if (window.__globeFocus) window.__globeFocus.clear();
+  });
+  canvas.addEventListener("pointerup", () => {
+    dragging = false;
+    canvas.style.cursor = "grab";
+  });
+  canvas.addEventListener("pointerout", () => {
+    dragging = false;
+    canvas.style.cursor = "grab";
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - dragStartX;
+    currentPhi = dragPhiStart + dx * 0.006;
+  });
+
+  // click empty = clear selection
+  overlay.addEventListener("click", () => {
+    pointEls.forEach((el) => {
+      el.style.borderColor = "rgba(255,255,255,.18)";
+      el.style.boxShadow = "0 12px 50px rgba(0,0,0,.58), 0 0 0 6px rgba(255,255,255,.06)";
+    });
+  });
+
+  // default select hub
+  const defaultSel = ENTITIES.find(e => e.id === "hub-ba");
+  if (defaultSel) {
+    window.__globeFocus.focusFor(defaultSel.lat, defaultSel.lon, 3800);
+    selectEntity(defaultSel.id);
+  }
+</script>
 </body>
 </html>
