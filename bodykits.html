@@ -3423,34 +3423,34 @@ function updateProductProgress(){
     }
 
     function renderEuropeMarkers(){
-      euMarkers.forEach(m => m.remove());
-      euMarkers.clear();
+  euMarkers.forEach(m => m.remove());
+  euMarkers.clear();
 
-      EVENTS.forEach(ev => {
-        if(typeof ev.lat !== "number" || typeof ev.lon !== "number") return;
+  EVENTS.forEach(ev => {
+    if (typeof ev.lat !== "number" || typeof ev.lon !== "number") return;
 
-        const color = (ev.status === "attend") ? "rgba(46,204,113,.95)" : "rgba(241,196,15,.95)";
-        const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
+    const color = (ev.status === "attend")
+      ? "rgba(46,204,113,.95)"
+      : "rgba(241,196,15,.95)";
 
-        const d = ev.details || {};
-        const lines = [
-          ev.about || "—",
-          "",
-          `Typ: ${ev.mode ? ev.mode.toUpperCase() : "—"}`,
-          `Autá: ${typeof d.carsCount === "number" ? d.carsCount : "—"}`,
-          `Naše autá: ${(d.ourCars && d.ourCars.length) ? d.ourCars.join(", ") : "—"}`,
-          `Drift taxi: ${d.driftTaxi ? "Áno" : "Nie"}`,
-          "",
-          `Navigovať: ${navUrl(ev.lat, ev.lon)}`
-        ].join("\n");
+    const m = L.marker([ev.lat, ev.lon], { icon: markerIcon(color) }).addTo(mapEU);
 
-      m.bindPopup(popEventHTML(ev), { closeButton:true, maxWidth: 300, className: "racemMiniWrap" });
+    // Popup (používaj jeden zdroj pravdy: popEventHTML)
+    m.bindPopup(popEventHTML(ev), {
+      closeButton: true,
+      maxWidth: 300,
+      className: "racemMiniWrap"
+    });
 
-       m.on("click", () => {
-  setEventMarkerActive(ev.id);
-  m.openPopup(); // explicitne otvorenie
-});
-    }
+    m.on("click", () => {
+      setEventMarkerActive(ev.id);
+      m.openPopup();
+    });
+
+    // DÔLEŽITÉ: uložiť marker pod ID eventu
+    euMarkers.set(ev.id, m);
+  });
+}
 
     function toggleItemOpen(el, open){
       if(open) el.setAttribute("data-open","1");
