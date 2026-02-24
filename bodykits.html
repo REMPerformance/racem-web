@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sk">
 <head>
@@ -2990,6 +2991,14 @@ function startOfToday(){
   return d;
 }
 
+function parseISODate(iso){
+  const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+  dt.setHours(0,0,0,0);
+  return dt;
+}
+
 function updateEventHud(){
   const activeEl = document.getElementById("ehActive");
   const monthEl  = document.getElementById("ehMonth");
@@ -3249,52 +3258,6 @@ async function ensureEventsCoords(){
 // JSON LOADERS (events + drivers)
 // =========================
 
-    function normalizeEvent(evRaw){
-  const ev = evRaw || {};
-
-  const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
-  const mode   = String(ev.type || ev.mode || "").trim().toLowerCase();
-
-  const city    = String(ev.city || "").trim();
-  const country = String(ev.country || "").trim();
-
-  // nové polia (kompatibilita): dateStart/dateEnd + fallback na date
-  const dateStart = String(ev.dateStart || ev.date || "").trim();
-  const dateEnd   = String(ev.dateEnd || "").trim();
-
-  // where fallback
-  const where = String(ev.where || "").trim() || `${city || "—"} (${country || "—"})`;
-
-  // coords
-  let lat = (typeof ev.lat === "number") ? ev.lat : null;
-  let lon = (typeof ev.lon === "number") ? ev.lon : null;
-
-  if(lat === null || lon === null){
-    const coords = pickCoords(city, country);
-    if(coords){ lat = coords.lat; lon = coords.lon; }
-  }
-
-  return {
-    id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
-    status,
-    name: String(ev.name || "Unnamed event"),
-    city,
-    country,
-    where,
-    dateStart,
-    dateEnd,
-    date: dateStart, // kvôli tvojej spätnej kompatibilite (render + hud)
-    about: String(ev.about || ""),
-    mode,
-    type: mode,
-    img: String(ev.img || ""),
-    lat, lon,
-    location: (ev.location && typeof ev.location === "object") ? ev.location : {},
-    details: (ev.details && typeof ev.details === "object") ? ev.details : {},
-    drivers: Array.isArray(ev.drivers) ? ev.drivers.map(String) : []
-  };
-}
-
 function normalizeDriver(dRaw){
   const d = dRaw || {};
   const city = String(d.city || "").trim();
@@ -3332,6 +3295,10 @@ async function loadDriversFromJSON(){
   if(!data){
     return DRIVERS_INPUT.map(normalizeDriver);
   }
+
+  const arr = Array.isArray(data) ? data : (Array.isArray(data.drivers) ? data.drivers : []);
+  return arr.map(normalizeDriver);
+}
 
 async function loadEventsFromJSON(){
   const data = await safeFetchJSON("/events.json");
@@ -3435,6 +3402,14 @@ function injectDriversIntoEvents(events, drivers){
 
   return out;
 }
+async function loadEventsFromJSON(){
+  const data = await safeFetchJSON("/events.json");
+
+  // fallback: aby stránka nikdy nespadla
+  if(!data){
+    EVENTS = EVENTS_INPUT.map(normalizeEvent);
+    return;
+  }
 
   const arr = Array.isArray(data) ? data : (Array.isArray(data.events) ? data.events : []);
   EVENTS = arr.map(normalizeEvent);
@@ -3972,9 +3947,7 @@ function wireUI() {
   // DRIVERS
   const qDrivers = document.getElementById("qDrivers");
   const resetDrivers = document.getElementById("resetDrivers");
-
   if (qDrivers) qDrivers.addEventListener("input", renderDrivers);
-
   if (resetDrivers) {
     resetDrivers.addEventListener("click", () => {
       if (qDrivers) qDrivers.value = "";
@@ -3986,16 +3959,13 @@ function wireUI() {
   const qSup = document.getElementById("qSup");
   const fSup = document.getElementById("fSup");
   const resetSup = document.getElementById("resetSup");
-
   if (qSup) qSup.addEventListener("input", renderSuppliers);
   if (fSup) fSup.addEventListener("change", renderSuppliers);
-
   if (resetSup) {
     resetSup.addEventListener("click", () => {
       if (qSup) qSup.value = "";
       if (fSup) fSup.value = "all";
       renderSuppliers();
-      if (window.__globeOverlayRefresh) window.__globeOverlayRefresh();
     });
   }
 }
@@ -4021,19 +3991,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireUI();
 
   // ✅ NAJPRV načítaj JSON eventy
- const driversLoaded = await loadDriversFromJSON();
-DRIVERS = driversLoaded;
+  await loadEventsFromJSON();
+  await ensureEventsCoords(); // ✅ doplní chýbajúce lat/lon
+  updateStats();
 
-const eventsLoaded = await loadEventsFromJSON();
-EVENTS = injectDriversIntoEvents(eventsLoaded, DRIVERS);
-
-await ensureEventsCoords();
-updateStats();
-
-renderEvents();
-renderDrivers();
-renderSuppliers();
-updateEventHud();
+  renderEvents();
+  renderDrivers();
+  renderSuppliers();
+  updateEventHud();
 
   await waitForLeaflet(4000);
 
@@ -4350,6 +4315,46 @@ function waitForLeaflet(timeoutMs = 3000) {
     selectEntity(defaultSel.id);
   }
 
+  async function initApp(){
+  // 1) load JSON
+  const [driversLoaded, eventsLoaded] = await Promise.all([
+    loadDriversFromJSON(),
+    loadEventsFromJSON()
+  ]);
+
+  DRIVERS = driversLoaded;
+  EVENTS = injectDriversIntoEvents(eventsLoaded, DRIVERS);
+
+  // 2) coords (ak nie sú)
+  await ensureEventsCoords();
+
+  // 3) UI + maps
+  wireContact();
+  wireUI();
+
+  initEuropeMap();
+  initSlovakiaMap();
+
+  renderEvents();
+  renderDrivers();
+  renderSuppliers();
+
+  updateStats();
+  updateEventHud();
+  updateProductProgress();
+
+  // 4) suppliers feed (ak chceš)
+  hydrateSfxla();
+
+  // 5) clock/hud
+  $("#year").textContent = String(new Date().getFullYear());
+  updateClock();
+  tickReach();
+  setInterval(updateClock, 250);
+  setInterval(tickReach, 2000);
+}
+
+document.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
 </html>
