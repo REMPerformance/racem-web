@@ -3098,7 +3098,6 @@ footer{
 
       <!-- LEFT: images -->
       <div>
-        <div class="zoomHint" id="zoomHint">KLIKNI PRE ZVÄČŠENIE</div>
 
         <div class="mImg">
           <button class="imgNav prev" id="mPrev" type="button" aria-label="Predošlý">‹</button>
@@ -3452,6 +3451,65 @@ function cartSumShipping(){
   return CART.reduce((s,i)=> s + (i.shippingEUR||0), 0);
 }
 
+function normalizeShopifyVariantId(raw){
+  if (!raw) return null;
+  const s = String(raw).trim();
+
+  // 1) klasika: číslo na konci alebo gid://.../123
+  let m = s.match(/(\d+)\s*$/);
+  if (m) return m[1];
+
+  // 2) Storefront GraphQL ID býva base64 (napr. "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMjM0...")
+  // Skús decode cez atob a potom vytiahni číslo z gid://shopify/ProductVariant/123
+  try{
+    const decoded = atob(s);
+    m = decoded.match(/ProductVariant\/(\d+)/);
+    if (m) return m[1];
+  }catch(e){
+    // ignoruj
+  }
+
+  return null;
+}
+
+
+function goToShopifyCheckout(){
+  if (!CART.length){
+    alert("Košík je prázdny.");
+    return;
+  }
+
+  const pairs = [];
+  const missing = [];
+
+  CART.forEach(it => {
+    const id = normalizeShopifyVariantId(it.shopifyVariantId);
+    if (!id){
+      missing.push(`${it.title} / ${it.variantName || "—"}`);
+      return;
+    }
+    const qty = Math.max(1, parseInt(it.qty || 1, 10) || 1);
+    pairs.push(`${id}:${qty}`);
+  });
+
+  // Ak niečo nemá Shopify Variant ID, nedá sa spraviť checkout
+  if (missing.length){
+    alert(
+      "Tieto položky nemajú Shopify Variant ID, takže sa nedá spraviť checkout:\n\n" +
+      missing.join("\n") +
+      "\n\nDoplň do JSON pri variante pole shopifyVariantId."
+    );
+
+    // fallback: otvor tvoj dopytový order modal
+    closeModal(cartModal);
+    openOrderModal();
+    return;
+  }
+
+  const url = `https://shop.racem.sk/cart/${pairs.join(",")}?checkout=1`;
+  window.location.href = url;
+}
+
    function syncCartBarOffset(){
   const topbar = document.querySelector(".topbar");
   const h = topbar ? topbar.offsetHeight : 0;
@@ -3492,6 +3550,12 @@ function addActiveToCart(){
 
   const variantName = vars.length ? (v?.name || "—") : "—";
 
+  // ✅ Shopify variant ID (musí prísť z JSON produktu/variantu)
+  const shopifyVariantId =
+    (v && (v.shopifyVariantId || v.shopify_variant_id || v.variantId)) ||
+    (activeProduct && (activeProduct.shopifyVariantId || activeProduct.shopify_variant_id || activeProduct.variantId)) ||
+    null;
+
   // ak nie je cena, stále to dovolíme, len priceEUR bude 0 a do textu dáme "UPRESNÍME"
   const imgs = getProductImages(activeProduct);
   const image = imgs[0] || activeProduct.image || "";
@@ -3508,6 +3572,7 @@ function addActiveToCart(){
       title: activeProduct.title || "—",
       carId: activeProduct.carId || "",
       variantName,
+      shopifyVariantId,
       priceEUR: (priceEUR !== null ? priceEUR : 0),
       priceUnknown: (priceEUR === null),
       shippingEUR: (typeof activeProduct.shippingEUR === "number" ? activeProduct.shippingEUR : 0),
@@ -3638,9 +3703,8 @@ if (cartBarClear) cartBarClear.addEventListener("click", () => {
 if (cartBack) cartBack.addEventListener("click", () => closeModal(cartModal));
 
 if (cartCheckout) cartCheckout.addEventListener("click", () => {
-  // z košíka do objednávky
   closeModal(cartModal);
-  openOrderModal();
+  goToShopifyCheckout();
 });
 
     renderOrderSummaryUI(); // ✅ keď je order modal otvorený, refreshne sumár
