@@ -2775,33 +2775,47 @@
       filter:blur(1.8px) saturate(1);
     }
 /* ===== RACEM FULL WIDTH BUTTON ===== */
-
-.brands-cta{
+/* ===== BODYKITS: FULL WIDTH CTA (SMALLER) ===== */
+.brands-ctaRow{
   width:100%;
-  margin-top:40px;
+  margin-top:34px;
 }
 
-.brands-cta-btn{
+.brands-ctaFull{
   display:block;
   width:100%;
   text-align:center;
-  background:#b31f24;
+
+  padding:14px 0;              /* menšie ako tvoje veľké bary */
+  border-radius:16px;
+
   color:#fff;
-  padding:20px 0;
-  font-family:'Oswald', sans-serif;
-  font-size:20px;
+  text-decoration:none;
+  font-weight:1000;
   letter-spacing:.18em;
   text-transform:uppercase;
-  text-decoration:none;
-  border-radius:14px;
-  transition:.3s ease;
-  box-shadow:0 20px 60px rgba(179,31,36,.35);
+  font-size:14px;
+
+  border:1px solid rgba(179,31,36,0.55);
+  background: linear-gradient(180deg, rgba(179,31,36,0.92), rgba(179,31,36,0.62));
+  box-shadow:
+    0 18px 55px rgba(179,31,36,0.18),
+    0 18px 55px rgba(0,0,0,0.55);
+
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
-.brands-cta-btn:hover{
-  background:#d6292f;
-  transform:translateY(-3px);
-  box-shadow:0 25px 80px rgba(179,31,36,.5);
+.brands-ctaFull:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  border-color: rgba(179,31,36,0.85);
+  box-shadow:
+    0 22px 75px rgba(179,31,36,0.26),
+    0 22px 75px rgba(0,0,0,0.68);
+}
+
+.brands-ctaFull:active{
+  transform: translateY(-1px) scale(0.995);
 }
   </style>
 </head>
@@ -2985,9 +2999,9 @@
           </div>
         </div>
 
-        <!-- FULL WIDTH BUTTON -->
-<div class="brands-cta">
-  <a href="https://www.racem.sk/ponuka" class="brands-cta-btn">
+    <!-- FULL WIDTH BUTTON (MENŠÍ) -->
+<div class="brands-ctaRow">
+  <a href="https://www.racem.sk/ponuka" class="brands-ctaFull">
     ZOBRAZIŤ VŠETKO
   </a>
 </div>
