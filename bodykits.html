@@ -2963,7 +2963,14 @@ function parseISODate(iso){
 
 // Navigácia: preferuj gmapsQuery (venue + city), inak lat/lon
 function navUrlFromEvent(ev){
-  const q = String(ev?.location?.gmapsQuery || "").trim();
+  const q = String(
+    ev?.gmapsQuery ||
+    ev?.location?.gmapsQuery ||
+    ev?.location?.mapsquery ||
+    ev?.mapsquery ||
+    ""
+  ).trim();
+
   if(q) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
   if(typeof ev?.lat === "number" && typeof ev?.lon === "number"){
@@ -3305,14 +3312,34 @@ function normalizeEvent(evRaw){
   const status = (String(ev.status || "plan").trim().toLowerCase() === "attend") ? "attend" : "plan";
   const mode = String(ev.type || ev.mode || "").trim().toLowerCase();
 
-  // ✅ nové JSON polia:
+  // ✅ dátumy (events.json môže mať dateStart/dateEnd alebo len date)
   const dateStart = String(ev.dateStart || ev.date || "").trim();
   const dateEnd   = String(ev.dateEnd || "").trim();
 
-  const loc = (ev.location && typeof ev.location === "object") ? ev.location : {};
-  const venue = String(loc.venue || "").trim();
-  const gmapsQuery = String(loc.gmapsQuery || "").trim();
+  // ✅ lokácia (podporuje: location string, venue string, mapsquery / gmapsQuery, alebo location objekt)
+  const locObj = (ev.location && typeof ev.location === "object") ? ev.location : null;
 
+  const venue =
+    String(
+      (locObj && (locObj.venue || locObj.location)) ||
+      ev.venue ||
+      ""
+    ).trim();
+
+  const gmapsQuery =
+    String(
+      (locObj && (locObj.gmapsQuery || locObj.mapsquery || locObj.mapQuery)) ||
+      ev.gmapsQuery ||
+      ev.mapsquery ||
+      ev.mapQuery ||
+      ""
+    ).trim();
+
+  // ak má events.json iba "location": "Letisko Prievidza" (string)
+  const locationText =
+    (typeof ev.location === "string") ? String(ev.location).trim() : "";
+
+  // coords: ak sú priamo v evente, použijeme, inak CITY_COORDS/geocode doplní neskôr
   let lat = (typeof ev.lat === "number") ? ev.lat : null;
   let lon = (typeof ev.lon === "number") ? ev.lon : null;
 
@@ -3323,28 +3350,36 @@ function normalizeEvent(evRaw){
 
   const details = (ev.details && typeof ev.details === "object") ? ev.details : {};
 
+  // uložíme aj kompatibilný location objekt, aby UI helpery nepadali
+  const location = {
+    venue: venue || locationText || "",
+    gmapsQuery: gmapsQuery || [venue || locationText, ev.city, ev.country].filter(Boolean).join(" ").trim()
+  };
+
   return {
-    id: String(ev.id || (crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(16).slice(2))),
+    id: String(ev.id || (globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : Math.random().toString(16).slice(2))),
     status,
     name: String(ev.name || "Unnamed event"),
     city: String(ev.city || "—"),
     country: String(ev.country || "—"),
     where: `${String(ev.city || "—")} (${String(ev.country || "—")})`,
 
-    // ✅ nové:
+    // ✅ nové (root polia)
     dateStart,
     dateEnd,
-    venue,
-    gmapsQuery,
+    venue: location.venue,
+    gmapsQuery: location.gmapsQuery,
+    location, // ✅ kompatibilita: navUrlFromEvent + popups
 
     // kompatibilita so starým UI:
-    date: dateStart,           // aby ti fungoval filter/HUD bez prepisu 50 vecí
+    date: dateStart,
 
     lat, lon,
     about: String(ev.about || ""),
     mode,
     img: String(ev.img || ""),
-        // z events.json (IDčka) – uložíme si ich pre merge
+
+    // z events.json (IDčka) – uložíme si ich pre merge
     carsIds: arrList(ev.cars),
     driversIds: arrList(ev.drivers),
 
