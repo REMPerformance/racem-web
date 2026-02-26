@@ -2184,7 +2184,36 @@ select:focus{
 .list::-webkit-scrollbar-thumb:hover{
   background: linear-gradient(180deg, rgba(255,43,47,.85), rgba(179,31,36,.65));
 }
-  </style>
+  
+/* ===== EVENT IMAGE LIGHTBOX ===== */
+.thumbBtn{
+  all: unset;
+  display:block;
+  width:100%;
+  height:100%;
+  cursor: zoom-in;
+  border-radius: 18px;
+}
+.thumbBtn:focus-visible{
+  outline: 2px solid rgba(179,31,36,.9);
+  outline-offset: 3px;
+}
+#imgModal .modal{
+  max-width: min(980px, 94vw);
+}
+#imgModal .imgBody{
+  padding: 14px;
+}
+#imgModalImg{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 70px rgba(0,0,0,.55);
+}
+
+</style>
 </head>
 
 <body>
@@ -2283,6 +2312,19 @@ select:focus{
 </div>
     </div>
   </div>
+  <!-- IMAGE MODAL (EVENTS) -->
+  <div class="modalBack" id="imgModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Fotka eventu">
+      <div class="modalHead">
+        <b id="imgModalTitle">Foto</b>
+        <button class="xBtn" id="closeImg">Zavrieť</button>
+      </div>
+      <div class="modalBody imgBody">
+        <img id="imgModalImg" src="" alt="" />
+      </div>
+    </div>
+  </div>
+
 
   <main>
     <div class="wrap">
@@ -3629,7 +3671,7 @@ const out = EVENTS.filter(ev => {
         const ourCarsHTML = carsListHTML(d.ourCars);
         const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
         const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
-        const img = ev.img ? `<img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" />` : "";
+        const img = ev.img ? `<button class="thumbBtn" type="button" data-full="${escapeHTML(ev.img)}" data-title="${escapeHTML(ev.name)}" aria-label="Otvoriť fotku"><img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" /></button>` : "";
 
         return `
           <div class="item" data-id="${escapeHTML(ev.id)}" role="button" aria-label="Event ${escapeHTML(ev.name)}">
@@ -3745,6 +3787,16 @@ const out = EVENTS.filter(ev => {
             if(url && url !== "#") window.open(url, "_blank", "noopener,noreferrer");
           });
         }
+        const thumbBtn = el.querySelector(".thumbBtn");
+        if(thumbBtn){
+          thumbBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const src = thumbBtn.getAttribute("data-full") || "";
+            const title = thumbBtn.getAttribute("data-title") || ev.name || "Foto";
+            if(src) openImgModal(src, title);
+          });
+        }
+
       });
     }
 
@@ -4040,7 +4092,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   tickReach();
   setInterval(tickReach, 60 * 1000);
 
-  wireContact();
+  
+function openImgModal(src, title){
+  const m = document.getElementById("imgModal");
+  const img = document.getElementById("imgModalImg");
+  const t = document.getElementById("imgModalTitle");
+  if(t) t.textContent = title || "Foto";
+  if(img){
+    img.src = src || "";
+    img.alt = title || "";
+  }
+  m.setAttribute("data-open","1");
+  m.setAttribute("aria-hidden","false");
+}
+function closeImgModal(){
+  const m = document.getElementById("imgModal");
+  const img = document.getElementById("imgModalImg");
+  if(img){
+    img.src = "";
+    img.alt = "";
+  }
+  m.removeAttribute("data-open");
+  m.setAttribute("aria-hidden","true");
+}
+function wireImgModal(){
+  const modal = document.getElementById("imgModal");
+  const closeBtn = document.getElementById("closeImg");
+  if(closeBtn) closeBtn.addEventListener("click", closeImgModal);
+  if(modal){
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) closeImgModal();
+    });
+  }
+  window.addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){
+      const isOpen = modal && modal.getAttribute("data-open") === "1";
+      if(isOpen) closeImgModal();
+    }
+  });
+}
+
+wireImgModal();
+wireContact();
+
   wireUI();
 
     // ✅ načítaj JSONy (cars + drivers + events) a sprav merge do EVENTS
