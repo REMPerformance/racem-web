@@ -3487,14 +3487,9 @@ function goToShopifyCheckout(){
 
   if (missing.length){
     alert(
-      "Tieto položky nemajú Shopify Variant ID, takže sa nedá pokračovať do objednávky:
-
-" +
-      missing.join("
-") +
-      "
-
-Doplň do JSON pri variante pole shopifyVariantId."
+      "Tieto položky nemajú Shopify Variant ID, takže sa nedá pokračovať do objednávky:\n\n" +
+      missing.join("\n") +
+      "\n\nDoplň do JSON pri variante pole shopifyVariantId."
     );
     return;
   }
@@ -3522,7 +3517,7 @@ Doplň do JSON pri variante pole shopifyVariantId."
   const ret = document.createElement("input");
   ret.type = "hidden";
   ret.name = "return_to";
-  ret.value = "/checkout";
+  ret.value = "/cart";
   form.appendChild(ret);
 
   document.body.appendChild(form);
@@ -3533,12 +3528,12 @@ Doplň do JSON pri variante pole shopifyVariantId."
   const topbar = document.querySelector(".topbar");
   const h = topbar ? topbar.offsetHeight : 0;
 
-  // ✅ globálne nastav CSS premennú (cartBar si ju berie cez top: var(--topbar-h))
+  // globálne nastav CSS premennú (cartBar si ju berie cez top: var(--topbar-h))
   document.documentElement.style.setProperty("--topbar-h", h + "px");
-}
 
-  // ✅ aby fixed topbar nezakryl obsah
+  // aby fixed/sticky topbar nezakryl obsah
   document.body.style.paddingTop = h + "px";
+}
 
 
 
