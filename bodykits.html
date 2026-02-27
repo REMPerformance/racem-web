@@ -4076,28 +4076,15 @@ function wireUI() {
   }
 }
 
+
 // =========================
-// INIT
+// IMAGE MODAL (EVENT PHOTO)
 // =========================
-document.addEventListener("DOMContentLoaded", async () => {
-  // rok (bez jQuery fallback)
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  updateStats();
-  updateProductProgress();
-
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  tickReach();
-  setInterval(tickReach, 60 * 1000);
-
-  
 function openImgModal(src, title){
   const m = document.getElementById("imgModal");
   const img = document.getElementById("imgModalImg");
   const t = document.getElementById("imgModalTitle");
+  if(!m) return;
   if(t) t.textContent = title || "Foto";
   if(img){
     img.src = src || "";
@@ -4109,6 +4096,7 @@ function openImgModal(src, title){
 function closeImgModal(){
   const m = document.getElementById("imgModal");
   const img = document.getElementById("imgModalImg");
+  if(!m) return;
   if(img){
     img.src = "";
     img.alt = "";
@@ -4131,8 +4119,35 @@ function wireImgModal(){
       if(isOpen) closeImgModal();
     }
   });
+
+  // ✅ Delegovaný handler (funguje aj keď sa event karty prerenderujú)
+  document.addEventListener("click", (e) => {
+    const a = e.target && e.target.closest ? e.target.closest("a.thumbBtn[data-full]") : null;
+    if(!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const src = a.getAttribute("data-full") || a.getAttribute("href") || "";
+    const title = a.getAttribute("data-title") || "Foto";
+    if(src) openImgModal(src, title);
+  });
 }
 
+// =========================
+// INIT
+// =========================
+document.addEventListener("DOMContentLoaded", async () => {
+  // rok (bez jQuery fallback)
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  updateStats();
+  updateProductProgress();
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  tickReach();
+  setInterval(tickReach, 60 * 1000);
 wireImgModal();
 wireContact();
 
