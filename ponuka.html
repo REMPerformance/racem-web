@@ -504,6 +504,17 @@
       margin:18px 0 12px;
       opacity:.9;
     }
+
+    .brandLogo{
+  width:44px;
+  height:44px;
+  object-fit:contain;
+  border-radius:14px;
+  padding:6px;
+  background: rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 0 0 1px rgba(179,31,36,.18), 0 0 38px rgba(179,31,36,.18);
+}
   </style>
 </head>
 
@@ -513,12 +524,12 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logoMark" aria-hidden="true"></div>
-        <div>
-          <h1>RACEM</h1>
-          <small>ponuka dielov • filtre • racing hud</small>
-        </div>
-      </div>
+  <img class="brandLogo" src="rmgroup.png" alt="RM GROUP" loading="lazy" decoding="async" />
+  <div>
+    <h1>RACEM</h1>
+    <small>ponuka dielov • filtre • racing hud</small>
+  </div>
+</div>
 
       <div class="topActions">
         <a class="btn" href="/" title="Späť na racem.sk">Domov</a>
@@ -572,7 +583,7 @@
         </div>
 
         <div class="field">
-          <label for="brand">Značka</label>
+          <label for="brand">Výrobca</label>
           <select id="brand">
             <option value="">Všetky</option>
           </select>
@@ -912,7 +923,7 @@
           const prod = PRODUCTS.find(x => x.id === id);
           if(!prod) return;
           alert(
-            `RACEM • DETAIL (demo)\n\n${prod.name}\nKategória: ${prod.category}\nZnačka: ${prod.brand}\nDostupnosť: ${prod.stock === "in_stock" ? "Skladom" : "Na objednávku"}\nCena: ${euro(prod.price)}\n\nĎalej sa to napojí na reálny produkt/Shopify/checkout.`
+            `RACEM • DETAIL (demo)\n\n${prod.name}\nKategória: ${prod.category}\nVýrobca: ${prod.brand}\nDostupnosť: ${prod.stock === "in_stock" ? "Skladom" : "Na objednávku"}\nCena: ${euro(prod.price)}\n\nĎalej sa to napojí na reálny produkt/Shopify/checkout.`
           );
         });
       });
