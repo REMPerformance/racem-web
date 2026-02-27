@@ -542,6 +542,37 @@
   box-shadow: 0 0 0 1px rgba(179,31,36,.18), 0 0 38px rgba(179,31,36,.18);
 }
   
+    
+    /* modal detail list */
+    .dl{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap:8px 10px;
+      margin:0;
+      padding:10px 0 0;
+    }
+    .dl dt{
+      color:var(--muted2);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin:0;
+    }
+    .dl dd{
+      margin:0;
+      color:rgba(255,255,255,.86);
+      font-size:12.5px;
+      line-height:1.45;
+      word-break:break-word;
+    }
+    .sepLine{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      margin:10px 0;
+      opacity:.9;
+    }
+
+
     /* ===== MODAL (produkt detail + varianty) ===== */
     .modalOverlay{
       position:fixed; inset:0;
@@ -1232,6 +1263,13 @@
       buy: document.getElementById("mBuy"),
       shopLink: document.getElementById("mShopLink"),
       desc: document.getElementById("mDesc"),
+      sku: document.getElementById("mSku"),
+      varSku: document.getElementById("mVarSku"),
+      pid: document.getElementById("mPid"),
+      handle: document.getElementById("mHandle"),
+      tags: document.getElementById("mTags"),
+      compare: document.getElementById("mCompare"),
+      opts: document.getElementById("mOpts"),
     };
 
     let activeProduct = null;
@@ -1251,6 +1289,18 @@
 
       const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
       m.shopLink.href = link;
+      // detaily (produkt)
+      if(m.pid) m.pid.textContent = prod.id || "—";
+      if(m.handle) m.handle.textContent = prod.handle || "—";
+      const pTags = Array.isArray(prod.tags) ? prod.tags.filter(Boolean) : [];
+      if(m.tags) m.tags.textContent = pTags.length ? pTags.join(", ") : "—";
+      // SKU na produkte berieme z prvého variantu (ak existuje)
+      const firstSku = (Array.isArray(prod.variants) && prod.variants[0] && prod.variants[0].sku) ? prod.variants[0].sku : "";
+      if(m.sku) m.sku.textContent = firstSku || "—";
+      if(m.compare) m.compare.textContent = "—";
+      if(m.opts) m.opts.textContent = "—";
+      if(m.varSku) m.varSku.textContent = "—";
+
 
       const imgs = [];
       (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
@@ -1362,7 +1412,19 @@
       m.price.textContent = euro(price);
       setStockBadge(v.stock === "in_stock" ? "in_stock" : "made_to_order");
 
-      const vid = v.variantId ? String(v.variantId).trim() : "";
+      
+      // variant detaily
+      if(m.varSku) m.varSku.textContent = (v.sku || "—");
+      if(m.compare) {
+        const ca = (v.compareAtPrice !== null && v.compareAtPrice !== undefined && v.compareAtPrice !== "") ? Number(v.compareAtPrice) : null;
+        m.compare.textContent = (Number.isFinite(ca) && ca > 0) ? (euro(ca) + " (pôvodná)") : "—";
+      }
+      if(m.opts){
+        const o = v.options || {};
+        const pairs = Object.keys(o).map(k => `${k}: ${o[k]}`).filter(Boolean);
+        m.opts.textContent = pairs.length ? pairs.join(" • ") : "—";
+      }
+const vid = v.variantId ? String(v.variantId).trim() : "";
       const ok = !!vid;
       m.buy.disabled = !ok;
       m.note.style.display = ok ? "none" : "block";
@@ -1433,6 +1495,23 @@
             <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
             <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
           </div>
+
+          
+          <div class="sepLine"></div>
+
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Detaily</div>
+            <dl class="dl">
+              <dt>SKU</dt><dd id="mSku">—</dd>
+              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
+              <dt>Produkt ID</dt><dd id="mPid">—</dd>
+              <dt>Handle</dt><dd id="mHandle">—</dd>
+              <dt>Tagy</dt><dd id="mTags">—</dd>
+              <dt>Compare</dt><dd id="mCompare">—</dd>
+              <dt>Možnosti</dt><dd id="mOpts">—</dd>
+            </dl>
+          </div>
+
 
           <div class="note" id="mDesc"></div>
         </div>
