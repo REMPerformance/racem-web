@@ -247,13 +247,7 @@
       color:#fff;
       text-shadow: 0 0 14px rgba(179,31,36,0.25);
     }
-   .nav-links a.nav-remx::after{ /* necháme si vlastný edge highlight, ale zrušíme pôvodnú podčiarkovaciu čiaru */
-  width:auto !important;
-  height:auto !important;
-  left:auto !important;
-  bottom:auto !important;
-  transform:none !important;
-}
+  
 .nav-links a.nav-remx:hover::after{ width:auto !important; }
 
     /* ===== HVIEZDNE STROPY – hover efekt ===== */
@@ -3115,6 +3109,83 @@
 /* Click */
 .nav-links a.nav-remx:active{
   transform: translateY(-1px) scale(0.99);
+}
+
+    /* underline pre všetky menu položky OKREM REM */
+.nav-links a:not(.nav-remx)::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-10px;
+  height:2px;
+  width:0;
+  margin:auto;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(179,31,36,.65);
+  transition: width .25s ease;
+}
+.nav-links a:not(.nav-remx):hover::after{ width:100%; }
+
+    /* REM badge base (nechaj tvoj current look, iba doplnky) */
+.nav-links a.nav-remx{
+  position:relative;
+  overflow:hidden;           /* aby dym nešiel mimo */
+  isolation:isolate;         /* nech blend vyzerá pekne */
+}
+
+/* DYMIACI / VETERNÝ SWEEP LAYER */
+.nav-links a.nav-remx::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  z-index:1;
+  pointer-events:none;
+
+  /* biely “dym” + šmuhy */
+  background:
+    linear-gradient(115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.00) 38%,
+      rgba(255,255,255,0.55) 48%,
+      rgba(255,255,255,0.00) 60%,
+      rgba(255,255,255,0) 100%),
+    repeating-linear-gradient(115deg,
+      rgba(255,255,255,0.00) 0 18px,
+      rgba(255,255,255,0.10) 18px 20px,
+      rgba(255,255,255,0.00) 20px 36px);
+
+  filter: blur(10px);
+  opacity:0;
+  transform: translateX(-120%) rotate(-6deg);
+  mix-blend-mode: screen;
+}
+
+/* aby text bol NAD dymom */
+.nav-links a.nav-remx > *{
+  position:relative;
+  z-index:2;
+}
+
+/* hover: preletí “dym/vietor” */
+.nav-links a.nav-remx:hover::after{
+  opacity: .95;
+  animation: remWindSweep .75s ease-out forwards;
+}
+
+@keyframes remWindSweep{
+  0%   { transform: translateX(-120%) rotate(-6deg); opacity:0; }
+  15%  { opacity:.95; }
+  100% { transform: translateX(120%) rotate(-6deg); opacity:0; }
+}
+
+    .nav-links a.nav-remx:hover{
+  animation: remKick .22s ease-out 1;
+}
+@keyframes remKick{
+  0%{ transform: translateY(0) scale(1); }
+  60%{ transform: translateY(-2px) scale(1.03); }
+  100%{ transform: translateY(-1px) scale(1.02); }
 }
   </style>
 </head>
