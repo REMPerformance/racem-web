@@ -3671,7 +3671,7 @@ const out = EVENTS.filter(ev => {
         const ourCarsHTML = carsListHTML(d.ourCars);
         const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
         const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
-        const img = ev.img ? `<button class="thumbBtn" type="button" data-full="${escapeHTML(ev.img)}" data-title="${escapeHTML(ev.name)}" aria-label="Otvoriť fotku"><img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" /></button>` : "";
+        const img = ev.img ? `<a class="thumbBtn" href="${escapeHTML(ev.img)}" target="_blank" rel="noopener noreferrer" data-full="${escapeHTML(ev.img)}" data-title="${escapeHTML(ev.name)}" aria-label="Otvoriť fotku"><img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" /></a>` : "";
 
         return `
           <div class="item" data-id="${escapeHTML(ev.id)}" role="button" aria-label="Event ${escapeHTML(ev.name)}">
@@ -3770,7 +3770,7 @@ const out = EVENTS.filter(ev => {
         };
 
         el.addEventListener("click", (e) => {
-          if(e.target && (e.target.closest && e.target.closest("button"))) return;
+          if(e.target && e.target.closest && e.target.closest("button, .thumbBtn")) return;
 
           const isOpen = el.getAttribute("data-open") === "1";
           closeAllItems(list);
@@ -3790,6 +3790,7 @@ const out = EVENTS.filter(ev => {
         const thumbBtn = el.querySelector(".thumbBtn");
         if(thumbBtn){
           thumbBtn.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
             const src = thumbBtn.getAttribute("data-full") || "";
             const title = thumbBtn.getAttribute("data-title") || ev.name || "Foto";
