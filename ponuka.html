@@ -827,7 +827,7 @@
 
     async function loadFeed(){
       try{
-        const res = await fetch("/products.json?v=" + Date.now(), { cache: "no-store" });
+        const res = await fetch("./products.json?v=" + Date.now(), { cache: "no-store" });
         if(!res.ok) throw new Error("products.json sa nenačítal (" + res.status + ")");
         FEED = await res.json();
       }catch(err){
