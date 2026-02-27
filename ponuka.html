@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RACEM | Ponuka</title>
+  <meta name="description" content="RACEM – Ponuka dielov. Filtre podľa kategórie, značky, ceny a dostupnosti. Racing HUD štýl." />
+  <meta name="robots" content="index,follow" />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg0:#070707;
+      --bg1:#0b0b0b;
+      --bg2:#0f0f10;
+      --card:#0c0c0d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(179,31,36,.30);
+      --txt:#ffffff;
+      --muted:rgba(255,255,255,.66);
+      --muted2:rgba(255,255,255,.48);
+      --red:#B31F24;
+      --red2:#d6292f;
+      --good:#2ee58a;
+      --warn:#ffcc66;
+
+      --r:18px;
+      --r2:22px;
+
+      --shadow: 0 18px 70px rgba(0,0,0,.62);
+      --glow: 0 0 0 1px rgba(179,31,36,.22), 0 0 38px rgba(179,31,36,.22);
+      --glowStrong: 0 0 0 1px rgba(179,31,36,.35), 0 0 60px rgba(179,31,36,.26);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(179,31,36,.12), transparent 55%),
+        radial-gradient(900px 500px at 85% 20%, rgba(255,255,255,.06), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 25%, var(--bg0));
+      color:var(--txt);
+      font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* subtle grid / telemetry */
+    .bg-grid{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 90px 90px;
+      mask-image: radial-gradient(ellipse at top, rgba(0,0,0,.85), rgba(0,0,0,.2) 55%, transparent 72%);
+      opacity:.55;
+      z-index:0;
+    }
+
+    .wrap{
+      width:min(1220px, calc(100% - 34px));
+      margin:0 auto;
+      position:relative;
+      z-index:2;
+      padding:28px 0 70px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:16px 18px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius:var(--r2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:260px;
+    }
+    .logoMark{
+      width:44px; height:44px; border-radius:14px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.22), transparent 70%),
+        linear-gradient(135deg, rgba(179,31,36,.95), rgba(179,31,36,.35));
+      box-shadow: var(--glowStrong);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .brand h1{
+      margin:0;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1.05;
+    }
+    .brand small{
+      display:block;
+      margin-top:4px;
+      color:var(--muted2);
+      letter-spacing:.08em;
+      font-size:12px;
+      text-transform:uppercase;
+    }
+
+    .topActions{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:var(--txt);
+      padding:12px 14px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      transition:.18s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.20); box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .btn--red{
+      background:linear-gradient(135deg, rgba(179,31,36,.95), rgba(179,31,36,.55));
+      border-color:rgba(179,31,36,.55);
+      box-shadow: var(--glow);
+    }
+    .btn--red:hover{background:linear-gradient(135deg, rgba(214,41,47,.98), rgba(179,31,36,.55)); box-shadow: var(--glowStrong)}
+
+    .hero{
+      margin-top:18px;
+      border-radius:var(--r2);
+      border:1px solid var(--line);
+      background:
+        radial-gradient(900px 360px at 20% 20%, rgba(179,31,36,.22), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        linear-gradient(90deg, transparent, rgba(179,31,36,.22), transparent);
+      transform: translateX(-40%);
+      opacity:.35;
+      filter: blur(0px);
+      animation: scan 6.8s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes scan{
+      0%{transform:translateX(-45%)}
+      100%{transform:translateX(55%)}
+    }
+
+    .heroInner{
+      padding:18px 18px 14px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .heroInner{grid-template-columns:1fr}
+      .brand{min-width:auto}
+    }
+
+    .heroTitle{
+      margin:0;
+      font-family: Oswald, sans-serif;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:28px;
+      line-height:1.05;
+    }
+    .heroSub{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
+      max-width:64ch;
+    }
+
+    .hudBox{
+      border:1px solid rgba(179,31,36,.32);
+      background:rgba(7,7,7,.35);
+      border-radius:var(--r2);
+      padding:14px 14px 12px;
+      box-shadow: var(--glow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hudBox .label{
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.72);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .tag{
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.75);
+      white-space:nowrap;
+    }
+    .tag--red{
+      border-color:rgba(179,31,36,.55);
+      background:rgba(179,31,36,.18);
+      box-shadow:0 0 0 1px rgba(179,31,36,.15);
+    }
+
+    .telemetry{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .kpi{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background:rgba(255,255,255,.02);
+      padding:10px 12px;
+    }
+    .kpi .k{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted2)}
+    .kpi .v{
+      margin-top:6px;
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:18px;
+    }
+
+    .filters{
+      margin-top:14px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:var(--r2);
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+    }
+
+    .filtersGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr .7fr .7fr;
+      gap:10px;
+      align-items:end;
+    }
+    @media (max-width: 980px){
+      .filtersGrid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 560px){
+      .filtersGrid{grid-template-columns:1fr}
+    }
+
+    .field label{
+      display:block;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted2);
+      margin:0 0 6px;
+    }
+    .input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.35);
+      color:var(--txt);
+      outline:none;
+      transition:.15s ease;
+      font-family: inherit;
+    }
+    .input:focus, select:focus{
+      border-color:rgba(179,31,36,.55);
+      box-shadow: var(--glow);
+    }
+    select option{background:#0c0c0d}
+
+    .row2{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.78);
+      cursor:pointer;
+      user-select:none;
+      transition:.15s ease;
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .chip:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.20)}
+    .chip.active{
+      border-color:rgba(179,31,36,.65);
+      background:rgba(179,31,36,.18);
+      box-shadow: var(--glow);
+      color:#fff;
+    }
+
+    .rightActions{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+
+    .metaBar{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--muted2);
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--r2);
+      background:
+        radial-gradient(500px 220px at 20% 10%, rgba(179,31,36,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+      box-shadow: 0 14px 50px rgba(0,0,0,.55);
+      overflow:hidden;
+      position:relative;
+      transition:.18s ease;
+      display:flex;
+      flex-direction:column;
+      min-height: 360px;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color:rgba(179,31,36,.35);
+      box-shadow: 0 18px 70px rgba(0,0,0,.65), 0 0 0 1px rgba(179,31,36,.22);
+    }
+
+    .thumb{
+      height:170px;
+      background:
+        linear-gradient(135deg, rgba(179,31,36,.20), rgba(255,255,255,.06)),
+        radial-gradient(140px 80px at 20% 30%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(200px 120px at 80% 10%, rgba(0,0,0,.35), transparent 60%);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,.06) 0px,
+          rgba(255,255,255,.06) 1px,
+          transparent 1px,
+          transparent 12px
+        );
+      opacity:.18;
+      pointer-events:none;
+    }
+
+    .badgeRow{
+      position:absolute;
+      top:12px; left:12px; right:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .badge{
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.35);
+      color:rgba(255,255,255,.80);
+      backdrop-filter: blur(8px);
+    }
+    .badge--stock{border-color:rgba(46,229,138,.45); color:rgba(46,229,138,.92)}
+    .badge--order{border-color:rgba(255,204,102,.42); color:rgba(255,204,102,.95)}
+    .badge--red{border-color:rgba(179,31,36,.55); color:#fff; background:rgba(179,31,36,.22); box-shadow:0 0 0 1px rgba(179,31,36,.12)}
+
+    .cardBody{padding:12px 12px 14px; display:flex; flex-direction:column; gap:10px; flex:1}
+    .title{
+      margin:0;
+      font-family: Oswald, sans-serif;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      font-size:16px;
+      line-height:1.15;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      min-height: 38px;
+    }
+
+    .pillRow{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
+    .pill{
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.72);
+    }
+
+    .bottomRow{
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .price{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size:18px;
+    }
+    .muted{color:var(--muted2); font-size:12px; letter-spacing:.08em; text-transform:uppercase}
+
+    .empty{
+      margin-top:14px;
+      border:1px dashed rgba(255,255,255,.16);
+      border-radius:var(--r2);
+      padding:18px;
+      color:rgba(255,255,255,.72);
+      background:rgba(0,0,0,.22);
+    }
+
+    footer{
+      margin-top:18px;
+      color:rgba(255,255,255,.45);
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .line{
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(179,31,36,.35), transparent);
+      margin:18px 0 12px;
+      opacity:.9;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logoMark" aria-hidden="true"></div>
+        <div>
+          <h1>RACEM</h1>
+          <small>ponuka dielov • filtre • racing hud</small>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <a class="btn" href="/" title="Späť na racem.sk">Domov</a>
+        <a class="btn btn--red" href="/contact.html" title="Kontakt">Kontakt</a>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Ponuka - hero">
+      <div class="heroInner">
+        <div>
+          <h2 class="heroTitle">Ponuka dielov</h2>
+          <p class="heroSub">
+            Tu bude úplne všetko. Vyhľadaj diel podľa názvu, filtruj kategórie, značky, dostupnosť a cenu.
+            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Neskôr to len napojíš na tvoj JSON feed.
+          </p>
+        </div>
+
+        <div class="hudBox">
+          <div class="label">
+            <span>LIVE KATALÓG</span>
+            <span class="tag tag--red" id="hudStatus">ONLINE</span>
+          </div>
+
+          <div class="telemetry">
+            <div class="kpi">
+              <div class="k">Zobrazené</div>
+              <div class="v" id="kpiShown">0</div>
+            </div>
+            <div class="kpi">
+              <div class="k">Spolu položiek</div>
+              <div class="v" id="kpiTotal">0</div>
+            </div>
+            <div class="kpi">
+              <div class="k">Kategórie</div>
+              <div class="v" id="kpiCats">0</div>
+            </div>
+            <div class="kpi">
+              <div class="k">Značky</div>
+              <div class="v" id="kpiBrands">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="filters" aria-label="Filtre">
+      <div class="filtersGrid">
+        <div class="field">
+          <label for="q">Vyhľadať</label>
+          <input class="input" id="q" type="search" placeholder="napr. intercooler, downpipe, wing, coilovers..." autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="brand">Značka</label>
+          <select id="brand">
+            <option value="">Všetky</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="stock">Dostupnosť</label>
+          <select id="stock">
+            <option value="">Všetko</option>
+            <option value="in_stock">Skladom</option>
+            <option value="made_to_order">Na objednávku</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sort">Triedenie</label>
+          <select id="sort">
+            <option value="relevance">Relevantnosť</option>
+            <option value="price_asc">Cena ↑</option>
+            <option value="price_desc">Cena ↓</option>
+            <option value="name_asc">Názov A→Z</option>
+            <option value="name_desc">Názov Z→A</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="chips" id="chips" aria-label="Kategórie"></div>
+
+        <div class="rightActions">
+          <button class="btn" id="reset" type="button">Reset</button>
+          <button class="btn btn--red" id="onlyDeals" type="button" title="Zobrazí len vybrané TOP položky">TOP výber</button>
+        </div>
+      </div>
+
+      <div class="row2" style="margin-top:10px;">
+        <div class="chips" style="gap:10px;">
+          <div class="field" style="min-width:160px; flex:1;">
+            <label for="minPrice">Min cena (€)</label>
+            <input class="input" id="minPrice" type="number" inputmode="numeric" placeholder="0" min="0" />
+          </div>
+          <div class="field" style="min-width:160px; flex:1;">
+            <label for="maxPrice">Max cena (€)</label>
+            <input class="input" id="maxPrice" type="number" inputmode="numeric" placeholder="99999" min="0" />
+          </div>
+        </div>
+
+        <div class="metaBar">
+          <div id="metaText">Načítané…</div>
+          <div id="activeFilters">Filtre: žiadne</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section aria-label="Výpis produktov">
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" style="display:none;">
+        Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> RACEM • Beat them all</div>
+      <div>HUD UI • statický katalóg pripravený na JSON feed</div>
+    </footer>
+  </div>
+
+  <script>
+    // =========================
+    // 1) DEMO DATA (nahradíš vlastným feedom)
+    // =========================
+    const PRODUCTS = [
+      // --- Kategórie zo screenu (presné názvy + doplnené demo produkty) ---
+      { id:"p1",  name:"Intercooler kit – front mount", category:"Intercooler", brand:"RACEM Select", stock:"in_stock", price:289, tags:["charge","boost"], top:true,  desc:"Front mount kit pre lepší IAT a stabilný výkon." },
+      { id:"p2",  name:"Intercooler piping – hliník",    category:"Intercooler", brand:"TurboWorks",   stock:"made_to_order", price:169, tags:["piping"], top:false, desc:"Rýchla stavba, pevné spoje, pripravené na boost." },
+      { id:"p3",  name:"Aero splitter – predná pera",     category:"Aero",        brand:"Streetfighter LA", stock:"made_to_order", price:220, tags:["aero","front"], top:true, desc:"Agresívny look + reálny prítlak (podľa setupu)." },
+      { id:"p4",  name:"Carbon ducktail – BMW E36",       category:"Aero",        brand:"SFXLA", stock:"made_to_order", price:349, tags:["carbon","rear"], top:true, desc:"Ducktail pre čistý grip a vizuálny tlak." },
+      { id:"p5",  name:"LED bar – slim 300mm",            category:"osvetlenie",  brand:"LEDO CI", stock:"in_stock", price:39, tags:["led"], top:false, desc:"Denné svietenie / doplnkové svetlo." },
+      { id:"p6",  name:"Angel eyes – BMW E46",            category:"osvetlenie",  brand:"LEDO CI", stock:"in_stock", price:59, tags:["bmw"], top:true, desc:"Čistý OEM+ look, ostré kruhy." },
+      { id:"p7",  name:"Výfuk catback – 63,5mm",          category:"Výfukové systémy", brand:"REM Performance", stock:"made_to_order", price:590, tags:["exhaust"], top:true, desc:"Priamy prietok, agresívny tón bez zbytočnej vaty." },
+      { id:"p8",  name:"Downpipe – 3.0''",                category:"Výfukové systémy", brand:"HGK", stock:"made_to_order", price:210, tags:["downpipe"], top:false, desc:"Rýchle spoolovanie, pevné zvary." },
+      { id:"p9",  name:"Shift knob – alu",                category:"Styling doplnky", brand:"RACEM", stock:"in_stock", price:25, tags:["interior"], top:false, desc:"Krátky, presný grip, racing feel." },
+      { id:"p10", name:"Wide mirrors – set",              category:"Styling doplnky", brand:"CSR", stock:"made_to_order", price:120, tags:["exterior"], top:false, desc:"Širší rozhľad + čistý štýl." },
+      { id:"p11", name:"Accessory pack – clamps & t-bolts",category:"Accesories", brand:"TurboWorks", stock:"in_stock", price:19, tags:["hardware"], top:false, desc:"Spony, skrutky, T-bolts – nech to drží." },
+
+      // --- Doplnené kategórie "navyše" (aby bolo “úplne všetko”) ---
+      { id:"p12", name:"Coilovers – street/track",        category:"Podvozok", brand:"BC Racing", stock:"made_to_order", price:1090, tags:["suspension"], top:true, desc:"Setup na mieru, výška, tuhosť, kontrola." },
+      { id:"p13", name:"Brake pads – sport",              category:"Brzdy",     brand:"EBC", stock:"in_stock", price:119, tags:["brakes"], top:false, desc:"Lepší bite, stabilita pri teplote." },
+      { id:"p14", name:"Oil cooler kit",                  category:"Chladenie", brand:"Mishimoto", stock:"made_to_order", price:399, tags:["cooling"], top:false, desc:"Stabilný tlak a teplota oleja pri záťaži." },
+      { id:"p15", name:"Intake – cold air",               category:"Sanovanie", brand:"K&N", stock:"in_stock", price:129, tags:["intake"], top:false, desc:"Lepší prietok, ostrý nástup (podľa auta)." },
+      { id:"p16", name:"ECU Stage 1/2/3 – custom",        category:"ECU/Software", brand:"REM Performance", stock:"made_to_order", price:250, tags:["tune"], top:true, desc:"Úprava podľa setupu: výkon, odozva, limity." },
+      { id:"p17", name:"Clutch kit – performance",        category:"Pohon", brand:"Sachs", stock:"made_to_order", price:680, tags:["drivetrain"], top:false, desc:"Prenos momentu bez drama." },
+      { id:"p18", name:"Turbo kit – základ",              category:"Turbo kity", brand:"RACEM Select", stock:"made_to_order", price:2490, tags:["boost"], top:true, desc:"Základ pre boost build (podľa platformy)." },
+      { id:"p19", name:"Supercharger kit – Eaton",        category:"Kompresor kity", brand:"RACEM Select", stock:"made_to_order", price:2890, tags:["boost"], top:true, desc:"Lineárny ťah a instant reakcia." },
+      { id:"p20", name:"Seat – FIA bucket",               category:"Interiér", brand:"Sparco", stock:"made_to_order", price:399, tags:["safety"], top:false, desc:"Low seating, lepší lock v zákrute." },
+    ];
+
+    // Kategórie: pridáme tie zo screenu + ďalšie (z dát)
+    const CATEGORY_ORDER = [
+      "Styling doplnky",
+      "osvetlenie",
+      "Intercooler",
+      "Accesories",
+      "Aero",
+      "Výfukové systémy",
+      // navyše:
+      "Turbo kity",
+      "Kompresor kity",
+      "Chladenie",
+      "Sanovanie",
+      "ECU/Software",
+      "Podvozok",
+      "Brzdy",
+      "Pohon",
+      "Interiér",
+    ];
+
+    // =========================
+    // 2) STATE
+    // =========================
+    const state = {
+      q: "",
+      category: "",     // single-select chip
+      brand: "",
+      stock: "",
+      minPrice: null,
+      maxPrice: null,
+      sort: "relevance",
+      onlyTop: false
+    };
+
+    // =========================
+    // 3) ELEMENTS
+    // =========================
+    const el = {
+      q: document.getElementById("q"),
+      brand: document.getElementById("brand"),
+      stock: document.getElementById("stock"),
+      sort: document.getElementById("sort"),
+      minPrice: document.getElementById("minPrice"),
+      maxPrice: document.getElementById("maxPrice"),
+      chips: document.getElementById("chips"),
+      grid: document.getElementById("grid"),
+      empty: document.getElementById("empty"),
+      reset: document.getElementById("reset"),
+      onlyDeals: document.getElementById("onlyDeals"),
+      metaText: document.getElementById("metaText"),
+      activeFilters: document.getElementById("activeFilters"),
+
+      kpiShown: document.getElementById("kpiShown"),
+      kpiTotal: document.getElementById("kpiTotal"),
+      kpiCats: document.getElementById("kpiCats"),
+      kpiBrands: document.getElementById("kpiBrands"),
+      year: document.getElementById("year"),
+    };
+
+    // =========================
+    // 4) HELPERS
+    // =========================
+    const euro = (n) => {
+      const x = Number(n || 0);
+      return x.toLocaleString("sk-SK") + " €";
+    };
+
+    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    const contains = (hay, needle) => norm(hay).includes(norm(needle));
+
+    function computeRelevance(p, q){
+      if(!q) return 0;
+      let score = 0;
+      const text = `${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(" ")} ${p.desc||""}`;
+      const nq = norm(q);
+      const nt = norm(text);
+
+      // jednoduchý scoring: názov = viac bodov
+      if(norm(p.name).includes(nq)) score += 6;
+      if(norm(p.brand).includes(nq)) score += 3;
+      if(norm(p.category).includes(nq)) score += 2;
+      if(nt.includes(nq)) score += 1;
+      if(p.top) score += 0.5;
+      return score;
+    }
+
+    function unique(arr){
+      return [...new Set(arr)];
+    }
+
+    // =========================
+    // 5) RENDER UI (chips + select)
+    // =========================
+    function buildChips(){
+      // kategórie z dát + poradie
+      const fromData = unique(PRODUCTS.map(p => p.category));
+      const merged = unique([...CATEGORY_ORDER, ...fromData]).filter(Boolean);
+
+      el.chips.innerHTML = "";
+      const allChip = document.createElement("div");
+      allChip.className = "chip" + (state.category === "" ? " active" : "");
+      allChip.textContent = "Všetky";
+      allChip.onclick = () => { state.category = ""; renderAll(); };
+      el.chips.appendChild(allChip);
+
+      for(const c of merged){
+        const chip = document.createElement("div");
+        chip.className = "chip" + (state.category === c ? " active" : "");
+        chip.textContent = c;
+        chip.onclick = () => {
+          state.category = (state.category === c) ? "" : c;
+          renderAll();
+        };
+        el.chips.appendChild(chip);
+      }
+
+      el.kpiCats.textContent = merged.length.toLocaleString("sk-SK");
+    }
+
+    function buildBrandSelect(){
+      const brands = unique(PRODUCTS.map(p => p.brand).filter(Boolean)).sort((a,b) => a.localeCompare(b, "sk"));
+      // reset options (keep first)
+      el.brand.innerHTML = `<option value="">Všetky</option>` + brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+      el.kpiBrands.textContent = brands.length.toLocaleString("sk-SK");
+    }
+
+    // =========================
+    // 6) FILTER + SORT
+    // =========================
+    function applyFilters(){
+      const q = state.q.trim();
+      const minP = (state.minPrice === null || state.minPrice === "") ? null : Number(state.minPrice);
+      const maxP = (state.maxPrice === null || state.maxPrice === "") ? null : Number(state.maxPrice);
+
+      let list = PRODUCTS.slice();
+
+      if(state.onlyTop){
+        list = list.filter(p => !!p.top);
+      }
+
+      if(state.category){
+        list = list.filter(p => p.category === state.category);
+      }
+
+      if(state.brand){
+        list = list.filter(p => p.brand === state.brand);
+      }
+
+      if(state.stock){
+        list = list.filter(p => p.stock === state.stock);
+      }
+
+      if(Number.isFinite(minP)){
+        list = list.filter(p => Number(p.price) >= minP);
+      }
+
+      if(Number.isFinite(maxP)){
+        list = list.filter(p => Number(p.price) <= maxP);
+      }
+
+      // search
+      if(q){
+        list = list
+          .map(p => ({...p, _rel: computeRelevance(p, q)}))
+          .filter(p => p._rel > 0 || contains(p.desc, q) || contains(p.tags?.join(" "), q));
+      } else {
+        list = list.map(p => ({...p, _rel: p.top ? 0.5 : 0}));
+      }
+
+      // sort
+      const s = state.sort;
+      if(s === "price_asc") list.sort((a,b) => a.price - b.price);
+      else if(s === "price_desc") list.sort((a,b) => b.price - a.price);
+      else if(s === "name_asc") list.sort((a,b) => a.name.localeCompare(b.name, "sk"));
+      else if(s === "name_desc") list.sort((a,b) => b.name.localeCompare(a.name, "sk"));
+      else {
+        // relevance default
+        list.sort((a,b) => (b._rel || 0) - (a._rel || 0) || (b.top - a.top) || a.name.localeCompare(b.name,"sk"));
+      }
+
+      return list;
+    }
+
+    // =========================
+    // 7) RENDER CARDS
+    // =========================
+    function renderCards(list){
+      el.grid.innerHTML = "";
+      el.empty.style.display = list.length ? "none" : "block";
+
+      for(const p of list){
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const stockBadge = p.stock === "in_stock"
+          ? `<span class="badge badge--stock">Skladom</span>`
+          : `<span class="badge badge--order">Na objednávku</span>`;
+
+        const topBadge = p.top ? `<span class="badge badge--red">TOP</span>` : "";
+
+        card.innerHTML = `
+          <div class="thumb">
+            <div class="badgeRow">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                ${topBadge}
+                ${stockBadge}
+              </div>
+              <span class="badge">${escapeHtml(p.category)}</span>
+            </div>
+          </div>
+
+          <div class="cardBody">
+            <h3 class="title">${escapeHtml(p.name)}</h3>
+            <p class="sub">${escapeHtml(p.desc || "")}</p>
+
+            <div class="pillRow">
+              <span class="pill">${escapeHtml(p.brand)}</span>
+              ${(p.tags||[]).slice(0,3).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+            </div>
+
+            <div class="bottomRow">
+              <div>
+                <div class="price">${euro(p.price)}</div>
+                <div class="muted">orientačne • bez dopravy</div>
+              </div>
+              <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
+            </div>
+          </div>
+        `;
+
+        el.grid.appendChild(card);
+      }
+
+      // demo "detail" klik (nahradíš vlastnou logikou)
+      el.grid.querySelectorAll("[data-add]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const id = e.currentTarget.getAttribute("data-add");
+          const prod = PRODUCTS.find(x => x.id === id);
+          if(!prod) return;
+          alert(
+            `RACEM • DETAIL (demo)\n\n${prod.name}\nKategória: ${prod.category}\nZnačka: ${prod.brand}\nDostupnosť: ${prod.stock === "in_stock" ? "Skladom" : "Na objednávku"}\nCena: ${euro(prod.price)}\n\nĎalej sa to napojí na reálny produkt/Shopify/checkout.`
+          );
+        });
+      });
+    }
+
+    // =========================
+    // 8) META / KPI
+    // =========================
+    function renderMeta(list){
+      el.kpiTotal.textContent = PRODUCTS.length.toLocaleString("sk-SK");
+      el.kpiShown.textContent = list.length.toLocaleString("sk-SK");
+
+      const parts = [];
+      if(state.onlyTop) parts.push("TOP výber");
+      if(state.category) parts.push(`kategória: ${state.category}`);
+      if(state.brand) parts.push(`značka: ${state.brand}`);
+      if(state.stock) parts.push(`dostupnosť: ${state.stock === "in_stock" ? "skladom" : "na objednávku"}`);
+      if(state.q) parts.push(`hľadať: "${state.q}"`);
+      if(state.minPrice !== null && state.minPrice !== "" && state.minPrice !== undefined) parts.push(`min: ${state.minPrice}€`);
+      if(state.maxPrice !== null && state.maxPrice !== "" && state.maxPrice !== undefined) parts.push(`max: ${state.maxPrice}€`);
+
+      el.activeFilters.textContent = parts.length ? ("Filtre: " + parts.join(" • ")) : "Filtre: žiadne";
+      el.metaText.textContent = `Zobrazené: ${list.length} / ${PRODUCTS.length}`;
+    }
+
+    // =========================
+    // 9) EVENTS
+    // =========================
+    function bindEvents(){
+      el.q.addEventListener("input", () => { state.q = el.q.value; renderAll(); });
+      el.brand.addEventListener("change", () => { state.brand = el.brand.value; renderAll(); });
+      el.stock.addEventListener("change", () => { state.stock = el.stock.value; renderAll(); });
+      el.sort.addEventListener("change", () => { state.sort = el.sort.value; renderAll(); });
+
+      el.minPrice.addEventListener("input", () => { state.minPrice = el.minPrice.value; renderAll(); });
+      el.maxPrice.addEventListener("input", () => { state.maxPrice = el.maxPrice.value; renderAll(); });
+
+      el.reset.addEventListener("click", () => {
+        state.q = ""; state.category=""; state.brand=""; state.stock=""; state.minPrice=null; state.maxPrice=null; state.sort="relevance"; state.onlyTop=false;
+        el.q.value=""; el.brand.value=""; el.stock.value=""; el.sort.value="relevance"; el.minPrice.value=""; el.maxPrice.value="";
+        renderAll();
+      });
+
+      el.onlyDeals.addEventListener("click", () => {
+        state.onlyTop = !state.onlyTop;
+        el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
+        el.onlyDeals.classList.toggle("btn", true);
+        renderAll();
+      });
+    }
+
+    // =========================
+    // 10) SAFE HTML
+    // =========================
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // =========================
+    // 11) MAIN RENDER
+    // =========================
+    function renderAll(){
+      buildChips(); // refresh active state
+      const list = applyFilters();
+      renderCards(list);
+      renderMeta(list);
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    (function init(){
+      el.year.textContent = new Date().getFullYear();
+      buildBrandSelect();
+      buildChips();
+      bindEvents();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
