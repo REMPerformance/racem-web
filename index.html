@@ -247,22 +247,14 @@
       color:#fff;
       text-shadow: 0 0 14px rgba(179,31,36,0.25);
     }
-    .nav-links a::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-10px;
-      width:0;
-      height:2px;
-      background: var(--red);
-      box-shadow:
-        0 0 10px rgba(179,31,36,.75),
-        0 0 22px rgba(179,31,36,.35);
-      transform: translateX(-50%);
-      transition: width .32s ease;
-    }
-    .nav-links a:hover::after{ width: 125%; }
-    .nav-links a:active{ transform: translateY(1px); }
+   .nav-links a.nav-remx::after{ /* necháme si vlastný edge highlight, ale zrušíme pôvodnú podčiarkovaciu čiaru */
+  width:auto !important;
+  height:auto !important;
+  left:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+}
+.nav-links a.nav-remx:hover::after{ width:auto !important; }
 
     /* ===== HVIEZDNE STROPY – hover efekt ===== */
     .nav-links a.nav-stars{
@@ -2933,6 +2925,197 @@
 .nav-rem:active{
   transform:scale(.97);
 }
+
+    /* =========================
+   REM PERFORMANCE – RACE BANNER
+   ========================= */
+
+.nav-links a.nav-remx{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 16px 10px 18px;
+  text-decoration:none;
+  color:#fff;
+
+  /* RACING SHAPE (nie pill) */
+  border-radius: 10px;
+  clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 10px 50%);
+
+  /* BRUTAL IDLE LOOK */
+  background:
+    linear-gradient(180deg, rgba(179,31,36,0.95), rgba(60,8,10,0.92)),
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,0.18), transparent 55%);
+
+  border:1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 0 0 1px rgba(179,31,36,0.20) inset,
+    0 18px 55px rgba(0,0,0,0.55),
+    0 0 26px rgba(179,31,36,0.35);
+
+  transform: translateZ(0);
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+/* subtle scanlines + micro texture (idle) */
+.nav-links a.nav-remx::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.10) 0px,
+      rgba(255,255,255,0.10) 1px,
+      rgba(255,255,255,0.00) 7px
+    ),
+    radial-gradient(circle at 60% 40%, rgba(0,0,0,0.0), rgba(0,0,0,0.35));
+  mix-blend-mode: overlay;
+}
+
+/* racing edge highlight */
+.nav-links a.nav-remx::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: 12px;
+  clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 10px 50%);
+  pointer-events:none;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  opacity:.35;
+}
+
+/* Text */
+.nav-remx-label{
+  font-family:'Oswald',sans-serif;
+  font-weight: 1000;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height:1;
+  text-shadow:
+    0 2px 16px rgba(0,0,0,0.65),
+    0 0 22px rgba(179,31,36,0.35);
+}
+
+.nav-remx-sub{
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-weight: 900;
+  opacity: .85;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255,255,255,0.22);
+}
+
+/* =========================
+   HOVER “BIELY DYM / VIETOR” SWEEP
+   ========================= */
+
+.nav-links a.nav-remx .nav-remx-sweep{ display:none; } /* safety */
+
+.nav-links a.nav-remx:hover{
+  transform: translateY(-2px) scale(1.03);
+  border-color: rgba(255,255,255,0.18);
+  filter: brightness(1.03);
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.10) inset,
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 40px rgba(179,31,36,0.48);
+}
+
+/* “dym/vietor” prelet – extra pseudo-layer */
+.nav-links a.nav-remx:hover::after{
+  opacity: .55;
+}
+
+/* Smoke sweep layer (nový pseudo element cez ::marker? nie, spravíme cez ďalší ::before2 simuláciu pomocou box-shadow vnútri) */
+.nav-links a.nav-remx:hover{
+  /* nič */
+}
+
+.nav-links a.nav-remx:hover .nav-remx-label{
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.55),
+    0 0 28px rgba(179,31,36,0.75);
+}
+
+/* Wind/Smoke overlay: použijeme ďalší pseudo cez background-image animáciu */
+.nav-links a.nav-remx{
+  overflow:hidden; /* potrebné pre sweep */
+}
+
+.nav-links a.nav-remx > *{ position:relative; z-index:2; }
+
+/* Sweep “dym” */
+.nav-links a.nav-remx::selection{ background:transparent; }
+
+.nav-links a.nav-remx:hover::before{
+  opacity:.22; /* scanlines ostanú, ale jemnejšie */
+}
+
+.nav-links a.nav-remx:hover::after{
+  /* nech ostane edge highlight */
+}
+
+/* Toto je hlavný dym – pridáme ho ako vnútorný overlay cez box “glow” element */
+.nav-links a.nav-remx::backdrop{}
+
+/* Pridáme tretí overlay pomocou background na samotnom linku cez CSS variables */
+.nav-links a.nav-remx{
+  --sweepX: -160%;
+}
+
+.nav-links a.nav-remx:hover{
+  animation: remSweepKick .9s ease-out 1;
+}
+
+@keyframes remSweepKick{
+  0%{ --sweepX: -160%; }
+  35%{ --sweepX: 30%; }
+  100%{ --sweepX: 160%; }
+}
+
+/* Dym vykreslíme cez extra “wind gradient” layer v backgrounde */
+.nav-links a.nav-remx{
+  background:
+    /* wind/smoke layer (idle skoro neviditeľná) */
+    linear-gradient(115deg,
+      transparent 0%,
+      rgba(255,255,255,0.00) 35%,
+      rgba(255,255,255,0.28) 48%,
+      rgba(255,255,255,0.00) 62%,
+      transparent 100%) var(--sweepX) 0 / 220% 100% no-repeat,
+
+    /* base racing red */
+    linear-gradient(180deg, rgba(179,31,36,0.95), rgba(60,8,10,0.92)),
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,0.18), transparent 55%);
+}
+
+.nav-links a.nav-remx:hover{
+  /* sprav dym výraznejší + rozmazaný dojem */
+  filter: brightness(1.03);
+}
+
+.nav-links a.nav-remx:hover{
+  /* jemný “rozmazaný vietor” dojem cez shadow */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.10) inset,
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 40px rgba(179,31,36,0.48),
+    0 0 26px rgba(255,255,255,0.08);
+}
+
+/* Click */
+.nav-links a.nav-remx:active{
+  transform: translateY(-1px) scale(0.99);
+}
   </style>
 </head>
 
@@ -2973,9 +3156,9 @@
         <a href="#bodykity">Body Kits</a>
         <a href="mobilny-autoservis.html">Mobilný autoservis</a>
         <a href="hviezdne-stropy.html" class="nav-stars">Hviezdne stropy</a>
-        <a href="https://www.racem.sk/remperformance" class="nav-rem">
-  <span class="nav-rem-text">REM Performance</span>
-  <span class="nav-rem-glow"></span>
+       <a href="https://www.racem.sk/remperformance" class="nav-remx">
+  <span class="nav-remx-label">REM Performance</span>
+  <span class="nav-remx-sub">division</span>
 </a>
       </nav>
     </div>
