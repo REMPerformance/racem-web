@@ -515,7 +515,167 @@
   border:1px solid rgba(255,255,255,.10);
   box-shadow: 0 0 0 1px rgba(179,31,36,.18), 0 0 38px rgba(179,31,36,.18);
 }
-  </style>
+  
+    /* ===== MODAL (produkt detail + varianty) ===== */
+    .modalOverlay{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.72);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .modalOverlay.open{display:flex;}
+    .modal{
+      width:min(980px, 100%);
+      border-radius:var(--r2);
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(900px 360px at 20% 10%, rgba(179,31,36,.18), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .modalHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 14px 12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+    }
+    .modalTitle{
+      margin:0;
+      font-family: Oswald, sans-serif;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:18px;
+      line-height:1.15;
+    }
+    .modalSub{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55}
+    .modalClose{
+      flex:0 0 auto;
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .modalBody{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      padding:14px;
+    }
+    @media (max-width: 860px){
+      .modalBody{grid-template-columns:1fr}
+    }
+    .gallery{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--r2);
+      background:rgba(0,0,0,.24);
+      overflow:hidden;
+      position:relative;
+      min-height: 260px;
+      display:flex;
+      flex-direction:column;
+    }
+    .galleryMain{
+      aspect-ratio: 16/10;
+      background:rgba(0,0,0,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .galleryMain img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .galleryThumbs{
+      display:flex;
+      gap:8px;
+      padding:10px;
+      overflow:auto;
+      border-top:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.02);
+    }
+    .gThumb{
+      width:84px; height:54px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.25);
+      overflow:hidden;
+      cursor:pointer;
+      flex:0 0 auto;
+      opacity:.85;
+      transition:.15s ease;
+    }
+    .gThumb:hover{opacity:1; transform:translateY(-1px); border-color:rgba(255,255,255,.18)}
+    .gThumb.active{border-color:rgba(179,31,36,.65); box-shadow: var(--glow); opacity:1}
+    .gThumb img{width:100%; height:100%; object-fit:cover; display:block}
+
+    .panelBox{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--r2);
+      background:rgba(0,0,0,.22);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .rowSplit{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .variants{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .vOpt{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.82);
+      cursor:pointer;
+      user-select:none;
+      transition:.15s ease;
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .vOpt:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.20)}
+    .vOpt.active{
+      border-color:rgba(179,31,36,.65);
+      background:rgba(179,31,36,.18);
+      box-shadow: var(--glow);
+      color:#fff;
+    }
+    .note{
+      color:var(--muted2);
+      font-size:12px;
+      letter-spacing:.06em;
+      line-height:1.55;
+    }
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none !important;
+      box-shadow:none !important;
+    }
+
+</style>
 </head>
 
 <body>
@@ -655,53 +815,67 @@
 
   <script>
     // =========================
-    // 1) DEMO DATA (nahradíš vlastným feedom)
+    // 1) DATA (JSON feed z products.json)
     // =========================
-    const PRODUCTS = [
-      // --- Kategórie zo screenu (presné názvy + doplnené demo produkty) ---
-      { id:"p1",  name:"Intercooler kit – front mount", category:"Intercooler", brand:"RACEM Select", stock:"in_stock", price:289, tags:["charge","boost"], top:true,  desc:"Front mount kit pre lepší IAT a stabilný výkon." },
-      { id:"p2",  name:"Intercooler piping – hliník",    category:"Intercooler", brand:"TurboWorks",   stock:"made_to_order", price:169, tags:["piping"], top:false, desc:"Rýchla stavba, pevné spoje, pripravené na boost." },
-      { id:"p3",  name:"Aero splitter – predná pera",     category:"Aero",        brand:"Streetfighter LA", stock:"made_to_order", price:220, tags:["aero","front"], top:true, desc:"Agresívny look + reálny prítlak (podľa setupu)." },
-      { id:"p4",  name:"Carbon ducktail – BMW E36",       category:"Aero",        brand:"SFXLA", stock:"made_to_order", price:349, tags:["carbon","rear"], top:true, desc:"Ducktail pre čistý grip a vizuálny tlak." },
-      { id:"p5",  name:"LED bar – slim 300mm",            category:"osvetlenie",  brand:"LEDO CI", stock:"in_stock", price:39, tags:["led"], top:false, desc:"Denné svietenie / doplnkové svetlo." },
-      { id:"p6",  name:"Angel eyes – BMW E46",            category:"osvetlenie",  brand:"LEDO CI", stock:"in_stock", price:59, tags:["bmw"], top:true, desc:"Čistý OEM+ look, ostré kruhy." },
-      { id:"p7",  name:"Výfuk catback – 63,5mm",          category:"Výfukové systémy", brand:"REM Performance", stock:"made_to_order", price:590, tags:["exhaust"], top:true, desc:"Priamy prietok, agresívny tón bez zbytočnej vaty." },
-      { id:"p8",  name:"Downpipe – 3.0''",                category:"Výfukové systémy", brand:"HGK", stock:"made_to_order", price:210, tags:["downpipe"], top:false, desc:"Rýchle spoolovanie, pevné zvary." },
-      { id:"p9",  name:"Shift knob – alu",                category:"Styling doplnky", brand:"RACEM", stock:"in_stock", price:25, tags:["interior"], top:false, desc:"Krátky, presný grip, racing feel." },
-      { id:"p10", name:"Wide mirrors – set",              category:"Styling doplnky", brand:"CSR", stock:"made_to_order", price:120, tags:["exterior"], top:false, desc:"Širší rozhľad + čistý štýl." },
-      { id:"p11", name:"Accessory pack – clamps & t-bolts",category:"Accesories", brand:"TurboWorks", stock:"in_stock", price:19, tags:["hardware"], top:false, desc:"Spony, skrutky, T-bolts – nech to drží." },
+    // Očakávaný formát: { meta, categories, products[] (produkt = karta, variants[]) }
+    let FEED = null;              // raw feed
+    let PRODUCTS = [];            // flat list pre grid (product cards)
+    let PRODUCT_BY_ID = new Map(); // id -> full product object
 
-      // --- Doplnené kategórie "navyše" (aby bolo “úplne všetko”) ---
-      { id:"p12", name:"Coilovers – street/track",        category:"Podvozok", brand:"BC Racing", stock:"made_to_order", price:1090, tags:["suspension"], top:true, desc:"Setup na mieru, výška, tuhosť, kontrola." },
-      { id:"p13", name:"Brake pads – sport",              category:"Brzdy",     brand:"EBC", stock:"in_stock", price:119, tags:["brakes"], top:false, desc:"Lepší bite, stabilita pri teplote." },
-      { id:"p14", name:"Oil cooler kit",                  category:"Chladenie", brand:"Mishimoto", stock:"made_to_order", price:399, tags:["cooling"], top:false, desc:"Stabilný tlak a teplota oleja pri záťaži." },
-      { id:"p15", name:"Intake – cold air",               category:"Sanovanie", brand:"K&N", stock:"in_stock", price:129, tags:["intake"], top:false, desc:"Lepší prietok, ostrý nástup (podľa auta)." },
-      { id:"p16", name:"ECU Stage 1/2/3 – custom",        category:"ECU/Software", brand:"REM Performance", stock:"made_to_order", price:250, tags:["tune"], top:true, desc:"Úprava podľa setupu: výkon, odozva, limity." },
-      { id:"p17", name:"Clutch kit – performance",        category:"Pohon", brand:"Sachs", stock:"made_to_order", price:680, tags:["drivetrain"], top:false, desc:"Prenos momentu bez drama." },
-      { id:"p18", name:"Turbo kit – základ",              category:"Turbo kity", brand:"RACEM Select", stock:"made_to_order", price:2490, tags:["boost"], top:true, desc:"Základ pre boost build (podľa platformy)." },
-      { id:"p19", name:"Supercharger kit – Eaton",        category:"Kompresor kity", brand:"RACEM Select", stock:"made_to_order", price:2890, tags:["boost"], top:true, desc:"Lineárny ťah a instant reakcia." },
-      { id:"p20", name:"Seat – FIA bucket",               category:"Interiér", brand:"Sparco", stock:"made_to_order", price:399, tags:["safety"], top:false, desc:"Low seating, lepší lock v zákrute." },
-    ];
+    // Ak chceš, vieš si sem dať preferované poradie kategórií (inak sa použije feed.categories + fallback z dát)
+    const CATEGORY_ORDER = []; // napr. ["Aero","Intercooler",...]
 
-    // Kategórie: pridáme tie zo screenu + ďalšie (z dát)
-    const CATEGORY_ORDER = [
-      "Styling doplnky",
-      "osvetlenie",
-      "Intercooler",
-      "Accesories",
-      "Aero",
-      "Výfukové systémy",
-      // navyše:
-      "Turbo kity",
-      "Kompresor kity",
-      "Chladenie",
-      "Sanovanie",
-      "ECU/Software",
-      "Podvozok",
-      "Brzdy",
-      "Pohon",
-      "Interiér",
-    ];
+    async function loadFeed(){
+      try{
+        const res = await fetch("/products.json?v=" + Date.now(), { cache: "no-store" });
+        if(!res.ok) throw new Error("products.json sa nenačítal (" + res.status + ")");
+        FEED = await res.json();
+      }catch(err){
+        console.error(err);
+        const hs = document.getElementById("hudStatus");
+        hs.textContent = "OFFLINE";
+        hs.classList.remove("tag--red");
+        hs.style.borderColor = "rgba(255,204,102,.42)";
+        hs.style.background = "rgba(255,204,102,.12)";
+        hs.style.color = "rgba(255,204,102,.95)";
+        FEED = { meta:{currency:"EUR", shopDomain:"shop.racem.sk"}, categories:[], products:[] };
+      }
+
+      const prods = Array.isArray(FEED.products) ? FEED.products : [];
+      PRODUCT_BY_ID = new Map(prods.map(p => [p.id, p]));
+
+      PRODUCTS = prods.map(p => {
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+        const prices = variants.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
+        const minPrice = prices.length ? Math.min(...prices) : 0;
+
+        const hasStock = variants.some(v => v.stock === "in_stock");
+        const stock = hasStock ? "in_stock" : "made_to_order";
+
+        const short = (p.short || "").trim();
+        const descFallback = stripHtml(p.descriptionHtml || "").trim();
+
+        return {
+          id: p.id,
+          handle: p.handle,
+          name: p.title,
+          category: p.category || "Uncategorized",
+          brand: p.manufacturer || "RACEM",
+          stock,
+          price: minPrice,
+          tags: Array.isArray(p.tags) ? p.tags : [],
+          top: (Array.isArray(p.tags) ? p.tags : []).some(t => String(t).toLowerCase() === "top"),
+          desc: short || (descFallback ? descFallback.slice(0, 140) + (descFallback.length > 140 ? "…" : "") : ""),
+          images: Array.isArray(p.images) ? p.images : [],
+          productUrl: p.productUrl || (p.handle ? ("https://shop.racem.sk/products/" + p.handle) : ""),
+        };
+      });
+    }
+
+    function stripHtml(s){
+      return String(s || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    }
+
 
     // =========================
     // 2) STATE
@@ -779,7 +953,8 @@
     function buildChips(){
       // kategórie z dát + poradie
       const fromData = unique(PRODUCTS.map(p => p.category));
-      const merged = unique([...CATEGORY_ORDER, ...fromData]).filter(Boolean);
+      const fromFeed = (FEED && Array.isArray(FEED.categories)) ? FEED.categories : [];
+      const merged = unique([...CATEGORY_ORDER, ...fromFeed, ...fromData]).filter(Boolean);
 
       el.chips.innerHTML = "";
       const allChip = document.createElement("div");
@@ -915,16 +1090,13 @@
 
         el.grid.appendChild(card);
       }
-
-      // demo "detail" klik (nahradíš vlastnou logikou)
+      // DETAIL klik -> modal s variantmi
       el.grid.querySelectorAll("[data-add]").forEach(btn => {
         btn.addEventListener("click", (e) => {
           const id = e.currentTarget.getAttribute("data-add");
-          const prod = PRODUCTS.find(x => x.id === id);
-          if(!prod) return;
-          alert(
-            `RACEM • DETAIL (demo)\n\n${prod.name}\nKategória: ${prod.category}\nVýrobca: ${prod.brand}\nDostupnosť: ${prod.stock === "in_stock" ? "Skladom" : "Na objednávku"}\nCena: ${euro(prod.price)}\n\nĎalej sa to napojí na reálny produkt/Shopify/checkout.`
-          );
+          const full = PRODUCT_BY_ID.get(id);
+          if(!full) return;
+          openModal(full);
         });
       });
     }
@@ -939,7 +1111,7 @@
       const parts = [];
       if(state.onlyTop) parts.push("TOP výber");
       if(state.category) parts.push(`kategória: ${state.category}`);
-      if(state.brand) parts.push(`značka: ${state.brand}`);
+      if(state.brand) parts.push(`výrobca: ${state.brand}`);
       if(state.stock) parts.push(`dostupnosť: ${state.stock === "in_stock" ? "skladom" : "na objednávku"}`);
       if(state.q) parts.push(`hľadať: "${state.q}"`);
       if(state.minPrice !== null && state.minPrice !== "" && state.minPrice !== undefined) parts.push(`min: ${state.minPrice}€`);
@@ -987,6 +1159,177 @@
         .replaceAll("'","&#039;");
     }
 
+    
+    // =========================
+    // 10.5) MODAL (detail produktu + varianty + shopify checkout)
+    // =========================
+    const m = {
+      overlay: document.getElementById("modalOverlay"),
+      close: document.getElementById("mClose"),
+      title: document.getElementById("mTitle"),
+      sub: document.getElementById("mSub"),
+      main: document.getElementById("mMain"),
+      thumbs: document.getElementById("mThumbs"),
+      cat: document.getElementById("mCat"),
+      man: document.getElementById("mMan"),
+      price: document.getElementById("mPrice"),
+      stock: document.getElementById("mStock"),
+      variants: document.getElementById("mVariants"),
+      note: document.getElementById("mVariantNote"),
+      buy: document.getElementById("mBuy"),
+      shopLink: document.getElementById("mShopLink"),
+      desc: document.getElementById("mDesc"),
+    };
+
+    let activeProduct = null;
+    let activeVariant = null;
+
+    function openModal(prod){
+      activeProduct = prod;
+      activeVariant = null;
+
+      m.title.textContent = prod.title || "Produkt";
+      const short = (prod.short || "").trim();
+      const descTxt = stripHtml(prod.descriptionHtml || "");
+      m.sub.textContent = short || (descTxt ? (descTxt.slice(0, 120) + (descTxt.length > 120 ? "…" : "")) : "");
+
+      m.cat.textContent = prod.category || "Uncategorized";
+      m.man.textContent = prod.manufacturer || "RACEM";
+
+      const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
+      m.shopLink.href = link;
+
+      const imgs = [];
+      (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
+      const vars = Array.isArray(prod.variants) ? prod.variants : [];
+      vars.forEach(v => (Array.isArray(v.images) ? v.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); }));
+
+      renderGallery(imgs);
+      renderVariants(vars);
+
+      const prices = vars.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
+      const minPrice = prices.length ? Math.min(...prices) : 0;
+      m.price.textContent = euro(minPrice);
+      const hasStock = vars.some(v => v.stock === "in_stock");
+      setStockBadge(hasStock ? "in_stock" : "made_to_order");
+
+      m.desc.innerHTML = prod.descriptionHtml ? prod.descriptionHtml : (short ? escapeHtml(short) : "");
+
+      m.overlay.classList.add("open");
+      m.overlay.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      m.overlay.classList.remove("open");
+      m.overlay.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+      activeProduct = null;
+      activeVariant = null;
+      m.buy.disabled = true;
+      m.note.style.display = "none";
+    }
+
+    function setStockBadge(stock){
+      if(stock === "in_stock"){
+        m.stock.className = "badge badge--stock";
+        m.stock.textContent = "Skladom";
+      }else{
+        m.stock.className = "badge badge--order";
+        m.stock.textContent = "Na objednávku";
+      }
+    }
+
+    function renderGallery(imgs){
+      m.main.innerHTML = "";
+      m.thumbs.innerHTML = "";
+      if(!imgs.length){
+        m.main.innerHTML = `<div class="note" style="padding:16px;">Bez obrázka</div>`;
+        return;
+      }
+
+      const mainImg = document.createElement("img");
+      mainImg.src = imgs[0];
+      mainImg.alt = "Produkt obrázok";
+      mainImg.loading = "lazy";
+      mainImg.decoding = "async";
+      m.main.appendChild(mainImg);
+
+      imgs.forEach((u, idx) => {
+        const t = document.createElement("div");
+        t.className = "gThumb" + (idx === 0 ? " active" : "");
+        t.innerHTML = `<img src="${escapeHtml(u)}" alt="thumb" loading="lazy" decoding="async">`;
+        t.onclick = () => {
+          mainImg.src = u;
+          m.thumbs.querySelectorAll(".gThumb").forEach(x => x.classList.remove("active"));
+          t.classList.add("active");
+        };
+        m.thumbs.appendChild(t);
+      });
+    }
+
+    function renderVariants(vars){
+      m.variants.innerHTML = "";
+      m.note.style.display = "none";
+      m.buy.disabled = true;
+
+      if(!vars.length){
+        const pill = document.createElement("div");
+        pill.className = "note";
+        pill.textContent = "Žiadne varianty v JSON feede.";
+        m.variants.appendChild(pill);
+        return;
+      }
+
+      // najprv vytvor UI
+      vars.forEach(v => {
+        const b = document.createElement("div");
+        b.className = "vOpt";
+        b.textContent = v.title || "Variant";
+        b.onclick = () => selectVariant(v);
+        m.variants.appendChild(b);
+      });
+
+      // default vyber prvý
+      selectVariant(vars[0]);
+      syncVariantUI();
+    }
+
+    function syncVariantUI(){
+      const nodes = Array.from(m.variants.querySelectorAll(".vOpt"));
+      nodes.forEach(n => {
+        n.classList.toggle("active", (activeVariant && n.textContent === (activeVariant.title || "Variant")));
+      });
+    }
+
+    function selectVariant(v){
+      activeVariant = v;
+
+      const price = Number(v.price || 0);
+      m.price.textContent = euro(price);
+      setStockBadge(v.stock === "in_stock" ? "in_stock" : "made_to_order");
+
+      const vid = v.variantId ? String(v.variantId).trim() : "";
+      const ok = !!vid;
+      m.buy.disabled = !ok;
+      m.note.style.display = ok ? "none" : "block";
+
+      syncVariantUI();
+    }
+
+    function goCheckout(){
+      if(!activeVariant) return;
+      const vid = activeVariant.variantId ? String(activeVariant.variantId).trim() : "";
+      if(!vid) return;
+      window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(vid)}:1`;
+    }
+
+    m.close.addEventListener("click", closeModal);
+    m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal(); });
+    m.buy.addEventListener("click", goCheckout);
+
+
     // =========================
     // 11) MAIN RENDER
     // =========================
@@ -1000,13 +1343,68 @@
     // =========================
     // INIT
     // =========================
-    (function init(){
+    (async function init(){
       el.year.textContent = new Date().getFullYear();
+      await loadFeed();
       buildBrandSelect();
       buildChips();
       bindEvents();
       renderAll();
     })();
   </script>
+
+  <!-- ===== PRODUCT DETAIL MODAL ===== -->
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Detail produktu">
+      <div class="modalHeader">
+        <div style="min-width:0">
+          <h3 class="modalTitle" id="mTitle">Produkt</h3>
+          <p class="modalSub" id="mSub">—</p>
+        </div>
+        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Zatvoriť</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="gallery">
+          <div class="galleryMain" id="mMain"></div>
+          <div class="galleryThumbs" id="mThumbs"></div>
+        </div>
+
+        <div class="panelBox">
+          <div class="rowSplit">
+            <span class="badge" id="mCat">Kategória</span>
+            <span class="badge badge--red" id="mMan">Výrobca</span>
+          </div>
+
+          <div class="rowSplit">
+            <div>
+              <div class="muted">Cena</div>
+              <div class="price" id="mPrice">—</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted">Dostupnosť</div>
+              <div class="badge" id="mStock">—</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Varianty</div>
+            <div class="variants" id="mVariants"></div>
+            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
+              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
+            </div>
+          </div>
+
+          <div class="rowSplit" style="margin-top:auto;">
+            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
+            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
+          </div>
+
+          <div class="note" id="mDesc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
