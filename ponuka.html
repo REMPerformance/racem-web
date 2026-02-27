@@ -813,6 +813,27 @@
     </footer>
   </div>
 
+  
+
+  <!-- ===== PRODUCT DETAIL MODAL ===== -->
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Detail produktu">
+      <div class="modalHeader">
+        <div style="min-width:0">
+          <h3 class="modalTitle" id="mTitle">Produkt</h3>
+          <p class="modalSub" id="mSub">—</p>
+        </div>
+        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Zatvoriť</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="gallery">
+          <div class="galleryMain" id="mMain"></div>
+          <div class="galleryThumbs" id="mThumbs"></div>
+        </div>
+
+        
+
   <script>
     // =========================
     // 1) DATA (JSON feed z products.json)
@@ -1324,13 +1345,13 @@
       window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(vid)}:1`;
     }
 
+    if(m.overlay && m.close && m.buy){
     m.close.addEventListener("click", closeModal);
     m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
     document.addEventListener("keydown", (e) => { if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal(); });
     m.buy.addEventListener("click", goCheckout);
-
-
-    // =========================
+}
+// =========================
     // 11) MAIN RENDER
     // =========================
     function renderAll(){
@@ -1351,26 +1372,7 @@
       bindEvents();
       renderAll();
     })();
-  </script>
-
-  <!-- ===== PRODUCT DETAIL MODAL ===== -->
-  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Detail produktu">
-      <div class="modalHeader">
-        <div style="min-width:0">
-          <h3 class="modalTitle" id="mTitle">Produkt</h3>
-          <p class="modalSub" id="mSub">—</p>
-        </div>
-        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Zatvoriť</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="gallery">
-          <div class="galleryMain" id="mMain"></div>
-          <div class="galleryThumbs" id="mThumbs"></div>
-        </div>
-
-        <div class="panelBox">
+  </script><div class="panelBox">
           <div class="rowSplit">
             <span class="badge" id="mCat">Kategória</span>
             <span class="badge badge--red" id="mMan">Výrobca</span>
