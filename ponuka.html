@@ -7,7 +7,36 @@
   <meta name="description" content="RACEM – Ponuka dielov. Filtre podľa kategórie, značky, ceny a dostupnosti. Racing HUD štýl." />
   <meta name="robots" content="index,follow" />
 
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  
+  <link rel="canonical" href="https://www.racem.sk/ponuka.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RACEM" />
+  <meta property="og:title" content="RACEM | Ponuka" />
+  <meta property="og:description" content="RACEM – Ponuka dielov. Filtre podľa kategórie, výrobcu, ceny a dostupnosti." />
+  <meta property="og:url" content="https://www.racem.sk/ponuka.html" />
+  <meta property="og:image" content="https://www.racem.sk/assets/racem-logo.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RACEM | Ponuka" />
+  <meta name="twitter:description" content="RACEM – Ponuka dielov. Filtre podľa kategórie, výrobcu, ceny a dostupnosti." />
+  <meta name="twitter:image" content="https://www.racem.sk/assets/racem-logo.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"RACEM | Ponuka",
+    "url":"https://www.racem.sk/ponuka.html",
+    "description":"RACEM – Ponuka dielov. Filtre podľa kategórie, výrobcu, ceny a dostupnosti.",
+    "isPartOf":{"@type":"WebSite","name":"RACEM","url":"https://www.racem.sk/"}
+  }
+  </script>
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -52,6 +81,19 @@
     }
 
     /* subtle grid / telemetry */
+    
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 520px at 50% -10%, rgba(179,31,36,.18), transparent 60%),
+        radial-gradient(1200px 780px at 50% 110%, rgba(0,0,0,.75), transparent 55%),
+        radial-gradient(900px 900px at 50% 50%, transparent 55%, rgba(0,0,0,.72) 100%);
+      z-index:1;
+    }
+
     .bg-grid{
       pointer-events:none;
       position:fixed; inset:0;
@@ -59,7 +101,7 @@
         linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
       background-size: 90px 90px;
-      mask-image: radial-gradient(ellipse at top, rgba(0,0,0,.85), rgba(0,0,0,.2) 55%, transparent 72%);
+      mask-image: radial-gradient(ellipse at top, rgba(0,0,0,.95), rgba(0,0,0,.55) 55%, rgba(0,0,0,.15) 78%, transparent 92%);
       opacity:.55;
       z-index:0;
     }
@@ -86,7 +128,7 @@
     }
 
     .brand{
-      display:flex; align-items:center; gap:12px; min-width:260px;
+      display:flex; align-items:center; gap:12px; min-width:auto;
     }
     .logoMark{
       width:44px; height:44px; border-radius:14px;
@@ -741,11 +783,7 @@
   <div class="wrap">
     <header>
       <div class="brand">
-  <img class="brandLogo" src="rmgroup.png" alt="RM GROUP" loading="lazy" decoding="async" />
-  <div>
-    <h1>RACEM</h1>
-    <small>ponuka dielov • filtre • racing hud</small>
-  </div>
+  <img class="brandLogo" src="assets/racem-logo.png" alt="RACEM" loading="lazy" decoding="async" />
 </div>
 
       <div class="topActions">
@@ -1147,14 +1185,16 @@
             <div class="badgeRow">
               <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
                 ${topBadge}
-                ${stockBadge}
               </div>
-              <span class="badge">${escapeHtml(p.category)}</span>
+              
             </div>
           </div>
 
           <div class="cardBody">
             <h3 class="title">${escapeHtml(p.name)}</h3>
+            <div class="pillRow" style="margin-top:-2px;">
+              <span class="pill">${escapeHtml(p.category)}</span>
+            </div>
             <p class="sub">${escapeHtml(p.desc || "")}</p>
 
             <div class="pillRow">
@@ -1165,7 +1205,7 @@
             <div class="bottomRow">
               <div>
                 <div class="price">${euro(p.price)}</div>
-                <div class="muted">orientačne • bez dopravy</div>
+                <div class="muted">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</div>
               </div>
               <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
             </div>
