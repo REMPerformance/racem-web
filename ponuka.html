@@ -1276,37 +1276,40 @@
     // 9) EVENTS
     // =========================
     function bindEvents(){
-      el.q.addEventListener("input", () => { state.q = el.q.value; renderAll(); });
-      el.brand.addEventListener("change", () => { state.brand = el.brand.value; renderAll(); });
-      el.stock.addEventListener("change", () => { state.stock = el.stock.value; renderAll(); });
-      el.sort.addEventListener("change", () => { state.sort = el.sort.value; renderAll(); });
+  el.q.addEventListener("input", () => { state.q = el.q.value; renderAll(); });
+  el.brand.addEventListener("change", () => { state.brand = el.brand.value; renderAll(); });
+  el.stock.addEventListener("change", () => { state.stock = el.stock.value; renderAll(); });
+  el.sort.addEventListener("change", () => { state.sort = el.sort.value; renderAll(); });
 
-      el.minPrice.addEventListener("input", () => { state.minPrice = el.minPrice.value; renderAll(); });
-      el.maxPrice.addEventListener("input", () => { state.maxPrice = el.maxPrice.value; renderAll(); });
+  el.minPrice.addEventListener("input", () => { state.minPrice = el.minPrice.value; renderAll(); });
+  el.maxPrice.addEventListener("input", () => { state.maxPrice = el.maxPrice.value; renderAll(); });
 
-      el.reset.addEventListener("click", () => {
-        state.q = ""; state.category=""; state.brand=""; state.stock=""; state.minPrice=null; state.maxPrice=null; state.sort="relevance"; state.onlyTop=false;
-        el.q.value=""; el.brand.value=""; el.stock.value=""; el.sort.value="relevance"; el.minPrice.value=""; el.maxPrice.value="";
-        renderAll();
-      });
+  el.reset.addEventListener("click", () => {
+    state.q = "";
+    state.category = "";
+    state.brand = "";
+    state.stock = "";
+    state.minPrice = null;
+    state.maxPrice = null;
+    state.sort = "relevance";
+    state.onlyTop = false;
 
-      el.onlyDeals.addEventListener("click", () => {
-        state.onlyTop = !state.onlyTop;
-        el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
-        
+    el.q.value = "";
+    el.brand.value = "";
+    el.stock.value = "";
+    el.sort.value = "relevance";
+    el.minPrice.value = "";
+    el.maxPrice.value = "";
 
-      // delegate: Detail -> modal (funguje aj po rerenderi)
-      el.grid.addEventListener(\"click\", (e) => {
-        const btn = e.target.closest(\"[data-add]\");
-        if(!btn) return;
-        const id = btn.getAttribute(\"data-add\");
-        const full = PRODUCT_BY_ID.get(id);
-        if(full) openModal(full);
-      });
-el.onlyDeals.classList.toggle("btn", true);
-        renderAll();
-      });
-    }
+    renderAll();
+  });
+
+  el.onlyDeals.addEventListener("click", () => {
+    state.onlyTop = !state.onlyTop;
+    el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
+    renderAll();
+  });
+}
 
     // =========================
     // 10) SAFE HTML
