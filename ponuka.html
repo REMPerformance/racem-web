@@ -644,35 +644,40 @@
 
     /* ===== MODAL (produkt detail + varianty) ===== */
     .modalOverlay{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.72);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:9999;
+position:fixed; inset:0;
+background:rgba(0,0,0,.78);
+backdrop-filter: blur(10px);
+display:none;
+/* umožní scroll viewportu, keď je modal vysoký */
+overflow:auto;
+align-items:flex-start;
+justify-content:center;
+padding:24px 18px;
+z-index:9999;
     }
     .modalOverlay.open{display:flex;}
     .modal{
-      width:min(980px, 100%);
-      border-radius:var(--r2);
-      border:1px solid rgba(255,255,255,.12);
-      background:
-        radial-gradient(900px 360px at 20% 10%, rgba(179,31,36,.18), transparent 58%),
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
+width:min(1240px, 96vw);
+max-height:92vh;
+border-radius:var(--r2);
+border:1px solid rgba(255,255,255,.14);
+background:
+  radial-gradient(1000px 420px at 18% 8%, rgba(179,31,36,.22), transparent 60%),
+  linear-gradient(180deg, rgba(0,0,0,.80), rgba(0,0,0,.92));
+box-shadow: 0 24px 90px rgba(0,0,0,.55);
+overflow:hidden;
+position:relative;
+display:flex;
+flex-direction:column;
     }
     .modalHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding:14px 14px 12px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:12px;
+padding:14px 14px 12px;
+border-bottom:1px solid rgba(255,255,255,.12);
+background:rgba(0,0,0,.55);
     }
     .modalTitle{
       margin:0;
@@ -682,30 +687,34 @@
       font-size:18px;
       line-height:1.15;
     }
-    .modalSub{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55}
+    .modalSub{margin:8px 0 0; color:rgba(255,255,255,.70); font-size:13px; line-height:1.55}
     .modalClose{
       flex:0 0 auto;
       border-radius:14px;
       padding:10px 12px;
     }
     .modalBody{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      padding:14px;
+display:grid;
+grid-template-columns: 1.05fr .95fr;
+gap:12px;
+padding:14px;
+/* scroll vo vnútri modalu */
+overflow:auto;
+flex:1 1 auto;
+overscroll-behavior: contain;
     }
     @media (max-width: 860px){
       .modalBody{grid-template-columns:1fr}
     }
     .gallery{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:var(--r2);
-      background:rgba(0,0,0,.24);
-      overflow:hidden;
-      position:relative;
-      min-height: 260px;
-      display:flex;
-      flex-direction:column;
+border:1px solid rgba(255,255,255,.12);
+border-radius:var(--r2);
+background:rgba(0,0,0,.40);
+overflow:hidden;
+position:relative;
+min-height: 260px;
+display:flex;
+flex-direction:column;
     }
     .galleryMain{
       aspect-ratio: 16/10;
@@ -745,13 +754,13 @@
     .gThumb img{width:100%; height:100%; object-fit:cover; display:block}
 
     .panelBox{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:var(--r2);
-      background:rgba(0,0,0,.22);
-      padding:12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+border:1px solid rgba(255,255,255,.12);
+border-radius:var(--r2);
+background:rgba(0,0,0,.42);
+padding:12px;
+display:flex;
+flex-direction:column;
+gap:10px;
     }
     .rowSplit{
       display:flex;
