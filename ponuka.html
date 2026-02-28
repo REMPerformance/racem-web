@@ -1241,15 +1241,21 @@
 
         el.grid.appendChild(card);
       }
-      // DETAIL klik -> modal s variantmi
-      el.grid.querySelectorAll("[data-add]").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          const id = e.currentTarget.getAttribute("data-add");
-          const full = PRODUCT_BY_ID.get(id);
-          if(!full) return;
-          openModal(full);
-        });
-      });
+     // DETAIL klik -> modal (delegácia)
+el.grid.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-add]");
+  if(!btn) return;
+
+  const id = btn.getAttribute("data-add");
+  const full = PRODUCT_BY_ID.get(id);
+
+  if(!full){
+    console.warn("DETAIL: produkt nenájdený v PRODUCT_BY_ID:", id);
+    return;
+  }
+
+  openModal(full);
+});
     }
 
     // =========================
