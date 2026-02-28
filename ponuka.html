@@ -954,9 +954,73 @@
           <div class="galleryThumbs" id="mThumbs"></div>
         </div>
 
-        
+        <div class="panelBox">
+          <div class="rowSplit">
+            <span class="badge" id="mCat">Kategória</span>
+            <span class="badge badge--red" id="mMan">Výrobca</span>
+          </div>
 
-  <script>
+          <div class="rowSplit">
+            <div>
+              <div class="muted">Cena</div>
+              <div class="price" id="mPrice">—</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted">Dostupnosť</div>
+              <div class="badge" id="mStock">—</div>
+            </div>
+          </div>
+
+          <!-- fitment / montáž / materiál / typ (ak doplníš do JSON) -->
+          <div class="sepLine"></div>
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Info</div>
+            <dl class="dl">
+              <dt>Pasuje na</dt><dd id="mFitment">—</dd>
+              <dt>Umiestnenie</dt><dd id="mMount">—</dd>
+              <dt>Materiál</dt><dd id="mMaterial">—</dd>
+              <dt>Typ</dt><dd id="mType">—</dd>
+            </dl>
+          </div>
+
+          <div class="sepLine"></div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Varianty</div>
+            <div class="variants" id="mVariants"></div>
+            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
+              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
+            </div>
+          </div>
+
+          <div class="rowSplit" style="margin-top:auto;">
+            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
+            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
+          </div>
+
+          <div class="sepLine"></div>
+
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Detaily</div>
+            <dl class="dl">
+              <dt>SKU</dt><dd id="mSku">—</dd>
+              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
+              <dt>Produkt ID</dt><dd id="mPid">—</dd>
+              <dt>Handle</dt><dd id="mHandle">—</dd>
+              <dt>Tagy</dt><dd id="mTags">—</dd>
+              <dt>Compare</dt><dd id="mCompare">—</dd>
+              <dt>Možnosti</dt><dd id="mOpts">—</dd>
+            </dl>
+          </div>
+
+          <div class="note" id="mDesc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script>
     // =========================
     // 1) DATA (JSON feed z products.json)
     // =========================
@@ -1241,22 +1305,7 @@
 
         el.grid.appendChild(card);
       }
-     // DETAIL klik -> modal (delegácia)
-el.grid.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-add]");
-  if(!btn) return;
-
-  const id = btn.getAttribute("data-add");
-  const full = PRODUCT_BY_ID.get(id);
-
-  if(!full){
-    console.warn("DETAIL: produkt nenájdený v PRODUCT_BY_ID:", id);
-    return;
-  }
-
-  openModal(full);
-});
-    }
+}
 
     // =========================
     // 8) META / KPI
@@ -1315,6 +1364,23 @@ el.grid.addEventListener("click", (e) => {
     el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
     renderAll();
   });
+
+
+  // DETAIL klik -> modal (delegácia, iba raz)
+  el.grid.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add]");
+    if(!btn) return;
+
+    const id = btn.getAttribute("data-add");
+    const full = PRODUCT_BY_ID.get(id);
+
+    if(!full){
+      console.warn("DETAIL: produkt nenájdený:", id);
+      return;
+    }
+
+    openModal(full);
+  });
 }
 
     // =========================
@@ -1344,6 +1410,10 @@ el.grid.addEventListener("click", (e) => {
       man: document.getElementById("mMan"),
       price: document.getElementById("mPrice"),
       stock: document.getElementById("mStock"),
+      fitment: document.getElementById("mFitment"),
+      mount: document.getElementById("mMount"),
+      material: document.getElementById("mMaterial"),
+      type: document.getElementById("mType"),
       variants: document.getElementById("mVariants"),
       note: document.getElementById("mVariantNote"),
       buy: document.getElementById("mBuy"),
@@ -1372,6 +1442,15 @@ el.grid.addEventListener("click", (e) => {
 
       m.cat.textContent = prod.category || "Uncategorized";
       m.man.textContent = prod.manufacturer || "RACEM";
+
+
+      // extra info (ak nie je v JSON, ukáže sa —)
+      const fit = prod.universal ? "Univerzálne" :
+        (Array.isArray(prod.fitment) ? prod.fitment.join(", ") : (prod.fitment || "—"));
+      if(m.fitment) m.fitment.textContent = fit || "—";
+      if(m.mount) m.mount.textContent = prod.mounting || "—";
+      if(m.material) m.material.textContent = prod.material || "—";
+      if(m.type) m.type.textContent = (prod.productType || prod.type || prod.category || "—");
 
       const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
       m.shopLink.href = link;
@@ -1552,58 +1631,7 @@ const vid = v.variantId ? String(v.variantId).trim() : "";
       bindEvents();
       renderAll();
     })();
-  </script><div class="panelBox">
-          <div class="rowSplit">
-            <span class="badge" id="mCat">Kategória</span>
-            <span class="badge badge--red" id="mMan">Výrobca</span>
-          </div>
-
-          <div class="rowSplit">
-            <div>
-              <div class="muted">Cena</div>
-              <div class="price" id="mPrice">—</div>
-            </div>
-            <div style="text-align:right">
-              <div class="muted">Dostupnosť</div>
-              <div class="badge" id="mStock">—</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="muted" style="margin-bottom:8px;">Varianty</div>
-            <div class="variants" id="mVariants"></div>
-            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
-              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
-            </div>
-          </div>
-
-          <div class="rowSplit" style="margin-top:auto;">
-            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
-            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
-          </div>
-
-          
-          <div class="sepLine"></div>
-
-          <div>
-            <div class="muted" style="margin-bottom:6px;">Detaily</div>
-            <dl class="dl">
-              <dt>SKU</dt><dd id="mSku">—</dd>
-              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
-              <dt>Produkt ID</dt><dd id="mPid">—</dd>
-              <dt>Handle</dt><dd id="mHandle">—</dd>
-              <dt>Tagy</dt><dd id="mTags">—</dd>
-              <dt>Compare</dt><dd id="mCompare">—</dd>
-              <dt>Možnosti</dt><dd id="mOpts">—</dd>
-            </dl>
-          </div>
-
-
-          <div class="note" id="mDesc"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </script>
 
 </body>
 </html>
