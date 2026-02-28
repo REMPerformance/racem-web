@@ -25,7 +25,668 @@
   <meta name="twitter:image" content="https://www.racem.sk/assets/racem-logo.png" />
 
   <!-- Structured data -->
-  <script type="application/ld+json">
+  <!-- ===== PRODUCT DETAIL MODAL ===== -->
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Detail produktu">
+      <div class="modalHeader">
+        <div style="min-width:0">
+          <h3 class="modalTitle" id="mTitle">Produkt</h3>
+          <p class="modalSub" id="mSub">—</p>
+        </div>
+        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Zatvoriť</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="gallery">
+          <div class="galleryMain" id="mMain"></div>
+          <div class="galleryThumbs" id="mThumbs"></div>
+        </div>
+
+        
+
+  <script>
+    // =========================
+    // 1) DATA (JSON feed z products.json)
+    // =========================
+    // Očakávaný formát: { meta, categories, products[] (produkt = karta, variants[]) }
+    let FEED = null;              // raw feed
+    let PRODUCTS = [];            // flat list pre grid (product cards)
+    let PRODUCT_BY_ID = new Map(); // id -> full product object
+
+    // Ak chceš, vieš si sem dať preferované poradie kategórií (inak sa použije feed.categories + fallback z dát)
+    const CATEGORY_ORDER = []; // napr. ["Aero","Intercooler",...]
+
+    async function loadFeed(){
+      try{
+        const res = await fetch("./products.json?v=" + Date.now(), { cache: "no-store" });
+        if(!res.ok) throw new Error("products.json sa nenačítal (" + res.status + ")");
+        FEED = await res.json();
+      }catch(err){
+        console.error(err);
+        const hs = document.getElementById("hudStatus");
+        hs.textContent = "OFFLINE";
+        hs.classList.remove("tag--red");
+        hs.style.borderColor = "rgba(255,204,102,.42)";
+        hs.style.background = "rgba(255,204,102,.12)";
+        hs.style.color = "rgba(255,204,102,.95)";
+        FEED = { meta:{currency:"EUR", shopDomain:"shop.racem.sk"}, categories:[], products:[] };
+      }
+
+      const prods = Array.isArray(FEED.products) ? FEED.products : [];
+      PRODUCT_BY_ID = new Map(prods.map(p => [p.id, p]));
+
+      PRODUCTS = prods.map(p => {
+        const variants = Array.isArray(p.variants) ? p.variants : [];
+        const prices = variants.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
+        const minPrice = prices.length ? Math.min(...prices) : 0;
+
+        const hasStock = variants.some(v => v.stock === "in_stock");
+        const stock = hasStock ? "in_stock" : "made_to_order";
+
+        const short = (p.short || "").trim();
+        const descFallback = stripHtml(p.descriptionHtml || "").trim();
+
+        return {
+          id: p.id,
+          handle: p.handle,
+          name: p.title,
+          category: p.category || "Uncategorized",
+          brand: p.manufacturer || "RACEM",
+          stock,
+          price: minPrice,
+          tags: Array.isArray(p.tags) ? p.tags : [],
+          top: (Array.isArray(p.tags) ? p.tags : []).some(t => String(t).toLowerCase() === "top"),
+          desc: short || (descFallback ? descFallback.slice(0, 140) + (descFallback.length > 140 ? "…" : "") : ""),
+          images: Array.isArray(p.images) ? p.images : [],
+          productUrl: p.productUrl || (p.handle ? ("https://shop.racem.sk/products/" + p.handle) : ""),
+        };
+      });
+    }
+
+    function stripHtml(s){
+      return String(s || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    }
+
+
+    // =========================
+    // 2) STATE
+    // =========================
+    const state = {
+      q: "",
+      category: "",     // single-select chip
+      brand: "",
+      stock: "",
+      minPrice: null,
+      maxPrice: null,
+      sort: "relevance",
+      onlyTop: false
+    };
+
+    // =========================
+    // 3) ELEMENTS
+    // =========================
+    const el = {
+      q: document.getElementById("q"),
+      brand: document.getElementById("brand"),
+      stock: document.getElementById("stock"),
+      sort: document.getElementById("sort"),
+      minPrice: document.getElementById("minPrice"),
+      maxPrice: document.getElementById("maxPrice"),
+      chips: document.getElementById("chips"),
+      grid: document.getElementById("grid"),
+      empty: document.getElementById("empty"),
+      reset: document.getElementById("reset"),
+      onlyDeals: document.getElementById("onlyDeals"),
+      metaText: document.getElementById("metaText"),
+      activeFilters: document.getElementById("activeFilters"),
+
+      kpiShown: document.getElementById("kpiShown"),
+      kpiTotal: document.getElementById("kpiTotal"),
+      kpiCats: document.getElementById("kpiCats"),
+      kpiBrands: document.getElementById("kpiBrands"),
+      year: document.getElementById("year"),
+    };
+
+    // =========================
+    // 4) HELPERS
+    // =========================
+    const euro = (n) => {
+      const x = Number(n || 0);
+      return x.toLocaleString("sk-SK") + " €";
+    };
+
+    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    const contains = (hay, needle) => norm(hay).includes(norm(needle));
+
+    function computeRelevance(p, q){
+      if(!q) return 0;
+      let score = 0;
+      const text = `${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(" ")} ${p.desc||""}`;
+      const nq = norm(q);
+      const nt = norm(text);
+
+      // jednoduchý scoring: názov = viac bodov
+      if(norm(p.name).includes(nq)) score += 6;
+      if(norm(p.brand).includes(nq)) score += 3;
+      if(norm(p.category).includes(nq)) score += 2;
+      if(nt.includes(nq)) score += 1;
+      if(p.top) score += 0.5;
+      return score;
+    }
+
+    function unique(arr){
+      return [...new Set(arr)];
+    }
+
+    // =========================
+    // 5) RENDER UI (chips + select)
+    // =========================
+    function buildChips(){
+      // kategórie z dát + poradie
+      const fromData = unique(PRODUCTS.map(p => p.category));
+      const fromFeed = (FEED && Array.isArray(FEED.categories)) ? FEED.categories : [];
+      const merged = unique([...CATEGORY_ORDER, ...fromFeed, ...fromData]).filter(Boolean);
+
+      el.chips.innerHTML = "";
+      const allChip = document.createElement("div");
+      allChip.className = "chip" + (state.category === "" ? " active" : "");
+      allChip.textContent = "Všetky";
+      allChip.onclick = () => { state.category = ""; renderAll(); };
+      el.chips.appendChild(allChip);
+
+      for(const c of merged){
+        const chip = document.createElement("div");
+        chip.className = "chip" + (state.category === c ? " active" : "");
+        chip.textContent = c;
+        chip.onclick = () => {
+          state.category = (state.category === c) ? "" : c;
+          renderAll();
+        };
+        el.chips.appendChild(chip);
+      }
+
+      el.kpiCats.textContent = merged.length.toLocaleString("sk-SK");
+    }
+
+    function buildBrandSelect(){
+      const brands = unique(PRODUCTS.map(p => p.brand).filter(Boolean)).sort((a,b) => a.localeCompare(b, "sk"));
+      // reset options (keep first)
+      el.brand.innerHTML = `<option value="">Všetky</option>` + brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+      el.kpiBrands.textContent = brands.length.toLocaleString("sk-SK");
+    }
+
+    // =========================
+    // 6) FILTER + SORT
+    // =========================
+    function applyFilters(){
+      const q = state.q.trim();
+      const minP = (state.minPrice === null || state.minPrice === "") ? null : Number(state.minPrice);
+      const maxP = (state.maxPrice === null || state.maxPrice === "") ? null : Number(state.maxPrice);
+
+      let list = PRODUCTS.slice();
+
+      if(state.onlyTop){
+        list = list.filter(p => !!p.top);
+      }
+
+      if(state.category){
+        list = list.filter(p => p.category === state.category);
+      }
+
+      if(state.brand){
+        list = list.filter(p => p.brand === state.brand);
+      }
+
+      if(state.stock){
+        list = list.filter(p => p.stock === state.stock);
+      }
+
+      if(Number.isFinite(minP)){
+        list = list.filter(p => Number(p.price) >= minP);
+      }
+
+      if(Number.isFinite(maxP)){
+        list = list.filter(p => Number(p.price) <= maxP);
+      }
+
+      // search
+      if(q){
+        list = list
+          .map(p => ({...p, _rel: computeRelevance(p, q)}))
+          .filter(p => p._rel > 0 || contains(p.desc, q) || contains(p.tags?.join(" "), q));
+      } else {
+        list = list.map(p => ({...p, _rel: p.top ? 0.5 : 0}));
+      }
+
+      // sort
+      const s = state.sort;
+      if(s === "price_asc") list.sort((a,b) => a.price - b.price);
+      else if(s === "price_desc") list.sort((a,b) => b.price - a.price);
+      else if(s === "name_asc") list.sort((a,b) => a.name.localeCompare(b.name, "sk"));
+      else if(s === "name_desc") list.sort((a,b) => b.name.localeCompare(a.name, "sk"));
+      else {
+        // relevance default
+        list.sort((a,b) => (b._rel || 0) - (a._rel || 0) || (b.top - a.top) || a.name.localeCompare(b.name,"sk"));
+      }
+
+      return list;
+    }
+
+    // =========================
+    // 7) RENDER CARDS
+    // =========================
+    function renderCards(list){
+      el.grid.innerHTML = "";
+      el.empty.style.display = list.length ? "none" : "block";
+
+      for(const p of list){
+        const card = document.createElement("article");
+        card.className = "card";
+
+
+        const thumbUrl = (p.images && p.images.length) ? p.images[0] : "";
+        const thumbImgHtml = thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(p.name)}" loading="lazy" decoding="async">` : ``;
+        const stockBadge = p.stock === "in_stock"
+          ? `<span class="badge badge--stock">Skladom</span>`
+          : `<span class="badge badge--order">Na objednávku</span>`;
+
+        const topBadge = p.top ? `<span class="badge badge--red">TOP</span>` : "";
+
+        card.innerHTML = `
+          <div class="thumb">
+            ${thumbImgHtml}
+            <div class="thumbShade"></div>
+
+            <div class="badgeRow">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                ${topBadge}
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="cardBody">
+            <h3 class="title">${escapeHtml(p.name)}</h3>
+            <div class="pillRow" style="margin-top:-2px;">
+              <span class="pill">${escapeHtml(p.category)}</span>
+            </div>
+            <p class="sub">${escapeHtml(p.desc || "")}</p>
+
+            <div class="pillRow">
+              <span class="pill">${escapeHtml(p.brand)}</span>
+              ${(p.tags||[]).slice(0,3).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+            </div>
+
+            <div class="bottomRow">
+              <div>
+                <div class="price">${euro(p.price)}</div>
+                <div class="muted">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</div>
+              </div>
+              <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
+            </div>
+          </div>
+        `;
+
+        el.grid.appendChild(card);
+      }
+      // DETAIL klik -> modal s variantmi
+      el.grid.querySelectorAll("[data-add]").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const id = e.currentTarget.getAttribute("data-add");
+          const full = PRODUCT_BY_ID.get(id);
+          if(!full) return;
+          openModal(full);
+        });
+      });
+    }
+
+    // =========================
+    // 8) META / KPI
+    // =========================
+    function renderMeta(list){
+      el.kpiTotal.textContent = PRODUCTS.length.toLocaleString("sk-SK");
+      el.kpiShown.textContent = list.length.toLocaleString("sk-SK");
+
+      const parts = [];
+      if(state.onlyTop) parts.push("TOP výber");
+      if(state.category) parts.push(`kategória: ${state.category}`);
+      if(state.brand) parts.push(`výrobca: ${state.brand}`);
+      if(state.stock) parts.push(`dostupnosť: ${state.stock === "in_stock" ? "skladom" : "na objednávku"}`);
+      if(state.q) parts.push(`hľadať: "${state.q}"`);
+      if(state.minPrice !== null && state.minPrice !== "" && state.minPrice !== undefined) parts.push(`min: ${state.minPrice}€`);
+      if(state.maxPrice !== null && state.maxPrice !== "" && state.maxPrice !== undefined) parts.push(`max: ${state.maxPrice}€`);
+
+      el.activeFilters.textContent = parts.length ? ("Filtre: " + parts.join(" • ")) : "Filtre: žiadne";
+      el.metaText.textContent = `Zobrazené: ${list.length} / ${PRODUCTS.length}`;
+    }
+
+    // =========================
+    // 9) EVENTS
+    // =========================
+    function bindEvents(){
+      el.q.addEventListener("input", () => { state.q = el.q.value; renderAll(); });
+      el.brand.addEventListener("change", () => { state.brand = el.brand.value; renderAll(); });
+      el.stock.addEventListener("change", () => { state.stock = el.stock.value; renderAll(); });
+      el.sort.addEventListener("change", () => { state.sort = el.sort.value; renderAll(); });
+
+      el.minPrice.addEventListener("input", () => { state.minPrice = el.minPrice.value; renderAll(); });
+      el.maxPrice.addEventListener("input", () => { state.maxPrice = el.maxPrice.value; renderAll(); });
+
+      el.reset.addEventListener("click", () => {
+        state.q = ""; state.category=""; state.brand=""; state.stock=""; state.minPrice=null; state.maxPrice=null; state.sort="relevance"; state.onlyTop=false;
+        el.q.value=""; el.brand.value=""; el.stock.value=""; el.sort.value="relevance"; el.minPrice.value=""; el.maxPrice.value="";
+        renderAll();
+
+      // delegate: Detail -> modal
+      el.grid.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-add]");
+        if(!btn) return;
+        const id = btn.getAttribute("data-add");
+        const full = PRODUCT_BY_ID.get(id);
+        if(full) openModal(full);
+      });
+
+      });
+
+      el.onlyDeals.addEventListener("click", () => {
+        state.onlyTop = !state.onlyTop;
+        el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
+        el.onlyDeals.classList.toggle("btn", true);
+        renderAll();
+      });
+    }
+
+    // =========================
+    // 10) SAFE HTML
+    // =========================
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    
+    // =========================
+    // 10.5) MODAL (detail produktu + varianty + shopify checkout)
+    // =========================
+    const m = {
+      overlay: document.getElementById("modalOverlay"),
+      close: document.getElementById("mClose"),
+      title: document.getElementById("mTitle"),
+      sub: document.getElementById("mSub"),
+      main: document.getElementById("mMain"),
+      thumbs: document.getElementById("mThumbs"),
+      cat: document.getElementById("mCat"),
+      man: document.getElementById("mMan"),
+      price: document.getElementById("mPrice"),
+      stock: document.getElementById("mStock"),
+      variants: document.getElementById("mVariants"),
+      note: document.getElementById("mVariantNote"),
+      buy: document.getElementById("mBuy"),
+      shopLink: document.getElementById("mShopLink"),
+      desc: document.getElementById("mDesc"),
+      sku: document.getElementById("mSku"),
+      varSku: document.getElementById("mVarSku"),
+      pid: document.getElementById("mPid"),
+      handle: document.getElementById("mHandle"),
+      tags: document.getElementById("mTags"),
+      compare: document.getElementById("mCompare"),
+      opts: document.getElementById("mOpts"),
+    };
+
+    let activeProduct = null;
+    let activeVariant = null;
+
+    function openModal(prod){
+      activeProduct = prod;
+      activeVariant = null;
+
+      m.title.textContent = prod.title || "Produkt";
+      const short = (prod.short || "").trim();
+      const descTxt = stripHtml(prod.descriptionHtml || "");
+      m.sub.textContent = short || (descTxt ? (descTxt.slice(0, 120) + (descTxt.length > 120 ? "…" : "")) : "");
+
+      m.cat.textContent = prod.category || "Uncategorized";
+      m.man.textContent = prod.manufacturer || "RACEM";
+
+      const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
+      m.shopLink.href = link;
+      // detaily (produkt)
+      if(m.pid) m.pid.textContent = prod.id || "—";
+      if(m.handle) m.handle.textContent = prod.handle || "—";
+      const pTags = Array.isArray(prod.tags) ? prod.tags.filter(Boolean) : [];
+      if(m.tags) m.tags.textContent = pTags.length ? pTags.join(", ") : "—";
+      // SKU na produkte berieme z prvého variantu (ak existuje)
+      const firstSku = (Array.isArray(prod.variants) && prod.variants[0] && prod.variants[0].sku) ? prod.variants[0].sku : "";
+      if(m.sku) m.sku.textContent = firstSku || "—";
+      if(m.compare) m.compare.textContent = "—";
+      if(m.opts) m.opts.textContent = "—";
+      if(m.varSku) m.varSku.textContent = "—";
+
+
+      const imgs = [];
+      (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
+      const vars = Array.isArray(prod.variants) ? prod.variants : [];
+      vars.forEach(v => (Array.isArray(v.images) ? v.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); }));
+
+      renderGallery(imgs);
+      renderVariants(vars);
+
+      const prices = vars.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
+      const minPrice = prices.length ? Math.min(...prices) : 0;
+      m.price.textContent = euro(minPrice);
+      const hasStock = vars.some(v => v.stock === "in_stock");
+      setStockBadge(hasStock ? "in_stock" : "made_to_order");
+
+      m.desc.innerHTML = prod.descriptionHtml ? prod.descriptionHtml : (short ? escapeHtml(short) : "");
+
+      m.overlay.classList.add("open");
+      m.overlay.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      m.overlay.classList.remove("open");
+      m.overlay.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+      activeProduct = null;
+      activeVariant = null;
+      m.buy.disabled = true;
+      m.note.style.display = "none";
+    }
+
+    function setStockBadge(stock){
+      if(stock === "in_stock"){
+        m.stock.className = "badge badge--stock";
+        m.stock.textContent = "Skladom";
+      }else{
+        m.stock.className = "badge badge--order";
+        m.stock.textContent = "Na objednávku";
+      }
+    }
+
+    function renderGallery(imgs){
+      m.main.innerHTML = "";
+      m.thumbs.innerHTML = "";
+      if(!imgs.length){
+        m.main.innerHTML = `<div class="note" style="padding:16px;">Bez obrázka</div>`;
+        return;
+      }
+
+      const mainImg = document.createElement("img");
+      mainImg.src = imgs[0];
+      mainImg.alt = "Produkt obrázok";
+      mainImg.loading = "lazy";
+      mainImg.decoding = "async";
+      m.main.appendChild(mainImg);
+
+      imgs.forEach((u, idx) => {
+        const t = document.createElement("div");
+        t.className = "gThumb" + (idx === 0 ? " active" : "");
+        t.innerHTML = `<img src="${escapeHtml(u)}" alt="thumb" loading="lazy" decoding="async">`;
+        t.onclick = () => {
+          mainImg.src = u;
+          m.thumbs.querySelectorAll(".gThumb").forEach(x => x.classList.remove("active"));
+          t.classList.add("active");
+        };
+        m.thumbs.appendChild(t);
+      });
+    }
+
+    function renderVariants(vars){
+      m.variants.innerHTML = "";
+      m.note.style.display = "none";
+      m.buy.disabled = true;
+
+      if(!vars.length){
+        const pill = document.createElement("div");
+        pill.className = "note";
+        pill.textContent = "Žiadne varianty v JSON feede.";
+        m.variants.appendChild(pill);
+        return;
+      }
+
+      // najprv vytvor UI
+      vars.forEach(v => {
+        const b = document.createElement("div");
+        b.className = "vOpt";
+        b.textContent = v.title || "Variant";
+        b.onclick = () => selectVariant(v);
+        m.variants.appendChild(b);
+      });
+
+      // default vyber prvý
+      selectVariant(vars[0]);
+      syncVariantUI();
+    }
+
+    function syncVariantUI(){
+      const nodes = Array.from(m.variants.querySelectorAll(".vOpt"));
+      nodes.forEach(n => {
+        n.classList.toggle("active", (activeVariant && n.textContent === (activeVariant.title || "Variant")));
+      });
+    }
+
+    function selectVariant(v){
+      activeVariant = v;
+
+      const price = Number(v.price || 0);
+      m.price.textContent = euro(price);
+      setStockBadge(v.stock === "in_stock" ? "in_stock" : "made_to_order");
+
+      
+      // variant detaily
+      if(m.varSku) m.varSku.textContent = (v.sku || "—");
+      if(m.compare) {
+        const ca = (v.compareAtPrice !== null && v.compareAtPrice !== undefined && v.compareAtPrice !== "") ? Number(v.compareAtPrice) : null;
+        m.compare.textContent = (Number.isFinite(ca) && ca > 0) ? (euro(ca) + " (pôvodná)") : "—";
+      }
+      if(m.opts){
+        const o = v.options || {};
+        const pairs = Object.keys(o).map(k => `${k}: ${o[k]}`).filter(Boolean);
+        m.opts.textContent = pairs.length ? pairs.join(" • ") : "—";
+      }
+const vid = v.variantId ? String(v.variantId).trim() : "";
+      const ok = !!vid;
+      m.buy.disabled = !ok;
+      m.note.style.display = ok ? "none" : "block";
+
+      syncVariantUI();
+    }
+
+    function goCheckout(){
+      if(!activeVariant) return;
+      const vid = activeVariant.variantId ? String(activeVariant.variantId).trim() : "";
+      if(!vid) return;
+      window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(vid)}:1`;
+    }
+
+    if(m.overlay && m.close && m.buy){
+    if(m.overlay && m.close && m.buy){
+      m.close.addEventListener("click", closeModal);
+      m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
+      document.addEventListener("keydown", (e) => { if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal(); });
+      m.buy.addEventListener("click", goCheckout);
+    }
+}
+// =========================
+    // 11) MAIN RENDER
+    // =========================
+    function renderAll(){
+      buildChips(); // refresh active state
+      const list = applyFilters();
+      renderCards(list);
+      renderMeta(list);
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    (async function init(){
+      el.year.textContent = new Date().getFullYear();
+      await loadFeed();
+      buildBrandSelect();
+      buildChips();
+      bindEvents();
+      renderAll();
+    })();
+  </script><div class="panelBox">
+          <div class="rowSplit">
+            <span class="badge" id="mCat">Kategória</span>
+            <span class="badge badge--red" id="mMan">Výrobca</span>
+          </div>
+
+          <div class="rowSplit">
+            <div>
+              <div class="muted">Cena</div>
+              <div class="price" id="mPrice">—</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted">Dostupnosť</div>
+              <div class="badge" id="mStock">—</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Varianty</div>
+            <div class="variants" id="mVariants"></div>
+            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
+              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
+            </div>
+          </div>
+
+          <div class="rowSplit" style="margin-top:auto;">
+            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
+            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
+          </div>
+
+          
+          <div class="sepLine"></div>
+
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Detaily</div>
+            <dl class="dl">
+              <dt>SKU</dt><dd id="mSku">—</dd>
+              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
+              <dt>Produkt ID</dt><dd id="mPid">—</dd>
+              <dt>Handle</dt><dd id="mHandle">—</dd>
+              <dt>Tagy</dt><dd id="mTags">—</dd>
+              <dt>Compare</dt><dd id="mCompare">—</dd>
+              <dt>Možnosti</dt><dd id="mOpts">—</dd>
+            </dl>
+          </div>
+
+
+          <div class="note" id="mDesc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebPage",
@@ -910,654 +1571,7 @@
 
   
 
-  <!-- ===== PRODUCT DETAIL MODAL ===== -->
-  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Detail produktu">
-      <div class="modalHeader">
-        <div style="min-width:0">
-          <h3 class="modalTitle" id="mTitle">Produkt</h3>
-          <p class="modalSub" id="mSub">—</p>
-        </div>
-        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Zatvoriť</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="gallery">
-          <div class="galleryMain" id="mMain"></div>
-          <div class="galleryThumbs" id="mThumbs"></div>
-        </div>
-
-        
-
-  <script>
-    // =========================
-    // 1) DATA (JSON feed z products.json)
-    // =========================
-    // Očakávaný formát: { meta, categories, products[] (produkt = karta, variants[]) }
-    let FEED = null;              // raw feed
-    let PRODUCTS = [];            // flat list pre grid (product cards)
-    let PRODUCT_BY_ID = new Map(); // id -> full product object
-
-    // Ak chceš, vieš si sem dať preferované poradie kategórií (inak sa použije feed.categories + fallback z dát)
-    const CATEGORY_ORDER = []; // napr. ["Aero","Intercooler",...]
-
-    async function loadFeed(){
-      try{
-        const res = await fetch("./products.json?v=" + Date.now(), { cache: "no-store" });
-        if(!res.ok) throw new Error("products.json sa nenačítal (" + res.status + ")");
-        FEED = await res.json();
-      }catch(err){
-        console.error(err);
-        const hs = document.getElementById("hudStatus");
-        hs.textContent = "OFFLINE";
-        hs.classList.remove("tag--red");
-        hs.style.borderColor = "rgba(255,204,102,.42)";
-        hs.style.background = "rgba(255,204,102,.12)";
-        hs.style.color = "rgba(255,204,102,.95)";
-        FEED = { meta:{currency:"EUR", shopDomain:"shop.racem.sk"}, categories:[], products:[] };
-      }
-
-      const prods = Array.isArray(FEED.products) ? FEED.products : [];
-      PRODUCT_BY_ID = new Map(prods.map(p => [p.id, p]));
-
-      PRODUCTS = prods.map(p => {
-        const variants = Array.isArray(p.variants) ? p.variants : [];
-        const prices = variants.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
-        const minPrice = prices.length ? Math.min(...prices) : 0;
-
-        const hasStock = variants.some(v => v.stock === "in_stock");
-        const stock = hasStock ? "in_stock" : "made_to_order";
-
-        const short = (p.short || "").trim();
-        const descFallback = stripHtml(p.descriptionHtml || "").trim();
-
-        return {
-          id: p.id,
-          handle: p.handle,
-          name: p.title,
-          category: p.category || "Uncategorized",
-          brand: p.manufacturer || "RACEM",
-          stock,
-          price: minPrice,
-          tags: Array.isArray(p.tags) ? p.tags : [],
-          top: (Array.isArray(p.tags) ? p.tags : []).some(t => String(t).toLowerCase() === "top"),
-          desc: short || (descFallback ? descFallback.slice(0, 140) + (descFallback.length > 140 ? "…" : "") : ""),
-          images: Array.isArray(p.images) ? p.images : [],
-          productUrl: p.productUrl || (p.handle ? ("https://shop.racem.sk/products/" + p.handle) : ""),
-        };
-      });
-    }
-
-    function stripHtml(s){
-      return String(s || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-    }
-
-
-    // =========================
-    // 2) STATE
-    // =========================
-    const state = {
-      q: "",
-      category: "",     // single-select chip
-      brand: "",
-      stock: "",
-      minPrice: null,
-      maxPrice: null,
-      sort: "relevance",
-      onlyTop: false
-    };
-
-    // =========================
-    // 3) ELEMENTS
-    // =========================
-    const el = {
-      q: document.getElementById("q"),
-      brand: document.getElementById("brand"),
-      stock: document.getElementById("stock"),
-      sort: document.getElementById("sort"),
-      minPrice: document.getElementById("minPrice"),
-      maxPrice: document.getElementById("maxPrice"),
-      chips: document.getElementById("chips"),
-      grid: document.getElementById("grid"),
-      empty: document.getElementById("empty"),
-      reset: document.getElementById("reset"),
-      onlyDeals: document.getElementById("onlyDeals"),
-      metaText: document.getElementById("metaText"),
-      activeFilters: document.getElementById("activeFilters"),
-
-      kpiShown: document.getElementById("kpiShown"),
-      kpiTotal: document.getElementById("kpiTotal"),
-      kpiCats: document.getElementById("kpiCats"),
-      kpiBrands: document.getElementById("kpiBrands"),
-      year: document.getElementById("year"),
-    };
-
-    // =========================
-    // 4) HELPERS
-    // =========================
-    const euro = (n) => {
-      const x = Number(n || 0);
-      return x.toLocaleString("sk-SK") + " €";
-    };
-
-    const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
-    const contains = (hay, needle) => norm(hay).includes(norm(needle));
-
-    function computeRelevance(p, q){
-      if(!q) return 0;
-      let score = 0;
-      const text = `${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(" ")} ${p.desc||""}`;
-      const nq = norm(q);
-      const nt = norm(text);
-
-      // jednoduchý scoring: názov = viac bodov
-      if(norm(p.name).includes(nq)) score += 6;
-      if(norm(p.brand).includes(nq)) score += 3;
-      if(norm(p.category).includes(nq)) score += 2;
-      if(nt.includes(nq)) score += 1;
-      if(p.top) score += 0.5;
-      return score;
-    }
-
-    function unique(arr){
-      return [...new Set(arr)];
-    }
-
-    // =========================
-    // 5) RENDER UI (chips + select)
-    // =========================
-    function buildChips(){
-      // kategórie z dát + poradie
-      const fromData = unique(PRODUCTS.map(p => p.category));
-      const fromFeed = (FEED && Array.isArray(FEED.categories)) ? FEED.categories : [];
-      const merged = unique([...CATEGORY_ORDER, ...fromFeed, ...fromData]).filter(Boolean);
-
-      el.chips.innerHTML = "";
-      const allChip = document.createElement("div");
-      allChip.className = "chip" + (state.category === "" ? " active" : "");
-      allChip.textContent = "Všetky";
-      allChip.onclick = () => { state.category = ""; renderAll(); };
-      el.chips.appendChild(allChip);
-
-      for(const c of merged){
-        const chip = document.createElement("div");
-        chip.className = "chip" + (state.category === c ? " active" : "");
-        chip.textContent = c;
-        chip.onclick = () => {
-          state.category = (state.category === c) ? "" : c;
-          renderAll();
-        };
-        el.chips.appendChild(chip);
-      }
-
-      el.kpiCats.textContent = merged.length.toLocaleString("sk-SK");
-    }
-
-    function buildBrandSelect(){
-      const brands = unique(PRODUCTS.map(p => p.brand).filter(Boolean)).sort((a,b) => a.localeCompare(b, "sk"));
-      // reset options (keep first)
-      el.brand.innerHTML = `<option value="">Všetky</option>` + brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
-      el.kpiBrands.textContent = brands.length.toLocaleString("sk-SK");
-    }
-
-    // =========================
-    // 6) FILTER + SORT
-    // =========================
-    function applyFilters(){
-      const q = state.q.trim();
-      const minP = (state.minPrice === null || state.minPrice === "") ? null : Number(state.minPrice);
-      const maxP = (state.maxPrice === null || state.maxPrice === "") ? null : Number(state.maxPrice);
-
-      let list = PRODUCTS.slice();
-
-      if(state.onlyTop){
-        list = list.filter(p => !!p.top);
-      }
-
-      if(state.category){
-        list = list.filter(p => p.category === state.category);
-      }
-
-      if(state.brand){
-        list = list.filter(p => p.brand === state.brand);
-      }
-
-      if(state.stock){
-        list = list.filter(p => p.stock === state.stock);
-      }
-
-      if(Number.isFinite(minP)){
-        list = list.filter(p => Number(p.price) >= minP);
-      }
-
-      if(Number.isFinite(maxP)){
-        list = list.filter(p => Number(p.price) <= maxP);
-      }
-
-      // search
-      if(q){
-        list = list
-          .map(p => ({...p, _rel: computeRelevance(p, q)}))
-          .filter(p => p._rel > 0 || contains(p.desc, q) || contains(p.tags?.join(" "), q));
-      } else {
-        list = list.map(p => ({...p, _rel: p.top ? 0.5 : 0}));
-      }
-
-      // sort
-      const s = state.sort;
-      if(s === "price_asc") list.sort((a,b) => a.price - b.price);
-      else if(s === "price_desc") list.sort((a,b) => b.price - a.price);
-      else if(s === "name_asc") list.sort((a,b) => a.name.localeCompare(b.name, "sk"));
-      else if(s === "name_desc") list.sort((a,b) => b.name.localeCompare(a.name, "sk"));
-      else {
-        // relevance default
-        list.sort((a,b) => (b._rel || 0) - (a._rel || 0) || (b.top - a.top) || a.name.localeCompare(b.name,"sk"));
-      }
-
-      return list;
-    }
-
-    // =========================
-    // 7) RENDER CARDS
-    // =========================
-    function renderCards(list){
-      el.grid.innerHTML = "";
-      el.empty.style.display = list.length ? "none" : "block";
-
-      for(const p of list){
-        const card = document.createElement("article");
-        card.className = "card";
-
-
-        const thumbUrl = (p.images && p.images.length) ? p.images[0] : "";
-        const thumbImgHtml = thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(p.name)}" loading="lazy" decoding="async">` : ``;
-        const stockBadge = p.stock === "in_stock"
-          ? `<span class="badge badge--stock">Skladom</span>`
-          : `<span class="badge badge--order">Na objednávku</span>`;
-
-        const topBadge = p.top ? `<span class="badge badge--red">TOP</span>` : "";
-
-        card.innerHTML = `
-          <div class="thumb">
-            ${thumbImgHtml}
-            <div class="thumbShade"></div>
-
-            <div class="badgeRow">
-              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-                ${topBadge}
-              </div>
-              
-            </div>
-          </div>
-
-          <div class="cardBody">
-            <h3 class="title">${escapeHtml(p.name)}</h3>
-            <div class="pillRow" style="margin-top:-2px;">
-              <span class="pill">${escapeHtml(p.category)}</span>
-            </div>
-            <p class="sub">${escapeHtml(p.desc || "")}</p>
-
-            <div class="pillRow">
-              <span class="pill">${escapeHtml(p.brand)}</span>
-              ${(p.tags||[]).slice(0,3).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
-            </div>
-
-            <div class="bottomRow">
-              <div>
-                <div class="price">${euro(p.price)}</div>
-                <div class="muted">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</div>
-              </div>
-              <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
-            </div>
-          </div>
-        `;
-
-        el.grid.appendChild(card);
-      }
-      // DETAIL klik -> modal s variantmi
-      el.grid.querySelectorAll("[data-add]").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          const id = e.currentTarget.getAttribute("data-add");
-          const full = PRODUCT_BY_ID.get(id);
-          if(!full) return;
-          openModal(full);
-        });
-      });
-    }
-
-    // =========================
-    // 8) META / KPI
-    // =========================
-    function renderMeta(list){
-      el.kpiTotal.textContent = PRODUCTS.length.toLocaleString("sk-SK");
-      el.kpiShown.textContent = list.length.toLocaleString("sk-SK");
-
-      const parts = [];
-      if(state.onlyTop) parts.push("TOP výber");
-      if(state.category) parts.push(`kategória: ${state.category}`);
-      if(state.brand) parts.push(`výrobca: ${state.brand}`);
-      if(state.stock) parts.push(`dostupnosť: ${state.stock === "in_stock" ? "skladom" : "na objednávku"}`);
-      if(state.q) parts.push(`hľadať: "${state.q}"`);
-      if(state.minPrice !== null && state.minPrice !== "" && state.minPrice !== undefined) parts.push(`min: ${state.minPrice}€`);
-      if(state.maxPrice !== null && state.maxPrice !== "" && state.maxPrice !== undefined) parts.push(`max: ${state.maxPrice}€`);
-
-      el.activeFilters.textContent = parts.length ? ("Filtre: " + parts.join(" • ")) : "Filtre: žiadne";
-      el.metaText.textContent = `Zobrazené: ${list.length} / ${PRODUCTS.length}`;
-    }
-
-    // =========================
-    // 9) EVENTS
-    // =========================
-    function bindEvents(){
-      el.q.addEventListener("input", () => { state.q = el.q.value; renderAll(); });
-      el.brand.addEventListener("change", () => { state.brand = el.brand.value; renderAll(); });
-      el.stock.addEventListener("change", () => { state.stock = el.stock.value; renderAll(); });
-      el.sort.addEventListener("change", () => { state.sort = el.sort.value; renderAll(); });
-
-      el.minPrice.addEventListener("input", () => { state.minPrice = el.minPrice.value; renderAll(); });
-      el.maxPrice.addEventListener("input", () => { state.maxPrice = el.maxPrice.value; renderAll(); });
-
-      el.reset.addEventListener("click", () => {
-        state.q = ""; state.category=""; state.brand=""; state.stock=""; state.minPrice=null; state.maxPrice=null; state.sort="relevance"; state.onlyTop=false;
-        el.q.value=""; el.brand.value=""; el.stock.value=""; el.sort.value="relevance"; el.minPrice.value=""; el.maxPrice.value="";
-        renderAll();
-      });
-
-      el.onlyDeals.addEventListener("click", () => {
-        state.onlyTop = !state.onlyTop;
-        el.onlyDeals.classList.toggle("btn--red", state.onlyTop);
-        el.onlyDeals.classList.toggle("btn", true);
-        renderAll();
-      });
-    }
-
-    // =========================
-    // 10) SAFE HTML
-    // =========================
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    
-    // =========================
-    // 10.5) MODAL (detail produktu + varianty + shopify checkout)
-    // =========================
-    const m = {
-      overlay: document.getElementById("modalOverlay"),
-      close: document.getElementById("mClose"),
-      title: document.getElementById("mTitle"),
-      sub: document.getElementById("mSub"),
-      main: document.getElementById("mMain"),
-      thumbs: document.getElementById("mThumbs"),
-      cat: document.getElementById("mCat"),
-      man: document.getElementById("mMan"),
-      price: document.getElementById("mPrice"),
-      stock: document.getElementById("mStock"),
-      variants: document.getElementById("mVariants"),
-      note: document.getElementById("mVariantNote"),
-      buy: document.getElementById("mBuy"),
-      shopLink: document.getElementById("mShopLink"),
-      desc: document.getElementById("mDesc"),
-      sku: document.getElementById("mSku"),
-      varSku: document.getElementById("mVarSku"),
-      pid: document.getElementById("mPid"),
-      handle: document.getElementById("mHandle"),
-      tags: document.getElementById("mTags"),
-      compare: document.getElementById("mCompare"),
-      opts: document.getElementById("mOpts"),
-    };
-
-    let activeProduct = null;
-    let activeVariant = null;
-
-    function openModal(prod){
-      activeProduct = prod;
-      activeVariant = null;
-
-      m.title.textContent = prod.title || "Produkt";
-      const short = (prod.short || "").trim();
-      const descTxt = stripHtml(prod.descriptionHtml || "");
-      m.sub.textContent = short || (descTxt ? (descTxt.slice(0, 120) + (descTxt.length > 120 ? "…" : "")) : "");
-
-      m.cat.textContent = prod.category || "Uncategorized";
-      m.man.textContent = prod.manufacturer || "RACEM";
-
-      const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
-      m.shopLink.href = link;
-      // detaily (produkt)
-      if(m.pid) m.pid.textContent = prod.id || "—";
-      if(m.handle) m.handle.textContent = prod.handle || "—";
-      const pTags = Array.isArray(prod.tags) ? prod.tags.filter(Boolean) : [];
-      if(m.tags) m.tags.textContent = pTags.length ? pTags.join(", ") : "—";
-      // SKU na produkte berieme z prvého variantu (ak existuje)
-      const firstSku = (Array.isArray(prod.variants) && prod.variants[0] && prod.variants[0].sku) ? prod.variants[0].sku : "";
-      if(m.sku) m.sku.textContent = firstSku || "—";
-      if(m.compare) m.compare.textContent = "—";
-      if(m.opts) m.opts.textContent = "—";
-      if(m.varSku) m.varSku.textContent = "—";
-
-
-      const imgs = [];
-      (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
-      const vars = Array.isArray(prod.variants) ? prod.variants : [];
-      vars.forEach(v => (Array.isArray(v.images) ? v.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); }));
-
-      renderGallery(imgs);
-      renderVariants(vars);
-
-      const prices = vars.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
-      const minPrice = prices.length ? Math.min(...prices) : 0;
-      m.price.textContent = euro(minPrice);
-      const hasStock = vars.some(v => v.stock === "in_stock");
-      setStockBadge(hasStock ? "in_stock" : "made_to_order");
-
-      m.desc.innerHTML = prod.descriptionHtml ? prod.descriptionHtml : (short ? escapeHtml(short) : "");
-
-      m.overlay.classList.add("open");
-      m.overlay.setAttribute("aria-hidden","false");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(){
-      m.overlay.classList.remove("open");
-      m.overlay.setAttribute("aria-hidden","true");
-      document.body.style.overflow = "";
-      activeProduct = null;
-      activeVariant = null;
-      m.buy.disabled = true;
-      m.note.style.display = "none";
-    }
-
-    function setStockBadge(stock){
-      if(stock === "in_stock"){
-        m.stock.className = "badge badge--stock";
-        m.stock.textContent = "Skladom";
-      }else{
-        m.stock.className = "badge badge--order";
-        m.stock.textContent = "Na objednávku";
-      }
-    }
-
-    function renderGallery(imgs){
-      m.main.innerHTML = "";
-      m.thumbs.innerHTML = "";
-      if(!imgs.length){
-        m.main.innerHTML = `<div class="note" style="padding:16px;">Bez obrázka</div>`;
-        return;
-      }
-
-      const mainImg = document.createElement("img");
-      mainImg.src = imgs[0];
-      mainImg.alt = "Produkt obrázok";
-      mainImg.loading = "lazy";
-      mainImg.decoding = "async";
-      m.main.appendChild(mainImg);
-
-      imgs.forEach((u, idx) => {
-        const t = document.createElement("div");
-        t.className = "gThumb" + (idx === 0 ? " active" : "");
-        t.innerHTML = `<img src="${escapeHtml(u)}" alt="thumb" loading="lazy" decoding="async">`;
-        t.onclick = () => {
-          mainImg.src = u;
-          m.thumbs.querySelectorAll(".gThumb").forEach(x => x.classList.remove("active"));
-          t.classList.add("active");
-        };
-        m.thumbs.appendChild(t);
-      });
-    }
-
-    function renderVariants(vars){
-      m.variants.innerHTML = "";
-      m.note.style.display = "none";
-      m.buy.disabled = true;
-
-      if(!vars.length){
-        const pill = document.createElement("div");
-        pill.className = "note";
-        pill.textContent = "Žiadne varianty v JSON feede.";
-        m.variants.appendChild(pill);
-        return;
-      }
-
-      // najprv vytvor UI
-      vars.forEach(v => {
-        const b = document.createElement("div");
-        b.className = "vOpt";
-        b.textContent = v.title || "Variant";
-        b.onclick = () => selectVariant(v);
-        m.variants.appendChild(b);
-      });
-
-      // default vyber prvý
-      selectVariant(vars[0]);
-      syncVariantUI();
-    }
-
-    function syncVariantUI(){
-      const nodes = Array.from(m.variants.querySelectorAll(".vOpt"));
-      nodes.forEach(n => {
-        n.classList.toggle("active", (activeVariant && n.textContent === (activeVariant.title || "Variant")));
-      });
-    }
-
-    function selectVariant(v){
-      activeVariant = v;
-
-      const price = Number(v.price || 0);
-      m.price.textContent = euro(price);
-      setStockBadge(v.stock === "in_stock" ? "in_stock" : "made_to_order");
-
-      
-      // variant detaily
-      if(m.varSku) m.varSku.textContent = (v.sku || "—");
-      if(m.compare) {
-        const ca = (v.compareAtPrice !== null && v.compareAtPrice !== undefined && v.compareAtPrice !== "") ? Number(v.compareAtPrice) : null;
-        m.compare.textContent = (Number.isFinite(ca) && ca > 0) ? (euro(ca) + " (pôvodná)") : "—";
-      }
-      if(m.opts){
-        const o = v.options || {};
-        const pairs = Object.keys(o).map(k => `${k}: ${o[k]}`).filter(Boolean);
-        m.opts.textContent = pairs.length ? pairs.join(" • ") : "—";
-      }
-const vid = v.variantId ? String(v.variantId).trim() : "";
-      const ok = !!vid;
-      m.buy.disabled = !ok;
-      m.note.style.display = ok ? "none" : "block";
-
-      syncVariantUI();
-    }
-
-    function goCheckout(){
-      if(!activeVariant) return;
-      const vid = activeVariant.variantId ? String(activeVariant.variantId).trim() : "";
-      if(!vid) return;
-      window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(vid)}:1`;
-    }
-
-    if(m.overlay && m.close && m.buy){
-    m.close.addEventListener("click", closeModal);
-    m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
-    document.addEventListener("keydown", (e) => { if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal(); });
-    m.buy.addEventListener("click", goCheckout);
-}
-// =========================
-    // 11) MAIN RENDER
-    // =========================
-    function renderAll(){
-      buildChips(); // refresh active state
-      const list = applyFilters();
-      renderCards(list);
-      renderMeta(list);
-    }
-
-    // =========================
-    // INIT
-    // =========================
-    (async function init(){
-      el.year.textContent = new Date().getFullYear();
-      await loadFeed();
-      buildBrandSelect();
-      buildChips();
-      bindEvents();
-      renderAll();
-    })();
-  </script><div class="panelBox">
-          <div class="rowSplit">
-            <span class="badge" id="mCat">Kategória</span>
-            <span class="badge badge--red" id="mMan">Výrobca</span>
-          </div>
-
-          <div class="rowSplit">
-            <div>
-              <div class="muted">Cena</div>
-              <div class="price" id="mPrice">—</div>
-            </div>
-            <div style="text-align:right">
-              <div class="muted">Dostupnosť</div>
-              <div class="badge" id="mStock">—</div>
-            </div>
-          </div>
-
-          <div>
-            <div class="muted" style="margin-bottom:8px;">Varianty</div>
-            <div class="variants" id="mVariants"></div>
-            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
-              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
-            </div>
-          </div>
-
-          <div class="rowSplit" style="margin-top:auto;">
-            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
-            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
-          </div>
-
-          
-          <div class="sepLine"></div>
-
-          <div>
-            <div class="muted" style="margin-bottom:6px;">Detaily</div>
-            <dl class="dl">
-              <dt>SKU</dt><dd id="mSku">—</dd>
-              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
-              <dt>Produkt ID</dt><dd id="mPid">—</dd>
-              <dt>Handle</dt><dd id="mHandle">—</dd>
-              <dt>Tagy</dt><dd id="mTags">—</dd>
-              <dt>Compare</dt><dd id="mCompare">—</dd>
-              <dt>Možnosti</dt><dd id="mOpts">—</dd>
-            </dl>
-          </div>
-
-
-          <div class="note" id="mDesc"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
 </body>
 </html>
