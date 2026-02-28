@@ -810,6 +810,143 @@ gap:10px;
       box-shadow:none !important;
     }
 
+
+
+/* ===== RACEM THEME OVERRIDES (auto) ===== */
+
+:root{
+  --bg0:#070707;
+  --bg1:#0b0b0b;
+  --bg2:#101010;
+  --panel:#0d0d0d;
+  --panel2:#121212;
+  --line:rgba(255,255,255,.10);
+  --line2:rgba(255,255,255,.14);
+  --text:#ffffff;
+  --muted:#d2d2d2;
+  --muted2:#b8b8b8;
+  --muted3:#9f9f9f;
+  --red:#b31f24;
+  --red2:#d6292f;
+  --glow:0 0 0 1px rgba(179,31,36,.28), 0 18px 60px rgba(179,31,36,.22);
+  --shadow:0 18px 70px rgba(0,0,0,.55);
+}
+
+html,body{background:var(--bg0)!important;color:var(--text)!important;}
+body{
+  background:
+    radial-gradient(900px 520px at 15% 10%, rgba(179,31,36,.14), transparent 62%),
+    radial-gradient(720px 420px at 88% 18%, rgba(255,255,255,.05), transparent 64%),
+    radial-gradient(900px 520px at 85% 88%, rgba(179,31,36,.10), transparent 60%),
+    linear-gradient(180deg, var(--bg0), var(--bg1) 45%, var(--bg0));
+}
+
+/* text contrast */
+.muted, .muted2{color:var(--muted2)!important;}
+.muted3{color:var(--muted3)!important;}
+p, li, dd{color:var(--muted)!important;}
+h1,h2,h3,h4,h5{color:var(--text)!important; text-shadow:0 1px 0 rgba(0,0,0,.5);}
+
+/* cards / panels */
+.panel, .card, .tile, .kpi, .filters, .section, .box, .panelBox{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)) !important;
+  background-color:var(--panel)!important;
+  border:1px solid var(--line)!important;
+  box-shadow:var(--shadow)!important;
+}
+
+/* product grid cards: cover common classnames */
+.productCard, .prodCard, .pCard, .gridCard, .card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012))!important;
+  border:1px solid var(--line2)!important;
+}
+.productCard:hover, .prodCard:hover, .pCard:hover, .gridCard:hover, .card:hover{
+  border-color:rgba(179,31,36,.45)!important;
+  box-shadow:var(--glow), var(--shadow)!important;
+  transform:translateY(-2px);
+}
+
+/* buttons */
+.btn{
+  color:#fff!important;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02))!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+}
+.btn:hover{
+  border-color:rgba(179,31,36,.45)!important;
+  box-shadow:0 0 0 1px rgba(179,31,36,.25), 0 14px 40px rgba(0,0,0,.55)!important;
+}
+.btn--red{
+  background:linear-gradient(180deg, rgba(214,41,47,.98), rgba(179,31,36,.98))!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:0 0 0 1px rgba(179,31,36,.35), 0 18px 60px rgba(179,31,36,.28)!important;
+}
+.btn--red:hover{filter:saturate(1.1) brightness(1.06);}
+
+/* inputs/selects */
+input, select, textarea{
+  color:#fff!important;
+  background:rgba(10,10,10,.72)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+}
+input::placeholder{color:rgba(255,255,255,.45)!important;}
+input:focus, select:focus, textarea:focus{
+  outline:none!important;
+  border-color:rgba(179,31,36,.6)!important;
+  box-shadow:0 0 0 3px rgba(179,31,36,.16)!important;
+}
+
+/* badges/pills */
+.badge, .pill{
+  background:rgba(255,255,255,.06)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  color:#fff!important;
+}
+.badge--red, .pill--red{
+  background:rgba(179,31,36,.20)!important;
+  border-color:rgba(179,31,36,.45)!important;
+  color:#fff!important;
+}
+
+/* separators */
+.sepLine, hr{
+  border-color:rgba(255,255,255,.10)!important;
+}
+
+/* modal: better contrast + racem glow */
+.modalOverlay{
+  background:rgba(0,0,0,.78)!important;
+  backdrop-filter:blur(10px);
+}
+.modal{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012))!important;
+  background-color:var(--panel2)!important;
+  border:1px solid rgba(179,31,36,.22)!important;
+  box-shadow:0 0 0 1px rgba(179,31,36,.20), 0 30px 110px rgba(0,0,0,.75)!important;
+}
+.modalTitle{color:#fff!important;}
+.modalSub{color:rgba(255,255,255,.70)!important;}
+.note{
+  color:rgba(255,255,255,.86)!important;
+  background:rgba(255,255,255,.05)!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+}
+.dl dt{color:rgba(255,255,255,.78)!important;}
+.dl dd{color:#fff!important;}
+.price{color:#fff!important; text-shadow:0 0 22px rgba(179,31,36,.18);}
+
+/* subtle HUD noise */
+body:before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(transparent 0, rgba(255,255,255,.018) 50%, transparent 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 6px);
+  opacity:.10;
+  mix-blend-mode:overlay;
+}
+
 </style>
 </head>
 
