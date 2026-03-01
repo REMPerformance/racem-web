@@ -1969,6 +1969,23 @@ select:focus{
   font-weight:700;
 }
 
+/* event type + countdown micro UI */
+.typeVal{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.typeVal svg{
+  width:18px;
+  height:18px;
+  opacity:.95;
+  filter: drop-shadow(0 10px 22px rgba(179,31,36,.22));
+}
+.cdVal[data-state="future"]{ color:#fff; }
+.cdVal[data-state="live"]{ color:#b31f24; text-shadow:0 0 18px rgba(179,31,36,.35); }
+.cdVal[data-state="past"]{ color:rgba(255,255,255,.55); }
+.cdVal[data-state="na"]{ color:rgba(255,255,255,.55); }
+
 .eSplit{
   display:grid;
   grid-template-columns: 1fr;
@@ -2996,11 +3013,64 @@ function fmtDateRange(startISO, endISO){
 }
 
 function parseISODate(iso){
-  const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(!m) return null;
-  const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
-  dt.setHours(0,0,0,0);
-  return dt;
+  const raw = String(iso||"").trim();
+  if(!raw) return null;
+
+  const s = raw.toLowerCase();
+
+  // 1) ISO: YYYY-MM-DD
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m){
+    const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+    dt.setHours(0,0,0,0);
+    return dt;
+  }
+
+  // 2) D.M.YYYY / DD.MM.YYYY
+  m = s.match(/^(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})$/);
+  if(m){
+    const dt = new Date(Number(m[3]), Number(m[2])-1, Number(m[1]));
+    dt.setHours(0,0,0,0);
+    return dt;
+  }
+
+  // 3) "23. mája 2026" (SK/CZ) – month words
+  const norm = (w) => String(w||"")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")  // diacritics
+    .toLowerCase()
+    .trim();
+
+  const monthMap = {
+    "januar":1, "januara":1, "januar\u00e1":1,
+    "februar":2, "februara":2,
+    "marec":3, "marca":3,
+    "april":4, "aprila":4,
+    "maj":5, "maja":5,
+    "jun":6, "juna":6,
+    "jul":7, "jula":7,
+    "august":8, "augusta":8,
+    "september":9, "septembra":9,
+    "oktober":10, "oktobra":10,
+    "november":11, "novembra":11,
+    "december":12, "decembra":12
+  };
+
+  m = s.match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
+  if(m){
+    const dd = Number(m[1]);
+    const mmWord = norm(m[2]);
+    const yy = Number(m[3]);
+
+    const mm = monthMap[mmWord];
+    if(mm){
+      const dt = new Date(yy, mm-1, dd);
+      dt.setHours(0,0,0,0);
+      return dt;
+    }
+  }
+
+  return null;
 }
 
 // Navigácia: preferuj gmapsQuery (venue + city), inak lat/lon
@@ -3086,11 +3156,64 @@ function startOfToday(){
 }
 
 function parseISODate(iso){
-  const m = String(iso||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(!m) return null;
-  const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
-  dt.setHours(0,0,0,0);
-  return dt;
+  const raw = String(iso||"").trim();
+  if(!raw) return null;
+
+  const s = raw.toLowerCase();
+
+  // 1) ISO: YYYY-MM-DD
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m){
+    const dt = new Date(Number(m[1]), Number(m[2])-1, Number(m[3]));
+    dt.setHours(0,0,0,0);
+    return dt;
+  }
+
+  // 2) D.M.YYYY / DD.MM.YYYY
+  m = s.match(/^(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})$/);
+  if(m){
+    const dt = new Date(Number(m[3]), Number(m[2])-1, Number(m[1]));
+    dt.setHours(0,0,0,0);
+    return dt;
+  }
+
+  // 3) "23. mája 2026" (SK/CZ) – month words
+  const norm = (w) => String(w||"")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")  // diacritics
+    .toLowerCase()
+    .trim();
+
+  const monthMap = {
+    "januar":1, "januara":1, "januar\u00e1":1,
+    "februar":2, "februara":2,
+    "marec":3, "marca":3,
+    "april":4, "aprila":4,
+    "maj":5, "maja":5,
+    "jun":6, "juna":6,
+    "jul":7, "jula":7,
+    "august":8, "augusta":8,
+    "september":9, "septembra":9,
+    "oktober":10, "oktobra":10,
+    "november":11, "novembra":11,
+    "december":12, "decembra":12
+  };
+
+  m = s.match(/^(\d{1,2})\.\s*([^\s]+)\s+(\d{4})$/);
+  if(m){
+    const dd = Number(m[1]);
+    const mmWord = norm(m[2]);
+    const yy = Number(m[3]);
+
+    const mm = monthMap[mmWord];
+    if(mm){
+      const dt = new Date(yy, mm-1, dd);
+      dt.setHours(0,0,0,0);
+      return dt;
+    }
+  }
+
+  return null;
 }
 
 function updateEventHud(){
@@ -3644,6 +3767,73 @@ function updateProductProgress(){
 }
 
 
+
+// =========================
+// EVENT TYPE (icon + label) + COUNTDOWN
+// =========================
+function svgIcon(kind){
+  // currentColor, 24x24, minimal strokes
+  if(kind === "drift") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M4 16c3-6 9-10 16-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M6 20c2-3 5-5 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    <path d="M18 12l2 2-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+  if(kind === "stance") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 14l1-3h10l1 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7 14h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 16h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+    <path d="M6 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+  </svg>`;
+  if(kind === "meet") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 21s6-5.2 6-11a6 6 0 10-12 0c0 5.8 6 11 6 11z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M12 11.5a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="2"/>
+  </svg>`;
+  if(kind === "trackday") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M7 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+    <path d="M17 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+    <path d="M12 6v2M12 10v2M12 14v2M12 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>`;
+  if(kind === "show") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 2v20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    <path d="M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function eventKind(ev){
+  const raw = String(ev?.mode || ev?.type || "").trim().toLowerCase();
+
+  if(raw === "drift" || raw === "drifting") return { key:"drift", label:"DRIFT", icon: svgIcon("drift") };
+  if(raw === "stance" || raw === "static") return { key:"stance", label:"STANCE", icon: svgIcon("stance") };
+  if(raw === "meet" || raw === "meeting" || raw === "meetup") return { key:"meet", label:"MEET", icon: svgIcon("meet") };
+  if(raw === "trackday" || raw === "track") return { key:"trackday", label:"TRACKDAY", icon: svgIcon("trackday") };
+  if(raw === "show") return { key:"show", label:"SHOW", icon: svgIcon("show") };
+
+  return { key: raw || "event", label: (raw ? raw.toUpperCase() : "EVENT"), icon: svgIcon("event") };
+}
+
+function eventCountdown(ev){
+  const today = startOfToday();
+  const s = parseISODate(ev?.dateStart || ev?.date);
+  const e = parseISODate(ev?.dateEnd || "");
+
+  if(!s) return { label:"—", state:"na", days:null };
+
+  // prebieha (ak máme end), alebo aspoň v deň štartu
+  if(e && today >= s && today <= e) return { label:"Prebieha", state:"live", days:0 };
+  if(!e && today.getTime() === s.getTime()) return { label:"Dnes", state:"live", days:0 };
+
+  // minulosť
+  if(today > s && (!e || today > e)) return { label:"Už prebehlo", state:"past", days:null };
+
+  // budúcnosť
+  const diff = Math.ceil((s - today) / 86400000);
+  return { label:`${diff} dní`, state:"future", days:diff };
+}
+
+
 function navUrl(lat, lon) {
   if (!lat || !lon) return "#";
   return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`;
@@ -3671,6 +3861,8 @@ const out = EVENTS.filter(ev => {
         const ourCarsHTML = carsListHTML(d.ourCars);
         const carsCount = (typeof d.carsCount === "number") ? String(d.carsCount) : "—";
         const driftTaxi = d.driftTaxi ? "Áno" : "Nie";
+        const kind = eventKind(ev);
+        const countdown = eventCountdown(ev);
         const img = ev.img ? `<a class="thumbBtn" href="${escapeHTML(ev.img)}" target="_blank" rel="noopener noreferrer" data-full="${escapeHTML(ev.img)}" data-title="${escapeHTML(ev.name)}" aria-label="Otvoriť fotku"><img src="${escapeHTML(ev.img)}" alt="${escapeHTML(ev.name)}" loading="lazy" /></a>` : "";
 
         return `
@@ -3696,8 +3888,8 @@ const out = EVENTS.filter(ev => {
 
   <div class="eGrid">
     <div class="eTile">
-      <div class="eLbl"><span class="miniDot"></span>AUTÁ (ODHAD)</div>
-      <div class="eVal"><strong>${escapeHTML(carsCount)}</strong></div>
+      <div class="eLbl"><span class="miniDot"></span>TYP AKCIE</div>
+      <div class="eVal"><strong class="typeVal">${kind.icon}<span>${escapeHTML(kind.label)}</span></strong></div>
     </div>
 
     <div class="eTile">
@@ -3711,8 +3903,8 @@ const out = EVENTS.filter(ev => {
 </div>
 
     <div class="eTile">
-      <div class="eLbl"><span class="miniDot"></span>EXTRA</div>
-      <div class="eVal">${escapeHTML(d.extra || "—")}</div>
+      <div class="eLbl"><span class="miniDot"></span>DO AKCIE</div>
+      <div class="eVal"><strong class="cdVal" data-state="${countdown.state}">${escapeHTML(countdown.label)}</strong></div>
     </div>
   </div>
 
@@ -3730,20 +3922,7 @@ const out = EVENTS.filter(ev => {
     </div>
   ` : ``}
 
-</div>
-
-                    <div class="actionsRow">
-                      <button class="miniBtn primary" data-nav="1" type="button">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke="currentColor" stroke-width="2"/>
-                          <path d="M12 10l7-3-3 7-2-3-2 2-1-3z" fill="currentColor" opacity=".85"/>
-                        </svg>
-                        Navigovať
-                      </button>
-                      <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">
-                        Klik ešte raz → zavrieť
-                      </span>
-                    </div>
+</div></div>
                   </div>
                 </div>
 
