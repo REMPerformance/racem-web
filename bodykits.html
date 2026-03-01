@@ -2188,6 +2188,187 @@ select:focus{
   max-height: calc((var(--rowH) * 4) + (var(--listGap) * 3) + var(--listPad));
 }
 
+/* =========================
+   JAZDCI – širšie + iný štýl (oproti eventom)
+   ========================= */
+#jazdci .driversGrid{
+  grid-template-columns: 1.05fr .95fr;
+}
+@media (max-width: 820px){
+  #jazdci .driversGrid{ grid-template-columns: 1fr; }
+}
+
+.driversHud{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.16));
+  padding: 12px 12px 10px;
+  box-shadow: 0 22px 70px rgba(0,0,0,.55);
+}
+.driversHudTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.driversHudTop b{
+  font-family: Teko, Oswald, sans-serif;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:18px;
+}
+.dhLive{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.78);
+  font-weight:700;
+}
+.dhLive i{
+  width:8px;height:8px;border-radius:999px;
+  background: rgba(46,204,113,.95);
+  box-shadow: 0 0 20px rgba(46,204,113,.45);
+}
+.driversHudGrid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+}
+.dhTile{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  padding: 10px 10px;
+}
+.dhTile span{
+  display:block;
+  color: rgba(255,255,255,.62);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.dhTile b{
+  display:block;
+  margin-top:4px;
+  font-family: Teko, Oswald, sans-serif;
+  font-size:22px;
+  letter-spacing:.06em;
+}
+
+/* Driver cards – „profil“ look */
+.dCard{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.11);
+  background:
+    radial-gradient(1200px 260px at 18% 0%, rgba(179,31,36,.22), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+  padding: 12px;
+  display:grid;
+  grid-template-columns: 84px 1fr;
+  gap:12px;
+  box-shadow: 0 20px 70px rgba(0,0,0,.55);
+}
+.dAvatar{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  overflow:hidden;
+  position:relative;
+  aspect-ratio: 1 / 1;
+}
+.dAvatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+.dNum{
+  position:absolute;
+  left:8px; bottom:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.14);
+  font-family: Teko, Oswald, sans-serif;
+  font-size:18px;
+  letter-spacing:.10em;
+}
+
+.dHead{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+.dName{
+  font-family: Teko, Oswald, sans-serif;
+  font-size:26px;
+  letter-spacing:.06em;
+  line-height:1.05;
+}
+.dMeta{
+  margin-top:2px;
+  color: rgba(255,255,255,.70);
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+.dChips{
+  margin-top:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.dChip{
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.80);
+}
+.dChip.red{
+  background: rgba(179,31,36,.18);
+  border-color: rgba(179,31,36,.38);
+}
+.dChip.green{
+  background: rgba(46,204,113,.14);
+  border-color: rgba(46,204,113,.35);
+}
+.dLine{
+  margin-top:10px;
+  border-top: 1px dashed rgba(255,255,255,.12);
+  padding-top:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.dMini{
+  color: rgba(255,255,255,.72);
+  font-size:12px;
+  line-height:1.45;
+}
+.dMini b{ color:#fff; }
+.dIG{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(179,31,36,.18);
+  border: 1px solid rgba(179,31,36,.40);
+  color:#fff;
+  text-decoration:none;
+  font-family: Teko, Oswald, sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:16px;
+  white-space:nowrap;
+}
+.dIG:hover{ background: rgba(255,43,47,.22); transform: translateY(-1px); }
+
     .list::-webkit-scrollbar{ width:10px; }
 .list::-webkit-scrollbar-track{
   background: rgba(0,0,0,.22);
@@ -2535,8 +2716,17 @@ select:focus{
     <span><b>Click:</b> marker → otvorí event</span>
   </div>
 </div>
+        </div>
+      </section>
 
-        <div class="secGrid">
+      <!-- JAZDCI -->
+      <section id="jazdci" class="block">
+        <div class="sectionTitle">
+          <h2>Naše talenty</h2>
+          <p>Jazdci, autá, výsledky. Klik na jazdca → fokus na mape.</p>
+        </div>
+
+        <div class="secGrid driversGrid">
           <div class="card">
             <div class="card controls" style="box-shadow:none; border:none; background:transparent;">
               <div class="field">
@@ -2549,7 +2739,28 @@ select:focus{
           </div>
 
           <div class="card mapCard">
-            <div class="rightTop">
+            <div class="driversHud" aria-label="RACEM DRIVERS HUD">
+              <div class="driversHudTop">
+                <b>RACEM DRIVERS</b>
+                <span class="dhLive"><i></i> ACTIVE</span>
+              </div>
+              <div class="driversHudGrid">
+                <div class="dhTile">
+                  <span>Jazdci</span>
+                  <b id="dhDrivers">—</b>
+                </div>
+                <div class="dhTile">
+                  <span>Tituly</span>
+                  <b id="dhTitles">—</b>
+                </div>
+                <div class="dhTile">
+                  <span>Najbližší štart</span>
+                  <b id="dhNext">—</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="rightTop" style="margin-top:10px;">
               <b>Mapa Slovenska</b>
               <span>zoom + drag</span>
             </div>
@@ -2834,6 +3045,15 @@ function buildDriversFromInput(driversInput){
     const carTexts = carIds.map(id => carLabel(carsById.get(String(id)))).filter(Boolean);
     const mainCar = carTexts[0] || "—";
 
+    const titles = Array.isArray(d.titles) ? d.titles : [];
+    const results2025 = Array.isArray(d.results2025) ? d.results2025 : [];
+    const ig = String(d.ig || "").trim();
+
+    // odvodený „about“ ak nie je vyplnené
+    const about =
+      String(d.about || "").trim() ||
+      (titles.length ? `${titles[0].title || "Titul"} • ${titles[0].category || ""} • ${titles[0].series || ""}`.replace(/\s•\s•/g," • ").trim() : "");
+
     return {
       id: String(d.id || ""),
       name: String(d.name || "—"),
@@ -2842,9 +3062,12 @@ function buildDriversFromInput(driversInput){
       country: String(d.country || "—"),
       lat: coords ? coords.lat : null,
       lon: coords ? coords.lon : null,
-      about: String(d.about || ""),
+      about,
       car: mainCar,
       number: String(d.number || "—"),
+      ig,
+      titles,
+      results2025,
       plans: Array.isArray(d.plans) ? d.plans : [],
       photos: Array.isArray(d.photos) ? d.photos : []
     };
@@ -4022,61 +4245,106 @@ const out = EVENTS.filter(ev => {
         skMarkers.set(d.id, m);
       });
     }
-
     function renderDrivers(){
       const q = ($("#qDrivers").value || "").trim().toLowerCase();
 
       const out = DRIVERS.filter(d => {
-        const hay = [d.name, d.where, d.about, d.car, d.number].join(" ").toLowerCase();
+        const hay = [d.name, d.where, d.about, d.car, d.number, d.city, d.country].join(" ").toLowerCase();
         return !q || hay.includes(q);
       });
 
       $("#listDrivers").innerHTML = out.map(d => {
-        const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
         const main = (d.photos && d.photos.length) ? d.photos[0] : "";
+        const ig = safeLink(d.ig);
+
+        const titles = Array.isArray(d.titles) ? d.titles : [];
+        const results = Array.isArray(d.results2025) ? d.results2025 : [];
+
+        const titleCount = titles.length;
+        const winCount = results.filter(r => Number(r.position) === 1).length;
+        const podiumCount = results.filter(r => {
+          const p = Number(r.position);
+          return p && p <= 3;
+        }).length;
+
+        const bestRes = results
+          .map(r => Number(r.position))
+          .filter(n => Number.isFinite(n))
+          .sort((a,b) => a-b)[0];
+
+        const bestLabel = Number.isFinite(bestRes) ? `Best: P${bestRes}` : "Best: —";
+
+        const chips = [
+          `<span class="dChip red">${escapeHTML(d.car)}</span>`,
+          `<span class="dChip"> ${escapeHTML(d.where)} </span>`,
+          `<span class="dChip green">${escapeHTML(bestLabel)}</span>`,
+          titleCount ? `<span class="dChip">Tituly: ${titleCount}</span>` : `<span class="dChip">Tituly: 0</span>`,
+          podiumCount ? `<span class="dChip">Podium: ${podiumCount}</span>` : `<span class="dChip">Podium: 0</span>`
+        ].join("");
+
+        // expand obsah (výsledky + galéria)
         const thumbs = (d.photos || []).slice(0, 6).map((src, idx) => `
           <div class="tmb" data-src="${escapeHTML(src)}" data-idx="${idx}">
             <img src="${escapeHTML(src)}" alt="${escapeHTML(d.name)} foto ${idx+1}" loading="lazy"/>
           </div>
         `).join("");
 
+        const resultsRows = results.slice(0, 6).map(r => `
+          <div class="box">
+            <b>${escapeHTML(r.event || "Event")}</b>
+            <span>${escapeHTML(r.category || "—")} • ${escapeHTML(r.date || "—")} • <b>P${escapeHTML(r.position || "—")}</b></span>
+          </div>
+        `).join("") || `
+          <div class="box">
+            <b>Výsledky</b>
+            <span>—</span>
+          </div>
+        `;
+
+        const titlesRows = titles.slice(0, 4).map(t => `
+          <div class="box">
+            <b>${escapeHTML(t.title || "Titul")}</b>
+            <span>${escapeHTML(t.year || "—")} • ${escapeHTML(t.category || "—")} • ${escapeHTML(t.series || "—")}</span>
+          </div>
+        `).join("") || `
+          <div class="box">
+            <b>Tituly</b>
+            <span>—</span>
+          </div>
+        `;
+
         return `
           <div class="item" data-id="${escapeHTML(d.id)}">
-            <div class="itemGrid">
-              <div class="thumb">
-                ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ""}
+            <div class="dCard">
+              <div class="dAvatar">
+                ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ``}
+                <div class="dNum">#${escapeHTML(d.number)}</div>
               </div>
 
               <div>
-                <div class="itemTop">
+                <div class="dHead">
                   <div>
-                    <b>${escapeHTML(d.name)}</b>
-                    <div class="meta">${escapeHTML(d.where)} • ${escapeHTML(d.car)} • #${escapeHTML(d.number)}</div>
+                    <div class="dName">${escapeHTML(d.name)}</div>
+                    <div class="dMeta">${escapeHTML(d.where)}</div>
                   </div>
-                  <div class="badges"><span class="badge green">SPONZORING</span></div>
+                  <div class="badges">
+                    <span class="badge green">SPONZORING</span>
+                    ${winCount ? `<span class="badge red">WIN×${winCount}</span>` : ``}
+                  </div>
                 </div>
 
-                <p class="desc">${escapeHTML(d.about)}<br><br><span style="color:rgba(255,255,255,.74)">Plán:</span> ${escapeHTML(plans || "—")}</p>
+                <div class="dChips">${chips}</div>
+
+                <div class="dLine">
+                  <div class="dMini">${escapeHTML(d.about || "—")}</div>
+                  ${ig ? `<a class="dIG" href="${escapeHTML(ig)}" target="_blank" rel="noopener">IG</a>` : ``}
+                </div>
 
                 <div class="expand">
                   <div class="expandInner">
                     <div class="kv">
-                      <div class="box">
-                        <b>Odkiaľ</b>
-                        <span>${escapeHTML(d.where)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Auto</b>
-                        <span>${escapeHTML(d.car)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Číslo</b>
-                        <span>#${escapeHTML(d.number)}</span>
-                      </div>
-                      <div class="box">
-                        <b>Kde sa plánuje zúčastniť</b>
-                        <span>${escapeHTML(plans || "—")}</span>
-                      </div>
+                      ${titlesRows}
+                      ${resultsRows}
                     </div>
 
                     <div class="gallery">
@@ -4125,7 +4393,7 @@ const out = EVENTS.filter(ev => {
         };
 
         el.addEventListener("click", (e) => {
-          if(e.target && (e.target.closest && e.target.closest("button"))) return;
+          if(e.target && (e.target.closest && (e.target.closest("a") || e.target.closest("button")))) return;
           if(e.target && (e.target.closest && e.target.closest(".tmb"))) return;
 
           const isOpen = el.getAttribute("data-open") === "1";
@@ -4152,10 +4420,43 @@ const out = EVENTS.filter(ev => {
           });
         });
       });
+
+      updateDriversHud();
+    }
+
+    function updateDriversHud(){
+      const elDrivers = document.getElementById("dhDrivers");
+      const elTitles  = document.getElementById("dhTitles");
+      const elNext    = document.getElementById("dhNext");
+      if(!elDrivers || !elTitles || !elNext) return;
+
+      const driversNow = Array.isArray(DRIVERS) ? DRIVERS.length : 0;
+      const titlesNow = (Array.isArray(DRIVERS) ? DRIVERS : []).reduce((s,d) => s + (Array.isArray(d.titles)?d.titles.length:0), 0);
+
+      // Najbližší štart – z events: prvý upcoming kde je náš jazdec v attendees[] (ak existuje)
+      const today = startOfToday();
+      const upcoming = (Array.isArray(EVENTS)?EVENTS:[])
+        .map(ev => ({ ev, dt: parseISODate(ev.dateStart || ev.date) }))
+        .filter(x => x.dt && x.dt >= today)
+        .sort((a,b) => a.dt - b.dt);
+
+      let nextLabel = "—";
+      for(const x of upcoming){
+        const at = Array.isArray(x.ev.attendees) ? x.ev.attendees : [];
+        if(at.length){
+          nextLabel = `${x.ev.city} (${fmtDateRange(x.ev.dateStart, x.ev.dateEnd)})`;
+          break;
+        }
+      }
+
+      elDrivers.textContent = String(driversNow);
+      elTitles.textContent  = String(titlesNow);
+      elNext.textContent    = nextLabel;
     }
 
     // =========================
     // SUPPLIERS LIST
+
     // =========================
     function renderSuppliers(){
       const q = ($("#qSup").value || "").trim().toLowerCase();
