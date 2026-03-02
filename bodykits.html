@@ -496,6 +496,7 @@
       position:relative;
       overflow:hidden;
     }
+    .item[data-sel="1"]{ border-color: rgba(255,43,47,.45); box-shadow: var(--glowRed2); }
     .item:hover{
       border-color: rgba(179,31,36,.45);
       transform: translateY(-1px);
@@ -914,6 +915,96 @@
     .gpt.t-locked .core{ background: rgba(255,255,255,.46); box-shadow: 0 0 14px rgba(255,255,255,.12); }
     .gpt.t-supplier .core{ background: rgba(46,204,113,.92); box-shadow: 0 0 16px rgba(46,204,113,.14); }
     .gpt[data-hidden="1"]{opacity:0; pointer-events:none;}
+
+
+    /* Driver detail (right panel) */
+    .driverDetail{
+      display:grid;
+      gap:12px;
+    }
+    .ddEmpty{
+      padding:16px;
+      border-radius: 16px;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.70);
+      line-height:1.6;
+      letter-spacing:.02em;
+    }
+    .ddTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 12px 0;
+    }
+    .ddName{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:20px;
+      margin:0;
+    }
+    .ddMeta{
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      margin-top:6px;
+    }
+    .ddIG{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,43,47,.30);
+      background: rgba(179,31,36,.10);
+      color: rgba(255,255,255,.92);
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      transition:.15s ease;
+      box-shadow: var(--glowRed);
+      white-space:nowrap;
+    }
+    .ddIG:hover{ transform: translateY(-1px); border-color: rgba(255,43,47,.55); background: rgba(179,31,36,.16); }
+
+    .ddBodyPad{ padding:0 12px 12px; }
+
+    .ddGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+
+    .ddTable{
+      width:100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow:hidden;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+    }
+    .ddTable th, .ddTable td{
+      padding:10px 10px;
+      font-size:12px;
+      letter-spacing:.06em;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align:top;
+    }
+    .ddTable th{
+      color: rgba(255,255,255,.78);
+      text-transform:uppercase;
+      font-weight:800;
+      background: rgba(255,255,255,.04);
+    }
+    .ddTable td{ color: rgba(255,255,255,.78); }
+    .ddTable tr:last-child td{ border-bottom:none; }
+    .posP1{ color: rgba(255,43,47,.95); font-weight:900; }
+    .posPodium{ color: rgba(241,196,15,.95); font-weight:900; }
 
     /* Gallery (drivers sponsor) */
     .gallery{
@@ -2723,7 +2814,7 @@ select:focus{
       <section id="jazdci" class="block">
         <div class="sectionTitle">
           <h2>Naše talenty</h2>
-          <p>Jazdci, autá, výsledky. Klik na jazdca → fokus na mape.</p>
+          <p>Jazdci, autá, výsledky. Klik na jazdca → zobrazí sa profil a štatistiky.</p>
         </div>
 
         <div class="secGrid driversGrid">
@@ -2738,40 +2829,40 @@ select:focus{
             <div class="list" id="listDrivers"></div>
           </div>
 
-          <div class="card mapCard">
+          
+          <div class="card" id="driverDetailCard">
             <div class="driversHud" aria-label="RACEM DRIVERS HUD">
               <div class="driversHudTop">
-                <b>RACEM DRIVERS</b>
-                <span class="dhLive"><i></i> ACTIVE</span>
+                <b>PROFIL JAZDCA</b>
+                <span class="dhLive"><i></i> SELECT</span>
               </div>
               <div class="driversHudGrid">
                 <div class="dhTile">
-                  <span>Jazdci</span>
-                  <b id="dhDrivers">—</b>
+                  <span>Umiestnenia</span>
+                  <b id="ddPlaces">—</b>
                 </div>
                 <div class="dhTile">
-                  <span>Tituly</span>
-                  <b id="dhTitles">—</b>
+                  <span>Výhry</span>
+                  <b id="ddWins">—</b>
                 </div>
                 <div class="dhTile">
-                  <span>Najbližší štart</span>
-                  <b id="dhNext">—</b>
+                  <span>Najlepší výsledok</span>
+                  <b id="ddBest">—</b>
                 </div>
               </div>
             </div>
 
             <div class="rightTop" style="margin-top:10px;">
-              <b>Mapa Slovenska</b>
-              <span>zoom + drag</span>
+              <b>Detail</b>
+              <span>klikni na jazdca vľavo</span>
             </div>
-            <div class="mapBox">
-              <div id="mapSlovakia"></div>
+
+            <div class="driverDetail" id="driverDetail">
+              <div class="ddEmpty">
+                Vyber jazdca zľava. Tu sa zobrazia štatistiky, výsledky a fotky.
+              </div>
             </div>
-            <div class="mapHint">
-              <span><b>Tip:</b> klik na jazdca → fokus</span>
-              <span><b>Lock:</b> SK bounds</span>
-            </div>
-          </div>
+          </div></div>
         </div>
       </section>
 
@@ -4203,48 +4294,175 @@ const out = EVENTS.filter(ev => {
       });
     }
 
+        // =========================
+    // DRIVERS LIST + DETAIL (NO MAP)
     // =========================
-    // DRIVERS LIST + SK MAP (LOCKED)
-    // =========================
-    let mapSK, skMarkers = new Map();
+    let ACTIVE_DRIVER_ID = null;
 
-    function initSlovakiaMap(){
-      const SK_BOUNDS = L.latLngBounds(
-        L.latLng(47.65, 16.75),
-        L.latLng(49.65, 22.70)
-      );
-
-      mapSK = L.map("mapSlovakia", {
-        zoomControl:true,
-        scrollWheelZoom:true,
-        maxBounds: SK_BOUNDS,
-        maxBoundsViscosity: 1.0,
-        worldCopyJump: false,
-        minZoom: 8,
-        maxZoom: 18
-      });
-
-      mapSK.fitBounds(SK_BOUNDS);
-      L.tileLayer(DARK_TILES, { maxZoom: 19, attribution: DARK_ATTR, noWrap: true }).addTo(mapSK);
-      renderSlovakiaMarkers();
+    function posClass(p){
+      const n = Number(p);
+      if(!Number.isFinite(n) || n <= 0) return "";
+      if(n === 1) return "posP1";
+      if(n <= 3) return "posPodium";
+      return "";
     }
 
-    function renderSlovakiaMarkers(){
-      skMarkers.forEach(m => m.remove());
-      skMarkers.clear();
+    function resultsStats(results){
+      const arr = Array.isArray(results) ? results : [];
+      const places = arr.filter(r => Number.isFinite(Number(r.position))).length;
+      const wins = arr.filter(r => Number(r.position) === 1).length;
+      const podiums = arr.filter(r => {
+        const p = Number(r.position);
+        return Number.isFinite(p) && p >= 1 && p <= 3;
+      }).length;
+      const best = arr
+        .map(r => Number(r.position))
+        .filter(n => Number.isFinite(n) && n > 0)
+        .sort((a,b)=>a-b)[0];
+      return {
+        places,
+        wins,
+        podiums,
+        best: Number.isFinite(best) ? best : null
+      };
+    }
 
-      DRIVERS.forEach(d => {
-        if(typeof d.lat !== "number" || typeof d.lon !== "number") return;
+    function renderDriverDetail(d){
+      const box = document.getElementById("driverDetail");
+      if(!box) return;
 
-        const m = L.marker([d.lat, d.lon], { icon: markerIcon("rgba(46,204,113,.95)") }).addTo(mapSK);
+      if(!d){
+        box.innerHTML = `<div class="ddEmpty">Vyber jazdca zľava. Tu sa zobrazia štatistiky, výsledky a fotky.</div>`;
+        const a=document.getElementById("ddPlaces"); if(a) a.textContent="—";
+        const b=document.getElementById("ddWins"); if(b) b.textContent="—";
+        const c=document.getElementById("ddBest"); if(c) c.textContent="—";
+        return;
+      }
 
-        const plans = (d.plans || []).map(p => `${p.where} • ${fmtDate(p.date)}${p.note ? " • " + p.note : ""}`).join(" | ");
-        const extra = plans ? `Plán: ${plans}` : "Plán: —";
+      const results = Array.isArray(d.results2025) ? d.results2025 : [];
+      const titles  = Array.isArray(d.titles) ? d.titles : [];
+      const photos  = Array.isArray(d.photos) ? d.photos : [];
+      const mainImg = photos[0] || "";
 
-        m.bindPopup(popHTML(d.name, `${d.where} • #${d.number} • ${d.car}`, `${d.about}\n\n${extra}`), { closeButton:true });
-        skMarkers.set(d.id, m);
+      const st = resultsStats(results);
+
+      // detail HUD (right)
+      const elPlaces = document.getElementById("ddPlaces");
+      const elWins   = document.getElementById("ddWins");
+      const elBest   = document.getElementById("ddBest");
+      if(elPlaces) elPlaces.textContent = String(st.places || 0);
+      if(elWins)   elWins.textContent   = String(st.wins || 0);
+      if(elBest)   elBest.textContent   = st.best ? `P${st.best}` : "—";
+
+      const ig = safeLink(d.ig);
+
+      const titlesHtml = titles.length ? `
+        <table class="ddTable" aria-label="Tituly">
+          <thead>
+            <tr><th>Rok</th><th>Titul</th><th>Kategória</th><th>Séria</th></tr>
+          </thead>
+          <tbody>
+            ${titles.slice(0, 12).map(t => `
+              <tr>
+                <td>${escapeHTML(t.year || "—")}</td>
+                <td><b>${escapeHTML(t.title || "—")}</b></td>
+                <td>${escapeHTML(t.category || "—")}</td>
+                <td>${escapeHTML(t.series || "—")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      ` : `<div class="ddEmpty">Tituly: zatiaľ nič.</div>`;
+
+      const resultsHtml = results.length ? `
+        <table class="ddTable" aria-label="Výsledky">
+          <thead>
+            <tr><th>Event</th><th>Kategória</th><th>Dátum</th><th>Pozícia</th></tr>
+          </thead>
+          <tbody>
+            ${results.slice(0, 24).map(r => {
+              const p = Number(r.position);
+              const pTxt = Number.isFinite(p) ? `P${p}` : "—";
+              const cls = posClass(p);
+              return `
+                <tr>
+                  <td><b>${escapeHTML(r.event || "—")}</b></td>
+                  <td>${escapeHTML(r.category || "—")}</td>
+                  <td>${escapeHTML(r.date || r.dateStart || "—")}</td>
+                  <td class="${cls}">${escapeHTML(pTxt)}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      ` : `<div class="ddEmpty">Výsledky: zatiaľ nič (doplň do <b>results2025[]</b>).</div>`;
+
+      const thumbs = photos.slice(1, 10).map(src => `
+        <div class="tmb" data-src="${escapeHTML(src)}" title="Zmeniť fotku">
+          <img src="${escapeHTML(src)}" alt="thumb" loading="lazy" />
+        </div>
+      `).join("") || `<div style="color:rgba(255,255,255,.65);font-size:12px">Žiadne ďalšie fotky.</div>`;
+
+      box.innerHTML = `
+        <div class="ddTop">
+          <div>
+            <div class="ddName">${escapeHTML(d.name)}</div>
+            <div class="ddMeta">${escapeHTML(d.where)} • #${escapeHTML(d.number)} • ${escapeHTML(d.car || "—")}</div>
+          </div>
+          ${ig ? `<a class="ddIG" href="${escapeHTML(ig)}" target="_blank" rel="noopener">Instagram</a>` : ``}
+        </div>
+
+        <div class="ddBodyPad">
+          <div class="ddGrid">
+            <div class="gallery">
+              <div class="mainShot">
+                ${mainImg ? `<img id="ddMainImg" src="${escapeHTML(mainImg)}" alt="${escapeHTML(d.name)}" />` : `<div style="padding:14px;color:rgba(255,255,255,.65)">Pridaj fotky do <b>photos[]</b>.</div>`}
+              </div>
+              <div class="thumbs" id="ddThumbs">
+                ${thumbs}
+              </div>
+            </div>
+
+            ${d.about ? `<div class="ddEmpty" style="border-style:solid;">${escapeHTML(d.about)}</div>` : ``}
+
+            <div class="grid2">
+              <div>
+                <div style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; margin:6px 0 8px;">Výsledky</div>
+                ${resultsHtml}
+              </div>
+              <div>
+                <div style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; margin:6px 0 8px;">Tituly</div>
+                ${titlesHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // thumbs -> main
+      const mainEl = document.getElementById("ddMainImg");
+      box.querySelectorAll(".tmb").forEach(t => {
+        t.addEventListener("click", () => {
+          if(!mainEl) return;
+          const src = t.getAttribute("data-src");
+          if(src) mainEl.src = src;
+        });
       });
     }
+
+    function selectDriver(id){
+      ACTIVE_DRIVER_ID = id || null;
+      const d = (Array.isArray(DRIVERS) ? DRIVERS : []).find(x => x.id === id);
+      // highlight in list
+      const list = document.getElementById("listDrivers");
+      if(list){
+        list.querySelectorAll(".item").forEach(el => {
+          el.setAttribute("data-sel", el.getAttribute("data-id") === id ? "1" : "0");
+        });
+      }
+      renderDriverDetail(d || null);
+    }
+
     function renderDrivers(){
       const q = ($("#qDrivers").value || "").trim().toLowerCase();
 
@@ -4260,61 +4478,18 @@ const out = EVENTS.filter(ev => {
         const titles = Array.isArray(d.titles) ? d.titles : [];
         const results = Array.isArray(d.results2025) ? d.results2025 : [];
 
-        const titleCount = titles.length;
-        const winCount = results.filter(r => Number(r.position) === 1).length;
-        const podiumCount = results.filter(r => {
-          const p = Number(r.position);
-          return p && p <= 3;
-        }).length;
-
-        const bestRes = results
-          .map(r => Number(r.position))
-          .filter(n => Number.isFinite(n))
-          .sort((a,b) => a-b)[0];
-
-        const bestLabel = Number.isFinite(bestRes) ? `Best: P${bestRes}` : "Best: —";
+        const st = resultsStats(results);
 
         const chips = [
-          `<span class="dChip red">${escapeHTML(d.car)}</span>`,
-          `<span class="dChip"> ${escapeHTML(d.where)} </span>`,
-          `<span class="dChip green">${escapeHTML(bestLabel)}</span>`,
-          titleCount ? `<span class="dChip">Tituly: ${titleCount}</span>` : `<span class="dChip">Tituly: 0</span>`,
-          podiumCount ? `<span class="dChip">Podium: ${podiumCount}</span>` : `<span class="dChip">Podium: 0</span>`
-        ].join("");
-
-        // expand obsah (výsledky + galéria)
-        const thumbs = (d.photos || []).slice(0, 6).map((src, idx) => `
-          <div class="tmb" data-src="${escapeHTML(src)}" data-idx="${idx}">
-            <img src="${escapeHTML(src)}" alt="${escapeHTML(d.name)} foto ${idx+1}" loading="lazy"/>
-          </div>
-        `).join("");
-
-        const resultsRows = results.slice(0, 6).map(r => `
-          <div class="box">
-            <b>${escapeHTML(r.event || "Event")}</b>
-            <span>${escapeHTML(r.category || "—")} • ${escapeHTML(r.date || "—")} • <b>P${escapeHTML(r.position || "—")}</b></span>
-          </div>
-        `).join("") || `
-          <div class="box">
-            <b>Výsledky</b>
-            <span>—</span>
-          </div>
-        `;
-
-        const titlesRows = titles.slice(0, 4).map(t => `
-          <div class="box">
-            <b>${escapeHTML(t.title || "Titul")}</b>
-            <span>${escapeHTML(t.year || "—")} • ${escapeHTML(t.category || "—")} • ${escapeHTML(t.series || "—")}</span>
-          </div>
-        `).join("") || `
-          <div class="box">
-            <b>Tituly</b>
-            <span>—</span>
-          </div>
-        `;
+          d.car ? `<span class="chip">${escapeHTML(d.car)}</span>` : "",
+          titles.length ? `<span class="chip">${escapeHTML(titles.length)} titul(ov)</span>` : "",
+          st.wins ? `<span class="chip" style="border-color:rgba(255,43,47,.45);background:rgba(179,31,36,.10)">WIN×${st.wins}</span>` : "",
+          st.podiums ? `<span class="chip">PODIUM×${st.podiums}</span>` : "",
+          st.best ? `<span class="chip">BEST P${st.best}</span>` : ""
+        ].filter(Boolean).join("");
 
         return `
-          <div class="item" data-id="${escapeHTML(d.id)}">
+          <div class="item" data-id="${escapeHTML(d.id)}" data-sel="${ACTIVE_DRIVER_ID === d.id ? "1":"0"}">
             <div class="dCard">
               <div class="dAvatar">
                 ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ``}
@@ -4329,48 +4504,16 @@ const out = EVENTS.filter(ev => {
                   </div>
                   <div class="badges">
                     <span class="badge green">SPONZORING</span>
-                    ${winCount ? `<span class="badge red">WIN×${winCount}</span>` : ``}
+                    ${st.wins ? `<span class="badge red">WIN×${st.wins}</span>` : ``}
                   </div>
                 </div>
 
-                <div class="dChips">${chips}</div>
+                <div class="dChips">${chips || ""}</div>
 
                 <div class="dLine">
                   <div class="dMini">${escapeHTML(d.about || "—")}</div>
                   ${ig ? `<a class="dIG" href="${escapeHTML(ig)}" target="_blank" rel="noopener">IG</a>` : ``}
                 </div>
-
-                <div class="expand">
-                  <div class="expandInner">
-                    <div class="kv">
-                      ${titlesRows}
-                      ${resultsRows}
-                    </div>
-
-                    <div class="gallery">
-                      <div class="mainShot">
-                        ${main ? `<img data-main="1" src="${escapeHTML(main)}" alt="${escapeHTML(d.name)} main" />` : `<div style="padding:14px;color:rgba(255,255,255,.65)">Pridaj fotky do <b>photos[]</b>.</div>`}
-                      </div>
-                      <div class="thumbs" data-thumbs="1">
-                        ${thumbs || `<div style="color:rgba(255,255,255,.65);font-size:12px">Žiadne fotky.</div>`}
-                      </div>
-                    </div>
-
-                    <div class="actionsRow">
-                      <button class="miniBtn" data-focus="1" type="button">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                        </svg>
-                        Fokus na mape
-                      </button>
-                      <span style="color:rgba(255,255,255,.60);font-size:12px;letter-spacing:.08em;">
-                        Klik ešte raz → zavrieť
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>
@@ -4378,83 +4521,22 @@ const out = EVENTS.filter(ev => {
       }).join("");
 
       const list = $("#listDrivers");
-
       list.querySelectorAll(".item").forEach(el => {
-        const id = el.getAttribute("data-id");
-        const d = DRIVERS.find(x => x.id === id);
-        if(!d) return;
-
-        const doFocus = () => {
-          if(typeof d.lat === "number" && typeof d.lon === "number"){
-            mapSK.setView([d.lat, d.lon], Math.max(mapSK.getZoom(), 10), { animate:true });
-            const m = skMarkers.get(id);
-            if(m) m.openPopup();
-          }
-        };
-
-        el.addEventListener("click", (e) => {
-          if(e.target && (e.target.closest && (e.target.closest("a") || e.target.closest("button")))) return;
-          if(e.target && (e.target.closest && e.target.closest(".tmb"))) return;
-
-          const isOpen = el.getAttribute("data-open") === "1";
-          closeAllItems(list);
-          toggleItemOpen(el, !isOpen);
-          doFocus();
-        });
-
-        const focusBtn = el.querySelector("button[data-focus='1']");
-        if(focusBtn){
-          focusBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            doFocus();
-          });
-        }
-
-        const mainImg = el.querySelector("img[data-main='1']");
-        el.querySelectorAll(".tmb").forEach(t => {
-          t.addEventListener("click", (e) => {
-            e.stopPropagation();
-            if(!mainImg) return;
-            const src = t.getAttribute("data-src");
-            if(src) mainImg.src = src;
-          });
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-id");
+          selectDriver(id);
         });
       });
 
-      updateDriversHud();
-    }
-
-    function updateDriversHud(){
-      const elDrivers = document.getElementById("dhDrivers");
-      const elTitles  = document.getElementById("dhTitles");
-      const elNext    = document.getElementById("dhNext");
-      if(!elDrivers || !elTitles || !elNext) return;
-
-      const driversNow = Array.isArray(DRIVERS) ? DRIVERS.length : 0;
-      const titlesNow = (Array.isArray(DRIVERS) ? DRIVERS : []).reduce((s,d) => s + (Array.isArray(d.titles)?d.titles.length:0), 0);
-
-      // Najbližší štart – z events: prvý upcoming kde je náš jazdec v attendees[] (ak existuje)
-      const today = startOfToday();
-      const upcoming = (Array.isArray(EVENTS)?EVENTS:[])
-        .map(ev => ({ ev, dt: parseISODate(ev.dateStart || ev.date) }))
-        .filter(x => x.dt && x.dt >= today)
-        .sort((a,b) => a.dt - b.dt);
-
-      let nextLabel = "—";
-      for(const x of upcoming){
-        const at = Array.isArray(x.ev.attendees) ? x.ev.attendees : [];
-        if(at.length){
-          nextLabel = `${x.ev.city} (${fmtDateRange(x.ev.dateStart, x.ev.dateEnd)})`;
-          break;
-        }
+      // auto-select first visible driver if none selected
+      if(!ACTIVE_DRIVER_ID && out.length) selectDriver(out[0].id);
+      if(ACTIVE_DRIVER_ID && !out.find(x => x.id === ACTIVE_DRIVER_ID)){
+        // selected driver got filtered out
+        renderDriverDetail(null);
       }
-
-      elDrivers.textContent = String(driversNow);
-      elTitles.textContent  = String(titlesNow);
-      elNext.textContent    = nextLabel;
     }
 
-    // =========================
+// =========================
     // SUPPLIERS LIST
 
     // =========================
@@ -4651,9 +4733,7 @@ wireContact();
 
   if (window.L) {
     try { initEuropeMap(); } catch (e) { console.warn("EU map init failed", e); }
-    try { initSlovakiaMap(); } catch (e) { console.warn("SK map init failed", e); }
-
-    // ✅ ak mapa už existuje a eventy sa zmenili, vynúť re-render markerov:
+// ✅ ak mapa už existuje a eventy sa zmenili, vynúť re-render markerov:
     try { renderEuropeMarkers(); } catch (e) {}
   }
 
