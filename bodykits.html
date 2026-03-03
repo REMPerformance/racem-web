@@ -496,7 +496,6 @@
       position:relative;
       overflow:hidden;
     }
-    .item[data-sel="1"]{ border-color: rgba(255,43,47,.45); box-shadow: var(--glowRed2); }
     .item:hover{
       border-color: rgba(179,31,36,.45);
       transform: translateY(-1px);
@@ -674,8 +673,7 @@
     .mapHint b{font-family: Oswald, sans-serif; letter-spacing:.14em; color: rgba(255,255,255,.88); font-weight:700;}
 
     #mapEurope{height: 520px;}
-    #mapSlovakia{height: 520px;}
-
+    
     /* Leaflet theming */
     .leaflet-container{
       background: #0b0b0d;
@@ -915,96 +913,6 @@
     .gpt.t-locked .core{ background: rgba(255,255,255,.46); box-shadow: 0 0 14px rgba(255,255,255,.12); }
     .gpt.t-supplier .core{ background: rgba(46,204,113,.92); box-shadow: 0 0 16px rgba(46,204,113,.14); }
     .gpt[data-hidden="1"]{opacity:0; pointer-events:none;}
-
-
-    /* Driver detail (right panel) */
-    .driverDetail{
-      display:grid;
-      gap:12px;
-    }
-    .ddEmpty{
-      padding:16px;
-      border-radius: 16px;
-      border:1px dashed rgba(255,255,255,.18);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.70);
-      line-height:1.6;
-      letter-spacing:.02em;
-    }
-    .ddTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 12px 0;
-    }
-    .ddName{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:20px;
-      margin:0;
-    }
-    .ddMeta{
-      color: rgba(255,255,255,.68);
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      margin-top:6px;
-    }
-    .ddIG{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,43,47,.30);
-      background: rgba(179,31,36,.10);
-      color: rgba(255,255,255,.92);
-      font-weight:800;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      transition:.15s ease;
-      box-shadow: var(--glowRed);
-      white-space:nowrap;
-    }
-    .ddIG:hover{ transform: translateY(-1px); border-color: rgba(255,43,47,.55); background: rgba(179,31,36,.16); }
-
-    .ddBodyPad{ padding:0 12px 12px; }
-
-    .ddGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-
-    .ddTable{
-      width:100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      overflow:hidden;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-    }
-    .ddTable th, .ddTable td{
-      padding:10px 10px;
-      font-size:12px;
-      letter-spacing:.06em;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      vertical-align:top;
-    }
-    .ddTable th{
-      color: rgba(255,255,255,.78);
-      text-transform:uppercase;
-      font-weight:800;
-      background: rgba(255,255,255,.04);
-    }
-    .ddTable td{ color: rgba(255,255,255,.78); }
-    .ddTable tr:last-child td{ border-bottom:none; }
-    .posP1{ color: rgba(255,43,47,.95); font-weight:900; }
-    .posPodium{ color: rgba(241,196,15,.95); font-weight:900; }
 
     /* Gallery (drivers sponsor) */
     .gallery{
@@ -2502,6 +2410,160 @@ select:focus{
   box-shadow: 0 18px 70px rgba(0,0,0,.55);
 }
 
+
+
+    /* Driver detail (right panel) */
+    .driverDetail{ display:grid; gap:12px; }
+    .ddEmpty{
+      padding:16px;
+      border-radius: 16px;
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.70);
+      line-height:1.6;
+      letter-spacing:.02em;
+    }
+    .ddTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 12px 0;
+    }
+    .ddName{
+      font-family: Oswald, sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:20px;
+      margin:0;
+    }
+    .ddMeta{
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      margin-top:6px;
+    }
+    .ddIG{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,43,47,.30);
+      background: rgba(179,31,36,.10);
+      color: rgba(255,255,255,.92);
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      transition:.15s ease;
+      box-shadow: var(--glowRed);
+      white-space:nowrap;
+      text-decoration:none;
+    }
+    .ddIG:hover{ transform: translateY(-1px); border-color: rgba(255,43,47,.55); background: rgba(179,31,36,.16); }
+
+    .ddBodyPad{ padding:0 12px 12px; }
+    .ddGrid{ display:grid; grid-template-columns: 1fr; gap:12px; }
+
+    .ddTable{
+      width:100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow:hidden;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+    }
+    .ddTable th, .ddTable td{
+      padding:10px 10px;
+      font-size:12px;
+      letter-spacing:.06em;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align:top;
+    }
+    .ddTable th{
+      color: rgba(255,255,255,.78);
+      text-transform:uppercase;
+      font-weight:800;
+      background: rgba(255,255,255,.04);
+    }
+    .ddTable td{ color: rgba(255,255,255,.78); }
+    .ddTable tr:last-child td{ border-bottom:none; }
+    .posP1{ color: rgba(255,43,47,.95); font-weight:900; }
+    .posPodium{ color: rgba(241,196,15,.95); font-weight:900; }
+
+    /* Gallery (drivers sponsor) – kompaktné */
+    .gallery{ display:grid; grid-template-columns: 1fr; gap:10px; align-items:stretch; }
+    .mainShot{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+      position:relative;
+      min-height: 140px;
+      max-height: 170px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.55);
+    }
+    .mainShot img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      filter: contrast(1.05) saturate(1.03) brightness(.98);
+    }
+    .thumbs{
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      padding-bottom:2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .thumbs::-webkit-scrollbar{ height:0; }
+    .tmb{
+      flex:0 0 70px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+      cursor:pointer;
+      transition:.15s ease;
+      aspect-ratio: 1 / 1;
+    }
+    .tmb:hover{ border-color: rgba(255,43,47,.55); transform: translateY(-1px); }
+    .tmb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .ddAcc{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      padding: 10px 12px;
+    }
+    .ddAcc summary{
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+      color: rgba(255,255,255,.88);
+    }
+    .ddAcc summary::-webkit-details-marker{ display:none; }
+    .ddAcc summary:after{
+      content:"▾";
+      float:right;
+      opacity:.65;
+      transform: translateY(-1px);
+    }
+    .ddAcc[open] summary:after{ content:"▴"; }
+
+    /* --- JAZDCI: kompaktný profil (bez dlhého scrollu stránky) --- */
+    #jazdci .driversGrid{ align-items: stretch; }
+    #jazdci .driversGrid > .card{ height: 640px; overflow: hidden; }
+    #jazdci #driverDetailCard{ display:flex; flex-direction:column; }
+    #jazdci #driverDetail{ flex: 1 1 auto; overflow:auto; padding-right: 6px; }
+    @media (max-width: 820px){
+      #jazdci .driversGrid > .card{ height:auto; overflow:visible; }
+      #jazdci #driverDetail{ max-height: 520px; }
+    }
+
 </style>
 </head>
 
@@ -2829,7 +2891,6 @@ select:focus{
             <div class="list" id="listDrivers"></div>
           </div>
 
-          
           <div class="card" id="driverDetailCard">
             <div class="driversHud" aria-label="RACEM DRIVERS HUD">
               <div class="driversHudTop">
@@ -2862,7 +2923,7 @@ select:focus{
                 Vyber jazdca zľava. Tu sa zobrazia štatistiky, výsledky a fotky.
               </div>
             </div>
-          </div></div>
+          </div>
         </div>
       </section>
 
@@ -4294,7 +4355,7 @@ const out = EVENTS.filter(ev => {
       });
     }
 
-        // =========================
+    // =========================
     // DRIVERS LIST + DETAIL (NO MAP)
     // =========================
     let ACTIVE_DRIVER_ID = null;
@@ -4319,17 +4380,14 @@ const out = EVENTS.filter(ev => {
         .map(r => Number(r.position))
         .filter(n => Number.isFinite(n) && n > 0)
         .sort((a,b)=>a-b)[0];
-      return {
-        places,
-        wins,
-        podiums,
-        best: Number.isFinite(best) ? best : null
-      };
+      return { places, wins, podiums, best: Number.isFinite(best) ? best : null };
     }
 
-    function renderDriverDetail(d){
+    function renderDriverDetail(d, opts = {}){
       const box = document.getElementById("driverDetail");
       if(!box) return;
+
+      const showAll = !!opts.showAll;
 
       if(!d){
         box.innerHTML = `<div class="ddEmpty">Vyber jazdca zľava. Tu sa zobrazia štatistiky, výsledky a fotky.</div>`;
@@ -4356,13 +4414,16 @@ const out = EVENTS.filter(ev => {
 
       const ig = safeLink(d.ig);
 
+      const resLimit = showAll ? 60 : 8;
+      const titleLimit = showAll ? 24 : 6;
+
       const titlesHtml = titles.length ? `
         <table class="ddTable" aria-label="Tituly">
           <thead>
             <tr><th>Rok</th><th>Titul</th><th>Kategória</th><th>Séria</th></tr>
           </thead>
           <tbody>
-            ${titles.slice(0, 12).map(t => `
+            ${titles.slice(0, titleLimit).map(t => `
               <tr>
                 <td>${escapeHTML(t.year || "—")}</td>
                 <td><b>${escapeHTML(t.title || "—")}</b></td>
@@ -4372,6 +4433,7 @@ const out = EVENTS.filter(ev => {
             `).join("")}
           </tbody>
         </table>
+        ${titles.length > titleLimit ? `<div class="muted2" style="margin-top:8px;">Zobrazené ${titleLimit} z ${titles.length} titulov.</div>` : ``}
       ` : `<div class="ddEmpty">Tituly: zatiaľ nič.</div>`;
 
       const resultsHtml = results.length ? `
@@ -4380,7 +4442,7 @@ const out = EVENTS.filter(ev => {
             <tr><th>Event</th><th>Kategória</th><th>Dátum</th><th>Pozícia</th></tr>
           </thead>
           <tbody>
-            ${results.slice(0, 24).map(r => {
+            ${results.slice(0, resLimit).map(r => {
               const p = Number(r.position);
               const pTxt = Number.isFinite(p) ? `P${p}` : "—";
               const cls = posClass(p);
@@ -4395,9 +4457,10 @@ const out = EVENTS.filter(ev => {
             }).join("")}
           </tbody>
         </table>
+        ${results.length > resLimit ? `<div class="muted2" style="margin-top:8px;">Zobrazené ${resLimit} z ${results.length} výsledkov.</div>` : ``}
       ` : `<div class="ddEmpty">Výsledky: zatiaľ nič (doplň do <b>results2025[]</b>).</div>`;
 
-      const thumbs = photos.slice(1, 10).map(src => `
+      const thumbs = photos.slice(1, 12).map(src => `
         <div class="tmb" data-src="${escapeHTML(src)}" title="Zmeniť fotku">
           <img src="${escapeHTML(src)}" alt="thumb" loading="lazy" />
         </div>
@@ -4409,7 +4472,10 @@ const out = EVENTS.filter(ev => {
             <div class="ddName">${escapeHTML(d.name)}</div>
             <div class="ddMeta">${escapeHTML(d.where)} • #${escapeHTML(d.number)} • ${escapeHTML(d.car || "—")}</div>
           </div>
-          ${ig ? `<a class="ddIG" href="${escapeHTML(ig)}" target="_blank" rel="noopener">Instagram</a>` : ``}
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+            ${ig ? `<a class="ddIG" href="${escapeHTML(ig)}" target="_blank" rel="noopener">Instagram</a>` : ``}
+            ${(results.length > 8 || titles.length > 6) ? `<button class="btn ghost" id="ddToggleAll" style="padding:10px 12px;">${showAll ? "Menej" : "Zobraziť viac"}</button>` : ``}
+          </div>
         </div>
 
         <div class="ddBodyPad">
@@ -4425,16 +4491,15 @@ const out = EVENTS.filter(ev => {
 
             ${d.about ? `<div class="ddEmpty" style="border-style:solid;">${escapeHTML(d.about)}</div>` : ``}
 
-            <div class="grid2">
-              <div>
-                <div style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; margin:6px 0 8px;">Výsledky</div>
-                ${resultsHtml}
-              </div>
-              <div>
-                <div style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase; margin:6px 0 8px;">Tituly</div>
-                ${titlesHtml}
-              </div>
-            </div>
+            <details class="ddAcc" open>
+              <summary style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase;">Výsledky</summary>
+              <div style="margin-top:10px;">${resultsHtml}</div>
+            </details>
+
+            <details class="ddAcc">
+              <summary style="font-family:Oswald, sans-serif; letter-spacing:.10em; text-transform:uppercase;">Tituly</summary>
+              <div style="margin-top:10px;">${titlesHtml}</div>
+            </details>
           </div>
         </div>
       `;
@@ -4448,11 +4513,20 @@ const out = EVENTS.filter(ev => {
           if(src) mainEl.src = src;
         });
       });
+
+      const toggleBtn = document.getElementById("ddToggleAll");
+      if(toggleBtn){
+        toggleBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          renderDriverDetail(d, { showAll: !showAll });
+        });
+      }
     }
 
     function selectDriver(id){
       ACTIVE_DRIVER_ID = id || null;
       const d = (Array.isArray(DRIVERS) ? DRIVERS : []).find(x => x.id === id);
+
       // highlight in list
       const list = document.getElementById("listDrivers");
       if(list){
@@ -4460,24 +4534,27 @@ const out = EVENTS.filter(ev => {
           el.setAttribute("data-sel", el.getAttribute("data-id") === id ? "1" : "0");
         });
       }
+
       renderDriverDetail(d || null);
     }
 
     function renderDrivers(){
-      const q = ($("#qDrivers").value || "").trim().toLowerCase();
+      const q = (document.getElementById("qDrivers")?.value || "").trim().toLowerCase();
 
-      const out = DRIVERS.filter(d => {
+      const out = (Array.isArray(DRIVERS) ? DRIVERS : []).filter(d => {
         const hay = [d.name, d.where, d.about, d.car, d.number, d.city, d.country].join(" ").toLowerCase();
         return !q || hay.includes(q);
       });
 
-      $("#listDrivers").innerHTML = out.map(d => {
+      const listEl = document.getElementById("listDrivers");
+      if(!listEl) return;
+
+      listEl.innerHTML = out.map(d => {
         const main = (d.photos && d.photos.length) ? d.photos[0] : "";
         const ig = safeLink(d.ig);
 
         const titles = Array.isArray(d.titles) ? d.titles : [];
         const results = Array.isArray(d.results2025) ? d.results2025 : [];
-
         const st = resultsStats(results);
 
         const chips = [
@@ -4493,14 +4570,14 @@ const out = EVENTS.filter(ev => {
             <div class="dCard">
               <div class="dAvatar">
                 ${main ? `<img src="${escapeHTML(main)}" alt="${escapeHTML(d.name)}" loading="lazy" />` : ``}
-                <div class="dNum">#${escapeHTML(d.number)}</div>
+                <div class="dNum">#${escapeHTML(d.number || "")}</div>
               </div>
 
               <div>
                 <div class="dHead">
                   <div>
                     <div class="dName">${escapeHTML(d.name)}</div>
-                    <div class="dMeta">${escapeHTML(d.where)}</div>
+                    <div class="dMeta">${escapeHTML(d.where || (d.city ? (d.city + " ("+ (d.country||"") + ")") : "—"))}</div>
                   </div>
                   <div class="badges">
                     <span class="badge green">SPONZORING</span>
@@ -4520,23 +4597,20 @@ const out = EVENTS.filter(ev => {
         `;
       }).join("");
 
-      const list = $("#listDrivers");
-      list.querySelectorAll(".item").forEach(el => {
+      listEl.querySelectorAll(".item").forEach(el => {
         el.addEventListener("click", () => {
           const id = el.getAttribute("data-id");
           selectDriver(id);
         });
       });
 
-      // auto-select first visible driver if none selected
       if(!ACTIVE_DRIVER_ID && out.length) selectDriver(out[0].id);
       if(ACTIVE_DRIVER_ID && !out.find(x => x.id === ACTIVE_DRIVER_ID)){
-        // selected driver got filtered out
         renderDriverDetail(null);
       }
     }
 
-// =========================
+    // =========================
     // SUPPLIERS LIST
 
     // =========================
