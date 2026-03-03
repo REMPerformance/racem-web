@@ -2865,9 +2865,10 @@ select:focus{
   </div>
 
   <div class="mapHint">
-    <span><b>Tip:</b> klik na event vľavo → automaticky fokus + pulz</span>
-    <span><b>Click:</b> marker → otvorí event</span>
-  </div>
+              <span><b>Zoom:</b> koliesko</span>
+              <span><b>Rotate:</b> ťah</span>
+              <span><b>Body:</b> doplníme neskôr</span>
+            </div>
 </div>
         </div>
       </section>
@@ -2930,8 +2931,8 @@ select:focus{
       <!-- DODÁVATELIA -->
       <section id="dodavatelia" class="block">
         <div class="sectionTitle">
-          <h2>Dodávatelia (Zemeguľa)</h2>
-          <p>Rotuje + zoom. Body sú čisté (bez pulzu), každý je rozkliknuteľný (fokus + highlight + scroll v zozname).</p>
+          <h2>Dodávatelia</h2>
+          <p>Zemeguľa je pripravená (rotate + zoom). Body na nej zatiaľ nechávame vypnuté — teraz riešime len zoznam a štruktúru dodávateľov.</p>
         </div>
 
         <div class="secGrid">
@@ -2944,9 +2945,6 @@ select:focus{
               <select id="fSup" class="select" title="Filter">
                 <option value="all">Všetko</option>
                 <option value="supplier">Dodávatelia</option>
-                <option value="brand">Brand partners</option>
-                <option value="hub">Hub / lokality</option>
-                <option value="locked">Uzamknuté</option>
               </select>
               <button class="btn ghost" id="resetSup">Reset</button>
             </div>
@@ -2956,7 +2954,7 @@ select:focus{
           <div class="card mapCard">
             <div class="rightTop">
               <b>Zemeguľa</b>
-              <span>zoom + rotate</span>
+              <span>rotate + zoom</span>
             </div>
 
             <div class="mapBox">
@@ -3091,28 +3089,7 @@ select:focus{
     // =========================
     // HUB / SUPPLIERS
     // =========================
-    const HUB_POINTS = [
-      {
-        id:"hub-ba",
-        type:"hub",
-        name:"RACEM HUB",
-        where:"Bratislava (SK)",
-        region:"SK",
-        lat: 48.148598,
-        lon: 17.107748,
-        about:"Centrála / hub – koordinácia objednávok, partnerov, obsahu a logistiky."
-      },
-      {
-        id:"locked-pn",
-        type:"locked",
-        name:"Piešťany (uzamknuté)",
-        where:"Piešťany (SK)",
-        region:"SK",
-        lat: 48.59479,
-        lon: 17.82532,
-        about:"Interné / pripravované. Zatiaľ bez verejných detailov."
-      }
-    ];
+    const HUB_POINTS = [];
 
     const HARD = { csrCount: 14684 };
     const CATALOG_FEEDS = { sfxla: "/sfxla-products.json" };
@@ -3140,17 +3117,47 @@ select:focus{
         lat: 34.0522,
         lon: -118.2437,
         productsCount: 980,
-        about:"Widebody a race diely. Väčšina na objednávku. Air/Sea freight."
+        about:"Widebody a race diely. Väčšina na objednávku."
+      },
+      {
+        id:"pmc",
+        type:"supplier",
+        status:"partner",
+        name:"PMC Motorsport",
+        where:"Poľsko (PL)",
+        region:"EU",
+        lat: 52.0693,
+        lon: 19.4803,
+        productsCount: 0,
+        about:"Motorsport príslušenstvo a montážny materiál (seat mounts, brackets, hardware)."
+      },
+      {
+        id:"deuter",
+        type:"supplier",
+        status:"partner",
+        name:"Deuter Motorsport",
+        where:"Poľsko (PL)",
+        region:"EU",
+        lat: 50.2762,
+        lon: 19.5652,
+        productsCount: 0,
+        about:"Polyuretánové silentbloky a diely pre podvozok. B2B spolupráca."
+      },
+      {
+        id:"swagier",
+        type:"supplier",
+        status:"partner",
+        name:"SWAGIER",
+        where:"Európa (EU)",
+        region:"EU",
+        lat: 48.1486,
+        lon: 17.1077,
+        productsCount: 0,
+        about:"Brand/partner — doplníme presnú lokáciu a katalóg neskôr."
       }
     ];
 
-    const BRAND_PARTNERS = [
-      { id:"skidnation", type:"brand", name:"SkidNation", where:"Bratislava (SK)", region:"SK", lat:48.148598, lon:17.107748, about:"Performance diely (MX-5/Miata). EU shipping base." },
-      { id:"wisefab", type:"brand", name:"Wisefab", where:"Tallinn (EE)", region:"EU", lat:59.436962, lon:24.753574, about:"Drift/race suspension. Angle kits, ramená, geometry." },
-      { id:"odesacnc", type:"brand", name:"Odesa CNC", where:"Wodzisław Śląski (PL)", region:"EU", lat:50.001, lon:18.463, about:"CNC drift diely: angle kity, ramená, hardware." },
-      { id:"darkside", type:"brand", name:"Darkside Developments", where:"Barnsley (UK)", region:"UK", lat:53.571788, lon:-1.382466, about:"Performance diesel tuning (hardware + servis)." },
-      { id:"cybul", type:"brand", name:"CYBUL", where:"Legionowo (PL)", region:"EU", lat:52.401, lon:20.926, about:"Motorsport diely: ramená, rollbary, uchytenia." }
-    ];
+    const BRAND_PARTNERS = [];
 
     // =========================
     // BUILD: coords for events & drivers
@@ -3233,6 +3240,9 @@ function buildDriversFromInput(driversInput){
       ...SUPPLIERS.map(x => ({...x})),
       ...BRAND_PARTNERS.map(x => ({...x}))
     ];
+
+    // Globe points are intentionally disabled for now
+    window.GLOBE_ENTITIES = [];
     window.ALL_SUP = ALL_SUP;
 
     // =========================
@@ -4650,10 +4660,7 @@ const out = EVENTS.filter(ev => {
       $("#listSuppliers").querySelectorAll(".item").forEach(el => {
         el.addEventListener("click", () => {
           const id = el.getAttribute("data-id");
-          const x = ALL_SUP.find(a => a.id === id);
-          if(!x || typeof x.lat !== "number" || typeof x.lon !== "number") return;
-          if(window.__globeFocus) window.__globeFocus.focusFor(x.lat, x.lon, 3600);
-          if(window.__globeSelect) window.__globeSelect(x.id);
+          if(window.__globeSelect) window.__globeSelect(id);
         });
       });
     }
@@ -4877,7 +4884,7 @@ function waitForLeaflet(timeoutMs = 3000) {
     }
   };
 
-  const ENTITIES = (window.ALL_SUP && window.ALL_SUP.length) ? window.ALL_SUP : [];
+  const ENTITIES = (window.GLOBE_ENTITIES && window.GLOBE_ENTITIES.length) ? window.GLOBE_ENTITIES : [];
   const focus = window.__globeFocus;
 
   // =========================
