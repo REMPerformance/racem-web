@@ -3100,26 +3100,26 @@ select:focus{
       {
         id:"csr",
         type:"supplier",
-        status:"hard",
+        status:"Online",
         name:"CSR Automotive",
         where:"Nemecko (DE)",
         region:"EU",
         lat: 51.1657,
         lon: 10.4515,
         productsCount: HARD.csrCount,
-        about:"Bodykity a aero (EU). Veľké pokrytie OEM značiek, stabilná dostupnosť."
+        about:"Bodykity a aero (EU). Certifikáty na cestnú premávku."
       },
       {
         id:"sfxla",
         type:"supplier",
-        status:"feed",
+        status:"Online",
         name:"SFXLA",
         where:"Kalifornia (USA)",
         region:"US",
         lat: 34.0522,
         lon: -118.2437,
         productsCount: 980,
-        about:"Widebody a race diely. Väčšina na objednávku."
+        about:"Widebody a aero. Extrémna rarita v EU"
       },
       {
         id:"pmc",
@@ -3143,7 +3143,7 @@ select:focus{
         lat: 50.2762,
         lon: 19.5652,
         productsCount: 0,
-        about:"Polyuretánové silentbloky a diely pre podvozok. B2B spolupráca."
+        about:"Polyuretánové silentbloky a diely pre podvozok."
       },
       {
         id:"swagier",
@@ -3155,7 +3155,7 @@ select:focus{
         lat: 48.1486,
         lon: 17.1077,
         productsCount: 0,
-        about:"Brand/partner — doplníme presnú lokáciu a katalóg neskôr."
+        about:"Drift diely, výstuhy, reinforcements, podpora drifťákov."
       }
     ];
 
@@ -3366,8 +3366,8 @@ const nav = navUrlFromEvent(ev);
     function badge(status){
       if(status === "attend") return `<span class="badge green pulse">ZÚČASTNÍME SA</span>`;
       if(status === "plan")   return `<span class="badge yellow pulse">PLÁNUJEME</span>`;
-      if(status === "locked") return `<span class="badge gray">UZAMKNUTÉ</span>`;
-      if(status === "hard") return `<span class="badge red">HARD</span>`;
+      if(status === "locked") return `<span class="badge red">UZAMKNUTÉ</span>`;
+      if(status === "Online") return `<span class="badge green">Online</span>`;
       if(status === "feed") return `<span class="badge yellow">FEED</span>`;
       return `<span class="badge">ACTIVE</span>`;
     }
