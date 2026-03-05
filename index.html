@@ -371,19 +371,19 @@
   align-items:center; 
 }
 
-    /* ===== FORCE GLOBE TO TOP-RIGHT OF VIEWPORT AREA ===== */
+    /* ===== HERO GLOBE PANEL (visible on all screens) ===== */
 .heroPanel.globePanel{
-  position: absolute !important;
+  /* keep it inside the hero grid so it can't end up off-screen */
+  position: relative !important;
+  inset: auto !important;
 
-  top: -90px !important;      
-  right: -240px !important;    
-
-  width: 820px !important;     
-  height: 820px !important;
+  /* responsive size */
+  width: min(520px, 44vw) !important;
+  height: min(520px, 44vw) !important;
 
   display:block !important;
   padding:0 !important;
-  margin:0 !important;
+  margin: 0 0 0 auto !important;
 
   border:none !important;
   background:transparent !important;
@@ -393,9 +393,16 @@
   z-index: 6 !important;
 }
 
+/* mobile: center it + shrink */
+@media (max-width: 980px){
+  .heroPanel.globePanel{
+    width: min(420px, 86vw) !important;
+    height: min(420px, 86vw) !important;
+    margin: 18px auto 0 !important;
+  }
+}
 
-
-    .headline{
+.headline{
   display:flex;
   flex-direction:column;
   gap:18px;
