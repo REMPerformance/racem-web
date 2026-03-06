@@ -1372,6 +1372,155 @@
       .heroCard{ padding: 18px !important; }
     }
 
+
+    /* ====== PRODUCTS TEASER / CAROUSEL ====== */
+    .products-teaser-panel{
+      padding: 30px !important;
+      overflow: hidden;
+    }
+    .products-teaser-title{
+      margin-top: 16px;
+      margin-bottom: 8px;
+      font-size: 32px;
+    }
+    .products-teaser-sub{
+      max-width: 760px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 18px;
+    }
+    .products-carousel{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding: 4px 2px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .products-carousel::-webkit-scrollbar{ height: 8px; }
+    .products-carousel::-webkit-scrollbar-thumb{
+      background: rgba(179,31,36,0.55);
+      border-radius: 999px;
+    }
+    .products-carousel::-webkit-scrollbar-track{
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+    }
+    .product-teaser-card{
+      flex: 0 0 auto;
+      width: 170px;
+      min-width: 170px;
+      text-decoration:none;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(20,20,20,0.96), rgba(8,8,8,0.92));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      scroll-snap-align:start;
+    }
+    .product-teaser-card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .product-teaser-media{
+      position:relative;
+      width:100%;
+      height:115px;
+      background: rgba(255,255,255,0.03);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      overflow:hidden;
+    }
+    .product-teaser-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition: transform .22s ease;
+    }
+    .product-teaser-card:hover .product-teaser-media img{
+      transform: scale(1.04);
+    }
+    .product-teaser-body{
+      padding:10px 10px 12px;
+    }
+    .product-teaser-name{
+      font-size:11px;
+      line-height:1.4;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#f1f1f1;
+      min-height:46px;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .product-teaser-price{
+      margin-top:8px;
+      font-size:13px;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:.04em;
+    }
+    .products-teaser-cta{
+      margin-top: 18px;
+      display:flex;
+      justify-content:flex-start;
+    }
+
+    @media (max-width:980px){
+      .products-teaser-panel{
+        padding: 22px !important;
+      }
+      .products-teaser-title{
+        font-size: 26px;
+      }
+      .products-teaser-sub{
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .product-teaser-card{
+        width: 148px;
+        min-width: 148px;
+      }
+      .product-teaser-media{
+        height: 98px;
+      }
+      .product-teaser-name{
+        font-size: 10px;
+        min-height: 42px;
+      }
+      .product-teaser-price{
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width:560px){
+      .products-teaser-panel{
+        padding: 18px !important;
+      }
+      .products-teaser-title{
+        font-size: 22px;
+      }
+      .products-teaser-sub{
+        font-size: 12px;
+      }
+      .product-teaser-card{
+        width: 138px;
+        min-width: 138px;
+      }
+      .product-teaser-media{
+        height: 92px;
+      }
+      .products-teaser-cta .btn{
+        width: 100%;
+      }
+    }
+
     /* ====== BODYKIT BRANDS STRIP (INDEX) ====== */
     .brands-wrap{ margin-top: 16px; }
 
@@ -3585,43 +3734,25 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     </div>
   </section>
 
-   <!-- ŠPORTOVÉ DIELY + NÁHRADNÉ AUTODIELY -->
-  <section>
+   <!-- VŠETKY PRODUKTY -->
+  <section id="vsetky-produkty">
     <div class="wrap">
-      <div class="panel reveal" style="padding:40px">
+      <div class="panel reveal products-teaser-panel">
         <span class="pill">
           <span class="dot"></span>
-          športové diely • náhradné autodiely • diely na objednávku
+          všetky produkty • performance • styling • motorsport
         </span>
 
-        <h2 style="margin-top:22px; max-width:1100px">
-          Športové diely a autodiely
-        </h2>
+        <h2 class="products-teaser-title">Všetky produkty</h2>
 
-        <p style="font-size:17px; max-width:1000px">
-          Ponúkame široký výber <b>športových dielov</b> aj <b>náhradných autodielov</b>
-          pre bežné aj upravené vozidlá.
+        <p class="products-teaser-sub">
+          Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.
         </p>
 
-        <p class="muted2" style="margin-top:16px; max-width:980px">
-          <b>Čo riešime najčastejšie:</b><br>
-          • výfuky, podvozky, motorové úpravy, interíerové úpravy<br>
-          • náhradné autodiely (podľa značky/modelu) z overených zdrojov<br>
-          • úpravy riadiacich jednotiek, elektronických komponentov ako aj samotnú montáž
-        </p>
+        <div id="productsCarousel" class="products-carousel" aria-label="Výber produktov"></div>
 
-        <p class="muted2" style="margin-top:14px; max-width:980px">
-          <b>TÜV & montáž:</b> Vybrané diely dodávame aj s <b> certifikátmi</b> .
-          Zároveň ponúkame <b>odbornú montáž</b> a podľa dohody aj <b>správy/potvrdenia o odbornej montáži</b>.
-        </p>
-
-        <p style="margin-top:16px; max-width:980px">
-          Ak máš konkrétnu požiadavku, pošli nám ju do kontaktu – pošleme ti reálnu ponuku s dostupnosťou a dodaním.
-        </p>
-
-        <div class="ctaRow" style="margin-top:20px">
-          <a class="btn btnPrimary btnArrow" href="#kontakt">Chcem ponuku <span class="arr">→</span></a>
-          <a class="btn btnGhost btnArrow" href="katalog.html">Katalóg dielov <span class="arr">→</span></a>
+        <div class="products-teaser-cta">
+          <a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
         </div>
       </div>
     </div>
@@ -4492,49 +4623,46 @@ if (!canvas) {
 
 
 
-<section class="products-preview" style="padding:70px 0">
-<div class="wrap">
-<h2 style="font-size:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Všetky produkty</h2>
-<div id="productsCarousel" style="display:flex;gap:16px;overflow-x:auto"></div>
-<div style="margin-top:20px">
-<a href="/ponuka.html" style="background:#B31F24;color:#fff;padding:10px 22px;font-size:13px;text-transform:uppercase;text-decoration:none;border-radius:4px">Celá ponuka</a>
-</div>
-</div>
-</section>
-
 <script>
-fetch('/products.json')
-.then(r=>r.json())
-.then(data=>{
-const products=data.products||data;
-products.sort(()=>0.5-Math.random());
-const selected=products.slice(0,8);
-const c=document.getElementById('productsCarousel');
+(function(){
+  const container = document.getElementById("productsCarousel");
+  if(!container) return;
 
-selected.forEach(p=>{
-const img=(p.images && p.images[0])?p.images[0]:'';
-const price=(p.variants && p.variants[0])?p.variants[0].price:'';
-const url=p.productUrl||'#';
+  fetch("products.json")
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("products.json not found")))
+    .then(data => {
+      const products = Array.isArray(data.products) ? data.products.filter(p => p && p.title && p.productUrl && Array.isArray(p.images) && p.images.length) : [];
+      if(!products.length) return;
 
-const card=document.createElement('a');
-card.href=url;
-card.style.minWidth='160px';
-card.style.background='#0b0b0b';
-card.style.border='1px solid rgba(255,255,255,0.05)';
-card.style.borderRadius='8px';
-card.style.overflow='hidden';
-card.style.textDecoration='none';
+      const shuffled = [...products].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, Math.min(10, shuffled.length));
 
-card.innerHTML=`
-<img src="${img}" style="width:100%;height:110px;object-fit:cover">
-<div style="font-size:12px;padding:8px;color:#ccc">${p.title||''}</div>
-<div style="font-size:12px;padding:0 8px 10px;color:#fff">${price} €</div>
-`;
+      container.innerHTML = selected.map(p => {
+        const title = String(p.title || "");
+        const img = String((p.images && p.images[0]) || "");
+        const url = String(p.productUrl || "ponuka.html");
+        const variant = Array.isArray(p.variants) && p.variants[0] ? p.variants[0] : null;
+        const price = variant && typeof variant.price !== "undefined" ? `${Number(variant.price).toFixed(2).replace(/\.00$/, "")} €` : "";
 
-c.appendChild(card);
-});
-});
+        return `
+          <a class="product-teaser-card" href="${url}" target="_self" aria-label="${title}">
+            <div class="product-teaser-media">
+              <img src="${img}" alt="${title}" loading="lazy" decoding="async">
+            </div>
+            <div class="product-teaser-body">
+              <div class="product-teaser-name">${title}</div>
+              <div class="product-teaser-price">${price}</div>
+            </div>
+          </a>
+        `;
+      }).join("");
+    })
+    .catch(err => {
+      console.warn("Products teaser failed:", err);
+    });
+})();
 </script>
+
 
 </body>
 </html>
