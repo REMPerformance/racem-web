@@ -2474,11 +2474,16 @@
   .heroPanel.globePanel{ width: min(320px, 92vw) !important; }
 }
 
-  .heroPanel.globePanel {
-  position: relative;
-  width:  min(520px, 44vw);
-  height: min(520px, 44vw);
-  margin-left: auto;
+.heroPanel.globePanel{
+  position: absolute;
+  right: -6vw;
+  top: -6vh;
+
+  width: min(720px, 52vw);
+  height: min(720px, 52vw);
+
+  pointer-events:auto;
+  z-index:5;
 }
 
 .heroPanel.globePanel canvas {
@@ -3347,16 +3352,6 @@
 <div class="heroPanel globePanel">
     <canvas id="racemGlobe"></canvas>
     <!-- tooltip that appears on hover -->
-    <div id="globeTip" class="globe-tooltip" aria-hidden="true">
-        <div id="gtTitle"></div>
-        <div id="gtSub"></div>
-    </div>
-</div>
-
-    <div id="globeTip" class="globe-tooltip" aria-hidden="true">
-    <strong id="gtTitle"></strong>
-    <div id="gtSub"></div>
-</div>
 
 
     </div>
@@ -4313,9 +4308,6 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   ];
 
   const canvas = document.getElementById("racemGlobe");
-  const tip = document.getElementById("globeTip");
-  const gtSub = document.getElementById("gtSub");
-  const gtTitle = document.getElementById("gtTitle");
 
   if (!canvas) {
     console.warn("Canvas #racemGlobe not found");
