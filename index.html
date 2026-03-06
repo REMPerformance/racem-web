@@ -2473,6 +2473,20 @@
 
   .heroPanel.globePanel{ width: min(320px, 92vw) !important; }
 }
+
+  .heroPanel.globePanel {
+  position: relative;
+  width:  min(520px, 44vw);
+  height: min(520px, 44vw);
+  margin-left: auto;
+}
+
+.heroPanel.globePanel canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
 /* =========================================
    MOBILE COMPACT: HERO LOGO + NAV + SHIPBAR + FOOTER
    (daj úplne na KONIEC CSS)
@@ -3330,24 +3344,18 @@
 
 
      <!-- RIGHT (GLOBE PANEL) -->
-<div class="heroPanel reveal globePanel" aria-label="RACEM globe">
-  <div class="globeWrap globeWrap--big">
+<div class="heroPanel globePanel">
     <canvas id="racemGlobe"></canvas>
-     
-
-    <!-- tooltip -->
-    <div class="globeTip" id="globeTip" aria-hidden="true">
-      <div class="gtTop">
-        <div class="gtLogo" aria-hidden="true"></div>
-        <div class="gtTitle" id="gtTitle">RACEM</div>
-      </div>
-      <div class="gtSub" id="gtSub">Piešťany</div>
+    <!-- tooltip that appears on hover -->
+    <div id="globeTip" class="globe-tooltip" aria-hidden="true">
+        <div id="gtTitle"></div>
+        <div id="gtSub"></div>
     </div>
+</div>
 
-    <!-- hacker overlay -->
-    <div class="globeOverlay" aria-hidden="true"></div>
-  </div>
-
+    <div id="globeTip" class="globe-tooltip" aria-hidden="true">
+    <strong id="gtTitle"></strong>
+    <div id="gtSub"></div>
 </div>
 
 
