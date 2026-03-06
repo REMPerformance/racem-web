@@ -2474,16 +2474,11 @@
   .heroPanel.globePanel{ width: min(320px, 92vw) !important; }
 }
 
-.heroPanel.globePanel{
-  position: absolute;
-  right: -6vw;
-  top: -6vh;
-
-  width: min(720px, 52vw);
-  height: min(720px, 52vw);
-
-  pointer-events:auto;
-  z-index:5;
+  .heroPanel.globePanel {
+  position: relative;
+  width:  min(520px, 44vw);
+  height: min(520px, 44vw);
+  margin-left: auto;
 }
 
 .heroPanel.globePanel canvas {
@@ -3239,7 +3234,64 @@
   60%{ transform: translateY(-2px) scale(1.03); }
   100%{ transform: translateY(-1px) scale(1.02); }
 }
-  </style>
+  
+/* ===== GLOBE FIX: vpravo hore bez tooltipov ===== */
+.hero{
+  overflow: visible !important;
+}
+
+.hero-grid{
+  position: relative;
+}
+
+.headline{
+  position: relative;
+  z-index: 2;
+}
+
+.heroPanel.globePanel{
+  position: absolute !important;
+  right: -6vw !important;
+  top: -6vh !important;
+  width: min(720px, 52vw) !important;
+  height: min(720px, 52vw) !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  z-index: 1 !important;
+}
+
+.heroPanel.globePanel canvas{
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 980px){
+  .heroPanel.globePanel{
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    width: min(420px, 86vw) !important;
+    height: min(420px, 86vw) !important;
+    margin: 18px auto 0 !important;
+  }
+}
+
+/* tooltip komplet vypnuty */
+#globeTip,
+.globeTip,
+.globe-tooltip{
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+</style>
 </head>
 
   <body id="top">
@@ -3351,7 +3403,7 @@
      <!-- RIGHT (GLOBE PANEL) -->
 <div class="heroPanel globePanel">
     <canvas id="racemGlobe"></canvas>
-    <!-- tooltip that appears on hover -->
+</div>
 
 
     </div>
@@ -4308,8 +4360,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   ];
 
   const canvas = document.getElementById("racemGlobe");
-
-  if (!canvas) {
+if (!canvas) {
     console.warn("Canvas #racemGlobe not found");
   }
 
@@ -4335,62 +4386,6 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     canvas.width = w;
     canvas.height = h;
     return { w, h, dpr };
-  }
-
-  // ===== hover projekcia (good enough) =====
-  function latLonToXYZ(lat, lon){
-    const la = (lat * Math.PI) / 180;
-    const lo = (lon * Math.PI) / 180;
-    return {
-      x: Math.cos(la) * Math.sin(lo),
-      y: Math.sin(la),
-      z: Math.cos(la) * Math.cos(lo),
-    };
-  }
-
-  function projectToCanvas(lat, lon, phiVal, thetaVal){
-    const v = latLonToXYZ(lat, lon);
-
-    const cosP = Math.cos(phiVal), sinP = Math.sin(phiVal);
-    const x1 = v.x * cosP - v.z * sinP;
-    const z1 = v.x * sinP + v.z * cosP;
-
-    const cosT = Math.cos(thetaVal), sinT = Math.sin(thetaVal);
-    const y2 = v.y * cosT - z1 * sinT;
-    const z2 = v.y * sinT + z1 * cosT;
-
-    if (z2 < 0) return null;
-
-    const cx = (x1 * 0.5 + 0.5) * canvas.clientWidth;
-    const cy = (-y2 * 0.5 + 0.5) * canvas.clientHeight;
-    return { cx, cy };
-  }
-
-  function setTip(x, y, loc){
-    if (!tip) return;
-
-    const wrap = canvas.parentElement; 
-    const rWrap = wrap.getBoundingClientRect();
-    const rCan = canvas.getBoundingClientRect();
-
-    const relX = (rCan.left - rWrap.left) + x;
-    const relY = (rCan.top - rWrap.top) + y;
-
-    tip.style.left = relX + "px";
-    tip.style.top  = relY + "px";
-
-    if (gtTitle) gtTitle.textContent = (loc.name || "RACEM").toUpperCase();
-    if (gtSub) gtSub.textContent = loc.detail || loc.name || "";
-
-    tip.classList.add("show");
-    tip.setAttribute("aria-hidden", "false");
-    canvas.style.cursor = "pointer";
-  }
-
-  function hideTip(){
-    tip?.classList.remove("show");
-    tip?.setAttribute("aria-hidden", "true");
-    canvas.style.cursor = "";
   }
 
   // ===== init globe =====
@@ -4425,40 +4420,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
         phi += 0.0032;
       }
     });
-
-    // hover events
-    canvas.addEventListener("mousemove", (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-
-      let best = { idx: -1, dist: Infinity, x: 0, y: 0 };
-      const currentPhi = phi;
-
-      for (let i = 0; i < LOCATIONS.length; i++){
-        const p = projectToCanvas(LOCATIONS[i].lat, LOCATIONS[i].lon, currentPhi, THETA);
-        if (!p) continue;
-
-        const dx = mx - p.cx;
-        const dy = my - p.cy;
-        const d = Math.hypot(dx, dy);
-
-        if (d < best.dist){
-          best = { idx: i, dist: d, x: p.cx, y: p.cy };
-        }
-      }
-
-      const HIT = 16;
-      if (best.idx !== -1 && best.dist <= HIT){
-        setTip(best.x, best.y, LOCATIONS[best.idx]);
-      } else {
-        hideTip();
-      }
-    }, { passive: true });
-
-    canvas.addEventListener("mouseleave", hideTip, { passive: true });
-
-    // resize observer
+// resize observer
     const ro = new ResizeObserver(() => {
       const { w, h, dpr } = sizeCanvas();
       globe.resize({ width: w, height: h, devicePixelRatio: dpr });
