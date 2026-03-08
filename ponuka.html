@@ -950,6 +950,116 @@ body:before{
   mix-blend-mode:overlay;
 }
 
+
+
+/* ===== RACEM HEADER + STICKY CART ===== */
+.wrap{padding-top:34px;}
+header{
+  position:sticky;
+  top:14px;
+  z-index:120;
+  padding:16px 20px;
+  background:linear-gradient(180deg, rgba(10,10,10,.88), rgba(10,10,10,.72));
+  border:1px solid rgba(179,31,36,.18);
+  box-shadow:0 18px 55px rgba(0,0,0,.45), 0 0 0 1px rgba(179,31,36,.14);
+}
+.brand{display:flex; align-items:center; gap:18px;}
+.brandLogo{width:168px;height:auto;max-height:62px;border-radius:0;padding:0;background:none;border:0;box-shadow:none;display:block;object-fit:contain}
+.mainNav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mainNav .btn{min-width:112px}
+.topActions{gap:10px}
+.cartBtn{display:none!important}
+.cartPeek{
+  position:fixed;
+  top:12px;
+  left:50%;
+  transform:translate(-50%, -130%);
+  z-index:1400;
+  width:min(720px, calc(100% - 28px));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(179,31,36,.35);
+  background:linear-gradient(180deg, rgba(18,18,18,.96), rgba(10,10,10,.94));
+  box-shadow:0 20px 70px rgba(0,0,0,.48), 0 0 0 1px rgba(179,31,36,.22), 0 0 40px rgba(179,31,36,.18);
+  transition:transform .32s ease, opacity .22s ease;
+  opacity:0;
+  pointer-events:none;
+}
+.cartPeek.show{transform:translate(-50%, 0);opacity:1;pointer-events:auto}
+.cartPeekInfo{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cartPeekEyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.cartPeekTitle{font-family:Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:18px;line-height:1}
+.cartPeekMeta{font-size:12px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cartPeekActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.cartOverlay{
+  position:fixed; inset:0; z-index:1300;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding:86px 18px 18px;
+}
+.cartOverlay.open{display:flex}
+.cartDrawer{
+  width:min(980px, calc(100% - 8px));
+  max-height:calc(100vh - 110px);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  border-radius:24px;
+  border:1px solid rgba(179,31,36,.28);
+  background:linear-gradient(180deg, rgba(18,18,18,.98), rgba(10,10,10,.96));
+  box-shadow:0 30px 100px rgba(0,0,0,.55), 0 0 0 1px rgba(179,31,36,.16);
+  transform:translateY(-26px);
+  opacity:0;
+  transition:transform .22s ease, opacity .18s ease;
+}
+.cartOverlay.open .cartDrawer{transform:translateY(0);opacity:1}
+.cartItems{overflow:auto; max-height:52vh}
+.cartHead,.cartMeta,.cartFoot{padding-left:18px;padding-right:18px}
+.card{
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.015))!important,
+    radial-gradient(420px 180px at 18% 0%, rgba(179,31,36,.12), transparent 62%)!important;
+}
+.card::before{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(120deg, transparent 0%, rgba(179,31,36,.10) 45%, transparent 72%);
+  opacity:0; transform:translateX(-30%);
+  transition:opacity .2s ease, transform .35s ease;
+  pointer-events:none;
+}
+.card:hover::before{opacity:1;transform:translateX(10%)}
+.card .thumb{height:240px;background:radial-gradient(220px 110px at 50% 0%, rgba(179,31,36,.12), transparent 60%), #0a0a0a}
+.cardBody{gap:12px;padding:14px}
+.title{font-size:17px;line-height:1.18}
+.sub{font-size:12.5px;color:rgba(255,255,255,.74)!important}
+.cardActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.cardActions .btn{min-width:120px}
+.platformRow{display:flex;flex-wrap:wrap;gap:7px}
+.platformChip{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:6px 10px;border-radius:999px;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid rgba(179,31,36,.26);
+  background:rgba(179,31,36,.12); color:#fff;
+}
+.gallery{max-height:calc(92vh - 120px)}
+.galleryMain{max-height:calc(92vh - 140px)}
+@media (max-width: 860px){
+  .brandLogo{width:132px;max-height:54px}
+  .mainNav .btn{min-width:0;padding:11px 12px}
+  .cartPeek{top:8px;padding:12px 14px}
+  .cartPeekActions{width:100%;justify-content:stretch}
+  .cartPeekActions .btn{flex:1}
+}
+
 </style>
 </head>
 
@@ -959,18 +1069,31 @@ body:before{
   <div class="wrap">
     <header>
       <div class="brand">
-  <img class="brandLogo" src="assets/racem-logo.png" alt="RACEM" loading="lazy" decoding="async" />
-</div>
+        <a href="/" aria-label="RACEM Domov">
+          <img class="brandLogo" src="assets/racem-logo.png" alt="RACEM" loading="lazy" decoding="async" />
+        </a>
+      </div>
 
       <div class="topActions">
-        <button class="btn cartBtn" id="cartOpen" type="button" title="Košík">
-          Košík
-          <span class="cartCount" id="cartCount">0</span>
-        </button>
-        <a class="btn" href="/" title="Späť na racem.sk">Domov</a>
-        <a class="btn btn--red" href="/contact.html" title="Kontakt">Kontakt</a>
+        <nav class="mainNav" aria-label="Hlavná navigácia">
+          <a class="btn" href="/" title="Domovská stránka">Domovská stránka</a>
+          <a class="btn" href="/contact.html" title="Kontakt">Kontakt</a>
+          <a class="btn btn--red" href="/vop.html" title="Všeobecné obchodné podmienky">VOP</a>
+        </nav>
       </div>
     </header>
+
+    <div class="cartPeek" id="cartPeek" aria-live="polite">
+      <div class="cartPeekInfo">
+        <div class="cartPeekEyebrow">RACEM CART</div>
+        <div class="cartPeekTitle">Košík pripravený</div>
+        <div class="cartPeekMeta"><span id="cartPeekCount">0 položiek</span> • <span id="cartPeekSubtotal">0 €</span></div>
+      </div>
+      <div class="cartPeekActions">
+        <button class="btn" id="cartHide" type="button">Skryť</button>
+        <button class="btn btn--red" id="cartOpen" type="button">Otvoriť košík</button>
+      </div>
+    </div>
 
     <section class="hero" aria-label="Ponuka - hero">
       <div class="heroInner">
@@ -1529,7 +1652,7 @@ body:before{
         const quickDisabled = (!p.defaultVariantId || p.hasMeaningfulVariants) ? 'disabled' : '';
 
         card.innerHTML = `
-          <div class="thumb">
+          <div class="thumb" data-open-detail="${escapeHtml(p.id)}">
             ${thumbImgHtml}
             <div class="thumbShade"></div>
             <div class="badgeRow">
@@ -1542,8 +1665,8 @@ body:before{
               <span class="pill">${escapeHtml(p.category)}</span>
               <span class="stockPill ${p.stock === "in_stock" ? "stockPill--in" : "stockPill--order"}">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</span>
             </div>
-            <h3 class="title">${escapeHtml(p.name)}</h3>
-            <p class="sub">${escapeHtml(p.desc || "")}</p>
+            <h3 class="title" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(p.name)}</h3>
+            <p class="sub">${escapeHtml(p.desc || "")}</p><div class="muted">Klikni na obrázok alebo Detail pre rozkliknutie produktu</div>
             <div class="pillRow">
               <span class="pill">${escapeHtml(p.brand)}</span>
               ${(p.tags||[]).slice(0,2).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
@@ -1638,13 +1761,17 @@ body:before{
         const variant = meaningful.length ? null : (vars[0] || null);
         if(variant && variant.variantId) addToCart(full, variant, 1);
       }
+      e.preventDefault();
+      e.stopPropagation();
       return;
     }
 
-    const btn = e.target.closest("[data-add]");
-    if(!btn) return;
+    const trigger = e.target.closest("[data-add], [data-open-detail], .title");
+    if(!trigger) return;
 
-    const id = btn.getAttribute("data-add");
+    const host = trigger.closest("[data-open-detail]") || trigger.closest(".card");
+    const id = trigger.getAttribute("data-add") || trigger.getAttribute("data-open-detail") || host?.getAttribute("data-open-detail");
+    if(!id) return;
     const full = PRODUCT_BY_ID.get(id);
 
     if(!full){
@@ -1652,10 +1779,12 @@ body:before{
       return;
     }
 
+    e.preventDefault();
     openModal(full);
   });
 
   document.getElementById("cartOpen")?.addEventListener("click", openCart);
+  document.getElementById("cartHide")?.addEventListener("click", hideCartPeek);
   document.getElementById("cartClose")?.addEventListener("click", closeCart);
   document.getElementById("cartOverlay")?.addEventListener("click", (e) => { if(e.target.id === "cartOverlay") closeCart(); });
   document.getElementById("cartClear")?.addEventListener("click", clearCart);
@@ -1854,11 +1983,13 @@ body:before{
 
     const CART_KEY = "racem_cart_v1";
     let CART = [];
+    let CART_PEEK_HIDDEN = false;
 
     function loadCart(){
       try{ CART = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
       catch(_){ CART = []; }
       if(!Array.isArray(CART)) CART = [];
+      try{ CART_PEEK_HIDDEN = localStorage.getItem("racem_cart_peek_hidden") === "1"; }catch(_){ CART_PEEK_HIDDEN = false; }
       renderCart();
     }
 
@@ -1888,7 +2019,7 @@ body:before{
         });
       }
       saveCart();
-      openCart();
+      showCartPeek(true);
     }
 
     function cartTotals(){
@@ -1903,13 +2034,18 @@ body:before{
       const count = document.getElementById("cartCount");
       const subtotal = document.getElementById("cartSubtotal");
       const meta = document.getElementById("cartMetaText");
+      const peekCount = document.getElementById("cartPeekCount");
+      const peekSubtotal = document.getElementById("cartPeekSubtotal");
       if(!wrap) return;
       const t = cartTotals();
       count.textContent = String(t.qty);
       subtotal.textContent = euro(t.subtotal);
       meta.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
+      if(peekCount) peekCount.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
+      if(peekSubtotal) peekSubtotal.textContent = euro(t.subtotal);
       wrap.innerHTML = "";
       empty.style.display = CART.length ? "none" : "block";
+      showCartPeek();
       CART.forEach(item => {
         const row = document.createElement("div");
         row.className = "cartItem";
