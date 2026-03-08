@@ -717,26 +717,28 @@ display:flex;
 flex-direction:column;
     }
     .galleryMain{
-      aspect-ratio: 16/10;
       background:rgba(0,0,0,.25);
       display:flex;
-      align-items:center;
-      justify-content:center;
+      flex-direction:column;
+      gap:10px;
+      align-items:stretch;
+      justify-content:flex-start;
       position:relative;
+      padding:10px;
+      overflow:auto;
     }
     .galleryMain img{
       width:100%;
-      height:100%;
-      object-fit:cover;
+      height:auto;
+      max-height:none;
+      object-fit:contain;
       display:block;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#0a0a0a;
     }
     .galleryThumbs{
-      display:flex;
-      gap:8px;
-      padding:10px;
-      overflow:auto;
-      border-top:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.02);
+      display:none;
     }
     .gThumb{
       width:84px; height:54px;
@@ -971,7 +973,7 @@ body:before{
           <h2 class="heroTitle">Ponuka dielov</h2>
           <p class="heroSub">
             Tu bude úplne všetko. Vyhľadaj diel podľa názvu, filtruj kategórie, značky, dostupnosť a cenu.
-            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Stránka načítava produkty z products.json aj swagier.json a spojí ich do jedného katalógu.
+            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Neskôr to len napojíš na tvoj JSON feed.
           </p>
         </div>
 
@@ -1117,7 +1119,6 @@ body:before{
             </div>
           </div>
 
-          <!-- fitment / montáž / materiál / typ (ak doplníš do JSON) -->
           <div class="sepLine"></div>
           <div>
             <div class="muted" style="margin-bottom:6px;">Info</div>
@@ -1125,17 +1126,17 @@ body:before{
               <dt>Pasuje na</dt><dd id="mFitment">—</dd>
               <dt>Umiestnenie</dt><dd id="mMount">—</dd>
               <dt>Materiál</dt><dd id="mMaterial">—</dd>
-              <dt>Typ</dt><dd id="mType">—</dd>
+              <dt>Kategória</dt><dd id="mType">—</dd>
             </dl>
           </div>
 
           <div class="sepLine"></div>
 
-          <div>
+          <div id="mVariantsWrap">
             <div class="muted" style="margin-bottom:8px;">Varianty</div>
             <div class="variants" id="mVariants"></div>
             <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
-              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do JSON feedu, potom bude fungovať checkout.
+              Tento variant nemá doplnené <b>variantId</b> v JSON feede, preto checkout nebude fungovať.
             </div>
           </div>
 
@@ -1147,19 +1148,9 @@ body:before{
           <div class="sepLine"></div>
 
           <div>
-            <div class="muted" style="margin-bottom:6px;">Detaily</div>
-            <dl class="dl">
-              <dt>SKU</dt><dd id="mSku">—</dd>
-              <dt>Variant SKU</dt><dd id="mVarSku">—</dd>
-              <dt>Produkt ID</dt><dd id="mPid">—</dd>
-              <dt>Handle</dt><dd id="mHandle">—</dd>
-              <dt>Tagy</dt><dd id="mTags">—</dd>
-              <dt>Compare</dt><dd id="mCompare">—</dd>
-              <dt>Možnosti</dt><dd id="mOpts">—</dd>
-            </dl>
+            <div class="muted" style="margin-bottom:6px;">Detail</div>
+            <div class="note" id="mDesc"></div>
           </div>
-
-          <div class="note" id="mDesc"></div>
         </div>
       </div>
     </div>
@@ -1168,111 +1159,44 @@ body:before{
 
 <script>
     // =========================
-    // 1) DATA (JSON feed z products.json + swagier.json)
+    // 1) DATA (JSON feed z products.json)
     // =========================
     // Očakávaný formát: { meta, categories, products[] (produkt = karta, variants[]) }
-    let FEED = null;              // raw merged feed
+    let FEED = null;              // raw feed
     let PRODUCTS = [];            // flat list pre grid (product cards)
     let PRODUCT_BY_ID = new Map(); // id -> full product object
 
     // Ak chceš, vieš si sem dať preferované poradie kategórií (inak sa použije feed.categories + fallback z dát)
     const CATEGORY_ORDER = []; // napr. ["Aero","Intercooler",...]
-    const FEED_FILES = ["./products.json", "./swagier.json"];
-
-    async function fetchJsonSafe(url){
-      try{
-        const res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
-        if(!res.ok) throw new Error(url + " sa nenačítal (" + res.status + ")");
-        return await res.json();
-      }catch(err){
-        console.warn("FEED LOAD WARN:", err);
-        return null;
-      }
-    }
-
-    function mergeFeeds(feeds){
-      const validFeeds = feeds.filter(Boolean);
-      const mergedProducts = [];
-      const mergedCategories = [];
-      const byId = new Map();
-
-      validFeeds.forEach(feed => {
-        const feedCategories = Array.isArray(feed?.categories) ? feed.categories : [];
-        feedCategories.forEach(cat => {
-          if(cat && !mergedCategories.includes(cat)) mergedCategories.push(cat);
-        });
-
-        const feedProducts = Array.isArray(feed?.products) ? feed.products : [];
-        feedProducts.forEach(prod => {
-          if(!prod || !prod.id) return;
-
-          if(!byId.has(prod.id)){
-            byId.set(prod.id, prod);
-            mergedProducts.push(prod);
-            return;
-          }
-
-          const existing = byId.get(prod.id);
-          const existingVariants = Array.isArray(existing.variants) ? existing.variants : [];
-          const incomingVariants = Array.isArray(prod.variants) ? prod.variants : [];
-          const variantMap = new Map();
-
-          [...existingVariants, ...incomingVariants].forEach(v => {
-            if(!v) return;
-            const key = v.id || v.variantId || v.sku || JSON.stringify(v.options || {}) || Math.random().toString(36);
-            if(!variantMap.has(key)) variantMap.set(key, v);
-          });
-
-          const mergedImages = [...new Set([...(Array.isArray(existing.images) ? existing.images : []), ...(Array.isArray(prod.images) ? prod.images : [])].filter(Boolean))];
-          const mergedTags = [...new Set([...(Array.isArray(existing.tags) ? existing.tags : []), ...(Array.isArray(prod.tags) ? prod.tags : [])].filter(Boolean))];
-          const mergedFitment = [...new Set([...(Array.isArray(existing.fitment) ? existing.fitment : []), ...(Array.isArray(prod.fitment) ? prod.fitment : [])].filter(Boolean))];
-          const mergedPlatforms = [...new Set([...(Array.isArray(existing.platforms) ? existing.platforms : []), ...(Array.isArray(prod.platforms) ? prod.platforms : [])].filter(Boolean))];
-
-          const merged = {
-            ...existing,
-            ...prod,
-            images: mergedImages,
-            tags: mergedTags,
-            fitment: mergedFitment,
-            platforms: mergedPlatforms,
-            variants: Array.from(variantMap.values())
-          };
-
-          byId.set(prod.id, merged);
-          const idx = mergedProducts.findIndex(x => x.id === prod.id);
-          if(idx !== -1) mergedProducts[idx] = merged;
-        });
-      });
-
-      const baseMeta = validFeeds.find(f => f?.meta)?.meta || {};
-      return {
-        meta: {
-          currency: "EUR",
-          shopDomain: "shop.racem.sk",
-          ...baseMeta
-        },
-        categories: mergedCategories,
-        products: mergedProducts
-      };
-    }
 
     async function loadFeed(){
-      const feeds = await Promise.all(FEED_FILES.map(fetchJsonSafe));
-      FEED = mergeFeeds(feeds);
-
-      const loadedCount = feeds.filter(Boolean).length;
       const hs = document.getElementById("hudStatus");
-      if(loadedCount === 0){
+      const urls = ["./products.json", "./swagier.json"];
+      const feeds = await Promise.all(urls.map(async (url) => {
+        try{
+          const res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+          if(!res.ok) throw new Error(url + " sa nenačítal (" + res.status + ")");
+          return await res.json();
+        }catch(err){
+          console.warn(err);
+          return null;
+        }
+      }));
+
+      const okFeeds = feeds.filter(f => f && Array.isArray(f.products));
+      if(!okFeeds.length){
         hs.textContent = "OFFLINE";
         hs.classList.remove("tag--red");
         hs.style.borderColor = "rgba(255,204,102,.42)";
         hs.style.background = "rgba(255,204,102,.12)";
         hs.style.color = "rgba(255,204,102,.95)";
         FEED = { meta:{currency:"EUR", shopDomain:"shop.racem.sk"}, categories:[], products:[] };
-      } else if(loadedCount === 1){
-        hs.textContent = "1/2 JSON";
-      } else {
-        hs.textContent = "2/2 JSON";
+      }else{
+        FEED = {
+          meta: okFeeds[0].meta || {currency:"EUR", shopDomain:"shop.racem.sk"},
+          categories: [...new Set(okFeeds.flatMap(f => Array.isArray(f.categories) ? f.categories : []))],
+          products: okFeeds.flatMap(f => Array.isArray(f.products) ? f.products : [])
+        };
       }
 
       const prods = Array.isArray(FEED.products) ? FEED.products : [];
@@ -1282,9 +1206,7 @@ body:before{
         const variants = Array.isArray(p.variants) ? p.variants : [];
         const prices = variants.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
         const minPrice = prices.length ? Math.min(...prices) : 0;
-
-        const hasStock = variants.some(v => v.stock === "in_stock");
-        const stock = hasStock ? "in_stock" : "made_to_order";
+        const stock = getDisplayStock(minPrice);
 
         const short = (p.short || "").trim();
         const descFallback = stripHtml(p.descriptionHtml || "").trim();
@@ -1360,6 +1282,84 @@ body:before{
 
     const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
     const contains = (hay, needle) => norm(hay).includes(norm(needle));
+
+
+    function getDisplayStock(price){
+      return Number(price || 0) > 1000 ? "made_to_order" : "in_stock";
+    }
+
+    function uniqClean(arr){
+      return [...new Set((arr || []).map(x => String(x || "").trim()).filter(Boolean))];
+    }
+
+    function extractMatches(text, regex){
+      const out = [];
+      String(text || "").replace(regex, (m) => { out.push(m.trim()); return m; });
+      return out;
+    }
+
+    function getFitmentList(prod){
+      const raw = [];
+      if(Array.isArray(prod.platforms)) raw.push(...prod.platforms);
+      if(Array.isArray(prod.fitment)) raw.push(...prod.fitment);
+      if(typeof prod.fitment === "string") raw.push(...prod.fitment.split(/[;,]/));
+      const text = `${prod.title || ""} ${stripHtml(prod.descriptionHtml || "")}`;      raw.push(...extractMatches(text, /\b(?:[EFG]\d{2}X?|MK\d|8L|8P|8V|S\d{2}|M\d{2}TU?B?\d{2}|\d\.\d\s?TDI|\d\.\d\s?T|\d-valec|\dvalec|335i|M2|M3|Golf\s?MK\d|Bora|A3\s?8L)\b/gi));
+      return uniqClean(raw.map(v => String(v).replace(/\s+/g, ' ').replace(/^BMW\s+/i,'').replace(/^VW\s+/i,'').trim()));
+    }
+
+    function formatFitment(prod){
+      const vals = getFitmentList(prod);
+      return vals.length ? vals.join(', ') : 'Univerzálne';
+    }
+
+    function formatPlacement(prod){
+      const vals = [];
+      const push = (v) => { if(v) vals.push(v); };
+      const mapVal = (v) => {
+        const s = norm(v);
+        if(!s || s === 'none' || s === 'universal') return '';
+        if(s.includes('pred') || s.includes('front')) return 'vpredu';
+        if(s.includes('zad') || s.includes('rear')) return 'vzadu';
+        if(s.includes('left') || s.includes('right') || s.includes('bok') || s.includes('side')) return 'na boku';
+        if(s.includes('inter')) return 'interiér';
+        if(s.includes('motor') || s.includes('engine')) return 'motor';
+        if(s.includes('podvoz') || s.includes('suspension') || s.includes('axle')) return 'podvozok';
+        return String(v).trim();
+      };
+      if(typeof prod.placement === 'string') prod.placement.split(/[;,/]/).forEach(v => push(mapVal(v)));
+      else if(prod.placement && typeof prod.placement === 'object') Object.values(prod.placement).forEach(v => push(mapVal(v)));
+      const cat = norm(prod.category);
+      if(cat.includes('interi')) push('interiér');
+      if(cat.includes('podvoz')) push('podvozok');
+      if(cat.includes('motor') || cat.includes('pohon') || cat.includes('intercooler') || cat.includes('vyfuk')) push('motor');
+      if(cat.includes('karoser') || cat.includes('exterier') || cat.includes('aero') || cat.includes('styling') || cat.includes('osvetlenie')) push('na boku');
+      return uniqClean(vals).join(', ') || 'Univerzálne';
+    }
+
+    function formatMaterial(prod){
+      const vals = [];
+      const add = (v) => { if(v) vals.push(v); };
+      if(Array.isArray(prod.material)) vals.push(...prod.material);
+      else if(prod.material && typeof prod.material === 'object') vals.push(...Object.values(prod.material));
+      else if(typeof prod.material === 'string') vals.push(...prod.material.split(/[;,/]/));
+      const text = `${prod.title || ""} ${stripHtml(prod.descriptionHtml || "")}`;
+      if(/hlin/i.test(text)) add('hliník');
+      if(/oce[lľ]|steel/i.test(text)) add('oceľ');
+      if(/nerez|stainless/i.test(text)) add('nerez');
+      if(/silik[oó]n/i.test(text)) add('silikón');
+      if(/plast|polyuretan/i.test(text)) add('plast');
+      if(/uhl[ií]k|carbon/i.test(text)) add('karbón');
+      return uniqClean(vals.map(v => String(v).trim())).join(', ') || 'Neuvedené';
+    }
+
+    function getMeaningfulVariants(vars){
+      const list = Array.isArray(vars) ? vars : [];
+      if(list.length <= 1 && norm(list[0]?.title || '') === 'default title') return [];
+      return list.filter(v => {
+        const t = String(v?.title || '').trim();
+        return t && norm(t) !== 'default title';
+      });
+    }
 
     function computeRelevance(p, q){
       if(!q) return 0;
@@ -1641,6 +1641,7 @@ body:before{
       mount: document.getElementById("mMount"),
       material: document.getElementById("mMaterial"),
       type: document.getElementById("mType"),
+      variantsWrap: document.getElementById("mVariantsWrap"),
       variants: document.getElementById("mVariants"),
       note: document.getElementById("mVariantNote"),
       buy: document.getElementById("mBuy"),
@@ -1669,30 +1670,13 @@ body:before{
 
       m.cat.textContent = prod.category || "Uncategorized";
       m.man.textContent = prod.manufacturer || "RACEM";
-
-
-      // extra info (ak nie je v JSON, ukáže sa —)
-      const fit = prod.universal ? "Univerzálne" :
-        (Array.isArray(prod.fitment) ? prod.fitment.join(", ") : (prod.fitment || "—"));
-      if(m.fitment) m.fitment.textContent = fit || "—";
-      if(m.mount) m.mount.textContent = prod.mounting || "—";
-      if(m.material) m.material.textContent = prod.material || "—";
-      if(m.type) m.type.textContent = (prod.productType || prod.type || prod.category || "—");
+      if(m.fitment) m.fitment.textContent = formatFitment(prod);
+      if(m.mount) m.mount.textContent = formatPlacement(prod);
+      if(m.material) m.material.textContent = formatMaterial(prod);
+      if(m.type) m.type.textContent = (prod.category || "—");
 
       const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
       m.shopLink.href = link;
-      // detaily (produkt)
-      if(m.pid) m.pid.textContent = prod.id || "—";
-      if(m.handle) m.handle.textContent = prod.handle || "—";
-      const pTags = Array.isArray(prod.tags) ? prod.tags.filter(Boolean) : [];
-      if(m.tags) m.tags.textContent = pTags.length ? pTags.join(", ") : "—";
-      // SKU na produkte berieme z prvého variantu (ak existuje)
-      const firstSku = (Array.isArray(prod.variants) && prod.variants[0] && prod.variants[0].sku) ? prod.variants[0].sku : "";
-      if(m.sku) m.sku.textContent = firstSku || "—";
-      if(m.compare) m.compare.textContent = "—";
-      if(m.opts) m.opts.textContent = "—";
-      if(m.varSku) m.varSku.textContent = "—";
-
 
       const imgs = [];
       (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
@@ -1705,8 +1689,7 @@ body:before{
       const prices = vars.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
       const minPrice = prices.length ? Math.min(...prices) : 0;
       m.price.textContent = euro(minPrice);
-      const hasStock = vars.some(v => v.stock === "in_stock");
-      setStockBadge(hasStock ? "in_stock" : "made_to_order");
+      setStockBadge(getDisplayStock(minPrice));
 
       m.desc.innerHTML = prod.descriptionHtml ? prod.descriptionHtml : (short ? escapeHtml(short) : "");
 
@@ -1743,23 +1726,13 @@ body:before{
         return;
       }
 
-      const mainImg = document.createElement("img");
-      mainImg.src = imgs[0];
-      mainImg.alt = "Produkt obrázok";
-      mainImg.loading = "lazy";
-      mainImg.decoding = "async";
-      m.main.appendChild(mainImg);
-
-      imgs.forEach((u, idx) => {
-        const t = document.createElement("div");
-        t.className = "gThumb" + (idx === 0 ? " active" : "");
-        t.innerHTML = `<img src="${escapeHtml(u)}" alt="thumb" loading="lazy" decoding="async">`;
-        t.onclick = () => {
-          mainImg.src = u;
-          m.thumbs.querySelectorAll(".gThumb").forEach(x => x.classList.remove("active"));
-          t.classList.add("active");
-        };
-        m.thumbs.appendChild(t);
+      imgs.forEach((u) => {
+        const img = document.createElement("img");
+        img.src = u;
+        img.alt = "Produkt obrázok";
+        img.loading = "lazy";
+        img.decoding = "async";
+        m.main.appendChild(img);
       });
     }
 
@@ -1768,16 +1741,16 @@ body:before{
       m.note.style.display = "none";
       m.buy.disabled = true;
 
-      if(!vars.length){
-        const pill = document.createElement("div");
-        pill.className = "note";
-        pill.textContent = "Žiadne varianty v JSON feede.";
-        m.variants.appendChild(pill);
+      const meaningful = getMeaningfulVariants(vars);
+      if(m.variantsWrap) m.variantsWrap.style.display = meaningful.length ? "block" : "none";
+
+      if(!meaningful.length){
+        const fallback = Array.isArray(vars) && vars.length ? vars[0] : null;
+        if(fallback) selectVariant(fallback);
         return;
       }
 
-      // najprv vytvor UI
-      vars.forEach(v => {
+      meaningful.forEach(v => {
         const b = document.createElement("div");
         b.className = "vOpt";
         b.textContent = v.title || "Variant";
@@ -1785,8 +1758,7 @@ body:before{
         m.variants.appendChild(b);
       });
 
-      // default vyber prvý
-      selectVariant(vars[0]);
+      selectVariant(meaningful[0]);
       syncVariantUI();
     }
 
@@ -1802,21 +1774,9 @@ body:before{
 
       const price = Number(v.price || 0);
       m.price.textContent = euro(price);
-      setStockBadge(v.stock === "in_stock" ? "in_stock" : "made_to_order");
+      setStockBadge(getDisplayStock(price));
 
-      
-      // variant detaily
-      if(m.varSku) m.varSku.textContent = (v.sku || "—");
-      if(m.compare) {
-        const ca = (v.compareAtPrice !== null && v.compareAtPrice !== undefined && v.compareAtPrice !== "") ? Number(v.compareAtPrice) : null;
-        m.compare.textContent = (Number.isFinite(ca) && ca > 0) ? (euro(ca) + " (pôvodná)") : "—";
-      }
-      if(m.opts){
-        const o = v.options || {};
-        const pairs = Object.keys(o).map(k => `${k}: ${o[k]}`).filter(Boolean);
-        m.opts.textContent = pairs.length ? pairs.join(" • ") : "—";
-      }
-const vid = v.variantId ? String(v.variantId).trim() : "";
+      const vid = v.variantId ? String(v.variantId).trim() : "";
       const ok = !!vid;
       m.buy.disabled = !ok;
       m.note.style.display = ok ? "none" : "block";
