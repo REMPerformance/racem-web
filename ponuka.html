@@ -498,21 +498,22 @@
     .badge--order{border-color:rgba(255,204,102,.42); color:rgba(255,204,102,.95)}
     .badge--red{border-color:rgba(179,31,36,.55); color:#fff; background:rgba(179,31,36,.22); box-shadow:0 0 0 1px rgba(179,31,36,.12)}
 
-    .cardBody{padding:12px 12px 14px; display:flex; flex-direction:column; gap:10px; flex:1}
+    .cardBody{padding:14px 14px 16px; display:flex; flex-direction:column; gap:12px; flex:1; position:relative} 
     .title{
       margin:0;
       font-family: Oswald, sans-serif;
       text-transform:uppercase;
       letter-spacing:.10em;
-      font-size:16px;
-      line-height:1.15;
+      font-size:17px;
+      line-height:1.18;
+      text-shadow:0 0 24px rgba(179,31,36,.16);
     }
     .sub{
       margin:0;
-      color:var(--muted);
+      color:rgba(255,255,255,.82);
       font-size:13px;
-      line-height:1.5;
-      min-height: 38px;
+      line-height:1.55;
+      min-height: 42px;
     }
 
     .pillRow{
@@ -532,10 +533,10 @@
     .bottomRow{
       margin-top:auto;
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:space-between;
-      gap:10px;
-      padding-top:10px;
+      gap:12px;
+      padding-top:12px;
       border-top:1px solid rgba(255,255,255,.08);
     }
     .price{
@@ -706,7 +707,7 @@ overscroll-behavior: contain;
     @media (max-width: 860px){
       .modalBody{grid-template-columns:1fr}
     }
-    .gallery{
+     .gallery{
 border:1px solid rgba(255,255,255,.12);
 border-radius:var(--r2);
 background:rgba(0,0,0,.40);
@@ -962,6 +963,10 @@ body:before{
 </div>
 
       <div class="topActions">
+        <button class="btn cartBtn" id="cartOpen" type="button" title="Košík">
+          Košík
+          <span class="cartCount" id="cartCount">0</span>
+        </button>
         <a class="btn" href="/" title="Späť na racem.sk">Domov</a>
         <a class="btn btn--red" href="/contact.html" title="Kontakt">Kontakt</a>
       </div>
@@ -1098,7 +1103,7 @@ body:before{
 
       <div class="modalBody">
         <div class="gallery">
-          <div class="galleryMain" id="mMain"></div>
+          <div class="galleryMain galleryStack" id="mMain"></div>
           <div class="galleryThumbs" id="mThumbs"></div>
         </div>
 
@@ -1141,14 +1146,14 @@ body:before{
           </div>
 
           <div class="rowSplit" style="margin-top:auto;">
-            <a class="btn" id="mShopLink" href="#" target="_blank" rel="noopener">Otvoriť v shope</a>
-            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť</button>
+            <button class="btn" id="mAddCart" type="button" disabled>Do košíka</button>
+            <button class="btn btn--red" id="mBuy" type="button" disabled>Kúpiť teraz</button>
           </div>
 
           <div class="sepLine"></div>
 
           <div>
-            <div class="muted" style="margin-bottom:6px;">Detail</div>
+            <div class="muted" style="margin-bottom:6px;">Detail produktu</div>
             <div class="note" id="mDesc"></div>
           </div>
         </div>
@@ -1156,6 +1161,31 @@ body:before{
     </div>
   </div>
 
+
+  <div class="cartOverlay" id="cartOverlay" aria-hidden="true">
+    <aside class="cartDrawer" aria-label="Košík">
+      <div class="cartHead">
+        <div>
+          <div class="cartEyebrow">RACEM CART</div>
+          <h3 class="cartTitle">Košík</h3>
+        </div>
+        <button class="btn" id="cartClose" type="button">Zatvoriť</button>
+      </div>
+
+      <div class="cartMeta">
+        <span id="cartMetaText">0 položiek</span>
+        <span id="cartSubtotal">0 €</span>
+      </div>
+
+      <div class="cartItems" id="cartItems"></div>
+      <div class="cartEmpty" id="cartEmpty">Košík je zatiaľ prázdny.</div>
+
+      <div class="cartFoot">
+        <button class="btn" id="cartClear" type="button">Vymazať</button>
+        <button class="btn btn--red" id="cartCheckout" type="button">Pokračovať na checkout</button>
+      </div>
+    </aside>
+  </div>
 
 <script>
     // =========================
@@ -1211,6 +1241,8 @@ body:before{
         const short = (p.short || "").trim();
         const descFallback = stripHtml(p.descriptionHtml || "").trim();
 
+        const meaningfulVariants = getMeaningfulVariants(variants);
+        const defaultVariant = meaningfulVariants.length ? null : (variants[0] || null);
         return {
           id: p.id,
           handle: p.handle,
@@ -1224,6 +1256,10 @@ body:before{
           desc: short || (descFallback ? descFallback.slice(0, 140) + (descFallback.length > 140 ? "…" : "") : ""),
           images: Array.isArray(p.images) ? p.images : [],
           productUrl: p.productUrl || (p.handle ? ("https://shop.racem.sk/products/" + p.handle) : ""),
+          platforms: getFitmentList(p).slice(0,4),
+          defaultVariantId: defaultVariant && defaultVariant.variantId ? String(defaultVariant.variantId).trim() : "",
+          defaultVariantTitle: defaultVariant && defaultVariant.title ? defaultVariant.title : "",
+          hasMeaningfulVariants: meaningfulVariants.length > 0
         };
       });
     }
@@ -1486,46 +1522,43 @@ body:before{
         const card = document.createElement("article");
         card.className = "card";
 
-
         const thumbUrl = (p.images && p.images.length) ? p.images[0] : "";
         const thumbImgHtml = thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(p.name)}" loading="lazy" decoding="async">` : ``;
-        const stockBadge = p.stock === "in_stock"
-          ? `<span class="badge badge--stock">Skladom</span>`
-          : `<span class="badge badge--order">Na objednávku</span>`;
-
-        const topBadge = p.top ? `<span class="badge badge--red">TOP</span>` : "";
+        const topBadge = p.top ? `<span class="badge badge--red">TOP</span>` : `<span class="badge">RACEM</span>`;
+        const platformHtml = (p.platforms || []).slice(0,4).map(t => `<span class="platformChip">${escapeHtml(t)}</span>`).join("");
+        const quickDisabled = (!p.defaultVariantId || p.hasMeaningfulVariants) ? 'disabled' : '';
 
         card.innerHTML = `
           <div class="thumb">
             ${thumbImgHtml}
             <div class="thumbShade"></div>
-
             <div class="badgeRow">
-              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-                ${topBadge}
-              </div>
-              
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${topBadge}</div>
             </div>
           </div>
 
           <div class="cardBody">
-            <h3 class="title">${escapeHtml(p.name)}</h3>
-            <div class="pillRow" style="margin-top:-2px;">
+            <div class="cardTopline">
               <span class="pill">${escapeHtml(p.category)}</span>
+              <span class="stockPill ${p.stock === "in_stock" ? "stockPill--in" : "stockPill--order"}">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</span>
             </div>
+            <h3 class="title">${escapeHtml(p.name)}</h3>
             <p class="sub">${escapeHtml(p.desc || "")}</p>
-
             <div class="pillRow">
               <span class="pill">${escapeHtml(p.brand)}</span>
-              ${(p.tags||[]).slice(0,3).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+              ${(p.tags||[]).slice(0,2).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
             </div>
+            ${platformHtml ? `<div class="platformRow">${platformHtml}</div>` : ``}
 
             <div class="bottomRow">
               <div>
                 <div class="price">${euro(p.price)}</div>
-                <div class="stockPill ${p.stock === "in_stock" ? "stockPill--in" : "stockPill--order"}">${p.stock === "in_stock" ? "Skladom" : "Na objednávku"}</div>
+                <div class="muted">Orientačne bez dopravy</div>
               </div>
-              <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
+              <div class="cardActions">
+                <button class="btn" type="button" data-quick-cart="${escapeHtml(p.id)}" ${quickDisabled}>Do košíka</button>
+                <button class="btn btn--red" type="button" data-add="${escapeHtml(p.id)}">Detail</button>
+              </div>
             </div>
           </div>
         `;
@@ -1595,6 +1628,19 @@ body:before{
 
   // DETAIL klik -> modal (delegácia, iba raz)
   el.grid.addEventListener("click", (e) => {
+    const quick = e.target.closest("[data-quick-cart]");
+    if(quick){
+      const id = quick.getAttribute("data-quick-cart");
+      const full = PRODUCT_BY_ID.get(id);
+      if(full){
+        const vars = Array.isArray(full.variants) ? full.variants : [];
+        const meaningful = getMeaningfulVariants(vars);
+        const variant = meaningful.length ? null : (vars[0] || null);
+        if(variant && variant.variantId) addToCart(full, variant, 1);
+      }
+      return;
+    }
+
     const btn = e.target.closest("[data-add]");
     if(!btn) return;
 
@@ -1608,6 +1654,12 @@ body:before{
 
     openModal(full);
   });
+
+  document.getElementById("cartOpen")?.addEventListener("click", openCart);
+  document.getElementById("cartClose")?.addEventListener("click", closeCart);
+  document.getElementById("cartOverlay")?.addEventListener("click", (e) => { if(e.target.id === "cartOverlay") closeCart(); });
+  document.getElementById("cartClear")?.addEventListener("click", clearCart);
+  document.getElementById("cartCheckout")?.addEventListener("click", checkoutCart);
 }
 
     // =========================
@@ -1644,6 +1696,7 @@ body:before{
       variantsWrap: document.getElementById("mVariantsWrap"),
       variants: document.getElementById("mVariants"),
       note: document.getElementById("mVariantNote"),
+      addCart: document.getElementById("mAddCart"),
       buy: document.getElementById("mBuy"),
       shopLink: document.getElementById("mShopLink"),
       desc: document.getElementById("mDesc"),
@@ -1705,6 +1758,7 @@ body:before{
       activeProduct = null;
       activeVariant = null;
       m.buy.disabled = true;
+      if(m.addCart) m.addCart.disabled = true;
       m.note.style.display = "none";
     }
 
@@ -1740,6 +1794,7 @@ body:before{
       m.variants.innerHTML = "";
       m.note.style.display = "none";
       m.buy.disabled = true;
+      if(m.addCart) m.addCart.disabled = true;
 
       const meaningful = getMeaningfulVariants(vars);
       if(m.variantsWrap) m.variantsWrap.style.display = meaningful.length ? "block" : "none";
@@ -1779,6 +1834,7 @@ body:before{
       const vid = v.variantId ? String(v.variantId).trim() : "";
       const ok = !!vid;
       m.buy.disabled = !ok;
+      if(m.addCart) m.addCart.disabled = !ok;
       m.note.style.display = ok ? "none" : "block";
 
       syncVariantUI();
@@ -1791,12 +1847,150 @@ body:before{
       window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(vid)}:1`;
     }
 
+    function addActiveVariantToCart(){
+      if(!activeProduct || !activeVariant || !activeVariant.variantId) return;
+      addToCart(activeProduct, activeVariant, 1);
+    }
+
+    const CART_KEY = "racem_cart_v1";
+    let CART = [];
+
+    function loadCart(){
+      try{ CART = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
+      catch(_){ CART = []; }
+      if(!Array.isArray(CART)) CART = [];
+      renderCart();
+    }
+
+    function saveCart(){
+      localStorage.setItem(CART_KEY, JSON.stringify(CART));
+      renderCart();
+    }
+
+    function addToCart(product, variant, qty=1){
+      const variantId = variant?.variantId ? String(variant.variantId).trim() : "";
+      if(!variantId) return;
+      const key = variantId;
+      const existing = CART.find(i => i.key === key);
+      if(existing){
+        existing.qty += qty;
+      }else{
+        CART.push({
+          key,
+          variantId,
+          productId: product.id,
+          name: product.title || product.name || "Produkt",
+          variantTitle: variant.title || "",
+          price: Number(variant.price || 0),
+          image: (variant.images && variant.images[0]) || (product.images && product.images[0]) || "",
+          productUrl: product.productUrl || (product.handle ? ("https://shop.racem.sk/products/" + product.handle) : ""),
+          qty
+        });
+      }
+      saveCart();
+      openCart();
+    }
+
+    function cartTotals(){
+      const qty = CART.reduce((s,i) => s + Number(i.qty || 0), 0);
+      const subtotal = CART.reduce((s,i) => s + Number(i.price || 0) * Number(i.qty || 0), 0);
+      return { qty, subtotal };
+    }
+
+    function renderCart(){
+      const wrap = document.getElementById("cartItems");
+      const empty = document.getElementById("cartEmpty");
+      const count = document.getElementById("cartCount");
+      const subtotal = document.getElementById("cartSubtotal");
+      const meta = document.getElementById("cartMetaText");
+      if(!wrap) return;
+      const t = cartTotals();
+      count.textContent = String(t.qty);
+      subtotal.textContent = euro(t.subtotal);
+      meta.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
+      wrap.innerHTML = "";
+      empty.style.display = CART.length ? "none" : "block";
+      CART.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "cartItem";
+        row.innerHTML = `
+          <div class="cartItemImg">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">` : ``}</div>
+          <div>
+            <h4 class="cartItemName">${escapeHtml(item.name)}</h4>
+            <div class="cartItemMeta">${item.variantTitle && norm(item.variantTitle) !== 'default title' ? escapeHtml(item.variantTitle) + ' • ' : ''}${euro(item.price)}</div>
+            <div class="cartItemBottom">
+              <div class="qtyWrap">
+                <button class="qtyBtn" type="button" data-cart-minus="${escapeHtml(item.key)}">−</button>
+                <span class="qtyVal">${Number(item.qty || 0)}</span>
+                <button class="qtyBtn" type="button" data-cart-plus="${escapeHtml(item.key)}">+</button>
+              </div>
+              <button class="removeBtn" type="button" data-cart-remove="${escapeHtml(item.key)}">Odstrániť</button>
+            </div>
+          </div>`;
+        wrap.appendChild(row);
+      });
+    }
+
+    function openCart(){
+      const overlay = document.getElementById("cartOverlay");
+      if(!overlay) return;
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCart(){
+      const overlay = document.getElementById("cartOverlay");
+      if(!overlay) return;
+      overlay.classList.remove("open");
+      overlay.setAttribute("aria-hidden","true");
+      if(!m.overlay.classList.contains("open")) document.body.style.overflow = "";
+    }
+
+    function changeCartQty(key, delta){
+      const item = CART.find(i => i.key === key);
+      if(!item) return;
+      item.qty = Math.max(1, Number(item.qty || 0) + delta);
+      saveCart();
+    }
+
+    function removeCartItem(key){
+      CART = CART.filter(i => i.key !== key);
+      saveCart();
+    }
+
+    function clearCart(){
+      CART = [];
+      saveCart();
+    }
+
+    function checkoutCart(){
+      const valid = CART.filter(i => i.variantId && Number(i.qty) > 0);
+      if(!valid.length) return;
+      const cartPath = valid.map(i => `${encodeURIComponent(i.variantId)}:${Math.max(1, Number(i.qty || 1))}`).join(",");
+      window.location.href = `https://shop.racem.sk/cart/${cartPath}`;
+    }
+
+    document.addEventListener("click", (e) => {
+      const plus = e.target.closest("[data-cart-plus]");
+      const minus = e.target.closest("[data-cart-minus]");
+      const remove = e.target.closest("[data-cart-remove]");
+      if(plus) changeCartQty(plus.getAttribute("data-cart-plus"), 1);
+      if(minus) changeCartQty(minus.getAttribute("data-cart-minus"), -1);
+      if(remove) removeCartItem(remove.getAttribute("data-cart-remove"));
+    });
+
     if(m.overlay && m.close && m.buy){
-    m.close.addEventListener("click", closeModal);
-    m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
-    document.addEventListener("keydown", (e) => { if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal(); });
-    m.buy.addEventListener("click", goCheckout);
-}
+      m.close.addEventListener("click", closeModal);
+      m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
+      document.addEventListener("keydown", (e) => {
+        if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal();
+        if(e.key === "Escape" && document.getElementById("cartOverlay")?.classList.contains("open")) closeCart();
+      });
+      m.buy.addEventListener("click", goCheckout);
+      m.addCart?.addEventListener("click", addActiveVariantToCart);
+    }
+
 // =========================
     // 11) MAIN RENDER
     // =========================
@@ -1816,6 +2010,7 @@ body:before{
       buildBrandSelect();
       buildChips();
       bindEvents();
+      loadCart();
       renderAll();
     })();
   </script>
