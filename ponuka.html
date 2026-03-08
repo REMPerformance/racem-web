@@ -971,7 +971,7 @@ body:before{
           <h2 class="heroTitle">Ponuka dielov</h2>
           <p class="heroSub">
             Tu bude úplne všetko. Vyhľadaj diel podľa názvu, filtruj kategórie, značky, dostupnosť a cenu.
-            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Neskôr to len napojíš na tvoj JSON feed.
+            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Stránka načítava produkty z products.json aj swagier.json a spojí ich do jedného katalógu.
           </p>
         </div>
 
@@ -1135,7 +1135,7 @@ body:before{
             <div class="muted" style="margin-bottom:8px;">Varianty</div>
             <div class="variants" id="mVariants"></div>
             <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
-              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do <b>products.json</b>, potom bude fungovať checkout.
+              Tento variant nemá doplnené <b>variantId</b> (Shopify). Doplň ho do JSON feedu, potom bude fungovať checkout.
             </div>
           </div>
 
@@ -1168,30 +1168,111 @@ body:before{
 
 <script>
     // =========================
-    // 1) DATA (JSON feed z products.json)
+    // 1) DATA (JSON feed z products.json + swagier.json)
     // =========================
     // Očakávaný formát: { meta, categories, products[] (produkt = karta, variants[]) }
-    let FEED = null;              // raw feed
+    let FEED = null;              // raw merged feed
     let PRODUCTS = [];            // flat list pre grid (product cards)
     let PRODUCT_BY_ID = new Map(); // id -> full product object
 
     // Ak chceš, vieš si sem dať preferované poradie kategórií (inak sa použije feed.categories + fallback z dát)
     const CATEGORY_ORDER = []; // napr. ["Aero","Intercooler",...]
+    const FEED_FILES = ["./products.json", "./swagier.json"];
+
+    async function fetchJsonSafe(url){
+      try{
+        const res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+        if(!res.ok) throw new Error(url + " sa nenačítal (" + res.status + ")");
+        return await res.json();
+      }catch(err){
+        console.warn("FEED LOAD WARN:", err);
+        return null;
+      }
+    }
+
+    function mergeFeeds(feeds){
+      const validFeeds = feeds.filter(Boolean);
+      const mergedProducts = [];
+      const mergedCategories = [];
+      const byId = new Map();
+
+      validFeeds.forEach(feed => {
+        const feedCategories = Array.isArray(feed?.categories) ? feed.categories : [];
+        feedCategories.forEach(cat => {
+          if(cat && !mergedCategories.includes(cat)) mergedCategories.push(cat);
+        });
+
+        const feedProducts = Array.isArray(feed?.products) ? feed.products : [];
+        feedProducts.forEach(prod => {
+          if(!prod || !prod.id) return;
+
+          if(!byId.has(prod.id)){
+            byId.set(prod.id, prod);
+            mergedProducts.push(prod);
+            return;
+          }
+
+          const existing = byId.get(prod.id);
+          const existingVariants = Array.isArray(existing.variants) ? existing.variants : [];
+          const incomingVariants = Array.isArray(prod.variants) ? prod.variants : [];
+          const variantMap = new Map();
+
+          [...existingVariants, ...incomingVariants].forEach(v => {
+            if(!v) return;
+            const key = v.id || v.variantId || v.sku || JSON.stringify(v.options || {}) || Math.random().toString(36);
+            if(!variantMap.has(key)) variantMap.set(key, v);
+          });
+
+          const mergedImages = [...new Set([...(Array.isArray(existing.images) ? existing.images : []), ...(Array.isArray(prod.images) ? prod.images : [])].filter(Boolean))];
+          const mergedTags = [...new Set([...(Array.isArray(existing.tags) ? existing.tags : []), ...(Array.isArray(prod.tags) ? prod.tags : [])].filter(Boolean))];
+          const mergedFitment = [...new Set([...(Array.isArray(existing.fitment) ? existing.fitment : []), ...(Array.isArray(prod.fitment) ? prod.fitment : [])].filter(Boolean))];
+          const mergedPlatforms = [...new Set([...(Array.isArray(existing.platforms) ? existing.platforms : []), ...(Array.isArray(prod.platforms) ? prod.platforms : [])].filter(Boolean))];
+
+          const merged = {
+            ...existing,
+            ...prod,
+            images: mergedImages,
+            tags: mergedTags,
+            fitment: mergedFitment,
+            platforms: mergedPlatforms,
+            variants: Array.from(variantMap.values())
+          };
+
+          byId.set(prod.id, merged);
+          const idx = mergedProducts.findIndex(x => x.id === prod.id);
+          if(idx !== -1) mergedProducts[idx] = merged;
+        });
+      });
+
+      const baseMeta = validFeeds.find(f => f?.meta)?.meta || {};
+      return {
+        meta: {
+          currency: "EUR",
+          shopDomain: "shop.racem.sk",
+          ...baseMeta
+        },
+        categories: mergedCategories,
+        products: mergedProducts
+      };
+    }
 
     async function loadFeed(){
-      try{
-        const res = await fetch("./products.json?v=" + Date.now(), { cache: "no-store" });
-        if(!res.ok) throw new Error("products.json sa nenačítal (" + res.status + ")");
-        FEED = await res.json();
-      }catch(err){
-        console.error(err);
-        const hs = document.getElementById("hudStatus");
+      const feeds = await Promise.all(FEED_FILES.map(fetchJsonSafe));
+      FEED = mergeFeeds(feeds);
+
+      const loadedCount = feeds.filter(Boolean).length;
+      const hs = document.getElementById("hudStatus");
+      if(loadedCount === 0){
         hs.textContent = "OFFLINE";
         hs.classList.remove("tag--red");
         hs.style.borderColor = "rgba(255,204,102,.42)";
         hs.style.background = "rgba(255,204,102,.12)";
         hs.style.color = "rgba(255,204,102,.95)";
         FEED = { meta:{currency:"EUR", shopDomain:"shop.racem.sk"}, categories:[], products:[] };
+      } else if(loadedCount === 1){
+        hs.textContent = "1/2 JSON";
+      } else {
+        hs.textContent = "2/2 JSON";
       }
 
       const prods = Array.isArray(FEED.products) ? FEED.products : [];
