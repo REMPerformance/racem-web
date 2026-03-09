@@ -1349,7 +1349,7 @@ header{
   min-width:100%;
   padding:14px;
   will-change:transform;
-  animation: heroCarouselLoop 60s linear infinite;
+  animation: heroCarouselLoop 42s linear infinite;
 }
 
 .heroCarousel:hover .heroCarouselTrack{
@@ -2656,30 +2656,26 @@ header{
     window.addEventListener("load", syncStickyOffsets);
 
 
-    function initHeroCarousel(products){
+    function initHeroCarousel(){
       const track = document.getElementById("heroCarouselTrack");
       if(!track) return;
 
-      const imgs = (Array.isArray(products) ? products : [])
-        .flatMap(p => Array.isArray(p.images) ? p.images.slice(0, 1) : [])
-        .filter(Boolean);
+      const images = [
+        "assets/swgr.png",
+        "assets/rcu.avif"
+      ];
 
       track.innerHTML = "";
 
-      const unique = [...new Set(imgs)];
-      const sample = unique.slice(0, 18);
-
-      if(!sample.length) return;
-
       const renderSet = () => {
-        sample.forEach(src => {
+        images.forEach(src => {
           const item = document.createElement("div");
           item.className = "heroCarouselItem";
 
           const img = document.createElement("img");
           img.src = src;
-          img.alt = "Produkt";
-          img.loading = "lazy";
+          img.alt = "RACEM produkt";
+          img.loading = "eager";
           img.decoding = "async";
 
           item.appendChild(img);
@@ -2687,6 +2683,8 @@ header{
         });
       };
 
+      renderSet();
+      renderSet();
       renderSet();
       renderSet();
     }
