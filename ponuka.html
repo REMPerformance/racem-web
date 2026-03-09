@@ -617,23 +617,45 @@
     /* modal detail list */
     .dl{
       display:grid;
-      grid-template-columns: 140px 1fr;
-      gap:8px 10px;
+      grid-template-columns: 1fr;
+      gap:10px;
       margin:0;
       padding:10px 0 0;
     }
+    .infoCard{
+      position:relative;
+      padding:12px 14px 12px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        rgba(10,10,10,.72);
+      overflow:hidden;
+      box-shadow:0 12px 28px rgba(0,0,0,.22);
+    }
+    .infoCard::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:10px;
+      bottom:10px;
+      width:3px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(179,31,36,1), rgba(214,41,47,.35));
+      box-shadow:0 0 18px rgba(179,31,36,.45);
+    }
     .dl dt{
-      color:var(--muted2);
-      font-size:11px;
-      letter-spacing:.12em;
+      color:rgba(255,255,255,.62);
+      font-size:10px;
+      letter-spacing:.18em;
       text-transform:uppercase;
-      margin:0;
+      margin:0 0 6px 0;
     }
     .dl dd{
       margin:0;
-      color:rgba(255,255,255,.86);
-      font-size:12.5px;
-      line-height:1.45;
+      color:rgba(255,255,255,.95);
+      font-size:13px;
+      line-height:1.55;
       word-break:break-word;
     }
     .sepLine{
@@ -1379,6 +1401,67 @@ header{
   }
 }
 
+
+.sectionKick{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(179,31,36,.26);
+  background:rgba(179,31,36,.10);
+  box-shadow:0 0 0 1px rgba(179,31,36,.12), 0 10px 24px rgba(0,0,0,.16);
+}
+.sectionKick::before,
+.sectionKick::after{
+  content:"";
+  display:block;
+  width:18px;
+  height:1px;
+  background:linear-gradient(90deg, rgba(179,31,36,.15), rgba(179,31,36,.95));
+  box-shadow:0 0 14px rgba(179,31,36,.35);
+}
+.panelBox{
+  position:relative;
+}
+.panelBox::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(90deg, transparent 0 3%, rgba(179,31,36,.12) 3% 3.2%, transparent 3.2% 100%),
+    linear-gradient(180deg, rgba(179,31,36,.12), transparent 18%, transparent 82%, rgba(179,31,36,.10));
+  mask: linear-gradient(#000,#000);
+  opacity:.9;
+}
+.panelBox::after{
+  content:"";
+  position:absolute;
+  right:16px;
+  top:16px;
+  width:90px;
+  height:1px;
+  background:linear-gradient(90deg, rgba(179,31,36,.9), transparent);
+  box-shadow:0 0 18px rgba(179,31,36,.38);
+  pointer-events:none;
+}
+#mDesc{
+  position:relative;
+}
+#mDesc::before{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  top:0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(179,31,36,.85), transparent);
+  box-shadow:0 0 16px rgba(179,31,36,.3);
+}
+
 </style>
 </head>
 
@@ -1431,7 +1514,7 @@ header{
 
         <div class="hudBox">
           <div class="label">
-            <span>LIVE KATALÓG</span>
+            <span></span>
             <span class="tag tag--red" id="hudStatus">ONLINE</span>
           </div>
 
@@ -1514,8 +1597,8 @@ header{
         </div>
 
         <div class="metaBar">
-          <div id="metaText">Načítané…</div>
-          <div id="activeFilters">Filtre: žiadne</div>
+          <div id="metaText"></div>
+          <div id="activeFilters"></div>
         </div>
       </div>
     </section>
@@ -1531,7 +1614,7 @@ header{
 
     <footer>
       <div>© <span id="year"></span> RACEM • Beat them all</div>
-      <div>HUD UI • statický katalóg pripravený na JSON feed</div>
+      <div></div>
     </footer>
   </div>
 
@@ -1573,12 +1656,12 @@ header{
 
           <div class="sepLine"></div>
           <div>
-            <div class="muted" style="margin-bottom:6px;">Info</div>
+            <div class="muted sectionKick" style="margin-bottom:8px;">Info</div>
             <dl class="dl">
-              <dt>Pasuje na</dt><dd id="mFitment">—</dd>
-              <dt>Umiestnenie</dt><dd id="mMount">—</dd>
-              <dt>Materiál</dt><dd id="mMaterial">—</dd>
-              <dt>Kategória</dt><dd id="mType">—</dd>
+              <div class="infoCard"><dt>Pasuje na</dt><dd id="mFitment">—</dd></div>
+              <div class="infoCard"><dt>Umiestnenie</dt><dd id="mMount">—</dd></div>
+              <div class="infoCard"><dt>Materiál</dt><dd id="mMaterial">—</dd></div>
+              <div class="infoCard"><dt>Kategória</dt><dd id="mType">—</dd></div>
             </dl>
           </div>
 
@@ -1600,7 +1683,7 @@ header{
           <div class="sepLine"></div>
 
           <div>
-            <div class="muted" style="margin-bottom:6px;">Detail produktu</div>
+            <div class="muted sectionKick" style="margin-bottom:8px;">Detail produktu</div>
             <div class="note" id="mDesc"></div>
           </div>
         </div>
@@ -2037,8 +2120,8 @@ header{
       if(state.minPrice !== null && state.minPrice !== "" && state.minPrice !== undefined) parts.push(`min: ${state.minPrice}€`);
       if(state.maxPrice !== null && state.maxPrice !== "" && state.maxPrice !== undefined) parts.push(`max: ${state.maxPrice}€`);
 
-      el.activeFilters.textContent = parts.length ? ("Filtre: " + parts.join(" • ")) : "Filtre: žiadne";
-      el.metaText.textContent = `Zobrazené: ${list.length} / ${PRODUCTS.length}`;
+      el.activeFilters.textContent = parts.length ? parts.join(" • ") : "";
+      el.metaText.textContent = `${list.length} / ${PRODUCTS.length}`;
     }
 
     // =========================
@@ -2129,6 +2212,48 @@ header{
     }
 
     
+
+    function normalizeListText(value){
+      if(Array.isArray(value)){
+        return value.flatMap(v => String(v || "").split(/[;,]/)).map(v => v.trim()).filter(Boolean).join(", ");
+      }
+      return String(value || "")
+        .replace(/\s*;\s*/g, ", ")
+        .replace(/\s*\/\s*/g, " / ")
+        .replace(/\s*,\s*/g, ", ")
+        .replace(/(^,\s*|,\s*$)/g, "")
+        .trim();
+    }
+
+    function prettyPlacement(value){
+      const txt = normalizeListText(value).toLowerCase();
+      if(!txt) return "Univerzálne";
+      const map = [
+        ["predek", "Vpredu"], ["predok", "Vpredu"], ["front", "Vpredu"],
+        ["zadek", "Vzadu"], ["zadok", "Vzadu"], ["rear", "Vzadu"],
+        ["bok", "Na boku"], ["side", "Na boku"],
+        ["motor", "Motor"], ["engine", "Motor"],
+        ["interier", "Interiér"], ["interiér", "Interiér"],
+        ["podvozok", "Podvozok"], ["suspension", "Podvozok"],
+        ["brzdy", "Brzdová sústava"], ["brake", "Brzdová sústava"]
+      ];
+      const out = [];
+      for (const [k, v] of map){
+        if(txt.includes(k) && !out.includes(v)) out.push(v);
+      }
+      return out.length ? out.join(", ") : normalizeListText(value);
+    }
+
+    function prettyMaterial(value){
+      const txt = normalizeListText(value);
+      return txt || "Neuvedené";
+    }
+
+    function prettyCategory(value){
+      const txt = normalizeListText(value);
+      return txt || "Auto diel";
+    }
+
     // =========================
     // 10.5) MODAL (detail produktu + varianty + shopify checkout)
     // =========================
