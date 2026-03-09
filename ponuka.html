@@ -1312,7 +1312,7 @@ header{
   position:relative;
   overflow:hidden;
   width:100%;
-  height:158px;
+  height:190px;
   border-radius:18px;
   border:1px solid rgba(255,255,255,.08);
   background:
@@ -1358,8 +1358,8 @@ header{
 
 .heroCarouselItem{
   flex:0 0 auto;
-  width:190px;
-  height:128px;
+  width:280px;
+  height:160px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1378,8 +1378,8 @@ header{
   object-fit:contain;
   display:block;
   background:#fff;
-  padding:10px;
-  filter:brightness(1.02) contrast(1.01);
+  padding:8px;
+  filter:brightness(1.04) contrast(1.02);
 }
 
 @keyframes heroCarouselLoop{
@@ -2375,6 +2375,9 @@ header{
         img.alt = `Produkt obrázok ${idx + 1}`;
         img.loading = "lazy";
         img.decoding = "async";
+          img.onerror = () => {
+            item.style.display = "none";
+          };
         stack.appendChild(img);
       });
 
@@ -2661,8 +2664,8 @@ header{
       if(!track) return;
 
       const images = [
-        "assets/swgr.png",
-        "assets/rcu.avif"
+        "/assets/swgr.png",
+        "/assets/rcu.avif"
       ];
 
       track.innerHTML = "";
@@ -2677,6 +2680,9 @@ header{
           img.alt = "RACEM produkt";
           img.loading = "eager";
           img.decoding = "async";
+          img.onerror = () => {
+            item.style.display = "none";
+          };
 
           item.appendChild(img);
           track.appendChild(item);
