@@ -1470,6 +1470,17 @@ header{
 .badge-soldout{color:#ff4b4b;}
 .badge-temp{color:#ffb347;}
 
+
+/* RACEM dark dropdowns */
+.dropdown-dark, select{
+  appearance:none;
+  background:linear-gradient(180deg,#0a0a0a,#050505);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03),0 10px 24px rgba(0,0,0,.22);
+}
+select option{background:#050505;color:#fff}
+
 </style>
 </head>
 
@@ -2716,5 +2727,17 @@ header{
 <script>
 
 </script>
+
+<script>
+function updateLiveTime(){
+ const el=document.getElementById("kpiTime");
+ if(!el)return;
+ const now=new Date();
+ el.textContent=now.toLocaleTimeString("sk-SK",{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+setInterval(updateLiveTime,1000);
+updateLiveTime();
+</script>
+
 </body>
 </html>
