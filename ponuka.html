@@ -277,7 +277,7 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:10px;
-      margin-top:12px;
+      margin-top:var(--cart-top);
     }
     .kpi{
       border:1px solid rgba(255,255,255,.10);
@@ -953,6 +953,7 @@ body:before{
 
 
 /* ===== RACEM HEADER + STICKY CART ===== */
+ :root{--header-offset:14px;--header-h:92px;--cart-top:calc(var(--header-offset) + var(--header-h) + 10px);} 
 .wrap{padding-top:34px;}
 header{
   position:sticky;
@@ -1071,7 +1072,7 @@ header{
 }
 .cartBar{
   position:fixed;
-  left:0; right:0; top:0;
+  left:0; right:0; top:var(--cart-top);
   z-index:1400;
   transform: translateY(-120%);
   opacity:0;
@@ -2286,10 +2287,26 @@ header{
       renderMeta(list);
     }
 
+    function syncStickyOffsets(){
+      const header = document.querySelector("header");
+      if(!header) return;
+      const root = document.documentElement;
+      const rect = header.getBoundingClientRect();
+      const top = Math.max(0, Math.round(rect.top));
+      const h = Math.round(header.offsetHeight || rect.height || 92);
+      root.style.setProperty("--header-offset", top + "px");
+      root.style.setProperty("--header-h", h + "px");
+      root.style.setProperty("--cart-top", `calc(${top}px + ${h}px + 10px)`);
+    }
+
+    window.addEventListener("resize", syncStickyOffsets);
+    window.addEventListener("load", syncStickyOffsets);
+
     // =========================
     // INIT
     // =========================
     (async function init(){
+      syncStickyOffsets();
       el.year.textContent = new Date().getFullYear();
       await loadFeed();
       buildBrandSelect();
