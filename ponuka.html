@@ -1278,42 +1278,105 @@ header{
 @media (max-width:560px){ .cartBarInner{ width:calc(100% - 24px);} .cartBarLeft{ width:100%; flex-direction:column; align-items:flex-start; } .cartBarInner{ flex-direction:column; align-items:stretch; gap:10px; } .cartBarRight{ width:100%; } .cartBarRight .btn{ flex:1; justify-content:center; } }
 
 
-.heroSlider{
+
+
+.heroCarousel{
+  position:relative;
+  width:100%;
+  margin-top:14px;
+}
+
+.heroCarouselViewport{
   position:relative;
   overflow:hidden;
   width:100%;
-  height:150px;
-  margin-top:10px;
+  height:158px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(420px 160px at 18% 0%, rgba(179,31,36,.16), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)),
+    rgba(8,8,8,.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 18px 44px rgba(0,0,0,.22);
 }
 
-.heroTrack{
+.heroCarouselViewport::before,
+.heroCarouselViewport::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:80px;
+  z-index:2;
+  pointer-events:none;
+}
+.heroCarouselViewport::before{
+  left:0;
+  background:linear-gradient(90deg, rgba(8,8,8,.95), rgba(8,8,8,0));
+}
+.heroCarouselViewport::after{
+  right:0;
+  background:linear-gradient(270deg, rgba(8,8,8,.95), rgba(8,8,8,0));
+}
+
+.heroCarouselTrack{
   display:flex;
-  gap:18px;
-  height:100%;
   align-items:center;
-  animation:heroScroll 30s linear infinite;
+  gap:14px;
+  width:max-content;
+  min-width:100%;
+  padding:14px;
+  will-change:transform;
+  animation: heroCarouselLoop 60s linear infinite;
 }
 
-.heroItem{
+.heroCarousel:hover .heroCarouselTrack{
+  animation-play-state:paused;
+}
+
+.heroCarouselItem{
   flex:0 0 auto;
-  height:120px;
-  width:200px;
-  background:#0b0b0b;
-  border-radius:10px;
+  width:190px;
+  height:128px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.08);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+    rgba(14,14,14,.92);
+  box-shadow: 0 12px 26px rgba(0,0,0,.24);
 }
 
-.heroItem img{
+.heroCarouselItem img{
   width:100%;
   height:100%;
   object-fit:contain;
+  display:block;
   background:#fff;
+  padding:10px;
+  filter:brightness(1.02) contrast(1.01);
 }
 
-@keyframes heroScroll{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
+@keyframes heroCarouselLoop{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(calc(-50% - 7px)); }
+}
+
+@media (max-width: 860px){
+  .heroCarouselViewport{
+    height:132px;
+  }
+  .heroCarouselTrack{
+    gap:10px;
+    padding:10px;
+  }
+  .heroCarouselItem{
+    width:150px;
+    height:110px;
+  }
 }
 
 </style>
@@ -1359,10 +1422,11 @@ header{
       <div class="heroInner">
         <div>
           <h2 class="heroTitle">Ponuka dielov</h2>
-          <p class="heroSub">
-            Tu bude úplne všetko. Vyhľadaj diel podľa názvu, filtruj kategórie, značky, dostupnosť a cenu.
-            Dizajn je robený tak, aby pôsobil „ťažko“ a profi (RACEM HUD). Neskôr to len napojíš na tvoj JSON feed.
-          </p>
+          <div class="heroCarousel" aria-label="Ukážka produktov">
+            <div class="heroCarouselViewport">
+              <div class="heroCarouselTrack" id="heroCarouselTrack"></div>
+            </div>
+          </div>
         </div>
 
         <div class="hudBox">
@@ -2459,6 +2523,42 @@ header{
     window.addEventListener("resize", syncStickyOffsets);
     window.addEventListener("load", syncStickyOffsets);
 
+
+    function initHeroCarousel(products){
+      const track = document.getElementById("heroCarouselTrack");
+      if(!track) return;
+
+      const imgs = (Array.isArray(products) ? products : [])
+        .flatMap(p => Array.isArray(p.images) ? p.images.slice(0, 1) : [])
+        .filter(Boolean);
+
+      track.innerHTML = "";
+
+      const unique = [...new Set(imgs)];
+      const sample = unique.slice(0, 18);
+
+      if(!sample.length) return;
+
+      const renderSet = () => {
+        sample.forEach(src => {
+          const item = document.createElement("div");
+          item.className = "heroCarouselItem";
+
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "Produkt";
+          img.loading = "lazy";
+          img.decoding = "async";
+
+          item.appendChild(img);
+          track.appendChild(item);
+        });
+      };
+
+      renderSet();
+      renderSet();
+    }
+
     // =========================
     // INIT
     // =========================
@@ -2475,34 +2575,7 @@ header{
   </script>
 
 <script>
-function initHeroSlider(products){
-  const track = document.getElementById("heroTrack");
-  if(!track) return;
 
-  const imgs = [];
-
-  products.forEach(p=>{
-    if(p.images && p.images.length){
-      imgs.push(p.images[0]);
-    }
-  });
-
-  const sample = imgs.slice(0,20);
-
-  sample.forEach(src=>{
-    const div = document.createElement("div");
-    div.className="heroItem";
-    div.innerHTML = `<img src="${src}" loading="lazy">`;
-    track.appendChild(div);
-  });
-
-  sample.forEach(src=>{
-    const div = document.createElement("div");
-    div.className="heroItem";
-    div.innerHTML = `<img src="${src}" loading="lazy">`;
-    track.appendChild(div);
-  });
-}
 </script>
 </body>
 </html>
