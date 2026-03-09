@@ -1060,6 +1060,109 @@ header{
   .cartPeekActions .btn{flex:1}
 }
 
+
+
+/* ===========================
+   CART BAR + CART MODAL (SFXLA STYLE)
+   =========================== */
+:root{
+  --cartbar-bg: rgba(6,6,6,.72);
+  --cartbar-line: rgba(255,255,255,.10);
+}
+.cartBar{
+  position:fixed;
+  left:0; right:0; top:0;
+  z-index:1400;
+  transform: translateY(-120%);
+  opacity:0;
+  pointer-events:none;
+  transition: transform .22s ease, opacity .18s ease;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(179,31,36,.22), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35)),
+    var(--cartbar-bg);
+  border-bottom:1px solid var(--cartbar-line);
+  box-shadow:0 18px 60px rgba(0,0,0,.55);
+  backdrop-filter: blur(12px);
+}
+.cartBar::before{
+  content:"";
+  position:absolute; left:0; right:0; top:0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, rgba(179,31,36,.9), transparent);
+  box-shadow: 0 0 18px rgba(179,31,36,.35);
+  pointer-events:none;
+}
+.cartBar.show{ transform: translateY(0); opacity:1; pointer-events:auto; }
+.cartBarInner{
+  width:min(1220px, calc(100% - 34px));
+  margin:0 auto;
+  padding:12px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.cartBarLeft{ display:flex; align-items:center; gap:12px; }
+.cartPill{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:8px 12px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: radial-gradient(circle at 20% 50%, rgba(179,31,36,.18), transparent 60%), rgba(0,0,0,.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  font-family: Oswald, sans-serif;
+  letter-spacing:.22em; text-transform:uppercase; font-size:12px; color:#fff;
+}
+.cartDot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 18px rgba(179,31,36,.7); }
+#cartBarCount{
+  display:inline-grid; place-items:center; min-width:26px; height:26px; padding:0 8px;
+  border-radius:999px; background: rgba(179,31,36,.22); border:1px solid rgba(179,31,36,.35);
+  box-shadow:0 10px 24px rgba(179,31,36,.12); margin-right:6px; font-weight:900;
+}
+.cartTotal{ font-family: Oswald, sans-serif; letter-spacing:.22em; text-transform:uppercase; font-size:14px; color:#fff; opacity:.92; }
+.cartBarRight{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+#cartModal .modalCard{ max-height:92vh; display:flex; flex-direction:column; }
+.cartModalOverlay{
+  position:fixed; inset:0; z-index:1500; display:none; align-items:center; justify-content:center;
+  padding:18px; background:rgba(0,0,0,.62); backdrop-filter: blur(10px);
+}
+.cartModalOverlay.show{ display:flex; }
+.cartModalCard{
+  width:min(980px, 100%);
+  max-height:92vh;
+  border-radius:18px; border:1px solid rgba(255,255,255,.10);
+  background: rgba(12,12,12,.92); box-shadow: 0 22px 80px rgba(0,0,0,.70);
+  overflow:hidden; position:relative; display:flex; flex-direction:column;
+}
+.cartModalHead{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:14px; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(0,0,0,.35);
+}
+.cartModalHead b{ font-family: Oswald, sans-serif; letter-spacing:.18em; text-transform:uppercase; font-size:16px; }
+.cartBody{ padding:14px; overflow:auto; }
+.cartBody::-webkit-scrollbar{ width:10px; }
+.cartBody::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.10); border-radius:999px; border:2px solid rgba(0,0,0,.35); }
+.cartItem{
+  border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); border-radius:18px;
+  padding:20px 22px; display:grid; grid-template-columns:96px 1fr auto; gap:22px; align-items:flex-start; margin-bottom:12px;
+}
+.cartThumb{ width:110px; height:78px; margin-top:6px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.35); }
+.cartThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.cartInfo b{ display:block; font-family: Oswald, sans-serif; letter-spacing:.18em; text-transform:uppercase; font-size:14px; color:#fff; line-height:1.1; margin-bottom:6px; }
+.cartMeta{ color: rgba(255,255,255,.74); font-size:13px; line-height:1.6; }
+.cartControls{ display:flex; align-items:center; gap:10px; }
+.qtyBox{ display:flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.25); border-radius:14px; padding:8px 10px; }
+.qtyBox button{ width:34px; height:34px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); color:#fff; font-size:18px; cursor:pointer; }
+.qtyBox span{ min-width:22px; text-align:center; font-family: Oswald, sans-serif; letter-spacing:.16em; text-transform:uppercase; }
+.cartRemove{ border:none; cursor:pointer; padding:12px 14px; border-radius:14px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#fff; font-family: Oswald, sans-serif; font-size:14px; letter-spacing:.16em; text-transform:uppercase; }
+.cartEmptyState{ padding:20px; color: rgba(255,255,255,.7); border:1px dashed rgba(255,255,255,.14); border-radius:18px; background: rgba(255,255,255,.03); }
+.cartFoot{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding:14px; border-top:1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.35); flex-wrap:wrap; }
+.cartFootLeft{ display:flex; flex-direction:column; gap:8px; }
+.cartFootLine{ display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:13px; color: rgba(255,255,255,.72); }
+.cartFootLine b{ color:#fff; font-family: Oswald, sans-serif; letter-spacing:.18em; text-transform:uppercase; }
+.cartFootLine.total{ margin-top:6px; padding-top:10px; border-top:1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.88); }
+.cartFootRight{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+@media (max-width:980px){ .cartBarInner{ width:min(1220px, calc(100% - 34px)); } .cartItem{ grid-template-columns:1fr; padding:16px; gap:14px; } .cartThumb{ width:100%; height:180px; margin-top:0; } }
+@media (max-width:560px){ .cartBarInner{ width:calc(100% - 24px);} .cartBarLeft{ width:100%; flex-direction:column; align-items:flex-start; } .cartBarInner{ flex-direction:column; align-items:stretch; gap:10px; } .cartBarRight{ width:100%; } .cartBarRight .btn{ flex:1; justify-content:center; } }
+
 </style>
 </head>
 
@@ -1083,15 +1186,19 @@ header{
       </div>
     </header>
 
-    <div class="cartPeek" id="cartPeek" aria-live="polite">
-      <div class="cartPeekInfo">
-        <div class="cartPeekEyebrow">RACEM CART</div>
-        <div class="cartPeekTitle">Košík pripravený</div>
-        <div class="cartPeekMeta"><span id="cartPeekCount">0 položiek</span> • <span id="cartPeekSubtotal">0 €</span></div>
-      </div>
-      <div class="cartPeekActions">
-        <button class="btn" id="cartHide" type="button">Skryť</button>
-        <button class="btn btn--red" id="cartOpen" type="button">Otvoriť košík</button>
+    <div class="cartBar" id="cartBar" aria-hidden="true">
+      <div class="cartBarInner">
+        <div class="cartBarLeft">
+          <div class="cartPill">
+            <span class="cartDot"></span>
+            <span id="cartBarCount">0</span> položiek
+          </div>
+          <div class="cartTotal" id="cartBarTotal">0 €</div>
+        </div>
+        <div class="cartBarRight">
+          <button class="btn" id="cartBarClear" type="button">Vyprázdniť</button>
+          <button class="btn btn--red" id="cartBarOpen" type="button">Zobraziť košík</button>
+        </div>
       </div>
     </div>
 
@@ -1285,29 +1392,36 @@ header{
   </div>
 
 
-  <div class="cartOverlay" id="cartOverlay" aria-hidden="true">
-    <aside class="cartDrawer" aria-label="Košík">
-      <div class="cartHead">
-        <div>
-          <div class="cartEyebrow">RACEM CART</div>
-          <h3 class="cartTitle">Košík</h3>
-        </div>
-        <button class="btn" id="cartClose" type="button">Zatvoriť</button>
+    <div class="cartModalOverlay" id="cartModal" aria-hidden="true">
+    <div class="cartModalCard" role="dialog" aria-modal="true" aria-label="Košík">
+      <div class="cartModalHead">
+        <b>Košík</b>
+        <button class="btn" id="closeCartModal" type="button" aria-label="Zatvoriť">Zatvoriť</button>
       </div>
 
-      <div class="cartMeta">
-        <span id="cartMetaText">0 položiek</span>
-        <span id="cartSubtotal">0 €</span>
-      </div>
-
-      <div class="cartItems" id="cartItems"></div>
-      <div class="cartEmpty" id="cartEmpty">Košík je zatiaľ prázdny.</div>
+      <div class="cartBody" id="cartBody"></div>
 
       <div class="cartFoot">
-        <button class="btn" id="cartClear" type="button">Vymazať</button>
-        <button class="btn btn--red" id="cartCheckout" type="button">Pokračovať na checkout</button>
+        <div class="cartFootLeft">
+          <div class="cartFootLine">
+            <span>Položky</span>
+            <b id="cartSumItems">0</b>
+          </div>
+          <div class="cartFootLine">
+            <span>Suma</span>
+            <b id="cartSumPrice">0 €</b>
+          </div>
+          <div class="cartFootLine total">
+            <span>Spolu</span>
+            <b id="cartSumTotal">0 €</b>
+          </div>
+        </div>
+        <div class="cartFootRight">
+          <button class="btn" id="cartBack" type="button">Pokračovať v ponuke</button>
+          <button class="btn btn--red" id="cartCheckout" type="button">Prejsť na checkout</button>
+        </div>
       </div>
-    </aside>
+    </div>
   </div>
 
 <script>
@@ -1783,13 +1897,7 @@ header{
     openModal(full);
   });
 
-  document.getElementById("cartOpen")?.addEventListener("click", openCart);
-  document.getElementById("cartHide")?.addEventListener("click", hideCartPeek);
-  document.getElementById("cartClose")?.addEventListener("click", closeCart);
-  document.getElementById("cartOverlay")?.addEventListener("click", (e) => { if(e.target.id === "cartOverlay") closeCart(); });
-  document.getElementById("cartClear")?.addEventListener("click", clearCart);
-  document.getElementById("cartCheckout")?.addEventListener("click", checkoutCart);
-}
+    }
 
     // =========================
     // 10) SAFE HTML
@@ -1983,143 +2091,138 @@ header{
 
     const CART_KEY = "racem_cart_v1";
     let CART = [];
-    let CART_PEEK_HIDDEN = false;
-
-
-    let cartPeekTimer = null;
-
-    function showCartPeek(forceOpen=false){
-      const peek = document.getElementById("cartPeek");
-      if(!peek) return;
-      const hasItems = CART.length > 0;
-      if(!hasItems){
-        peek.classList.remove("show");
-        return;
-      }
-      if(CART_PEEK_HIDDEN && !forceOpen) return;
-      peek.classList.add("show");
-      clearTimeout(cartPeekTimer);
-      cartPeekTimer = setTimeout(() => {
-        if(!document.getElementById("cartOverlay")?.classList.contains("open")) peek.classList.remove("show");
-      }, 3500);
-    }
-
-    function hideCartPeek(){
-      CART_PEEK_HIDDEN = true;
-      try{ localStorage.setItem("racem_cart_peek_hidden", "1"); }catch(_){}
-      const peek = document.getElementById("cartPeek");
-      if(peek) peek.classList.remove("show");
-    }
-
-    function unhideCartPeek(){
-      CART_PEEK_HIDDEN = false;
-      try{ localStorage.setItem("racem_cart_peek_hidden", "0"); }catch(_){}
-    }
 
     function loadCart(){
       try{ CART = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
       catch(_){ CART = []; }
       if(!Array.isArray(CART)) CART = [];
-      try{ CART_PEEK_HIDDEN = localStorage.getItem("racem_cart_peek_hidden") === "1"; }catch(_){ CART_PEEK_HIDDEN = false; }
-      renderCart();
+      renderCartBar();
+      renderCartModal();
     }
 
     function saveCart(){
-      localStorage.setItem(CART_KEY, JSON.stringify(CART));
-      renderCart();
+      try{ localStorage.setItem(CART_KEY, JSON.stringify(CART)); }catch(_){ }
+      renderCartBar();
+      renderCartModal();
+    }
+
+    function cartCount(){
+      return CART.reduce((s,i) => s + Math.max(1, Number(i.qty || 1)), 0);
+    }
+
+    function cartSumPrice(){
+      return CART.reduce((s,i) => s + Number(i.price || 0) * Math.max(1, Number(i.qty || 1)), 0);
     }
 
     function addToCart(product, variant, qty=1){
       const variantId = variant?.variantId ? String(variant.variantId).trim() : "";
       if(!variantId) return;
-      unhideCartPeek();
       const key = variantId;
       const existing = CART.find(i => i.key === key);
       if(existing){
-        existing.qty += qty;
+        existing.qty = Math.max(1, Number(existing.qty || 1) + qty);
       }else{
         CART.push({
           key,
           variantId,
           productId: product.id,
-          name: product.title || product.name || "Produkt",
-          variantTitle: variant.title || "",
+          title: product.title || product.name || "Produkt",
+          variantName: variant.title || "—",
           price: Number(variant.price || 0),
           image: (variant.images && variant.images[0]) || (product.images && product.images[0]) || "",
-          productUrl: product.productUrl || (product.handle ? ("https://shop.racem.sk/products/" + product.handle) : ""),
-          qty
+          qty: Math.max(1, Number(qty || 1))
         });
       }
       saveCart();
-      showCartPeek(true);
+      renderCartBar(true);
     }
 
-    function cartTotals(){
-      const qty = CART.reduce((s,i) => s + Number(i.qty || 0), 0);
-      const subtotal = CART.reduce((s,i) => s + Number(i.price || 0) * Number(i.qty || 0), 0);
-      return { qty, subtotal };
+    function renderCartBar(forceOpen=false){
+      const bar = document.getElementById("cartBar");
+      if(!bar) return;
+      const count = cartCount();
+      const sum = cartSumPrice();
+      const c = document.getElementById("cartBarCount");
+      const t = document.getElementById("cartBarTotal");
+      if(c) c.textContent = String(count);
+      if(t) t.textContent = euro(sum);
+      bar.classList.toggle("show", count > 0);
+      bar.setAttribute("aria-hidden", count > 0 ? "false" : "true");
+      if(forceOpen && count > 0){
+        bar.classList.add("show");
+        clearTimeout(window.__racemCartBarTimer);
+        window.__racemCartBarTimer = setTimeout(() => {
+          if(!document.getElementById("cartModal")?.classList.contains("show") && cartCount() > 0){
+            bar.classList.add("show");
+          }
+        }, 2500);
+      }
     }
 
-    function renderCart(){
-      const wrap = document.getElementById("cartItems");
-      const empty = document.getElementById("cartEmpty");
-      const count = document.getElementById("cartCount");
-      const subtotal = document.getElementById("cartSubtotal");
-      const meta = document.getElementById("cartMetaText");
-      const peekCount = document.getElementById("cartPeekCount");
-      const peekSubtotal = document.getElementById("cartPeekSubtotal");
-      if(!wrap) return;
-      const t = cartTotals();
-      if(count) count.textContent = String(t.qty);
-      if(subtotal) subtotal.textContent = euro(t.subtotal);
-      if(meta) meta.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
-      if(peekCount) peekCount.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
-      if(peekSubtotal) peekSubtotal.textContent = euro(t.subtotal);
-      wrap.innerHTML = "";
-      empty.style.display = CART.length ? "none" : "block";
-      showCartPeek();
-      CART.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "cartItem";
-        row.innerHTML = `
-          <div class="cartItemImg">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">` : ``}</div>
-          <div>
-            <h4 class="cartItemName">${escapeHtml(item.name)}</h4>
-            <div class="cartItemMeta">${item.variantTitle && norm(item.variantTitle) !== 'default title' ? escapeHtml(item.variantTitle) + ' • ' : ''}${euro(item.price)}</div>
-            <div class="cartItemBottom">
-              <div class="qtyWrap">
-                <button class="qtyBtn" type="button" data-cart-minus="${escapeHtml(item.key)}">−</button>
-                <span class="qtyVal">${Number(item.qty || 0)}</span>
-                <button class="qtyBtn" type="button" data-cart-plus="${escapeHtml(item.key)}">+</button>
+    function renderCartModal(){
+      const body = document.getElementById("cartBody");
+      if(!body) return;
+      body.innerHTML = "";
+
+      if(!CART.length){
+        body.innerHTML = `<div class="cartEmptyState">Košík je zatiaľ prázdny.</div>`;
+      }else{
+        CART.forEach(item => {
+          const row = document.createElement("div");
+          row.className = "cartItem";
+          row.innerHTML = `
+            <div class="cartThumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">` : ``}</div>
+            <div class="cartInfo">
+              <b>${escapeHtml(item.title)}</b>
+              <div class="cartMeta">
+                Variant: ${escapeHtml(item.variantName && norm(item.variantName) !== 'default title' ? item.variantName : '—')}<br>
+                Cena: ${escapeHtml(euro(item.price))} / ks<br>
               </div>
-              <button class="removeBtn" type="button" data-cart-remove="${escapeHtml(item.key)}">Odstrániť</button>
             </div>
-          </div>`;
-        wrap.appendChild(row);
-      });
+            <div class="cartControls">
+              <div class="qtyBox">
+                <button type="button" data-act="dec" data-key="${escapeHtml(item.key)}">−</button>
+                <span>${Math.max(1, Number(item.qty || 1))}</span>
+                <button type="button" data-act="inc" data-key="${escapeHtml(item.key)}">+</button>
+              </div>
+              <button class="cartRemove" type="button" data-act="remove" data-key="${escapeHtml(item.key)}">Odstrániť</button>
+            </div>
+          `;
+          body.appendChild(row);
+        });
+      }
+
+      const itemsCount = cartCount();
+      const sumPrice = cartSumPrice();
+      const elItems = document.getElementById("cartSumItems");
+      const elPrice = document.getElementById("cartSumPrice");
+      const elTotal = document.getElementById("cartSumTotal");
+      if(elItems) elItems.textContent = String(itemsCount);
+      if(elPrice) elPrice.textContent = euro(sumPrice);
+      if(elTotal) elTotal.textContent = euro(sumPrice);
     }
 
-    function openCart(){
-      const overlay = document.getElementById("cartOverlay");
-      if(!overlay) return;
-      unhideCartPeek();
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden","false");
+    function openCartModal(){
+      const cartModal = document.getElementById("cartModal");
+      if(!cartModal) return;
+      renderCartModal();
+      cartModal.classList.add("show");
+      cartModal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
     }
 
-    function closeCart(){
-      const overlay = document.getElementById("cartOverlay");
-      if(!overlay) return;
-      overlay.classList.remove("open");
-      overlay.setAttribute("aria-hidden","true");
+    function closeCartModal(){
+      const cartModal = document.getElementById("cartModal");
+      if(!cartModal) return;
+      cartModal.classList.remove("show");
+      cartModal.setAttribute("aria-hidden", "true");
       if(!m.overlay.classList.contains("open")) document.body.style.overflow = "";
     }
 
     function changeCartQty(key, delta){
       const item = CART.find(i => i.key === key);
       if(!item) return;
-      item.qty = Math.max(1, Number(item.qty || 0) + delta);
+      item.qty = Math.max(1, Number(item.qty || 1) + delta);
       saveCart();
     }
 
@@ -2131,6 +2234,7 @@ header{
     function clearCart(){
       CART = [];
       saveCart();
+      if(document.getElementById("cartModal")?.classList.contains("show")) closeCartModal();
     }
 
     function checkoutCart(){
@@ -2141,12 +2245,14 @@ header{
     }
 
     document.addEventListener("click", (e) => {
-      const plus = e.target.closest("[data-cart-plus]");
-      const minus = e.target.closest("[data-cart-minus]");
-      const remove = e.target.closest("[data-cart-remove]");
-      if(plus) changeCartQty(plus.getAttribute("data-cart-plus"), 1);
-      if(minus) changeCartQty(minus.getAttribute("data-cart-minus"), -1);
-      if(remove) removeCartItem(remove.getAttribute("data-cart-remove"));
+      const act = e.target.closest("[data-act]");
+      if(act){
+        const key = act.getAttribute("data-key") || "";
+        const type = act.getAttribute("data-act");
+        if(type === "inc") changeCartQty(key, 1);
+        if(type === "dec") changeCartQty(key, -1);
+        if(type === "remove") removeCartItem(key);
+      }
     });
 
     if(m.overlay && m.close && m.buy){
@@ -2154,11 +2260,21 @@ header{
       m.overlay.addEventListener("click", (e) => { if(e.target === m.overlay) closeModal(); });
       document.addEventListener("keydown", (e) => {
         if(e.key === "Escape" && m.overlay.classList.contains("open")) closeModal();
-        if(e.key === "Escape" && document.getElementById("cartOverlay")?.classList.contains("open")) closeCart();
+        if(e.key === "Escape" && document.getElementById("cartModal")?.classList.contains("show")) closeCartModal();
       });
       m.buy.addEventListener("click", goCheckout);
       m.addCart?.addEventListener("click", addActiveVariantToCart);
     }
+
+    document.getElementById("cartBarOpen")?.addEventListener("click", openCartModal);
+    document.getElementById("closeCartModal")?.addEventListener("click", closeCartModal);
+    document.getElementById("cartBack")?.addEventListener("click", closeCartModal);
+        document.getElementById("cartBarClear")?.addEventListener("click", clearCart);
+    document.getElementById("cartModal")?.addEventListener("click", (e) => { if(e.target === document.getElementById("cartModal")) closeCartModal(); });
+    document.getElementById("cartBar")?.addEventListener("click", (e) => {
+      if(e.target.closest("button")) return;
+      openCartModal();
+    });
 
 // =========================
     // 11) MAIN RENDER
