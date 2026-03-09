@@ -2131,14 +2131,19 @@ header{
         return;
       }
 
-      imgs.forEach((u, i) => {
+      const stack = document.createElement("div");
+      stack.className = "galleryStack";
+
+      imgs.forEach((u, idx) => {
         const img = document.createElement("img");
         img.src = u;
-        img.alt = `Produkt obrázok ${i + 1}`;
+        img.alt = `Produkt obrázok ${idx + 1}`;
         img.loading = "lazy";
         img.decoding = "async";
-        m.main.appendChild(img);
+        stack.appendChild(img);
       });
+
+      m.main.appendChild(stack);
     }
 
     function renderVariants(vars){
