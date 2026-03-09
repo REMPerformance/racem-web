@@ -1858,7 +1858,7 @@ header{
       if(m.type) m.type.textContent = (prod.category || "—");
 
       const link = prod.productUrl || (prod.handle ? ("https://shop.racem.sk/products/" + prod.handle) : "#");
-      m.shopLink.href = link;
+      if(m.shopLink) m.shopLink.href = link;
 
       const imgs = [];
       (Array.isArray(prod.images) ? prod.images : []).forEach(u => { if(u && !imgs.includes(u)) imgs.push(u); });
@@ -1985,6 +1985,37 @@ header{
     let CART = [];
     let CART_PEEK_HIDDEN = false;
 
+
+    let cartPeekTimer = null;
+
+    function showCartPeek(forceOpen=false){
+      const peek = document.getElementById("cartPeek");
+      if(!peek) return;
+      const hasItems = CART.length > 0;
+      if(!hasItems){
+        peek.classList.remove("show");
+        return;
+      }
+      if(CART_PEEK_HIDDEN && !forceOpen) return;
+      peek.classList.add("show");
+      clearTimeout(cartPeekTimer);
+      cartPeekTimer = setTimeout(() => {
+        if(!document.getElementById("cartOverlay")?.classList.contains("open")) peek.classList.remove("show");
+      }, 3500);
+    }
+
+    function hideCartPeek(){
+      CART_PEEK_HIDDEN = true;
+      try{ localStorage.setItem("racem_cart_peek_hidden", "1"); }catch(_){}
+      const peek = document.getElementById("cartPeek");
+      if(peek) peek.classList.remove("show");
+    }
+
+    function unhideCartPeek(){
+      CART_PEEK_HIDDEN = false;
+      try{ localStorage.setItem("racem_cart_peek_hidden", "0"); }catch(_){}
+    }
+
     function loadCart(){
       try{ CART = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
       catch(_){ CART = []; }
@@ -2001,6 +2032,7 @@ header{
     function addToCart(product, variant, qty=1){
       const variantId = variant?.variantId ? String(variant.variantId).trim() : "";
       if(!variantId) return;
+      unhideCartPeek();
       const key = variantId;
       const existing = CART.find(i => i.key === key);
       if(existing){
@@ -2038,9 +2070,9 @@ header{
       const peekSubtotal = document.getElementById("cartPeekSubtotal");
       if(!wrap) return;
       const t = cartTotals();
-      count.textContent = String(t.qty);
-      subtotal.textContent = euro(t.subtotal);
-      meta.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
+      if(count) count.textContent = String(t.qty);
+      if(subtotal) subtotal.textContent = euro(t.subtotal);
+      if(meta) meta.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
       if(peekCount) peekCount.textContent = `${t.qty} ${t.qty === 1 ? 'položka' : (t.qty >= 2 && t.qty <= 4 ? 'položky' : 'položiek')}`;
       if(peekSubtotal) peekSubtotal.textContent = euro(t.subtotal);
       wrap.innerHTML = "";
@@ -2070,6 +2102,7 @@ header{
     function openCart(){
       const overlay = document.getElementById("cartOverlay");
       if(!overlay) return;
+      unhideCartPeek();
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden","false");
       document.body.style.overflow = "hidden";
