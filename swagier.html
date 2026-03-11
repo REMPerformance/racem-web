@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SWAGIER | RACEM</title>
+  <meta name="description" content="SWAGIER x RACEM – prémiová ponuka dielov, stylingu a performance produktov v agresívnom motorsport e-shop štýle." />
+  <meta name="theme-color" content="#0a0a0c" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#050506;
+      --bg-2:#09090b;
+      --panel:#0d0d11;
+      --panel-2:#111218;
+      --panel-3:#171922;
+      --line:rgba(255,255,255,.08);
+      --line-strong:rgba(255,255,255,.14);
+      --text:#f4f4f6;
+      --muted:#9b9eaa;
+      --soft:#c7cad3;
+      --red:#b31f24;
+      --red-2:#e33c43;
+      --red-3:#7f1216;
+      --red-glow:rgba(179,31,36,.28);
+      --gold:#d5a85b;
+      --green:#30c477;
+      --orange:#ff9e45;
+      --danger:#ff5252;
+      --shadow:0 20px 70px rgba(0,0,0,.5);
+      --radius:22px;
+      --radius-sm:14px;
+      --radius-xs:10px;
+      --container:min(1520px, calc(100vw - 32px));
+      --header-h:78px;
+      --grid-gap:18px;
+      --card-bg:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(179,31,36,.15), transparent 25%),
+        radial-gradient(circle at 85% 10%, rgba(179,31,36,.10), transparent 22%),
+        radial-gradient(circle at 60% 80%, rgba(213,168,91,.06), transparent 18%),
+        linear-gradient(180deg, #070708 0%, #050506 32%, #060608 100%);
+      color:var(--text);
+      font-family:"Inter",system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+      background-size: 100% 28px, 28px 100%;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
+      opacity:.22;
+      z-index:0;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(179,31,36,.10), transparent 16%),
+        radial-gradient(circle at 70% 35%, rgba(255,255,255,.03), transparent 12%),
+        radial-gradient(circle at 55% 70%, rgba(179,31,36,.08), transparent 16%);
+      filter:blur(55px);
+      animation: floatAmbient 14s ease-in-out infinite alternate;
+      z-index:0;
+    }
+
+    @keyframes floatAmbient{
+      0%{transform:translate3d(0,0,0) scale(1)}
+      100%{transform:translate3d(2%, -2%, 0) scale(1.06)}
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    button,input,select{font:inherit}
+    .container{width:var(--container);margin:0 auto;position:relative;z-index:2}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      backdrop-filter: blur(16px);
+      background:linear-gradient(180deg, rgba(8,8,10,.92), rgba(8,8,10,.76));
+      border-bottom:1px solid rgba(255,255,255,.07);
+      box-shadow:0 10px 40px rgba(0,0,0,.28);
+    }
+
+    .topbar-inner{
+      min-height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      position:relative;
+      background:
+        linear-gradient(145deg, rgba(179,31,36,.24), rgba(179,31,36,.06)),
+        #0f1015;
+      border:1px solid rgba(179,31,36,.35);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.03),
+        0 0 24px rgba(179,31,36,.22);
+      overflow:hidden;
+      flex:none;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after{
+      content:"";
+      position:absolute;
+      inset:auto;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transform:rotate(-28deg);
+    }
+
+    .brand-mark::before{
+      width:85px;height:2px;top:13px;left:-22px;
+    }
+    .brand-mark::after{
+      width:85px;height:2px;top:25px;left:-12px;opacity:.65;
+    }
+
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    .brand-text strong{
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      letter-spacing:.14em;
+      font-size:1.1rem;
+      white-space:nowrap;
+    }
+
+    .brand-text span{
+      color:var(--muted);
+      font-size:.74rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .ghost-btn,
+    .cta-btn,
+    .mini-btn{
+      border:none;
+      cursor:pointer;
+      transition:.25s ease;
+      position:relative;
+    }
+
+    .ghost-btn{
+      height:44px;
+      padding:0 16px;
+      border-radius:999px;
+      color:var(--soft);
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .ghost-btn:hover{
+      color:#fff;
+      border-color:rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+    }
+
+    .cta-btn{
+      height:46px;
+      padding:0 18px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:700;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 10px 28px rgba(179,31,36,.32);
+    }
+
+    .cta-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(179,31,36,.42);
+    }
+
+    .hero{
+      padding:34px 0 20px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-wrap{
+      position:relative;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      overflow:hidden;
+      background:
+        linear-gradient(135deg, rgba(179,31,36,.12), transparent 36%),
+        radial-gradient(circle at 70% 25%, rgba(179,31,36,.20), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+        #0a0b0f;
+      box-shadow:var(--shadow);
+      min-height:500px;
+    }
+
+    .hero-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,.04), transparent 28%),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 48px,
+          rgba(255,255,255,.02) 48px 49px
+        );
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    .hero-wrap::after{
+      content:"SWAGIER";
+      position:absolute;
+      right:-12px;
+      bottom:-18px;
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:clamp(72px, 12vw, 220px);
+      letter-spacing:.12em;
+      color:rgba(255,255,255,.035);
+      pointer-events:none;
+      line-height:.8;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:28px;
+      padding:40px;
+      min-height:500px;
+      align-items:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:#f7f7f8;
+      text-transform:uppercase;
+      font-size:.72rem;
+      letter-spacing:.14em;
+      margin-bottom:18px;
+      backdrop-filter:blur(10px);
+    }
+
+    .eyebrow-dot{
+      width:9px;height:9px;border-radius:50%;
+      background:var(--red-2);
+      box-shadow:0 0 0 6px rgba(179,31,36,.16), 0 0 16px rgba(179,31,36,.5);
+      animation:pulse 1.8s infinite;
+      flex:none;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.18);opacity:.8}
+    }
+
+    .hero h1{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      font-size:clamp(2.4rem, 5vw, 5rem);
+      line-height:.92;
+      letter-spacing:.01em;
+      font-weight:800;
+      max-width:920px;
+    }
+
+    .hero h1 .accent{
+      color:var(--red-2);
+      text-shadow:0 0 28px rgba(179,31,36,.28);
+    }
+
+    .hero p{
+      margin:18px 0 0;
+      max-width:780px;
+      color:var(--soft);
+      font-size:1.06rem;
+      line-height:1.75;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:28px;
+    }
+
+    .hero-card{
+      position:relative;
+      padding:24px;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)),
+        rgba(8,9,12,.8);
+      min-height:360px;
+      overflow:hidden;
+      box-shadow:0 18px 60px rgba(0,0,0,.34);
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background:
+        radial-gradient(circle at 70% 30%, rgba(179,31,36,.26), transparent 18%),
+        radial-gradient(circle at 35% 70%, rgba(255,255,255,.06), transparent 16%);
+      filter:blur(34px);
+      animation:heroGlow 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow{
+      0%{transform:translate3d(0,0,0) scale(1)}
+      100%{transform:translate3d(-2%, 2%, 0) scale(1.06)}
+    }
+
+    .tech-lines{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(transparent 0 calc(100% - 1px), rgba(255,255,255,.05) calc(100% - 1px)),
+        linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(255,255,255,.03) calc(100% - 1px));
+      background-size:100% 60px, 60px 100%;
+      mask-image:radial-gradient(circle at center, black 48%, transparent 100%);
+      opacity:.35;
+    }
+
+    .hero-panel{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .hero-stat-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+
+    .hero-stat{
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(12px);
+    }
+
+    .hero-stat-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.7rem;
+      margin-bottom:8px;
+    }
+
+    .hero-stat-value{
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:1.6rem;
+      line-height:1;
+    }
+
+    .hero-highlight{
+      margin-top:16px;
+      border-radius:20px;
+      padding:18px;
+      background:linear-gradient(135deg, rgba(179,31,36,.16), rgba(255,255,255,.04));
+      border:1px solid rgba(179,31,36,.2);
+    }
+
+    .hero-highlight small{
+      display:block;
+      color:var(--muted);
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .hero-highlight strong{
+      display:block;
+      font-size:1.2rem;
+      line-height:1.4;
+    }
+
+    .section{
+      padding:16px 0 24px;
+      position:relative;
+      z-index:2;
+    }
+
+    .stats-strip{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+      margin-top:6px;
+    }
+
+    .hud-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      padding:18px 18px 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 16px 50px rgba(0,0,0,.25);
+    }
+
+    .hud-card::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;
+      width:100%;
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--red-2), transparent);
+      opacity:.8;
+    }
+
+    .hud-label{
+      color:var(--muted);
+      font-size:.72rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .hud-value{
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:1.75rem;
+      line-height:1;
+      margin-bottom:6px;
+    }
+
+    .hud-sub{
+      color:var(--soft);
+      font-size:.94rem;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .section-title{
+      font-family:"Oxanium",sans-serif;
+      font-size:clamp(1.5rem, 3vw, 2.6rem);
+      line-height:1;
+      margin:0;
+      letter-spacing:.02em;
+    }
+
+    .section-copy{
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.7;
+    }
+
+    .shop-layout{
+      display:grid;
+      grid-template-columns:320px minmax(0, 1fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .filters{
+      position:sticky;
+      top:calc(var(--header-h) + 14px);
+      border-radius:26px;
+      padding:18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 18px 56px rgba(0,0,0,.28);
+    }
+
+    .filter-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .filter-head h3{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      letter-spacing:.06em;
+      font-size:1.05rem;
+    }
+
+    .reset-link{
+      font-size:.84rem;
+      color:var(--red-2);
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .filter-group{
+      padding:16px 0;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .filter-group:first-of-type{border-top:none;padding-top:0}
+
+    .filter-title{
+      margin:0 0 12px;
+      font-weight:700;
+      color:#fff;
+      font-size:.95rem;
+    }
+
+    .search-wrap{
+      position:relative;
+    }
+
+    .input,
+    .select{
+      width:100%;
+      height:50px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#11131a;
+      color:#fff;
+      outline:none;
+      padding:0 16px;
+      transition:.22s ease;
+    }
+
+    .input{
+      padding-left:48px;
+    }
+
+    .input:focus,
+    .select:focus{
+      border-color:rgba(179,31,36,.55);
+      box-shadow:0 0 0 4px rgba(179,31,36,.12);
+    }
+
+    .search-ico{
+      position:absolute;
+      left:16px;top:50%;
+      transform:translateY(-50%);
+      width:16px;height:16px;
+      opacity:.7;
+      pointer-events:none;
+    }
+
+    .search-ico svg{display:block;width:100%;height:100%}
+
+    .price-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .chip-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .chip{
+      border:1px solid rgba(255,255,255,.08);
+      background:#12141b;
+      color:#d9dbe2;
+      padding:11px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.22s ease;
+      font-size:.9rem;
+      line-height:1;
+      user-select:none;
+    }
+
+    .chip:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.16);
+      background:#181b24;
+      color:#fff;
+    }
+
+    .chip.active{
+      color:#fff;
+      border-color:rgba(179,31,36,.45);
+      background:linear-gradient(135deg, rgba(179,31,36,.25), rgba(179,31,36,.10));
+      box-shadow:0 0 0 4px rgba(179,31,36,.08);
+    }
+
+    .checks{
+      display:grid;
+      gap:10px;
+    }
+
+    .check{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--soft);
+      cursor:pointer;
+      user-select:none;
+      min-width:0;
+    }
+
+    .check input{
+      appearance:none;
+      width:18px;height:18px;
+      border-radius:5px;
+      border:1px solid rgba(255,255,255,.16);
+      background:#11131a;
+      display:grid;
+      place-items:center;
+      margin:0;
+      flex:none;
+      transition:.2s ease;
+    }
+
+    .check input:checked{
+      border-color:var(--red-2);
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 0 0 4px rgba(179,31,36,.12);
+    }
+
+    .check input:checked::before{
+      content:"";
+      width:8px;height:8px;border-radius:2px;background:white;
+    }
+
+    .results-shell{
+      min-width:0;
+    }
+
+    .results-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+      border-radius:22px;
+      padding:14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 16px 44px rgba(0,0,0,.22);
+      position:sticky;
+      top:calc(var(--header-h) + 12px);
+      z-index:25;
+      backdrop-filter:blur(12px);
+    }
+
+    .toolbar-left,
+    .toolbar-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .result-count{
+      color:#fff;
+      font-weight:700;
+    }
+
+    .result-meta{
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .toolbar-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:42px;
+      padding:0 14px;
+      border-radius:999px;
+      background:#11131a;
+      border:1px solid rgba(255,255,255,.08);
+      color:#f3f4f7;
+      font-size:.92rem;
+    }
+
+    .mobile-filter-btn{
+      display:none;
+      height:42px;
+      padding:0 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#11131a;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .active-filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .active-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(179,31,36,.24);
+      background:rgba(179,31,36,.12);
+      color:#fff;
+      font-size:.88rem;
+    }
+
+    .active-tag button{
+      width:20px;height:20px;border:none;border-radius:50%;
+      background:rgba(255,255,255,.1);color:#fff;cursor:pointer;
+      padding:0;line-height:1;
+    }
+
+    .products{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:var(--grid-gap);
+    }
+
+    .product-card{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+      border-radius:26px;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 18px 50px rgba(0,0,0,.24);
+      transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+      isolation:isolate;
+    }
+
+    .product-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent, rgba(179,31,36,.04));
+      opacity:0;
+      transition:.28s ease;
+      pointer-events:none;
+    }
+
+    .product-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(179,31,36,.28);
+      box-shadow:0 24px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(179,31,36,.08);
+    }
+
+    .product-card:hover::before{opacity:1}
+
+    .product-media{
+      position:relative;
+      aspect-ratio: 1.08 / 1;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.16), transparent 22%),
+        linear-gradient(180deg, #13151d, #0d0f15);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .product-media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(255,255,255,.07), transparent 30%);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .product-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.01);
+      transition:transform .45s ease, filter .3s ease;
+      position:relative;
+      z-index:1;
+    }
+
+    .product-card:hover .product-media img{
+      transform:scale(1.07);
+      filter:contrast(1.04) saturate(1.04);
+    }
+
+    .product-overlay{
+      position:absolute;
+      inset:auto 12px 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      z-index:3;
+      pointer-events:none;
+    }
+
+    .product-badges,
+    .product-actions-float{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      pointer-events:auto;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:9px 11px;
+      border-radius:999px;
+      font-size:.74rem;
+      line-height:1;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(12,13,18,.7);
+      color:#fff;
+    }
+
+    .badge.red{background:rgba(179,31,36,.78)}
+    .badge.gold{background:rgba(213,168,91,.2); color:#f4d9a4; border-color:rgba(213,168,91,.25)}
+    .badge.green{background:rgba(48,196,119,.16); color:#7ce0a8; border-color:rgba(48,196,119,.22)}
+    .badge.orange{background:rgba(255,158,69,.14); color:#ffbc7d; border-color:rgba(255,158,69,.22)}
+    .badge.dark{background:rgba(12,13,18,.72)}
+
+    .icon-btn{
+      width:42px;height:42px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(12,13,18,.72);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.22s ease;
+      backdrop-filter:blur(12px);
+    }
+
+    .icon-btn:hover{
+      background:rgba(179,31,36,.22);
+      border-color:rgba(179,31,36,.35);
+      transform:translateY(-2px);
+    }
+
+    .product-body{
+      padding:18px 18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      flex:1;
+    }
+
+    .product-topline{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .product-meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .brand-line{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tiny-tag{
+      display:inline-flex;
+      align-items:center;
+      height:24px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .product-title{
+      margin:0;
+      font-size:1.07rem;
+      line-height:1.42;
+      font-weight:800;
+      color:#fff;
+    }
+
+    .sku-line{
+      color:var(--muted);
+      font-size:.8rem;
+      letter-spacing:.04em;
+    }
+
+    .product-desc{
+      color:#b8bcc7;
+      font-size:.93rem;
+      line-height:1.68;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:4.7em;
+    }
+
+    .spec-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      min-height:34px;
+    }
+
+    .spec-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 11px;
+      border-radius:999px;
+      background:#12141b;
+      border:1px solid rgba(255,255,255,.06);
+      color:#d9dde6;
+      font-size:.82rem;
+      max-width:100%;
+    }
+
+    .price-row{
+      margin-top:auto;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      padding-top:6px;
+    }
+
+    .price-block{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .price-label{
+      color:var(--muted);
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .price-main{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .price{
+      font-family:"Oxanium",sans-serif;
+      font-size:1.8rem;
+      line-height:1;
+      font-weight:800;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .old-price{
+      color:#8f94a0;
+      text-decoration:line-through;
+      font-size:.98rem;
+      white-space:nowrap;
+    }
+
+    .product-footer{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .card-btn{
+      flex:1;
+      height:48px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.02em;
+      transition:.25s ease;
+    }
+
+    .card-btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 12px 28px rgba(179,31,36,.26);
+    }
+
+    .card-btn.primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(179,31,36,.36);
+    }
+
+    .card-btn.secondary{
+      color:#fff;
+      background:#11131a;
+    }
+
+    .card-btn.secondary:hover{
+      background:#171a22;
+      border-color:rgba(255,255,255,.16);
+    }
+
+    .loading-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:var(--grid-gap);
+    }
+
+    .skeleton{
+      border-radius:26px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      background:#0b0d11;
+    }
+
+    .skeleton-media{
+      aspect-ratio:1.08/1;
+      background:linear-gradient(90deg, #11131a, #1a1d26, #11131a);
+      background-size:200% 100%;
+      animation:shimmer 1.4s linear infinite;
+    }
+
+    .skeleton-body{
+      padding:18px;
+    }
+
+    .skeleton-line{
+      height:12px;border-radius:999px;margin-bottom:10px;
+      background:linear-gradient(90deg, #11131a, #1a1d26, #11131a);
+      background-size:200% 100%;
+      animation:shimmer 1.4s linear infinite;
+    }
+
+    @keyframes shimmer{
+      0%{background-position:200% 0}
+      100%{background-position:-200% 0}
+    }
+
+    .empty-state{
+      border-radius:28px;
+      padding:46px 24px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+    }
+
+    .empty-state h3{
+      margin:0 0 10px;
+      font-family:"Oxanium",sans-serif;
+      font-size:1.8rem;
+    }
+
+    .empty-state p{
+      margin:0 auto 18px;
+      color:var(--muted);
+      max-width:640px;
+      line-height:1.7;
+    }
+
+    .info-section{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .info-card{
+      border-radius:24px;
+      padding:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 16px 44px rgba(0,0,0,.22);
+    }
+
+    .info-icon{
+      width:46px;height:46px;
+      border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(179,31,36,.24), rgba(179,31,36,.08));
+      border:1px solid rgba(179,31,36,.22);
+      margin-bottom:14px;
+      box-shadow:0 0 26px rgba(179,31,36,.12);
+    }
+
+    .info-card h3{
+      margin:0 0 10px;
+      font-family:"Oxanium",sans-serif;
+      font-size:1.16rem;
+    }
+
+    .info-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+    }
+
+    .footer{
+      padding:26px 0 40px;
+    }
+
+    .footer-wrap{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:20px;
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(4,5,8,.72);
+      backdrop-filter:blur(14px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      opacity:0;
+      visibility:hidden;
+      transition:.26s ease;
+      z-index:1200;
+    }
+
+    .modal.open{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .modal-card{
+      width:min(1160px, 100%);
+      max-height:min(88vh, 980px);
+      overflow:auto;
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      box-shadow:0 30px 90px rgba(0,0,0,.45);
+      position:relative;
+    }
+
+    .modal-close{
+      position:sticky;
+      top:14px;
+      float:right;
+      margin:14px 14px 0 0;
+      width:46px;height:46px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(12,13,18,.78);
+      color:#fff;
+      cursor:pointer;
+      z-index:2;
+      backdrop-filter:blur(12px);
+    }
+
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:0;
+      min-height:520px;
+    }
+
+    .modal-media{
+      position:relative;
+      min-height:520px;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.18), transparent 25%),
+        linear-gradient(180deg, #12151d, #0c0f14);
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+
+    .modal-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .modal-content{
+      padding:28px 28px 30px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .modal-title{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      font-size:2rem;
+      line-height:1.08;
+    }
+
+    .modal-desc{
+      color:var(--soft);
+      line-height:1.82;
+      font-size:1rem;
+    }
+
+    .modal-specs{
+      display:grid;
+      gap:10px;
+    }
+
+    .modal-spec{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#11131a;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .modal-spec span:first-child{color:var(--muted)}
+    .modal-spec span:last-child{text-align:right;color:#fff;font-weight:700}
+
+    .mobile-filter-panel{
+      position:fixed;
+      inset:0;
+      z-index:1150;
+      background:rgba(3,4,7,.72);
+      backdrop-filter:blur(12px);
+      opacity:0;
+      visibility:hidden;
+      transition:.24s ease;
+    }
+
+    .mobile-filter-panel.open{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .mobile-filter-sheet{
+      position:absolute;
+      right:0;top:0;bottom:0;
+      width:min(92vw, 400px);
+      background:#0b0d11;
+      border-left:1px solid rgba(255,255,255,.08);
+      padding:18px;
+      overflow:auto;
+      transform:translateX(100%);
+      transition:.28s ease;
+      box-shadow:-20px 0 60px rgba(0,0,0,.35);
+    }
+
+    .mobile-filter-panel.open .mobile-filter-sheet{
+      transform:translateX(0);
+    }
+
+    .mobile-sheet-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .mobile-sheet-top h3{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+    }
+
+    @media (max-width: 1300px){
+      .products{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .loading-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .hero-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 1024px){
+      .shop-layout{grid-template-columns:1fr}
+      .filters{display:none}
+      .mobile-filter-btn{display:inline-flex;align-items:center}
+      .stats-strip{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .info-section{grid-template-columns:1fr}
+      .modal-grid{grid-template-columns:1fr}
+      .modal-media{min-height:340px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+    }
+
+    @media (max-width: 760px){
+      :root{--container:min(100vw - 22px, 100vw - 22px)}
+      .hero-grid{padding:22px}
+      .hero-wrap{min-height:auto}
+      .hero-card{min-height:auto}
+      .stats-strip{grid-template-columns:1fr}
+      .products{grid-template-columns:1fr}
+      .loading-grid{grid-template-columns:1fr}
+      .results-toolbar{padding:12px}
+      .section-title{line-height:1.1}
+      .top-actions .ghost-btn{display:none}
+      .hero h1{font-size:clamp(2rem, 9vw, 3rem)}
+      .product-footer{flex-direction:column}
+      .card-btn{width:100%}
+      .hero-actions{flex-direction:column}
+      .hero-actions > *{width:100%}
+      .footer-wrap{align-items:flex-start;flex-direction:column}
+      .price-row{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#">
+        <div class="brand-mark"></div>
+        <div class="brand-text">
+          <strong>SWAGIER</strong>
+          <span>Powered by RACEM</span>
+        </div>
+      </a>
+
+      <div class="top-actions">
+        <button class="ghost-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Katalóg</button>
+        <button class="ghost-btn" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">Prečo SWAGIER</button>
+        <button class="cta-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Prejsť na produkty</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-wrap">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Oficiálna ponuka výrobcu SWAGIER
+              </div>
+
+              <h1>
+                Brutálna ponuka dielov a <span class="accent">vizuálov</span> v štýle pravého RACEM e-shopu
+              </h1>
+
+              <p>
+                Kompletná sekcia výrobcu SWAGIER postavená ako reálny moderný performance katalóg.
+                Ostrý dizajn, silné produktové karty, filtre, rýchle preview, detailné rozloženie a agresívna motorsport atmosféra bez lacného AI feelingu.
+              </p>
+
+              <div class="hero-actions">
+                <button class="cta-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Pozrieť produkty</button>
+                <button class="ghost-btn" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})">Info a výhody</button>
+              </div>
+            </div>
+
+            <div class="hero-card">
+              <div class="tech-lines"></div>
+              <div class="hero-panel">
+                <div class="hero-stat-grid">
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Produktov</div>
+                    <div class="hero-stat-value" id="heroProducts">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Kategórií</div>
+                    <div class="hero-stat-value" id="heroCategories">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Značiek fitmentu</div>
+                    <div class="hero-stat-value" id="heroBrands">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Cenový rozsah</div>
+                    <div class="hero-stat-value" id="heroPriceRange">—</div>
+                  </div>
+                </div>
+
+                <div class="hero-highlight">
+                  <small>RACEM / SWAGIER Zóna</small>
+                  <strong id="heroHighlightText">Načítavam katalóg a pripravujem prehľad ponuky…</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-strip section">
+          <div class="hud-card">
+            <div class="hud-label">Live katalóg</div>
+            <div class="hud-value" id="hudAllProducts">—</div>
+            <div class="hud-sub">produktov načítaných zo SWAGIER.json</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Aktívne zobrazenie</div>
+            <div class="hud-value" id="hudVisibleProducts">—</div>
+            <div class="hud-sub">výsledkov po filtrovaní a vyhľadávaní</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Najčastejšia kategória</div>
+            <div class="hud-value" id="hudTopCategory">—</div>
+            <div class="hud-sub">dominantný segment v tejto ponuke</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Status feed</div>
+            <div class="hud-value" id="hudStatus">LIVE</div>
+            <div class="hud-sub">SWAGIER x RACEM performance catalog</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="catalog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">SWAGIER katalóg</h2>
+            <div class="section-copy">
+              Výber postavený ako seriózny performance obchod. Vieš filtrovať podľa kategórií, fitmentu, dostupnosti, cien aj textu.
+              Produktové karty sú spravené tak, aby to nevyzeralo ako placeholder katalóg, ale ako plnohodnotný predajný frontend.
+            </div>
+          </div>
+        </div>
+
+        <div class="shop-layout">
+          <aside class="filters" id="desktopFilters">
+            <div class="filter-head">
+              <h3>Filtre a výber</h3>
+              <span class="reset-link" id="resetAllBtn">Reset</span>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Hľadať produkt</div>
+              <div class="search-wrap">
+                <div class="search-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="M20 20L17 17"></path>
+                  </svg>
+                </div>
+                <input id="searchInput" class="input" type="text" placeholder="Názov, SKU, fitment, popis..." />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Kategória</div>
+              <div class="chip-grid" id="categoryChips"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Fitment / značka</div>
+              <div class="chip-grid" id="brandChips"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Cena</div>
+              <div class="price-grid">
+                <input id="priceMin" class="input" type="number" min="0" step="1" placeholder="Od €" style="padding-left:16px;" />
+                <input id="priceMax" class="input" type="number" min="0" step="1" placeholder="Do €" style="padding-left:16px;" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Dostupnosť</div>
+              <div class="checks">
+                <label class="check"><input type="checkbox" value="skladom" class="availabilityCheck"> <span>Skladom</span></label>
+                <label class="check"><input type="checkbox" value="objednavka" class="availabilityCheck"> <span>Na objednávku</span></label>
+                <label class="check"><input type="checkbox" value="vypredane" class="availabilityCheck"> <span>Vypredané</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Akcie a špeciálne stavy</div>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="saleOnly"> <span>Len zlacnené produkty</span></label>
+                <label class="check"><input type="checkbox" id="newOnly"> <span>Len nové / featured</span></label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="results-shell">
+            <div class="results-toolbar">
+              <div class="toolbar-left">
+                <button class="mobile-filter-btn" id="openMobileFilters">Filtre</button>
+                <div class="toolbar-pill">
+                  <strong class="result-count" id="resultCount">0</strong>
+                  <span class="result-meta">výsledkov</span>
+                </div>
+                <div class="toolbar-pill" id="toolbarInfo">
+                  SWAGIER / RACEM catalog live
+                </div>
+              </div>
+
+              <div class="toolbar-right">
+                <select class="select" id="sortSelect" style="min-width:240px;">
+                  <option value="featured">Zoradiť: Odporúčané</option>
+                  <option value="priceAsc">Cena: Od najnižšej</option>
+                  <option value="priceDesc">Cena: Od najvyššej</option>
+                  <option value="nameAsc">Názov: A → Z</option>
+                  <option value="nameDesc">Názov: Z → A</option>
+                  <option value="newest">Najnovšie / featured</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="active-filters" id="activeFilters"></div>
+
+            <div id="loadingState" class="loading-grid">
+              <div class="skeleton">
+                <div class="skeleton-media"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton-line" style="width:36%"></div>
+                  <div class="skeleton-line" style="width:84%"></div>
+                  <div class="skeleton-line" style="width:71%"></div>
+                  <div class="skeleton-line" style="width:48%; margin-top:20px;"></div>
+                </div>
+              </div>
+              <div class="skeleton">
+                <div class="skeleton-media"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton-line" style="width:32%"></div>
+                  <div class="skeleton-line" style="width:88%"></div>
+                  <div class="skeleton-line" style="width:66%"></div>
+                  <div class="skeleton-line" style="width:54%; margin-top:20px;"></div>
+                </div>
+              </div>
+              <div class="skeleton">
+                <div class="skeleton-media"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton-line" style="width:29%"></div>
+                  <div class="skeleton-line" style="width:81%"></div>
+                  <div class="skeleton-line" style="width:74%"></div>
+                  <div class="skeleton-line" style="width:52%; margin-top:20px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="products" id="productsGrid" style="display:none;"></div>
+
+            <div id="emptyState" class="empty-state" style="display:none;">
+              <h3>Nič sa nenašlo</h3>
+              <p>
+                Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov, širšie vyhľadávanie alebo uprav cenové rozpätie.
+              </p>
+              <button class="cta-btn" id="emptyResetBtn">Resetovať filtre</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Prečo je táto podstránka silná</h2>
+            <div class="section-copy">
+              Nie je to len vypis JSON produktov na tmavom pozadí. Je to postavené ako predajný performance frontend, ktorý vieš rovno nasadiť a ďalej škálovať na ďalších výrobcov.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M3 12L12 3L21 12"></path>
+                <path d="M5 10V21H19V10"></path>
+              </svg>
+            </div>
+            <h3>Silný vizuál</h3>
+            <p>
+              Celý layout je robený v agresívnom RACEM HUD štýle. Tmavé vrstvené pozadie, červené glowy, technické panely, plávajúce badge a karty s realistickým predajným feelingom.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M4 4H20V8H4z"></path>
+                <path d="M4 12H12V20H4z"></path>
+                <path d="M16 12H20V16H16z"></path>
+                <path d="M16 18H20V20H16z"></path>
+              </svg>
+            </div>
+            <h3>Pripravené na rast</h3>
+            <p>
+              Vieš na rovnakom princípe spraviť ďalších výrobcov. Stačí vymeniť JSON, branding a prípadne doplniť CTA na checkout alebo detail produktovej stránky.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20V14"></path>
+              </svg>
+            </div>
+            <h3>Reálne použiteľné</h3>
+            <p>
+              Filtrovanie, vyhľadávanie, sortovanie, responsive správanie, modal preview a fallback spracovanie dát sú už rovno vo vnútri. Čiže nie maketa, ale použiteľný základ.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-wrap">
+      <div><strong>SWAGIER</strong> / RACEM performance catalog</div>
+      <div id="footerMeta">Načítanie dát zo SWAGIER.json</div>
+    </div>
+  </footer>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Zavrieť">✕</button>
+      <div class="modal-grid" id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="mobile-filter-panel" id="mobileFilterPanel">
+    <div class="mobile-filter-sheet">
+      <div class="mobile-sheet-top">
+        <h3>Filtre</h3>
+        <button class="modal-close" id="closeMobileFilters" aria-label="Zavrieť">✕</button>
+      </div>
+      <div id="mobileFiltersMount"></div>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = './SWAGIER.json';
+
+    const state = {
+      allProducts: [],
+      filteredProducts: [],
+      activeCategory: null,
+      activeBrand: null,
+      search: '',
+      priceMin: '',
+      priceMax: '',
+      availability: new Set(),
+      saleOnly: false,
+      newOnly: false,
+      sort: 'featured'
+    };
+
+    const els = {
+      productsGrid: document.getElementById('productsGrid'),
+      loadingState: document.getElementById('loadingState'),
+      emptyState: document.getElementById('emptyState'),
+      categoryChips: document.getElementById('categoryChips'),
+      brandChips: document.getElementById('brandChips'),
+      searchInput: document.getElementById('searchInput'),
+      priceMin: document.getElementById('priceMin'),
+      priceMax: document.getElementById('priceMax'),
+      sortSelect: document.getElementById('sortSelect'),
+      resultCount: document.getElementById('resultCount'),
+      activeFilters: document.getElementById('activeFilters'),
+      saleOnly: document.getElementById('saleOnly'),
+      newOnly: document.getElementById('newOnly'),
+      availabilityChecks: [...document.querySelectorAll('.availabilityCheck')],
+      resetAllBtn: document.getElementById('resetAllBtn'),
+      emptyResetBtn: document.getElementById('emptyResetBtn'),
+      heroProducts: document.getElementById('heroProducts'),
+      heroCategories: document.getElementById('heroCategories'),
+      heroBrands: document.getElementById('heroBrands'),
+      heroPriceRange: document.getElementById('heroPriceRange'),
+      heroHighlightText: document.getElementById('heroHighlightText'),
+      hudAllProducts: document.getElementById('hudAllProducts'),
+      hudVisibleProducts: document.getElementById('hudVisibleProducts'),
+      hudTopCategory: document.getElementById('hudTopCategory'),
+      hudStatus: document.getElementById('hudStatus'),
+      footerMeta: document.getElementById('footerMeta'),
+      toolbarInfo: document.getElementById('toolbarInfo'),
+      productModal: document.getElementById('productModal'),
+      modalContent: document.getElementById('modalContent'),
+      modalCloseBtn: document.getElementById('modalCloseBtn'),
+      openMobileFilters: document.getElementById('openMobileFilters'),
+      mobileFilterPanel: document.getElementById('mobileFilterPanel'),
+      closeMobileFilters: document.getElementById('closeMobileFilters'),
+      desktopFilters: document.getElementById('desktopFilters'),
+      mobileFiltersMount: document.getElementById('mobileFiltersMount')
+    };
+
+    function getValue(obj, keys, fallback = null){
+      for(const key of keys){
+        const value = obj?.[key];
+        if(value !== undefined && value !== null && value !== '') return value;
+      }
+      return fallback;
+    }
+
+    function normalizeArray(value){
+      if(Array.isArray(value)) return value.filter(Boolean);
+      if(typeof value === 'string'){
+        return value.split(',').map(v => v.trim()).filter(Boolean);
+      }
+      return [];
+    }
+
+    function normalizeText(value=''){
+      return String(value).toLowerCase().trim();
+    }
+
+    function normalizeAvailability(value=''){
+      const v = normalizeText(value);
+      if(!v) return 'objednavka';
+      if(v.includes('sklad')) return 'skladom';
+      if(v.includes('stock')) return 'skladom';
+      if(v.includes('objed')) return 'objednavka';
+      if(v.includes('order')) return 'objednavka';
+      if(v.includes('vypred')) return 'vypredane';
+      if(v.includes('out')) return 'vypredane';
+      return v;
+    }
+
+    function formatPrice(value){
+      if(value === null || value === undefined || value === '' || Number.isNaN(Number(value))) return 'Na vyžiadanie';
+      return new Intl.NumberFormat('sk-SK', {
+        style:'currency',
+        currency:'EUR',
+        maximumFractionDigits:0
+      }).format(Number(value));
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function getImage(product){
+      const imgs = normalizeArray(getValue(product, ['images', 'gallery', 'photos', 'imageUrls'], []));
+      return getValue(product, ['image', 'img', 'thumbnail', 'photo', 'cover'], imgs[0] || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80');
+    }
+
+    function getPrice(product){
+      const price = getValue(product, ['price', 'cena', 'finalPrice', 'regular_price', 'regularPrice'], null);
+      return price !== null ? Number(price) : null;
+    }
+
+    function getOldPrice(product){
+      const price = getValue(product, ['compareAtPrice', 'oldPrice', 'povodnaCena', 'saleCompareAt'], null);
+      return price !== null ? Number(price) : null;
+    }
+
+    function getProductName(product){
+      return getValue(product, ['name', 'title', 'nazov', 'productName'], 'Produkt bez názvu');
+    }
+
+    function getProductSku(product){
+      return getValue(product, ['sku', 'SKU', 'id', 'code'], '—');
+    }
+
+    function getProductDesc(product){
+      return getValue(product, ['description', 'desc', 'popis', 'shortDescription'], 'Bez doplnkového popisu.');
+    }
+
+    function getCategory(product){
+      return getValue(product, ['category', 'kategoria', 'segment', 'type'], 'Ostatné');
+    }
+
+    function getFitment(product){
+      const fitment = normalizeArray(getValue(product, ['fitment', 'fits', 'brands', 'compatibleBrands', 'vehicleBrands'], []));
+      if(fitment.length) return fitment;
+      const singleBrand = getValue(product, ['brand', 'vehicleBrand', 'manufacturerFitment'], null);
+      return singleBrand ? [singleBrand] : [];
+    }
+
+    function getAvailability(product){
+      return normalizeAvailability(getValue(product, ['availability', 'stockStatus', 'status', 'dostupnost'], 'objednavka'));
+    }
+
+    function isFeatured(product){
+      return Boolean(getValue(product, ['featured', 'isFeatured', 'new', 'isNew', 'top', 'highlight'], false));
+    }
+
+    function isOnSale(product){
+      const oldPrice = getOldPrice(product);
+      const price = getPrice(product);
+      return Boolean(
+        getValue(product, ['sale', 'isSale', 'discount'], false) ||
+        (oldPrice && price && oldPrice > price)
+      );
+    }
+
+    function getBadgeLabel(product){
+      return getValue(product, ['badge', 'label', 'tag'], null);
+    }
+
+    function mapProduct(raw, index){
+      return {
+        raw,
+        _index: index,
+        name: getProductName(raw),
+        sku: getProductSku(raw),
+        description: getProductDesc(raw),
+        category: getCategory(raw),
+        fitment: getFitment(raw),
+        price: getPrice(raw),
+        oldPrice: getOldPrice(raw),
+        image: getImage(raw),
+        availability: getAvailability(raw),
+        featured: isFeatured(raw),
+        onSale: isOnSale(raw),
+        badge: getBadgeLabel(raw),
+        url: getValue(raw, ['url', 'link', 'href'], '#'),
+        materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
+        location: getValue(raw, ['location', 'placement', 'umiestnenie'], null),
+        model: getValue(raw, ['model', 'vehicleModel'], null)
+      };
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch(DATA_URL, {cache:'no-store'});
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        let list = [];
+        if(Array.isArray(json)) list = json;
+        else if(Array.isArray(json.products)) list = json.products;
+        else if(Array.isArray(json.items)) list = json.items;
+        else if(Array.isArray(json.data)) list = json.data;
+        else list = [];
+
+        state.allProducts = list.map(mapProduct);
+        buildFilterChips();
+        updateGlobalStats();
+        applyFilters();
+      }catch(err){
+        console.error(err);
+        els.loadingState.style.display = 'none';
+        els.emptyState.style.display = 'block';
+        els.emptyState.innerHTML = `
+          <h3>SWAGIER.json sa nepodarilo načítať</h3>
+          <p>
+            Skontroluj, či je súbor <strong>SWAGIER.json</strong> v rovnakom priečinku ako táto HTML stránka,
+            prípadne uprav <strong>DATA_URL</strong> v skripte. Bez toho sa produkty nemajú z čoho načítať.
+          </p>
+          <button class="cta-btn" onclick="location.reload()">Skúsiť znovu</button>
+        `;
+      }
+    }
+
+    function uniqueSorted(values){
+      return [...new Set(values.filter(Boolean).map(v => String(v).trim()))].sort((a,b)=>a.localeCompare(b,'sk'));
+    }
+
+    function buildFilterChips(){
+      const categories = uniqueSorted(state.allProducts.map(p => p.category));
+      const brands = uniqueSorted(state.allProducts.flatMap(p => p.fitment));
+
+      els.categoryChips.innerHTML = `
+        <button class="chip ${state.activeCategory === null ? 'active' : ''}" data-cat="">Všetko</button>
+        ${categories.map(cat => `<button class="chip ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`).join('')}
+      `;
+
+      els.brandChips.innerHTML = `
+        <button class="chip ${state.activeBrand === null ? 'active' : ''}" data-brand="">Všetky</button>
+        ${brands.slice(0, 24).map(brand => `<button class="chip ${state.activeBrand === brand ? 'active' : ''}" data-brand="${escapeHtml(brand)}">${escapeHtml(brand)}</button>`).join('')}
+      `;
+
+      [...els.categoryChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const value = btn.dataset.cat || null;
+          state.activeCategory = value || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      [...els.brandChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const value = btn.dataset.brand || null;
+          state.activeBrand = value || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      mountMobileFilters();
+    }
+
+    function mountMobileFilters(){
+      els.mobileFiltersMount.innerHTML = els.desktopFilters.innerHTML;
+
+      const mount = els.mobileFiltersMount;
+
+      const searchInput = mount.querySelector('#searchInput');
+      const priceMin = mount.querySelector('#priceMin');
+      const priceMax = mount.querySelector('#priceMax');
+      const saleOnly = mount.querySelector('#saleOnly');
+      const newOnly = mount.querySelector('#newOnly');
+      const resetAllBtn = mount.querySelector('#resetAllBtn');
+      const categoryChips = mount.querySelector('#categoryChips');
+      const brandChips = mount.querySelector('#brandChips');
+      const availabilityChecks = [...mount.querySelectorAll('.availabilityCheck')];
+
+      searchInput.value = state.search;
+      priceMin.value = state.priceMin;
+      priceMax.value = state.priceMax;
+      saleOnly.checked = state.saleOnly;
+      newOnly.checked = state.newOnly;
+
+      availabilityChecks.forEach(ch => {
+        ch.checked = state.availability.has(ch.value);
+        ch.addEventListener('change', ()=>{
+          syncAvailabilityFromInputs(availabilityChecks);
+          syncDesktopState();
+          applyFilters();
+        });
+      });
+
+      searchInput.addEventListener('input', ()=>{
+        state.search = searchInput.value.trim();
+        els.searchInput.value = state.search;
+        applyFilters();
+      });
+
+      priceMin.addEventListener('input', ()=>{
+        state.priceMin = priceMin.value;
+        els.priceMin.value = state.priceMin;
+        applyFilters();
+      });
+
+      priceMax.addEventListener('input', ()=>{
+        state.priceMax = priceMax.value;
+        els.priceMax.value = state.priceMax;
+        applyFilters();
+      });
+
+      saleOnly.addEventListener('change', ()=>{
+        state.saleOnly = saleOnly.checked;
+        els.saleOnly.checked = state.saleOnly;
+        applyFilters();
+      });
+
+      newOnly.addEventListener('change', ()=>{
+        state.newOnly = newOnly.checked;
+        els.newOnly.checked = state.newOnly;
+        applyFilters();
+      });
+
+      resetAllBtn.addEventListener('click', resetFilters);
+
+      [...categoryChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const value = btn.dataset.cat || null;
+          state.activeCategory = value || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      [...brandChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const value = btn.dataset.brand || null;
+          state.activeBrand = value || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+    }
+
+    function syncAvailabilityFromInputs(checkboxes){
+      state.availability = new Set(checkboxes.filter(ch => ch.checked).map(ch => ch.value));
+    }
+
+    function syncDesktopState(){
+      els.searchInput.value = state.search;
+      els.priceMin.value = state.priceMin;
+      els.priceMax.value = state.priceMax;
+      els.saleOnly.checked = state.saleOnly;
+      els.newOnly.checked = state.newOnly;
+      els.availabilityChecks.forEach(ch => ch.checked = state.availability.has(ch.value));
+    }
+
+    function applyFilters(){
+      let items = [...state.allProducts];
+
+      if(state.search){
+        const q = normalizeText(state.search);
+        items = items.filter(p => {
+          const hay = [
+            p.name, p.sku, p.description, p.category,
+            ...(p.fitment || []),
+            ...(p.materials || []),
+            p.location || '', p.model || ''
+          ].join(' | ').toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      if(state.activeCategory){
+        items = items.filter(p => p.category === state.activeCategory);
+      }
+
+      if(state.activeBrand){
+        items = items.filter(p => p.fitment.includes(state.activeBrand));
+      }
+
+      const min = Number(state.priceMin);
+      const max = Number(state.priceMax);
+
+      if(state.priceMin !== '' && !Number.isNaN(min)){
+        items = items.filter(p => p.price !== null && p.price >= min);
+      }
+
+      if(state.priceMax !== '' && !Number.isNaN(max)){
+        items = items.filter(p => p.price !== null && p.price <= max);
+      }
+
+      if(state.availability.size){
+        items = items.filter(p => state.availability.has(p.availability));
+      }
+
+      if(state.saleOnly){
+        items = items.filter(p => p.onSale);
+      }
+
+      if(state.newOnly){
+        items = items.filter(p => p.featured);
+      }
+
+      switch(state.sort){
+        case 'priceAsc':
+          items.sort((a,b)=>(a.price ?? Infinity) - (b.price ?? Infinity));
+          break;
+        case 'priceDesc':
+          items.sort((a,b)=>(b.price ?? -Infinity) - (a.price ?? -Infinity));
+          break;
+        case 'nameAsc':
+          items.sort((a,b)=>a.name.localeCompare(b.name, 'sk'));
+          break;
+        case 'nameDesc':
+          items.sort((a,b)=>b.name.localeCompare(a.name, 'sk'));
+          break;
+        case 'newest':
+          items.sort((a,b)=>Number(b.featured) - Number(a.featured) || b._index - a._index);
+          break;
+        case 'featured':
+        default:
+          items.sort((a,b)=>{
+            const scoreA = Number(a.featured) * 4 + Number(a.onSale) * 2 + (a.price !== null ? 1 : 0);
+            const scoreB = Number(b.featured) * 4 + Number(b.onSale) * 2 + (b.price !== null ? 1 : 0);
+            return scoreB - scoreA || a._index - b._index;
+          });
+      }
+
+      state.filteredProducts = items;
+      renderProducts();
+      renderActiveFilters();
+      updateResultStats();
+    }
+
+    function getAvailabilityBadge(availability){
+      if(availability === 'skladom') return { cls:'green', text:'Skladom' };
+      if(availability === 'objednavka') return { cls:'orange', text:'Na objednávku' };
+      return { cls:'dark', text:'Vypredané' };
+    }
+
+    function renderProducts(){
+      els.loadingState.style.display = 'none';
+
+      if(!state.filteredProducts.length){
+        els.productsGrid.style.display = 'none';
+        els.emptyState.style.display = 'block';
+        return;
+      }
+
+      els.emptyState.style.display = 'none';
+      els.productsGrid.style.display = 'grid';
+
+      els.productsGrid.innerHTML = state.filteredProducts.map((p, i) => {
+        const availability = getAvailabilityBadge(p.availability);
+        const fitmentText = p.fitment.length ? p.fitment.slice(0, 2).join(' • ') : 'Univerzálne / špecifikácia v detaile';
+        const category = escapeHtml(p.category);
+        const title = escapeHtml(p.name);
+        const desc = escapeHtml(p.description);
+        const sku = escapeHtml(String(p.sku));
+        const img = escapeHtml(p.image);
+        const badge = p.badge ? `<span class="badge gold">${escapeHtml(p.badge)}</span>` : '';
+        const price = formatPrice(p.price);
+        const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
+
+        return `
+          <article class="product-card" data-index="${i}">
+            <div class="product-media">
+              <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
+              <div class="product-overlay">
+                <div class="product-badges">
+                  <span class="badge ${availability.cls}">${availability.text}</span>
+                  ${p.onSale ? '<span class="badge red">Sale</span>' : ''}
+                  ${p.featured ? '<span class="badge gold">Featured</span>' : ''}
+                  ${badge}
+                </div>
+                <div class="product-actions-float">
+                  <button class="icon-btn preview-btn" data-sku="${sku}" title="Rýchly náhľad" aria-label="Rýchly náhľad">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M1 12S5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-body">
+              <div class="product-topline">
+                <div class="product-meta">
+                  <div class="brand-line">
+                    <span class="tiny-tag">SWAGIER</span>
+                    <span class="tiny-tag">${category}</span>
+                  </div>
+                  <h3 class="product-title">${title}</h3>
+                  <div class="sku-line">SKU: ${sku}</div>
+                </div>
+              </div>
+
+              <div class="product-desc">${desc}</div>
+
+              <div class="spec-row">
+                <span class="spec-pill">${escapeHtml(fitmentText)}</span>
+                ${p.location ? `<span class="spec-pill">${escapeHtml(p.location)}</span>` : ''}
+              </div>
+
+              <div class="price-row">
+                <div class="price-block">
+                  <div class="price-label">Cena</div>
+                  <div class="price-main">
+                    <span class="price">${price}</span>
+                    ${oldPrice}
+                  </div>
+                </div>
+              </div>
+
+              <div class="product-footer">
+                <button class="card-btn secondary preview-btn" data-sku="${sku}">Detail produktu</button>
+                <button class="card-btn primary">Zistiť viac</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      els.productsGrid.querySelectorAll('.preview-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const sku = btn.dataset.sku;
+          const product = state.filteredProducts.find(p => String(p.sku) === sku);
+          if(product) openModal(product);
+        });
+      });
+    }
+
+    function renderActiveFilters(){
+      const tags = [];
+
+      if(state.search) tags.push({ label:`Hľadanie: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.activeCategory) tags.push({ label:`Kategória: ${state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
+      if(state.activeBrand) tags.push({ label:`Fitment: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
+      if(state.priceMin !== '') tags.push({ label:`Cena od: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.priceMax !== '') tags.push({ label:`Cena do: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.saleOnly) tags.push({ label:`Len akcie`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.newOnly) tags.push({ label:`Len featured`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      [...state.availability].forEach(value => {
+        const map = { skladom:'Skladom', objednavka:'Na objednávku', vypredane:'Vypredané' };
+        tags.push({
+          label:`Dostupnosť: ${map[value] || value}`,
+          action:() => {
+            state.availability.delete(value);
+            syncDesktopState();
+            mountMobileFilters();
+            applyFilters();
+          }
+        });
+      });
+
+      els.activeFilters.innerHTML = tags.map((tag, idx)=>`
+        <div class="active-tag">
+          <span>${escapeHtml(tag.label)}</span>
+          <button type="button" data-tag-index="${idx}">×</button>
+        </div>
+      `).join('');
+
+      [...els.activeFilters.querySelectorAll('button')].forEach((btn, idx)=>{
+        btn.addEventListener('click', ()=>tags[idx].action());
+      });
+    }
+
+    function updateGlobalStats(){
+      const all = state.allProducts;
+      const categories = uniqueSorted(all.map(p => p.category));
+      const brands = uniqueSorted(all.flatMap(p => p.fitment));
+      const prices = all.map(p => p.price).filter(v => v !== null && !Number.isNaN(v));
+      const minPrice = prices.length ? Math.min(...prices) : null;
+      const maxPrice = prices.length ? Math.max(...prices) : null;
+
+      els.heroProducts.textContent = all.length || '0';
+      els.heroCategories.textContent = categories.length || '0';
+      els.heroBrands.textContent = brands.length || '0';
+      els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
+      els.hudAllProducts.textContent = all.length || '0';
+      els.footerMeta.textContent = `Načítaných ${all.length || 0} produktov zo SWAGIER.json`;
+
+      const topCategory = getTopCategory(all);
+      els.hudTopCategory.textContent = topCategory || '—';
+
+      els.heroHighlightText.textContent = all.length
+        ? `Katalóg obsahuje ${all.length} položiek. Dominantná kategória je ${topCategory || 'nezaradená'} a systém je pripravený na okamžité filtrovanie.`
+        : 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.';
+    }
+
+    function updateResultStats(){
+      els.resultCount.textContent = state.filteredProducts.length;
+      els.hudVisibleProducts.textContent = state.filteredProducts.length;
+      els.toolbarInfo.textContent = state.search
+        ? `Vyhľadávaš: ${state.search}`
+        : `SWAGIER / RACEM catalog live`;
+    }
+
+    function getTopCategory(list){
+      const counter = {};
+      for(const p of list){
+        counter[p.category] = (counter[p.category] || 0) + 1;
+      }
+      const sorted = Object.entries(counter).sort((a,b)=>b[1]-a[1]);
+      return sorted[0]?.[0] || null;
+    }
+
+    function openModal(product){
+      const availability = getAvailabilityBadge(product.availability);
+      const fitment = product.fitment.length ? product.fitment.join(', ') : 'Nie je špecifikované';
+      const materials = product.materials.length ? product.materials.join(', ') : 'Nie je uvedené';
+      const oldPrice = product.oldPrice && product.oldPrice > (product.price ?? 0)
+        ? `<span class="old-price">${formatPrice(product.oldPrice)}</span>`
+        : '';
+
+      els.modalContent.innerHTML = `
+        <div class="modal-media">
+          <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
+        </div>
+        <div class="modal-content">
+          <div class="brand-line">
+            <span class="badge ${availability.cls}">${availability.text}</span>
+            <span class="badge dark">SWAGIER</span>
+            <span class="badge dark">${escapeHtml(product.category)}</span>
+            ${product.featured ? '<span class="badge gold">Featured</span>' : ''}
+            ${product.onSale ? '<span class="badge red">Sale</span>' : ''}
+          </div>
+
+          <h3 class="modal-title">${escapeHtml(product.name)}</h3>
+
+          <div class="sku-line">SKU: ${escapeHtml(String(product.sku))}</div>
+
+          <div class="price-main">
+            <span class="price">${formatPrice(product.price)}</span>
+            ${oldPrice}
+          </div>
+
+          <div class="modal-desc">${escapeHtml(product.description)}</div>
+
+          <div class="modal-specs">
+            <div class="modal-spec"><span>Kategória</span><span>${escapeHtml(product.category)}</span></div>
+            <div class="modal-spec"><span>Fitment / značka</span><span>${escapeHtml(fitment)}</span></div>
+            <div class="modal-spec"><span>Materiál</span><span>${escapeHtml(materials)}</span></div>
+            <div class="modal-spec"><span>Umiestnenie</span><span>${escapeHtml(product.location || 'Nie je uvedené')}</span></div>
+            <div class="modal-spec"><span>Model</span><span>${escapeHtml(product.model || 'Nie je uvedené')}</span></div>
+          </div>
+
+          <div class="product-footer" style="margin-top:6px;">
+            <button class="card-btn secondary" onclick="document.getElementById('productModal').classList.remove('open')">Zavrieť</button>
+            <button class="card-btn primary">Prejsť ďalej</button>
+          </div>
+        </div>
+      `;
+
+      els.productModal.classList.add('open');
+      els.productModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(){
+      els.productModal.classList.remove('open');
+      els.productModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function resetFilters(){
+      state.activeCategory = null;
+      state.activeBrand = null;
+      state.search = '';
+      state.priceMin = '';
+      state.priceMax = '';
+      state.availability = new Set();
+      state.saleOnly = false;
+      state.newOnly = false;
+      state.sort = 'featured';
+
+      els.searchInput.value = '';
+      els.priceMin.value = '';
+      els.priceMax.value = '';
+      els.saleOnly.checked = false;
+      els.newOnly.checked = false;
+      els.sortSelect.value = 'featured';
+      els.availabilityChecks.forEach(ch => ch.checked = false);
+
+      buildFilterChips();
+      mountMobileFilters();
+      applyFilters();
+    }
+
+    function bindEvents(){
+      els.searchInput.addEventListener('input', ()=>{
+        state.search = els.searchInput.value.trim();
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.priceMin.addEventListener('input', ()=>{
+        state.priceMin = els.priceMin.value;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.priceMax.addEventListener('input', ()=>{
+        state.priceMax = els.priceMax.value;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.sortSelect.addEventListener('change', ()=>{
+        state.sort = els.sortSelect.value;
+        applyFilters();
+      });
+
+      els.saleOnly.addEventListener('change', ()=>{
+        state.saleOnly = els.saleOnly.checked;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.newOnly.addEventListener('change', ()=>{
+        state.newOnly = els.newOnly.checked;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.availabilityChecks.forEach(ch=>{
+        ch.addEventListener('change', ()=>{
+          syncAvailabilityFromInputs(els.availabilityChecks);
+          mountMobileFilters();
+          applyFilters();
+        });
+      });
+
+      els.resetAllBtn.addEventListener('click', resetFilters);
+      els.emptyResetBtn.addEventListener('click', resetFilters);
+
+      els.modalCloseBtn.addEventListener('click', closeModal);
+      els.productModal.addEventListener('click', (e)=>{
+        if(e.target === els.productModal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape'){
+          closeModal();
+          els.mobileFilterPanel.classList.remove('open');
+        }
+      });
+
+      els.openMobileFilters.addEventListener('click', ()=>{
+        els.mobileFilterPanel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+
+      els.closeMobileFilters.addEventListener('click', ()=>{
+        els.mobileFilterPanel.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+
+      els.mobileFilterPanel.addEventListener('click', (e)=>{
+        if(e.target === els.mobileFilterPanel){
+          els.mobileFilterPanel.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    bindEvents();
+    loadProducts();
+  </script>
+</body>
+</html>
