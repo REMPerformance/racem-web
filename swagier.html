@@ -1673,6 +1673,7 @@
           <div class="results-shell">
             <div class="results-toolbar">
               <div class="toolbar-left">
+                <div class="toolbar-pill" id="toolbarInfo">Performance catalog live</div>
                 <button class="mobile-filter-btn" id="openMobileFilters">Filtre</button>
                 <div class="toolbar-pill">
                   <strong class="result-count" id="resultCount">0</strong>
@@ -1816,7 +1817,7 @@
       cartBackdrop: document.getElementById('cartBackdrop'),
       closeCartBtn: document.getElementById('closeCartBtn'),
       cartItems: document.getElementById('cartItems'),
-      cartTotal: document.getElementById('cartTotal')
+      cartTotal: document.getElementById('cartTotal'),
       mobileFiltersMount: document.getElementById('mobileFiltersMount')
     };
 
@@ -2330,10 +2331,11 @@ function getVariantOptionsLabel(variant){
     function updateResultStats(){
       els.resultCount.textContent = state.filteredProducts.length;
       els.hudVisibleProducts.textContent = state.filteredProducts.length;
-      els.toolbarInfo.textContent = state.search
-        ? `Vyhľadávaš: ${state.search}`
-        : `Performance catalog live`;
-    }
+      if (els.toolbarInfo) {
+  els.toolbarInfo.textContent = state.search
+    ? `Vyhľadávaš: ${state.search}`
+    : `Performance catalog live`;
+}
 
     function getTopCategory(list){
       const counter = {};
