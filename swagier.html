@@ -2328,13 +2328,15 @@ function getVariantOptionsLabel(variant){
         : 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.';
     }
 
-    function updateResultStats(){
-      els.resultCount.textContent = state.filteredProducts.length;
-      els.hudVisibleProducts.textContent = state.filteredProducts.length;
-      if (els.toolbarInfo) {
-  els.toolbarInfo.textContent = state.search
-    ? `Vyhľadávaš: ${state.search}`
-    : `Performance catalog live`;
+ function updateResultStats(){
+  els.resultCount.textContent = state.filteredProducts.length;
+  els.hudVisibleProducts.textContent = state.filteredProducts.length;
+
+  if (els.toolbarInfo) {
+    els.toolbarInfo.textContent = state.search
+      ? `Vyhľadávaš: ${state.search}`
+      : `Performance catalog live`;
+  }
 }
 
     function getTopCategory(list){
