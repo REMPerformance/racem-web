@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RACEM | Performance Catalog</title>
-  <meta name="description" content="Prémiová ponuka dielov, stylingu a performance produktov v agresívnom motorsport e-shop štýle." />
+  <meta name="description" content="Prémiová ponuka performance dielov v RACEM štýle." />
   <meta name="theme-color" content="#0a0a0c" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,19 +26,14 @@
       --red:#b31f24;
       --red-2:#e33c43;
       --red-3:#7f1216;
-      --red-glow:rgba(179,31,36,.28);
       --gold:#d5a85b;
       --green:#30c477;
       --orange:#ff9e45;
       --danger:#ff5252;
       --shadow:0 20px 70px rgba(0,0,0,.5);
-      --radius:22px;
-      --radius-sm:14px;
-      --radius-xs:10px;
-      --container:min(1520px, calc(100vw - 32px));
+      --container:min(1540px, calc(100vw - 32px));
       --header-h:78px;
-      --grid-gap:18px;
-      --card-bg:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      --grid-gap:16px;
     }
 
     *{box-sizing:border-box}
@@ -46,10 +41,9 @@
     body{
       margin:0;
       background:
-        radial-gradient(circle at 15% 15%, rgba(179,31,36,.15), transparent 25%),
-        radial-gradient(circle at 85% 10%, rgba(179,31,36,.10), transparent 22%),
-        radial-gradient(circle at 60% 80%, rgba(213,168,91,.06), transparent 18%),
-        linear-gradient(180deg, #070708 0%, #050506 32%, #060608 100%);
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,.035), transparent 32%),
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,.025), transparent 18%),
+        linear-gradient(180deg, #060607 0%, #050506 45%, #060607 100%);
       color:var(--text);
       font-family:"Inter",system-ui,sans-serif;
       overflow-x:hidden;
@@ -61,11 +55,11 @@
       inset:0;
       pointer-events:none;
       background:
-        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
-      background-size: 100% 28px, 28px 100%;
-      mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
-      opacity:.22;
+        linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.011) 1px, transparent 1px);
+      background-size:100% 28px, 28px 100%;
+      mask-image:radial-gradient(circle at center, black 45%, transparent 100%);
+      opacity:.18;
       z-index:0;
     }
 
@@ -75,17 +69,17 @@
       inset:-20%;
       pointer-events:none;
       background:
-        radial-gradient(circle at 20% 30%, rgba(179,31,36,.10), transparent 16%),
-        radial-gradient(circle at 70% 35%, rgba(255,255,255,.03), transparent 12%),
-        radial-gradient(circle at 55% 70%, rgba(179,31,36,.08), transparent 16%);
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.035), transparent 18%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,.025), transparent 12%),
+        radial-gradient(circle at 60% 75%, rgba(255,255,255,.02), transparent 18%);
       filter:blur(55px);
-      animation: floatAmbient 14s ease-in-out infinite alternate;
+      animation:floatAmbient 14s ease-in-out infinite alternate;
       z-index:0;
     }
 
     @keyframes floatAmbient{
       0%{transform:translate3d(0,0,0) scale(1)}
-      100%{transform:translate3d(2%, -2%, 0) scale(1.06)}
+      100%{transform:translate3d(1.5%,-1.5%,0) scale(1.04)}
     }
 
     a{text-decoration:none;color:inherit}
@@ -97,8 +91,8 @@
       position:sticky;
       top:0;
       z-index:1000;
-      backdrop-filter: blur(16px);
-      background:linear-gradient(180deg, rgba(8,8,10,.92), rgba(8,8,10,.76));
+      backdrop-filter:blur(16px);
+      background:linear-gradient(180deg, rgba(8,8,10,.95), rgba(8,8,10,.78));
       border-bottom:1px solid rgba(255,255,255,.07);
       box-shadow:0 10px 40px rgba(0,0,0,.28);
     }
@@ -118,50 +112,19 @@
       min-width:0;
     }
 
-    .brand-mark{
-      width:44px;
-      height:44px;
-      border-radius:12px;
-      position:relative;
-      background:
-        linear-gradient(145deg, rgba(179,31,36,.24), rgba(179,31,36,.06)),
-        #0f1015;
-      border:1px solid rgba(179,31,36,.35);
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.03),
-        0 0 24px rgba(179,31,36,.22);
-      overflow:hidden;
+    .brand-logo{
+      width:154px;
+      max-width:40vw;
+      height:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 4px 16px rgba(0,0,0,.35));
       flex:none;
-    }
-
-    .brand-mark::before,
-    .brand-mark::after{
-      content:"";
-      position:absolute;
-      inset:auto;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
-      transform:rotate(-28deg);
-    }
-
-    .brand-mark::before{
-      width:85px;height:2px;top:13px;left:-22px;
-    }
-    .brand-mark::after{
-      width:85px;height:2px;top:25px;left:-12px;opacity:.65;
     }
 
     .brand-text{
       display:flex;
       flex-direction:column;
       min-width:0;
-    }
-
-    .brand-text strong{
-      font-family:"Oxanium",sans-serif;
-      font-weight:800;
-      letter-spacing:.14em;
-      font-size:1.1rem;
-      white-space:nowrap;
     }
 
     .brand-text span{
@@ -180,9 +143,7 @@
       justify-content:flex-end;
     }
 
-    .ghost-btn,
-    .cta-btn,
-    .mini-btn{
+    .ghost-btn,.cta-btn{
       border:none;
       cursor:pointer;
       transition:.25s ease;
@@ -191,17 +152,17 @@
 
     .ghost-btn{
       height:44px;
-      padding:0 16px;
+      padding:0 18px;
       border-radius:999px;
-      color:var(--soft);
+      color:#fff;
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.08);
+      font-weight:700;
     }
 
     .ghost-btn:hover{
-      color:#fff;
-      border-color:rgba(255,255,255,.16);
       background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.16);
     }
 
     .cta-btn{
@@ -212,12 +173,12 @@
       font-weight:700;
       background:linear-gradient(135deg, var(--red-2), var(--red));
       border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 10px 28px rgba(179,31,36,.32);
+      box-shadow:0 10px 28px rgba(179,31,36,.28);
     }
 
     .cta-btn:hover{
       transform:translateY(-2px);
-      box-shadow:0 16px 40px rgba(179,31,36,.42);
+      box-shadow:0 16px 40px rgba(179,31,36,.4);
     }
 
     .hero{
@@ -232,8 +193,8 @@
       border-radius:30px;
       overflow:hidden;
       background:
-        linear-gradient(135deg, rgba(179,31,36,.12), transparent 36%),
-        radial-gradient(circle at 70% 25%, rgba(179,31,36,.20), transparent 24%),
+        linear-gradient(135deg, rgba(255,255,255,.03), transparent 38%),
+        radial-gradient(circle at 70% 25%, rgba(255,255,255,.045), transparent 24%),
         linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
         #0a0b0f;
       box-shadow:var(--shadow);
@@ -245,13 +206,9 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(115deg, rgba(255,255,255,.04), transparent 28%),
-        repeating-linear-gradient(
-          90deg,
-          transparent 0 48px,
-          rgba(255,255,255,.02) 48px 49px
-        );
-      opacity:.6;
+        linear-gradient(115deg, rgba(255,255,255,.03), transparent 28%),
+        repeating-linear-gradient(90deg, transparent 0 48px, rgba(255,255,255,.018) 48px 49px);
+      opacity:.55;
       pointer-events:none;
     }
 
@@ -299,7 +256,7 @@
     .eyebrow-dot{
       width:9px;height:9px;border-radius:50%;
       background:var(--red-2);
-      box-shadow:0 0 0 6px rgba(179,31,36,.16), 0 0 16px rgba(179,31,36,.5);
+      box-shadow:0 0 0 6px rgba(179,31,36,.16), 0 0 16px rgba(179,31,36,.4);
       animation:pulse 1.8s infinite;
       flex:none;
     }
@@ -312,7 +269,7 @@
     .hero h1{
       margin:0;
       font-family:"Oxanium",sans-serif;
-      font-size:clamp(2rem, 4.1vw, 4rem);
+      font-size:clamp(1.95rem, 4vw, 3.85rem);
       line-height:.96;
       letter-spacing:.01em;
       font-weight:800;
@@ -321,15 +278,15 @@
 
     .hero h1 .accent{
       color:var(--red-2);
-      text-shadow:0 0 28px rgba(179,31,36,.28);
+      text-shadow:0 0 28px rgba(179,31,36,.22);
     }
 
     .hero p{
       margin:18px 0 0;
       max-width:780px;
       color:var(--soft);
-      font-size:1.06rem;
-      line-height:1.75;
+      font-size:1.03rem;
+      line-height:1.72;
     }
 
     .hero-actions{
@@ -345,8 +302,8 @@
       border-radius:26px;
       border:1px solid rgba(255,255,255,.08);
       background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)),
-        rgba(8,9,12,.8);
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02)),
+        rgba(8,9,12,.84);
       min-height:360px;
       overflow:hidden;
       box-shadow:0 18px 60px rgba(0,0,0,.34);
@@ -357,15 +314,15 @@
       position:absolute;
       inset:-30%;
       background:
-        radial-gradient(circle at 70% 30%, rgba(179,31,36,.26), transparent 18%),
-        radial-gradient(circle at 35% 70%, rgba(255,255,255,.06), transparent 16%);
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,.08), transparent 18%),
+        radial-gradient(circle at 35% 70%, rgba(255,255,255,.05), transparent 16%);
       filter:blur(34px);
       animation:heroGlow 10s ease-in-out infinite alternate;
     }
 
     @keyframes heroGlow{
       0%{transform:translate3d(0,0,0) scale(1)}
-      100%{transform:translate3d(-2%, 2%, 0) scale(1.06)}
+      100%{transform:translate3d(-2%,2%,0) scale(1.06)}
     }
 
     .tech-lines{
@@ -422,8 +379,8 @@
       margin-top:16px;
       border-radius:20px;
       padding:18px;
-      background:linear-gradient(135deg, rgba(179,31,36,.16), rgba(255,255,255,.04));
-      border:1px solid rgba(179,31,36,.2);
+      background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
     }
 
     .hero-highlight small{
@@ -436,15 +393,11 @@
 
     .hero-highlight strong{
       display:block;
-      font-size:1.2rem;
-      line-height:1.4;
+      font-size:1.16rem;
+      line-height:1.42;
     }
 
-    .section{
-      padding:16px 0 24px;
-      position:relative;
-      z-index:2;
-    }
+    .section{padding:16px 0 24px;position:relative;z-index:2}
 
     .stats-strip{
       display:grid;
@@ -468,11 +421,9 @@
     .hud-card::before{
       content:"";
       position:absolute;
-      left:0;top:0;
-      width:100%;
-      height:2px;
+      left:0;top:0;width:100%;height:2px;
       background:linear-gradient(90deg, transparent, var(--red-2), transparent);
-      opacity:.8;
+      opacity:.75;
     }
 
     .hud-label{
@@ -491,10 +442,7 @@
       margin-bottom:6px;
     }
 
-    .hud-sub{
-      color:var(--soft);
-      font-size:.94rem;
-    }
+    .hud-sub{color:var(--soft);font-size:.94rem}
 
     .section-head{
       display:flex;
@@ -507,7 +455,7 @@
 
     .section-title{
       font-family:"Oxanium",sans-serif;
-      font-size:clamp(1.5rem, 3vw, 2.6rem);
+      font-size:clamp(1.5rem, 3vw, 2.45rem);
       line-height:1;
       margin:0;
       letter-spacing:.02em;
@@ -521,7 +469,7 @@
 
     .shop-layout{
       display:grid;
-      grid-template-columns:320px minmax(0, 1fr);
+      grid-template-columns:320px minmax(0,1fr);
       gap:20px;
       align-items:start;
     }
@@ -529,6 +477,9 @@
     .filters{
       position:sticky;
       top:calc(var(--header-h) + 14px);
+      max-height:calc(100vh - var(--header-h) - 28px);
+      overflow:auto;
+      scrollbar-width:thin;
       border-radius:26px;
       padding:18px;
       background:
@@ -537,6 +488,9 @@
       border:1px solid rgba(255,255,255,.08);
       box-shadow:0 18px 56px rgba(0,0,0,.28);
     }
+
+    .filters::-webkit-scrollbar{width:8px}
+    .filters::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
 
     .filter-head{
       display:flex;
@@ -574,12 +528,9 @@
       font-size:.95rem;
     }
 
-    .search-wrap{
-      position:relative;
-    }
+    .search-wrap{position:relative}
 
-    .input,
-    .select{
+    .input,.select{
       width:100%;
       height:50px;
       border-radius:16px;
@@ -591,12 +542,8 @@
       transition:.22s ease;
     }
 
-    .input{
-      padding-left:48px;
-    }
-
-    .input:focus,
-    .select:focus{
+    .input{padding-left:48px}
+    .input:focus,.select:focus{
       border-color:rgba(179,31,36,.55);
       box-shadow:0 0 0 4px rgba(179,31,36,.12);
     }
@@ -651,10 +598,7 @@
       box-shadow:0 0 0 4px rgba(179,31,36,.08);
     }
 
-    .checks{
-      display:grid;
-      gap:10px;
-    }
+    .checks{display:grid;gap:10px}
 
     .check{
       display:flex;
@@ -690,9 +634,7 @@
       width:8px;height:8px;border-radius:2px;background:white;
     }
 
-    .results-shell{
-      min-width:0;
-    }
+    .results-shell{min-width:0}
 
     .results-toolbar{
       display:flex;
@@ -714,23 +656,15 @@
       backdrop-filter:blur(12px);
     }
 
-    .toolbar-left,
-    .toolbar-right{
+    .toolbar-left,.toolbar-right{
       display:flex;
       align-items:center;
       gap:10px;
       flex-wrap:wrap;
     }
 
-    .result-count{
-      color:#fff;
-      font-weight:700;
-    }
-
-    .result-meta{
-      color:var(--muted);
-      font-size:.94rem;
-    }
+    .result-count{color:#fff;font-weight:700}
+    .result-meta{color:var(--muted);font-size:.94rem}
 
     .toolbar-pill{
       display:inline-flex;
@@ -784,7 +718,7 @@
 
     .products{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:var(--grid-gap);
     }
 
@@ -793,7 +727,7 @@
       display:flex;
       flex-direction:column;
       min-height:100%;
-      border-radius:26px;
+      border-radius:24px;
       overflow:hidden;
       background:
         linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
@@ -824,10 +758,10 @@
 
     .product-media{
       position:relative;
-      aspect-ratio: 1.08 / 1;
+      aspect-ratio:1.08/1;
       overflow:hidden;
       background:
-        radial-gradient(circle at 70% 20%, rgba(179,31,36,.16), transparent 22%),
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.12), transparent 22%),
         linear-gradient(180deg, #13151d, #0d0f15);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
@@ -869,8 +803,7 @@
       pointer-events:none;
     }
 
-    .product-badges,
-    .product-actions-float{
+    .product-badges,.product-actions-float{
       display:flex;
       align-items:center;
       gap:8px;
@@ -884,7 +817,7 @@
       gap:6px;
       padding:9px 11px;
       border-radius:999px;
-      font-size:.74rem;
+      font-size:.72rem;
       line-height:1;
       font-weight:800;
       text-transform:uppercase;
@@ -921,18 +854,11 @@
     }
 
     .product-body{
-      padding:18px 18px 16px;
+      padding:16px 16px 14px;
       display:flex;
       flex-direction:column;
       gap:12px;
       flex:1;
-    }
-
-    .product-topline{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
     }
 
     .product-meta{
@@ -965,10 +891,11 @@
 
     .product-title{
       margin:0;
-      font-size:1.07rem;
-      line-height:1.42;
+      font-size:1rem;
+      line-height:1.38;
       font-weight:800;
       color:#fff;
+      min-height:2.7em;
     }
 
     .sku-line{
@@ -979,13 +906,13 @@
 
     .product-desc{
       color:#b8bcc7;
-      font-size:.93rem;
-      line-height:1.68;
+      font-size:.9rem;
+      line-height:1.65;
       display:-webkit-box;
       -webkit-line-clamp:3;
       -webkit-box-orient:vertical;
       overflow:hidden;
-      min-height:4.7em;
+      min-height:4.45em;
     }
 
     .spec-row{
@@ -1004,7 +931,7 @@
       background:#12141b;
       border:1px solid rgba(255,255,255,.06);
       color:#d9dde6;
-      font-size:.82rem;
+      font-size:.8rem;
       max-width:100%;
     }
 
@@ -1026,7 +953,7 @@
 
     .price-label{
       color:var(--muted);
-      font-size:.8rem;
+      font-size:.78rem;
       text-transform:uppercase;
       letter-spacing:.12em;
     }
@@ -1040,7 +967,7 @@
 
     .price{
       font-family:"Oxanium",sans-serif;
-      font-size:1.8rem;
+      font-size:1.55rem;
       line-height:1;
       font-weight:800;
       color:#fff;
@@ -1050,7 +977,7 @@
     .old-price{
       color:#8f94a0;
       text-decoration:line-through;
-      font-size:.98rem;
+      font-size:.92rem;
       white-space:nowrap;
     }
 
@@ -1062,7 +989,7 @@
 
     .card-btn{
       flex:1;
-      height:48px;
+      height:46px;
       border-radius:16px;
       border:1px solid rgba(255,255,255,.08);
       cursor:pointer;
@@ -1074,12 +1001,12 @@
     .card-btn.primary{
       color:#fff;
       background:linear-gradient(135deg, var(--red-2), var(--red));
-      box-shadow:0 12px 28px rgba(179,31,36,.26);
+      box-shadow:0 12px 28px rgba(179,31,36,.24);
     }
 
     .card-btn.primary:hover{
       transform:translateY(-2px);
-      box-shadow:0 16px 34px rgba(179,31,36,.36);
+      box-shadow:0 16px 34px rgba(179,31,36,.34);
     }
 
     .card-btn.secondary{
@@ -1094,12 +1021,12 @@
 
     .loading-grid{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:var(--grid-gap);
     }
 
     .skeleton{
-      border-radius:26px;
+      border-radius:24px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.06);
       background:#0b0d11;
@@ -1112,9 +1039,7 @@
       animation:shimmer 1.4s linear infinite;
     }
 
-    .skeleton-body{
-      padding:18px;
-    }
+    .skeleton-body{padding:18px}
 
     .skeleton-line{
       height:12px;border-radius:999px;margin-bottom:10px;
@@ -1151,47 +1076,7 @@
       line-height:1.7;
     }
 
-    .info-section{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
-    }
-
-    .info-card{
-      border-radius:24px;
-      padding:22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-        #0b0d11;
-      border:1px solid rgba(255,255,255,.07);
-      box-shadow:0 16px 44px rgba(0,0,0,.22);
-    }
-
-    .info-icon{
-      width:46px;height:46px;
-      border-radius:14px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg, rgba(179,31,36,.24), rgba(179,31,36,.08));
-      border:1px solid rgba(179,31,36,.22);
-      margin-bottom:14px;
-      box-shadow:0 0 26px rgba(179,31,36,.12);
-    }
-
-    .info-card h3{
-      margin:0 0 10px;
-      font-family:"Oxanium",sans-serif;
-      font-size:1.16rem;
-    }
-
-    .info-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.75;
-    }
-
-    .footer{
-      padding:26px 0 40px;
-    }
+    .footer{padding:26px 0 40px}
 
     .footer-wrap{
       display:flex;
@@ -1220,10 +1105,7 @@
       z-index:1200;
     }
 
-    .modal.open{
-      opacity:1;
-      visibility:visible;
-    }
+    .modal.open{opacity:1;visibility:visible}
 
     .modal-card{
       width:min(1160px, 100%);
@@ -1264,7 +1146,7 @@
       position:relative;
       min-height:520px;
       background:
-        radial-gradient(circle at 70% 20%, rgba(179,31,36,.18), transparent 25%),
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.12), transparent 25%),
         linear-gradient(180deg, #12151d, #0c0f14);
       border-right:1px solid rgba(255,255,255,.06);
     }
@@ -1295,10 +1177,7 @@
       font-size:1rem;
     }
 
-    .modal-specs{
-      display:grid;
-      gap:10px;
-    }
+    .modal-specs{display:grid;gap:10px}
 
     .modal-spec{
       display:flex;
@@ -1324,10 +1203,7 @@
       transition:.24s ease;
     }
 
-    .mobile-filter-panel.open{
-      opacity:1;
-      visibility:visible;
-    }
+    .mobile-filter-panel.open{opacity:1;visibility:visible}
 
     .mobile-filter-sheet{
       position:absolute;
@@ -1342,9 +1218,7 @@
       box-shadow:-20px 0 60px rgba(0,0,0,.35);
     }
 
-    .mobile-filter-panel.open .mobile-filter-sheet{
-      transform:translateX(0);
-    }
+    .mobile-filter-panel.open .mobile-filter-sheet{transform:translateX(0)}
 
     .mobile-sheet-top{
       display:flex;
@@ -1359,9 +1233,11 @@
       font-family:"Oxanium",sans-serif;
     }
 
-    @media (max-width: 1300px){
-      .products{grid-template-columns:repeat(2, minmax(0,1fr))}
-      .loading-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+    @media (max-width: 1450px){
+      .products,.loading-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
+    }
+
+    @media (max-width: 1200px){
       .hero-grid{grid-template-columns:1fr}
     }
 
@@ -1370,9 +1246,9 @@
       .filters{display:none}
       .mobile-filter-btn{display:inline-flex;align-items:center}
       .stats-strip{grid-template-columns:repeat(2, minmax(0,1fr))}
-      .info-section{grid-template-columns:1fr}
       .modal-grid{grid-template-columns:1fr}
       .modal-media{min-height:340px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+      .products,.loading-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
     }
 
     @media (max-width: 760px){
@@ -1381,18 +1257,17 @@
       .hero-wrap{min-height:auto}
       .hero-card{min-height:auto}
       .stats-strip{grid-template-columns:1fr}
-      .products{grid-template-columns:1fr}
-      .loading-grid{grid-template-columns:1fr}
+      .products,.loading-grid{grid-template-columns:1fr}
       .results-toolbar{padding:12px}
       .section-title{line-height:1.1}
-      .top-actions .ghost-btn{display:none}
-      .hero h1{font-size:clamp(1.85rem, 8vw, 2.8rem)}
+      .hero h1{font-size:clamp(1.8rem, 8vw, 2.8rem)}
       .product-footer{flex-direction:column}
       .card-btn{width:100%}
       .hero-actions{flex-direction:column}
       .hero-actions > *{width:100%}
       .footer-wrap{align-items:flex-start;flex-direction:column}
       .price-row{flex-direction:column;align-items:flex-start}
+      .brand-logo{width:126px}
     }
   </style>
 </head>
@@ -1400,18 +1275,15 @@
 
   <header class="topbar">
     <div class="container topbar-inner">
-      <a class="brand" href="#">
-        <div class="brand-mark"></div>
+      <a class="brand" href="/">
+        <img class="brand-logo" src="assets/racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
         <div class="brand-text">
-          <strong>SWAGIER</strong>
           <span>Performance Parts Selection</span>
         </div>
       </a>
 
       <div class="top-actions">
-        <button class="ghost-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Katalóg</button>
-        <button class="ghost-btn" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">Výhody</button>
-        <button class="cta-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Prejsť na produkty</button>
+        <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
       </div>
     </div>
   </header>
@@ -1428,17 +1300,17 @@
               </div>
 
               <h1>
-                Výber dielov a <span class="accent">vizuálov</span> v štýle reálneho RACEM e-shopu
+                Výber dielov a <span class="accent">komponentov</span> v štýle reálneho RACEM e-shopu
               </h1>
 
               <p>
-                Kompletná performance sekcia postavená ako reálny moderný katalóg.
-                Ostrý dizajn, silné produktové karty, filtre, rýchly preview, detailné rozloženie a agresívna motorsport atmosféra bez lacného placeholder feelingu.
+                Kompletná performance sekcia postavená na reálnych dátach zo súboru <strong>swagier.json</strong>.
+                Ostrý dizajn, silné produktové karty, filtre, rýchly preview a plnohodnotný katalóg pripravený na predaj.
               </p>
 
               <div class="hero-actions">
                 <button class="cta-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Pozrieť produkty</button>
-                <button class="ghost-btn" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})">Info a výhody</button>
+                <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
               </div>
             </div>
 
@@ -1455,7 +1327,7 @@
                     <div class="hero-stat-value" id="heroCategories">—</div>
                   </div>
                   <div class="hero-stat">
-                    <div class="hero-stat-label">Značiek fitmentu</div>
+                    <div class="hero-stat-label">Platforiem</div>
                     <div class="hero-stat-value" id="heroBrands">—</div>
                   </div>
                   <div class="hero-stat">
@@ -1494,8 +1366,8 @@
 
           <div class="hud-card">
             <div class="hud-label">Status feed</div>
-            <div class="hud-value" id="hudStatus">LIVE</div>
-            <div class="hud-sub">Performance catalog</div>
+            <div class="hud-value">LIVE</div>
+            <div class="hud-sub">performance catalog</div>
           </div>
         </div>
       </div>
@@ -1507,8 +1379,7 @@
           <div>
             <h2 class="section-title">Katalóg produktov</h2>
             <div class="section-copy">
-              Výber postavený ako seriózny performance obchod. Vieš filtrovať podľa kategórií, fitmentu, dostupnosti, cien aj textu.
-              Produktové karty sú spravené tak, aby to nepôsobilo ako obyčajný dump JSONu, ale ako plnohodnotný predajný frontend.
+              Produkty sú načítané priamo z JSONu. Filtrovanie funguje podľa kategórie, platformy, dostupnosti, cien aj textu.
             </div>
           </div>
         </div>
@@ -1529,7 +1400,7 @@
                     <path d="M20 20L17 17"></path>
                   </svg>
                 </div>
-                <input id="searchInput" class="input" type="text" placeholder="Názov, SKU, fitment, popis..." />
+                <input id="searchInput" class="input" type="text" placeholder="Názov, SKU, platforma, popis..." />
               </div>
             </div>
 
@@ -1539,7 +1410,7 @@
             </div>
 
             <div class="filter-group">
-              <div class="filter-title">Fitment / značka</div>
+              <div class="filter-title">Platforma / fitment</div>
               <div class="chip-grid" id="brandChips"></div>
             </div>
 
@@ -1561,10 +1432,10 @@
             </div>
 
             <div class="filter-group">
-              <div class="filter-title">Akcie a špeciálne stavy</div>
+              <div class="filter-title">Akcie a stavy</div>
               <div class="checks">
                 <label class="check"><input type="checkbox" id="saleOnly"> <span>Len zlacnené produkty</span></label>
-                <label class="check"><input type="checkbox" id="newOnly"> <span>Len nové / featured</span></label>
+                <label class="check"><input type="checkbox" id="newOnly"> <span>Len featured</span></label>
               </div>
             </div>
           </aside>
@@ -1597,101 +1468,19 @@
             <div class="active-filters" id="activeFilters"></div>
 
             <div id="loadingState" class="loading-grid">
-              <div class="skeleton">
-                <div class="skeleton-media"></div>
-                <div class="skeleton-body">
-                  <div class="skeleton-line" style="width:36%"></div>
-                  <div class="skeleton-line" style="width:84%"></div>
-                  <div class="skeleton-line" style="width:71%"></div>
-                  <div class="skeleton-line" style="width:48%; margin-top:20px;"></div>
-                </div>
-              </div>
-              <div class="skeleton">
-                <div class="skeleton-media"></div>
-                <div class="skeleton-body">
-                  <div class="skeleton-line" style="width:32%"></div>
-                  <div class="skeleton-line" style="width:88%"></div>
-                  <div class="skeleton-line" style="width:66%"></div>
-                  <div class="skeleton-line" style="width:54%; margin-top:20px;"></div>
-                </div>
-              </div>
-              <div class="skeleton">
-                <div class="skeleton-media"></div>
-                <div class="skeleton-body">
-                  <div class="skeleton-line" style="width:29%"></div>
-                  <div class="skeleton-line" style="width:81%"></div>
-                  <div class="skeleton-line" style="width:74%"></div>
-                  <div class="skeleton-line" style="width:52%; margin-top:20px;"></div>
-                </div>
-              </div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:36%"></div><div class="skeleton-line" style="width:84%"></div><div class="skeleton-line" style="width:71%"></div><div class="skeleton-line" style="width:48%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:32%"></div><div class="skeleton-line" style="width:88%"></div><div class="skeleton-line" style="width:66%"></div><div class="skeleton-line" style="width:54%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:29%"></div><div class="skeleton-line" style="width:81%"></div><div class="skeleton-line" style="width:74%"></div><div class="skeleton-line" style="width:52%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:34%"></div><div class="skeleton-line" style="width:77%"></div><div class="skeleton-line" style="width:70%"></div><div class="skeleton-line" style="width:50%; margin-top:20px;"></div></div></div>
             </div>
 
             <div class="products" id="productsGrid" style="display:none;"></div>
 
             <div id="emptyState" class="empty-state" style="display:none;">
               <h3>Nič sa nenašlo</h3>
-              <p>
-                Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov, širšie vyhľadávanie alebo uprav cenové rozpätie.
-              </p>
+              <p>Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov alebo širšie vyhľadávanie.</p>
               <button class="cta-btn" id="emptyResetBtn">Resetovať filtre</button>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="why">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Prečo je táto podstránka silná</h2>
-            <div class="section-copy">
-              Nie je to len vypis JSON produktov na tmavom pozadí. Je to postavené ako predajný performance frontend, ktorý vieš rovno nasadiť a ďalej škálovať na ďalších výrobcov.
-            </div>
-          </div>
-        </div>
-
-        <div class="info-section">
-          <div class="info-card">
-            <div class="info-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M3 12L12 3L21 12"></path>
-                <path d="M5 10V21H19V10"></path>
-              </svg>
-            </div>
-            <h3>Silný vizuál</h3>
-            <p>
-              Celý layout je robený v agresívnom RACEM HUD štýle. Tmavé vrstvené pozadie, červené glowy, technické panely, plávajúce badge a karty s realistickým predajným feelingom.
-            </p>
-          </div>
-
-          <div class="info-card">
-            <div class="info-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M4 4H20V8H4z"></path>
-                <path d="M4 12H12V20H4z"></path>
-                <path d="M16 12H20V16H16z"></path>
-                <path d="M16 18H20V20H16z"></path>
-              </svg>
-            </div>
-            <h3>Pripravené na rast</h3>
-            <p>
-              Vieš na rovnakom princípe spraviť ďalších výrobcov. Stačí vymeniť JSON, branding a prípadne doplniť CTA na checkout alebo detail produktovej stránky.
-            </p>
-          </div>
-
-          <div class="info-card">
-            <div class="info-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M12 20V10"></path>
-                <path d="M18 20V4"></path>
-                <path d="M6 20V14"></path>
-              </svg>
-            </div>
-            <h3>Reálne použiteľné</h3>
-            <p>
-              Filtrovanie, vyhľadávanie, sortovanie, responsive správanie, modal preview a fallback spracovanie dát sú už rovno vo vnútri. Čiže nie maketa, ale použiteľný základ.
-            </p>
           </div>
         </div>
       </div>
@@ -1764,7 +1553,6 @@
       hudAllProducts: document.getElementById('hudAllProducts'),
       hudVisibleProducts: document.getElementById('hudVisibleProducts'),
       hudTopCategory: document.getElementById('hudTopCategory'),
-      hudStatus: document.getElementById('hudStatus'),
       footerMeta: document.getElementById('footerMeta'),
       toolbarInfo: document.getElementById('toolbarInfo'),
       productModal: document.getElementById('productModal'),
@@ -1787,9 +1575,7 @@
 
     function normalizeArray(value){
       if(Array.isArray(value)) return value.filter(Boolean);
-      if(typeof value === 'string'){
-        return value.split(',').map(v => v.trim()).filter(Boolean);
-      }
+      if(typeof value === 'string') return value.split(',').map(v => v.trim()).filter(Boolean);
       return [];
     }
 
@@ -1797,16 +1583,19 @@
       return String(value).toLowerCase().trim();
     }
 
+    function stripHtml(html=''){
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      return (div.textContent || div.innerText || '').trim();
+    }
+
     function normalizeAvailability(value=''){
       const v = normalizeText(value);
       if(!v) return 'objednavka';
-      if(v.includes('sklad')) return 'skladom';
-      if(v.includes('stock')) return 'skladom';
-      if(v.includes('objed')) return 'objednavka';
-      if(v.includes('order')) return 'objednavka';
-      if(v.includes('vypred')) return 'vypredane';
-      if(v.includes('out')) return 'vypredane';
-      return v;
+      if(v.includes('in_stock') || v.includes('instock') || v.includes('sklad')) return 'skladom';
+      if(v.includes('made_to_order') || v.includes('preorder') || v.includes('objed') || v.includes('order')) return 'objednavka';
+      if(v.includes('out') || v.includes('vypred')) return 'vypredane';
+      return 'objednavka';
     }
 
     function formatPrice(value){
@@ -1814,7 +1603,7 @@
       return new Intl.NumberFormat('sk-SK', {
         style:'currency',
         currency:'EUR',
-        maximumFractionDigits:0
+        maximumFractionDigits:2
       }).format(Number(value));
     }
 
@@ -1827,19 +1616,32 @@
         .replaceAll("'", '&#039;');
     }
 
+    function firstVariant(product){
+      const variants = normalizeArray(product.variants);
+      return variants[0] || null;
+    }
+
     function getImage(product){
+      const variant = firstVariant(product);
+      const variantImgs = normalizeArray(variant?.images);
       const imgs = normalizeArray(getValue(product, ['images', 'gallery', 'photos', 'imageUrls'], []));
-      return getValue(product, ['image', 'img', 'thumbnail', 'photo', 'cover'], imgs[0] || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80');
+      return variantImgs[0] || getValue(product, ['image', 'img', 'thumbnail', 'photo', 'cover'], imgs[0] || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80');
     }
 
     function getPrice(product){
-      const price = getValue(product, ['price', 'cena', 'finalPrice', 'regular_price', 'regularPrice'], null);
-      return price !== null ? Number(price) : null;
+      const variant = firstVariant(product);
+      const direct = getValue(product, ['price', 'cena', 'finalPrice', 'regular_price', 'regularPrice'], null);
+      const variantPrice = getValue(variant || {}, ['price'], null);
+      const value = direct ?? variantPrice;
+      return value !== null ? Number(value) : null;
     }
 
     function getOldPrice(product){
-      const price = getValue(product, ['compareAtPrice', 'oldPrice', 'povodnaCena', 'saleCompareAt'], null);
-      return price !== null ? Number(price) : null;
+      const variant = firstVariant(product);
+      const direct = getValue(product, ['compareAtPrice', 'oldPrice', 'povodnaCena', 'saleCompareAt'], null);
+      const variantPrice = getValue(variant || {}, ['compareAtPrice'], null);
+      const value = direct ?? variantPrice;
+      return value !== null ? Number(value) : null;
     }
 
     function getProductName(product){
@@ -1847,11 +1649,15 @@
     }
 
     function getProductSku(product){
-      return getValue(product, ['sku', 'SKU', 'id', 'code'], '—');
+      const variant = firstVariant(product);
+      return getValue(product, ['sku', 'SKU', 'id', 'code'], getValue(variant || {}, ['sku'], '—'));
     }
 
     function getProductDesc(product){
-      return getValue(product, ['description', 'desc', 'popis', 'shortDescription'], 'Bez doplnkového popisu.');
+      const raw = getValue(product, ['description', 'desc', 'popis', 'shortDescription'], null);
+      const html = getValue(product, ['descriptionHtml'], null);
+      const shortText = getValue(product, ['short'], null);
+      return stripHtml(raw || html || shortText || 'Bez doplnkového popisu.');
     }
 
     function getCategory(product){
@@ -1859,14 +1665,18 @@
     }
 
     function getFitment(product){
-      const fitment = normalizeArray(getValue(product, ['fitment', 'fits', 'brands', 'compatibleBrands', 'vehicleBrands'], []));
+      const fitment = normalizeArray(getValue(product, ['fitment', 'fits', 'brands', 'compatibleBrands', 'vehicleBrands', 'platforms'], []));
       if(fitment.length) return fitment;
-      const singleBrand = getValue(product, ['brand', 'vehicleBrand', 'manufacturerFitment'], null);
-      return singleBrand ? [singleBrand] : [];
+      const manufacturer = getValue(product, ['manufacturer'], null);
+      return manufacturer ? [manufacturer] : [];
     }
 
     function getAvailability(product){
-      return normalizeAvailability(getValue(product, ['availability', 'stockStatus', 'status', 'dostupnost'], 'objednavka'));
+      const variant = firstVariant(product);
+      return normalizeAvailability(
+        getValue(product, ['availability', 'stockStatus', 'status', 'dostupnost'], null) ??
+        getValue(variant || {}, ['stock'], 'objednavka')
+      );
     }
 
     function isFeatured(product){
@@ -1876,13 +1686,11 @@
     function isOnSale(product){
       const oldPrice = getOldPrice(product);
       const price = getPrice(product);
-      return Boolean(
-        getValue(product, ['sale', 'isSale', 'discount'], false) ||
-        (oldPrice && price && oldPrice > price)
-      );
+      return Boolean((oldPrice && price && oldPrice > price) || getValue(product, ['sale', 'isSale', 'discount'], false));
     }
 
     function getBadgeLabel(product){
+      if (getValue(product, ['certified'], null)) return 'Certified';
       return getValue(product, ['badge', 'label', 'tag'], null);
     }
 
@@ -1902,10 +1710,11 @@
         featured: isFeatured(raw),
         onSale: isOnSale(raw),
         badge: getBadgeLabel(raw),
-        url: getValue(raw, ['url', 'link', 'href'], '#'),
+        url: getValue(raw, ['productUrl', 'url', 'link', 'href'], '#'),
         materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
-        location: getValue(raw, ['location', 'placement', 'umiestnenie'], null),
-        model: getValue(raw, ['model', 'vehicleModel'], null)
+        location: getValue(raw, ['placement', 'location', 'umiestnenie'], null),
+        model: getValue(raw, ['model', 'vehicleModel'], null),
+        manufacturer: getValue(raw, ['manufacturer'], null)
       };
     }
 
@@ -1916,22 +1725,13 @@
         const json = await res.json();
 
         let list = [];
-
-        if (Array.isArray(json)) {
-          list = json;
-        } else if (Array.isArray(json.products)) {
-          list = json.products;
-        } else if (Array.isArray(json.items)) {
-          list = json.items;
-        } else if (Array.isArray(json.data)) {
-          list = json.data;
-        } else if (Array.isArray(json.catalog)) {
-          list = json.catalog;
-        } else if (Array.isArray(json.result)) {
-          list = json.result;
-        } else {
-          list = [];
-        }
+        if (Array.isArray(json)) list = json;
+        else if (Array.isArray(json.products)) list = json.products;
+        else if (Array.isArray(json.items)) list = json.items;
+        else if (Array.isArray(json.data)) list = json.data;
+        else if (Array.isArray(json.catalog)) list = json.catalog;
+        else if (Array.isArray(json.result)) list = json.result;
+        else list = [];
 
         list = list.filter(item => item && typeof item === 'object');
 
@@ -1939,15 +1739,14 @@
         buildFilterChips();
         updateGlobalStats();
         applyFilters();
-      }catch(err){
+      } catch(err){
         console.error(err);
         els.loadingState.style.display = 'none';
         els.emptyState.style.display = 'block';
         els.emptyState.innerHTML = `
           <h3>swagier.json sa nepodarilo načítať</h3>
           <p>
-            Skontroluj, či je súbor <strong>swagier.json</strong> v rovnakom priečinku ako táto HTML stránka,
-            prípadne uprav <strong>DATA_URL</strong> v skripte. Bez toho sa produkty nemajú z čoho načítať.
+            Skontroluj, či je súbor <strong>swagier.json</strong> v rovnakom priečinku ako táto HTML stránka.
           </p>
           <button class="cta-btn" onclick="location.reload()">Skúsiť znovu</button>
         `;
@@ -1974,8 +1773,7 @@
 
       [...els.categoryChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const value = btn.dataset.cat || null;
-          state.activeCategory = value || null;
+          state.activeCategory = btn.dataset.cat || null;
           buildFilterChips();
           applyFilters();
         });
@@ -1983,8 +1781,7 @@
 
       [...els.brandChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const value = btn.dataset.brand || null;
-          state.activeBrand = value || null;
+          state.activeBrand = btn.dataset.brand || null;
           buildFilterChips();
           applyFilters();
         });
@@ -1997,7 +1794,6 @@
       els.mobileFiltersMount.innerHTML = els.desktopFilters.innerHTML;
 
       const mount = els.mobileFiltersMount;
-
       const searchInput = mount.querySelector('#searchInput');
       const priceMin = mount.querySelector('#priceMin');
       const priceMax = mount.querySelector('#priceMax');
@@ -2057,8 +1853,7 @@
 
       [...categoryChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const value = btn.dataset.cat || null;
-          state.activeCategory = value || null;
+          state.activeCategory = btn.dataset.cat || null;
           buildFilterChips();
           applyFilters();
         });
@@ -2066,8 +1861,7 @@
 
       [...brandChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const value = btn.dataset.brand || null;
-          state.activeBrand = value || null;
+          state.activeBrand = btn.dataset.brand || null;
           buildFilterChips();
           applyFilters();
         });
@@ -2094,7 +1888,7 @@
         const q = normalizeText(state.search);
         items = items.filter(p => {
           const hay = [
-            p.name, p.sku, p.description, p.category,
+            p.name, p.sku, p.description, p.category, p.manufacturer || '',
             ...(p.fitment || []),
             ...(p.materials || []),
             p.location || '', p.model || ''
@@ -2103,13 +1897,8 @@
         });
       }
 
-      if(state.activeCategory){
-        items = items.filter(p => p.category === state.activeCategory);
-      }
-
-      if(state.activeBrand){
-        items = items.filter(p => p.fitment.includes(state.activeBrand));
-      }
+      if(state.activeCategory) items = items.filter(p => p.category === state.activeCategory);
+      if(state.activeBrand) items = items.filter(p => p.fitment.includes(state.activeBrand));
 
       const min = Number(state.priceMin);
       const max = Number(state.priceMax);
@@ -2126,13 +1915,8 @@
         items = items.filter(p => state.availability.has(p.availability));
       }
 
-      if(state.saleOnly){
-        items = items.filter(p => p.onSale);
-      }
-
-      if(state.newOnly){
-        items = items.filter(p => p.featured);
-      }
+      if(state.saleOnly) items = items.filter(p => p.onSale);
+      if(state.newOnly) items = items.filter(p => p.featured);
 
       switch(state.sort){
         case 'priceAsc':
@@ -2150,7 +1934,6 @@
         case 'newest':
           items.sort((a,b)=>Number(b.featured) - Number(a.featured) || b._index - a._index);
           break;
-        case 'featured':
         default:
           items.sort((a,b)=>{
             const scoreA = Number(a.featured) * 4 + Number(a.onSale) * 2 + (a.price !== null ? 1 : 0);
@@ -2183,9 +1966,9 @@
       els.emptyState.style.display = 'none';
       els.productsGrid.style.display = 'grid';
 
-      els.productsGrid.innerHTML = state.filteredProducts.map((p, i) => {
+      els.productsGrid.innerHTML = state.filteredProducts.map((p) => {
         const availability = getAvailabilityBadge(p.availability);
-        const fitmentText = p.fitment.length ? p.fitment.slice(0, 2).join(' • ') : 'Univerzálne / špecifikácia v detaile';
+        const fitmentText = p.fitment.length ? p.fitment.slice(0, 3).join(' • ') : 'Špecifikácia v detaile';
         const category = escapeHtml(p.category);
         const title = escapeHtml(p.name);
         const desc = escapeHtml(p.description);
@@ -2194,9 +1977,10 @@
         const badge = p.badge ? `<span class="badge gold">${escapeHtml(p.badge)}</span>` : '';
         const price = formatPrice(p.price);
         const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
+        const link = escapeHtml(p.url || '#');
 
         return `
-          <article class="product-card" data-index="${i}">
+          <article class="product-card">
             <div class="product-media">
               <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
               <div class="product-overlay">
@@ -2218,15 +2002,13 @@
             </div>
 
             <div class="product-body">
-              <div class="product-topline">
-                <div class="product-meta">
-                  <div class="brand-line">
-                    <span class="tiny-tag">Performance</span>
-                    <span class="tiny-tag">${category}</span>
-                  </div>
-                  <h3 class="product-title">${title}</h3>
-                  <div class="sku-line">SKU: ${sku}</div>
+              <div class="product-meta">
+                <div class="brand-line">
+                  <span class="tiny-tag">${category}</span>
+                  ${p.manufacturer ? `<span class="tiny-tag">${escapeHtml(p.manufacturer)}</span>` : ''}
                 </div>
+                <h3 class="product-title">${title}</h3>
+                <div class="sku-line">SKU: ${sku}</div>
               </div>
 
               <div class="product-desc">${desc}</div>
@@ -2248,7 +2030,7 @@
 
               <div class="product-footer">
                 <button class="card-btn secondary preview-btn" data-sku="${sku}">Detail produktu</button>
-                <button class="card-btn primary">Zistiť viac</button>
+                <a class="card-btn primary" href="${link}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;">Prejsť na produkt</a>
               </div>
             </div>
           </article>
@@ -2269,7 +2051,7 @@
 
       if(state.search) tags.push({ label:`Hľadanie: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.activeCategory) tags.push({ label:`Kategória: ${state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
-      if(state.activeBrand) tags.push({ label:`Fitment: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
+      if(state.activeBrand) tags.push({ label:`Platforma: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
       if(state.priceMin !== '') tags.push({ label:`Cena od: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.priceMax !== '') tags.push({ label:`Cena do: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.saleOnly) tags.push({ label:`Len akcie`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
@@ -2318,7 +2100,7 @@
       els.hudTopCategory.textContent = topCategory || '—';
 
       els.heroHighlightText.textContent = all.length
-        ? `Katalóg obsahuje ${all.length} položiek. Dominantná kategória je ${topCategory || 'nezaradená'} a systém je pripravený na okamžité filtrovanie.`
+        ? `Katalóg obsahuje ${all.length} položiek. Dominantná kategória je ${topCategory || 'nezaradená'} a ceny sa berú priamo z variantov v JSONe.`
         : 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.';
     }
 
@@ -2332,9 +2114,7 @@
 
     function getTopCategory(list){
       const counter = {};
-      for(const p of list){
-        counter[p.category] = (counter[p.category] || 0) + 1;
-      }
+      for(const p of list) counter[p.category] = (counter[p.category] || 0) + 1;
       const sorted = Object.entries(counter).sort((a,b)=>b[1]-a[1]);
       return sorted[0]?.[0] || null;
     }
@@ -2346,6 +2126,7 @@
       const oldPrice = product.oldPrice && product.oldPrice > (product.price ?? 0)
         ? `<span class="old-price">${formatPrice(product.oldPrice)}</span>`
         : '';
+      const link = escapeHtml(product.url || '#');
 
       els.modalContent.innerHTML = `
         <div class="modal-media">
@@ -2354,14 +2135,12 @@
         <div class="modal-content">
           <div class="brand-line">
             <span class="badge ${availability.cls}">${availability.text}</span>
-            <span class="badge dark">Performance</span>
             <span class="badge dark">${escapeHtml(product.category)}</span>
             ${product.featured ? '<span class="badge gold">Featured</span>' : ''}
             ${product.onSale ? '<span class="badge red">Sale</span>' : ''}
           </div>
 
           <h3 class="modal-title">${escapeHtml(product.name)}</h3>
-
           <div class="sku-line">SKU: ${escapeHtml(String(product.sku))}</div>
 
           <div class="price-main">
@@ -2373,15 +2152,15 @@
 
           <div class="modal-specs">
             <div class="modal-spec"><span>Kategória</span><span>${escapeHtml(product.category)}</span></div>
-            <div class="modal-spec"><span>Fitment / značka</span><span>${escapeHtml(fitment)}</span></div>
+            <div class="modal-spec"><span>Platforma / fitment</span><span>${escapeHtml(fitment)}</span></div>
             <div class="modal-spec"><span>Materiál</span><span>${escapeHtml(materials)}</span></div>
             <div class="modal-spec"><span>Umiestnenie</span><span>${escapeHtml(product.location || 'Nie je uvedené')}</span></div>
-            <div class="modal-spec"><span>Model</span><span>${escapeHtml(product.model || 'Nie je uvedené')}</span></div>
+            <div class="modal-spec"><span>Výrobca</span><span>${escapeHtml(product.manufacturer || 'Nie je uvedené')}</span></div>
           </div>
 
           <div class="product-footer" style="margin-top:6px;">
             <button class="card-btn secondary" onclick="document.getElementById('productModal').classList.remove('open'); document.body.style.overflow=''">Zavrieť</button>
-            <button class="card-btn primary">Prejsť ďalej</button>
+            <a class="card-btn primary" href="${link}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;">Prejsť na produkt</a>
           </div>
         </div>
       `;
