@@ -1200,7 +1200,275 @@
       margin:0;
       font-family:"Oxanium",sans-serif;
     }
+.cart-btn-top{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
 
+.cart-count{
+  min-width:24px;
+  height:24px;
+  padding:0 7px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, var(--red-2), var(--red));
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  box-shadow:0 8px 20px rgba(179,31,36,.28);
+}
+
+.cart-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(4,5,8,.62);
+  backdrop-filter:blur(8px);
+  opacity:0;
+  visibility:hidden;
+  transition:.25s ease;
+  z-index:1240;
+}
+
+.cart-backdrop.open{
+  opacity:1;
+  visibility:visible;
+}
+
+.cart-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:min(460px, 100vw);
+  height:100vh;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+    #0b0d11;
+  border-left:1px solid rgba(255,255,255,.08);
+  box-shadow:-24px 0 70px rgba(0,0,0,.42);
+  transform:translateX(100%);
+  transition:.28s ease;
+  z-index:1250;
+  display:flex;
+  flex-direction:column;
+}
+
+.cart-drawer.open{
+  transform:translateX(0);
+}
+
+.cart-drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px 18px 12px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.cart-drawer-head h3{
+  margin:0;
+  font-family:"Oxanium",sans-serif;
+}
+
+.cart-items{
+  flex:1;
+  overflow:auto;
+  padding:14px 18px;
+  display:grid;
+  gap:12px;
+}
+
+.cart-item{
+  display:grid;
+  grid-template-columns:84px minmax(0,1fr);
+  gap:12px;
+  padding:12px;
+  border-radius:18px;
+  background:#11131a;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.cart-item img{
+  width:84px;
+  height:84px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#0d0f15;
+  padding:8px;
+}
+
+.cart-item-title{
+  margin:0 0 6px;
+  font-size:.95rem;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.cart-item-meta{
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.5;
+}
+
+.cart-item-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:10px;
+}
+
+.qty-wrap{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty-btn{
+  width:30px;
+  height:30px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#171a22;
+  color:#fff;
+  cursor:pointer;
+}
+
+.remove-btn{
+  border:none;
+  background:none;
+  color:#ff7b7b;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.cart-footer{
+  padding:16px 18px 18px;
+  border-top:1px solid rgba(255,255,255,.06);
+  background:rgba(10,11,15,.95);
+}
+
+.cart-total-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:1rem;
+}
+
+.modal-gallery{
+  display:grid;
+  grid-template-columns:96px minmax(0,1fr);
+  gap:16px;
+  width:100%;
+  height:100%;
+  padding:24px;
+}
+
+.modal-thumbs{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow:auto;
+}
+
+.modal-thumb{
+  width:96px;
+  height:96px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#11131a;
+  padding:8px;
+  cursor:pointer;
+}
+
+.modal-thumb.active{
+  border-color:rgba(179,31,36,.42);
+  box-shadow:0 0 0 4px rgba(179,31,36,.1);
+}
+
+.modal-main-image{
+  width:100%;
+  height:100%;
+  min-height:420px;
+  object-fit:contain;
+  background:linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0));
+  border-radius:22px;
+}
+
+.variant-block{
+  display:grid;
+  gap:10px;
+}
+
+.variant-label{
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:.78rem;
+}
+
+.variant-select{
+  width:100%;
+  min-height:50px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#11131a;
+  color:#fff;
+  padding:0 14px;
+  outline:none;
+}
+
+.modal-price{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.modal-price .price{
+  font-size:2rem;
+}
+
+.modal-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+@media (max-width: 1024px){
+  .modal-gallery{
+    grid-template-columns:1fr;
+    padding:18px;
+  }
+
+  .modal-thumbs{
+    flex-direction:row;
+    order:2;
+  }
+
+  .modal-thumb{
+    width:72px;
+    height:72px;
+    flex:none;
+  }
+
+  .modal-main-image{
+    min-height:280px;
+  }
+
+  .cart-drawer{
+    width:min(100vw, 100vw);
+  }
+}
+
+@media (max-width: 760px){
+  .modal-actions{
+    grid-template-columns:1fr;
+  }
+}
     @media (max-width: 1450px){
       .products,.loading-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
     }
@@ -1251,8 +1519,13 @@
       </a>
 
       <div class="top-actions">
-        <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
-      </div>
+  <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
+
+  <button class="ghost-btn cart-btn-top" id="cartBtn" type="button">
+    Košík
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</div>
     </div>
   </header>
 
@@ -1455,6 +1728,24 @@
     </div>
   </div>
 
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-head">
+    <h3>Tvoj košík</h3>
+    <button class="modal-close" id="closeCartBtn" aria-label="Zavrieť">✕</button>
+  </div>
+
+  <div class="cart-items" id="cartItems"></div>
+
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Spolu</span>
+      <strong id="cartTotal">0,00 €</strong>
+    </div>
+  </div>
+</aside>
+
   <div class="mobile-filter-panel" id="mobileFilterPanel">
     <div class="mobile-filter-sheet">
       <div class="mobile-sheet-top">
@@ -1468,18 +1759,23 @@
   <script>
     const DATA_URL = './swagier.json';
 
-    const state = {
-      allProducts: [],
-      filteredProducts: [],
-      activeCategory: null,
-      activeBrand: null,
-      search: '',
-      priceMin: '',
-      priceMax: '',
-      saleOnly: false,
-      newOnly: false,
-      sort: 'featured'
-    };
+   const state = {
+  allProducts: [],
+  filteredProducts: [],
+  activeCategory: null,
+  activeBrand: null,
+  search: '',
+  priceMin: '',
+  priceMax: '',
+  saleOnly: false,
+  newOnly: false,
+  sort: 'featured',
+
+  cart: [],
+  modalProduct: null,
+  modalVariantIndex: 0,
+  modalImageIndex: 0
+};
 
     const els = {
       productsGrid: document.getElementById('productsGrid'),
@@ -1514,6 +1810,13 @@
       mobileFilterPanel: document.getElementById('mobileFilterPanel'),
       closeMobileFilters: document.getElementById('closeMobileFilters'),
       desktopFilters: document.getElementById('desktopFilters'),
+      cartBtn: document.getElementById('cartBtn'),
+      cartCount: document.getElementById('cartCount'),
+      cartDrawer: document.getElementById('cartDrawer'),
+      cartBackdrop: document.getElementById('cartBackdrop'),
+      closeCartBtn: document.getElementById('closeCartBtn'),
+      cartItems: document.getElementById('cartItems'),
+      cartTotal: document.getElementById('cartTotal')
       mobileFiltersMount: document.getElementById('mobileFiltersMount')
     };
 
@@ -1563,6 +1866,40 @@
       const variants = normalizeArray(product.variants);
       return variants[0] || null;
     }
+
+    function getVariants(product){
+  return normalizeArray(product?.raw?.variants || product?.variants);
+}
+
+function getActiveVariant(product){
+  const variants = getVariants(product);
+  return variants[state.modalVariantIndex] || variants[0] || null;
+}
+
+function getAllImages(product, variant = null){
+  const baseImages = normalizeArray(
+    getValue(product?.raw || product, ['images', 'gallery', 'photos', 'imageUrls'], [])
+  );
+
+  const variantImages = normalizeArray(variant?.images);
+  return [...new Set([...variantImages, ...baseImages].filter(Boolean))];
+}
+
+function getVariantOptionsLabel(variant){
+  if(!variant) return 'Základná verzia';
+
+  const options = variant.options && typeof variant.options === 'object'
+    ? Object.values(variant.options).filter(Boolean)
+    : [];
+
+  if(options.length){
+    return options.join(' / ');
+  }
+
+  return variant.title && variant.title !== 'Default Title'
+    ? variant.title
+    : 'Základná verzia';
+}
 
     function getImage(product){
       const variant = firstVariant(product);
@@ -1635,22 +1972,25 @@
 
     function mapProduct(raw, index){
       return {
-        raw,
-        _index: index,
-        name: getProductName(raw),
-        description: getProductDesc(raw),
-        category: getCategory(raw),
-        carModels: getCarModels(raw),
-        price: getPrice(raw),
-        oldPrice: getOldPrice(raw),
-        image: getImage(raw),
-        featured: isFeatured(raw),
-        onSale: isOnSale(raw),
-        url: getValue(raw, ['productUrl', 'url', 'link', 'href'], '#'),
-        materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
-        location: getValue(raw, ['placement', 'location', 'umiestnenie'], null),
-        manufacturer: getValue(raw, ['manufacturer'], null)
-      };
+  raw,
+  _index: index,
+  name: getProductName(raw),
+  description: getProductDesc(raw),
+  category: getCategory(raw),
+  carModels: getCarModels(raw),
+  price: getPrice(raw),
+  oldPrice: getOldPrice(raw),
+  image: getImage(raw),
+  featured: isFeatured(raw),
+  onSale: isOnSale(raw),
+  url: getValue(raw, ['productUrl', 'url', 'link', 'href'], '#'),
+  materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
+  location: getValue(raw, ['placement', 'location', 'umiestnenie'], null),
+  manufacturer: getValue(raw, ['manufacturer'], null),
+
+  variants: normalizeArray(raw.variants),
+  images: normalizeArray(getValue(raw, ['images', 'gallery', 'photos', 'imageUrls'], []))
+};
     }
 
     async function loadProducts(){
@@ -1924,9 +2264,9 @@
               </div>
 
               <div class="product-footer">
-                <button class="card-btn secondary preview-btn" data-index="${index}">Detail produktu</button>
-                <a class="card-btn primary" href="${link}" target="_blank" rel="noopener">Prejsť na produkt</a>
-              </div>
+  <button class="card-btn secondary preview-btn" data-index="${index}">Detail produktu</button>
+  <button class="card-btn primary preview-btn" data-index="${index}">Vybrať variant</button>
+</div>
             </div>
           </article>
         `;
@@ -2003,53 +2343,237 @@
     }
 
     function openModal(product){
-      const models = product.carModels.length ? product.carModels.join(', ') : 'Nie je špecifikované';
-      const materials = product.materials.length ? product.materials.join(', ') : 'Nie je uvedené';
-      const oldPrice = product.oldPrice && product.oldPrice > (product.price ?? 0)
-        ? `<span class="old-price">${formatPrice(product.oldPrice)}</span>`
-        : '';
-      const link = escapeHtml(product.url || '#');
+  state.modalProduct = product;
+  state.modalVariantIndex = 0;
+  state.modalImageIndex = 0;
+  renderModal();
+  els.productModal.classList.add('open');
+  els.productModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
 
-      els.modalContent.innerHTML = `
-        <div class="modal-media">
-          <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
+function closeModal(){
+  els.productModal.classList.remove('open');
+  els.productModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function renderModal(){
+  const product = state.modalProduct;
+  if(!product) return;
+
+  const variants = getVariants(product);
+  const activeVariant = getActiveVariant(product);
+  const images = getAllImages(product, activeVariant);
+  const activeImage = images[state.modalImageIndex] || images[0] || product.image;
+
+  const price = formatPrice(activeVariant?.price ?? product.price);
+  const oldPriceValue = activeVariant?.compareAtPrice ?? product.oldPrice;
+  const oldPrice = oldPriceValue ? `<span class="old-price">${formatPrice(oldPriceValue)}</span>` : '';
+
+  els.modalContent.innerHTML = `
+    <div class="modal-media">
+      <div class="modal-gallery">
+        <div class="modal-thumbs">
+          ${images.map((img, i) => `
+            <button class="modal-thumb ${i === state.modalImageIndex ? 'active' : ''}" type="button" data-image-index="${i}">
+              <img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)}" style="width:100%;height:100%;object-fit:contain;">
+            </button>
+          `).join('')}
         </div>
-        <div class="modal-content">
-          <h3 class="modal-title">${escapeHtml(product.name)}</h3>
 
-          <div class="price-main">
-            <span class="price">${formatPrice(product.price)}</span>
-            ${oldPrice}
-          </div>
-
-          <div class="modal-desc">${escapeHtml(product.description)}</div>
-
-          <div class="modal-specs">
-            <div class="modal-spec"><span>Kategória</span><span>${escapeHtml(product.category)}</span></div>
-            <div class="modal-spec"><span>Model auta</span><span>${escapeHtml(models)}</span></div>
-            <div class="modal-spec"><span>Materiál</span><span>${escapeHtml(materials)}</span></div>
-            <div class="modal-spec"><span>Umiestnenie</span><span>${escapeHtml(product.location || 'Nie je uvedené')}</span></div>
-            <div class="modal-spec"><span>Výrobca</span><span>${escapeHtml(product.manufacturer || 'Nie je uvedené')}</span></div>
-          </div>
-
-          <div class="product-footer" style="margin-top:6px;">
-            <button class="card-btn secondary" onclick="document.getElementById('productModal').classList.remove('open'); document.body.style.overflow=''">Zavrieť</button>
-            <a class="card-btn primary" href="${link}" target="_blank" rel="noopener">Prejsť na produkt</a>
-          </div>
+        <div>
+          <img
+            class="modal-main-image"
+            src="${escapeHtml(activeImage)}"
+            alt="${escapeHtml(product.name)}"
+            onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'"
+          >
         </div>
-      `;
+      </div>
+    </div>
 
-      els.productModal.classList.add('open');
-      els.productModal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
+    <div class="modal-content">
+      <h2 class="modal-title">${escapeHtml(product.name)}</h2>
 
-    function closeModal(){
-      els.productModal.classList.remove('open');
-      els.productModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
+      <div class="modal-price">
+        <span class="price">${price}</span>
+        ${oldPrice}
+      </div>
 
+      ${
+        variants.length > 1
+          ? `
+            <div class="variant-block">
+              <div class="variant-label">Variant</div>
+              <select class="variant-select" id="variantSelect">
+                ${variants.map((variant, i) => `
+                  <option value="${i}" ${i === state.modalVariantIndex ? 'selected' : ''}>
+                    ${escapeHtml(getVariantOptionsLabel(variant))} — ${formatPrice(variant.price)}
+                  </option>
+                `).join('')}
+              </select>
+            </div>
+          `
+          : ''
+      }
+
+      <div class="modal-desc">${escapeHtml(product.description)}</div>
+
+      <div class="modal-specs">
+        <div class="modal-spec">
+          <span>Kategória</span>
+          <span>${escapeHtml(product.category || '—')}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>Model auta</span>
+          <span>${escapeHtml(product.carModels?.join(', ') || 'UNIVERZÁLNE')}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>Výrobca</span>
+          <span>${escapeHtml(product.manufacturer || '—')}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>SKU</span>
+          <span>${escapeHtml(activeVariant?.sku || '—')}</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="card-btn primary" id="addToCartBtn">Pridať do košíka</button>
+        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">Otvoriť v Shopify</a>
+      </div>
+    </div>
+  `;
+
+  els.modalContent.querySelectorAll('[data-image-index]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.modalImageIndex = Number(btn.dataset.imageIndex);
+      renderModal();
+    });
+  });
+
+  const variantSelect = document.getElementById('variantSelect');
+  if(variantSelect){
+    variantSelect.addEventListener('change', (e) => {
+      state.modalVariantIndex = Number(e.target.value);
+      state.modalImageIndex = 0;
+      renderModal();
+    });
+  }
+
+  const addBtn = document.getElementById('addToCartBtn');
+  if(addBtn){
+    addBtn.addEventListener('click', () => addToCart(product));
+  }
+}
+function getCartItemKey(product, variant){
+  return `${product.raw?.id || product.name}__${variant?.id || 'default'}`;
+}
+
+function addToCart(product){
+  const variant = getActiveVariant(product);
+  const images = getAllImages(product, variant);
+  const image = images[0] || product.image;
+
+  const item = {
+    key: getCartItemKey(product, variant),
+    productId: product.raw?.id || product.name,
+    name: product.name,
+    variantTitle: getVariantOptionsLabel(variant),
+    sku: variant?.sku || '',
+    price: Number(variant?.price ?? product.price ?? 0),
+    qty: 1,
+    image
+  };
+
+  const existing = state.cart.find(x => x.key === item.key);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    state.cart.push(item);
+  }
+
+  updateCartUI();
+  openCart();
+}
+
+function updateCartUI(){
+  const count = state.cart.reduce((sum, item) => sum + item.qty, 0);
+  const total = state.cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+
+  if(els.cartCount) els.cartCount.textContent = count;
+  if(els.cartTotal) els.cartTotal.textContent = formatPrice(total);
+
+  if(!els.cartItems) return;
+
+  if(!state.cart.length){
+    els.cartItems.innerHTML = `
+      <div class="empty-state" style="padding:24px;">
+        <h3 style="font-size:1.2rem;">Košík je prázdny</h3>
+        <p>Zatiaľ si nepridal žiadny produkt.</p>
+      </div>
+    `;
+    return;
+  }
+
+  els.cartItems.innerHTML = state.cart.map(item => `
+    <div class="cart-item">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+      <div>
+        <h4 class="cart-item-title">${escapeHtml(item.name)}</h4>
+        <div class="cart-item-meta">
+          ${escapeHtml(item.variantTitle)}<br>
+          ${item.sku ? `SKU: ${escapeHtml(item.sku)}<br>` : ''}
+          ${formatPrice(item.price)}
+        </div>
+
+        <div class="cart-item-actions">
+          <div class="qty-wrap">
+            <button class="qty-btn" type="button" data-qty-action="minus" data-key="${escapeHtml(item.key)}">−</button>
+            <strong>${item.qty}</strong>
+            <button class="qty-btn" type="button" data-qty-action="plus" data-key="${escapeHtml(item.key)}">+</button>
+          </div>
+
+          <button class="remove-btn" type="button" data-remove-key="${escapeHtml(item.key)}">Odstrániť</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  els.cartItems.querySelectorAll('[data-qty-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = state.cart.find(x => x.key === btn.dataset.key);
+      if(!item) return;
+
+      if(btn.dataset.qtyAction === 'plus') item.qty += 1;
+      if(btn.dataset.qtyAction === 'minus') item.qty -= 1;
+
+      state.cart = state.cart.filter(x => x.qty > 0);
+      updateCartUI();
+    });
+  });
+
+  els.cartItems.querySelectorAll('[data-remove-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.cart = state.cart.filter(x => x.key !== btn.dataset.removeKey);
+      updateCartUI();
+    });
+  });
+}
+
+function openCart(){
+  els.cartDrawer?.classList.add('open');
+  els.cartBackdrop?.classList.add('open');
+}
+
+function closeCart(){
+  els.cartDrawer?.classList.remove('open');
+  els.cartBackdrop?.classList.remove('open');
+}
     function resetFilters(){
       state.activeCategory = null;
       state.activeBrand = null;
@@ -2129,6 +2653,16 @@
         document.body.style.overflow = 'hidden';
       });
 
+      els.modalCloseBtn?.addEventListener('click', closeModal);
+
+els.productModal?.addEventListener('click', (e) => {
+  if(e.target === els.productModal) closeModal();
+});
+
+els.cartBtn?.addEventListener('click', openCart);
+els.closeCartBtn?.addEventListener('click', closeCart);
+els.cartBackdrop?.addEventListener('click', closeCart);
+
       els.closeMobileFilters.addEventListener('click', ()=>{
         els.mobileFilterPanel.classList.remove('open');
         document.body.style.overflow = '';
@@ -2144,6 +2678,7 @@
 
     bindEvents();
     loadProducts();
+    updateCartUI();
   </script>
 </body>
 </html>
