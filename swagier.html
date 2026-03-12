@@ -1072,9 +1072,9 @@
     .modal.open{opacity:1;visibility:visible}
 
     .modal-card{
-      width:min(1160px, 100%);
-      max-height:min(88vh, 980px);
-      overflow:auto;
+      width:min(1180px, 100%);
+      height:min(88vh, 980px);
+      overflow:hidden;
       border-radius:30px;
       border:1px solid rgba(255,255,255,.08);
       background:
@@ -1101,35 +1101,39 @@
 
     .modal-grid{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:minmax(420px, .95fr) minmax(0, 1.05fr);
       gap:0;
-      min-height:520px;
+      height:100%;
+      min-height:0;
     }
 
     .modal-media{
       position:relative;
-      min-height:520px;
+      min-height:0;
       background:
         radial-gradient(circle at 70% 20%, rgba(179,31,36,.12), transparent 25%),
         linear-gradient(180deg, #12151d, #0c0f14);
       border-right:1px solid rgba(255,255,255,.06);
       display:flex;
-      align-items:center;
-      justify-content:center;
+      align-items:flex-start;
+      justify-content:flex-start;
+      padding:18px;
+      overflow:auto;
     }
 
     .modal-media img{
       width:100%;
       height:100%;
       object-fit:contain;
-      padding:24px;
     }
 
     .modal-content{
-      padding:28px 28px 30px;
+      padding:24px 24px 30px;
       display:flex;
       flex-direction:column;
       gap:18px;
+      overflow:auto;
+      min-height:0;
     }
 
     .modal-title{
@@ -1200,10 +1204,12 @@
       margin:0;
       font-family:"Oxanium",sans-serif;
     }
+
 .cart-btn-top{
   display:inline-flex;
   align-items:center;
   gap:10px;
+  padding-right:10px;
 }
 
 .cart-count{
@@ -1225,7 +1231,7 @@
   position:fixed;
   inset:0;
   background:rgba(4,5,8,.62);
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(10px);
   opacity:0;
   visibility:hidden;
   transition:.25s ease;
@@ -1241,13 +1247,14 @@
   position:fixed;
   top:0;
   right:0;
-  width:min(460px, 100vw);
+  width:min(470px, 100vw);
   height:100vh;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-    #0b0d11;
+    radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
+    #090b0f;
   border-left:1px solid rgba(255,255,255,.08);
-  box-shadow:-24px 0 70px rgba(0,0,0,.42);
+  box-shadow:-28px 0 80px rgba(0,0,0,.48);
   transform:translateX(100%);
   transition:.28s ease;
   z-index:1250;
@@ -1264,53 +1271,56 @@
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:18px 18px 12px;
+  padding:20px 20px 14px;
   border-bottom:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
 }
 
 .cart-drawer-head h3{
   margin:0;
   font-family:"Oxanium",sans-serif;
+  font-size:1.2rem;
 }
 
 .cart-items{
   flex:1;
   overflow:auto;
-  padding:14px 18px;
+  padding:16px 18px;
   display:grid;
   gap:12px;
 }
 
 .cart-item{
   display:grid;
-  grid-template-columns:84px minmax(0,1fr);
+  grid-template-columns:94px minmax(0,1fr);
   gap:12px;
   padding:12px;
-  border-radius:18px;
-  background:#11131a;
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.018)), #10131a;
   border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 16px 40px rgba(0,0,0,.18);
 }
 
 .cart-item img{
-  width:84px;
-  height:84px;
+  width:94px;
+  height:94px;
   object-fit:contain;
-  border-radius:12px;
-  background:#0d0f15;
-  padding:8px;
+  border-radius:16px;
+  background:#0b0d12;
+  padding:10px;
 }
 
 .cart-item-title{
   margin:0 0 6px;
-  font-size:.95rem;
+  font-size:.96rem;
   font-weight:800;
-  line-height:1.35;
+  line-height:1.34;
 }
 
 .cart-item-meta{
   color:var(--muted);
   font-size:.84rem;
-  line-height:1.5;
+  line-height:1.55;
 }
 
 .cart-item-actions{
@@ -1318,29 +1328,45 @@
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  margin-top:10px;
+  margin-top:12px;
 }
 
 .qty-wrap{
   display:inline-flex;
   align-items:center;
   gap:8px;
+  padding:6px;
+  border-radius:999px;
+  background:#0d1016;
+  border:1px solid rgba(255,255,255,.06);
 }
 
 .qty-btn{
   width:30px;
   height:30px;
-  border-radius:10px;
+  border-radius:50%;
   border:1px solid rgba(255,255,255,.08);
   background:#171a22;
   color:#fff;
   cursor:pointer;
+  transition:.22s ease;
+}
+
+.qty-btn:hover{
+  background:rgba(179,31,36,.22);
+  border-color:rgba(179,31,36,.34);
+}
+
+.qty-value{
+  min-width:18px;
+  text-align:center;
+  font-weight:800;
 }
 
 .remove-btn{
   border:none;
   background:none;
-  color:#ff7b7b;
+  color:#ff8f8f;
   font-weight:700;
   cursor:pointer;
 }
@@ -1348,7 +1374,9 @@
 .cart-footer{
   padding:16px 18px 18px;
   border-top:1px solid rgba(255,255,255,.06);
-  background:rgba(10,11,15,.95);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  display:grid;
+  gap:14px;
 }
 
 .cart-total-row{
@@ -1358,44 +1386,84 @@
   font-size:1rem;
 }
 
-.modal-gallery{
-  display:grid;
-  grid-template-columns:96px minmax(0,1fr);
-  gap:16px;
+.cart-note{
+  color:var(--muted);
+  font-size:.86rem;
+  line-height:1.55;
+}
+
+.cart-cta{
   width:100%;
-  height:100%;
-  padding:24px;
 }
 
-.modal-thumbs{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  overflow:auto;
-}
-
-.modal-thumb{
-  width:96px;
-  height:96px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.08);
-  background:#11131a;
-  padding:8px;
-  cursor:pointer;
-}
-
-.modal-thumb.active{
-  border-color:rgba(179,31,36,.42);
-  box-shadow:0 0 0 4px rgba(179,31,36,.1);
+.modal-stage{
+  position:relative;
+  width:100%;
+  min-height:min(74vh, 760px);
+  border-radius:26px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255,255,255,.06), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+    #0d1016;
+  border:1px solid rgba(255,255,255,.06);
 }
 
 .modal-main-image{
   width:100%;
   height:100%;
-  min-height:420px;
+  min-height:min(74vh, 760px);
   object-fit:contain;
-  background:linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,0));
-  border-radius:22px;
+  object-position:left top;
+  padding:20px 20px 112px;
+}
+
+.modal-thumb-rail{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  gap:0;
+  overflow:auto hidden;
+  background:linear-gradient(180deg, rgba(5,6,9,0), rgba(5,6,9,.9) 32%, rgba(5,6,9,.98));
+  padding:12px 12px 12px;
+}
+
+.modal-thumb{
+  width:88px;
+  height:88px;
+  flex:none;
+  border-radius:0;
+  border:none;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-right:1px solid rgba(255,255,255,.06);
+  background:rgba(16,19,26,.94);
+  padding:8px;
+  cursor:pointer;
+  transition:.22s ease;
+}
+
+.modal-thumb:first-child{
+  border-top-left-radius:14px;
+  border-bottom-left-radius:14px;
+}
+
+.modal-thumb:last-child{
+  border-top-right-radius:14px;
+  border-bottom-right-radius:14px;
+  border-right:none;
+}
+
+.modal-thumb.active{
+  background:linear-gradient(135deg, rgba(179,31,36,.34), rgba(179,31,36,.14));
+  box-shadow:inset 0 0 0 1px rgba(179,31,36,.35);
+}
+
+.modal-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
 .variant-block{
@@ -1410,15 +1478,41 @@
   font-size:.78rem;
 }
 
-.variant-select{
-  width:100%;
-  min-height:50px;
-  border-radius:16px;
+.variant-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.variant-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:46px;
+  padding:10px 14px;
+  border-radius:999px;
   border:1px solid rgba(255,255,255,.08);
   background:#11131a;
   color:#fff;
-  padding:0 14px;
-  outline:none;
+  cursor:pointer;
+  transition:.22s ease;
+  font-weight:700;
+}
+
+.variant-chip small{
+  color:var(--muted);
+  font-weight:600;
+}
+
+.variant-chip:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.16);
+}
+
+.variant-chip.active{
+  background:linear-gradient(135deg, rgba(179,31,36,.30), rgba(179,31,36,.14));
+  border-color:rgba(179,31,36,.42);
+  box-shadow:0 0 0 4px rgba(179,31,36,.08);
 }
 
 .modal-price{
@@ -1436,31 +1530,37 @@
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
+  margin-top:auto;
 }
 
 @media (max-width: 1024px){
-  .modal-gallery{
+  .modal-card{
+    height:min(92vh, 980px);
+  }
+
+  .modal-grid{
     grid-template-columns:1fr;
-    padding:18px;
   }
 
-  .modal-thumbs{
-    flex-direction:row;
-    order:2;
+  .modal-media{
+    padding:16px;
+    min-height:340px;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.06);
   }
 
-  .modal-thumb{
-    width:72px;
-    height:72px;
-    flex:none;
+  .modal-stage,
+  .modal-main-image{
+    min-height:360px;
   }
 
   .modal-main-image{
-    min-height:280px;
+    object-position:center;
+    padding-bottom:108px;
   }
 
   .cart-drawer{
-    width:min(100vw, 100vw);
+    width:100vw;
   }
 }
 
@@ -1468,8 +1568,18 @@
   .modal-actions{
     grid-template-columns:1fr;
   }
+
+  .modal-thumb{
+    width:78px;
+    height:78px;
+  }
+
+  .variant-chip{
+    width:100%;
+    justify-content:space-between;
+  }
 }
-    @media (max-width: 1450px){
+@media (max-width: 1450px){
       .products,.loading-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
     }
 
@@ -1744,6 +1854,8 @@
       <span>Spolu</span>
       <strong id="cartTotal">0,00 €</strong>
     </div>
+    <div class="cart-note">Košík slúži ako rýchly výber produktov. Na dokončenie objednávky otvor konkrétny produkt v eshope.</div>
+    <button class="cta-btn cart-cta" type="button" id="closeCartCta">Pokračovať v prehliadaní</button>
   </div>
 </aside>
 
@@ -1818,6 +1930,7 @@
       closeCartBtn: document.getElementById('closeCartBtn'),
       cartItems: document.getElementById('cartItems'),
       cartTotal: document.getElementById('cartTotal'),
+      closeCartCta: document.getElementById('closeCartCta'),
       mobileFiltersMount: document.getElementById('mobileFiltersMount')
     };
 
@@ -2223,7 +2336,6 @@ function getVariantOptionsLabel(variant){
         const img = escapeHtml(p.image);
         const price = formatPrice(p.price);
         const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
-        const link = escapeHtml(p.url || '#');
         const modelText = p.carModels.length ? p.carModels.slice(0, 3).join(' • ') : 'Model v detaile';
 
         return `
@@ -2245,29 +2357,28 @@ function getVariantOptionsLabel(variant){
             <div class="product-body">
               <div class="product-meta">
                 <h3 class="product-title">${title}</h3>
-              </div>
+                <div class="product-desc">${desc}</div>
 
-              <div class="product-desc">${desc}</div>
+                <div class="spec-row">
+                  <span class="spec-pill">${escapeHtml(modelText)}</span>
+                  ${p.location ? `<span class="spec-pill">${escapeHtml(p.location)}</span>` : ''}
+                </div>
 
-              <div class="spec-row">
-                <span class="spec-pill">${escapeHtml(modelText)}</span>
-                ${p.location ? `<span class="spec-pill">${escapeHtml(p.location)}</span>` : ''}
-              </div>
-
-              <div class="price-row">
-                <div class="price-block">
-                  <div class="price-label">Cena</div>
-                  <div class="price-main">
-                    <span class="price">${price}</span>
-                    ${oldPrice}
+                <div class="price-row">
+                  <div class="price-block">
+                    <div class="price-label">Cena</div>
+                    <div class="price-main">
+                      <span class="price">${price}</span>
+                      ${oldPrice}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="product-footer">
-  <button class="card-btn secondary preview-btn" data-index="${index}">Detail produktu</button>
-  <button class="card-btn primary preview-btn" data-index="${index}">Vybrať variant</button>
-</div>
+                <div class="product-footer">
+                  <button class="card-btn secondary preview-btn" data-index="${index}">Detail</button>
+                  <button class="card-btn primary add-cart-btn" data-index="${index}">Pridať do košíku</button>
+                </div>
+              </div>
             </div>
           </article>
         `;
@@ -2278,6 +2389,14 @@ function getVariantOptionsLabel(variant){
           const index = Number(btn.dataset.index);
           const product = state.filteredProducts[index];
           if(product) openModal(product);
+        });
+      });
+
+      els.productsGrid.querySelectorAll('.add-cart-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const index = Number(btn.dataset.index);
+          const product = state.filteredProducts[index];
+          if(product) addToCart(product, { closeProduct:false });
         });
       });
     }
@@ -2377,23 +2496,23 @@ function renderModal(){
 
   els.modalContent.innerHTML = `
     <div class="modal-media">
-      <div class="modal-gallery">
-        <div class="modal-thumbs">
-          ${images.map((img, i) => `
-            <button class="modal-thumb ${i === state.modalImageIndex ? 'active' : ''}" type="button" data-image-index="${i}">
-              <img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)}" style="width:100%;height:100%;object-fit:contain;">
-            </button>
-          `).join('')}
-        </div>
+      <div class="modal-stage">
+        <img
+          class="modal-main-image"
+          src="${escapeHtml(activeImage)}"
+          alt="${escapeHtml(product.name)}"
+          onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'"
+        >
 
-        <div>
-          <img
-            class="modal-main-image"
-            src="${escapeHtml(activeImage)}"
-            alt="${escapeHtml(product.name)}"
-            onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'"
-          >
-        </div>
+        ${images.length > 1 ? `
+          <div class="modal-thumb-rail">
+            ${images.map((img, i) => `
+              <button class="modal-thumb ${i === state.modalImageIndex ? 'active' : ''}" type="button" data-image-index="${i}">
+                <img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)}">
+              </button>
+            `).join('')}
+          </div>
+        ` : ''}
       </div>
     </div>
 
@@ -2410,13 +2529,14 @@ function renderModal(){
           ? `
             <div class="variant-block">
               <div class="variant-label">Variant</div>
-              <select class="variant-select" id="variantSelect">
+              <div class="variant-chips">
                 ${variants.map((variant, i) => `
-                  <option value="${i}" ${i === state.modalVariantIndex ? 'selected' : ''}>
-                    ${escapeHtml(getVariantOptionsLabel(variant))} — ${formatPrice(variant.price)}
-                  </option>
+                  <button class="variant-chip ${i === state.modalVariantIndex ? 'active' : ''}" type="button" data-variant-index="${i}">
+                    <span>${escapeHtml(getVariantOptionsLabel(variant))}</span>
+                    <small>${formatPrice(variant.price)}</small>
+                  </button>
                 `).join('')}
-              </select>
+              </div>
             </div>
           `
           : ''
@@ -2448,7 +2568,7 @@ function renderModal(){
 
       <div class="modal-actions">
         <button class="card-btn primary" id="addToCartBtn">Pridať do košíka</button>
-        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">Otvoriť v Shopify</a>
+        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">Otvoriť v eshope</a>
       </div>
     </div>
   `;
@@ -2460,25 +2580,25 @@ function renderModal(){
     });
   });
 
-  const variantSelect = document.getElementById('variantSelect');
-  if(variantSelect){
-    variantSelect.addEventListener('change', (e) => {
-      state.modalVariantIndex = Number(e.target.value);
+  els.modalContent.querySelectorAll('[data-variant-index]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.modalVariantIndex = Number(btn.dataset.variantIndex);
       state.modalImageIndex = 0;
       renderModal();
     });
-  }
+  });
 
   const addBtn = document.getElementById('addToCartBtn');
   if(addBtn){
-    addBtn.addEventListener('click', () => addToCart(product));
+    addBtn.addEventListener('click', () => addToCart(product, { closeProduct:true }));
   }
 }
 function getCartItemKey(product, variant){
   return `${product.raw?.id || product.name}__${variant?.id || 'default'}`;
 }
 
-function addToCart(product){
+function addToCart(product, options = {}){
+  const { closeProduct = true } = options;
   const variant = getActiveVariant(product);
   const images = getAllImages(product, variant);
   const image = images[0] || product.image;
@@ -2502,6 +2622,7 @@ function addToCart(product){
   }
 
   updateCartUI();
+  if(closeProduct) closeModal();
   openCart();
 }
 
@@ -2516,7 +2637,7 @@ function updateCartUI(){
 
   if(!state.cart.length){
     els.cartItems.innerHTML = `
-      <div class="empty-state" style="padding:24px;">
+      <div class="empty-state" style="padding:18px;">
         <h3 style="font-size:1.2rem;">Košík je prázdny</h3>
         <p>Zatiaľ si nepridal žiadny produkt.</p>
       </div>
@@ -2538,7 +2659,7 @@ function updateCartUI(){
         <div class="cart-item-actions">
           <div class="qty-wrap">
             <button class="qty-btn" type="button" data-qty-action="minus" data-key="${escapeHtml(item.key)}">−</button>
-            <strong>${item.qty}</strong>
+            <strong class="qty-value">${item.qty}</strong>
             <button class="qty-btn" type="button" data-qty-action="plus" data-key="${escapeHtml(item.key)}">+</button>
           </div>
 
@@ -2665,6 +2786,7 @@ els.productModal?.addEventListener('click', (e) => {
 
 els.cartBtn?.addEventListener('click', openCart);
 els.closeCartBtn?.addEventListener('click', closeCart);
+els.closeCartCta?.addEventListener('click', closeCart);
 els.cartBackdrop?.addEventListener('click', closeCart);
 
       els.closeMobileFilters.addEventListener('click', ()=>{
