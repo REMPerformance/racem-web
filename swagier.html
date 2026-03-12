@@ -1288,8 +1288,8 @@
                     <div class="hero-stat-value" id="heroCategories">—</div>
                   </div>
                   <div class="hero-stat">
-                    <div class="hero-stat-label">Modelov</div>
-                    <div class="hero-stat-value" id="heroBrands">—</div>
+                    <div class="hero-stat-label">Modelov áut</div>
+                    <div class="hero-stat-value" id="heroModels">—</div>
                   </div>
                   <div class="hero-stat">
                     <div class="hero-stat-label">Cenový rozsah</div>
@@ -1328,7 +1328,7 @@
           <div class="hud-card">
             <div class="hud-label">Status feed</div>
             <div class="hud-value">LIVE</div>
-            <div class="hud-sub">katalóg je online</div>
+            <div class="hud-sub">ponuka je online</div>
           </div>
         </div>
       </div>
@@ -1340,7 +1340,7 @@
           <div>
             <h2 class="section-title">Katalóg produktov</h2>
             <div class="section-copy">
-              Komponenty pre upravené vozidlá – od podvozku až po karosériu.
+              Výber dielov pre upravené vozidlá. Filtruj podľa kategórie, modelu auta alebo ceny a rýchlo nájdi diely pre svoj projekt.
             </div>
           </div>
         </div>
@@ -1372,7 +1372,7 @@
 
             <div class="filter-group">
               <div class="filter-title">Model auta</div>
-              <div class="chip-grid" id="brandChips"></div>
+              <div class="chip-grid" id="modelChips"></div>
             </div>
 
             <div class="filter-group">
@@ -1387,7 +1387,7 @@
               <div class="filter-title">Akcie a stavy</div>
               <div class="checks">
                 <label class="check"><input type="checkbox" id="saleOnly"> <span>Len zlacnené produkty</span></label>
-                <label class="check"><input type="checkbox" id="newOnly"> <span>Len featured</span></label>
+                <label class="check"><input type="checkbox" id="newOnly"> <span>Len zvýraznené produkty</span></label>
               </div>
             </div>
           </aside>
@@ -1400,6 +1400,7 @@
                   <strong class="result-count" id="resultCount">0</strong>
                   <span class="result-meta">výsledkov</span>
                 </div>
+                <div class="toolbar-pill" id="toolbarInfo">SWAGIER parts catalog</div>
               </div>
 
               <div class="toolbar-right">
@@ -1439,7 +1440,7 @@
   <footer class="footer">
     <div class="container footer-wrap">
       <div><strong>RACEM</strong> performance catalog</div>
-      <div id="footerMeta">Načítanie dát zo swagier.json</div>
+      <div id="footerMeta">Načítanie dát zo SWAGIER JSON katalógu</div>
     </div>
   </footer>
 
@@ -1461,13 +1462,13 @@
   </div>
 
   <script>
-    const DATA_URL = './swagier.json';
+    const DATA_URL_CANDIDATES = ['./swagier.json', './swagier (1).json'];
 
     const state = {
       allProducts: [],
       filteredProducts: [],
       activeCategory: null,
-      activeBrand: null,
+      activeModel: null,
       search: '',
       priceMin: '',
       priceMax: '',
@@ -1481,7 +1482,7 @@
       loadingState: document.getElementById('loadingState'),
       emptyState: document.getElementById('emptyState'),
       categoryChips: document.getElementById('categoryChips'),
-      brandChips: document.getElementById('brandChips'),
+      modelChips: document.getElementById('modelChips'),
       searchInput: document.getElementById('searchInput'),
       priceMin: document.getElementById('priceMin'),
       priceMax: document.getElementById('priceMax'),
@@ -1494,7 +1495,7 @@
       emptyResetBtn: document.getElementById('emptyResetBtn'),
       heroProducts: document.getElementById('heroProducts'),
       heroCategories: document.getElementById('heroCategories'),
-      heroBrands: document.getElementById('heroBrands'),
+      heroModels: document.getElementById('heroModels'),
       heroPriceRange: document.getElementById('heroPriceRange'),
       heroHighlightText: document.getElementById('heroHighlightText'),
       hudAllProducts: document.getElementById('hudAllProducts'),
@@ -1599,13 +1600,13 @@
 
     function getCarModels(product){
       const direct = normalizeArray(getValue(product, ['carModels', 'models', 'vehicleModels', 'fitmentModels'], []));
-      if (direct.length) return direct;
+      if (direct.length) return direct.map(v => String(v).toLowerCase() === 'automobil' ? 'UNIVERZÁLNE' : v);
 
       const fitment = normalizeArray(getValue(product, ['fitment', 'fits', 'platforms'], []));
-      if (fitment.length) return fitment;
+      if (fitment.length) return fitment.map(v => String(v).toLowerCase() === 'automobil' ? 'UNIVERZÁLNE' : v);
 
       const model = getValue(product, ['model', 'vehicleModel'], null);
-      return model ? [model] : [];
+      return model ? [model === 'automobil' ? 'UNIVERZÁLNE' : model] : [];
     }
 
     function isFeatured(product){
@@ -1640,9 +1641,19 @@
 
     async function loadProducts(){
       try{
-        const res = await fetch(DATA_URL, {cache:'no-store'});
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
+        let json = null;
+        let lastError = null;
+        for (const url of DATA_URL_CANDIDATES){
+          try{
+            const res = await fetch(url, {cache:'no-store'});
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            json = await res.json();
+            break;
+          }catch(err){
+            lastError = err;
+          }
+        }
+        if(!json) throw lastError || new Error('JSON load failed');
 
         let list = [];
         if (Array.isArray(json)) list = json;
@@ -1679,16 +1690,16 @@
 
     function buildFilterChips(){
       const categories = uniqueSorted(state.allProducts.map(p => p.category));
-      const carModels = uniqueSorted(state.allProducts.flatMap(p => p.carModels));
+      const carModels = uniqueSorted(state.allProducts.flatMap(p => p.carModels).map(model => model === 'automobil' ? 'UNIVERZÁLNE' : model));
 
       els.categoryChips.innerHTML = `
         <button class="chip ${state.activeCategory === null ? 'active' : ''}" data-cat="">Všetko</button>
         ${categories.map(cat => `<button class="chip ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`).join('')}
       `;
 
-      els.brandChips.innerHTML = `
-        <button class="chip ${state.activeBrand === null ? 'active' : ''}" data-brand="">Všetky</button>
-        ${carModels.map(model => `<button class="chip ${state.activeBrand === model ? 'active' : ''}" data-brand="${escapeHtml(model)}">${escapeHtml(model)}</button>`).join('')}
+      els.modelChips.innerHTML = `
+        <button class="chip ${state.activeModel === null ? 'active' : ''}" data-brand="">Všetky</button>
+        ${carModels.map(model => `<button class="chip ${state.activeModel === model ? 'active' : ''}" data-brand="${escapeHtml(model)}">${escapeHtml(model)}</button>`).join('')}
       `;
 
       [...els.categoryChips.querySelectorAll('.chip')].forEach(btn=>{
@@ -1699,9 +1710,9 @@
         });
       });
 
-      [...els.brandChips.querySelectorAll('.chip')].forEach(btn=>{
+      [...els.modelChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          state.activeBrand = btn.dataset.brand || null;
+          state.activeModel = btn.dataset.brand || null;
           buildFilterChips();
           applyFilters();
         });
@@ -1721,7 +1732,7 @@
       const newOnly = mount.querySelector('#newOnly');
       const resetAllBtn = mount.querySelector('#resetAllBtn');
       const categoryChips = mount.querySelector('#categoryChips');
-      const brandChips = mount.querySelector('#brandChips');
+      const modelChips = mount.querySelector('#modelChips');
 
       searchInput.value = state.search;
       priceMin.value = state.priceMin;
@@ -1769,9 +1780,9 @@
         });
       });
 
-      [...brandChips.querySelectorAll('.chip')].forEach(btn=>{
+      [...modelChips.querySelectorAll('.chip')].forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          state.activeBrand = btn.dataset.brand || null;
+          state.activeModel = btn.dataset.brand || null;
           buildFilterChips();
           applyFilters();
         });
@@ -1803,7 +1814,7 @@
       }
 
       if(state.activeCategory) items = items.filter(p => p.category === state.activeCategory);
-      if(state.activeBrand) items = items.filter(p => p.carModels.includes(state.activeBrand));
+      if(state.activeModel) items = items.filter(p => p.carModels.includes(state.activeModel));
 
       const min = Number(state.priceMin);
       const max = Number(state.priceMax);
@@ -1869,6 +1880,7 @@
         const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
         const link = escapeHtml(p.url || '#');
         const modelText = p.carModels.length ? p.carModels.slice(0, 3).join(' • ') : 'Model v detaile';
+        const moreModels = p.carModels.length > 3 ? ` +${p.carModels.length - 3}` : ''; 
 
         return `
           <article class="product-card">
@@ -1894,7 +1906,7 @@
               <div class="product-desc">${desc}</div>
 
               <div class="spec-row">
-                <span class="spec-pill">${escapeHtml(modelText)}</span>
+                <span class="spec-pill">${escapeHtml(modelText)}${moreModels}</span>
                 ${p.location ? `<span class="spec-pill">${escapeHtml(p.location)}</span>` : ''}
               </div>
 
@@ -1931,11 +1943,11 @@
 
       if(state.search) tags.push({ label:`Hľadanie: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.activeCategory) tags.push({ label:`Kategória: ${state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
-      if(state.activeBrand) tags.push({ label:`Model auta: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
+      if(state.activeModel) tags.push({ label:`Model auta: ${state.activeModel}`, action:() => { state.activeModel=null; buildFilterChips(); applyFilters(); }});
       if(state.priceMin !== '') tags.push({ label:`Cena od: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.priceMax !== '') tags.push({ label:`Cena do: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
       if(state.saleOnly) tags.push({ label:`Len akcie`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
-      if(state.newOnly) tags.push({ label:`Len featured`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.newOnly) tags.push({ label:`Len zvýraznené`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
 
       els.activeFilters.innerHTML = tags.map((tag, idx)=>`
         <div class="active-tag">
@@ -1959,10 +1971,10 @@
 
       els.heroProducts.textContent = all.length || '0';
       els.heroCategories.textContent = categories.length || '0';
-      els.heroBrands.textContent = carModels.length || '0';
+      els.heroModels.textContent = carModels.length || '0';
       els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
       els.hudAllProducts.textContent = all.length || '0';
-      els.footerMeta.textContent = `Načítaných ${all.length || 0} produktov zo swagier.json`;
+      els.footerMeta.textContent = `Načítaných ${all.length || 0} produktov zo SWAGIER JSON katalógu`;
 
       const topCategory = getTopCategory(all);
       els.hudTopCategory.textContent = topCategory || '—';
@@ -1975,9 +1987,11 @@
     function updateResultStats(){
       els.resultCount.textContent = state.filteredProducts.length;
       els.hudVisibleProducts.textContent = state.filteredProducts.length;
-      els.toolbarInfo.textContent = state.search
-        ? `Vyhľadávaš: ${state.search}`
-        : `Performance catalog live`;
+      if(els.toolbarInfo){
+        els.toolbarInfo.textContent = state.search
+          ? `Vyhľadávaš: ${state.search}`
+          : (state.activeModel ? `Model: ${state.activeModel}` : 'SWAGIER parts catalog');
+      }
     }
 
     function getTopCategory(list){
@@ -2037,7 +2051,7 @@
 
     function resetFilters(){
       state.activeCategory = null;
-      state.activeBrand = null;
+      state.activeModel = null;
       state.search = '';
       state.priceMin = '';
       state.priceMax = '';
