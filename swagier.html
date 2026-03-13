@@ -1392,8 +1392,22 @@
   line-height:1.55;
 }
 
+.cart-footer-actions{
+  display:grid;
+  gap:10px;
+}
+
+.cart-secondary-cta,
 .cart-cta{
   width:100%;
+}
+
+.cart-cta[disabled],
+.cart-secondary-cta[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
 }
 
 .modal-stage{
@@ -1853,8 +1867,11 @@
       <span>Spolu</span>
       <strong id="cartTotal">0,00 €</strong>
     </div>
-    <div class="cart-note">Košík slúži ako rýchly výber produktov. Na dokončenie objednávky otvor konkrétny produkt v eshope.</div>
-    <button class="cta-btn cart-cta" type="button" id="closeCartCta">Pokračovať v prehliadaní</button>
+    <div class="cart-note">Keď budeš pripravený, celý obsah košíka sa prenesie naraz do Shopify checkoutu podľa variant ID.</div>
+    <div class="cart-footer-actions">
+      <button class="ghost-btn cart-secondary-cta" type="button" id="closeCartCta">Pokračovať v prehliadaní</button>
+      <button class="cta-btn cart-cta" type="button" id="cartCheckoutBtn">Prejsť k pokladni</button>
+    </div>
   </div>
 </aside>
 
@@ -1930,6 +1947,7 @@
       cartItems: document.getElementById('cartItems'),
       cartTotal: document.getElementById('cartTotal'),
       closeCartCta: document.getElementById('closeCartCta'),
+      cartCheckoutBtn: document.getElementById('cartCheckoutBtn'),
       mobileFiltersMount: document.getElementById('mobileFiltersMount')
     };
 
@@ -2605,6 +2623,8 @@ function addToCart(product, options = {}){
   const item = {
     key: getCartItemKey(product, variant),
     productId: product.raw?.id || product.name,
+    variantId: Number(variant?.variantId || variant?.id || 0),
+    productUrl: product.raw?.productUrl || product.url || '',
     name: product.name,
     variantTitle: getVariantOptionsLabel(variant),
     sku: variant?.sku || '',
@@ -2625,12 +2645,42 @@ function addToCart(product, options = {}){
   openCart();
 }
 
+function getShopifyCheckoutUrl(){
+  const validItems = state.cart.filter(item => Number.isFinite(Number(item.variantId)) && Number(item.variantId) > 0 && item.qty > 0);
+  if(!validItems.length) return '';
+
+  const baseUrl = validItems.find(item => item.productUrl)?.productUrl || 'https://shop.racem.sk';
+  let origin = 'https://shop.racem.sk';
+
+  try {
+    origin = new URL(baseUrl).origin;
+  } catch(err) {}
+
+  const cartPath = validItems
+    .map(item => `${encodeURIComponent(String(item.variantId))}:${encodeURIComponent(String(item.qty))}`)
+    .join(',');
+
+  return `${origin}/cart/${cartPath}`;
+}
+
+function goToShopifyCheckout(){
+  const checkoutUrl = getShopifyCheckoutUrl();
+  if(!checkoutUrl){
+    alert('V košíku nie je žiadny produkt s platným Shopify variant ID.');
+    return;
+  }
+
+  window.location.href = checkoutUrl;
+}
+
 function updateCartUI(){
   const count = state.cart.reduce((sum, item) => sum + item.qty, 0);
   const total = state.cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+  const checkoutUrl = getShopifyCheckoutUrl();
 
   if(els.cartCount) els.cartCount.textContent = count;
   if(els.cartTotal) els.cartTotal.textContent = formatPrice(total);
+  if(els.cartCheckoutBtn) els.cartCheckoutBtn.disabled = !checkoutUrl;
 
   if(!els.cartItems) return;
 
@@ -2786,6 +2836,7 @@ els.productModal?.addEventListener('click', (e) => {
 els.cartBtn?.addEventListener('click', openCart);
 els.closeCartBtn?.addEventListener('click', closeCart);
 els.closeCartCta?.addEventListener('click', closeCart);
+els.cartCheckoutBtn?.addEventListener('click', goToShopifyCheckout);
 els.cartBackdrop?.addEventListener('click', closeCart);
 
       els.closeMobileFilters.addEventListener('click', ()=>{
