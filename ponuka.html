@@ -2015,6 +2015,69 @@ select option{background:#050505;color:#fff}
 @media (max-width:1100px){.heroStats{grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media (max-width:620px){.heroStats{grid-template-columns:1fr;}}
 
+    .heroInner{
+display:grid;
+grid-template-columns:1fr 1fr;
+align-items:center;
+gap:20px;
+padding:24px;
+}
+
+.heroText{
+max-width:650px;
+}
+
+.heroTitle{
+margin:0;
+font-family:Oswald, sans-serif;
+text-transform:uppercase;
+letter-spacing:.14em;
+font-size:48px;
+line-height:1.1;
+}
+
+.racemRed{
+color:#B31F24;
+text-shadow:0 0 28px rgba(179,31,36,.45);
+}
+
+.heroSub{
+margin-top:12px;
+font-size:14px;
+color:rgba(255,255,255,.72);
+max-width:500px;
+}
+
+.heroLogo{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+}
+
+.heroLogo img{
+max-height:140px;
+opacity:.30;
+filter:contrast(1.1);
+}
+
+/* responsive */
+@media (max-width:900px){
+
+.heroInner{
+grid-template-columns:1fr;
+text-align:center;
+}
+
+.heroLogo{
+justify-content:center;
+margin-top:16px;
+}
+
+.heroLogo img{
+max-height:110px;
+}
+
+}
 </style>
 </head>
 
@@ -2071,15 +2134,29 @@ select option{background:#050505;color:#fff}
       </div>
     </div>
 
-    <section class="heroPanel" aria-label="RACEM performance catalog hero">
-      <div class="heroInnerX heroInnerX--single">
-        <div>
-          <div class="heroEyebrow" data-i18n="heroEyebrow">All products in one place</div>
-          <h1 class="heroTitleX" data-i18n="heroTitle">Celá ponuka na jednom mieste.</h1>
-          <p class="heroLeadX" data-i18n="heroLead">Vyber si diely rýchlo, filtruj podľa auta, ceny alebo kategórie a otvor produkt bez zbytočného balastu.</p>
-        </div>
-      </div>
-    </section>
+   <section class="hero">
+
+<div class="heroInner">
+
+<div class="heroText">
+
+<h1 class="heroTitle">
+CELÁ <span class="racemRed">PONUKA</span> NA JEDNOM MIESTE
+</h1>
+
+<p class="heroSub">
+Vyber si diely rýchlo, filtruj podľa auta, ceny alebo kategórie a otvor produkt bez zbytočného balastu.
+</p>
+
+</div>
+
+<div class="heroLogo">
+<img src="assets/cybul.png" alt="CYBUL">
+</div>
+
+</div>
+
+</section>
 
     <section class="heroStats" aria-label="Catalog statistics">
       <div class="stat-card">
