@@ -137,7 +137,7 @@
       min-width:0;
     }
     .brand-logo{
-      width:46px; height:46px; border-radius:14px;
+      width:132px; height:56px; border-radius:16px;
       background:
         radial-gradient(circle at 30% 30%, rgba(255,255,255,.13), transparent 45%),
         linear-gradient(145deg, rgba(179,31,36,.35), rgba(20,21,28,.9));
@@ -147,7 +147,7 @@
       overflow:hidden;
       flex:0 0 auto;
     }
-    .brand-logo img{width:100%; height:100%; object-fit:contain; padding:8px}
+    .brand-logo img{width:100%; height:100%; object-fit:contain; padding:6px 10px}
     .brand-copy{min-width:0}
     .brand-kicker{
       color:var(--red-2); font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
@@ -213,7 +213,7 @@
 
     .hero{
       position:relative;
-      padding:34px 0 22px;
+      padding:16px 0 14px;
       overflow:hidden;
     }
     .hero-grid{
@@ -241,8 +241,8 @@
       pointer-events:none;
     }
     .hero-main{
-      min-height:500px;
-      padding:34px;
+      min-height:260px;
+      padding:22px;
       background:
         radial-gradient(circle at top right, rgba(179,31,36,.22), transparent 28%),
         radial-gradient(circle at 15% 10%, rgba(255,255,255,.06), transparent 20%),
@@ -261,7 +261,7 @@
     }
     .hero-side-card{
       padding:22px;
-      min-height:240px;
+      min-height:0;
     }
     .kicker{
       display:inline-flex; align-items:center; gap:10px;
@@ -273,20 +273,20 @@
       text-transform:uppercase; letter-spacing:.14em;
     }
     .hero h1{
-      font-size:clamp(2.2rem, 4vw, 4.9rem);
-      line-height:.95;
-      margin:18px 0 14px;
+      font-size:clamp(1.5rem, 2.6vw, 2.7rem);
+      line-height:1.02;
+      margin:12px 0 10px;
       letter-spacing:-.04em;
       max-width:900px;
     }
     .hero p.lead{
-      max-width:760px; font-size:1.06rem; color:#d7dbe6; line-height:1.72; margin:0 0 24px;
+      max-width:760px; font-size:.95rem; color:#d7dbe6; line-height:1.62; margin:0 0 14px;
     }
     .hero-stats{
-      display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; margin:26px 0 20px;
+      display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin:18px 0 14px;
     }
     .stat-card{
-      padding:18px;
+      padding:14px;
       border-radius:22px;
       background:rgba(255,255,255,.035);
       border:1px solid rgba(255,255,255,.07);
@@ -360,31 +360,36 @@
     }
 
     .featured-strip{
-      padding:18px;
-      margin-top:20px;
+      padding:14px;
+      margin-top:14px;
     }
     .featured-scroller{
-      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(280px, 1fr); gap:16px;
+      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(220px, 260px); gap:12px;
       overflow:auto; padding-bottom:6px;
       scrollbar-width:thin;
     }
     .feature-card{
-      min-height:180px; border-radius:22px;
-      padding:18px; position:relative; overflow:hidden;
+      min-height:0; border-radius:20px;
+      padding:14px; position:relative; overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
       background:
         radial-gradient(circle at top right, rgba(179,31,36,.2), transparent 30%),
         linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
     }
-    .feature-card h3{margin:10px 0 10px; font-size:1.1rem}
-    .feature-card p{margin:0; color:#d7dbe6; line-height:1.6}
+    .feature-card h3{margin:10px 0 6px; font-size:.98rem; line-height:1.25}
+    .feature-card p{margin:0; color:#d7dbe6; line-height:1.45; font-size:.86rem}
+    .feature-media{aspect-ratio:1.18/1; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0e1015; margin-bottom:10px;}
+    .feature-media img{width:100%; height:100%; object-fit:cover; transition:transform .25s ease;}
+    .feature-card:hover .feature-media img{transform:scale(1.04)}
+    .feature-meta{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px;}
+    .feature-card .btn{padding:10px 12px; min-height:40px;}
     .feature-pill{
       display:inline-flex; align-items:center; gap:8px; font-size:.72rem;
       text-transform:uppercase; letter-spacing:.16em; color:var(--gold);
     }
 
     .filters-panel{
-      padding:18px;
+      padding:14px;
       margin-top:18px;
     }
     .controls-grid{
@@ -419,7 +424,7 @@
       margin-top:14px;
     }
     .quick-pills{
-      display:flex; gap:10px; flex-wrap:wrap;
+      display:none !important;
     }
     .quick-pills button{
       border:1px solid rgba(255,255,255,.08);
@@ -440,7 +445,7 @@
     }
 
     .catalog-shell{
-      padding:18px;
+      padding:14px;
       margin:18px 0 70px;
     }
     .catalog-top{
@@ -722,14 +727,14 @@
       min-height:0;
       padding:20px;
       display:grid;
-      grid-template-columns:minmax(420px, 1.04fr) minmax(0, .96fr);
+      grid-template-columns:minmax(420px, 1fr) minmax(0, .92fr);
       gap:22px;
       align-items:start;
     }
     .gallery-wrap{
       min-width:0;
       position:sticky;
-      top:0;
+      top:8px;
       align-self:start;
       height:max-content;
     }
@@ -746,7 +751,7 @@
     .thumbs{
       margin-top:12px;
       display:grid; grid-template-columns:repeat(auto-fill, minmax(92px,1fr)); gap:10px;
-      max-height:172px; overflow:auto; padding-right:4px;
+      max-height:190px; overflow:auto; padding-right:4px;
     }
     .thumb{
       aspect-ratio:1/1;
@@ -763,6 +768,7 @@
       display:flex; flex-direction:column; gap:16px;
       min-width:0;
       min-height:0;
+      max-height:calc(100vh - 170px);
       overflow:auto;
       padding-right:6px;
     }
@@ -770,7 +776,7 @@
       border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.03);
       border-radius:22px;
-      padding:18px;
+      padding:14px;
     }
     .detail-box h4{margin:0 0 10px; font-size:1rem}
     .desc{
@@ -882,12 +888,12 @@
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="RACEM CYBUL">
         <div class="brand-logo">
-          <img src="assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
+          <img src="assets/rmlogo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:20px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
         </div>
         <div class="brand-copy">
-          <div class="brand-kicker" data-i18n="supplierKicker">CYBUL Collection</div>
+          <div class="brand-kicker" data-i18n="supplierKicker">RACEM Performance</div>
           <div class="brand-title">CYBUL RADICAL SOLUTIONS</div>
-          <div class="brand-sub" data-i18n="brandSub">Performance parts / swap solutions / drift hardware</div>
+          <div class="brand-sub" data-i18n="brandSub">Performance parts / race hardware / street & track builds</div>
         </div>
       </a>
 
@@ -920,11 +926,10 @@
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-main">
-            <div class="kicker" data-i18n="heroKicker">CYBUL Radical Solutions</div>
+            <div class="kicker" data-i18n="heroKicker">Performance Parts</div>
             <h1 data-i18n="heroTitle">Performance diely pre drift, trackday a street buildy.</h1>
             <p class="lead" data-i18n="heroLead">
-              CYBUL RADICAL SOLUTIONS v RACEM štýle. Rýchly vyhľadávač, platformové filtre, varianty, lokálny košík,
-              obľúbené produkty, dvojjazyčné rozhranie a priamy presun na Shopify checkout podľa variant ID.
+              Výber dielov pre autá, ktoré majú fungovať pod záťažou. Drift, swap, trackday aj street buildy na jednom mieste, s prehľadným katalógom, variantmi a rýchlym výberom podľa platformy.
             </p>
 
             <div class="hero-stats">
@@ -955,14 +960,14 @@
 
           <div class="hero-side">
             <div class="hero-side-card">
-              <div class="kicker" style="font-size:.72rem;" data-i18n="cardFastAccess">Rýchly výber</div>
-              <h3 data-i18n="cardFastAccessTitle">Vyhľadaj presne to, čo riešiš</h3>
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardFastAccess">Technické riešenia</div>
+              <h3 data-i18n="cardFastAccessTitle">Diely postavené pre reálne zaťaženie</h3>
               <p data-i18n="cardFastAccessText">
-                Platforma, kategória, cena, názov produktu aj variant. Vyhľadaj správny diel rýchlo a bez chaosu.
+                V tejto ponuke nájdeš komponenty zamerané na pevnosť, presnosť a funkciu. Nie sú to len vizuálne doplnky, ale diely určené pre buildy, kde sa rieši fitment, výkon a odolnosť.
               </p>
               <div class="mini-list">
                 <div class="mini-row">
-                  <span data-i18n="miniSwap">Swap diely</span>
+                  <span data-i18n="miniSwap">Swap a mounting</span>
                   <strong id="swapCount">—</strong>
                 </div>
                 <div class="mini-row">
@@ -977,16 +982,16 @@
             </div>
 
             <div class="hero-side-card">
-              <div class="kicker" style="font-size:.72rem;" data-i18n="cardWhy">Prečo si vybrať CYBUL</div>
-              <h3 data-i18n="cardWhyTitle">Presný výber pre tvoj build</h3>
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardWhy">O dodávateľovi</div>
+              <h3 data-i18n="cardWhyTitle">Zamerané na funkčné motorsport riešenia</h3>
               <p data-i18n="cardWhyText">
-                Vyberaj z dielov pre rôzne platformy, porovnaj varianty a objednaj si konfiguráciu, ktorá sedí na tvoje auto.
+                Portfólio je postavené na dieloch pre upravené vozidlá, kde rozhoduje funkcia, kompatibilita a pevnosť. Nájdeš tu riešenia pre drift, swap projekty, podvozok, brzdy aj technické komponenty pre buildy, ktoré sa reálne používajú.
               </p>
               <div class="trust-points">
-                <span class="chip" data-i18n="trust1">Dvojjazyčné UI</span>
-                <span class="chip" data-i18n="trust2">Shopify checkout</span>
-                <span class="chip" data-i18n="trust3">Motorsport style</span>
-                <span class="chip" data-i18n="trust4">Lokálny košík</span>
+                <span class="chip" data-i18n="trust1">Track & street</span>
+                <span class="chip" data-i18n="trust2">Varianty produktov</span>
+                <span class="chip" data-i18n="trust3">Presný fitment</span>
+                <span class="chip" data-i18n="trust4">Overené platformy</span>
               </div>
             </div>
           </div>
@@ -995,8 +1000,8 @@
         <div class="featured-strip" id="featured">
           <div class="section-head" style="margin-top:0; margin-bottom:14px;">
             <div>
-              <h2 data-i18n="featuredTitle">Odporúčané produkty</h2>
-              <p data-i18n="featuredLead">Vybrané produkty pre obľúbené platformy a najžiadanejšie performance úpravy.</p>
+              <h2 data-i18n="featuredTitle">Odporúčame</h2>
+              <p data-i18n="featuredLead">Vybrané kúsky pre najžiadanejšie buildy a platformy.</p>
             </div>
           </div>
           <div class="featured-scroller" id="featuredScroller"></div>
@@ -1031,7 +1036,6 @@
           </div>
 
           <div class="filters-row-bottom">
-            <div class="quick-pills" id="quickPills"></div>
             <div class="results-meta">
               <span id="resultsCount">0</span>
               <span data-i18n="resultsProducts">produktov</span>
@@ -1165,13 +1169,13 @@
 
     const i18n = {
       sk: {
-        supplierKicker: "CYBUL Collection",
+        supplierKicker: "RACEM Performance",
         brandSub: "Performance diely / swap riešenia / drift hardvér",
         navFeatured: "Odporúčame",
         navCatalog: "Katalóg",
         navFavorites: "Obľúbené",
         navContact: "Viac info",
-        heroKicker: "CYBUL Radical Solutions",
+        heroKicker: "Performance Parts",
         heroTitle: "Performance diely pre drift, trackday a street buildy.",
         heroLead: "Prémiové performance diely pre drift, trackday a street buildy. Prehľadný katalóg, rýchle filtrovanie, varianty produktov a pohodlný nákup na jednom mieste.",
         statProducts: "Produktov",
@@ -1181,21 +1185,21 @@
         browseCatalog: "Prejsť do katalógu",
         seeRecommendations: "Zobraziť odporúčané",
         openCart: "Otvoriť košík",
-        cardFastAccess: "Rýchly výber",
-        cardFastAccessTitle: "Vyhľadaj presne to, čo riešiš",
-        cardFastAccessText: "Platforma, kategória, cena, názov produktu aj variant. Vyhľadaj správny diel rýchlo a bez chaosu.",
-        miniSwap: "Swap diely",
+        cardFastAccess: "Technické riešenia",
+        cardFastAccessTitle: "Diely postavené pre reálne zaťaženie",
+        cardFastAccessText: "V tejto ponuke nájdeš komponenty zamerané na pevnosť, presnosť a funkciu. Nie sú to len vizuálne doplnky, ale diely určené pre buildy, kde sa rieši fitment, výkon a odolnosť.",
+        miniSwap: "Swap a mounting",
         miniBMW: "BMW platformy",
         miniMazda: "Mazda / MX-5",
-        cardWhy: "Prečo si vybrať CYBUL",
-        cardWhyTitle: "Presný výber pre tvoj build",
-        cardWhyText: "Vyberaj z dielov pre rôzne platformy, porovnaj varianty a objednaj si konfiguráciu, ktorá sedí na tvoje auto.",
-        trust1: "Dvojjazyčné UI",
-        trust2: "Shopify checkout",
-        trust3: "Motorsport style",
-        trust4: "Lokálny košík",
-        featuredTitle: "Odporúčané produkty",
-        featuredLead: "Vybrané produkty pre obľúbené platformy a najžiadanejšie performance úpravy.",
+        cardWhy: "O dodávateľovi",
+        cardWhyTitle: "Zamerané na funkčné motorsport riešenia",
+        cardWhyText: "Portfólio je postavené na dieloch pre upravené vozidlá, kde rozhoduje funkcia, kompatibilita a pevnosť. Nájdeš tu riešenia pre drift, swap projekty, podvozok, brzdy aj technické komponenty pre buildy, ktoré sa reálne používajú.",
+        trust1: "Track & street",
+        trust2: "Varianty produktov",
+        trust3: "Presný fitment",
+        trust4: "Overené platformy",
+        featuredTitle: "Odporúčame",
+        featuredLead: "Vybrané kúsky pre najžiadanejšie buildy a platformy.",
         searchLabel: "Vyhľadávanie",
         searchPlaceholder: "Hľadaj podľa názvu, SKU, platformy...",
         categoryLabel: "Kategória",
@@ -1251,7 +1255,7 @@
         remove: "Odstrániť",
         recommended: "Odporúčame",
         premium: "Premium",
-        featuredBadge: "Top pick",
+        featuredBadge: "Odporúčame",
         sourceFeed: "Kolekcia",
         filteredInfo: "Zobrazené",
         addedTitle: "Pridané do košíka",
@@ -1271,15 +1275,15 @@
         favoritesSection: "Obľúbené"
       },
       en: {
-        supplierKicker: "CYBUL Collection",
-        brandSub: "Performance parts / swap solutions / drift hardware",
+        supplierKicker: "RACEM Performance",
+        brandSub: "Performance parts / race hardware / street & track builds",
         navFeatured: "Recommended",
         navCatalog: "Catalog",
         navFavorites: "Favorites",
         navContact: "More info",
-        heroKicker: "CYBUL Radical Solutions",
+        heroKicker: "Performance Parts",
         heroTitle: "Performance parts for drift, trackday and street builds.",
-        heroLead: "Premium performance parts for drift, trackday and street builds. Clean catalog, fast filtering, product variants and a smooth shopping experience in one place.",
+        heroLead: "A focused selection of parts for cars built to perform under load. Drift, swap, trackday and street builds in one place, with a clear catalog, variants and quick filtering by platform.",
         statProducts: "Products",
         statCategories: "Categories",
         statPlatforms: "Platforms",
@@ -1287,21 +1291,21 @@
         browseCatalog: "Browse catalog",
         seeRecommendations: "See recommendations",
         openCart: "Open cart",
-        cardFastAccess: "Rýchly výber",
-        cardFastAccessTitle: "Find exactly what you need",
-        cardFastAccessText: "Platform, category, price, product title and variant. Find the right part quickly and without the clutter.",
+        cardFastAccess: "Technical solutions",
+        cardFastAccessTitle: "Built for real load and hard use",
+        cardFastAccessText: "This range focuses on components designed for strength, precision and real function. These are not just styling parts, but hardware for builds where fitment, durability and performance matter.",
         miniSwap: "Swap parts",
         miniBMW: "BMW platforms",
         miniMazda: "Mazda / MX-5",
-        cardWhy: "Prečo si vybrať CYBUL",
-        cardWhyTitle: "Built for serious builds",
-        cardWhyText: "Browse parts for multiple platforms, compare variants and order the setup that fits your car.",
-        trust1: "Bilingual UI",
-        trust2: "Shopify checkout",
-        trust3: "Motorsport style",
-        trust4: "Local cart",
-        featuredTitle: "Odporúčané produkty",
-        featuredLead: "Vybrané produkty pre obľúbené platformy a najžiadanejšie performance úpravy.",
+        cardWhy: "About the supplier",
+        cardWhyTitle: "Focused on functional motorsport solutions",
+        cardWhyText: "The portfolio is built around parts for modified cars where function, compatibility and strength come first. You will find solutions for drift, swap projects, suspension, brakes and technical components for builds that are actually driven.",
+        trust1: "Track & street",
+        trust2: "Product variants",
+        trust3: "Precise fitment",
+        trust4: "Proven platforms",
+        featuredTitle: "Recommended",
+        featuredLead: "Selected picks for the most requested builds and platforms.",
         searchLabel: "Search",
         searchPlaceholder: "Search by title, SKU, platform...",
         categoryLabel: "Category",
@@ -1357,7 +1361,7 @@
         remove: "Remove",
         recommended: "Recommended",
         premium: "Premium",
-        featuredBadge: "Top pick",
+        featuredBadge: "Recommended",
         sourceFeed: "Collection",
         filteredInfo: "Showing",
         addedTitle: "Added to cart",
@@ -1607,7 +1611,6 @@
       els.sortSelect.value = ['featured','price-asc','price-desc','name-asc','name-desc','variants-desc'].includes(sortVal) ? sortVal : 'featured';
       els.stockFilter.value = ['made_to_order','other'].includes(stockVal) ? stockVal : '';
 
-      renderQuickPills();
     }
 
     function renderQuickPills(){
@@ -1619,15 +1622,18 @@
         {label:t('quickMazda'), action:() => {els.searchInput.value='mx-5'; applyFilters(); activateQuick('mazda');}, key:'mazda'},
         {label:t('quickBrakes'), action:() => {els.categoryFilter.value='Brzdy'; applyFilters(); activateQuick('brakes');}, key:'brakes'},
       ];
+      if (!els.quickPills) return;
       els.quickPills.innerHTML = pills.map(p => `<button type="button" data-quick="${p.key}">${p.label}</button>`).join('');
       els.quickPills.querySelectorAll('button').forEach((btn, idx) => btn.addEventListener('click', pills[idx].action));
     }
 
     function clearQuick(){
+      if (!els.quickPills) return;
       els.quickPills.querySelectorAll('button').forEach(b => b.classList.remove('active'));
     }
     function activateQuick(key){
       clearQuick();
+      if (!els.quickPills) return;
       const btn = els.quickPills.querySelector(`[data-quick="${key}"]`);
       if (btn) btn.classList.add('active');
     }
@@ -1693,24 +1699,28 @@
       const picks = [...state.products].sort((a,b)=>b._recommendedScore - a._recommendedScore).slice(0,8);
       els.featuredScroller.innerHTML = picks.map(p => {
         const title = escapeHtml(displayTitle(p));
-        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 132) + (stripHtml(p.descriptionHtml||'').length > 132 ? '…' : '')) || '');
+        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 84) + (stripHtml(p.descriptionHtml||'').length > 84 ? '…' : '')) || '');
         const priceLine = p._minPrice != null ? `${t('currencyFrom')} ${money(p._minPrice)}` : t('priceOnRequest');
+        const img = escapeHtml((p._images && p._images[0]) || '');
         return `
-          <article class="feature-card">
+          <article class="feature-card" data-feature-open="${escapeHtml(p.id)}">
             <div class="feature-pill">${t('featuredBadge')}</div>
+            <div class="feature-media">${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ''}</div>
             <h3>${title}</h3>
             <p>${blurb}</p>
-            <div class="trust-points" style="margin-top:14px;">
-              ${(p.platforms || []).slice(0,4).map(pl => `<span class="chip">${escapeHtml(pl)}</span>`).join('')}
-            </div>
-            <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
-              <strong style="font-size:1.08rem;">${priceLine}</strong>
+            <div class="feature-meta">
+              <strong style="font-size:.98rem;">${priceLine}</strong>
               <button class="btn btn-secondary feature-open" data-id="${escapeHtml(p.id)}">${t('detail')}</button>
             </div>
           </article>`;
       }).join('');
-      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => {
-        btn.addEventListener('click', () => openProductModal(btn.dataset.id));
+      els.featuredScroller.querySelectorAll('[data-feature-open], .feature-open').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = btn.dataset.featureOpen || btn.dataset.id;
+          if (!id) return;
+          e.stopPropagation();
+          openProductModal(id);
+        });
       });
     }
 
