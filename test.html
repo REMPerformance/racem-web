@@ -146,13 +146,13 @@
     .brand-copy{min-width:0; display:flex; flex-direction:column; justify-content:center}
     .brand-kicker{display:none}
     .brand-title{
-      font-weight:900; letter-spacing:.12em; font-size:1.18rem; text-transform:uppercase;
+      font-weight:900; letter-spacing:.08em; font-size:.92rem; text-transform:uppercase;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .brand-sub{display:none}
 
     .top-nav{
-      display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+      display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; margin-left:auto;
     }
     .nav-pill{
       padding:11px 14px; border-radius:999px;
@@ -236,7 +236,7 @@
       background:
         radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 28%),
         radial-gradient(circle at 15% 10%, rgba(255,255,255,.05), transparent 20%),
-        linear-gradient(180deg, rgba(16,17,22,.9), rgba(8,9,12,.96));
+        linear-gradient(180deg, rgba(10,11,15,.96), rgba(5,6,9,.985));
     }
     .hero-main::after{
       content:"";
@@ -335,7 +335,7 @@
     }
     .btn-ghost:hover{border-color:rgba(255,255,255,.2)}
 
-    .supplier-note{margin-top:12px; max-width:860px; padding:14px 16px; border-radius:20px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07);}
+    .supplier-note{margin-top:12px; max-width:860px; padding:14px 16px; border-radius:20px; background:linear-gradient(180deg, rgba(5,5,7,.9), rgba(5,6,8,.82)); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.06);}
     .supplier-note h3{margin:0 0 8px; font-size:1.04rem}
     .supplier-note p{margin:0; color:#d0d4de; line-height:1.72; font-size:.94rem}
     .hero-side-card h3{margin:0 0 8px; font-size:1.15rem}
@@ -637,6 +637,15 @@
       display:flex; flex-direction:column;
       box-shadow:-30px 0 80px rgba(0,0,0,.35);
     }
+    .favorites-grid{display:grid; gap:14px;}
+    .favorite-card{display:grid; grid-template-columns:92px 1fr auto; gap:14px; padding:14px; border-radius:20px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);}
+    .favorite-card img{width:92px; height:92px; object-fit:cover; border-radius:16px; background:#141821;}
+    .favorite-card h4{margin:0 0 8px; font-size:1rem;}
+    .favorite-card .meta{color:var(--muted); font-size:.86rem; line-height:1.55; margin-bottom:10px;}
+    .favorite-card-actions{display:flex; gap:10px; flex-wrap:wrap;}
+    .favorite-card-actions .btn, .favorite-card-actions button{min-height:40px; padding:10px 12px; border-radius:14px;}
+    .favorite-card-side{display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; gap:12px;}
+    .favorite-price{font-weight:900; white-space:nowrap;}
     .drawer.open, .modal.open{pointer-events:auto}
     .drawer.open .backdrop, .modal.open .backdrop{opacity:1}
     .drawer.open .drawer-panel{transform:translateX(0)}
@@ -1043,6 +1052,8 @@
       .product-actions{grid-template-columns:1fr auto}
       .cart-item{grid-template-columns:78px 1fr}
       .cart-item > div:last-child{grid-column:1 / -1}
+      .favorite-card{grid-template-columns:78px 1fr}
+      .favorite-card-side{grid-column:1 / -1; align-items:flex-start}
       .drawer-panel{width:100vw}
       .footer-box{padding:18px}
       .detail-price{align-items:flex-start}
@@ -1073,7 +1084,6 @@
 
       <nav class="top-nav">
         <a class="nav-pill" href="#top" data-i18n="navHome">Domovská stránka</a>
-        <a class="nav-pill" href="#favorites" id="navFavoritesBtn" data-i18n="navFavorites">Obľúbené</a>
       </nav>
 
       <div class="header-actions">
@@ -1246,6 +1256,20 @@
         <button class="btn btn-primary" id="checkoutBtn" data-i18n="checkoutBtn">Prejsť na Shopify checkout</button>
         <button class="btn btn-secondary" id="clearCartBtn" data-i18n="clearCart">Vymazať košík</button>
       </div>
+    </div>
+  </aside>
+
+  <aside class="drawer" id="favoritesDrawer" aria-hidden="true">
+    <div class="backdrop" data-close-favorites></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <div>
+          <h3 data-i18n="favoritesSection">Obľúbené</h3>
+          <div class="muted" data-i18n="cartSubtitle">Vybrané produkty pripravené na dokončenie objednávky</div>
+        </div>
+        <button class="drawer-close" data-close-favorites>✕</button>
+      </div>
+      <div class="drawer-body" id="favoritesItems"></div>
     </div>
   </aside>
 
@@ -2139,7 +2163,56 @@
 
     function closeProductModal(){
       document.getElementById('productModal').classList.remove('open');
-      if (!document.getElementById('cartDrawer').classList.contains('open')) {
+      if (!document.getElementById('cartDrawer').classList.contains('open') && !document.getElementById('favoritesDrawer').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function renderFavorites(){
+      const items = state.favorites.map(id => getProductById(id)).filter(Boolean);
+      if (!items.length){
+        els.favoritesItems.innerHTML = `<div class="empty-state">${t('cartEmpty')}</div>`;
+        return;
+      }
+      els.favoritesItems.innerHTML = `<div class="favorites-grid">${items.map(product => {
+        const variant = product._buyableVariants[0] || product._firstVariant;
+        const img = product._images[0] || '';
+        const price = variant?.price != null ? money(variant.price) : t('priceOnRequest');
+        const platforms = (product._displayPlatforms || product.platforms || []).slice(0,4).map(displayPlatformLabel).join(' • ');
+        return `
+          <div class="favorite-card">
+            ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(displayTitle(product))}">` : `<div></div>`}
+            <div>
+              <h4>${escapeHtml(displayTitle(product))}</h4>
+              <div class="meta">${escapeHtml((product._make || '') + (platforms ? ' • ' + platforms : ''))}</div>
+              <div class="favorite-card-actions">
+                <button class="btn btn-secondary" data-favorite-open="${escapeHtml(product.id)}">${t('detail')}</button>
+                <button class="btn btn-primary" data-favorite-add="${escapeHtml(product.id)}">${t('addToCart')}</button>
+              </div>
+            </div>
+            <div class="favorite-card-side">
+              <div class="favorite-price">${price}</div>
+              <button class="btn btn-ghost" data-favorite-remove="${escapeHtml(product.id)}">${t('remove')}</button>
+            </div>
+          </div>`;
+      }).join('')}</div>`;
+      els.favoritesItems.querySelectorAll('[data-favorite-open]').forEach(el => el.addEventListener('click', () => {
+        closeFavorites();
+        openProductModal(el.dataset.favoriteOpen);
+      }));
+      els.favoritesItems.querySelectorAll('[data-favorite-add]').forEach(el => el.addEventListener('click', () => addProductToCart(el.dataset.favoriteAdd)));
+      els.favoritesItems.querySelectorAll('[data-favorite-remove]').forEach(el => el.addEventListener('click', () => toggleFavorite(el.dataset.favoriteRemove)));
+    }
+
+    function openFavorites(){
+      document.getElementById('favoritesDrawer').classList.add('open');
+      renderFavorites();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFavorites(){
+      document.getElementById('favoritesDrawer').classList.remove('open');
+      if (!document.getElementById('cartDrawer').classList.contains('open') && !document.getElementById('productModal').classList.contains('open')) {
         document.body.style.overflow = '';
       }
     }
@@ -2156,6 +2229,7 @@
       saveState();
       updateCounters();
       renderProducts();
+      renderFavorites();
       if (state.currentModal?.id === productId) {
         els.modalFavBtn.classList.toggle('active', state.favorites.includes(productId));
       }
@@ -2193,7 +2267,6 @@
     function updateCounters(){
       els.favoritesCount.textContent = state.favorites.length;
       els.cartCount.textContent = state.cart.reduce((a,b)=>a + (b.qty || 0), 0);
-      els.navFavoritesBtn.textContent = `${t('navFavorites')} (${state.favorites.length})`;
     }
 
     function renderCart(){
@@ -2371,6 +2444,7 @@
       });
 
       document.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', closeCart));
+      document.querySelectorAll('[data-close-favorites]').forEach(el => el.addEventListener('click', closeFavorites));
       document.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeProductModal));
 
       els.modalAddBtn.addEventListener('click', () => {
@@ -2387,23 +2461,12 @@
       });
 
 
-      els.favoritesOpenBtn.addEventListener('click', () => {
-        state.favoritesOnly = true;
-        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
-        applyFilters();
-        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
-      });
-      els.navFavoritesBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        state.favoritesOnly = true;
-        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
-        applyFilters();
-        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
-      });
+      els.favoritesOpenBtn.addEventListener('click', openFavorites);
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape'){
           closeCart();
+          closeFavorites();
           closeProductModal();
         }
       });
@@ -2418,6 +2481,7 @@
         applyFilters();
         updateCounters();
         renderCart();
+        renderFavorites();
         applyTranslations();
       }catch(err){
         console.error(err);
