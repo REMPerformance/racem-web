@@ -290,19 +290,14 @@
       position:absolute;
       right:-1%;
       bottom:-20px;
-      width:min(760px,62vw);
+      width:min(980px,74vw);
       max-width:none;
       opacity:.18;
       filter:brightness(0) invert(1) grayscale(1) contrast(1.2);
       pointer-events:none;
       z-index:0;
     }
-    .stats-watermark{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
-      object-position:right center; opacity:.09; filter:brightness(0) invert(1) grayscale(1) contrast(1.25);
-      pointer-events:none; z-index:0; transform:scale(1.35);
-    }
-    .hero-main > *:not(.hero-watermark):not(.stats-watermark){position:relative; z-index:1;}
+    .hero-main > *:not(.hero-watermark){position:relative; z-index:1;}
 
     .hero-side-card{
       padding:16px;
@@ -1231,7 +1226,7 @@
     .loading-screen{position:fixed; inset:0; z-index:200; background:radial-gradient(circle at 50% 30%, rgba(179,31,36,.18), transparent 25%), linear-gradient(180deg,#08090c,#060607); display:grid; place-items:center; transition:opacity .45s ease, visibility .45s ease;}
     .loading-screen.hidden{opacity:0; visibility:hidden; pointer-events:none;}
     .loading-core{position:relative; width:min(480px,90vw); padding:34px 26px; border-radius:30px; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)); box-shadow:0 40px 100px rgba(0,0,0,.4); text-align:center; overflow:hidden;}
-    .loading-core::before{content:""; position:absolute; inset:-20%; background:conic-gradient(from 0deg, transparent, rgba(179,31,36,.22), transparent 34%, rgba(255,255,255,.06), transparent 68%, rgba(179,31,36,.14), transparent); animation:spinBg 5s linear infinite;}
+    .loading-core::before{content:""; position:absolute; inset:-60%; background:conic-gradient(from 0deg, transparent, rgba(179,31,36,.22), transparent 34%, rgba(255,255,255,.06), transparent 68%, rgba(179,31,36,.14), transparent); animation:spinBg 5s linear infinite;}
     .loading-core > *{position:relative; z-index:1;}
     .loading-logo{width:min(280px,70vw); margin:0 auto 14px; filter:drop-shadow(0 14px 34px rgba(179,31,36,.24));}
     .loading-title{margin:0; font-size:1.4rem; letter-spacing:.16em; text-transform:uppercase;}
@@ -1332,7 +1327,6 @@
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-main">
-            <img class="stats-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
             <img class="hero-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
             
             <h1 data-i18n="heroTitle">Performance diely pre drift, trackday a street buildy.</h1>
@@ -1354,7 +1348,7 @@
                 <div class="stat-value" id="statPlatforms">—</div>
               </div>
               <div class="stat-card">
-                <div class="stat-label" data-i18n="statVariants">Variantov</div>
+                <div class="stat-label" data-i18n="statVariants">Cenový rozsah</div>
                 <div class="stat-value" id="statVariants">—</div>
               </div>
             </div>
@@ -1609,7 +1603,7 @@
         statProducts: "Produktov",
         statCategories: "Kategórie",
         statPlatforms: "Platforiem",
-        statVariants: "Variantov",
+        statVariants: "Cenový rozsah",
         browseCatalog: "",
         seeRecommendations: "Zobraziť odporúčané",
         openCart: "Otvoriť košík",
@@ -1721,7 +1715,7 @@
         statProducts: "Products",
         statCategories: "Categories",
         statPlatforms: "Platforms",
-        statVariants: "Variants",
+        statVariants: "Price range",
         browseCatalog: "",
         seeRecommendations: "See recommendations",
         openCart: "Open cart",
@@ -2109,10 +2103,17 @@
       const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))];
       const platforms = [...new Set(state.products.flatMap(p => p._displayPlatforms || p.platforms || []).filter(Boolean))];
       const variants = state.products.reduce((acc,p) => acc + (p._buyableVariants.length || 0), 0);
+      const allPrices = state.products.flatMap(p => [p._minPrice, p._maxPrice]).filter(v => typeof v === 'number' && !Number.isNaN(v));
+      const globalMinPrice = allPrices.length ? Math.min(...allPrices) : null;
+      const globalMaxPrice = allPrices.length ? Math.max(...allPrices) : null;
+      const priceRangeText = globalMinPrice != null && globalMaxPrice != null
+        ? (globalMinPrice === globalMaxPrice ? money(globalMinPrice) : `${money(globalMinPrice)} – ${money(globalMaxPrice)}`)
+        : '—';
+
       els.statProducts.textContent = state.products.length;
       els.statCategories.textContent = categories.length;
       els.statPlatforms.textContent = platforms.length;
-      els.statVariants.textContent = variants;
+      els.statVariants.textContent = priceRangeText;
       els.catalogSubline.textContent = t('catalogSubline');
       const footerProducts = document.getElementById('footerProductsCount');
       const footerPlatforms = document.getElementById('footerPlatformsCount');
