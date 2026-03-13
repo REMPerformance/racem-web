@@ -1,0 +1,2133 @@
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBUL Radical Solutions | RACEM</title>
+  <meta name="theme-color" content="#0a0a0b" />
+  <style>
+    :root{
+      --bg:#060607;
+      --bg-2:#0b0c10;
+      --panel:#101116;
+      --panel-2:#14161d;
+      --soft:#1c1f28;
+      --line:rgba(255,255,255,.08);
+      --line-2:rgba(179,31,36,.34);
+      --text:#f5f7fb;
+      --muted:#a4aab8;
+      --muted-2:#818896;
+      --red:#b31f24;
+      --red-2:#e13b42;
+      --red-3:#741419;
+      --green:#7df0b4;
+      --gold:#f6cf67;
+      --shadow:0 30px 80px rgba(0,0,0,.45);
+      --radius:22px;
+      --radius-sm:14px;
+      --blur:20px;
+      --header-h:78px;
+      --container:min(1480px, calc(100vw - 32px));
+      --grid-gap:18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(179,31,36,.18), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,.05), transparent 25%),
+        radial-gradient(circle at 50% 110%, rgba(179,31,36,.16), transparent 35%),
+        linear-gradient(180deg, #09090b 0%, #08090d 22%, #060607 100%);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:38px 38px;
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,1), rgba(0,0,0,.55) 55%, transparent 100%);
+      pointer-events:none;
+      opacity:.65;
+      z-index:-2;
+      animation:gridShift 24s linear infinite;
+    }
+    body::after{
+      content:"";
+      position:fixed; inset:-20%;
+      background:
+        conic-gradient(from 0deg, transparent, rgba(179,31,36,.12), transparent 30%, rgba(255,255,255,.04), transparent 65%, rgba(179,31,36,.10), transparent);
+      filter:blur(70px);
+      pointer-events:none;
+      z-index:-3;
+      animation:spinBg 32s linear infinite;
+      opacity:.7;
+    }
+    @keyframes gridShift{
+      from{transform:translate3d(0,0,0)}
+      to{transform:translate3d(-38px,-38px,0)}
+    }
+    @keyframes spinBg{
+      from{transform:rotate(0deg) scale(1)}
+      to{transform:rotate(360deg) scale(1.06)}
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:.85}
+      50%{transform:scale(1.05); opacity:1}
+    }
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+    @keyframes slideUp{
+      from{opacity:0; transform:translateY(18px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+    @keyframes cardShine{
+      from{transform:translateX(-130%)}
+      to{transform:translateX(130%)}
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button, select, input{
+      font:inherit;
+      color:inherit;
+    }
+
+    .wrap{width:var(--container); margin:0 auto;}
+    .hidden{display:none !important}
+    .muted{color:var(--muted)}
+    .nowrap{white-space:nowrap}
+    .chip, .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:#e9ecf4;
+    }
+
+    .site-header{
+      position:sticky; top:0; z-index:70;
+      backdrop-filter: blur(18px);
+      background:linear-gradient(180deg, rgba(6,6,7,.88), rgba(6,6,7,.62));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .site-header::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:-1px; height:1px;
+      background:linear-gradient(90deg, transparent, rgba(179,31,36,.7), transparent);
+    }
+    .header-inner{
+      min-height:var(--header-h);
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:18px;
+      align-items:center;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px;
+      min-width:0;
+    }
+    .brand-logo{
+      width:46px; height:46px; border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.13), transparent 45%),
+        linear-gradient(145deg, rgba(179,31,36,.35), rgba(20,21,28,.9));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 12px 40px rgba(179,31,36,.18);
+      display:grid; place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .brand-logo img{width:100%; height:100%; object-fit:contain; padding:8px}
+    .brand-copy{min-width:0}
+    .brand-kicker{
+      color:var(--red-2); font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
+      margin-bottom:2px;
+    }
+    .brand-title{
+      font-weight:800; letter-spacing:.02em; font-size:1rem;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brand-sub{
+      color:var(--muted); font-size:.8rem;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .top-nav{
+      display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    }
+    .nav-pill{
+      padding:11px 14px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.03);
+      color:#e5e8ef;
+      transition:.2s ease;
+    }
+    .nav-pill:hover{border-color:rgba(179,31,36,.5); background:rgba(179,31,36,.08)}
+
+    .header-actions{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .lang-switch{
+      display:flex; background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:999px; padding:4px;
+    }
+    .lang-switch button{
+      border:none; background:transparent; padding:8px 12px; border-radius:999px; cursor:pointer; color:var(--muted);
+    }
+    .lang-switch button.active{
+      background:linear-gradient(180deg, rgba(179,31,36,.22), rgba(179,31,36,.13));
+      color:#fff;
+      box-shadow: inset 0 0 0 1px rgba(179,31,36,.35);
+    }
+
+    .icon-btn{
+      position:relative;
+      min-width:46px; height:46px; border-radius:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
+      display:grid; place-items:center; cursor:pointer;
+      transition:.2s ease;
+    }
+    .icon-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(179,31,36,.5);
+      box-shadow:0 12px 28px rgba(179,31,36,.12);
+    }
+    .icon-btn .count{
+      position:absolute; top:-6px; right:-6px;
+      min-width:22px; height:22px; padding:0 6px;
+      border-radius:999px; display:grid; place-items:center;
+      background:linear-gradient(180deg, var(--red-2), var(--red));
+      color:white; font-size:.75rem; font-weight:800;
+      border:2px solid #070709;
+    }
+
+    .hero{
+      position:relative;
+      padding:34px 0 22px;
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.3fr .9fr;
+      gap:20px;
+    }
+    .hero-main, .hero-side-card, .featured-strip, .filters-panel, .catalog-shell, .section-box{
+      position:relative;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025)),
+        linear-gradient(180deg, rgba(16,17,22,.92), rgba(11,12,16,.96));
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero-main::before, .hero-side-card::before, .featured-strip::before, .filters-panel::before, .catalog-shell::before, .section-box::before{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+      transform:translateX(-130%);
+      animation:cardShine 7s linear infinite;
+      opacity:.35;
+      pointer-events:none;
+    }
+    .hero-main{
+      min-height:500px;
+      padding:34px;
+      background:
+        radial-gradient(circle at top right, rgba(179,31,36,.22), transparent 28%),
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,.06), transparent 20%),
+        linear-gradient(180deg, rgba(16,17,22,.86), rgba(8,9,12,.94));
+    }
+    .hero-main::after{
+      content:"";
+      position:absolute; right:-80px; top:-80px; width:340px; height:340px;
+      background:radial-gradient(circle, rgba(179,31,36,.3), rgba(179,31,36,.06), transparent 70%);
+      filter:blur(10px);
+      animation:pulse 4s ease-in-out infinite;
+    }
+    .hero-side{
+      display:grid; gap:20px;
+      grid-template-rows:1fr 1fr;
+    }
+    .hero-side-card{
+      padding:22px;
+      min-height:240px;
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(179,31,36,.13);
+      border:1px solid rgba(179,31,36,.35);
+      color:#fff; font-weight:700; font-size:.84rem;
+      text-transform:uppercase; letter-spacing:.14em;
+    }
+    .hero h1{
+      font-size:clamp(2.2rem, 4vw, 4.9rem);
+      line-height:.95;
+      margin:18px 0 14px;
+      letter-spacing:-.04em;
+      max-width:900px;
+    }
+    .hero p.lead{
+      max-width:760px; font-size:1.06rem; color:#d7dbe6; line-height:1.72; margin:0 0 24px;
+    }
+    .hero-stats{
+      display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; margin:26px 0 20px;
+    }
+    .stat-card{
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.07);
+      min-height:110px;
+    }
+    .stat-value{
+      font-size:1.8rem; font-weight:900; letter-spacing:-.03em;
+      margin-top:8px;
+    }
+    .stat-label{
+      color:var(--muted); font-size:.84rem; text-transform:uppercase; letter-spacing:.12em;
+    }
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      border:none; cursor:pointer;
+      padding:14px 18px;
+      border-radius:16px;
+      font-weight:800;
+      letter-spacing:.02em;
+      transition:.2s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(180deg, var(--red-2), var(--red));
+      box-shadow:0 14px 28px rgba(179,31,36,.28);
+    }
+    .btn-primary:hover{transform:translateY(-1px); box-shadow:0 18px 34px rgba(179,31,36,.34)}
+    .btn-secondary{
+      color:#fff;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+    }
+    .btn-secondary:hover{border-color:rgba(179,31,36,.45)}
+    .btn-ghost{
+      color:#fff;
+      background:transparent;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .btn-ghost:hover{border-color:rgba(255,255,255,.2)}
+
+    .hero-side-card h3{margin:0 0 8px; font-size:1.15rem}
+    .hero-side-card p{margin:0; color:#d0d4de; line-height:1.65}
+    .mini-list{
+      display:grid; gap:10px; margin-top:16px;
+    }
+    .mini-row{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:12px 14px; border-radius:16px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .mini-row strong{font-size:1rem}
+    .mini-row span{color:var(--muted)}
+    .trust-points{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:18px
+    }
+    .trust-points .chip{
+      font-size:.85rem;
+      background:rgba(255,255,255,.04);
+    }
+
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin:30px 0 14px;
+    }
+    .section-head h2{
+      margin:0; font-size:1.65rem; letter-spacing:-.03em
+    }
+    .section-head p{
+      margin:8px 0 0; color:var(--muted); max-width:820px;
+    }
+
+    .featured-strip{
+      padding:18px;
+      margin-top:20px;
+    }
+    .featured-scroller{
+      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(280px, 1fr); gap:16px;
+      overflow:auto; padding-bottom:6px;
+      scrollbar-width:thin;
+    }
+    .feature-card{
+      min-height:180px; border-radius:22px;
+      padding:18px; position:relative; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(circle at top right, rgba(179,31,36,.2), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+    }
+    .feature-card h3{margin:10px 0 10px; font-size:1.1rem}
+    .feature-card p{margin:0; color:#d7dbe6; line-height:1.6}
+    .feature-pill{
+      display:inline-flex; align-items:center; gap:8px; font-size:.72rem;
+      text-transform:uppercase; letter-spacing:.16em; color:var(--gold);
+    }
+
+    .filters-panel{
+      padding:18px;
+      margin-top:18px;
+    }
+    .controls-grid{
+      display:grid;
+      grid-template-columns:1.4fr repeat(4, minmax(150px, .42fr)) auto;
+      gap:12px;
+      align-items:stretch;
+    }
+    .field{
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .field label{
+      font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.14em;
+      padding-left:4px;
+    }
+    .input, .select{
+      height:52px; width:100%;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:0 16px;
+      outline:none;
+      transition:.2s ease;
+    }
+    .input:focus, .select:focus{
+      border-color:rgba(179,31,36,.5);
+      box-shadow:0 0 0 4px rgba(179,31,36,.13);
+    }
+    .filters-row-bottom{
+      display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .quick-pills{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .quick-pills button{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.035);
+      color:#ebeff7;
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .quick-pills button:hover,.quick-pills button.active{
+      border-color:rgba(179,31,36,.5);
+      background:rgba(179,31,36,.10);
+    }
+    .results-meta{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      color:var(--muted);
+    }
+
+    .catalog-shell{
+      padding:18px;
+      margin:18px 0 70px;
+    }
+    .catalog-top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom:16px;
+      flex-wrap:wrap;
+    }
+    .catalog-top h2{margin:0; font-size:1.5rem}
+    .view-toggles{display:flex; gap:8px}
+    .view-btn{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      border-radius:14px;
+      padding:11px 12px;
+      cursor:pointer;
+    }
+    .view-btn.active{
+      border-color:rgba(179,31,36,.55);
+      background:rgba(179,31,36,.12);
+    }
+    .products-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:18px;
+    }
+    .products-grid.list{
+      grid-template-columns:1fr;
+    }
+    .product-card{
+      position:relative;
+      display:flex; flex-direction:column;
+      min-height:100%;
+      border-radius:24px;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.018)),
+        linear-gradient(180deg, #12141a, #0d0f14);
+      border:1px solid rgba(255,255,255,.08);
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      animation:slideUp .35s ease both;
+    }
+    .product-card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(179,31,36,.4);
+      box-shadow:0 24px 60px rgba(0,0,0,.34);
+    }
+    .product-media{
+      position:relative; aspect-ratio:1.15/1;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(179,31,36,.18), transparent 30%),
+        linear-gradient(180deg, #151820, #0e1117);
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .product-media img{
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .35s ease;
+    }
+    .product-card:hover .product-media img{transform:scale(1.04)}
+    .product-badges{
+      position:absolute; top:12px; left:12px; right:12px;
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+      pointer-events:none;
+    }
+    .badge{
+      padding:8px 11px; border-radius:999px;
+      font-size:.73rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(12px);
+      background:rgba(6,6,8,.58);
+      color:#fff;
+    }
+    .badge.red{border-color:rgba(179,31,36,.4); background:rgba(179,31,36,.18)}
+    .badge.gold{border-color:rgba(246,207,103,.4); background:rgba(246,207,103,.12); color:#ffe9b2}
+    .badge.green{border-color:rgba(125,240,180,.35); background:rgba(125,240,180,.10); color:#c7ffe4}
+    .favorite-btn{
+      pointer-events:auto;
+      border:none; cursor:pointer;
+      width:38px; height:38px; border-radius:12px;
+      display:grid; place-items:center;
+      background:rgba(6,6,8,.56); color:#fff; border:1px solid rgba(255,255,255,.12);
+    }
+    .favorite-btn.active{background:rgba(179,31,36,.2); border-color:rgba(179,31,36,.46)}
+
+    .product-body{padding:16px 16px 16px; display:flex; flex-direction:column; gap:12px; flex:1}
+    .category-line{
+      display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+      color:var(--muted);
+      font-size:.8rem;
+      text-transform:uppercase; letter-spacing:.12em;
+    }
+    .product-title{
+      margin:0; font-size:1.04rem; line-height:1.28; letter-spacing:-.02em;
+      min-height:2.6em;
+      cursor:pointer;
+    }
+    .platform-tags{
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .platform-tags .tag{
+      font-size:.78rem;
+      padding:7px 10px;
+      color:#e5eaf5;
+      background:rgba(255,255,255,.045);
+    }
+    .product-price-row{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin-top:auto;
+    }
+    .price-wrap{
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .price{
+      font-size:1.5rem; font-weight:900; letter-spacing:-.03em;
+    }
+    .compare-price{
+      color:#818896; text-decoration:line-through; font-size:.92rem;
+    }
+    .variant-inline{
+      font-size:.8rem; color:var(--muted);
+      min-height:1.2em;
+    }
+    .product-actions{
+      display:grid; grid-template-columns:1fr auto; gap:10px;
+    }
+    .card-btn{
+      min-height:46px;
+      border-radius:14px; border:none; cursor:pointer;
+      font-weight:800;
+    }
+    .card-btn.detail{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      color:#fff;
+    }
+    .card-btn.add{
+      background:linear-gradient(180deg, var(--red-2), var(--red));
+      color:#fff;
+      padding:0 14px;
+      min-width:52px;
+    }
+
+    .products-grid.list .product-card{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      min-height:260px;
+    }
+    .products-grid.list .product-media{aspect-ratio:auto; height:100%}
+    .products-grid.list .product-title{min-height:auto; font-size:1.18rem}
+    .products-grid.list .product-actions{grid-template-columns:180px 58px}
+
+    .empty-state{
+      padding:42px 20px; text-align:center; color:var(--muted);
+      border:1px dashed rgba(255,255,255,.11);
+      border-radius:24px;
+      background:rgba(255,255,255,.025);
+    }
+
+    .drawer, .modal{
+      position:fixed; inset:0; z-index:120; pointer-events:none;
+    }
+    .backdrop{
+      position:absolute; inset:0;
+      background:rgba(0,0,0,.56);
+      backdrop-filter:blur(8px);
+      opacity:0; transition:.25s ease;
+    }
+    .drawer-panel{
+      position:absolute; top:0; right:0; height:100%; width:min(560px, 100vw);
+      background:
+        radial-gradient(circle at top right, rgba(179,31,36,.16), transparent 26%),
+        linear-gradient(180deg, #12141a, #0b0d12);
+      border-left:1px solid rgba(255,255,255,.08);
+      transform:translateX(102%);
+      transition:.28s ease;
+      display:flex; flex-direction:column;
+      box-shadow:-30px 0 80px rgba(0,0,0,.35);
+    }
+    .drawer.open, .modal.open{pointer-events:auto}
+    .drawer.open .backdrop, .modal.open .backdrop{opacity:1}
+    .drawer.open .drawer-panel{transform:translateX(0)}
+
+    .drawer-head{
+      padding:20px 20px 16px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+      position:sticky; top:0;
+      background:rgba(12,13,17,.92);
+      backdrop-filter:blur(14px);
+      z-index:2;
+    }
+    .drawer-head h3{margin:0; font-size:1.25rem}
+    .drawer-close{
+      width:44px; height:44px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05); color:#fff; cursor:pointer;
+    }
+    .drawer-body{
+      padding:18px 20px 22px;
+      overflow:auto;
+      display:flex; flex-direction:column; gap:14px;
+      flex:1;
+    }
+
+    .cart-item{
+      display:grid;
+      grid-template-columns:92px 1fr auto;
+      gap:14px;
+      padding:14px;
+      border-radius:20px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+    }
+    .cart-item img{
+      width:92px; height:92px; object-fit:cover; border-radius:16px;
+      background:#141821;
+    }
+    .cart-item h4{margin:0 0 8px; font-size:1rem}
+    .cart-item .meta{color:var(--muted); font-size:.86rem; line-height:1.55}
+    .qty-box{
+      display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden; margin-top:10px;
+    }
+    .qty-box button{
+      width:36px; height:36px; border:none; background:rgba(255,255,255,.04); cursor:pointer; color:#fff;
+    }
+    .qty-box span{
+      min-width:40px; text-align:center; font-weight:800;
+      display:grid; place-items:center;
+      background:rgba(255,255,255,.02); height:36px;
+    }
+    .cart-price{
+      font-weight:900; font-size:1rem; white-space:nowrap;
+    }
+    .cart-footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:18px 20px 20px;
+      display:grid; gap:12px;
+      background:rgba(12,13,17,.9);
+      backdrop-filter:blur(14px);
+    }
+    .cart-summary{
+      display:flex; justify-content:space-between; gap:12px; align-items:center;
+    }
+    .cart-summary strong{font-size:1.3rem}
+    .small-note{
+      color:var(--muted); font-size:.84rem; line-height:1.6;
+    }
+
+    .modal-panel{
+      position:absolute; inset:24px;
+      max-width:1280px; margin:auto;
+      background:
+        radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 26%),
+        linear-gradient(180deg, #111319, #090b10);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:28px;
+      box-shadow:0 40px 100px rgba(0,0,0,.45);
+      transform:translateY(20px) scale(.98);
+      opacity:0;
+      transition:.25s ease;
+      overflow:hidden;
+      display:grid; grid-template-rows:auto 1fr;
+    }
+    .modal.open .modal-panel{
+      transform:translateY(0) scale(1);
+      opacity:1;
+    }
+    .modal-head{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding:18px 20px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(11,12,16,.92);
+      backdrop-filter:blur(14px);
+    }
+    .modal-title-group h3{margin:0; font-size:1.3rem}
+    .modal-title-group p{margin:6px 0 0; color:var(--muted)}
+    .modal-content{
+      overflow:auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns:1.06fr .94fr;
+      gap:22px;
+    }
+    .gallery-wrap{
+      min-width:0;
+    }
+    .main-image{
+      aspect-ratio:1.08/1;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, #151821, #0d1016);
+    }
+    .main-image img{
+      width:100%; height:100%; object-fit:cover;
+    }
+    .thumbs{
+      margin-top:12px;
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(92px,1fr)); gap:10px;
+      max-height:172px; overflow:auto; padding-right:4px;
+    }
+    .thumb{
+      aspect-ratio:1/1;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:#12151b;
+      cursor:pointer;
+      padding:0;
+    }
+    .thumb.active{border-color:rgba(179,31,36,.58); box-shadow:0 0 0 2px rgba(179,31,36,.18)}
+    .thumb img{width:100%; height:100%; object-fit:cover}
+    .details-wrap{
+      display:flex; flex-direction:column; gap:16px;
+      min-width:0;
+    }
+    .detail-box{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      border-radius:22px;
+      padding:18px;
+    }
+    .detail-box h4{margin:0 0 10px; font-size:1rem}
+    .desc{
+      color:#dce0ea; line-height:1.72;
+    }
+    .desc p{margin:0 0 12px}
+    .desc ul{margin:0 0 0 18px}
+    .variant-chooser{
+      display:grid; gap:10px;
+    }
+    .variant-option{
+      width:100%; text-align:left; cursor:pointer;
+      padding:13px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.035);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .variant-option.active{
+      border-color:rgba(179,31,36,.56);
+      background:rgba(179,31,36,.10);
+    }
+    .detail-price{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    }
+    .price-big{
+      font-size:2rem; font-weight:900; letter-spacing:-.04em;
+    }
+    .detail-actions{
+      display:grid; grid-template-columns:1fr auto auto; gap:10px;
+    }
+    .sku-line{
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:var(--muted); font-size:.88rem;
+    }
+
+    .footer{
+      padding:0 0 42px;
+    }
+    .footer-box{
+      border:1px solid rgba(255,255,255,.07);
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      border-radius:26px;
+      padding:22px;
+      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    }
+    .footer-copy h3{margin:0 0 6px}
+    .footer-copy p{margin:0; color:var(--muted); line-height:1.7}
+    .footer-actions{display:flex; gap:10px; flex-wrap:wrap}
+
+    .toast-stack{
+      position:fixed; right:18px; bottom:18px; z-index:140;
+      display:grid; gap:10px;
+    }
+    .toast{
+      min-width:260px; max-width:min(380px, 92vw);
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(12,13,17,.9);
+      backdrop-filter:blur(12px);
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+      animation:slideUp .25s ease;
+    }
+    .toast strong{display:block; margin-bottom:4px}
+
+    @media (max-width: 1260px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero-side{grid-template-columns:1fr 1fr; grid-template-rows:none}
+      .controls-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
+      .controls-grid .search-field{grid-column:1 / -1}
+      .products-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
+      .modal-content{grid-template-columns:1fr}
+    }
+    @media (max-width: 980px){
+      .header-inner{grid-template-columns:1fr; padding:14px 0}
+      .top-nav{justify-content:flex-start}
+      .header-actions{justify-content:flex-start}
+      .hero-main{padding:24px; min-height:auto}
+      .hero-stats{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .hero-side{grid-template-columns:1fr}
+      .controls-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .products-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .products-grid.list .product-card{grid-template-columns:1fr}
+      .modal-panel{inset:10px}
+      .detail-actions{grid-template-columns:1fr}
+    }
+    @media (max-width: 640px){
+      :root{--container:min(100vw - 18px, 100vw - 18px)}
+      .hero h1{font-size:2.1rem}
+      .hero p.lead{font-size:.98rem}
+      .hero-stats{grid-template-columns:1fr}
+      .controls-grid{grid-template-columns:1fr}
+      .products-grid{grid-template-columns:1fr}
+      .featured-scroller{grid-auto-columns:minmax(84vw, 1fr)}
+      .product-actions{grid-template-columns:1fr auto}
+      .cart-item{grid-template-columns:78px 1fr}
+      .cart-item > div:last-child{grid-column:1 / -1}
+      .drawer-panel{width:100vw}
+      .footer-box{padding:18px}
+      .detail-price{align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="RACEM CYBUL">
+        <div class="brand-logo">
+          <img src="assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
+        </div>
+        <div class="brand-copy">
+          <div class="brand-kicker" data-i18n="supplierKicker">Supplier Hub</div>
+          <div class="brand-title">CYBUL RADICAL SOLUTIONS</div>
+          <div class="brand-sub" data-i18n="brandSub">Performance parts / swap solutions / drift hardware</div>
+        </div>
+      </a>
+
+      <nav class="top-nav">
+        <a class="nav-pill" href="#featured" data-i18n="navFeatured">Odporúčame</a>
+        <a class="nav-pill" href="#catalog" data-i18n="navCatalog">Katalóg</a>
+        <a class="nav-pill" href="#favorites" id="navFavoritesBtn" data-i18n="navFavorites">Obľúbené</a>
+        <a class="nav-pill" href="#footer" data-i18n="navContact">Viac info</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-switch" aria-label="Language switch">
+          <button class="active" data-lang-btn="sk">SK</button>
+          <button data-lang-btn="en">EN</button>
+        </div>
+        <button class="icon-btn" id="favoritesOpenBtn" title="Favorites">
+          ❤
+          <span class="count" id="favoritesCount">0</span>
+        </button>
+        <button class="icon-btn" id="cartOpenBtn" title="Cart">
+          🛒
+          <span class="count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="kicker" data-i18n="heroKicker">RACEM x CYBUL</div>
+            <h1 data-i18n="heroTitle">Brutálny katalóg performance dielov pre swapy, drift a track buildy.</h1>
+            <p class="lead" data-i18n="heroLead">
+              CYBUL RADICAL SOLUTIONS v RACEM štýle. Rýchly vyhľadávač, platformové filtre, varianty, lokálny košík,
+              obľúbené produkty, dvojjazyčné rozhranie a priamy presun na Shopify checkout podľa variant ID.
+            </p>
+
+            <div class="hero-stats">
+              <div class="stat-card">
+                <div class="stat-label" data-i18n="statProducts">Produktov</div>
+                <div class="stat-value" id="statProducts">—</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label" data-i18n="statCategories">Kategórií</div>
+                <div class="stat-value" id="statCategories">—</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label" data-i18n="statPlatforms">Platforiem</div>
+                <div class="stat-value" id="statPlatforms">—</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label" data-i18n="statVariants">Variantov</div>
+                <div class="stat-value" id="statVariants">—</div>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a href="#catalog" class="btn btn-primary" data-i18n="browseCatalog">Prejsť do katalógu</a>
+              <button class="btn btn-secondary" id="jumpFeaturedBtn" data-i18n="seeRecommendations">Zobraziť odporúčané</button>
+              <button class="btn btn-ghost" id="openCartHeroBtn" data-i18n="openCart">Otvoriť košík</button>
+            </div>
+          </div>
+
+          <div class="hero-side">
+            <div class="hero-side-card">
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardFastAccess">Fast access</div>
+              <h3 data-i18n="cardFastAccessTitle">Vyhľadaj presne to, čo riešiš</h3>
+              <p data-i18n="cardFastAccessText">
+                Platforma, kategória, cena, názov produktu aj variant. Toto nie je obyčajný feed. Toto je reálne použiteľná substránka.
+              </p>
+              <div class="mini-list">
+                <div class="mini-row">
+                  <span data-i18n="miniSwap">Swap diely</span>
+                  <strong id="swapCount">—</strong>
+                </div>
+                <div class="mini-row">
+                  <span data-i18n="miniBMW">BMW platformy</span>
+                  <strong id="bmwCount">—</strong>
+                </div>
+                <div class="mini-row">
+                  <span data-i18n="miniMazda">Mazda / MX-5</span>
+                  <strong id="mazdaCount">—</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-side-card">
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardWhy">Why this page</div>
+              <h3 data-i18n="cardWhyTitle">Postavené na feed-e cybul.json</h3>
+              <p data-i18n="cardWhyText">
+                Produkty sa načítavajú dynamicky z JSON-u, riešia sa varianty, galéria, platformy, obľúbené aj checkout flow.
+              </p>
+              <div class="trust-points">
+                <span class="chip" data-i18n="trust1">Dvojjazyčné UI</span>
+                <span class="chip" data-i18n="trust2">Shopify checkout</span>
+                <span class="chip" data-i18n="trust3">RACEM visual</span>
+                <span class="chip" data-i18n="trust4">Lokálny košík</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="featured-strip" id="featured">
+          <div class="section-head" style="margin-top:0; margin-bottom:14px;">
+            <div>
+              <h2 data-i18n="featuredTitle">Odporúčané a najzaujímavejšie</h2>
+              <p data-i18n="featuredLead">Vybrané produkty podľa kombinácie ceny, počtu obrázkov, variantov a atraktivity pre performance buildy.</p>
+            </div>
+          </div>
+          <div class="featured-scroller" id="featuredScroller"></div>
+        </div>
+
+        <div class="filters-panel">
+          <div class="controls-grid">
+            <div class="field search-field">
+              <label for="searchInput" data-i18n="searchLabel">Vyhľadávanie</label>
+              <input class="input" id="searchInput" type="search" placeholder="Hľadaj podľa názvu, SKU, platformy..." />
+            </div>
+            <div class="field">
+              <label for="categoryFilter" data-i18n="categoryLabel">Kategória</label>
+              <select class="select" id="categoryFilter"></select>
+            </div>
+            <div class="field">
+              <label for="platformFilter" data-i18n="platformLabel">Platforma</label>
+              <select class="select" id="platformFilter"></select>
+            </div>
+            <div class="field">
+              <label for="sortSelect" data-i18n="sortLabel">Zoradenie</label>
+              <select class="select" id="sortSelect"></select>
+            </div>
+            <div class="field">
+              <label for="stockFilter" data-i18n="stockLabel">Dostupnosť</label>
+              <select class="select" id="stockFilter"></select>
+            </div>
+            <div class="field">
+              <label data-i18n="actionsLabel">Akcie</label>
+              <button class="btn btn-secondary" id="resetFiltersBtn" style="height:52px;" data-i18n="resetFilters">Reset filtrov</button>
+            </div>
+          </div>
+
+          <div class="filters-row-bottom">
+            <div class="quick-pills" id="quickPills"></div>
+            <div class="results-meta">
+              <span id="resultsCount">0</span>
+              <span data-i18n="resultsProducts">produktov</span>
+              <span>•</span>
+              <button class="nav-pill" id="favoritesOnlyBtn" type="button" data-i18n="favoritesOnly">Len obľúbené</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="catalog-shell" id="catalog">
+          <div class="catalog-top">
+            <div>
+              <h2 data-i18n="catalogTitle">Katalóg CYBUL</h2>
+              <div class="muted" id="catalogSubline" data-i18n="catalogSubline">Načítavam produkty...</div>
+            </div>
+            <div class="view-toggles">
+              <button class="view-btn active" id="gridViewBtn" data-i18n="gridView">Grid</button>
+              <button class="view-btn" id="listViewBtn" data-i18n="listView">List</button>
+            </div>
+          </div>
+          <div class="products-grid" id="productsGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer" id="footer">
+      <div class="wrap">
+        <div class="footer-box">
+          <div class="footer-copy">
+            <h3 data-i18n="footerTitle">CYBUL Radical Solutions / RACEM supplier page</h3>
+            <p data-i18n="footerText">
+              Vizuál a UX v RACEM štýle, dáta z JSON feedu, pripravené na ďalšie rozšírenie o badges, bestsellery, custom pricing alebo napojenie na ďalšie feedy.
+            </p>
+          </div>
+          <div class="footer-actions">
+            <a href="#top" class="btn btn-secondary" data-i18n="backTop">Späť hore</a>
+            <button class="btn btn-primary" id="footerCartBtn" data-i18n="goToCart">Prejsť do košíka</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="backdrop" data-close-drawer></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <div>
+          <h3 data-i18n="cartTitle">Košík</h3>
+          <div class="muted" data-i18n="cartSubtitle">Lokálny košík pripravený na Shopify checkout</div>
+        </div>
+        <button class="drawer-close" data-close-drawer>✕</button>
+      </div>
+      <div class="drawer-body" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <span data-i18n="cartTotal">Spolu</span>
+          <strong id="cartTotal">€0.00</strong>
+        </div>
+        <div class="small-note" data-i18n="cartNote">
+          Checkout skladá Shopify cart URL priamo z variant ID a množstiev. Produkty bez validného variant ID sa do checkoutu nepustia.
+        </div>
+        <button class="btn btn-primary" id="checkoutBtn" data-i18n="checkoutBtn">Prejsť na Shopify checkout</button>
+        <button class="btn btn-secondary" id="clearCartBtn" data-i18n="clearCart">Vymazať košík</button>
+      </div>
+    </div>
+  </aside>
+
+  <section class="modal" id="productModal" aria-hidden="true">
+    <div class="backdrop" data-close-modal></div>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div class="modal-title-group">
+          <h3 id="modalTitle">Produkt</h3>
+          <p id="modalMeta">—</p>
+        </div>
+        <button class="drawer-close" data-close-modal>✕</button>
+      </div>
+      <div class="modal-content">
+        <div class="gallery-wrap">
+          <div class="main-image"><img id="modalMainImage" alt=""></div>
+          <div class="thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="details-wrap">
+          <div class="detail-box">
+            <h4 data-i18n="modalVariantTitle">Varianty</h4>
+            <div class="variant-chooser" id="variantChooser"></div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-price">
+              <div>
+                <div class="price-big" id="modalPrice">€0.00</div>
+                <div class="compare-price" id="modalCompare"></div>
+              </div>
+              <div class="sku-line" id="modalSkuLine"></div>
+            </div>
+            <div class="detail-actions" style="margin-top:16px;">
+              <button class="btn btn-primary" id="modalAddBtn" data-i18n="addToCart">Pridať do košíka</button>
+              <a class="btn btn-secondary" id="modalShopBtn" target="_blank" rel="noopener" data-i18n="openInShop">Otvoriť v e-shope</a>
+              <button class="btn btn-ghost" id="modalFavBtn">❤</button>
+            </div>
+          </div>
+          <div class="detail-box">
+            <h4 data-i18n="modalPlatformsTitle">Platformy</h4>
+            <div class="platform-tags" id="modalPlatforms"></div>
+          </div>
+          <div class="detail-box">
+            <h4 data-i18n="modalDescriptionTitle">Popis</h4>
+            <div class="desc" id="modalDescription"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script>
+    const state = {
+      lang: localStorage.getItem('cybul_lang') || 'sk',
+      productsRaw: [],
+      products: [],
+      filtered: [],
+      favorites: JSON.parse(localStorage.getItem('cybul_favorites') || '[]'),
+      cart: JSON.parse(localStorage.getItem('cybul_cart') || '[]'),
+      favoritesOnly: false,
+      view: localStorage.getItem('cybul_view') || 'grid',
+      currentModal: null,
+      currentThumb: 0
+    };
+
+    const i18n = {
+      sk: {
+        supplierKicker: "Supplier Hub",
+        brandSub: "Performance diely / swap riešenia / drift hardvér",
+        navFeatured: "Odporúčame",
+        navCatalog: "Katalóg",
+        navFavorites: "Obľúbené",
+        navContact: "Viac info",
+        heroKicker: "RACEM x CYBUL",
+        heroTitle: "Brutálny katalóg performance dielov pre swapy, drift a track buildy.",
+        heroLead: "CYBUL RADICAL SOLUTIONS v RACEM štýle. Rýchly vyhľadávač, platformové filtre, varianty, lokálny košík, obľúbené produkty, dvojjazyčné rozhranie a priamy presun na Shopify checkout podľa variant ID.",
+        statProducts: "Produktov",
+        statCategories: "Kategórií",
+        statPlatforms: "Platforiem",
+        statVariants: "Variantov",
+        browseCatalog: "Prejsť do katalógu",
+        seeRecommendations: "Zobraziť odporúčané",
+        openCart: "Otvoriť košík",
+        cardFastAccess: "Fast access",
+        cardFastAccessTitle: "Vyhľadaj presne to, čo riešiš",
+        cardFastAccessText: "Platforma, kategória, cena, názov produktu aj variant. Toto nie je obyčajný feed. Toto je reálne použiteľná substránka.",
+        miniSwap: "Swap diely",
+        miniBMW: "BMW platformy",
+        miniMazda: "Mazda / MX-5",
+        cardWhy: "Why this page",
+        cardWhyTitle: "Postavené na feed-e cybul.json",
+        cardWhyText: "Produkty sa načítavajú dynamicky z JSON-u, riešia sa varianty, galéria, platformy, obľúbené aj checkout flow.",
+        trust1: "Dvojjazyčné UI",
+        trust2: "Shopify checkout",
+        trust3: "RACEM visual",
+        trust4: "Lokálny košík",
+        featuredTitle: "Odporúčané a najzaujímavejšie",
+        featuredLead: "Vybrané produkty podľa kombinácie ceny, počtu obrázkov, variantov a atraktivity pre performance buildy.",
+        searchLabel: "Vyhľadávanie",
+        searchPlaceholder: "Hľadaj podľa názvu, SKU, platformy...",
+        categoryLabel: "Kategória",
+        platformLabel: "Platforma",
+        sortLabel: "Zoradenie",
+        stockLabel: "Dostupnosť",
+        actionsLabel: "Akcie",
+        resetFilters: "Reset filtrov",
+        resultsProducts: "produktov",
+        favoritesOnly: "Len obľúbené",
+        catalogTitle: "Katalóg CYBUL",
+        catalogSubline: "Dynamicky načítané produkty s variantami, galériou a lokálnym košíkom.",
+        gridView: "Grid",
+        listView: "List",
+        footerTitle: "CYBUL Radical Solutions / RACEM supplier page",
+        footerText: "Vizuál a UX v RACEM štýle, dáta z JSON feedu, pripravené na ďalšie rozšírenie o badges, bestsellery, custom pricing alebo napojenie na ďalšie feedy.",
+        backTop: "Späť hore",
+        goToCart: "Prejsť do košíka",
+        cartTitle: "Košík",
+        cartSubtitle: "Lokálny košík pripravený na Shopify checkout",
+        cartTotal: "Spolu",
+        cartNote: "Checkout skladá Shopify cart URL priamo z variant ID a množstiev. Produkty bez validného variant ID sa do checkoutu nepustia.",
+        checkoutBtn: "Prejsť na Shopify checkout",
+        clearCart: "Vymazať košík",
+        modalVariantTitle: "Varianty",
+        modalPlatformsTitle: "Platformy",
+        modalDescriptionTitle: "Popis",
+        addToCart: "Pridať do košíka",
+        openInShop: "Otvoriť v e-shope",
+        quickAll: "Všetko",
+        quickDrift: "Drift",
+        quickSwap: "Swap",
+        quickBMW: "BMW",
+        quickMazda: "Mazda",
+        quickBrakes: "Brzdy",
+        allCategories: "Všetky kategórie",
+        allPlatforms: "Všetky platformy",
+        allStock: "Všetko",
+        stockMadeToOrder: "Na objednávku",
+        stockOther: "Ostatné",
+        sortFeatured: "Odporúčané",
+        sortPriceAsc: "Cena od najnižšej",
+        sortPriceDesc: "Cena od najvyššej",
+        sortNameAsc: "Názov A–Z",
+        sortNameDesc: "Názov Z–A",
+        sortNewest: "Najviac variantov",
+        detail: "Detail",
+        cartEmpty: "Košík je prázdny. Vyber si produkty z katalógu.",
+        noResults: "Nenašiel sa žiadny produkt pre aktuálne filtre.",
+        variant: "Variant",
+        sku: "SKU",
+        quantity: "Množstvo",
+        remove: "Odstrániť",
+        recommended: "Odporúčame",
+        premium: "Premium",
+        featuredBadge: "Top pick",
+        sourceFeed: "Zdrojový feed",
+        filteredInfo: "Zobrazené",
+        addedTitle: "Pridané do košíka",
+        addedBody: "Produkt bol pridaný do košíka.",
+        favAddedTitle: "Pridané do obľúbených",
+        favAddedBody: "Produkt si si označil ako obľúbený.",
+        favRemovedTitle: "Odstránené z obľúbených",
+        favRemovedBody: "Produkt už nie je v obľúbených.",
+        checkoutErrorTitle: "Checkout nie je pripravený",
+        checkoutErrorBody: "V košíku nie sú produkty s validným Shopify variant ID.",
+        currencyFrom: "od",
+        images: "obrázky",
+        variantsWord: "varianty",
+        buttonFavoritesOff: "Len obľúbené",
+        buttonFavoritesOn: "Zobrazuješ obľúbené",
+        priceOnRequest: "Na dopyt",
+        favoritesSection: "Obľúbené"
+      },
+      en: {
+        supplierKicker: "Supplier Hub",
+        brandSub: "Performance parts / swap solutions / drift hardware",
+        navFeatured: "Recommended",
+        navCatalog: "Catalog",
+        navFavorites: "Favorites",
+        navContact: "More info",
+        heroKicker: "RACEM x CYBUL",
+        heroTitle: "A brutal performance catalog for swaps, drift and track builds.",
+        heroLead: "CYBUL RADICAL SOLUTIONS in full RACEM style. Fast search, platform filters, variants, local cart, favorites, bilingual UI and direct Shopify checkout based on variant IDs.",
+        statProducts: "Products",
+        statCategories: "Categories",
+        statPlatforms: "Platforms",
+        statVariants: "Variants",
+        browseCatalog: "Browse catalog",
+        seeRecommendations: "See recommendations",
+        openCart: "Open cart",
+        cardFastAccess: "Fast access",
+        cardFastAccessTitle: "Find exactly what you need",
+        cardFastAccessText: "Platform, category, price, product title and variant. This is not a flat feed. This is a real supplier landing page.",
+        miniSwap: "Swap parts",
+        miniBMW: "BMW platforms",
+        miniMazda: "Mazda / MX-5",
+        cardWhy: "Why this page",
+        cardWhyTitle: "Built on cybul.json feed",
+        cardWhyText: "Products are loaded dynamically from JSON, including variants, gallery, platforms, favorites and checkout flow.",
+        trust1: "Bilingual UI",
+        trust2: "Shopify checkout",
+        trust3: "RACEM visual",
+        trust4: "Local cart",
+        featuredTitle: "Recommended and most interesting",
+        featuredLead: "Selected products based on price, number of images, variants and overall fit for serious performance builds.",
+        searchLabel: "Search",
+        searchPlaceholder: "Search by title, SKU, platform...",
+        categoryLabel: "Category",
+        platformLabel: "Platform",
+        sortLabel: "Sort",
+        stockLabel: "Availability",
+        actionsLabel: "Actions",
+        resetFilters: "Reset filters",
+        resultsProducts: "products",
+        favoritesOnly: "Favorites only",
+        catalogTitle: "CYBUL Catalog",
+        catalogSubline: "Dynamically loaded products with variants, gallery and a local cart.",
+        gridView: "Grid",
+        listView: "List",
+        footerTitle: "CYBUL Radical Solutions / RACEM supplier page",
+        footerText: "RACEM-style visual system and UX powered by JSON feed data, ready for further expansion with badges, bestsellers, custom pricing or additional supplier feeds.",
+        backTop: "Back to top",
+        goToCart: "Go to cart",
+        cartTitle: "Cart",
+        cartSubtitle: "Local cart ready for Shopify checkout",
+        cartTotal: "Total",
+        cartNote: "Checkout builds a Shopify cart URL directly from variant IDs and quantities. Items without a valid variant ID are excluded.",
+        checkoutBtn: "Go to Shopify checkout",
+        clearCart: "Clear cart",
+        modalVariantTitle: "Variants",
+        modalPlatformsTitle: "Platforms",
+        modalDescriptionTitle: "Description",
+        addToCart: "Add to cart",
+        openInShop: "Open in shop",
+        quickAll: "All",
+        quickDrift: "Drift",
+        quickSwap: "Swap",
+        quickBMW: "BMW",
+        quickMazda: "Mazda",
+        quickBrakes: "Brakes",
+        allCategories: "All categories",
+        allPlatforms: "All platforms",
+        allStock: "All",
+        stockMadeToOrder: "Made to order",
+        stockOther: "Other",
+        sortFeatured: "Featured",
+        sortPriceAsc: "Price low to high",
+        sortPriceDesc: "Price high to low",
+        sortNameAsc: "Name A–Z",
+        sortNameDesc: "Name Z–A",
+        sortNewest: "Most variants",
+        detail: "Details",
+        cartEmpty: "Your cart is empty. Pick products from the catalog.",
+        noResults: "No products found for the current filters.",
+        variant: "Variant",
+        sku: "SKU",
+        quantity: "Qty",
+        remove: "Remove",
+        recommended: "Recommended",
+        premium: "Premium",
+        featuredBadge: "Top pick",
+        sourceFeed: "Source feed",
+        filteredInfo: "Showing",
+        addedTitle: "Added to cart",
+        addedBody: "The product was added to the cart.",
+        favAddedTitle: "Added to favorites",
+        favAddedBody: "The product was saved to favorites.",
+        favRemovedTitle: "Removed from favorites",
+        favRemovedBody: "The product is no longer in favorites.",
+        checkoutErrorTitle: "Checkout not ready",
+        checkoutErrorBody: "There are no products with valid Shopify variant IDs in the cart.",
+        currencyFrom: "from",
+        images: "images",
+        variantsWord: "variants",
+        buttonFavoritesOff: "Favorites only",
+        buttonFavoritesOn: "Showing favorites",
+        priceOnRequest: "On request",
+        favoritesSection: "Favorites"
+      }
+    };
+
+    const els = {};
+    document.querySelectorAll('[id]').forEach(el => els[el.id] = el);
+
+    function t(key){
+      return (i18n[state.lang] && i18n[state.lang][key]) || key;
+    }
+
+    function money(value){
+      if (value == null || Number.isNaN(Number(value))) return t('priceOnRequest');
+      const locale = state.lang === 'sk' ? 'sk-SK' : 'en-IE';
+      return new Intl.NumberFormat(locale, {style:'currency', currency:'EUR', maximumFractionDigits:2}).format(Number(value));
+    }
+
+    function saveState(){
+      localStorage.setItem('cybul_favorites', JSON.stringify(state.favorites));
+      localStorage.setItem('cybul_cart', JSON.stringify(state.cart));
+      localStorage.setItem('cybul_lang', state.lang);
+      localStorage.setItem('cybul_view', state.view);
+    }
+
+    function slugify(v=''){
+      return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    }
+
+    function stripHtml(html=''){
+      const div = document.createElement('div');
+      div.innerHTML = html || '';
+      return (div.textContent || div.innerText || '').replace(/\s+/g,' ').trim();
+    }
+
+    function translateTitleSmart(title=''){
+      if (state.lang === 'sk') return title;
+      const map = [
+        ['spojkový kit', 'clutch kit'],
+        ['zadná olejová vaňa', 'rear oil pan'],
+        ['konverzné ramená', 'conversion control arms'],
+        ['výstuhy', 'reinforcements'],
+        ['držiaky motora', 'engine mounts'],
+        ['adaptéry', 'adapters'],
+        ['nastaviteľná zadná náprava', 'adjustable rear beam'],
+        ['medziľahlý riadiaci hriadeľ', 'intermediate steering shaft'],
+        ['hydraulická ručná brzda', 'hydraulic handbrake'],
+        ['pre prevodovku', 'for gearbox'],
+        ['pre BMW', 'for BMW'],
+        ['predného pomocného rámu', 'front subframe'],
+        ['nerezové výfukové zvody', 'stainless exhaust manifold'],
+        ['roll bar', 'roll bar'],
+        ['angle lock kit', 'angle lock kit'],
+        ['BMW', 'BMW'],
+        ['Mazda', 'Mazda'],
+        ['Toyota', 'Toyota'],
+        ['swap kit', 'swap kit'],
+        ['štandard', 'standard'],
+        ['surová oceľ', 'raw steel'],
+        ['na zváranie', 'for welding']
+      ];
+      let out = title;
+      map.forEach(([sk, en]) => {
+        const re = new RegExp(sk, 'ig');
+        out = out.replace(re, en);
+      });
+      return out.charAt(0).toUpperCase() + out.slice(1);
+    }
+
+    function translateOptionNameSmart(name=''){
+      if (state.lang === 'sk') return name;
+      const map = {
+        'Verzia':'Version',
+        'Typ spojky':'Clutch type',
+        'Čapy':'Joints',
+        'Materiál':'Material',
+        'Montáž':'Mount',
+        'Rozsah camberu':'Camber range',
+        'Title':'Title'
+      };
+      return map[name] || name;
+    }
+
+    function translateOptionValueSmart(value=''){
+      if (state.lang === 'sk') return value;
+      const map = {
+        'Štandard':'Standard',
+        'S čapmi':'With joints',
+        'Surová oceľ (na zváranie)':'Raw steel (for welding)',
+        'Predná montáž':'Front mount',
+        'Nerezová oceľ':'Stainless steel',
+        'Nerez':'Stainless steel',
+        'Default Title':'Default title'
+      };
+      return map[value] || value;
+    }
+
+    function normalizeProducts(source){
+      const products = (source.products || []).map((p, idx) => {
+        const rawVariants = Array.isArray(p.variants) ? p.variants : [];
+        const buyableVariants = rawVariants.filter(v => v && v.variantId && v.price != null);
+        const allImages = [...new Set([
+          ...(Array.isArray(p.images) ? p.images : []),
+          ...rawVariants.flatMap(v => Array.isArray(v.images) ? v.images : [])
+        ].filter(Boolean))];
+        const firstVariant = buyableVariants[0] || rawVariants[0] || null;
+        const minPrice = buyableVariants.length ? Math.min(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
+        const maxPrice = buyableVariants.length ? Math.max(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
+        const textBlob = [
+          p.title, stripHtml(p.descriptionHtml || ''), p.category, p.manufacturer,
+          ...(p.platforms || []),
+          ...rawVariants.map(v => [v.title, v.sku, ...Object.entries(v.options || {}).flat()].join(' '))
+        ].join(' ').toLowerCase();
+
+        return {
+          ...p,
+          _index: idx,
+          _images: allImages,
+          _buyableVariants: buyableVariants,
+          _allVariants: rawVariants,
+          _firstVariant: firstVariant,
+          _minPrice: minPrice,
+          _maxPrice: maxPrice,
+          _textBlob: textBlob,
+          _recommendedScore:
+            (buyableVariants.length * 25) +
+            (allImages.length * 7) +
+            ((p.platforms || []).length * 4) +
+            ((/drift|swap|v8|1jz|2jz|m5[027]|e3[046]/i.test(textBlob) ? 22 : 0)) +
+            ((minPrice || 0) > 800 ? 10 : 0),
+          _badges: buildBadges(p, buyableVariants, minPrice, textBlob)
+        };
+      });
+      return products;
+    }
+
+    function buildBadges(product, buyableVariants, minPrice, textBlob){
+      const badges = [];
+      if (/drift/i.test(textBlob)) badges.push({label:'Drift', cls:'red'});
+      if (/swap|1jz|2jz|1uz|3uz|m60|m62|m57|v8/i.test(textBlob)) badges.push({label:'Swap', cls:'gold'});
+      if ((product.platforms || []).some(p => /^e\d+/i.test(p))) badges.push({label:'BMW', cls:'green'});
+      if (buyableVariants.length > 1) badges.push({label:'Multi', cls:''});
+      if ((minPrice || 0) >= 1000) badges.push({label:'Pro', cls:'gold'});
+      return badges.slice(0,2);
+    }
+
+    async function loadData(){
+      const attempts = ['cybul.json', 'cybul%20(1).json', 'cybul (1).json'];
+      let lastError = null;
+      for (const path of attempts){
+        try{
+          const res = await fetch(path);
+          if (!res.ok) throw new Error(`${path}: ${res.status}`);
+          const json = await res.json();
+          state.productsRaw = json.products || [];
+          state.products = normalizeProducts(json);
+          window.__cybulMeta = json.meta || {};
+          window.__cybulCategories = json.categories || [];
+          return;
+        }catch(err){
+          lastError = err;
+        }
+      }
+      throw lastError || new Error('Could not load data');
+    }
+
+    function applyTranslations(){
+      document.documentElement.lang = state.lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t(key);
+      });
+      els.searchInput.placeholder = t('searchPlaceholder');
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === state.lang);
+      });
+      els.favoritesOnlyBtn.textContent = state.favoritesOnly ? t('buttonFavoritesOn') : t('buttonFavoritesOff');
+      renderFilters();
+      renderHeroStats();
+      renderFeatured();
+      renderProducts();
+      renderCart();
+      if (state.currentModal) openProductModal(state.currentModal.id, true);
+    }
+
+    function renderHeroStats(){
+      const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))];
+      const platforms = [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))];
+      const variants = state.products.reduce((acc,p) => acc + (p._buyableVariants.length || 0), 0);
+      els.statProducts.textContent = state.products.length;
+      els.statCategories.textContent = categories.length;
+      els.statPlatforms.textContent = platforms.length;
+      els.statVariants.textContent = variants;
+      els.swapCount.textContent = state.products.filter(p => /swap|1jz|2jz|1uz|3uz|m60|m62|m57|v8/i.test(p._textBlob)).length;
+      els.bmwCount.textContent = state.products.filter(p => (p.platforms||[]).some(x => /^e\d+|^m\d+/i.test(x))).length;
+      els.mazdaCount.textContent = state.products.filter(p => /mx-5|mazda/i.test(p._textBlob)).length;
+      els.catalogSubline.textContent = t('catalogSubline');
+    }
+
+    function getAllCategories(){
+      return [...new Set(state.products.map(p => p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    }
+    function getAllPlatforms(){
+      return [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))].sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+    }
+
+    function renderFilters(){
+      const categoryVal = els.categoryFilter.value || '';
+      const platformVal = els.platformFilter.value || '';
+      const sortVal = els.sortSelect.value || 'featured';
+      const stockVal = els.stockFilter.value || '';
+
+      const categories = getAllCategories();
+      const platforms = getAllPlatforms();
+
+      els.categoryFilter.innerHTML = `<option value="">${t('allCategories')}</option>` + categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + platforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      els.sortSelect.innerHTML = `
+        <option value="featured">${t('sortFeatured')}</option>
+        <option value="price-asc">${t('sortPriceAsc')}</option>
+        <option value="price-desc">${t('sortPriceDesc')}</option>
+        <option value="name-asc">${t('sortNameAsc')}</option>
+        <option value="name-desc">${t('sortNameDesc')}</option>
+        <option value="variants-desc">${t('sortNewest')}</option>`;
+      els.stockFilter.innerHTML = `
+        <option value="">${t('allStock')}</option>
+        <option value="made_to_order">${t('stockMadeToOrder')}</option>
+        <option value="other">${t('stockOther')}</option>`;
+
+      els.categoryFilter.value = categories.includes(categoryVal) ? categoryVal : '';
+      els.platformFilter.value = platforms.includes(platformVal) ? platformVal : '';
+      els.sortSelect.value = ['featured','price-asc','price-desc','name-asc','name-desc','variants-desc'].includes(sortVal) ? sortVal : 'featured';
+      els.stockFilter.value = ['made_to_order','other'].includes(stockVal) ? stockVal : '';
+
+      renderQuickPills();
+    }
+
+    function renderQuickPills(){
+      const pills = [
+        {label:t('quickAll'), action:() => {clearQuick(); applyFilters();}, key:'all'},
+        {label:t('quickDrift'), action:() => {els.searchInput.value='drift'; applyFilters(); activateQuick('drift');}, key:'drift'},
+        {label:t('quickSwap'), action:() => {els.searchInput.value='swap'; applyFilters(); activateQuick('swap');}, key:'swap'},
+        {label:t('quickBMW'), action:() => {els.platformFilter.value='E36'; applyFilters(); activateQuick('bmw');}, key:'bmw'},
+        {label:t('quickMazda'), action:() => {els.searchInput.value='mx-5'; applyFilters(); activateQuick('mazda');}, key:'mazda'},
+        {label:t('quickBrakes'), action:() => {els.categoryFilter.value='Brzdy'; applyFilters(); activateQuick('brakes');}, key:'brakes'},
+      ];
+      els.quickPills.innerHTML = pills.map(p => `<button type="button" data-quick="${p.key}">${p.label}</button>`).join('');
+      els.quickPills.querySelectorAll('button').forEach((btn, idx) => btn.addEventListener('click', pills[idx].action));
+    }
+
+    function clearQuick(){
+      els.quickPills.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    }
+    function activateQuick(key){
+      clearQuick();
+      const btn = els.quickPills.querySelector(`[data-quick="${key}"]`);
+      if (btn) btn.classList.add('active');
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function applyFilters(){
+      const q = (els.searchInput.value || '').trim().toLowerCase();
+      const category = els.categoryFilter.value;
+      const platform = els.platformFilter.value;
+      const sort = els.sortSelect.value;
+      const stock = els.stockFilter.value;
+
+      let items = [...state.products];
+
+      if (q){
+        items = items.filter(p => p._textBlob.includes(q));
+      }
+      if (category){
+        items = items.filter(p => p.category === category);
+      }
+      if (platform){
+        items = items.filter(p => (p.platforms || []).includes(platform));
+      }
+      if (stock){
+        items = items.filter(p => {
+          const firstStock = p._buyableVariants[0]?.stock || p._allVariants[0]?.stock || '';
+          return stock === 'other' ? firstStock !== 'made_to_order' : firstStock === stock;
+        });
+      }
+      if (state.favoritesOnly){
+        items = items.filter(p => state.favorites.includes(p.id));
+      }
+
+      items.sort((a,b) => {
+        switch(sort){
+          case 'price-asc': return (a._minPrice ?? Infinity) - (b._minPrice ?? Infinity);
+          case 'price-desc': return (b._minPrice ?? -Infinity) - (a._minPrice ?? -Infinity);
+          case 'name-asc': return displayTitle(a).localeCompare(displayTitle(b));
+          case 'name-desc': return displayTitle(b).localeCompare(displayTitle(a));
+          case 'variants-desc': return (b._buyableVariants.length || 0) - (a._buyableVariants.length || 0);
+          default:
+            return (b._recommendedScore - a._recommendedScore) || ((a._minPrice ?? 0) - (b._minPrice ?? 0));
+        }
+      });
+
+      state.filtered = items;
+      renderProducts();
+    }
+
+    function displayTitle(product){
+      return translateTitleSmart(product.title || '');
+    }
+
+    function renderFeatured(){
+      const picks = [...state.products].sort((a,b)=>b._recommendedScore - a._recommendedScore).slice(0,8);
+      els.featuredScroller.innerHTML = picks.map(p => {
+        const title = escapeHtml(displayTitle(p));
+        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 132) + (stripHtml(p.descriptionHtml||'').length > 132 ? '…' : '')) || '');
+        const priceLine = p._minPrice != null ? `${t('currencyFrom')} ${money(p._minPrice)}` : t('priceOnRequest');
+        return `
+          <article class="feature-card">
+            <div class="feature-pill">${t('featuredBadge')}</div>
+            <h3>${title}</h3>
+            <p>${blurb}</p>
+            <div class="trust-points" style="margin-top:14px;">
+              ${(p.platforms || []).slice(0,4).map(pl => `<span class="chip">${escapeHtml(pl)}</span>`).join('')}
+            </div>
+            <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <strong style="font-size:1.08rem;">${priceLine}</strong>
+              <button class="btn btn-secondary feature-open" data-id="${escapeHtml(p.id)}">${t('detail')}</button>
+            </div>
+          </article>`;
+      }).join('');
+      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => {
+        btn.addEventListener('click', () => openProductModal(btn.dataset.id));
+      });
+    }
+
+    function currentCardVariant(product){
+      return product._buyableVariants[0] || product._firstVariant || null;
+    }
+
+    function renderProducts(){
+      els.productsGrid.classList.toggle('list', state.view === 'list');
+      els.gridViewBtn.classList.toggle('active', state.view === 'grid');
+      els.listViewBtn.classList.toggle('active', state.view === 'list');
+
+      els.resultsCount.textContent = state.filtered.length;
+      if (!state.filtered.length){
+        els.productsGrid.innerHTML = `<div class="empty-state">${t('noResults')}</div>`;
+        return;
+      }
+
+      els.productsGrid.innerHTML = state.filtered.map((p, idx) => {
+        const variant = currentCardVariant(p);
+        const img = p._images[0] || '';
+        const fav = state.favorites.includes(p.id);
+        const compareAt = variant?.compareAtPrice;
+        const price = variant?.price ?? p._minPrice;
+        const priceMarkup = price != null ? `
+          <div class="price-wrap">
+            <div class="price">${money(price)}</div>
+            <div class="compare-price">${compareAt ? money(compareAt) : ''}</div>
+          </div>` : `<div class="price-wrap"><div class="price">${t('priceOnRequest')}</div></div>`;
+
+        return `
+          <article class="product-card" style="animation-delay:${Math.min(idx * 18, 220)}ms">
+            <div class="product-media" data-open="${escapeHtml(p.id)}">
+              ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(displayTitle(p))}" loading="lazy">` : ''}
+              <div class="product-badges">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  ${(p._badges || []).map(b => `<span class="badge ${b.cls || ''}">${escapeHtml(b.label)}</span>`).join('')}
+                </div>
+                <button class="favorite-btn ${fav ? 'active' : ''}" data-favorite="${escapeHtml(p.id)}">❤</button>
+              </div>
+            </div>
+            <div class="product-body">
+              <div class="category-line">
+                <span>${escapeHtml(p.category || '')}</span>
+                <span>•</span>
+                <span>${p._buyableVariants.length || p._allVariants.length} ${t('variantsWord')}</span>
+              </div>
+              <h3 class="product-title" data-open="${escapeHtml(p.id)}">${escapeHtml(displayTitle(p))}</h3>
+              <div class="platform-tags">
+                ${(p.platforms || []).slice(0,5).map(pl => `<span class="tag">${escapeHtml(pl)}</span>`).join('')}
+              </div>
+              <div class="product-price-row">
+                ${priceMarkup}
+                <div class="variant-inline">${variant ? `${t('variant')}: ${escapeHtml(translateOptionValueSmart(variant.title || ''))}` : ''}</div>
+              </div>
+              <div class="product-actions">
+                <button class="card-btn detail" data-open="${escapeHtml(p.id)}">${t('detail')}</button>
+                <button class="card-btn add" data-add="${escapeHtml(p.id)}">+</button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      els.productsGrid.querySelectorAll('[data-open]').forEach(el => {
+        el.addEventListener('click', () => openProductModal(el.dataset.open));
+      });
+      els.productsGrid.querySelectorAll('[data-add]').forEach(el => {
+        el.addEventListener('click', () => addProductToCart(el.dataset.add));
+      });
+      els.productsGrid.querySelectorAll('[data-favorite]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleFavorite(el.dataset.favorite);
+        });
+      });
+    }
+
+    function getProductById(id){
+      return state.products.find(p => p.id === id);
+    }
+
+    function openProductModal(id, preserveVariant=false){
+      const product = getProductById(id);
+      if (!product) return;
+
+      let selectedVariant = preserveVariant && state.currentModal?.selectedVariantId
+        ? (product._buyableVariants.find(v => String(v.variantId) === String(state.currentModal.selectedVariantId)) || product._buyableVariants[0] || product._firstVariant)
+        : (product._buyableVariants[0] || product._firstVariant);
+
+      const galleryImages = [...new Set([
+        ...(selectedVariant?.images || []),
+        ...product._images
+      ].filter(Boolean))];
+
+      state.currentModal = {
+        id: product.id,
+        selectedVariantId: selectedVariant?.variantId || null,
+        galleryImages
+      };
+
+      els.modalTitle.textContent = displayTitle(product);
+      els.modalMeta.textContent = `${product.category || ''} • ${(product.platforms || []).join(', ') || '—'}`;
+
+      function renderModalView(){
+        const currentProduct = getProductById(state.currentModal.id);
+        const currentVariant = currentProduct._buyableVariants.find(v => String(v.variantId) === String(state.currentModal.selectedVariantId)) || currentProduct._buyableVariants[0] || currentProduct._firstVariant;
+        const images = [...new Set([...(currentVariant?.images || []), ...currentProduct._images].filter(Boolean))];
+        state.currentModal.galleryImages = images;
+        if (state.currentThumb >= images.length) state.currentThumb = 0;
+
+        els.modalMainImage.src = images[state.currentThumb] || '';
+        els.modalMainImage.alt = displayTitle(currentProduct);
+        els.modalThumbs.innerHTML = images.map((img, idx) => `
+          <button class="thumb ${idx === state.currentThumb ? 'active' : ''}" data-thumb="${idx}">
+            <img src="${escapeHtml(img)}" alt="">
+          </button>`).join('');
+        els.modalThumbs.querySelectorAll('[data-thumb]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.currentThumb = Number(btn.dataset.thumb);
+            renderModalView();
+          });
+        });
+
+        els.variantChooser.innerHTML = currentProduct._buyableVariants.length
+          ? currentProduct._buyableVariants.map(v => {
+              const options = Object.entries(v.options || {}).map(([k,val]) => `${translateOptionNameSmart(k)}: ${translateOptionValueSmart(val)}`).join(' • ');
+              return `
+                <button class="variant-option ${String(v.variantId) === String(currentVariant?.variantId) ? 'active' : ''}" data-variant-id="${escapeHtml(String(v.variantId))}">
+                  <div>
+                    <strong>${escapeHtml(translateOptionValueSmart(v.title || ''))}</strong>
+                    <div class="muted" style="margin-top:4px; font-size:.85rem;">${escapeHtml(options || v.sku || '')}</div>
+                  </div>
+                  <strong>${money(v.price)}</strong>
+                </button>`;
+            }).join('')
+          : `<div class="muted">${t('priceOnRequest')}</div>`;
+
+        els.variantChooser.querySelectorAll('[data-variant-id]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.currentModal.selectedVariantId = btn.dataset.variantId;
+            state.currentThumb = 0;
+            renderModalView();
+          });
+        });
+
+        els.modalPrice.textContent = currentVariant?.price != null ? money(currentVariant.price) : t('priceOnRequest');
+        els.modalCompare.textContent = currentVariant?.compareAtPrice ? money(currentVariant.compareAtPrice) : '';
+        els.modalDescription.innerHTML = currentProduct.descriptionHtml || '<p>—</p>';
+        els.modalPlatforms.innerHTML = (currentProduct.platforms || []).map(p => `<span class="tag">${escapeHtml(p)}</span>`).join('');
+        els.modalShopBtn.href = currentProduct.productUrl || '#';
+        els.modalSkuLine.innerHTML = currentVariant?.sku ? `<span>${t('sku')}: <strong>${escapeHtml(currentVariant.sku)}</strong></span>` : '';
+        els.modalFavBtn.classList.toggle('active', state.favorites.includes(currentProduct.id));
+      }
+
+      renderModalView();
+      document.getElementById('productModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal(){
+      document.getElementById('productModal').classList.remove('open');
+      if (!document.getElementById('cartDrawer').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function toggleFavorite(productId){
+      const index = state.favorites.indexOf(productId);
+      if (index >= 0){
+        state.favorites.splice(index,1);
+        showToast(t('favRemovedTitle'), t('favRemovedBody'));
+      } else {
+        state.favorites.push(productId);
+        showToast(t('favAddedTitle'), t('favAddedBody'));
+      }
+      saveState();
+      updateCounters();
+      renderProducts();
+      if (state.currentModal?.id === productId) {
+        els.modalFavBtn.classList.toggle('active', state.favorites.includes(productId));
+      }
+    }
+
+    function addProductToCart(productId, variantId = null){
+      const product = getProductById(productId);
+      if (!product) return;
+      const variant = variantId
+        ? product._buyableVariants.find(v => String(v.variantId) === String(variantId))
+        : (product._buyableVariants[0] || product._firstVariant);
+      if (!variant || !variant.variantId){
+        showToast(t('checkoutErrorTitle'), t('checkoutErrorBody'));
+        return;
+      }
+      const key = `${product.id}__${variant.variantId}`;
+      const existing = state.cart.find(item => item.key === key);
+      if (existing){
+        existing.qty += 1;
+      } else {
+        state.cart.push({
+          key,
+          productId: product.id,
+          variantId: variant.variantId,
+          variantTitle: variant.title,
+          qty: 1
+        });
+      }
+      saveState();
+      updateCounters();
+      renderCart();
+      showToast(t('addedTitle'), t('addedBody'));
+    }
+
+    function updateCounters(){
+      els.favoritesCount.textContent = state.favorites.length;
+      els.cartCount.textContent = state.cart.reduce((a,b)=>a + (b.qty || 0), 0);
+      els.navFavoritesBtn.textContent = `${t('navFavorites')} (${state.favorites.length})`;
+    }
+
+    function renderCart(){
+      const items = state.cart.map(item => {
+        const product = getProductById(item.productId);
+        const variant = product?._buyableVariants.find(v => String(v.variantId) === String(item.variantId)) || product?._firstVariant;
+        return {item, product, variant};
+      }).filter(x => x.product && x.variant);
+
+      if (!items.length){
+        els.cartItems.innerHTML = `<div class="empty-state">${t('cartEmpty')}</div>`;
+        els.cartTotal.textContent = money(0);
+        return;
+      }
+
+      let total = 0;
+      els.cartItems.innerHTML = items.map(({item, product, variant}) => {
+        const img = variant.images?.[0] || product._images[0] || '';
+        total += Number(variant.price || 0) * item.qty;
+        return `
+          <div class="cart-item">
+            <img src="${escapeHtml(img)}" alt="${escapeHtml(displayTitle(product))}">
+            <div>
+              <h4>${escapeHtml(displayTitle(product))}</h4>
+              <div class="meta">
+                ${t('variant')}: ${escapeHtml(translateOptionValueSmart(variant.title || ''))}<br>
+                ${variant.sku ? `${t('sku')}: ${escapeHtml(variant.sku)}` : ''}
+              </div>
+              <div class="qty-box">
+                <button data-qty="${escapeHtml(item.key)}" data-change="-1">−</button>
+                <span>${item.qty}</span>
+                <button data-qty="${escapeHtml(item.key)}" data-change="1">+</button>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; gap:10px;">
+              <div class="cart-price">${money(Number(variant.price || 0) * item.qty)}</div>
+              <button class="btn btn-ghost" data-remove="${escapeHtml(item.key)}">${t('remove')}</button>
+            </div>
+          </div>`;
+      }).join('');
+      els.cartTotal.textContent = money(total);
+
+      els.cartItems.querySelectorAll('[data-qty]').forEach(btn => {
+        btn.addEventListener('click', () => changeCartQty(btn.dataset.qty, Number(btn.dataset.change)));
+      });
+      els.cartItems.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => removeFromCart(btn.dataset.remove));
+      });
+    }
+
+    function changeCartQty(key, delta){
+      const item = state.cart.find(x => x.key === key);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0){
+        state.cart = state.cart.filter(x => x.key !== key);
+      }
+      saveState();
+      updateCounters();
+      renderCart();
+    }
+
+    function removeFromCart(key){
+      state.cart = state.cart.filter(x => x.key !== key);
+      saveState();
+      updateCounters();
+      renderCart();
+    }
+
+    function openCart(){
+      document.getElementById('cartDrawer').classList.add('open');
+      renderCart();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart(){
+      document.getElementById('cartDrawer').classList.remove('open');
+      if (!document.getElementById('productModal').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function doCheckout(){
+      const grouped = state.cart
+        .map(item => {
+          const product = getProductById(item.productId);
+          const variant = product?._buyableVariants.find(v => String(v.variantId) === String(item.variantId));
+          return variant?.variantId ? `${variant.variantId}:${item.qty}` : null;
+        })
+        .filter(Boolean);
+
+      if (!grouped.length){
+        showToast(t('checkoutErrorTitle'), t('checkoutErrorBody'));
+        return;
+      }
+      const url = `https://shop.racem.sk/cart/${grouped.join(',')}`;
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function showToast(title, body){
+      const stack = els.toastStack;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<strong>${escapeHtml(title)}</strong><div>${escapeHtml(body)}</div>`;
+      stack.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 220);
+      }, 2800);
+    }
+
+    function bindEvents(){
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.lang = btn.getAttribute('data-lang-btn');
+          saveState();
+          applyTranslations();
+        });
+      });
+
+      ['searchInput','categoryFilter','platformFilter','sortSelect','stockFilter'].forEach(id => {
+        els[id].addEventListener(id === 'searchInput' ? 'input' : 'change', applyFilters);
+      });
+
+      els.resetFiltersBtn.addEventListener('click', () => {
+        els.searchInput.value = '';
+        els.categoryFilter.value = '';
+        els.platformFilter.value = '';
+        els.sortSelect.value = 'featured';
+        els.stockFilter.value = '';
+        state.favoritesOnly = false;
+        clearQuick();
+        applyTranslations();
+        applyFilters();
+      });
+
+      els.favoritesOnlyBtn.addEventListener('click', () => {
+        state.favoritesOnly = !state.favoritesOnly;
+        els.favoritesOnlyBtn.textContent = state.favoritesOnly ? t('buttonFavoritesOn') : t('buttonFavoritesOff');
+        applyFilters();
+      });
+
+      els.gridViewBtn.addEventListener('click', () => { state.view='grid'; saveState(); renderProducts(); });
+      els.listViewBtn.addEventListener('click', () => { state.view='list'; saveState(); renderProducts(); });
+
+      els.cartOpenBtn.addEventListener('click', openCart);
+      els.openCartHeroBtn.addEventListener('click', openCart);
+      els.footerCartBtn.addEventListener('click', openCart);
+      els.checkoutBtn.addEventListener('click', doCheckout);
+      els.clearCartBtn.addEventListener('click', () => {
+        state.cart = [];
+        saveState();
+        updateCounters();
+        renderCart();
+      });
+
+      document.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', closeCart));
+      document.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeProductModal));
+
+      els.modalAddBtn.addEventListener('click', () => {
+        if (!state.currentModal) return;
+        addProductToCart(state.currentModal.id, state.currentModal.selectedVariantId);
+      });
+      els.modalFavBtn.addEventListener('click', () => {
+        if (!state.currentModal) return;
+        toggleFavorite(state.currentModal.id);
+      });
+
+      els.jumpFeaturedBtn.addEventListener('click', () => {
+        document.getElementById('featured').scrollIntoView({behavior:'smooth'});
+      });
+
+      els.favoritesOpenBtn.addEventListener('click', () => {
+        state.favoritesOnly = true;
+        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
+        applyFilters();
+        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+      });
+      els.navFavoritesBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        state.favoritesOnly = true;
+        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
+        applyFilters();
+        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape'){
+          closeCart();
+          closeProductModal();
+        }
+      });
+    }
+
+    async function init(){
+      bindEvents();
+      try{
+        await loadData();
+        renderFilters();
+        applyFilters();
+        updateCounters();
+        renderCart();
+        applyTranslations();
+      }catch(err){
+        console.error(err);
+        els.productsGrid.innerHTML = `<div class="empty-state">Failed to load cybul.json</div>`;
+        showToast('Data error', 'Could not load cybul.json');
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
