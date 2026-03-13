@@ -702,7 +702,7 @@
       opacity:0;
       transition:.25s ease;
       overflow:hidden;
-      display:grid; grid-template-rows:auto 1fr;
+      display:grid; grid-template-rows:auto minmax(0,1fr);
     }
     .modal.open .modal-panel{
       transform:translateY(0) scale(1);
@@ -718,14 +718,20 @@
     .modal-title-group h3{margin:0; font-size:1.3rem}
     .modal-title-group p{margin:6px 0 0; color:var(--muted)}
     .modal-content{
-      overflow:auto;
+      overflow:hidden;
+      min-height:0;
       padding:20px;
       display:grid;
-      grid-template-columns:1.06fr .94fr;
+      grid-template-columns:minmax(420px, 1.04fr) minmax(0, .96fr);
       gap:22px;
+      align-items:start;
     }
     .gallery-wrap{
       min-width:0;
+      position:sticky;
+      top:0;
+      align-self:start;
+      height:max-content;
     }
     .main-image{
       aspect-ratio:1.08/1;
@@ -756,6 +762,9 @@
     .details-wrap{
       display:flex; flex-direction:column; gap:16px;
       min-width:0;
+      min-height:0;
+      overflow:auto;
+      padding-right:6px;
     }
     .detail-box{
       border:1px solid rgba(255,255,255,.08);
@@ -791,7 +800,7 @@
       font-size:2rem; font-weight:900; letter-spacing:-.04em;
     }
     .detail-actions{
-      display:grid; grid-template-columns:1fr auto auto; gap:10px;
+      display:grid; grid-template-columns:1fr 1fr auto; gap:10px;
     }
     .sku-line{
       display:flex; gap:10px; flex-wrap:wrap;
@@ -834,7 +843,9 @@
       .controls-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
       .controls-grid .search-field{grid-column:1 / -1}
       .products-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
-      .modal-content{grid-template-columns:1fr}
+      .modal-content{grid-template-columns:1fr; overflow:auto}
+      .gallery-wrap{position:relative; top:auto}
+      .details-wrap{overflow:visible; padding-right:0}
     }
     @media (max-width: 980px){
       .header-inner{grid-template-columns:1fr; padding:14px 0}
@@ -1119,7 +1130,7 @@
             </div>
             <div class="detail-actions" style="margin-top:16px;">
               <button class="btn btn-primary" id="modalAddBtn" data-i18n="addToCart">Pridať do košíka</button>
-              <a class="btn btn-secondary" id="modalShopBtn" target="_blank" rel="noopener" data-i18n="openInShop">Otvoriť v e-shope</a>
+              <button class="btn btn-secondary" id="modalBuyBtn" data-i18n="buyNow">Kúpiť ihneď</button>
               <button class="btn btn-ghost" id="modalFavBtn">❤</button>
             </div>
           </div>
@@ -1213,7 +1224,7 @@
         modalPlatformsTitle: "Platformy",
         modalDescriptionTitle: "Popis",
         addToCart: "Pridať do košíka",
-        openInShop: "Otvoriť v e-shope",
+        buyNow: "Kúpiť ihneď",
         quickAll: "Všetko",
         quickDrift: "Drift",
         quickSwap: "Swap",
@@ -1319,7 +1330,7 @@
         modalPlatformsTitle: "Platforms",
         modalDescriptionTitle: "Description",
         addToCart: "Add to cart",
-        openInShop: "Open in shop",
+        buyNow: "Buy now",
         quickAll: "All",
         quickDrift: "Drift",
         quickSwap: "Swap",
@@ -1849,7 +1860,6 @@
         els.modalCompare.textContent = currentVariant?.compareAtPrice ? money(currentVariant.compareAtPrice) : '';
         els.modalDescription.innerHTML = currentProduct.descriptionHtml || '<p>—</p>';
         els.modalPlatforms.innerHTML = (currentProduct.platforms || []).map(p => `<span class="tag">${escapeHtml(p)}</span>`).join('');
-        els.modalShopBtn.href = currentProduct.productUrl || '#';
         els.modalSkuLine.innerHTML = currentVariant?.sku ? `<span>${t('sku')}: <strong>${escapeHtml(currentVariant.sku)}</strong></span>` : '';
         els.modalFavBtn.classList.toggle('active', state.favorites.includes(currentProduct.id));
       }
@@ -2015,6 +2025,22 @@
       window.open(url, '_blank', 'noopener');
     }
 
+    function buyNow(productId, variantId = null){
+      const product = getProductById(productId);
+      if (!product) return;
+      const variant = variantId
+        ? product._buyableVariants.find(v => String(v.variantId) === String(variantId))
+        : (product._buyableVariants[0] || product._firstVariant);
+
+      if (!variant || !variant.variantId){
+        showToast(t('checkoutErrorTitle'), t('checkoutErrorBody'));
+        return;
+      }
+
+      const url = `https://shop.racem.sk/cart/${variant.variantId}:1`;
+      window.open(url, '_blank', 'noopener');
+    }
+
     function showToast(title, body){
       const stack = els.toastStack;
       const toast = document.createElement('div');
@@ -2079,6 +2105,10 @@
       els.modalAddBtn.addEventListener('click', () => {
         if (!state.currentModal) return;
         addProductToCart(state.currentModal.id, state.currentModal.selectedVariantId);
+      });
+      els.modalBuyBtn.addEventListener('click', () => {
+        if (!state.currentModal) return;
+        buyNow(state.currentModal.id, state.currentModal.selectedVariantId);
       });
       els.modalFavBtn.addEventListener('click', () => {
         if (!state.currentModal) return;
