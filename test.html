@@ -852,14 +852,12 @@
       animation:slideUp .25s ease;
     }
     .toast strong{display:block; margin-bottom:4px}
-
-    
     .showcase-panel{
       position:relative;
       min-height:220px;
       min-width:0;
       width:100%;
-      padding:14px;
+      padding:16px;
       border-radius:28px;
       border:1px solid rgba(255,255,255,.07);
       background:
@@ -868,23 +866,135 @@
       overflow:hidden;
       box-shadow:var(--shadow);
     }
-    .showcase-panel::before{
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background:linear-gradient(90deg, rgba(6,6,8,1), transparent 10%, transparent 90%, rgba(6,6,8,1));
+    .showcase-slider{
+      position:relative;
+      min-height:100%;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.07);
+      background:#0c0d11;
+      isolation:isolate;
+    }
+    .showcase-slides{
+      position:relative;
+      min-height:420px;
+    }
+    .showcase-slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transform:scale(1.035);
+      transition:opacity .9s ease, transform 6s ease;
+      pointer-events:none;
+    }
+    .showcase-slide.active{
+      opacity:1;
+      transform:scale(1);
       z-index:2;
     }
-    .showcase-title{position:relative; z-index:3; margin:0 0 12px; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; color:#d8dde8;}
-    .showcase-marquee{display:grid; gap:12px; position:relative; z-index:1; min-width:0; width:100%; overflow:hidden;}
-    .showcase-row{position:relative; overflow:hidden; width:100%; min-width:0; border-radius:22px;}
-    .showcase-track{display:flex; gap:12px; width:max-content; min-width:max-content; will-change:transform; animation:marquee 38s linear infinite; padding-right:12px;}
-    .showcase-track.reverse{animation-direction:reverse; animation-duration:44s;}
-    .showcase-panel:hover .showcase-track{animation-play-state:paused;}
-    .showcase-item{width:170px; aspect-ratio:1.16/1; border-radius:22px; overflow:hidden; position:relative; border:1px solid rgba(255,255,255,.08); background:#0e1015; flex:0 0 auto;}
-    .showcase-item img{width:100%; height:100%; object-fit:cover; transition:transform .28s ease, filter .28s ease;}
-    .showcase-item::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.65));}
-    .showcase-item span{position:absolute; left:12px; right:12px; bottom:12px; z-index:1; font-size:.82rem; font-weight:800; line-height:1.25;}
-    .showcase-item:hover img{transform:scale(1.06); filter:saturate(1.15);}
-    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .showcase-slide img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:saturate(1.02) contrast(1.02);
+    }
+    .showcase-slide::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(5,6,8,.86) 0%, rgba(5,6,8,.58) 34%, rgba(5,6,8,.2) 64%, rgba(5,6,8,.55) 100%),
+        linear-gradient(180deg, rgba(5,6,8,.12) 0%, rgba(5,6,8,.62) 100%);
+      z-index:1;
+    }
+    .showcase-content{
+      position:absolute;
+      left:24px;
+      right:24px;
+      bottom:24px;
+      z-index:3;
+      display:grid;
+      gap:10px;
+      max-width:74%;
+    }
+    .showcase-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:8px 12px;
+      border-radius:999px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.76rem;
+      font-weight:800;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(6,6,8,.34);
+      backdrop-filter:blur(10px);
+    }
+    .showcase-slide h4{
+      margin:0;
+      font-size:clamp(1.2rem, 2vw, 1.9rem);
+      line-height:1.06;
+      letter-spacing:-.03em;
+      text-shadow:0 10px 28px rgba(0,0,0,.4);
+    }
+    .showcase-slide p{
+      margin:0;
+      color:#dde2ec;
+      line-height:1.55;
+      font-size:.96rem;
+      max-width:640px;
+    }
+    .showcase-nav{
+      position:absolute;
+      right:18px;
+      bottom:18px;
+      z-index:4;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .showcase-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      border:none;
+      padding:0;
+      background:rgba(255,255,255,.28);
+      cursor:pointer;
+      transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    .showcase-dot.active{
+      background:#fff;
+      transform:scale(1.18);
+      box-shadow:0 0 0 4px rgba(255,255,255,.12);
+    }
+    .showcase-progress{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:3px;
+      background:rgba(255,255,255,.07);
+      z-index:4;
+      overflow:hidden;
+    }
+    .showcase-progress span{
+      display:block;
+      width:100%;
+      height:100%;
+      transform-origin:left center;
+      transform:scaleX(0);
+      background:linear-gradient(90deg, rgba(179,31,36,.35), rgba(225,59,66,.95), rgba(255,255,255,.9));
+    }
+    .showcase-progress span.animate{
+      animation:showcaseProgress 6s linear forwards;
+    }
+    @keyframes showcaseProgress{
+      from{transform:scaleX(0)}
+      to{transform:scaleX(1)}
+    }
     .loading-screen{position:fixed; inset:0; z-index:200; background:radial-gradient(circle at 50% 30%, rgba(179,31,36,.18), transparent 25%), linear-gradient(180deg,#08090c,#060607); display:grid; place-items:center; transition:opacity .45s ease, visibility .45s ease;}
     .loading-screen.hidden{opacity:0; visibility:hidden; pointer-events:none;}
     .loading-core{position:relative; width:min(480px,90vw); padding:34px 26px; border-radius:30px; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)); box-shadow:0 40px 100px rgba(0,0,0,.4); text-align:center; overflow:hidden;}
@@ -928,7 +1038,8 @@
       .controls-grid{grid-template-columns:1fr}
       .products-grid{grid-template-columns:1fr}
       .featured-scroller{grid-auto-columns:minmax(84vw, 1fr)}
-      .showcase-item{width:72vw}
+      .showcase-content{max-width:100%}
+      .showcase-slides{min-height:320px}
       .product-actions{grid-template-columns:1fr auto}
       .cart-item{grid-template-columns:78px 1fr}
       .cart-item > div:last-child{grid-column:1 / -1}
@@ -1022,10 +1133,10 @@
 
           <div class="hero-side">
             <div class="showcase-panel">
-              <h3 class="showcase-title" data-i18n="showcaseTitle">Výber buildov a kľúčových dielov</h3>
-              <div class="showcase-marquee">
-                <div class="showcase-row"><div class="showcase-track" id="heroShowcaseTrack1"></div></div>
-                <div class="showcase-row"><div class="showcase-track reverse" id="heroShowcaseTrack2"></div></div>
+              <div class="showcase-slider">
+                <div class="showcase-slides" id="heroShowcaseSlides"></div>
+                <div class="showcase-nav" id="heroShowcaseDots"></div>
+                <div class="showcase-progress"><span id="heroShowcaseProgress"></span></div>
               </div>
             </div>
           </div>
@@ -1802,15 +1913,73 @@
     }
 
     function renderHeroShowcase(){
-      const picks = getRecommendedProducts().slice(0,6);
-      const buildTrack = (el, arr) => {
-        el.innerHTML = [...arr, ...arr].map(p => {
-          const img = escapeHtml((p._images && p._images[0]) || '');
-          return `<div class="showcase-item"><img src="${img}" alt="${escapeHtml(displayTitle(p))}" loading="lazy"><span>${escapeHtml(displayTitle(p))}</span></div>`;
-        }).join('');
+      const picks = getRecommendedProducts().slice(0, 6);
+      if (!els.heroShowcaseSlides) return;
+      if (!picks.length){
+        els.heroShowcaseSlides.innerHTML = '';
+        if (els.heroShowcaseDots) els.heroShowcaseDots.innerHTML = '';
+        return;
+      }
+      const blurbs = {
+        sk: [
+          'Výber funkčných dielov pre buildy, ktoré majú reálne jazdiť a držať pri záťaži.',
+          'Presný fitment, pevné riešenia a technické komponenty pre drift, street a trackday projekty.',
+          'Komponenty pre platformy, ktoré sa naozaj stavajú — bez zbytočnej vizuálnej omáčky.'
+        ],
+        en: [
+          'A selection of functional parts for builds meant to be driven hard and work under load.',
+          'Precise fitment, strong solutions and technical components for drift, street and trackday projects.',
+          'Hardware for platforms people actually build — without unnecessary visual fluff.'
+        ]
       };
-      buildTrack(els.heroShowcaseTrack1, picks);
-      buildTrack(els.heroShowcaseTrack2, [...picks].reverse());
+      els.heroShowcaseSlides.innerHTML = picks.map((p, index) => {
+        const img = escapeHtml((p._images && p._images[0]) || '');
+        const title = escapeHtml(displayTitle(p));
+        const platforms = escapeHtml((p.platforms || []).slice(0,3).join(' / ') || 'Performance parts');
+        const desc = escapeHtml((blurbs[state.lang] && blurbs[state.lang][index % blurbs[state.lang].length]) || '');
+        const kicker = escapeHtml(platforms);
+        return `
+          <article class="showcase-slide${index === 0 ? ' active' : ''}" data-slide-index="${index}">
+            ${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ''}
+            <div class="showcase-content">
+              <div class="showcase-kicker">${kicker}</div>
+              <h4>${title}</h4>
+              <p>${desc}</p>
+            </div>
+          </article>`;
+      }).join('');
+      if (els.heroShowcaseDots){
+        els.heroShowcaseDots.innerHTML = picks.map((_, index) => `<button class="showcase-dot${index === 0 ? ' active' : ''}" type="button" data-showcase-dot="${index}" aria-label="Slide ${index + 1}"></button>`).join('');
+      }
+
+      const slides = Array.from(els.heroShowcaseSlides.querySelectorAll('.showcase-slide'));
+      const dots = els.heroShowcaseDots ? Array.from(els.heroShowcaseDots.querySelectorAll('.showcase-dot')) : [];
+      const progress = els.heroShowcaseProgress;
+      if (state.heroShowcaseTimer) clearInterval(state.heroShowcaseTimer);
+      let current = 0;
+
+      const restartProgress = () => {
+        if (!progress) return;
+        progress.classList.remove('animate');
+        void progress.offsetWidth;
+        progress.classList.add('animate');
+      };
+
+      const setSlide = (index) => {
+        current = index;
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        restartProgress();
+      };
+
+      dots.forEach((dot, i) => dot.addEventListener('click', () => {
+        setSlide(i);
+        if (state.heroShowcaseTimer) clearInterval(state.heroShowcaseTimer);
+        state.heroShowcaseTimer = setInterval(() => setSlide((current + 1) % slides.length), 6000);
+      }));
+
+      setSlide(0);
+      state.heroShowcaseTimer = setInterval(() => setSlide((current + 1) % slides.length), 6000);
     }
 
     function currentCardVariant(product){
