@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Performance Parts | RACEM</title>
+  <title>CYBUL Radical Solutions | RACEM</title>
   <meta name="theme-color" content="#0a0a0b" />
   <style>
     :root{
@@ -133,26 +133,37 @@
       align-items:center;
     }
     .brand{
-      display:flex; align-items:center; gap:10px;
+      display:flex; align-items:center; gap:14px;
       min-width:0;
     }
     .brand-logo{
-      width:200px; height:72px;
+      width:46px; height:46px; border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.13), transparent 45%),
+        linear-gradient(145deg, rgba(179,31,36,.35), rgba(20,21,28,.9));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 12px 40px rgba(179,31,36,.18);
       display:grid; place-items:center;
-      overflow:visible;
+      overflow:hidden;
       flex:0 0 auto;
     }
-    .brand-logo img{width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 28px rgba(179,31,36,.18));}
-    .brand-copy{min-width:0; display:flex; flex-direction:column; justify-content:center}
-    .brand-kicker{display:none}
+    .brand-logo img{width:100%; height:100%; object-fit:contain; padding:8px}
+    .brand-copy{min-width:0}
+    .brand-kicker{
+      color:var(--red-2); font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
+      margin-bottom:2px;
+    }
     .brand-title{
-      font-weight:900; letter-spacing:.08em; font-size:.92rem; text-transform:uppercase;
+      font-weight:800; letter-spacing:.02em; font-size:1rem;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .brand-sub{display:none}
+    .brand-sub{
+      color:var(--muted); font-size:.8rem;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
 
     .top-nav{
-      display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; margin-left:auto;
+      display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
     }
     .nav-pill{
       padding:11px 14px; border-radius:999px;
@@ -202,15 +213,16 @@
 
     .hero{
       position:relative;
-      padding:10px 0 10px;
+      padding:34px 0 22px;
       overflow:hidden;
     }
     .hero-grid{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:18px;
-      align-items:stretch;
+      grid-template-columns:1.3fr .9fr;
+      gap:20px;
+      align-items:start;
     }
+    .hero-grid > *, .hero-side, .hero-side-card, .featured-strip, .section-head, .featured-scroller{min-width:0;}
     .hero-main, .hero-side-card, .featured-strip, .filters-panel, .catalog-shell, .section-box{
       position:relative;
       background:
@@ -231,12 +243,12 @@
       pointer-events:none;
     }
     .hero-main{
-      min-height:220px;
-      padding:18px;
+      min-height:500px;
+      padding:34px;
       background:
-        radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 28%),
-        radial-gradient(circle at 15% 10%, rgba(255,255,255,.05), transparent 20%),
-        linear-gradient(180deg, rgba(10,11,15,.96), rgba(5,6,9,.985));
+        radial-gradient(circle at top right, rgba(179,31,36,.22), transparent 28%),
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,.06), transparent 20%),
+        linear-gradient(180deg, rgba(16,17,22,.86), rgba(8,9,12,.94));
     }
     .hero-main::after{
       content:"";
@@ -245,28 +257,13 @@
       filter:blur(10px);
       animation:pulse 4s ease-in-out infinite;
     }
-    .hero-side{display:block; min-width:0;}
-    .hero-watermark{
-      position:absolute;
-      right:-1%;
-      bottom:-20px;
-      width:min(760px,62vw);
-      max-width:none;
-      opacity:.18;
-      filter:brightness(0) invert(1) grayscale(1) contrast(1.2);
-      pointer-events:none;
-      z-index:0;
+    .hero-side{
+      display:grid; gap:20px;
+      grid-template-rows:1fr 1fr;
     }
-    .stats-watermark{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
-      object-position:right center; opacity:.09; filter:brightness(0) invert(1) grayscale(1) contrast(1.25);
-      pointer-events:none; z-index:0; transform:scale(1.35);
-    }
-    .hero-main > *:not(.hero-watermark):not(.stats-watermark){position:relative; z-index:1;}
-
     .hero-side-card{
-      padding:16px;
-      min-height:0;
+      padding:22px;
+      min-height:240px;
     }
     .kicker{
       display:inline-flex; align-items:center; gap:10px;
@@ -278,35 +275,33 @@
       text-transform:uppercase; letter-spacing:.14em;
     }
     .hero h1{
-      font-size:clamp(1.5rem, 2.6vw, 2.7rem);
-      line-height:1.02;
-      margin:12px 0 10px;
+      font-size:clamp(2.2rem, 4vw, 4.9rem);
+      line-height:.95;
+      margin:18px 0 14px;
       letter-spacing:-.04em;
       max-width:900px;
     }
     .hero p.lead{
-      max-width:760px; font-size:.95rem; color:#d7dbe6; line-height:1.62; margin:0 0 14px;
+      max-width:760px; font-size:1.06rem; color:#d7dbe6; line-height:1.72; margin:0 0 24px;
     }
     .hero-stats{
-      position:relative;
-      display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; margin:14px 0 10px;
-      z-index:1;
+      display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px; margin:26px 0 20px;
     }
     .stat-card{
-      padding:12px;
+      padding:18px;
       border-radius:22px;
       background:rgba(255,255,255,.035);
       border:1px solid rgba(255,255,255,.07);
-      min-height:88px;
+      min-height:110px;
     }
     .stat-value{
-      font-size:1.55rem; font-weight:900; letter-spacing:-.03em;
+      font-size:1.8rem; font-weight:900; letter-spacing:-.03em;
       margin-top:8px;
     }
     .stat-label{
       color:var(--muted); font-size:.84rem; text-transform:uppercase; letter-spacing:.12em;
     }
-    .hero-actions{display:none}
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
     .btn{
       border:none; cursor:pointer;
       padding:14px 18px;
@@ -335,9 +330,7 @@
     }
     .btn-ghost:hover{border-color:rgba(255,255,255,.2)}
 
-    .supplier-note{margin-top:12px; max-width:860px; padding:14px 16px; border-radius:20px; background:linear-gradient(180deg, rgba(5,5,7,.9), rgba(5,6,8,.82)); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.06);}
-    .supplier-note h3{margin:0 0 8px; font-size:1.04rem}
-    .supplier-note p{margin:0; color:#d0d4de; line-height:1.72; font-size:.94rem}
+    .hero-side-card{min-width:0; overflow:hidden}
     .hero-side-card h3{margin:0 0 8px; font-size:1.15rem}
     .hero-side-card p{margin:0; color:#d0d4de; line-height:1.65}
     .mini-list{
@@ -370,40 +363,46 @@
     }
 
     .featured-strip{
-      padding:10px;
-      margin-top:10px;
+      padding:18px;
+      margin-top:20px;
     }
     .featured-scroller{
-      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(175px, 200px); gap:10px;
-      overflow:auto; padding-bottom:4px; scrollbar-width:thin;
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:220px;
+      gap:14px;
+      width:100%;
+      max-width:100%;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding:4px 2px 8px;
+      scrollbar-width:thin;
+      overscroll-behavior-x:contain;
+      scroll-snap-type:x proximity;
     }
+    .featured-scroller > *{scroll-snap-align:start; min-width:0;}
     .feature-card{
-      min-height:0; border-radius:18px;
-      padding:10px; position:relative; overflow:hidden;
+      min-height:168px; border-radius:20px;
+      padding:14px; position:relative; overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
       background:
         radial-gradient(circle at top right, rgba(179,31,36,.2), transparent 30%),
         linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
     }
-    .feature-card h3{margin:8px 0 4px; font-size:.92rem; line-height:1.24}
-    .feature-card p{margin:0; color:#d7dbe6; line-height:1.4; font-size:.8rem}
-    .feature-media{aspect-ratio:1.12/1; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0e1015; margin-bottom:10px;}
-    .feature-media img{width:100%; height:100%; object-fit:cover; transition:transform .25s ease;}
-    .feature-card:hover .feature-media img{transform:scale(1.04)}
-    .feature-meta{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px;}
-    .feature-card .btn{padding:10px 12px; min-height:40px;}
+    .feature-card h3{margin:8px 0 8px; font-size:1rem; line-height:1.25}
+    .feature-card p{margin:0; color:#d7dbe6; line-height:1.5; font-size:.92rem}
     .feature-pill{
       display:inline-flex; align-items:center; gap:8px; font-size:.72rem;
       text-transform:uppercase; letter-spacing:.16em; color:var(--gold);
     }
 
     .filters-panel{
-      padding:12px;
-      margin-top:12px;
+      padding:18px;
+      margin-top:18px;
     }
     .controls-grid{
       display:grid;
-      grid-template-columns:1.35fr repeat(4, minmax(150px, .42fr)) auto;
+      grid-template-columns:1.4fr repeat(4, minmax(150px, .42fr)) auto;
       gap:12px;
       align-items:stretch;
     }
@@ -417,45 +416,23 @@
     .input, .select{
       height:52px; width:100%;
       border-radius:16px;
-      border:1px solid rgba(179,31,36,.22);
-      background:linear-gradient(180deg, rgba(8,8,10,.96), rgba(12,13,17,.96));
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
       color:var(--text);
       padding:0 16px;
       outline:none;
       transition:.2s ease;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.03), 0 10px 24px rgba(0,0,0,.18);
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
     }
     .input:focus, .select:focus{
       border-color:rgba(179,31,36,.5);
       box-shadow:0 0 0 4px rgba(179,31,36,.13);
-    }
-
-    .select{
-      background-image:
-        linear-gradient(45deg, transparent 50%, rgba(255,255,255,.88) 50%),
-        linear-gradient(135deg, rgba(255,255,255,.88) 50%, transparent 50%),
-        linear-gradient(180deg, rgba(8,8,10,.96), rgba(12,13,17,.96));
-      background-position:
-        calc(100% - 22px) calc(50% - 3px),
-        calc(100% - 16px) calc(50% - 3px),
-        0 0;
-      background-size:6px 6px, 6px 6px, 100% 100%;
-      background-repeat:no-repeat;
-      padding-right:42px;
-    }
-    .select option{
-      background:#0a0a0d;
-      color:#f5f7fb;
     }
     .filters-row-bottom{
       display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
       margin-top:14px;
     }
     .quick-pills{
-      display:none !important;
+      display:flex; gap:10px; flex-wrap:wrap;
     }
     .quick-pills button{
       border:1px solid rgba(255,255,255,.08);
@@ -476,8 +453,8 @@
     }
 
     .catalog-shell{
-      padding:12px;
-      margin:12px 0 56px;
+      padding:18px;
+      margin:18px 0 70px;
     }
     .catalog-top{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -555,15 +532,12 @@
     .badge.green{border-color:rgba(125,240,180,.35); background:rgba(125,240,180,.10); color:#c7ffe4}
     .favorite-btn{
       pointer-events:auto;
-      transition:transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
       border:none; cursor:pointer;
       width:38px; height:38px; border-radius:12px;
       display:grid; place-items:center;
       background:rgba(6,6,8,.56); color:#fff; border:1px solid rgba(255,255,255,.12);
     }
-    .favorite-btn:hover{transform:scale(1.06)}
-    .favorite-btn.active{background:rgba(179,31,36,.2); border-color:rgba(179,31,36,.46); box-shadow:0 0 0 4px rgba(179,31,36,.14); animation:pulse .45s ease;}
-    #modalFavBtn.active{box-shadow:0 0 0 4px rgba(179,31,36,.14); animation:pulse .45s ease;}
+    .favorite-btn.active{background:rgba(179,31,36,.2); border-color:rgba(179,31,36,.46)}
 
     .product-body{padding:16px 16px 16px; display:flex; flex-direction:column; gap:12px; flex:1}
     .category-line{
@@ -600,8 +574,7 @@
       color:#818896; text-decoration:line-through; font-size:.92rem;
     }
     .variant-inline{
-      font-size:.8rem; color:var(--muted);
-      min-height:1.2em;
+      display:none;
     }
     .product-actions{
       display:grid; grid-template-columns:1fr auto; gap:10px;
@@ -615,12 +588,25 @@
       background:rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.09);
       color:#fff;
+      transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .card-btn.detail:hover{
+      transform:translateY(-2px);
+      border-color:rgba(179,31,36,.42);
+      background:rgba(179,31,36,.10);
+      box-shadow:0 14px 30px rgba(179,31,36,.12);
     }
     .card-btn.add{
       background:linear-gradient(180deg, var(--red-2), var(--red));
       color:#fff;
       padding:0 14px;
       min-width:52px;
+      transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
+    }
+    .card-btn.add:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 18px 34px rgba(179,31,36,.28);
+      filter:saturate(1.08);
     }
 
     .products-grid.list .product-card{
@@ -659,15 +645,6 @@
       display:flex; flex-direction:column;
       box-shadow:-30px 0 80px rgba(0,0,0,.35);
     }
-    .favorites-grid{display:grid; gap:14px;}
-    .favorite-card{display:grid; grid-template-columns:92px 1fr auto; gap:14px; padding:14px; border-radius:20px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);}
-    .favorite-card img{width:92px; height:92px; object-fit:cover; border-radius:16px; background:#141821;}
-    .favorite-card h4{margin:0 0 8px; font-size:1rem;}
-    .favorite-card .meta{color:var(--muted); font-size:.86rem; line-height:1.55; margin-bottom:10px;}
-    .favorite-card-actions{display:flex; gap:10px; flex-wrap:wrap;}
-    .favorite-card-actions .btn, .favorite-card-actions button{min-height:40px; padding:10px 12px; border-radius:14px;}
-    .favorite-card-side{display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; gap:12px;}
-    .favorite-price{font-weight:900; white-space:nowrap;}
     .drawer.open, .modal.open{pointer-events:auto}
     .drawer.open .backdrop, .modal.open .backdrop{opacity:1}
     .drawer.open .drawer-panel{transform:translateX(0)}
@@ -685,6 +662,14 @@
     .drawer-close{
       width:44px; height:44px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.05); color:#fff; cursor:pointer;
+      transition:background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .drawer-close:hover{
+      color:#fff;
+      background:rgba(179,31,36,.18);
+      border-color:rgba(179,31,36,.55);
+      box-shadow:0 14px 28px rgba(179,31,36,.18);
+      transform:translateY(-1px);
     }
     .drawer-body{
       padding:18px 20px 22px;
@@ -750,7 +735,7 @@
       opacity:0;
       transition:.25s ease;
       overflow:hidden;
-      display:grid; grid-template-rows:auto minmax(0,1fr);
+      display:grid; grid-template-rows:auto 1fr;
     }
     .modal.open .modal-panel{
       transform:translateY(0) scale(1);
@@ -766,20 +751,14 @@
     .modal-title-group h3{margin:0; font-size:1.3rem}
     .modal-title-group p{margin:6px 0 0; color:var(--muted)}
     .modal-content{
-      overflow:hidden;
-      min-height:0;
+      overflow:auto;
       padding:20px;
       display:grid;
-      grid-template-columns:minmax(420px, 1fr) minmax(0, .92fr);
+      grid-template-columns:1.06fr .94fr;
       gap:22px;
-      align-items:start;
     }
     .gallery-wrap{
       min-width:0;
-      position:sticky;
-      top:8px;
-      align-self:start;
-      height:max-content;
     }
     .main-image{
       aspect-ratio:1.08/1;
@@ -794,7 +773,7 @@
     .thumbs{
       margin-top:12px;
       display:grid; grid-template-columns:repeat(auto-fill, minmax(92px,1fr)); gap:10px;
-      max-height:190px; overflow:auto; padding-right:4px;
+      max-height:172px; overflow:auto; padding-right:4px;
     }
     .thumb{
       aspect-ratio:1/1;
@@ -810,16 +789,12 @@
     .details-wrap{
       display:flex; flex-direction:column; gap:16px;
       min-width:0;
-      min-height:0;
-      max-height:calc(100vh - 170px);
-      overflow:auto;
-      padding-right:6px;
     }
     .detail-box{
       border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.03);
       border-radius:22px;
-      padding:14px;
+      padding:18px;
     }
     .detail-box h4{margin:0 0 10px; font-size:1rem}
     .desc{
@@ -828,16 +803,15 @@
     .desc p{margin:0 0 12px}
     .desc ul{margin:0 0 0 18px}
     .variant-chooser{
-      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;
+      display:grid; gap:10px;
     }
     .variant-option{
       width:100%; text-align:left; cursor:pointer;
-      padding:8px 10px;
-      border-radius:14px;
+      padding:13px 14px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.035);
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-size:.86rem; min-height:44px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
     .variant-option.active{
       border-color:rgba(179,31,36,.56);
@@ -850,168 +824,27 @@
       font-size:2rem; font-weight:900; letter-spacing:-.04em;
     }
     .detail-actions{
-      display:grid; grid-template-columns:1fr 1fr auto; gap:10px;
+      display:grid; grid-template-columns:1fr auto auto; gap:10px;
     }
-    .sku-line{display:none !important;}
+    .sku-line{
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:var(--muted); font-size:.88rem;
+    }
 
     .footer{
-      padding:10px 0 42px;
+      padding:0 0 42px;
     }
-    .site-footer{
-      position:relative;
+    .footer-box{
       border:1px solid rgba(255,255,255,.07);
-      border-radius:28px;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(179,31,36,.16), transparent 26%),
-        radial-gradient(circle at 85% 0%, rgba(255,255,255,.05), transparent 24%),
-        linear-gradient(180deg, rgba(14,15,20,.96), rgba(8,9,12,.98));
-      box-shadow:var(--shadow);
-    }
-    .site-footer::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size:34px 34px;
-      opacity:.35;
-      pointer-events:none;
-    }
-    .footer-top{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:1.3fr .8fr .9fr;
-      gap:22px;
-      padding:28px;
-      border-bottom:1px solid rgba(255,255,255,.07);
-    }
-    .footer-brand-block{
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      border-radius:26px;
       padding:22px;
-      border-radius:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.07);
+      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
     }
-    .footer-brand-line{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:16px;
-      flex-wrap:wrap;
-    }
-    .footer-brand-line img{
-      width:170px;
-      height:auto;
-      object-fit:contain;
-      filter:drop-shadow(0 10px 28px rgba(179,31,36,.18));
-    }
-    .footer-brand-line strong{
-      font-size:.98rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:#fff;
-    }
-    .footer-brand-block p{
-      margin:0;
-      color:#cfd4df;
-      line-height:1.75;
-      max-width:700px;
-    }
-    .footer-stats{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:10px;
-      margin-top:16px;
-    }
-    .footer-stat{
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.035);
-      border:1px solid rgba(255,255,255,.06);
-    }
-    .footer-stat span{
-      display:block;
-      color:var(--muted);
-      font-size:.76rem;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      margin-bottom:6px;
-    }
-    .footer-stat strong{
-      font-size:1.05rem;
-      color:#fff;
-    }
-    .footer-card{
-      padding:22px;
-      border-radius:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.07);
-      min-height:100%;
-    }
-    .footer-card h4{
-      margin:0 0 14px;
-      font-size:.84rem;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:#fff;
-    }
-    .footer-links{
-      display:grid;
-      gap:10px;
-    }
-    .footer-links a, .footer-links button{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      width:100%;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.07);
-      background:rgba(255,255,255,.025);
-      color:#dce1eb;
-      text-decoration:none;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    .footer-links a:hover, .footer-links button:hover{
-      border-color:rgba(179,31,36,.42);
-      background:rgba(179,31,36,.08);
-      transform:translateY(-1px);
-    }
-    .footer-links small{
-      color:var(--muted);
-      display:block;
-      margin-top:12px;
-      line-height:1.65;
-    }
-    .footer-bottom{
-      position:relative;
-      z-index:1;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
-      padding:18px 28px 22px;
-    }
-    .footer-bottom p{
-      margin:0;
-      color:var(--muted);
-      font-size:.9rem;
-    }
-    .footer-bottom .footer-mini-nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .footer-bottom .footer-mini-nav a{
-      color:#dce1eb;
-      font-size:.88rem;
-      opacity:.9;
-    }
+    .footer-copy h3{margin:0 0 6px}
+    .footer-copy p{margin:0; color:var(--muted); line-height:1.7}
+    .footer-actions{display:flex; gap:10px; flex-wrap:wrap}
+
     .toast-stack{
       position:fixed; right:18px; bottom:18px; z-index:140;
       display:grid; gap:10px;
@@ -1027,178 +860,22 @@
       animation:slideUp .25s ease;
     }
     .toast strong{display:block; margin-bottom:4px}
-    .showcase-panel{
-      position:relative;
-      min-height:220px;
-      min-width:0;
-      width:100%;
-      padding:16px;
-      border-radius:28px;
-      border:1px solid rgba(255,255,255,.07);
-      background:
-        radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 24%),
-        linear-gradient(180deg, rgba(16,17,22,.92), rgba(11,12,16,.96));
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-    .showcase-slider{
-      position:relative;
-      min-height:100%;
-      border-radius:24px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.07);
-      background:#0c0d11;
-      isolation:isolate;
-    }
-    .showcase-slides{
-      position:relative;
-      min-height:420px;
-    }
-    .showcase-slide{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      transform:scale(1.035);
-      transition:opacity .9s ease, transform 6s ease;
-      pointer-events:none;
-    }
-    .showcase-slide.active{
-      opacity:1;
-      transform:scale(1);
-      z-index:2;
-    }
-    .showcase-slide img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:saturate(1.02) contrast(1.02);
-    }
-    .showcase-slide::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(5,6,8,.86) 0%, rgba(5,6,8,.58) 34%, rgba(5,6,8,.2) 64%, rgba(5,6,8,.55) 100%),
-        linear-gradient(180deg, rgba(5,6,8,.12) 0%, rgba(5,6,8,.62) 100%);
-      z-index:1;
-    }
-    .showcase-content{
-      position:absolute;
-      left:24px;
-      right:24px;
-      bottom:24px;
-      z-index:3;
-      display:grid;
-      gap:10px;
-      max-width:74%;
-    }
-    .showcase-kicker{
-      display:inline-flex;
-      align-items:center;
-      width:max-content;
-      padding:8px 12px;
-      border-radius:999px;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.76rem;
-      font-weight:800;
-      color:#fff;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(6,6,8,.34);
-      backdrop-filter:blur(10px);
-    }
-    .showcase-slide h4{
-      margin:0;
-      font-size:clamp(1.2rem, 2vw, 1.9rem);
-      line-height:1.06;
-      letter-spacing:-.03em;
-      text-shadow:0 10px 28px rgba(0,0,0,.4);
-    }
-    .showcase-slide p{
-      margin:0;
-      color:#dde2ec;
-      line-height:1.55;
-      font-size:.96rem;
-      max-width:640px;
-    }
-    .showcase-nav{
-      position:absolute;
-      right:18px;
-      bottom:18px;
-      z-index:4;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .showcase-dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      border:none;
-      padding:0;
-      background:rgba(255,255,255,.28);
-      cursor:pointer;
-      transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
-    }
-    .showcase-dot.active{
-      background:#fff;
-      transform:scale(1.18);
-      box-shadow:0 0 0 4px rgba(255,255,255,.12);
-    }
-    .showcase-progress{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      height:3px;
-      background:rgba(255,255,255,.07);
-      z-index:4;
-      overflow:hidden;
-    }
-    .showcase-progress span{
-      display:block;
-      width:100%;
-      height:100%;
-      transform-origin:left center;
-      transform:scaleX(0);
-      background:linear-gradient(90deg, rgba(179,31,36,.35), rgba(225,59,66,.95), rgba(255,255,255,.9));
-    }
-    .showcase-progress span.animate{
-      animation:showcaseProgress 6s linear forwards;
-    }
-    @keyframes showcaseProgress{
-      from{transform:scaleX(0)}
-      to{transform:scaleX(1)}
-    }
-    .loading-screen{position:fixed; inset:0; z-index:200; background:radial-gradient(circle at 50% 30%, rgba(179,31,36,.18), transparent 25%), linear-gradient(180deg,#08090c,#060607); display:grid; place-items:center; transition:opacity .45s ease, visibility .45s ease;}
-    .loading-screen.hidden{opacity:0; visibility:hidden; pointer-events:none;}
-    .loading-core{position:relative; width:min(480px,90vw); padding:34px 26px; border-radius:30px; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)); box-shadow:0 40px 100px rgba(0,0,0,.4); text-align:center; overflow:hidden;}
-    .loading-core::before{content:""; position:absolute; inset:-20%; background:conic-gradient(from 0deg, transparent, rgba(179,31,36,.22), transparent 34%, rgba(255,255,255,.06), transparent 68%, rgba(179,31,36,.14), transparent); animation:spinBg 5s linear infinite;}
-    .loading-core > *{position:relative; z-index:1;}
-    .loading-logo{width:min(280px,70vw); margin:0 auto 14px; filter:drop-shadow(0 14px 34px rgba(179,31,36,.24));}
-    .loading-title{margin:0; font-size:1.4rem; letter-spacing:.16em; text-transform:uppercase;}
-    .loading-sub{margin:10px auto 0; max-width:420px; color:#cfd4df; line-height:1.6;}
-    .loading-bar{height:8px; border-radius:999px; margin-top:18px; overflow:hidden; background:rgba(255,255,255,.08);}
-    .loading-bar span{display:block; width:40%; height:100%; background:linear-gradient(90deg, var(--red-3), var(--red-2), #fff, var(--red)); box-shadow:0 0 24px rgba(179,31,36,.45); animation:loaderSlide 1.15s ease-in-out infinite;}
-    @keyframes loaderSlide{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
-@media (max-width: 1260px){
+
+    @media (max-width: 1260px){
       .hero-grid{grid-template-columns:1fr}
-      .hero-side{display:block}
+      .hero-side{grid-template-columns:1fr 1fr; grid-template-rows:none}
       .controls-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
       .controls-grid .search-field{grid-column:1 / -1}
       .products-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
-      .modal-content{grid-template-columns:1fr; overflow:auto}
-      .gallery-wrap{position:relative; top:auto}
-      .details-wrap{overflow:visible; padding-right:0}
+      .modal-content{grid-template-columns:1fr}
     }
     @media (max-width: 980px){
-      .variant-chooser{grid-template-columns:1fr;}
       .header-inner{grid-template-columns:1fr; padding:14px 0}
       .top-nav{justify-content:flex-start}
       .header-actions{justify-content:flex-start}
       .hero-main{padding:24px; min-height:auto}
       .hero-stats{grid-template-columns:repeat(2, minmax(0,1fr))}
-      .hero-side{display:block}
+      .hero-side{grid-template-columns:1fr}
       .controls-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
       .products-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
       .products-grid.list .product-card{grid-template-columns:1fr}
@@ -1213,43 +890,34 @@
       .controls-grid{grid-template-columns:1fr}
       .products-grid{grid-template-columns:1fr}
       .featured-scroller{grid-auto-columns:minmax(84vw, 1fr)}
-      .showcase-content{max-width:100%}
-      .showcase-slides{min-height:320px}
       .product-actions{grid-template-columns:1fr auto}
       .cart-item{grid-template-columns:78px 1fr}
       .cart-item > div:last-child{grid-column:1 / -1}
-      .favorite-card{grid-template-columns:78px 1fr}
-      .favorite-card-side{grid-column:1 / -1; align-items:flex-start}
       .drawer-panel{width:100vw}
-      .footer-box{padding:18px}
+      .site-footer{border-radius:22px}
       .detail-price{align-items:flex-start}
     }
   </style>
 </head>
 <body>
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-core">
-      <img class="loading-logo" src="assets/racem-logo.png" alt="RACEM">
-      <h2 class="loading-title">CYBUL RADICAL SOLUTIONS</h2>
-      <p class="loading-sub" data-i18n="loadingText">Načítavam performance katalóg, varianty a platformy.</p>
-      <div class="loading-bar"><span></span></div>
-    </div>
-  
-  </div>
-
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="RACEM CYBUL">
         <div class="brand-logo">
-          <img src="assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:20px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
+          <img src="assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:12px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
         </div>
         <div class="brand-copy">
+          <div class="brand-kicker" data-i18n="supplierKicker">Supplier Hub</div>
           <div class="brand-title">CYBUL RADICAL SOLUTIONS</div>
+          <div class="brand-sub" data-i18n="brandSub">Performance parts / swap solutions / drift hardware</div>
         </div>
       </a>
 
       <nav class="top-nav">
-        <a class="nav-pill" href="#top" data-i18n="navHome">Domovská stránka</a>
+        <a class="nav-pill" href="#featured" data-i18n="navFeatured">Odporúčame</a>
+        <a class="nav-pill" href="#catalog" data-i18n="navCatalog">Katalóg</a>
+        <a class="nav-pill" href="#favorites" id="navFavoritesBtn" data-i18n="navFavorites">Obľúbené</a>
+        <a class="nav-pill" href="#footer" data-i18n="navContact">Viac info</a>
       </nav>
 
       <div class="header-actions">
@@ -1274,12 +942,11 @@
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-main">
-            <img class="stats-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
-            <img class="hero-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
-            <div class="kicker" data-i18n="heroKicker">Performance Parts</div>
-            <h1 data-i18n="heroTitle">Performance diely pre drift, trackday a street buildy.</h1>
+            <div class="kicker" data-i18n="heroKicker">RACEM x CYBUL</div>
+            <h1 data-i18n="heroTitle">Brutálny katalóg performance dielov pre swapy, drift a track buildy.</h1>
             <p class="lead" data-i18n="heroLead">
-              Výber dielov pre autá, ktoré majú fungovať pod záťažou. Drift, swap, trackday aj street buildy na jednom mieste, s prehľadným katalógom, variantmi a rýchlym výberom podľa platformy.
+              CYBUL RADICAL SOLUTIONS v RACEM štýle. Rýchly vyhľadávač, platformové filtre, varianty, lokálny košík,
+              obľúbené produkty, dvojjazyčné rozhranie a priamy presun na Shopify checkout podľa variant ID.
             </p>
 
             <div class="hero-stats">
@@ -1301,18 +968,47 @@
               </div>
             </div>
 
-            <div class="supplier-note">
-              <h3 data-i18n="supplierInfoTitle">Riešenia pre buildy, ktoré sa majú používať</h3>
-              <p data-i18n="supplierInfoText">V ponuke nájdeš podvozkové diely, swap komponenty, výstuhy, roll bary, angle kity aj technické riešenia pre platformy, ktoré sa reálne stavajú na drift, street a trackday použitie. Dôraz je na pevnosť, funkciu, čistý fitment a diely, ktoré dávajú zmysel aj mimo výstavného auta.</p>
+            <div class="hero-actions">
+              <a href="#catalog" class="btn btn-primary" data-i18n="browseCatalog">Prejsť do katalógu</a>
+              <button class="btn btn-secondary" id="jumpFeaturedBtn" data-i18n="seeRecommendations">Zobraziť odporúčané</button>
+              <button class="btn btn-ghost" id="openCartHeroBtn" data-i18n="openCart">Otvoriť košík</button>
             </div>
           </div>
 
           <div class="hero-side">
-            <div class="showcase-panel">
-              <div class="showcase-slider">
-                <div class="showcase-slides" id="heroShowcaseSlides"></div>
-                <div class="showcase-nav" id="heroShowcaseDots"></div>
-                <div class="showcase-progress"><span id="heroShowcaseProgress"></span></div>
+            <div class="hero-side-card">
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardFastAccess">Fast access</div>
+              <h3 data-i18n="cardFastAccessTitle">Vyhľadaj presne to, čo riešiš</h3>
+              <p data-i18n="cardFastAccessText">
+                Platforma, kategória, cena, názov produktu aj variant. Toto nie je obyčajný feed. Toto je reálne použiteľná substránka.
+              </p>
+              <div class="mini-list">
+                <div class="mini-row">
+                  <span data-i18n="miniSwap">Swap diely</span>
+                  <strong id="swapCount">—</strong>
+                </div>
+                <div class="mini-row">
+                  <span data-i18n="miniBMW">BMW platformy</span>
+                  <strong id="bmwCount">—</strong>
+                </div>
+                <div class="mini-row">
+                  <span data-i18n="miniMazda">Mazda / MX-5</span>
+                  <strong id="mazdaCount">—</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-side-card">
+              <div class="kicker" style="font-size:.72rem;" data-i18n="cardWhy">Why this page</div>
+              <h3 data-i18n="cardWhyTitle">Postavené na feed-e cybul.json</h3>
+              <p data-i18n="cardWhyText">
+                Produkty sa načítavajú dynamicky z JSON-u, riešia sa varianty, galéria, platformy, obľúbené aj checkout flow.
+              </p>
+              <div class="trust-points">
+                <span class="chip" data-i18n="trust1">Dvojjazyčné UI</span>
+                <span class="chip" data-i18n="trust2">Shopify checkout</span>
+                <span class="chip" data-i18n="trust3">RACEM visual</span>
+                <span class="chip" data-i18n="trust4">Lokálny košík</span>
               </div>
             </div>
           </div>
@@ -1321,8 +1017,8 @@
         <div class="featured-strip" id="featured">
           <div class="section-head" style="margin-top:0; margin-bottom:14px;">
             <div>
-              <h2 data-i18n="featuredTitle">Odporúčame</h2>
-              <p data-i18n="featuredLead">Vybrané kúsky pre najžiadanejšie buildy a platformy.</p>
+              <h2 data-i18n="featuredTitle">Odporúčané a najzaujímavejšie</h2>
+              <p data-i18n="featuredLead">Vybrané produkty podľa kombinácie ceny, počtu obrázkov, variantov a atraktivity pre performance buildy.</p>
             </div>
           </div>
           <div class="featured-scroller" id="featuredScroller"></div>
@@ -1332,10 +1028,10 @@
           <div class="controls-grid">
             <div class="field search-field">
               <label for="searchInput" data-i18n="searchLabel">Vyhľadávanie</label>
-              <input class="input" id="searchInput" type="search" placeholder="Hľadaj podľa názvu alebo platformy..." />
+              <input class="input" id="searchInput" type="search" placeholder="Hľadaj podľa názvu, SKU, platformy..." />
             </div>
             <div class="field">
-              <label for="categoryFilter" data-i18n="categoryLabel">Výrobca auta</label>
+              <label for="categoryFilter" data-i18n="categoryLabel">Kategória</label>
               <select class="select" id="categoryFilter"></select>
             </div>
             <div class="field">
@@ -1357,6 +1053,7 @@
           </div>
 
           <div class="filters-row-bottom">
+            <div class="quick-pills" id="quickPills"></div>
             <div class="results-meta">
               <span id="resultsCount">0</span>
               <span data-i18n="resultsProducts">produktov</span>
@@ -1369,7 +1066,7 @@
         <div class="catalog-shell" id="catalog">
           <div class="catalog-top">
             <div>
-              <h2 data-i18n="catalogTitle">Katalóg produktov</h2>
+              <h2 data-i18n="catalogTitle">Katalóg CYBUL</h2>
               <div class="muted" id="catalogSubline" data-i18n="catalogSubline">Načítavam produkty...</div>
             </div>
             <div class="view-toggles">
@@ -1384,18 +1081,59 @@
 
     <section class="footer" id="footer">
       <div class="wrap">
-        <div class="footer-box">
-          <div class="footer-copy">
-            <h3 data-i18n="footerTitle">Performance Parts</h3>
-            <p data-i18n="footerText">
-              Výber performance dielov pre vodičov, ktorí chcú funkčné riešenia, kvalitné spracovanie a čistý technický štýl.
-            </p>
+        <footer class="site-footer">
+          <div class="footer-top">
+            <div class="footer-brand-block">
+              <div class="footer-brand-line">
+                <img src="assets/racem-logo.png" alt="RACEM">
+                <strong>CYBUL RADICAL SOLUTIONS</strong>
+              </div>
+              <p data-i18n="footerText">
+                Výber performance dielov pre vodičov, ktorí chcú funkčné riešenia, kvalitné spracovanie a čistý technický štýl bez kompromisov.
+              </p>
+              <div class="footer-stats">
+                <div class="footer-stat">
+                  <span data-i18n="statProducts">Produktov</span>
+                  <strong id="footerStatProducts">—</strong>
+                </div>
+                <div class="footer-stat">
+                  <span data-i18n="statPlatforms">Platforiem</span>
+                  <strong id="footerStatPlatforms">—</strong>
+                </div>
+                <div class="footer-stat">
+                  <span data-i18n="statVariants">Variantov</span>
+                  <strong id="footerStatVariants">—</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer-card">
+              <h4 data-i18n="footerNavTitle">Navigácia</h4>
+              <div class="footer-links">
+                <a href="#top"><span data-i18n="navHome">Domovská stránka</span><span>↗</span></a>
+                <a href="#catalog"><span data-i18n="catalogTitle">Katalóg produktov</span><span>↗</span></a>
+                <a href="#featured"><span data-i18n="featuredTitle">Odporúčame</span><span>↗</span></a>
+                <button type="button" id="footerCartBtn"><span data-i18n="goToCart">Prejsť do košíka</span><span>🛒</span></button>
+              </div>
+            </div>
+
+            <div class="footer-card">
+              <h4 data-i18n="footerInfoTitle">Výber a fitment</h4>
+              <div class="footer-links">
+                <a href="#catalog"><span data-i18n="footerInfo1">Filtrovanie podľa výrobcu a platformy</span></a>
+                <a href="#catalog"><span data-i18n="footerInfo2">Varianty s cenami pripravené na výber</span></a>
+                <a href="#featured"><span data-i18n="footerInfo3">Odporúčané diely pre najžiadanejšie buildy</span></a>
+              </div>
+            </div>
           </div>
-          <div class="footer-actions">
-            <a href="#top" class="btn btn-secondary" data-i18n="backTop">Späť hore</a>
-            <button class="btn btn-primary" id="footerCartBtn" data-i18n="goToCart">Prejsť do košíka</button>
+
+          <div class="footer-bottom">
+            <p>© RACEM Performance</p>
+            <div class="footer-mini-nav">
+              <a href="#top" data-i18n="backTop">Späť hore</a>
+            </div>
           </div>
-        </div>
+        </footer>
       </div>
     </section>
   </main>
@@ -1406,7 +1144,7 @@
       <div class="drawer-head">
         <div>
           <h3 data-i18n="cartTitle">Košík</h3>
-          <div class="muted" data-i18n="cartSubtitle">Vybrané produkty pripravené na dokončenie objednávky</div>
+          <div class="muted" data-i18n="cartSubtitle">Lokálny košík pripravený na Shopify checkout</div>
         </div>
         <button class="drawer-close" data-close-drawer>✕</button>
       </div>
@@ -1417,25 +1155,11 @@
           <strong id="cartTotal">€0.00</strong>
         </div>
         <div class="small-note" data-i18n="cartNote">
-          Skontroluj vybrané produkty, varianty a množstvá pred dokončením objednávky.
+          Checkout skladá Shopify cart URL priamo z variant ID a množstiev. Produkty bez validného variant ID sa do checkoutu nepustia.
         </div>
         <button class="btn btn-primary" id="checkoutBtn" data-i18n="checkoutBtn">Prejsť na Shopify checkout</button>
         <button class="btn btn-secondary" id="clearCartBtn" data-i18n="clearCart">Vymazať košík</button>
       </div>
-    </div>
-  </aside>
-
-  <aside class="drawer" id="favoritesDrawer" aria-hidden="true">
-    <div class="backdrop" data-close-favorites></div>
-    <div class="drawer-panel">
-      <div class="drawer-head">
-        <div>
-          <h3 data-i18n="favoritesSection">Obľúbené</h3>
-          <div class="muted" data-i18n="cartSubtitle">Vybrané produkty pripravené na dokončenie objednávky</div>
-        </div>
-        <button class="drawer-close" data-close-favorites>✕</button>
-      </div>
-      <div class="drawer-body" id="favoritesItems"></div>
     </div>
   </aside>
 
@@ -1469,7 +1193,7 @@
             </div>
             <div class="detail-actions" style="margin-top:16px;">
               <button class="btn btn-primary" id="modalAddBtn" data-i18n="addToCart">Pridať do košíka</button>
-              <button class="btn btn-secondary" id="modalBuyBtn" data-i18n="buyNow">Kúpiť ihneď</button>
+              <a class="btn btn-secondary" id="modalShopBtn" target="_blank" rel="noopener" data-i18n="openInShop">Otvoriť v e-shope</a>
               <button class="btn btn-ghost" id="modalFavBtn">❤</button>
             </div>
           </div>
@@ -1504,44 +1228,40 @@
 
     const i18n = {
       sk: {
-        supplierKicker: "",
-        brandSub: "",
-        navHome: "Domovská stránka",
-        
+        supplierKicker: "Supplier Hub",
+        brandSub: "Performance diely / swap riešenia / drift hardvér",
+        navFeatured: "Odporúčame",
+        navCatalog: "Katalóg",
         navFavorites: "Obľúbené",
-        
-        heroKicker: "Performance Parts",
-        heroTitle: "Performance diely pre drift, trackday a street buildy.",
-        heroLead: "Prémiové performance diely pre drift, trackday a street buildy. Prehľadný katalóg, rýchle filtrovanie, varianty produktov a pohodlný nákup na jednom mieste.",
+        navContact: "Viac info",
+        heroKicker: "RACEM x CYBUL",
+        heroTitle: "Brutálny katalóg performance dielov pre swapy, drift a track buildy.",
+        heroLead: "CYBUL RADICAL SOLUTIONS v RACEM štýle. Rýchly vyhľadávač, platformové filtre, varianty, lokálny košík, obľúbené produkty, dvojjazyčné rozhranie a priamy presun na Shopify checkout podľa variant ID.",
         statProducts: "Produktov",
         statCategories: "Kategórií",
         statPlatforms: "Platforiem",
         statVariants: "Variantov",
-        browseCatalog: "",
+        browseCatalog: "Prejsť do katalógu",
         seeRecommendations: "Zobraziť odporúčané",
         openCart: "Otvoriť košík",
-        cardFastAccess: "Technické riešenia",
-        cardFastAccessTitle: "Diely postavené pre reálne zaťaženie",
-        cardFastAccessText: "V tejto ponuke nájdeš komponenty zamerané na pevnosť, presnosť a funkciu. Nie sú to len vizuálne doplnky, ale diely určené pre buildy, kde sa rieši fitment, výkon a odolnosť.",
-        miniSwap: "Swap a mounting",
+        cardFastAccess: "Fast access",
+        cardFastAccessTitle: "Vyhľadaj presne to, čo riešiš",
+        cardFastAccessText: "Platforma, kategória, cena, názov produktu aj variant. Toto nie je obyčajný feed. Toto je reálne použiteľná substránka.",
+        miniSwap: "Swap diely",
         miniBMW: "BMW platformy",
         miniMazda: "Mazda / MX-5",
-        cardWhy: "O dodávateľovi",
-        cardWhyTitle: "Zamerané na funkčné motorsport riešenia",
-        cardWhyText: "Portfólio je postavené na dieloch pre upravené vozidlá, kde rozhoduje funkcia, kompatibilita a pevnosť. Nájdeš tu riešenia pre drift, swap projekty, podvozok, brzdy aj technické komponenty pre buildy, ktoré sa reálne používajú.",
-        trust1: "Track & street",
-        trust2: "Varianty produktov",
-        trust3: "Presný fitment",
-        trust4: "Overené platformy",
-        featuredTitle: "Odporúčame",
-        featuredLead: "Vybrané diely pre Supra, Lexus, BMW E36 / E46, angle kity a výfukové zvody.",
-        supplierInfoTitle: "Riešenia pre buildy, ktoré sa majú používať",
-        supplierInfoText: "V ponuke nájdeš podvozkové diely, swap komponenty, výstuhy, roll bary, angle kity aj technické riešenia pre platformy, ktoré sa reálne stavajú na drift, street a trackday použitie. Dôraz je na pevnosť, funkciu, čistý fitment a diely, ktoré dávajú zmysel aj mimo výstavného auta.",
-        showcaseTitle: "Výber buildov a kľúčových dielov",
-        loadingText: "Načítavam performance katalóg, varianty a platformy.",
+        cardWhy: "Why this page",
+        cardWhyTitle: "Postavené na feed-e cybul.json",
+        cardWhyText: "Produkty sa načítavajú dynamicky z JSON-u, riešia sa varianty, galéria, platformy, obľúbené aj checkout flow.",
+        trust1: "Dvojjazyčné UI",
+        trust2: "Shopify checkout",
+        trust3: "RACEM visual",
+        trust4: "Lokálny košík",
+        featuredTitle: "Odporúčané a najzaujímavejšie",
+        featuredLead: "Vybrané produkty podľa kombinácie ceny, počtu obrázkov, variantov a atraktivity pre performance buildy.",
         searchLabel: "Vyhľadávanie",
-        searchPlaceholder: "Hľadaj podľa názvu alebo platformy...",
-        categoryLabel: "Výrobca auta",
+        searchPlaceholder: "Hľadaj podľa názvu, SKU, platformy...",
+        categoryLabel: "Kategória",
         platformLabel: "Platforma",
         sortLabel: "Zoradenie",
         stockLabel: "Dostupnosť",
@@ -1549,35 +1269,32 @@
         resetFilters: "Reset filtrov",
         resultsProducts: "produktov",
         favoritesOnly: "Len obľúbené",
-        catalogTitle: "Katalóg produktov",
-        catalogSubline: "Prehľadný katalóg s variantami, galériou a rýchlym výberom.",
+        catalogTitle: "Katalóg CYBUL",
+        catalogSubline: "Dynamicky načítané produkty s variantami, galériou a lokálnym košíkom.",
         gridView: "Grid",
         listView: "List",
-        footerNavTitle: "Navigácia",
-        footerInfoTitle: "Informácie",
-        footerFilterLink: "Filtrovať podľa platformy",
-        footerNote: "Performance katalóg je navrhnutý pre rýchly výber dielov podľa výrobcu auta, platformy a variantu produktu.",
-        footerText: "Výber performance dielov pre vodičov, ktorí chcú funkčné riešenia, kvalitné spracovanie a technický štýl bez kompromisov.",
+        footerTitle: "CYBUL Radical Solutions / RACEM supplier page",
+        footerText: "Vizuál a UX v RACEM štýle, dáta z JSON feedu, pripravené na ďalšie rozšírenie o badges, bestsellery, custom pricing alebo napojenie na ďalšie feedy.",
         backTop: "Späť hore",
         goToCart: "Prejsť do košíka",
         cartTitle: "Košík",
-        cartSubtitle: "Vybrané produkty pripravené na dokončenie objednávky",
+        cartSubtitle: "Lokálny košík pripravený na Shopify checkout",
         cartTotal: "Spolu",
-        cartNote: "Skontroluj vybrané produkty, varianty a množstvá pred dokončením objednávky.",
+        cartNote: "Checkout skladá Shopify cart URL priamo z variant ID a množstiev. Produkty bez validného variant ID sa do checkoutu nepustia.",
         checkoutBtn: "Prejsť na Shopify checkout",
         clearCart: "Vymazať košík",
         modalVariantTitle: "Varianty",
         modalPlatformsTitle: "Platformy",
         modalDescriptionTitle: "Popis",
         addToCart: "Pridať do košíka",
-        buyNow: "Kúpiť ihneď",
+        openInShop: "Otvoriť v e-shope",
         quickAll: "Všetko",
         quickDrift: "Drift",
         quickSwap: "Swap",
         quickBMW: "BMW",
         quickMazda: "Mazda",
         quickBrakes: "Brzdy",
-        allCategories: "Všetci výrobcovia",
+        allCategories: "Všetky kategórie",
         allPlatforms: "Všetky platformy",
         allStock: "Všetko",
         stockMadeToOrder: "Na objednávku",
@@ -1592,13 +1309,13 @@
         cartEmpty: "Košík je prázdny. Vyber si produkty z katalógu.",
         noResults: "Nenašiel sa žiadny produkt pre aktuálne filtre.",
         variant: "Variant",
-        sku: "",
+        sku: "SKU",
         quantity: "Množstvo",
         remove: "Odstrániť",
         recommended: "Odporúčame",
         premium: "Premium",
-        featuredBadge: "Odporúčame",
-        sourceFeed: "Kolekcia",
+        featuredBadge: "Top pick",
+        sourceFeed: "Zdrojový feed",
         filteredInfo: "Zobrazené",
         addedTitle: "Pridané do košíka",
         addedBody: "Produkt bol pridaný do košíka.",
@@ -1617,44 +1334,40 @@
         favoritesSection: "Obľúbené"
       },
       en: {
-        supplierKicker: "",
-        brandSub: "",
-        navHome: "Home",
-        
+        supplierKicker: "Supplier Hub",
+        brandSub: "Performance parts / swap solutions / drift hardware",
+        navFeatured: "Recommended",
+        navCatalog: "Catalog",
         navFavorites: "Favorites",
-        
-        heroKicker: "Performance Parts",
-        heroTitle: "Performance parts for drift, trackday and street builds.",
-        heroLead: "A focused selection of parts for cars built to perform under load. Drift, swap, trackday and street builds in one place, with a clear catalog, variants and quick filtering by platform.",
+        navContact: "More info",
+        heroKicker: "RACEM x CYBUL",
+        heroTitle: "A brutal performance catalog for swaps, drift and track builds.",
+        heroLead: "CYBUL RADICAL SOLUTIONS in full RACEM style. Fast search, platform filters, variants, local cart, favorites, bilingual UI and direct Shopify checkout based on variant IDs.",
         statProducts: "Products",
         statCategories: "Categories",
         statPlatforms: "Platforms",
         statVariants: "Variants",
-        browseCatalog: "",
+        browseCatalog: "Browse catalog",
         seeRecommendations: "See recommendations",
         openCart: "Open cart",
-        cardFastAccess: "Technical solutions",
-        cardFastAccessTitle: "Built for real load and hard use",
-        cardFastAccessText: "This range focuses on components designed for strength, precision and real function. These are not just styling parts, but hardware for builds where fitment, durability and performance matter.",
+        cardFastAccess: "Fast access",
+        cardFastAccessTitle: "Find exactly what you need",
+        cardFastAccessText: "Platform, category, price, product title and variant. This is not a flat feed. This is a real supplier landing page.",
         miniSwap: "Swap parts",
         miniBMW: "BMW platforms",
         miniMazda: "Mazda / MX-5",
-        cardWhy: "About the supplier",
-        cardWhyTitle: "Focused on functional motorsport solutions",
-        cardWhyText: "The portfolio is built around parts for modified cars where function, compatibility and strength come first. You will find solutions for drift, swap projects, suspension, brakes and technical components for builds that are actually driven.",
-        trust1: "Track & street",
-        trust2: "Product variants",
-        trust3: "Precise fitment",
-        trust4: "Proven platforms",
-        featuredTitle: "Recommended",
-        featuredLead: "Selected parts for Supra, Lexus, BMW E36 / E46, angle kits and exhaust manifolds.",
-        supplierInfoTitle: "Solutions for builds meant to be driven",
-        supplierInfoText: "This range focuses on suspension parts, swap components, reinforcements, roll bars, angle kits and technical hardware for platforms commonly built for drift, street and trackday use. The focus is on strength, function, clean fitment and parts that make sense beyond a show car.",
-        showcaseTitle: "Selected builds and key parts",
-        loadingText: "Loading performance catalog, variants and platforms.",
+        cardWhy: "Why this page",
+        cardWhyTitle: "Built on cybul.json feed",
+        cardWhyText: "Products are loaded dynamically from JSON, including variants, gallery, platforms, favorites and checkout flow.",
+        trust1: "Bilingual UI",
+        trust2: "Shopify checkout",
+        trust3: "RACEM visual",
+        trust4: "Local cart",
+        featuredTitle: "Recommended and most interesting",
+        featuredLead: "Selected products based on price, number of images, variants and overall fit for serious performance builds.",
         searchLabel: "Search",
-        searchPlaceholder: "Search by title or platform...",
-        categoryLabel: "Car make",
+        searchPlaceholder: "Search by title, SKU, platform...",
+        categoryLabel: "Category",
         platformLabel: "Platform",
         sortLabel: "Sort",
         stockLabel: "Availability",
@@ -1663,34 +1376,31 @@
         resultsProducts: "products",
         favoritesOnly: "Favorites only",
         catalogTitle: "CYBUL Catalog",
-        catalogSubline: "Clean catalog with variants, gallery and quick selection.",
+        catalogSubline: "Dynamically loaded products with variants, gallery and a local cart.",
         gridView: "Grid",
         listView: "List",
-        footerNavTitle: "Navigácia",
-        footerInfoTitle: "Informácie",
-        footerFilterLink: "Filtrovať podľa platformy",
-        footerNote: "Performance katalóg je navrhnutý pre rýchly výber dielov podľa výrobcu auta, platformy a variantu produktu.",
-        footerText: "Selection of performance parts for drivers who want functional solutions, quality workmanship and a technical style without compromise.",
+        footerTitle: "CYBUL Radical Solutions / RACEM supplier page",
+        footerText: "RACEM-style visual system and UX powered by JSON feed data, ready for further expansion with badges, bestsellers, custom pricing or additional supplier feeds.",
         backTop: "Back to top",
         goToCart: "Go to cart",
         cartTitle: "Cart",
-        cartSubtitle: "Selected products ready for checkout",
+        cartSubtitle: "Local cart ready for Shopify checkout",
         cartTotal: "Total",
-        cartNote: "Review selected products, variants and quantities before completing your order.",
+        cartNote: "Checkout builds a Shopify cart URL directly from variant IDs and quantities. Items without a valid variant ID are excluded.",
         checkoutBtn: "Go to Shopify checkout",
         clearCart: "Clear cart",
         modalVariantTitle: "Variants",
         modalPlatformsTitle: "Platforms",
         modalDescriptionTitle: "Description",
         addToCart: "Add to cart",
-        buyNow: "Buy now",
+        openInShop: "Open in shop",
         quickAll: "All",
         quickDrift: "Drift",
         quickSwap: "Swap",
         quickBMW: "BMW",
         quickMazda: "Mazda",
         quickBrakes: "Brakes",
-        allCategories: "All makes",
+        allCategories: "All categories",
         allPlatforms: "All platforms",
         allStock: "All",
         stockMadeToOrder: "Made to order",
@@ -1705,13 +1415,13 @@
         cartEmpty: "Your cart is empty. Pick products from the catalog.",
         noResults: "No products found for the current filters.",
         variant: "Variant",
-        sku: "",
+        sku: "SKU",
         quantity: "Qty",
         remove: "Remove",
         recommended: "Recommended",
         premium: "Premium",
-        featuredBadge: "Recommended",
-        sourceFeed: "Collection",
+        featuredBadge: "Top pick",
+        sourceFeed: "Source feed",
         filteredInfo: "Showing",
         addedTitle: "Added to cart",
         addedBody: "The product was added to the cart.",
@@ -1753,33 +1463,6 @@
 
     function slugify(v=''){
       return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    }
-
-
-    function inferMakeFromProduct(product){
-      const text = `${product.title || ''} ${(product.platforms || []).join(' ')}`.toLowerCase();
-      if (/mazda|mx-5|miata/.test(text)) return 'Mazda';
-      if (/nissan|silvia|s-chassis|s13|s14|s15/.test(text)) return 'Nissan';
-      if (/lexus|is/.test(text)) return 'Lexus';
-      if (/toyota|supra|1jz|2jz|1uz|3uz/.test(text)) return 'Toyota';
-      if (/bmw|e30|e36|e46|e8x|e9x|z3|z4|m50|m52|m57|m60|m62/.test(text)) return 'BMW';
-      return 'Universal';
-    }
-
-    function displayPlatformLabel(platform=''){
-      return platform === 'UNIVERZÁLNE' ? (state.lang === 'sk' ? 'Univerzálne' : 'Universal') : platform;
-    }
-
-    function getDisplayPlatforms(product){
-      const make = product._make;
-      return (product.platforms || []).filter(pl => {
-        if (make === 'BMW') return /^(E\d+|E8X|E9X|Z3|Z4)$/i.test(pl);
-        if (make === 'Mazda') return /MX-5|NA|NB|NC/i.test(pl) || pl === 'automobil';
-        if (make === 'Toyota') return /SUPRA|A90|1JZ|2JZ|1UZ|3UZ/i.test(pl);
-        if (make === 'Nissan') return /S13|S14|S15|S-CHASSIS|SILVIA/i.test(pl);
-        if (make === 'Lexus') return /IS/i.test(pl);
-        return !/^(M50|M52|M57|M60|M62|1JZ|2JZ|1UZ-FE|3UZ|automobil)$/i.test(pl);
-      });
     }
 
     function stripHtml(html=''){
@@ -1850,6 +1533,20 @@
       return map[value] || value;
     }
 
+    function cleanVariantTitle(product, variant){
+      if (!variant) return '';
+      const translatedTitle = translateOptionValueSmart(variant.title || '').trim();
+      const normalizedTitle = translatedTitle.toLowerCase();
+      const productTitle = displayTitle(product).trim().toLowerCase();
+      const optionValues = Object.values(variant.options || {}).map(v => translateOptionValueSmart(v).trim()).filter(Boolean);
+      const uniqueOptions = [...new Set(optionValues)];
+      if (translatedTitle && !/default title/i.test(translatedTitle) && normalizedTitle !== productTitle && !uniqueOptions.includes(translatedTitle)) {
+        return translatedTitle;
+      }
+      return uniqueOptions.join(' • ');
+    }
+
+
     function normalizeProducts(source){
       const products = (source.products || []).map((p, idx) => {
         const rawVariants = Array.isArray(p.variants) ? p.variants : [];
@@ -1862,9 +1559,9 @@
         const minPrice = buyableVariants.length ? Math.min(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
         const maxPrice = buyableVariants.length ? Math.max(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
         const textBlob = [
-          p.title, stripHtml(p.descriptionHtml || ''), p.category,
+          p.title, stripHtml(p.descriptionHtml || ''), p.category, p.manufacturer,
           ...(p.platforms || []),
-          ...rawVariants.map(v => [v.title, ...Object.entries(v.options || {}).flat()].join(' '))
+          ...rawVariants.map(v => [v.title, v.sku, ...Object.entries(v.options || {}).flat()].join(' '))
         ].join(' ').toLowerCase();
 
         return {
@@ -1877,8 +1574,6 @@
           _minPrice: minPrice,
           _maxPrice: maxPrice,
           _textBlob: textBlob,
-          _make: inferMakeFromProduct(p),
-          _displayPlatforms: getDisplayPlatforms({ ...p, _make: inferMakeFromProduct(p) }),
           _recommendedScore:
             (buyableVariants.length * 25) +
             (allImages.length * 7) +
@@ -1935,7 +1630,6 @@
       renderFilters();
       renderHeroStats();
       renderFeatured();
-      renderHeroShowcase();
       renderProducts();
       renderCart();
       if (state.currentModal) openProductModal(state.currentModal.id, true);
@@ -1943,34 +1637,36 @@
 
     function renderHeroStats(){
       const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))];
-      const platforms = [...new Set(state.products.flatMap(p => p._displayPlatforms || p.platforms || []).filter(Boolean))];
+      const platforms = [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))];
       const variants = state.products.reduce((acc,p) => acc + (p._buyableVariants.length || 0), 0);
       els.statProducts.textContent = state.products.length;
       els.statCategories.textContent = categories.length;
       els.statPlatforms.textContent = platforms.length;
       els.statVariants.textContent = variants;
+      els.swapCount.textContent = state.products.filter(p => /swap|1jz|2jz|1uz|3uz|m60|m62|m57|v8/i.test(p._textBlob)).length;
+      els.bmwCount.textContent = state.products.filter(p => (p.platforms||[]).some(x => /^e\d+|^m\d+/i.test(x))).length;
+      els.mazdaCount.textContent = state.products.filter(p => /mx-5|mazda/i.test(p._textBlob)).length;
       els.catalogSubline.textContent = t('catalogSubline');
     }
 
     function getAllCategories(){
-      return [...new Set(state.products.map(p => p._make).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+      return [...new Set(state.products.map(p => p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
     }
-    function getAllPlatforms(make=''){
-      const items = make ? state.products.filter(p => p._make === make) : state.products;
-      return [...new Set(items.flatMap(p => p._displayPlatforms || p.platforms || []))].filter(Boolean).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+    function getAllPlatforms(){
+      return [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))].sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
     }
 
     function renderFilters(){
-      const makeVal = els.categoryFilter.value || '';
+      const categoryVal = els.categoryFilter.value || '';
       const platformVal = els.platformFilter.value || '';
       const sortVal = els.sortSelect.value || 'featured';
       const stockVal = els.stockFilter.value || '';
 
-      const makes = getAllCategories();
-      const platforms = getAllPlatforms(makeVal);
+      const categories = getAllCategories();
+      const platforms = getAllPlatforms();
 
-      els.categoryFilter.innerHTML = `<option value="">${t('allCategories')}</option>` + makes.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + platforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(displayPlatformLabel(c))}</option>`).join('');
+      els.categoryFilter.innerHTML = `<option value="">${t('allCategories')}</option>` + categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + platforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
       els.sortSelect.innerHTML = `
         <option value="featured">${t('sortFeatured')}</option>
         <option value="price-asc">${t('sortPriceAsc')}</option>
@@ -1983,12 +1679,12 @@
         <option value="made_to_order">${t('stockMadeToOrder')}</option>
         <option value="other">${t('stockOther')}</option>`;
 
-      els.categoryFilter.value = makes.includes(makeVal) ? makeVal : '';
-      const nextPlatforms = getAllPlatforms(els.categoryFilter.value || '');
-      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + nextPlatforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(displayPlatformLabel(c))}</option>`).join('');
-      els.platformFilter.value = nextPlatforms.includes(platformVal) ? platformVal : '';
+      els.categoryFilter.value = categories.includes(categoryVal) ? categoryVal : '';
+      els.platformFilter.value = platforms.includes(platformVal) ? platformVal : '';
       els.sortSelect.value = ['featured','price-asc','price-desc','name-asc','name-desc','variants-desc'].includes(sortVal) ? sortVal : 'featured';
       els.stockFilter.value = ['made_to_order','other'].includes(stockVal) ? stockVal : '';
+
+      renderQuickPills();
     }
 
     function renderQuickPills(){
@@ -2000,18 +1696,15 @@
         {label:t('quickMazda'), action:() => {els.searchInput.value='mx-5'; applyFilters(); activateQuick('mazda');}, key:'mazda'},
         {label:t('quickBrakes'), action:() => {els.categoryFilter.value='Brzdy'; applyFilters(); activateQuick('brakes');}, key:'brakes'},
       ];
-      if (!els.quickPills) return;
       els.quickPills.innerHTML = pills.map(p => `<button type="button" data-quick="${p.key}">${p.label}</button>`).join('');
       els.quickPills.querySelectorAll('button').forEach((btn, idx) => btn.addEventListener('click', pills[idx].action));
     }
 
     function clearQuick(){
-      if (!els.quickPills) return;
       els.quickPills.querySelectorAll('button').forEach(b => b.classList.remove('active'));
     }
     function activateQuick(key){
       clearQuick();
-      if (!els.quickPills) return;
       const btn = els.quickPills.querySelector(`[data-quick="${key}"]`);
       if (btn) btn.classList.add('active');
     }
@@ -2027,7 +1720,7 @@
 
     function applyFilters(){
       const q = (els.searchInput.value || '').trim().toLowerCase();
-      const make = els.categoryFilter.value;
+      const category = els.categoryFilter.value;
       const platform = els.platformFilter.value;
       const sort = els.sortSelect.value;
       const stock = els.stockFilter.value;
@@ -2037,11 +1730,11 @@
       if (q){
         items = items.filter(p => p._textBlob.includes(q));
       }
-      if (make){
-        items = items.filter(p => p._make === make);
+      if (category){
+        items = items.filter(p => p.category === category);
       }
       if (platform){
-        items = items.filter(p => (p._displayPlatforms || p.platforms || []).includes(platform));
+        items = items.filter(p => (p.platforms || []).includes(platform));
       }
       if (stock){
         items = items.filter(p => {
@@ -2073,109 +1766,29 @@
       return translateTitleSmart(product.title || '');
     }
 
-    function getRecommendedProducts(){
-      const priority = [/supra|a90/i, /lexus|is/i, /angle lock|angle kit/i, /vyfukove zvody|exhaust manifold/i, /e46/i, /e36/i];
-      const selected = [];
-      const used = new Set();
-      priority.forEach(rx => {
-        const hit = state.products
-          .filter(p => !used.has(p.id))
-          .sort((a,b)=>b._recommendedScore - a._recommendedScore)
-          .find(p => rx.test(`${p.title} ${(p.platforms || []).join(' ')}`));
-        if (hit){ used.add(hit.id); selected.push(hit); }
-      });
-      return [...selected, ...state.products.filter(p => !used.has(p.id)).sort((a,b)=>b._recommendedScore - a._recommendedScore)].slice(0,8);
-    }
-
     function renderFeatured(){
-      const picks = getRecommendedProducts();
+      const picks = [...state.products].sort((a,b)=>b._recommendedScore - a._recommendedScore).slice(0,8);
       els.featuredScroller.innerHTML = picks.map(p => {
         const title = escapeHtml(displayTitle(p));
-        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 70) + (stripHtml(p.descriptionHtml||'').length > 70 ? '…' : '')) || '');
+        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 132) + (stripHtml(p.descriptionHtml||'').length > 132 ? '…' : '')) || '');
         const priceLine = p._minPrice != null ? `${t('currencyFrom')} ${money(p._minPrice)}` : t('priceOnRequest');
-        const img = escapeHtml((p._images && p._images[0]) || '');
         return `
-          <article class="feature-card" data-feature-open="${escapeHtml(p.id)}">
-            <div class="feature-media">${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ''}</div>
+          <article class="feature-card">
+            <div class="feature-pill">${t('featuredBadge')}</div>
             <h3>${title}</h3>
             <p>${blurb}</p>
-            <div class="feature-meta">
-              <strong style="font-size:.92rem;">${priceLine}</strong>
+            <div class="trust-points" style="margin-top:14px;">
+              ${(p.platforms || []).slice(0,4).map(pl => `<span class="chip">${escapeHtml(pl)}</span>`).join('')}
+            </div>
+            <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <strong style="font-size:1.08rem;">${priceLine}</strong>
               <button class="btn btn-secondary feature-open" data-id="${escapeHtml(p.id)}">${t('detail')}</button>
             </div>
           </article>`;
       }).join('');
-      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => btn.addEventListener('click', () => openProductModal(btn.dataset.id)));
-    }
-
-    function renderHeroShowcase(){
-      const picks = getRecommendedProducts().slice(0, 6);
-      if (!els.heroShowcaseSlides) return;
-      if (!picks.length){
-        els.heroShowcaseSlides.innerHTML = '';
-        if (els.heroShowcaseDots) els.heroShowcaseDots.innerHTML = '';
-        return;
-      }
-      const blurbs = {
-        sk: [
-          'Výber funkčných dielov pre buildy, ktoré majú reálne jazdiť a držať pri záťaži.',
-          'Presný fitment, pevné riešenia a technické komponenty pre drift, street a trackday projekty.',
-          'Komponenty pre platformy, ktoré sa naozaj stavajú — bez zbytočnej vizuálnej omáčky.'
-        ],
-        en: [
-          'A selection of functional parts for builds meant to be driven hard and work under load.',
-          'Precise fitment, strong solutions and technical components for drift, street and trackday projects.',
-          'Hardware for platforms people actually build — without unnecessary visual fluff.'
-        ]
-      };
-      els.heroShowcaseSlides.innerHTML = picks.map((p, index) => {
-        const img = escapeHtml((p._images && p._images[0]) || '');
-        const title = escapeHtml(displayTitle(p));
-        const platforms = escapeHtml((p.platforms || []).slice(0,3).join(' / ') || 'Performance parts');
-        const desc = escapeHtml((blurbs[state.lang] && blurbs[state.lang][index % blurbs[state.lang].length]) || '');
-        const kicker = escapeHtml(platforms);
-        return `
-          <article class="showcase-slide${index === 0 ? ' active' : ''}" data-slide-index="${index}">
-            ${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ''}
-            <div class="showcase-content">
-              <div class="showcase-kicker">${kicker}</div>
-              <h4>${title}</h4>
-              <p>${desc}</p>
-            </div>
-          </article>`;
-      }).join('');
-      if (els.heroShowcaseDots){
-        els.heroShowcaseDots.innerHTML = picks.map((_, index) => `<button class="showcase-dot${index === 0 ? ' active' : ''}" type="button" data-showcase-dot="${index}" aria-label="Slide ${index + 1}"></button>`).join('');
-      }
-
-      const slides = Array.from(els.heroShowcaseSlides.querySelectorAll('.showcase-slide'));
-      const dots = els.heroShowcaseDots ? Array.from(els.heroShowcaseDots.querySelectorAll('.showcase-dot')) : [];
-      const progress = els.heroShowcaseProgress;
-      if (state.heroShowcaseTimer) clearInterval(state.heroShowcaseTimer);
-      let current = 0;
-
-      const restartProgress = () => {
-        if (!progress) return;
-        progress.classList.remove('animate');
-        void progress.offsetWidth;
-        progress.classList.add('animate');
-      };
-
-      const setSlide = (index) => {
-        current = index;
-        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        restartProgress();
-      };
-
-      dots.forEach((dot, i) => dot.addEventListener('click', () => {
-        setSlide(i);
-        if (state.heroShowcaseTimer) clearInterval(state.heroShowcaseTimer);
-        state.heroShowcaseTimer = setInterval(() => setSlide((current + 1) % slides.length), 6000);
-      }));
-
-      setSlide(0);
-      state.heroShowcaseTimer = setInterval(() => setSlide((current + 1) % slides.length), 6000);
+      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => {
+        btn.addEventListener('click', () => openProductModal(btn.dataset.id));
+      });
     }
 
     function currentCardVariant(product){
@@ -2218,21 +1831,21 @@
             </div>
             <div class="product-body">
               <div class="category-line">
-                <span>${escapeHtml(p._make || p.category || '')}</span>
+                <span>${escapeHtml(p.category || '')}</span>
                 <span>•</span>
                 <span>${p._buyableVariants.length || p._allVariants.length} ${t('variantsWord')}</span>
               </div>
               <h3 class="product-title" data-open="${escapeHtml(p.id)}">${escapeHtml(displayTitle(p))}</h3>
               <div class="platform-tags">
-                ${(p._displayPlatforms || p.platforms || []).slice(0,5).map(pl => `<span class="tag">${escapeHtml(displayPlatformLabel(pl))}</span>`).join('')}
+                ${(p.platforms || []).slice(0,5).map(pl => `<span class="tag">${escapeHtml(pl)}</span>`).join('')}
               </div>
               <div class="product-price-row">
                 ${priceMarkup}
-                <div class="variant-inline">${variant && variant.title && !/default title/i.test(variant.title) ? `${t('variant')}: ${escapeHtml(translateOptionValueSmart(variant.title || ''))}` : ''}</div>
+                <div class="variant-inline">${variant ? `${t('variant')}: ${escapeHtml(translateOptionValueSmart(variant.title || ''))}` : ''}</div>
               </div>
               <div class="product-actions">
                 <button class="card-btn detail" data-open="${escapeHtml(p.id)}">${t('detail')}</button>
-                <button class="card-btn add" data-add="${escapeHtml(p.id)}">${t('addToCart')}</button>
+                <button class="card-btn add" data-add="${escapeHtml(p.id)}">+</button>
               </div>
             </div>
           </article>`;
@@ -2276,7 +1889,7 @@
       };
 
       els.modalTitle.textContent = displayTitle(product);
-      els.modalMeta.textContent = `${product._make || product.category || ''} • ${(product._displayPlatforms || product.platforms || []).map(displayPlatformLabel).join(', ') || '—'}`;
+      els.modalMeta.textContent = `${product.category || ''} • ${(product.platforms || []).join(', ') || '—'}`;
 
       function renderModalView(){
         const currentProduct = getProductById(state.currentModal.id);
@@ -2300,12 +1913,12 @@
 
         els.variantChooser.innerHTML = currentProduct._buyableVariants.length
           ? currentProduct._buyableVariants.map(v => {
-              const options = Object.values(v.options || {}).map(val => translateOptionValueSmart(val)).filter(Boolean).join(' • ');
+              const options = Object.entries(v.options || {}).map(([k,val]) => `${translateOptionNameSmart(k)}: ${translateOptionValueSmart(val)}`).join(' • ');
               return `
                 <button class="variant-option ${String(v.variantId) === String(currentVariant?.variantId) ? 'active' : ''}" data-variant-id="${escapeHtml(String(v.variantId))}">
                   <div>
                     <strong>${escapeHtml(translateOptionValueSmart(v.title || ''))}</strong>
-                    <div class="muted" style="margin-top:4px; font-size:.82rem;">${escapeHtml(options || '')}</div>
+                    <div class="muted" style="margin-top:4px; font-size:.85rem;">${escapeHtml(options || v.sku || '')}</div>
                   </div>
                   <strong>${money(v.price)}</strong>
                 </button>`;
@@ -2324,7 +1937,8 @@
         els.modalCompare.textContent = currentVariant?.compareAtPrice ? money(currentVariant.compareAtPrice) : '';
         els.modalDescription.innerHTML = currentProduct.descriptionHtml || '<p>—</p>';
         els.modalPlatforms.innerHTML = (currentProduct.platforms || []).map(p => `<span class="tag">${escapeHtml(p)}</span>`).join('');
-        els.modalSkuLine.innerHTML = ''; //  hidden for customer-facing view
+        els.modalShopBtn.href = currentProduct.productUrl || '#';
+        els.modalSkuLine.innerHTML = currentVariant?.sku ? `<span>${t('sku')}: <strong>${escapeHtml(currentVariant.sku)}</strong></span>` : '';
         els.modalFavBtn.classList.toggle('active', state.favorites.includes(currentProduct.id));
       }
 
@@ -2335,56 +1949,7 @@
 
     function closeProductModal(){
       document.getElementById('productModal').classList.remove('open');
-      if (!document.getElementById('cartDrawer').classList.contains('open') && !document.getElementById('favoritesDrawer').classList.contains('open')) {
-        document.body.style.overflow = '';
-      }
-    }
-
-    function renderFavorites(){
-      const items = state.favorites.map(id => getProductById(id)).filter(Boolean);
-      if (!items.length){
-        els.favoritesItems.innerHTML = `<div class="empty-state">${t('cartEmpty')}</div>`;
-        return;
-      }
-      els.favoritesItems.innerHTML = `<div class="favorites-grid">${items.map(product => {
-        const variant = product._buyableVariants[0] || product._firstVariant;
-        const img = product._images[0] || '';
-        const price = variant?.price != null ? money(variant.price) : t('priceOnRequest');
-        const platforms = (product._displayPlatforms || product.platforms || []).slice(0,4).map(displayPlatformLabel).join(' • ');
-        return `
-          <div class="favorite-card">
-            ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(displayTitle(product))}">` : `<div></div>`}
-            <div>
-              <h4>${escapeHtml(displayTitle(product))}</h4>
-              <div class="meta">${escapeHtml((product._make || '') + (platforms ? ' • ' + platforms : ''))}</div>
-              <div class="favorite-card-actions">
-                <button class="btn btn-secondary" data-favorite-open="${escapeHtml(product.id)}">${t('detail')}</button>
-                <button class="btn btn-primary" data-favorite-add="${escapeHtml(product.id)}">${t('addToCart')}</button>
-              </div>
-            </div>
-            <div class="favorite-card-side">
-              <div class="favorite-price">${price}</div>
-              <button class="btn btn-ghost" data-favorite-remove="${escapeHtml(product.id)}">${t('remove')}</button>
-            </div>
-          </div>`;
-      }).join('')}</div>`;
-      els.favoritesItems.querySelectorAll('[data-favorite-open]').forEach(el => el.addEventListener('click', () => {
-        closeFavorites();
-        openProductModal(el.dataset.favoriteOpen);
-      }));
-      els.favoritesItems.querySelectorAll('[data-favorite-add]').forEach(el => el.addEventListener('click', () => addProductToCart(el.dataset.favoriteAdd)));
-      els.favoritesItems.querySelectorAll('[data-favorite-remove]').forEach(el => el.addEventListener('click', () => toggleFavorite(el.dataset.favoriteRemove)));
-    }
-
-    function openFavorites(){
-      document.getElementById('favoritesDrawer').classList.add('open');
-      renderFavorites();
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeFavorites(){
-      document.getElementById('favoritesDrawer').classList.remove('open');
-      if (!document.getElementById('cartDrawer').classList.contains('open') && !document.getElementById('productModal').classList.contains('open')) {
+      if (!document.getElementById('cartDrawer').classList.contains('open')) {
         document.body.style.overflow = '';
       }
     }
@@ -2401,7 +1966,6 @@
       saveState();
       updateCounters();
       renderProducts();
-      renderFavorites();
       if (state.currentModal?.id === productId) {
         els.modalFavBtn.classList.toggle('active', state.favorites.includes(productId));
       }
@@ -2439,6 +2003,7 @@
     function updateCounters(){
       els.favoritesCount.textContent = state.favorites.length;
       els.cartCount.textContent = state.cart.reduce((a,b)=>a + (b.qty || 0), 0);
+      els.navFavoritesBtn.textContent = `${t('navFavorites')} (${state.favorites.length})`;
     }
 
     function renderCart(){
@@ -2465,7 +2030,7 @@
               <h4>${escapeHtml(displayTitle(product))}</h4>
               <div class="meta">
                 ${t('variant')}: ${escapeHtml(translateOptionValueSmart(variant.title || ''))}<br>
-                
+                ${variant.sku ? `${t('sku')}: ${escapeHtml(variant.sku)}` : ''}
               </div>
               <div class="qty-box">
                 <button data-qty="${escapeHtml(item.key)}" data-change="-1">−</button>
@@ -2538,22 +2103,6 @@
       window.open(url, '_blank', 'noopener');
     }
 
-    function buyNow(productId, variantId = null){
-      const product = getProductById(productId);
-      if (!product) return;
-      const variant = variantId
-        ? product._buyableVariants.find(v => String(v.variantId) === String(variantId))
-        : (product._buyableVariants[0] || product._firstVariant);
-
-      if (!variant || !variant.variantId){
-        showToast(t('checkoutErrorTitle'), t('checkoutErrorBody'));
-        return;
-      }
-
-      const url = `https://shop.racem.sk/cart/${variant.variantId}:1`;
-      window.open(url, '_blank', 'noopener');
-    }
-
     function showToast(title, body){
       const stack = els.toastStack;
       const toast = document.createElement('div');
@@ -2576,12 +2125,8 @@
         });
       });
 
-      ['searchInput','platformFilter','sortSelect','stockFilter'].forEach(id => {
+      ['searchInput','categoryFilter','platformFilter','sortSelect','stockFilter'].forEach(id => {
         els[id].addEventListener(id === 'searchInput' ? 'input' : 'change', applyFilters);
-      });
-      els.categoryFilter.addEventListener('change', () => {
-        renderFilters();
-        applyFilters();
       });
 
       els.resetFiltersBtn.addEventListener('click', () => {
@@ -2606,6 +2151,7 @@
       els.listViewBtn.addEventListener('click', () => { state.view='list'; saveState(); renderProducts(); });
 
       els.cartOpenBtn.addEventListener('click', openCart);
+      els.openCartHeroBtn.addEventListener('click', openCart);
       els.footerCartBtn.addEventListener('click', openCart);
       els.checkoutBtn.addEventListener('click', doCheckout);
       els.clearCartBtn.addEventListener('click', () => {
@@ -2616,29 +2162,38 @@
       });
 
       document.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', closeCart));
-      document.querySelectorAll('[data-close-favorites]').forEach(el => el.addEventListener('click', closeFavorites));
       document.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeProductModal));
 
       els.modalAddBtn.addEventListener('click', () => {
         if (!state.currentModal) return;
         addProductToCart(state.currentModal.id, state.currentModal.selectedVariantId);
       });
-      els.modalBuyBtn.addEventListener('click', () => {
-        if (!state.currentModal) return;
-        buyNow(state.currentModal.id, state.currentModal.selectedVariantId);
-      });
       els.modalFavBtn.addEventListener('click', () => {
         if (!state.currentModal) return;
         toggleFavorite(state.currentModal.id);
       });
 
+      els.jumpFeaturedBtn.addEventListener('click', () => {
+        document.getElementById('featured').scrollIntoView({behavior:'smooth'});
+      });
 
-      els.favoritesOpenBtn.addEventListener('click', openFavorites);
+      els.favoritesOpenBtn.addEventListener('click', () => {
+        state.favoritesOnly = true;
+        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
+        applyFilters();
+        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+      });
+      els.navFavoritesBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        state.favoritesOnly = true;
+        els.favoritesOnlyBtn.textContent = t('buttonFavoritesOn');
+        applyFilters();
+        document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+      });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape'){
           closeCart();
-          closeFavorites();
           closeProductModal();
         }
       });
@@ -2646,35 +2201,21 @@
 
     async function init(){
       bindEvents();
-      const started = Date.now();
       try{
         await loadData();
         renderFilters();
         applyFilters();
         updateCounters();
         renderCart();
-        renderFavorites();
         applyTranslations();
       }catch(err){
         console.error(err);
         els.productsGrid.innerHTML = `<div class="empty-state">Failed to load cybul.json</div>`;
         showToast('Data error', 'Could not load cybul.json');
-      }finally{
-        const remaining = Math.max(0, 2000 - (Date.now() - started));
-        setTimeout(() => {
-          document.getElementById('loadingScreen')?.classList.add('hidden');
-        }, remaining);
       }
     }
 
     init();
-  
-    const footerYearEl = document.getElementById('footerYear');
-    if(footerYearEl) footerYearEl.textContent = new Date().getFullYear();
-    const footerOpenCart = document.getElementById('footerOpenCart');
-    if(footerOpenCart) footerOpenCart.addEventListener('click', ()=> openDrawer('cartDrawer'));
-    const footerOpenFavorites = document.getElementById('footerOpenFavorites');
-    if(footerOpenFavorites) footerOpenFavorites.addEventListener('click', ()=> openDrawer('favoritesDrawer'));
-</script>
+  </script>
 </body>
 </html>
