@@ -137,30 +137,19 @@
       min-width:0;
     }
     .brand-logo{
-      width:170px; height:64px; border-radius:16px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.13), transparent 45%),
-        linear-gradient(145deg, rgba(179,31,36,.35), rgba(20,21,28,.9));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 12px 40px rgba(179,31,36,.18);
+      width:200px; height:72px;
       display:grid; place-items:center;
-      overflow:hidden;
+      overflow:visible;
       flex:0 0 auto;
     }
-    .brand-logo img{width:100%; height:100%; object-fit:contain; padding:6px 10px}
-    .brand-copy{min-width:0}
-    .brand-kicker{
-      color:var(--red-2); font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
-      margin-bottom:2px;
-    }
+    .brand-logo img{width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 28px rgba(179,31,36,.18));}
+    .brand-copy{min-width:0; display:flex; flex-direction:column; justify-content:center}
+    .brand-kicker{display:none}
     .brand-title{
-      font-weight:800; letter-spacing:.02em; font-size:1rem;
+      font-weight:900; letter-spacing:.12em; font-size:1.18rem; text-transform:uppercase;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .brand-sub{
-      color:var(--muted); font-size:.8rem;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .brand-sub{display:none}
 
     .top-nav{
       display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
@@ -218,8 +207,9 @@
     }
     .hero-grid{
       display:grid;
-      grid-template-columns:1.3fr .9fr;
-      gap:20px;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
     }
     .hero-main, .hero-side-card, .featured-strip, .filters-panel, .catalog-shell, .section-box{
       position:relative;
@@ -241,12 +231,12 @@
       pointer-events:none;
     }
     .hero-main{
-      min-height:215px;
+      min-height:220px;
       padding:18px;
       background:
-        radial-gradient(circle at top right, rgba(179,31,36,.22), transparent 28%),
-        radial-gradient(circle at 15% 10%, rgba(255,255,255,.06), transparent 20%),
-        linear-gradient(180deg, rgba(16,17,22,.86), rgba(8,9,12,.94));
+        radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 28%),
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,.05), transparent 20%),
+        linear-gradient(180deg, rgba(16,17,22,.9), rgba(8,9,12,.96));
     }
     .hero-main::after{
       content:"";
@@ -255,22 +245,24 @@
       filter:blur(10px);
       animation:pulse 4s ease-in-out infinite;
     }
-    .hero-side{
-      display:grid; gap:14px;
-      grid-template-rows:1fr 1fr;
-    }
+    .hero-side{display:block;}
     .hero-watermark{
       position:absolute;
-      right:-2%;
-      bottom:-14px;
-      width:min(700px,62vw);
+      right:-1%;
+      bottom:-20px;
+      width:min(760px,62vw);
       max-width:none;
-      opacity:.2;
-      filter:grayscale(1) contrast(1.1);
+      opacity:.18;
+      filter:brightness(0) invert(1) grayscale(1) contrast(1.2);
       pointer-events:none;
       z-index:0;
     }
-    .hero-main > *:not(.hero-watermark){position:relative; z-index:1;}
+    .stats-watermark{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+      object-position:right center; opacity:.09; filter:brightness(0) invert(1) grayscale(1) contrast(1.25);
+      pointer-events:none; z-index:0; transform:scale(1.35);
+    }
+    .hero-main > *:not(.hero-watermark):not(.stats-watermark){position:relative; z-index:1;}
 
     .hero-side-card{
       padding:16px;
@@ -314,7 +306,7 @@
     .stat-label{
       color:var(--muted); font-size:.84rem; text-transform:uppercase; letter-spacing:.12em;
     }
-    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px}
+    .hero-actions{display:none}
     .btn{
       border:none; cursor:pointer;
       padding:14px 18px;
@@ -343,6 +335,9 @@
     }
     .btn-ghost:hover{border-color:rgba(255,255,255,.2)}
 
+    .supplier-note{margin-top:12px; max-width:860px; padding:14px 16px; border-radius:20px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07);}
+    .supplier-note h3{margin:0 0 8px; font-size:1.04rem}
+    .supplier-note p{margin:0; color:#d0d4de; line-height:1.72; font-size:.94rem}
     .hero-side-card h3{margin:0 0 8px; font-size:1.15rem}
     .hero-side-card p{margin:0; color:#d0d4de; line-height:1.65}
     .mini-list{
@@ -375,24 +370,23 @@
     }
 
     .featured-strip{
-      padding:12px;
+      padding:10px;
       margin-top:10px;
     }
     .featured-scroller{
-      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(190px, 220px); gap:10px;
-      overflow:auto; padding-bottom:6px;
-      scrollbar-width:thin;
+      display:grid; grid-auto-flow:column; grid-auto-columns:minmax(175px, 200px); gap:10px;
+      overflow:auto; padding-bottom:4px; scrollbar-width:thin;
     }
     .feature-card{
       min-height:0; border-radius:18px;
-      padding:12px; position:relative; overflow:hidden;
+      padding:10px; position:relative; overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
       background:
         radial-gradient(circle at top right, rgba(179,31,36,.2), transparent 30%),
         linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
     }
-    .feature-card h3{margin:10px 0 6px; font-size:.98rem; line-height:1.25}
-    .feature-card p{margin:0; color:#d7dbe6; line-height:1.45; font-size:.86rem}
+    .feature-card h3{margin:8px 0 4px; font-size:.92rem; line-height:1.24}
+    .feature-card p{margin:0; color:#d7dbe6; line-height:1.4; font-size:.8rem}
     .feature-media{aspect-ratio:1.12/1; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0e1015; margin-bottom:10px;}
     .feature-media img{width:100%; height:100%; object-fit:cover; transition:transform .25s ease;}
     .feature-card:hover .feature-media img{transform:scale(1.04)}
@@ -409,7 +403,7 @@
     }
     .controls-grid{
       display:grid;
-      grid-template-columns:1.4fr repeat(4, minmax(150px, .42fr)) auto;
+      grid-template-columns:1.35fr repeat(4, minmax(150px, .42fr)) auto;
       gap:12px;
       align-items:stretch;
     }
@@ -807,11 +801,12 @@
     }
     .variant-option{
       width:100%; text-align:left; cursor:pointer;
-      padding:10px 11px;
-      border-radius:16px;
+      padding:8px 10px;
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.035);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      font-size:.86rem; min-height:44px;
     }
     .variant-option.active{
       border-color:rgba(179,31,36,.56);
@@ -858,9 +853,49 @@
     }
     .toast strong{display:block; margin-bottom:4px}
 
-    @media (max-width: 1260px){
+    
+    .showcase-panel{
+      position:relative;
+      min-height:220px;
+      padding:14px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.07);
+      background:
+        radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 24%),
+        linear-gradient(180deg, rgba(16,17,22,.92), rgba(11,12,16,.96));
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .showcase-panel::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(90deg, rgba(6,6,8,1), transparent 14%, transparent 86%, rgba(6,6,8,1));
+      z-index:2;
+    }
+    .showcase-title{position:relative; z-index:3; margin:0 0 12px; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; color:#d8dde8;}
+    .showcase-marquee{display:grid; gap:12px; overflow:hidden; position:relative;}
+    .showcase-track{display:flex; gap:12px; width:max-content; animation:marquee 38s linear infinite;}
+    .showcase-track.reverse{animation-direction:reverse; animation-duration:44s;}
+    .showcase-panel:hover .showcase-track{animation-play-state:paused;}
+    .showcase-item{width:190px; aspect-ratio:1.18/1; border-radius:22px; overflow:hidden; position:relative; border:1px solid rgba(255,255,255,.08); background:#0e1015; flex:0 0 auto;}
+    .showcase-item img{width:100%; height:100%; object-fit:cover; transition:transform .28s ease, filter .28s ease;}
+    .showcase-item::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.65));}
+    .showcase-item span{position:absolute; left:12px; right:12px; bottom:12px; z-index:1; font-size:.82rem; font-weight:800; line-height:1.25;}
+    .showcase-item:hover img{transform:scale(1.06); filter:saturate(1.15);}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .loading-screen{position:fixed; inset:0; z-index:200; background:radial-gradient(circle at 50% 30%, rgba(179,31,36,.18), transparent 25%), linear-gradient(180deg,#08090c,#060607); display:grid; place-items:center; transition:opacity .45s ease, visibility .45s ease;}
+    .loading-screen.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+    .loading-core{position:relative; width:min(480px,90vw); padding:34px 26px; border-radius:30px; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)); box-shadow:0 40px 100px rgba(0,0,0,.4); text-align:center; overflow:hidden;}
+    .loading-core::before{content:""; position:absolute; inset:-20%; background:conic-gradient(from 0deg, transparent, rgba(179,31,36,.22), transparent 34%, rgba(255,255,255,.06), transparent 68%, rgba(179,31,36,.14), transparent); animation:spinBg 5s linear infinite;}
+    .loading-core > *{position:relative; z-index:1;}
+    .loading-logo{width:min(280px,70vw); margin:0 auto 14px; filter:drop-shadow(0 14px 34px rgba(179,31,36,.24));}
+    .loading-title{margin:0; font-size:1.4rem; letter-spacing:.16em; text-transform:uppercase;}
+    .loading-sub{margin:10px auto 0; max-width:420px; color:#cfd4df; line-height:1.6;}
+    .loading-bar{height:8px; border-radius:999px; margin-top:18px; overflow:hidden; background:rgba(255,255,255,.08);}
+    .loading-bar span{display:block; width:40%; height:100%; background:linear-gradient(90deg, var(--red-3), var(--red-2), #fff, var(--red)); box-shadow:0 0 24px rgba(179,31,36,.45); animation:loaderSlide 1.15s ease-in-out infinite;}
+    @keyframes loaderSlide{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
+@media (max-width: 1260px){
       .hero-grid{grid-template-columns:1fr}
-      .hero-side{grid-template-columns:1fr 1fr; grid-template-rows:none}
+      .hero-side{display:block}
       .controls-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
       .controls-grid .search-field{grid-column:1 / -1}
       .products-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
@@ -875,7 +910,7 @@
       .header-actions{justify-content:flex-start}
       .hero-main{padding:24px; min-height:auto}
       .hero-stats{grid-template-columns:repeat(2, minmax(0,1fr))}
-      .hero-side{grid-template-columns:1fr}
+      .hero-side{display:block}
       .controls-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
       .products-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
       .products-grid.list .product-card{grid-template-columns:1fr}
@@ -890,6 +925,7 @@
       .controls-grid{grid-template-columns:1fr}
       .products-grid{grid-template-columns:1fr}
       .featured-scroller{grid-auto-columns:minmax(84vw, 1fr)}
+      .showcase-item{width:72vw}
       .product-actions{grid-template-columns:1fr auto}
       .cart-item{grid-template-columns:78px 1fr}
       .cart-item > div:last-child{grid-column:1 / -1}
@@ -900,13 +936,25 @@
   </style>
 </head>
 <body>
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-core">
+      <img class="loading-logo" src="assets/racem-logo.png" alt="RACEM">
+      <h2 class="loading-title">CYBUL RADICAL SOLUTIONS</h2>
+      <p class="loading-sub" data-i18n="loadingText">Načítavam performance katalóg, varianty a platformy.</p>
+      <div class="loading-bar"><span></span></div>
+    </div>
+  
+  </div>
+
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="RACEM CYBUL">
         <div class="brand-logo">
           <img src="assets/racem-logo.png" alt="RACEM" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-weight:900;font-size:20px;letter-spacing:.18em;color:#fff&quot;>RACEM</span>';">
         </div>
-        
+        <div class="brand-copy">
+          <div class="brand-title">CYBUL RADICAL SOLUTIONS</div>
+        </div>
       </a>
 
       <nav class="top-nav">
@@ -936,6 +984,7 @@
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-main">
+            <img class="stats-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
             <img class="hero-watermark" src="assets/cybul.jpg" alt="" aria-hidden="true">
             <div class="kicker" data-i18n="heroKicker">Performance Parts</div>
             <h1 data-i18n="heroTitle">Performance diely pre drift, trackday a street buildy.</h1>
@@ -962,46 +1011,18 @@
               </div>
             </div>
 
-            <div class="hero-actions">
-              <button class="btn btn-secondary" id="jumpFeaturedBtn" data-i18n="seeRecommendations">Zobraziť odporúčané</button>
-              <button class="btn btn-ghost" id="openCartHeroBtn" data-i18n="openCart">Otvoriť košík</button>
+            <div class="supplier-note">
+              <h3 data-i18n="supplierInfoTitle">Riešenia pre buildy, ktoré sa majú používať</h3>
+              <p data-i18n="supplierInfoText">V ponuke nájdeš podvozkové diely, swap komponenty, výstuhy, roll bary, angle kity aj technické riešenia pre platformy, ktoré sa reálne stavajú na drift, street a trackday použitie. Dôraz je na pevnosť, funkciu, čistý fitment a diely, ktoré dávajú zmysel aj mimo výstavného auta.</p>
             </div>
           </div>
 
           <div class="hero-side">
-            <div class="hero-side-card">
-              <div class="kicker" style="font-size:.72rem;" data-i18n="cardFastAccess">Technické riešenia</div>
-              <h3 data-i18n="cardFastAccessTitle">Diely postavené pre reálne zaťaženie</h3>
-              <p data-i18n="cardFastAccessText">
-                V tejto ponuke nájdeš komponenty zamerané na pevnosť, presnosť a funkciu. Nie sú to len vizuálne doplnky, ale diely určené pre buildy, kde sa rieši fitment, výkon a odolnosť.
-              </p>
-              <div class="mini-list">
-                <div class="mini-row">
-                  <span data-i18n="miniSwap">Swap a mounting</span>
-                  <strong id="swapCount">—</strong>
-                </div>
-                <div class="mini-row">
-                  <span data-i18n="miniBMW">BMW platformy</span>
-                  <strong id="bmwCount">—</strong>
-                </div>
-                <div class="mini-row">
-                  <span data-i18n="miniMazda">Mazda / MX-5</span>
-                  <strong id="mazdaCount">—</strong>
-                </div>
-              </div>
-            </div>
-
-            <div class="hero-side-card">
-              <div class="kicker" style="font-size:.72rem;" data-i18n="cardWhy">O dodávateľovi</div>
-              <h3 data-i18n="cardWhyTitle">Zamerané na funkčné motorsport riešenia</h3>
-              <p data-i18n="cardWhyText">
-                Portfólio je postavené na dieloch pre upravené vozidlá, kde rozhoduje funkcia, kompatibilita a pevnosť. Nájdeš tu riešenia pre drift, swap projekty, podvozok, brzdy aj technické komponenty pre buildy, ktoré sa reálne používajú.
-              </p>
-              <div class="trust-points">
-                <span class="chip" data-i18n="trust1">Track & street</span>
-                <span class="chip" data-i18n="trust2">Varianty produktov</span>
-                <span class="chip" data-i18n="trust3">Presný fitment</span>
-                <span class="chip" data-i18n="trust4">Overené platformy</span>
+            <div class="showcase-panel">
+              <h3 class="showcase-title" data-i18n="showcaseTitle">Výber buildov a kľúčových dielov</h3>
+              <div class="showcase-marquee">
+                <div class="showcase-track" id="heroShowcaseTrack1"></div>
+                <div class="showcase-track reverse" id="heroShowcaseTrack2"></div>
               </div>
             </div>
           </div>
@@ -1021,10 +1042,10 @@
           <div class="controls-grid">
             <div class="field search-field">
               <label for="searchInput" data-i18n="searchLabel">Vyhľadávanie</label>
-              <input class="input" id="searchInput" type="search" placeholder="Hľadaj podľa názvu, SKU, platformy..." />
+              <input class="input" id="searchInput" type="search" placeholder="Hľadaj podľa názvu alebo platformy..." />
             </div>
             <div class="field">
-              <label for="categoryFilter" data-i18n="categoryLabel">Kategória</label>
+              <label for="categoryFilter" data-i18n="categoryLabel">Výrobca auta</label>
               <select class="select" id="categoryFilter"></select>
             </div>
             <div class="field">
@@ -1209,10 +1230,14 @@
         trust3: "Presný fitment",
         trust4: "Overené platformy",
         featuredTitle: "Odporúčame",
-        featuredLead: "Vybrané kúsky pre najžiadanejšie buildy a platformy.",
+        featuredLead: "Vybrané diely pre Supra, Lexus, BMW E36 / E46, angle kity a výfukové zvody.",
+        supplierInfoTitle: "Riešenia pre buildy, ktoré sa majú používať",
+        supplierInfoText: "V ponuke nájdeš podvozkové diely, swap komponenty, výstuhy, roll bary, angle kity aj technické riešenia pre platformy, ktoré sa reálne stavajú na drift, street a trackday použitie. Dôraz je na pevnosť, funkciu, čistý fitment a diely, ktoré dávajú zmysel aj mimo výstavného auta.",
+        showcaseTitle: "Výber buildov a kľúčových dielov",
+        loadingText: "Načítavam performance katalóg, varianty a platformy.",
         searchLabel: "Vyhľadávanie",
         searchPlaceholder: "Hľadaj podľa názvu alebo platformy...",
-        categoryLabel: "Kategória",
+        categoryLabel: "Výrobca auta",
         platformLabel: "Platforma",
         sortLabel: "Zoradenie",
         stockLabel: "Dostupnosť",
@@ -1245,7 +1270,7 @@
         quickBMW: "BMW",
         quickMazda: "Mazda",
         quickBrakes: "Brzdy",
-        allCategories: "Všetky kategórie",
+        allCategories: "Všetci výrobcovia",
         allPlatforms: "Všetky platformy",
         allStock: "Všetko",
         stockMadeToOrder: "Na objednávku",
@@ -1260,7 +1285,7 @@
         cartEmpty: "Košík je prázdny. Vyber si produkty z katalógu.",
         noResults: "Nenašiel sa žiadny produkt pre aktuálne filtre.",
         variant: "Variant",
-        sku: "SKU",
+        sku: "",
         quantity: "Množstvo",
         remove: "Odstrániť",
         recommended: "Odporúčame",
@@ -1315,10 +1340,14 @@
         trust3: "Precise fitment",
         trust4: "Proven platforms",
         featuredTitle: "Recommended",
-        featuredLead: "Selected picks for the most requested builds and platforms.",
+        featuredLead: "Selected parts for Supra, Lexus, BMW E36 / E46, angle kits and exhaust manifolds.",
+        supplierInfoTitle: "Solutions for builds meant to be driven",
+        supplierInfoText: "This range focuses on suspension parts, swap components, reinforcements, roll bars, angle kits and technical hardware for platforms commonly built for drift, street and trackday use. The focus is on strength, function, clean fitment and parts that make sense beyond a show car.",
+        showcaseTitle: "Selected builds and key parts",
+        loadingText: "Loading performance catalog, variants and platforms.",
         searchLabel: "Search",
         searchPlaceholder: "Search by title or platform...",
-        categoryLabel: "Category",
+        categoryLabel: "Car make",
         platformLabel: "Platform",
         sortLabel: "Sort",
         stockLabel: "Availability",
@@ -1351,7 +1380,7 @@
         quickBMW: "BMW",
         quickMazda: "Mazda",
         quickBrakes: "Brakes",
-        allCategories: "All categories",
+        allCategories: "All makes",
         allPlatforms: "All platforms",
         allStock: "All",
         stockMadeToOrder: "Made to order",
@@ -1366,7 +1395,7 @@
         cartEmpty: "Your cart is empty. Pick products from the catalog.",
         noResults: "No products found for the current filters.",
         variant: "Variant",
-        sku: "SKU",
+        sku: "",
         quantity: "Qty",
         remove: "Remove",
         recommended: "Recommended",
@@ -1414,6 +1443,33 @@
 
     function slugify(v=''){
       return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    }
+
+
+    function inferMakeFromProduct(product){
+      const text = `${product.title || ''} ${(product.platforms || []).join(' ')}`.toLowerCase();
+      if (/mazda|mx-5|miata/.test(text)) return 'Mazda';
+      if (/nissan|silvia|s-chassis|s13|s14|s15/.test(text)) return 'Nissan';
+      if (/lexus|is/.test(text)) return 'Lexus';
+      if (/toyota|supra|1jz|2jz|1uz|3uz/.test(text)) return 'Toyota';
+      if (/bmw|e30|e36|e46|e8x|e9x|z3|z4|m50|m52|m57|m60|m62/.test(text)) return 'BMW';
+      return 'Universal';
+    }
+
+    function displayPlatformLabel(platform=''){
+      return platform === 'UNIVERZÁLNE' ? (state.lang === 'sk' ? 'Univerzálne' : 'Universal') : platform;
+    }
+
+    function getDisplayPlatforms(product){
+      const make = product._make;
+      return (product.platforms || []).filter(pl => {
+        if (make === 'BMW') return /^(E\d+|E8X|E9X|Z3|Z4)$/i.test(pl);
+        if (make === 'Mazda') return /MX-5|NA|NB|NC/i.test(pl) || pl === 'automobil';
+        if (make === 'Toyota') return /SUPRA|A90|1JZ|2JZ|1UZ|3UZ/i.test(pl);
+        if (make === 'Nissan') return /S13|S14|S15|S-CHASSIS|SILVIA/i.test(pl);
+        if (make === 'Lexus') return /IS/i.test(pl);
+        return !/^(M50|M52|M57|M60|M62|1JZ|2JZ|1UZ-FE|3UZ|automobil)$/i.test(pl);
+      });
     }
 
     function stripHtml(html=''){
@@ -1496,9 +1552,9 @@
         const minPrice = buyableVariants.length ? Math.min(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
         const maxPrice = buyableVariants.length ? Math.max(...buyableVariants.map(v => Number(v.price)).filter(v => !Number.isNaN(v))) : null;
         const textBlob = [
-          p.title, stripHtml(p.descriptionHtml || ''), p.category, p.manufacturer,
+          p.title, stripHtml(p.descriptionHtml || ''), p.category,
           ...(p.platforms || []),
-          ...rawVariants.map(v => [v.title, v.sku, ...Object.entries(v.options || {}).flat()].join(' '))
+          ...rawVariants.map(v => [v.title, ...Object.entries(v.options || {}).flat()].join(' '))
         ].join(' ').toLowerCase();
 
         return {
@@ -1511,6 +1567,8 @@
           _minPrice: minPrice,
           _maxPrice: maxPrice,
           _textBlob: textBlob,
+          _make: inferMakeFromProduct(p),
+          _displayPlatforms: getDisplayPlatforms({ ...p, _make: inferMakeFromProduct(p) }),
           _recommendedScore:
             (buyableVariants.length * 25) +
             (allImages.length * 7) +
@@ -1567,6 +1625,7 @@
       renderFilters();
       renderHeroStats();
       renderFeatured();
+      renderHeroShowcase();
       renderProducts();
       renderCart();
       if (state.currentModal) openProductModal(state.currentModal.id, true);
@@ -1574,36 +1633,34 @@
 
     function renderHeroStats(){
       const categories = [...new Set(state.products.map(p => p.category).filter(Boolean))];
-      const platforms = [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))];
+      const platforms = [...new Set(state.products.flatMap(p => p._displayPlatforms || p.platforms || []).filter(Boolean))];
       const variants = state.products.reduce((acc,p) => acc + (p._buyableVariants.length || 0), 0);
       els.statProducts.textContent = state.products.length;
       els.statCategories.textContent = categories.length;
       els.statPlatforms.textContent = platforms.length;
       els.statVariants.textContent = variants;
-      els.swapCount.textContent = state.products.filter(p => /swap|1jz|2jz|1uz|3uz|m60|m62|m57|v8/i.test(p._textBlob)).length;
-      els.bmwCount.textContent = state.products.filter(p => (p.platforms||[]).some(x => /^e\d+|^m\d+/i.test(x))).length;
-      els.mazdaCount.textContent = state.products.filter(p => /mx-5|mazda/i.test(p._textBlob)).length;
       els.catalogSubline.textContent = t('catalogSubline');
     }
 
     function getAllCategories(){
-      return [...new Set(state.products.map(p => p.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+      return [...new Set(state.products.map(p => p._make).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
     }
-    function getAllPlatforms(){
-      return [...new Set(state.products.flatMap(p => p.platforms || []).filter(Boolean))].sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+    function getAllPlatforms(make=''){
+      const items = make ? state.products.filter(p => p._make === make) : state.products;
+      return [...new Set(items.flatMap(p => p._displayPlatforms || p.platforms || []))].filter(Boolean).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
     }
 
     function renderFilters(){
-      const categoryVal = els.categoryFilter.value || '';
+      const makeVal = els.categoryFilter.value || '';
       const platformVal = els.platformFilter.value || '';
       const sortVal = els.sortSelect.value || 'featured';
       const stockVal = els.stockFilter.value || '';
 
-      const categories = getAllCategories();
-      const platforms = getAllPlatforms();
+      const makes = getAllCategories();
+      const platforms = getAllPlatforms(makeVal);
 
-      els.categoryFilter.innerHTML = `<option value="">${t('allCategories')}</option>` + categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + platforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      els.categoryFilter.innerHTML = `<option value="">${t('allCategories')}</option>` + makes.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + platforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(displayPlatformLabel(c))}</option>`).join('');
       els.sortSelect.innerHTML = `
         <option value="featured">${t('sortFeatured')}</option>
         <option value="price-asc">${t('sortPriceAsc')}</option>
@@ -1616,11 +1673,12 @@
         <option value="made_to_order">${t('stockMadeToOrder')}</option>
         <option value="other">${t('stockOther')}</option>`;
 
-      els.categoryFilter.value = categories.includes(categoryVal) ? categoryVal : '';
-      els.platformFilter.value = platforms.includes(platformVal) ? platformVal : '';
+      els.categoryFilter.value = makes.includes(makeVal) ? makeVal : '';
+      const nextPlatforms = getAllPlatforms(els.categoryFilter.value || '');
+      els.platformFilter.innerHTML = `<option value="">${t('allPlatforms')}</option>` + nextPlatforms.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(displayPlatformLabel(c))}</option>`).join('');
+      els.platformFilter.value = nextPlatforms.includes(platformVal) ? platformVal : '';
       els.sortSelect.value = ['featured','price-asc','price-desc','name-asc','name-desc','variants-desc'].includes(sortVal) ? sortVal : 'featured';
       els.stockFilter.value = ['made_to_order','other'].includes(stockVal) ? stockVal : '';
-
     }
 
     function renderQuickPills(){
@@ -1659,7 +1717,7 @@
 
     function applyFilters(){
       const q = (els.searchInput.value || '').trim().toLowerCase();
-      const category = els.categoryFilter.value;
+      const make = els.categoryFilter.value;
       const platform = els.platformFilter.value;
       const sort = els.sortSelect.value;
       const stock = els.stockFilter.value;
@@ -1669,11 +1727,11 @@
       if (q){
         items = items.filter(p => p._textBlob.includes(q));
       }
-      if (category){
-        items = items.filter(p => p.category === category);
+      if (make){
+        items = items.filter(p => p._make === make);
       }
       if (platform){
-        items = items.filter(p => (p.platforms || []).includes(platform));
+        items = items.filter(p => (p._displayPlatforms || p.platforms || []).includes(platform));
       }
       if (stock){
         items = items.filter(p => {
@@ -1705,33 +1763,51 @@
       return translateTitleSmart(product.title || '');
     }
 
+    function getRecommendedProducts(){
+      const priority = [/supra|a90/i, /lexus|is/i, /angle lock|angle kit/i, /vyfukove zvody|exhaust manifold/i, /e46/i, /e36/i];
+      const selected = [];
+      const used = new Set();
+      priority.forEach(rx => {
+        const hit = state.products
+          .filter(p => !used.has(p.id))
+          .sort((a,b)=>b._recommendedScore - a._recommendedScore)
+          .find(p => rx.test(`${p.title} ${(p.platforms || []).join(' ')}`));
+        if (hit){ used.add(hit.id); selected.push(hit); }
+      });
+      return [...selected, ...state.products.filter(p => !used.has(p.id)).sort((a,b)=>b._recommendedScore - a._recommendedScore)].slice(0,8);
+    }
+
     function renderFeatured(){
-      const picks = [...state.products].sort((a,b)=>b._recommendedScore - a._recommendedScore).slice(0,8);
+      const picks = getRecommendedProducts();
       els.featuredScroller.innerHTML = picks.map(p => {
         const title = escapeHtml(displayTitle(p));
-        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 84) + (stripHtml(p.descriptionHtml||'').length > 84 ? '…' : '')) || '');
+        const blurb = escapeHtml((stripHtml(p.descriptionHtml || '').slice(0, 70) + (stripHtml(p.descriptionHtml||'').length > 70 ? '…' : '')) || '');
         const priceLine = p._minPrice != null ? `${t('currencyFrom')} ${money(p._minPrice)}` : t('priceOnRequest');
         const img = escapeHtml((p._images && p._images[0]) || '');
         return `
           <article class="feature-card" data-feature-open="${escapeHtml(p.id)}">
-            <div class="feature-pill">${t('featuredBadge')}</div>
             <div class="feature-media">${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ''}</div>
             <h3>${title}</h3>
             <p>${blurb}</p>
             <div class="feature-meta">
-              <strong style="font-size:.98rem;">${priceLine}</strong>
+              <strong style="font-size:.92rem;">${priceLine}</strong>
               <button class="btn btn-secondary feature-open" data-id="${escapeHtml(p.id)}">${t('detail')}</button>
             </div>
           </article>`;
       }).join('');
-      els.featuredScroller.querySelectorAll('[data-feature-open], .feature-open').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = btn.dataset.featureOpen || btn.dataset.id;
-          if (!id) return;
-          e.stopPropagation();
-          openProductModal(id);
-        });
-      });
+      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => btn.addEventListener('click', () => openProductModal(btn.dataset.id)));
+    }
+
+    function renderHeroShowcase(){
+      const picks = getRecommendedProducts().slice(0,6);
+      const buildTrack = (el, arr) => {
+        el.innerHTML = [...arr, ...arr].map(p => {
+          const img = escapeHtml((p._images && p._images[0]) || '');
+          return `<div class="showcase-item"><img src="${img}" alt="${escapeHtml(displayTitle(p))}" loading="lazy"><span>${escapeHtml(displayTitle(p))}</span></div>`;
+        }).join('');
+      };
+      buildTrack(els.heroShowcaseTrack1, picks);
+      buildTrack(els.heroShowcaseTrack2, [...picks].reverse());
     }
 
     function currentCardVariant(product){
@@ -1774,13 +1850,13 @@
             </div>
             <div class="product-body">
               <div class="category-line">
-                <span>${escapeHtml(p.category || '')}</span>
+                <span>${escapeHtml(p._make || p.category || '')}</span>
                 <span>•</span>
                 <span>${p._buyableVariants.length || p._allVariants.length} ${t('variantsWord')}</span>
               </div>
               <h3 class="product-title" data-open="${escapeHtml(p.id)}">${escapeHtml(displayTitle(p))}</h3>
               <div class="platform-tags">
-                ${(p.platforms || []).slice(0,5).map(pl => `<span class="tag">${escapeHtml(pl)}</span>`).join('')}
+                ${(p._displayPlatforms || p.platforms || []).slice(0,5).map(pl => `<span class="tag">${escapeHtml(displayPlatformLabel(pl))}</span>`).join('')}
               </div>
               <div class="product-price-row">
                 ${priceMarkup}
@@ -1832,7 +1908,7 @@
       };
 
       els.modalTitle.textContent = displayTitle(product);
-      els.modalMeta.textContent = `${product.category || ''} • ${(product.platforms || []).join(', ') || '—'}`;
+      els.modalMeta.textContent = `${product._make || product.category || ''} • ${(product._displayPlatforms || product.platforms || []).map(displayPlatformLabel).join(', ') || '—'}`;
 
       function renderModalView(){
         const currentProduct = getProductById(state.currentModal.id);
@@ -1880,7 +1956,7 @@
         els.modalCompare.textContent = currentVariant?.compareAtPrice ? money(currentVariant.compareAtPrice) : '';
         els.modalDescription.innerHTML = currentProduct.descriptionHtml || '<p>—</p>';
         els.modalPlatforms.innerHTML = (currentProduct.platforms || []).map(p => `<span class="tag">${escapeHtml(p)}</span>`).join('');
-        els.modalSkuLine.innerHTML = ''; // SKU hidden for customer-facing view
+        els.modalSkuLine.innerHTML = ''; //  hidden for customer-facing view
         els.modalFavBtn.classList.toggle('active', state.favorites.includes(currentProduct.id));
       }
 
@@ -2083,8 +2159,12 @@
         });
       });
 
-      ['searchInput','categoryFilter','platformFilter','sortSelect','stockFilter'].forEach(id => {
+      ['searchInput','platformFilter','sortSelect','stockFilter'].forEach(id => {
         els[id].addEventListener(id === 'searchInput' ? 'input' : 'change', applyFilters);
+      });
+      els.categoryFilter.addEventListener('change', () => {
+        renderFilters();
+        applyFilters();
       });
 
       els.resetFiltersBtn.addEventListener('click', () => {
@@ -2109,7 +2189,6 @@
       els.listViewBtn.addEventListener('click', () => { state.view='list'; saveState(); renderProducts(); });
 
       els.cartOpenBtn.addEventListener('click', openCart);
-      els.openCartHeroBtn.addEventListener('click', openCart);
       els.footerCartBtn.addEventListener('click', openCart);
       els.checkoutBtn.addEventListener('click', doCheckout);
       els.clearCartBtn.addEventListener('click', () => {
@@ -2135,9 +2214,6 @@
         toggleFavorite(state.currentModal.id);
       });
 
-      els.jumpFeaturedBtn.addEventListener('click', () => {
-        document.getElementById('featured').scrollIntoView({behavior:'smooth'});
-      });
 
       els.favoritesOpenBtn.addEventListener('click', () => {
         state.favoritesOnly = true;
@@ -2163,6 +2239,7 @@
 
     async function init(){
       bindEvents();
+      const started = Date.now();
       try{
         await loadData();
         renderFilters();
@@ -2174,6 +2251,11 @@
         console.error(err);
         els.productsGrid.innerHTML = `<div class="empty-state">Failed to load cybul.json</div>`;
         showToast('Data error', 'Could not load cybul.json');
+      }finally{
+        const remaining = Math.max(0, 2000 - (Date.now() - started));
+        setTimeout(() => {
+          document.getElementById('loadingScreen')?.classList.add('hidden');
+        }, remaining);
       }
     }
 
