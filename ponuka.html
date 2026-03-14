@@ -2078,6 +2078,108 @@ max-height:110px;
 }
 
 }
+
+/* ===== FINAL HERO / CARD / RECOMMENDED FIXES ===== */
+.heroInner--single{
+  display:flex!important;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:136px;
+  padding:26px 24px!important;
+}
+.heroText--wide{max-width:none!important;width:100%}
+.heroTitle--singleLine{
+  margin:0!important;
+  font-family:Oswald,sans-serif!important;
+  text-transform:uppercase!important;
+  letter-spacing:.10em!important;
+  font-size:clamp(34px,4vw,64px)!important;
+  line-height:1!important;
+  white-space:nowrap;
+}
+.heroSub,.heroLogo{display:none!important}
+.hero{overflow:hidden}
+.recommendedSection{padding:18px 18px 16px!important}
+.sectionTitle{font-size:clamp(24px,2.4vw,34px)!important}
+.recommendedGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important}
+.recoCard{
+  padding:10px!important;
+  border-radius:18px!important;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.recoCard:hover{
+  transform:translateY(-3px);
+  border-color:rgba(179,31,36,.42)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.34),0 0 0 1px rgba(179,31,36,.16)!important;
+}
+.recoMedia{height:150px!important}
+.recoMedia img{padding:8px!important}
+.recoTitle{
+  font-size:16px!important;
+  line-height:1.08!important;
+  cursor:pointer;
+  min-height:52px;
+}
+.recoMeta{
+  font-size:11.5px!important;
+  min-height:34px!important;
+  -webkit-line-clamp:2!important;
+}
+.recoBottom{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:10px!important;
+  align-items:stretch!important;
+}
+.recoActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.recoActions .btn{width:100%;min-width:0;padding:11px 10px!important}
+.card{
+  min-height:382px!important;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease!important;
+}
+.card:hover{
+  transform:translateY(-4px)!important;
+  border-color:rgba(179,31,36,.46)!important;
+  box-shadow:0 22px 56px rgba(0,0,0,.42),0 0 0 1px rgba(179,31,36,.18)!important;
+}
+.card:hover .thumbImg{transform:scale(1.04);filter:brightness(1.18) saturate(1.1) contrast(1.04) drop-shadow(0 18px 36px rgba(0,0,0,.30))}
+.thumb{cursor:pointer!important}
+.title{cursor:pointer}
+.bottomRow--compact{
+  align-items:end!important;
+  gap:12px!important;
+}
+.priceBlock{min-width:0}
+.cardActions--inline{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  width:100%!important;
+  flex:1 1 auto;
+}
+.cardActions--inline .btn{
+  min-width:0!important;
+  width:100%!important;
+  white-space:nowrap;
+  padding:12px 10px!important;
+}
+@media (max-width:1100px){
+  .heroTitle--singleLine{white-space:normal}
+}
+@media (max-width:900px){
+  .recommendedGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .bottomRow--compact{grid-template-columns:1fr;display:grid!important}
+}
+@media (max-width:620px){
+  .recommendedGrid{grid-template-columns:1fr!important}
+  .heroInner--single{min-height:112px;padding:22px 18px!important}
+  .heroTitle--singleLine{font-size:clamp(28px,9vw,42px)!important;white-space:normal}
+}
+
 </style>
 </head>
 
@@ -2135,27 +2237,11 @@ max-height:110px;
     </div>
 
    <section class="hero">
-
-<div class="heroInner">
-
-<div class="heroText">
-
-<h1 class="heroTitle">
-CELÁ <span class="racemRed">PONUKA</span> NA JEDNOM MIESTE
-</h1>
-
-<p class="heroSub">
-Vyber si diely rýchlo, filtruj podľa auta, ceny alebo kategórie a otvor produkt bez zbytočného balastu.
-</p>
-
-</div>
-
-<div class="heroLogo">
-<img src="assets/cybul.png" alt="CYBUL">
-</div>
-
-</div>
-
+  <div class="heroInner heroInner--single">
+    <div class="heroText heroText--wide">
+      <h1 class="heroTitle heroTitle--singleLine">CELÁ <span class="racemRed">PONUKA</span> NA JEDNOM MIESTE</h1>
+    </div>
+  </div>
 </section>
 
     <section class="heroStats" aria-label="Catalog statistics">
@@ -2667,8 +2753,8 @@ function renderCards(list){
     const stockLabel = p.stock==='in_stock' ? t('inStock') : t('madeToOrder');
     const hasCheckout = !!String(p.defaultVariantId||'').trim();
     const hasShopLink = !!String(p.productUrl||'').trim();
-    const secondaryLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('moreBtn'));
-    const secondaryClass = hasCheckout ? 'btn btn--red' : 'btn btn--ghost';
+    const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
+    const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
     card.innerHTML=`
       <div class="thumb" data-open-detail="${escapeHtml(p.id)}">
         ${thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">` : ''}
@@ -2677,14 +2763,14 @@ function renderCards(list){
       </div>
       <div class="cardBody">
         <div class="cardTopline"><div class="feedBadge">${escapeHtml(translateCategory(p.category)||p.category||t('universal'))}</div></div>
-        <h3 class="title">${escapeHtml(productTitle(p))}</h3>
+        <h3 class="title" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(productTitle(p))}</h3>
         <p class="sub">${escapeHtml(productDesc(p))}</p>
         <div class="platformRow">${platformHtml}</div>
-        <div class="bottomRow">
-          <div><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
-          <div class="cardActions">
-            <button class="btn" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
-            <button class="${secondaryClass}" type="button" data-card-action="${hasCheckout?'cart':(hasShopLink?'shop':'detail')}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(secondaryLabel)}</button>
+        <div class="bottomRow bottomRow--compact">
+          <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
+          <div class="cardActions cardActions--inline">
+            <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
+            <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
           </div>
         </div>
       </div>`;
@@ -2699,9 +2785,21 @@ function renderRecommended(){
     const card=document.createElement('article');
     card.className='recoCard';
     const img=(p.images&&p.images[0])?p.images[0]:'';
-    const action = String(p.defaultVariantId||'').trim() ? 'cart' : (String(p.productUrl||'').trim() ? 'shop' : 'detail');
-    const actionLabel = action==='cart' ? t('addCartBtn') : (action==='shop' ? t('openShopBtn') : t('detailBtn'));
-    card.innerHTML=`<div class="recoMedia" data-open-detail="${escapeHtml(p.id)}">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div><h3 class="recoTitle">${escapeHtml(productTitle(p))}</h3><div class="recoMeta">${escapeHtml(productDesc(p))}</div><div class="recoBottom"><div><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div><button class="btn btn--red" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button></div>`;
+    const hasCheckout = !!String(p.defaultVariantId||'').trim();
+    const hasShopLink = !!String(p.productUrl||'').trim();
+    const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
+    const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
+    card.innerHTML=`
+      <div class="recoMedia" data-open-detail="${escapeHtml(p.id)}">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div>
+      <h3 class="recoTitle" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(productTitle(p))}</h3>
+      <div class="recoMeta">${escapeHtml(productDesc(p))}</div>
+      <div class="recoBottom">
+        <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
+        <div class="recoActions">
+          <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
+          <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
+        </div>
+      </div>`;
     el.recommendedGrid.appendChild(card);
   });
 }
@@ -2794,8 +2892,6 @@ function bindEvents(){
   el.onlyDeals.addEventListener('click',()=>{ state.onlyTop=!state.onlyTop; el.onlyDeals.classList.toggle('btn--red', state.onlyTop); renderAll(); });
   document.querySelectorAll('.langBtn').forEach(btn=>btn.addEventListener('click',()=>{ state.lang=btn.dataset.lang; localStorage.setItem('racem_catalog_lang', state.lang); renderAll(); }));
   document.addEventListener('click',(e)=>{
-    const detail=e.target.closest('[data-open-detail]'); if(detail){ e.preventDefault(); e.stopPropagation(); openModal(detail.getAttribute('data-open-detail')); return; }
-    const buy=e.target.closest('[data-quick-buy]'); if(buy){ e.preventDefault(); e.stopPropagation(); quickBuyByProductId(buy.getAttribute('data-quick-buy')); return; }
     const actionBtn=e.target.closest('[data-card-action]');
     if(actionBtn){
       e.preventDefault(); e.stopPropagation();
@@ -2810,7 +2906,10 @@ function bindEvents(){
       }
       if(action==='shop' && product.productUrl){ window.open(product.productUrl,'_blank','noopener'); return; }
       openModal(id);
+      return;
     }
+    const buy=e.target.closest('[data-quick-buy]'); if(buy){ e.preventDefault(); e.stopPropagation(); quickBuyByProductId(buy.getAttribute('data-quick-buy')); return; }
+    const detail=e.target.closest('[data-open-detail]'); if(detail){ e.preventDefault(); e.stopPropagation(); openModal(detail.getAttribute('data-open-detail')); return; }
   });
 }
 
