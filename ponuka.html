@@ -2967,7 +2967,27 @@ function bindEvents(){
   });
 }
 
-const m = { overlay:document.getElementById('modalOverlay'), close:document.getElementById('mClose'), title:document.getElementById('mTitle'), sub:document.getElementById('mSub'), cat:document.getElementById('mCat'), man:document.getElementById('mMan'), price:document.getElementById('mPrice'), stock:document.getElementById('mStock'), fitment:document.getElementById('mFitment'), mount:document.getElementById('mMount'), material:document.getElementById('mMaterial'), link:document.getElementById('mLink'), main:document.getElementById('mMain'), variants:document.getElementById('mVariants'), note:document.getElementById('mVariantNote'), buy:document.getElementById('mBuy'), addCart:document.getElementById('mAddCart') };
+const m = {
+  overlay:document.getElementById('modalOverlay'),
+  close:document.getElementById('mClose'),
+  title:document.getElementById('mTitle'),
+  sub:document.getElementById('mSub'),
+  cat:document.getElementById('mCat'),
+  man:document.getElementById('mMan'),
+  price:document.getElementById('mPrice'),
+  stock:document.getElementById('mStock'),
+  fitment:document.getElementById('mFitment'),
+  mount:document.getElementById('mMount'),
+  material:document.getElementById('mMaterial'),
+  main:document.getElementById('mMain'),
+  variants:document.getElementById('mVariants'),
+  note:document.getElementById('mVariantNote'),
+  buy:document.getElementById('mBuy'),
+  addCart:document.getElementById('mAddCart'),
+  type:document.getElementById('mType'),
+  desc:document.getElementById('mDesc')
+};
+  
 let activeProduct=null; let activeVariant=null;
 function fillModalImages(images, title){ m.main.innerHTML = (images||[]).map(src=>`<img src="${escapeHtml(src)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async">`).join('') || `<div class="note">—</div>`; }
 function syncVariantUI(){ m.variants.querySelectorAll('.vOpt').forEach(btn=>btn.classList.toggle('active', btn.dataset.variantId===String(activeVariant?.variantId||''))); }
@@ -3008,7 +3028,17 @@ function setActiveVariant(v){
 }
 function openModal(id){
   const raw=PRODUCT_BY_ID.get(id); if(!raw) return; activeProduct=raw;
-  m.title.textContent=productTitle(raw); m.sub.textContent=productDesc(raw); m.cat.textContent=translateCategory(raw.category||''); m.man.textContent=raw.manufacturer || 'RACEM'; m.stock.textContent = getDisplayStock((raw.variants||[])[0]?.price) === 'in_stock' ? t('inStock') : t('madeToOrder'); m.fitment.textContent=formatFitment(raw); m.mount.textContent=formatPlacement(raw); m.material.textContent=formatMaterial(raw); m.link.innerHTML = raw.productUrl ? `<a href="${escapeHtml(raw.productUrl)}" target="_blank" rel="noopener">${escapeHtml(raw.productUrl)}</a>` : '—';
+  m.title.textContent = productTitle(raw);
+m.sub.textContent = productDesc(raw);
+m.cat.textContent = translateCategory(raw.category || '');
+m.man.textContent = raw.manufacturer || 'RACEM';
+m.stock.textContent = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? t('inStock') : t('madeToOrder');
+m.fitment.textContent = formatFitment(raw);
+m.mount.textContent = formatPlacement(raw);
+m.material.textContent = formatMaterial(raw);
+
+if (m.type) m.type.textContent = translateCategory(raw.category || '') || '—';
+if (m.desc) m.desc.innerHTML = raw.descriptionHtml || raw.description || '—';
   const images=uniq([...(raw.images||[]), ...(raw.variants||[]).flatMap(v=>Array.isArray(v.images)?v.images:[])]); fillModalImages(images, productTitle(raw));
   const meaningful=getMeaningfulVariants(raw.variants||[]);
   const vars = meaningful.length ? meaningful : ((raw.variants||[]).length ? (raw.variants||[]) : [{title:productTitle(raw),price:raw.price||0,variantId:raw.defaultVariantId||'',images:raw.images||[]}]);
