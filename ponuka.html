@@ -2180,6 +2180,11 @@ max-height:110px;
   .heroTitle--singleLine{font-size:clamp(28px,9vw,42px)!important;white-space:normal}
 }
 
+
+.thumb[data-open-detail], .title[data-open-detail], .recoMedia[data-open-detail], .recoTitle[data-open-detail]{cursor:pointer;}
+.thumb[data-open-detail]:hover .thumbImg, .recoMedia[data-open-detail]:hover img{transform:scale(1.03); transition:transform .22s ease;}
+.btn.btn--ghost{white-space:nowrap;}
+
 </style>
 </head>
 
@@ -2756,20 +2761,20 @@ function renderCards(list){
     const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
     const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
     card.innerHTML=`
-      <div class="thumb" data-open-detail="${escapeHtml(p.id)}">
+      <div class="thumb" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">
         ${thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">` : ''}
         <div class="thumbShade"></div>
         <div class="badgeRow"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="badge">${escapeHtml(stockLabel)}</span></div></div>
       </div>
       <div class="cardBody">
         <div class="cardTopline"><div class="feedBadge">${escapeHtml(translateCategory(p.category)||p.category||t('universal'))}</div></div>
-        <h3 class="title" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(productTitle(p))}</h3>
+        <h3 class="title" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(productTitle(p))}</h3>
         <p class="sub">${escapeHtml(productDesc(p))}</p>
         <div class="platformRow">${platformHtml}</div>
         <div class="bottomRow bottomRow--compact">
           <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
           <div class="cardActions cardActions--inline">
-            <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
+            <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(t('detailBtn'))}</button>
             <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
           </div>
         </div>
@@ -2790,13 +2795,13 @@ function renderRecommended(){
     const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
     const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
     card.innerHTML=`
-      <div class="recoMedia" data-open-detail="${escapeHtml(p.id)}">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div>
-      <h3 class="recoTitle" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(productTitle(p))}</h3>
+      <div class="recoMedia" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div>
+      <h3 class="recoTitle" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(productTitle(p))}</h3>
       <div class="recoMeta">${escapeHtml(productDesc(p))}</div>
       <div class="recoBottom">
         <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
         <div class="recoActions">
-          <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
+          <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(t('detailBtn'))}</button>
           <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
         </div>
       </div>`;
@@ -2860,6 +2865,15 @@ function renderMeta(list){
   if(state.maxPrice!==null && state.maxPrice!=='') parts.push(`${t('metaMax')}: ${state.maxPrice}€`);
   el.activeFilters.textContent = parts.length ? parts.join(' • ') : t('metaFiltersNone');
   el.metaText.textContent = `${shownCount} / ${totalCount} • ${t('loadedFeeds')}: ${uniq(PRODUCTS.map(p=>p.source)).join(', ')}`;
+}
+
+function openProductDetail(id){
+  try{
+    if(!id) return;
+    openModal(String(id));
+  }catch(err){
+    console.error('DETAIL OPEN ERROR', err, id);
+  }
 }
 
 function applyTranslations(){
