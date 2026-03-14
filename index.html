@@ -1129,6 +1129,51 @@
     }
     .pill--catalog:active{ transform: scale(0.98); }
 
+
+
+    /* ===== LANGUAGE SWITCH ===== */
+    .nav-wrap-rel{ position:relative; }
+    .lang-switch{
+      position:absolute;
+      right:0;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      z-index:130;
+      padding:4px;
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:999px;
+      background:rgba(10,10,10,0.68);
+      box-shadow:0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+    }
+    .lang-btn{
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:rgba(255,255,255,0.72);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:background .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .lang-btn:hover{
+      color:#fff;
+      background:rgba(255,255,255,0.06);
+    }
+    .lang-btn.is-active{
+      color:#fff;
+      background:linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.72));
+      box-shadow:0 10px 24px rgba(179,31,36,0.22);
+    }
+    .lang-sep{ color:rgba(255,255,255,0.28); font-size:11px; font-weight:700; }
+
     /* jemná optimalizácia pre tých čo nechcú animácie */
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; }
@@ -1170,8 +1215,15 @@
         max-width: 100%;
         flex-direction: column;
         gap: 16px;
-        padding: 14px 0;
+        padding: 26px 0 14px;
       }
+
+      .lang-switch{
+        right: 50%;
+        top: -8px;
+        transform: translateX(50%);
+      }
+
       .nav-links{
         gap: 18px;
         flex-wrap: wrap;
@@ -3519,7 +3571,13 @@ html, body{
 
 
   <div class="topbar">
-    <div class="wrap nav nav-centered">
+    <div class="wrap nav nav-centered nav-wrap-rel">
+
+      <div class="lang-switch" aria-label="Language switcher">
+        <button class="lang-btn" type="button" data-lang="sk">SK</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" type="button" data-lang="en">EN</button>
+      </div>
 
       <nav class="nav-links">
         <a href="ponua.html">Naša ponuka</a>
@@ -3597,30 +3655,6 @@ html, body{
     </div>
   </section>
 
-   <!-- VŠETKY PRODUKTY -->
-  <section id="vsetky-produkty">
-    <div class="wrap">
-      <div class="panel reveal products-teaser-panel">
-        <span class="pill">
-          <span class="dot"></span>
-          všetky produkty • performance • styling • motorsport
-        </span>
-
-        <h2 class="products-teaser-title">Všetky produkty</h2>
-
-        <p class="products-teaser-sub">
-          Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.
-        </p>
-
-        <div id="productsCarousel" class="products-carousel" aria-label="Výber produktov"></div>
-
-        <div class="products-teaser-cta">
-          <a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- BODYKITY / ZNAČKY (INDEX) -->
   <section id="bodykity">
     <div class="wrap">
@@ -3638,8 +3672,8 @@ html, body{
             </p>
           </div>
 
-          <a class="brands-cta" href="https://www.racem.sk/ponuka">
-            Zobraziť všetko
+          <a class="brands-cta" href="distribucia-kitov.html">
+            Objavuj RACEM Group
             <span class="ctaArrow">→</span>
           </a>
         </div>
@@ -3682,9 +3716,41 @@ html, body{
           </div>
         </div>
 
+    <!-- FULL WIDTH BUTTON (MENŠÍ) -->
+<div class="brands-ctaRow">
+  <a href="https://www.racem.sk/ponuka" class="brands-ctaFull">
+    ZOBRAZIŤ VŠETKO
+  </a>
+</div>
+
       </div>
     </div>
   </section>
+
+<section id="vsetky-produkty">
+    <div class="wrap">
+      <div class="panel reveal products-teaser-panel">
+        <span class="pill">
+          <span class="dot"></span>
+          všetky produkty • performance • styling • motorsport
+        </span>
+
+        <h2 class="products-teaser-title">Všetky produkty</h2>
+
+        <p class="products-teaser-sub">
+          Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.
+        </p>
+
+        <div id="productsCarousel" class="products-carousel" aria-label="Výber produktov"></div>
+
+        <div class="products-teaser-cta">
+          <a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
 
     <!-- KTO SME -->
   <section id="kto-sme">
@@ -3710,7 +3776,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
             Viac informácií o spolupráci ti pošleme po kontakte.
           </p>
 
-          <div class="ctaRow" style="margin-top:14px; gap:10px; flex-wrap:wrap;">
+          <div class="ctaRow" style="margin-top:14px;">
             <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
             <a class="btn btnPrimary btnArrow" href="distribucia-kitov.html">Objavuj RACEM Group <span class="arr">→</span></a>
           </div>
@@ -3745,6 +3811,8 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     </div>
   </section>
 
+   <!-- VŠETKY PRODUKTY -->
+  
 
 
   <!-- MOBILNÝ AUTOSERVIS -->
@@ -4651,6 +4719,205 @@ if (!canvas) {
 })();
 </script>
 
+
+
+<script>
+(function(){
+  const STORAGE_KEY = 'racem_lang';
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  const meta = {
+    title: document.querySelector('title'),
+    description: document.querySelector('meta[name="description"]'),
+    ogTitle: document.querySelector('meta[property="og:title"]'),
+    ogDescription: document.querySelector('meta[property="og:description"]'),
+    twitterTitle: document.querySelector('meta[name="twitter:title"]'),
+    twitterDescription: document.querySelector('meta[name="twitter:description"]')
+  };
+
+  const translations = {
+    sk: {
+      title: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity | REM Performance',
+      description: 'RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy.',
+      ogTitle: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity',
+      ogDescription: 'Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance.',
+      twitterTitle: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity',
+      twitterDescription: 'Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy.',
+      values: {
+        '#shipbarText': 'Odosielame do CZ, PL, HU, AT a celej EÚ.',
+        '.nav-links a[href="ponua.html"]': 'Naša ponuka',
+        '.nav-links a[href="#bodykity"]': 'Body Kits',
+        '.nav-links a[href="mobilny-autoservis.html"]': 'Mobilný autoservis',
+        '.nav-links a.nav-stars': 'Hviezdne stropy',
+        '.nav-remx-label': 'REM Performance',
+        '.nav-remx-sub': 'division',
+        '.sr-only': 'RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.',
+        '.heroServices .hsItem:nth-child(1) .hsTitle': 'Turbokits & Kompresorkits',
+        '.heroServices .hsItem:nth-child(1) .hsSub': 'Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov',
+        '.heroServices .hsItem:nth-child(2) .hsTitle': 'BODYKITS & AERO',
+        '.heroServices .hsItem:nth-child(2) .hsSub': 'Najväčší autorizovaný predajca bodykitov na Slovensku',
+        '.heroServices .hsItem:nth-child(3) .hsTitle': 'Naše služby',
+        '.heroServices .hsItem:nth-child(3) .hsSub': 'Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla',
+        '.heroServices .hsItem:nth-child(4) .hsTitle': 'Performance a športové diely',
+        '.heroServices .hsItem:nth-child(4) .hsSub': 'Široká ponuka dielov a doplnkov pre vaše autá',
+        '#bodykity .pill': '<span class="dot"></span> widebody • stance • drift • performance',
+        '.brands-title': 'Všetko pre tvoj projekt',
+        '.brands-head p': 'Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.',
+        '.brands-head .brands-cta': 'Objavuj RACEM Group <span class="ctaArrow">→</span>',
+        '.brands-ctaFull': 'ZOBRAZIŤ VŠETKO',
+        '#vsetky-produkty .pill': '<span class="dot"></span> všetky produkty • performance • styling • motorsport',
+        '.products-teaser-title': 'Všetky produkty',
+        '.products-teaser-sub': 'Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.',
+        '.products-teaser-cta a': 'Celá ponuka <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .pill': '<span class="dot"></span> racem group • komunita',
+        '#kto-sme .panel:first-child h2': 'Staň sa súčasťou RACEM Group',
+        '#kto-sme .panel:first-child p:nth-of-type(1)': 'Ak chceš <b>zľavy na bodykity, aero a vybrané diely</b>, môžeš sa stať súčasťou <b>RACEM Group</b>.',
+        '#kto-sme .panel:first-child p:nth-of-type(2)': 'Si tím, jazdec, garáž alebo organizátor zrazov?<br>Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, športové aj vybrané náhradné autodiely.',
+        '#kto-sme .panel:first-child p:nth-of-type(3)': 'Ak sa chceš stať súčasťou RACEM Group napíš nám: <b>„RACEM Group – členstvo“</b>. Viac informácií o spolupráci ti pošleme po kontakte.',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(1)': 'Kontakt <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(2)': 'Objavuj RACEM Group <span class="arr">→</span>',
+        '#kto-sme .panel:nth-child(2) .pill': '<span class="dot"></span> turbo kity • kompresor kity',
+        '#kto-sme .panel:nth-child(2) h2': 'Turbo &amp; kompresor kity',
+        '.construction-tape': 'Pripravujeme pre Vás',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(1)': 'Výkonné turbodúchadlá a kompresory pre váš motor. Od jednoduchých stage kitov až po plne custom riešenia pre maximálny boost.',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(2)': '• Kompletné kity vrátane intercoolerov, wastegate, blow-off<br>• Kompatibilita s VW, BMW, Audi, Mercedes, Porsche a ďalšími<br>• Montáž + ECU remap na mieste alebo v dielni<br>',
+        '#kto-sme .panel:nth-child(2) .ctaRow a': 'Kontakt <span class="arr">→</span>',
+        '#modalInterestBtn': 'Mám záujem o tento diel',
+        '#modalCloseBtn': 'Zavrieť',
+        '.footer-layout > div:first-child': 'Prevádzkovateľ webu – <a href="https://www.racem.sk/remperformance" class="footer-brand"><span class="red"><b>REM Performance</b></span></a>',
+        '.footer-layout > div:last-child': 'Performance diely • bodykity • aero • turbo kity • mobilný autoservis',
+        '.footer-links a[href="#kontakt"]': 'Kontakt',
+        '.footer-links a[href="#podmienky"]': 'Obchodné podmienky',
+        '.cookieText': 'Používame <b>cookies / úložisko</b> na správne fungovanie stránky a základnú analytiku. <a href="vop.html#cookies">Viac info</a>.',
+        '#cookieAccept': 'Akceptovať'
+      },
+      attrs: {
+        '#shipbarClose': { 'aria-label': 'Zavrieť' },
+        '.hero-logo-link': { 'aria-label': 'Kontakt' },
+        '.modal-close': { 'aria-label': 'Zavrieť náhľad' },
+        '.modal-prev': { 'aria-label': 'Predchádzajúci obrázok' },
+        '.modal-next': { 'aria-label': 'Nasledujúci obrázok' },
+        '#cookieBar': { 'aria-label': 'Cookies' },
+        '.lang-switch': { 'aria-label': 'Prepínač jazyka' }
+      }
+    },
+    en: {
+      title: 'RACEM | Body kits, certified aero, turbo & supercharger kits | REM Performance',
+      description: 'RACEM (REM Performance) – body kits and widebody, certified aero (TÜV), sport and racing parts, engine and chassis components, turbo/supercharger kits, starlight headliners and more.',
+      ogTitle: 'RACEM | Body kits, certified aero, turbo & supercharger kits',
+      ogDescription: 'Body kits, certified aero (TÜV), sport and racing parts, engine & chassis, turbo/supercharger kits, starlight headliners. RACEM – REM Performance.',
+      twitterTitle: 'RACEM | Body kits, certified aero, turbo & supercharger kits',
+      twitterDescription: 'Body kits, certified aero (TÜV), sport and racing parts, engine & chassis, turbo/supercharger kits, starlight headliners.',
+      values: {
+        '#shipbarText': 'We ship to CZ, PL, HU, AT and all across the EU.',
+        '.nav-links a[href="ponua.html"]': 'Our offer',
+        '.nav-links a[href="#bodykity"]': 'Body Kits',
+        '.nav-links a[href="mobilny-autoservis.html"]': 'Mobile workshop',
+        '.nav-links a.nav-stars': 'Starlight headliners',
+        '.nav-remx-label': 'REM Performance',
+        '.nav-remx-sub': 'division',
+        '.sr-only': 'RACEM – performance parts, body kits, aero parts, turbo kits, supercharger kits.',
+        '.heroServices .hsItem:nth-child(1) .hsTitle': 'Turbo kits & Supercharger kits',
+        '.heroServices .hsItem:nth-child(1) .hsSub': 'We are preparing an exclusive plug-and-play range of turbo and supercharger kits for you',
+        '.heroServices .hsItem:nth-child(2) .hsTitle': 'BODY KITS & AERO',
+        '.heroServices .hsItem:nth-child(2) .hsSub': 'The largest authorized body kit seller in Slovakia',
+        '.heroServices .hsItem:nth-child(3) .hsTitle': 'Our services',
+        '.heroServices .hsItem:nth-child(3) .hsSub': 'Aero and body kit installation • diagnostics • professional installation reports • registration of accessories and modifications affecting vehicle technical parameters',
+        '.heroServices .hsItem:nth-child(4) .hsTitle': 'Performance & sport parts',
+        '.heroServices .hsItem:nth-child(4) .hsSub': 'A wide range of parts and accessories for your cars',
+        '#bodykity .pill': '<span class="dot"></span> widebody • stance • drift • performance',
+        '.brands-title': 'Everything for your project',
+        '.brands-head p': 'We are authorized dealers of these global brands and source them for you individually.',
+        '.brands-head .brands-cta': 'Discover RACEM Group <span class="ctaArrow">→</span>',
+        '.brands-ctaFull': 'VIEW ALL',
+        '#vsetky-produkty .pill': '<span class="dot"></span> all products • performance • styling • motorsport',
+        '.products-teaser-title': 'All products',
+        '.products-teaser-sub': 'A selection of what you can find with us — from intercoolers and aero parts to lighting, gauges and other performance accessories.',
+        '.products-teaser-cta a': 'Full offer <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .pill': '<span class="dot"></span> racem group • community',
+        '#kto-sme .panel:first-child h2': 'Become part of RACEM Group',
+        '#kto-sme .panel:first-child p:nth-of-type(1)': 'If you want <b>better prices on body kits, aero and selected parts</b>, you can become part of <b>RACEM Group</b>.',
+        '#kto-sme .panel:first-child p:nth-of-type(2)': 'Are you a team, driver, garage or event organizer?<br>That is exactly who we can secure better pricing for on body kits, aero parts, sport parts and selected replacement parts.',
+        '#kto-sme .panel:first-child p:nth-of-type(3)': 'If you want to become part of RACEM Group, write to us: <b>“RACEM Group – membership”</b>. We will send you more information about cooperation after contact.',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(1)': 'Contact <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(2)': 'Discover RACEM Group <span class="arr">→</span>',
+        '#kto-sme .panel:nth-child(2) .pill': '<span class="dot"></span> turbo kits • supercharger kits',
+        '#kto-sme .panel:nth-child(2) h2': 'Turbo &amp; supercharger kits',
+        '.construction-tape': 'Coming soon',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(1)': 'High-performance turbochargers and superchargers for your engine. From simple stage kits to fully custom solutions for maximum boost.',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(2)': '• Complete kits including intercoolers, wastegate, blow-off<br>• Compatibility with VW, BMW, Audi, Mercedes, Porsche and more<br>• Installation + ECU remap on-site or in workshop<br>',
+        '#kto-sme .panel:nth-child(2) .ctaRow a': 'Contact <span class="arr">→</span>',
+        '#modalInterestBtn': 'I am interested in this part',
+        '#modalCloseBtn': 'Close',
+        '.footer-layout > div:first-child': 'Website operator – <a href="https://www.racem.sk/remperformance" class="footer-brand"><span class="red"><b>REM Performance</b></span></a>',
+        '.footer-layout > div:last-child': 'Performance parts • body kits • aero • turbo kits • mobile workshop',
+        '.footer-links a[href="#kontakt"]': 'Contact',
+        '.footer-links a[href="#podmienky"]': 'Terms & conditions',
+        '.cookieText': 'We use <b>cookies / storage</b> for correct site functionality and basic analytics. <a href="vop.html#cookies">More info</a>.',
+        '#cookieAccept': 'Accept'
+      },
+      attrs: {
+        '#shipbarClose': { 'aria-label': 'Close' },
+        '.hero-logo-link': { 'aria-label': 'Contact' },
+        '.modal-close': { 'aria-label': 'Close preview' },
+        '.modal-prev': { 'aria-label': 'Previous image' },
+        '.modal-next': { 'aria-label': 'Next image' },
+        '#cookieBar': { 'aria-label': 'Cookies' },
+        '.lang-switch': { 'aria-label': 'Language switcher' }
+      }
+    }
+  };
+
+  function setContent(selector, value){
+    const el = $(selector);
+    if (!el) return;
+    el.innerHTML = value;
+  }
+
+  function setAttrs(selector, attrs){
+    const el = $(selector);
+    if (!el) return;
+    Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k,v));
+  }
+
+  function detectAutoLang(){
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'sk' || saved === 'en') return saved;
+    const navLangs = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    const joined = navLangs.join(',').toLowerCase();
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+    const isSkOrCs = joined.includes('sk') || joined.includes('cs');
+    const isSkOrCzTz = tz.includes('bratislava') || tz.includes('prague');
+    return (isSkOrCs || isSkOrCzTz) ? 'sk' : 'en';
+  }
+
+  function applyLanguage(lang, persist = false){
+    const pack = translations[lang] || translations.sk;
+    document.documentElement.lang = lang === 'en' ? 'en' : 'sk';
+
+    if (meta.title) document.title = pack.title;
+    if (meta.description) meta.description.setAttribute('content', pack.description);
+    if (meta.ogTitle) meta.ogTitle.setAttribute('content', pack.ogTitle);
+    if (meta.ogDescription) meta.ogDescription.setAttribute('content', pack.ogDescription);
+    if (meta.twitterTitle) meta.twitterTitle.setAttribute('content', pack.twitterTitle);
+    if (meta.twitterDescription) meta.twitterDescription.setAttribute('content', pack.twitterDescription);
+
+    Object.entries(pack.values).forEach(([selector, value]) => setContent(selector, value));
+    Object.entries(pack.attrs).forEach(([selector, attrs]) => setAttrs(selector, attrs));
+
+    $$('.lang-btn').forEach(btn => btn.classList.toggle('is-active', btn.dataset.lang === lang));
+    if (persist) localStorage.setItem(STORAGE_KEY, lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    applyLanguage(detectAutoLang(), false);
+    $$('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang, true));
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
