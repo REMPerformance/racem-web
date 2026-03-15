@@ -85,13 +85,14 @@
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x:hidden;
-    }
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x:hidden;
+  padding-top: 96px;
+}
 
     /* ✅ SR-ONLY (SEO text, neviditeľné pre ľudí) */
     .sr-only{
@@ -220,25 +221,32 @@
     }
 
     /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
-    .topbar{
-  position: sticky;
-  top: var(--stickyOffset, 0px); 
-  z-index: 100;
+.topbar{
+  position: fixed;
+  top: var(--stickyOffset, 0px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
   backdrop-filter: blur(12px);
-  background: rgba(10,10,10,0.62);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,10,10,0.82);
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-    .nav{ padding:0; }
+.nav{
+  width: 100%;
+}
 
-    .nav-centered{
+.nav-centered{
+  width: 100%;
   max-width: 980px;
   margin: 0 auto;
   padding: 16px 0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap: 0;              
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
 }
 
 .nav-links{ 
@@ -3553,7 +3561,17 @@ html, body{
     margin: 18px auto 0 !important;
   }
 }
+@media (max-width: 980px){
+  body{
+    padding-top: 118px;
+  }
+}
 
+@media (max-width: 560px){
+  body{
+    padding-top: 126px;
+  }
+}
 </style>
 </head>
 
