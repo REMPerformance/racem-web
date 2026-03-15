@@ -2225,8 +2225,7 @@ max-height:110px;
       <div class="loadingRing">
         <img class="loadingLogo" src="assets/racem-logo.png" alt="RACEM" loading="eager" decoding="async">
       </div>
-      <h2 class="loadingTitle">RACEM</h2>
-      <p class="loadingSub" id="loadingText">Loading performance catalog</p>
+            <p class="loadingSub" id="loadingText">Loading performance catalog</p>
       <div class="loadingBars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
     </div>
   </div>
@@ -2299,7 +2298,7 @@ max-height:110px;
       <div class="stat-card">
         <div class="stat-label" data-i18n="statCheckoutStatus">Checkout status</div>
         <div class="stat-number" id="kpiShown">0</div>
-        <div class="stat-sub" id="kpiShownSub">Otvorený</div>
+        <div class="stat-sub" id="kpiShownSub">OPEN</div>
       </div>
     </section>
 
@@ -2902,7 +2901,7 @@ function renderMeta(list){
   if(el.kpiTopModelSub) el.kpiTopModelSub.textContent = topModel.count ? `${topModel.count.toLocaleString(locale)} ${t('productsWord')}` : `0 ${t('productsWord')}`;
 
   if(el.kpiShown) el.kpiShown.textContent = 'OPEN';
-  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Checkout otvorený' : 'Checkout active')}</span>`;
+  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Aktívny checkout' : 'Checkout active')}</span>`;
 
   const parts=[];
   if(state.onlyTop) parts.push(t('metaTop'));
@@ -2916,7 +2915,7 @@ function renderMeta(list){
   if(state.minPrice!==null && state.minPrice!=='') parts.push(`${t('metaMin')}: ${state.minPrice}€`);
   if(state.maxPrice!==null && state.maxPrice!=='') parts.push(`${t('metaMax')}: ${state.maxPrice}€`);
   el.activeFilters.textContent = parts.length ? parts.join(' • ') : t('metaFiltersNone');
-  el.metaText.textContent = `${shownCount} / ${totalCount} • ${t('loadedFeeds')}: ${uniq(PRODUCTS.map(p=>p.source)).join(', ')}`;
+  el.metaText.textContent = '';
 }
 
 function openProductDetail(id){
