@@ -2328,6 +2328,81 @@ max-height:110px;
     .galleryMain img{max-height:420px;}
   }
 
+
+  /* ===== UX cleanup v4 ===== */
+  .gallery{
+    padding:0 !important;
+    border:none !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+  .galleryMain{
+    padding:0 !important;
+    border:none !important;
+    background:transparent !important;
+    min-height:0 !important;
+  }
+  .galleryMain img{
+    width:100%;
+    max-height:560px;
+    object-fit:contain;
+    padding:0 !important;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.08);
+    background:#090909;
+  }
+  .panelBox::before,
+  .panelBox::after,
+  #mDesc::before{display:none !important;}
+  #mStock.badge{
+    padding:9px 14px;
+    border-radius:14px;
+    font-weight:700;
+    letter-spacing:.12em;
+    box-shadow:0 12px 28px rgba(0,0,0,.24);
+  }
+  #mStock.badge--stock{
+    border-color:rgba(46,229,138,.34);
+    background:rgba(46,229,138,.10);
+    color:#7effb4;
+  }
+  #mStock.badge--order{
+    border-color:rgba(255,191,84,.34);
+    background:rgba(255,191,84,.10);
+    color:#ffd27a;
+  }
+  .card .badge{
+    padding:8px 12px;
+    border-radius:14px;
+    font-weight:700;
+    letter-spacing:.12em;
+  }
+  .card .badge--stock{
+    background:rgba(46,229,138,.10);
+    color:#7effb4;
+    border-color:rgba(46,229,138,.34);
+  }
+  .card .badge--order{
+    background:rgba(255,191,84,.10);
+    color:#ffd27a;
+    border-color:rgba(255,191,84,.34);
+  }
+  .priceBlock{min-width:0;display:flex;flex-direction:column;gap:4px;}
+  .card .price{
+    font-size:clamp(22px, 2vw, 34px) !important;
+    line-height:.94;
+    white-space:nowrap;
+    letter-spacing:.03em;
+  }
+  .bottomRow--compact{align-items:end;gap:10px;}
+  .cardActions{min-width:170px;}
+  .loadMoreWrap{
+    display:flex;
+    justify-content:center;
+    margin-top:16px;
+  }
+  #loadMoreBtn{min-width:220px;}
+
 </style>
 </head>
 
@@ -2528,6 +2603,7 @@ max-height:110px;
 
     <section aria-label="Výpis produktov">
       <div class="grid" id="grid"></div>
+      <div class="loadMoreWrap"><button class="btn" id="loadMoreBtn" type="button">Načítať ďalšie</button></div>
       <div class="empty" id="empty" style="display:none;">
         Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.
       </div>
@@ -2677,7 +2753,8 @@ const state = {
   variantMode: '',
   checkoutReady: '',
   sort: 'relevance',
-  onlyTop: false
+  onlyTop: false,
+  visibleCount: 20
 };
 
 const i18n = {
@@ -2691,7 +2768,7 @@ const i18n = {
     heroBullet1Title:'Multi-feed', heroBullet1Text:'Načíta swagier.json, cybul.json, products.json a sfxla-products.json do jedného filtrovaného katalógu.',
     heroBullet2Title:'Pokročilé filtre', heroBullet2Text:'Hľadanie podľa platformy, tagu, výrobcu, kategórie, feedu, stavu skladu a cenového rozsahu.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Otvor detail, vyber validný variant, pridaj do košíka a skoč do Shopify košíka cez variant ID.',
-    statShown:'Zobrazené', statCheckoutStatus:'Checkout status', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
+    statShown:'Zobrazené', statCheckoutStatus:'Checkout otvorený', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
     searchLabel:'Vyhľadať', brandLabel:'Výrobca', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Dostupnosť', sortLabel:'Triedenie',
     minPriceLabel:'Min cena (€)', maxPriceLabel:'Max cena (€)', tagLabel:'Tag', pricePresetLabel:'Rýchly cenový filter', variantModeLabel:'Variant režim', checkoutReadyLabel:'Checkout stav',
     allOption:'Všetky', everythingOption:'Všetko', stockIn:'Skladom', stockOrder:'Na objednávku',
@@ -2706,7 +2783,7 @@ const i18n = {
     cartTitle:'Košík', cartItems:'Položky', cartSubtotal:'Suma', cartTotal:'Spolu', cartContinue:'Pokračovať v ponuke', cartCheckout:'Prejsť na checkout', cartClear:'Vyprázdniť', cartView:'Zobraziť košík',
     empty:'Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.',
     feedLabel:'Feed', checkoutMissing:'Tento variant nemá doplnené variantId, preto checkout nebude fungovať.',
-    cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam performance katalóg', productsWord:'produktov',
+    cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam performance katalóg', productsWord:'produktov', loadMoreBtn:'Načítať ďalšie',
     seoTitle:'RACEM | Ponuka performance dielov', seoDesc:'RACEM ponuka performance dielov. Kombinovaný katalóg CYBUL, SWAGIER, SFXLA a RACEM s pokročilým filtrovaním podľa platformy, značky, kategórie, ceny a dostupnosti.'
   },
   en: {
@@ -2719,7 +2796,7 @@ const i18n = {
     heroBullet1Title:'Multi-feed', heroBullet1Text:'Loads swagier.json, cybul.json, products.json and sfxla-products.json into one filtered catalog.',
     heroBullet2Title:'Advanced filtering', heroBullet2Text:'Search by platform, tag, manufacturer, category, feed, stock state and price range.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Open detail, pick a valid variant, add it to cart and jump to the Shopify cart with variant IDs.',
-    statShown:'Shown', statCheckoutStatus:'Checkout status', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
+    statShown:'Shown', statCheckoutStatus:'Checkout open', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
     searchLabel:'Search', brandLabel:'Brand', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Availability', sortLabel:'Sort',
     minPriceLabel:'Min price (€)', maxPriceLabel:'Max price (€)', tagLabel:'Tag', pricePresetLabel:'Price quick filter', variantModeLabel:'Variant mode', checkoutReadyLabel:'Checkout state',
     allOption:'All', everythingOption:'Everything', stockIn:'In stock', stockOrder:'Made to order',
@@ -2734,13 +2811,13 @@ const i18n = {
     cartTitle:'Cart', cartItems:'Items', cartSubtotal:'Subtotal', cartTotal:'Total', cartContinue:'Continue browsing', cartCheckout:'Go to checkout', cartClear:'Clear', cartView:'View cart',
     empty:'No products matched. Change the filters or search term.',
     feedLabel:'Feed', checkoutMissing:'This variant has no mapped variantId, so checkout will not work yet.',
-    cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading performance catalog', productsWord:'products',
+    cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading performance catalog', productsWord:'products', loadMoreBtn:'Load more',
     seoTitle:'RACEM | Performance Parts Catalog', seoDesc:'RACEM performance parts catalog. Combined CYBUL, SWAGIER, SFXLA and RACEM feeds with advanced filtering by platform, brand, category, price and availability.'
   }
 };
 
 const el = {
-  q: document.getElementById('q'), brand: document.getElementById('brand'), platform: document.getElementById('platform'), source: document.getElementById('source'), stock: document.getElementById('stock'), sort: document.getElementById('sort'), minPrice: document.getElementById('minPrice'), maxPrice: document.getElementById('maxPrice'), tagFilter: document.getElementById('tagFilter'), pricePreset: document.getElementById('pricePreset'), onlyWithVariants: document.getElementById('onlyWithVariants'), checkoutReady: document.getElementById('checkoutReady'), chips: document.getElementById('chips'), feedChips: document.getElementById('feedChips'), grid: document.getElementById('grid'), recommendedGrid: document.getElementById('recommendedGrid'), empty: document.getElementById('empty'), reset: document.getElementById('reset'), onlyDeals: document.getElementById('onlyDeals'), metaText: document.getElementById('metaText'), activeFilters: document.getElementById('activeFilters'), kpiShown: document.getElementById('kpiShown'), kpiShownSub: document.getElementById('kpiShownSub'), kpiTotal: document.getElementById('kpiTotal'), kpiPriceRange: document.getElementById('kpiPriceRange'), kpiTopModel: document.getElementById('kpiTopModel'), kpiTopModelSub: document.getElementById('kpiTopModelSub'), kpiCats: document.getElementById('kpiCats'), kpiBrands: document.getElementById('kpiBrands'), loadingOverlay: document.getElementById('loadingOverlay'), loadingText: document.getElementById('loadingText'), year: document.getElementById('year')
+  q: document.getElementById('q'), brand: document.getElementById('brand'), platform: document.getElementById('platform'), source: document.getElementById('source'), stock: document.getElementById('stock'), sort: document.getElementById('sort'), minPrice: document.getElementById('minPrice'), maxPrice: document.getElementById('maxPrice'), tagFilter: document.getElementById('tagFilter'), pricePreset: document.getElementById('pricePreset'), onlyWithVariants: document.getElementById('onlyWithVariants'), checkoutReady: document.getElementById('checkoutReady'), chips: document.getElementById('chips'), feedChips: document.getElementById('feedChips'), grid: document.getElementById('grid'), recommendedGrid: document.getElementById('recommendedGrid'), empty: document.getElementById('empty'), reset: document.getElementById('reset'), onlyDeals: document.getElementById('onlyDeals'), metaText: document.getElementById('metaText'), activeFilters: document.getElementById('activeFilters'), kpiShown: document.getElementById('kpiShown'), kpiShownSub: document.getElementById('kpiShownSub'), kpiTotal: document.getElementById('kpiTotal'), kpiPriceRange: document.getElementById('kpiPriceRange'), kpiTopModel: document.getElementById('kpiTopModel'), kpiTopModelSub: document.getElementById('kpiTopModelSub'), kpiCats: document.getElementById('kpiCats'), kpiBrands: document.getElementById('kpiBrands'), loadingOverlay: document.getElementById('loadingOverlay'), loadingText: document.getElementById('loadingText'), year: document.getElementById('year'), loadMoreBtn: document.getElementById('loadMoreBtn')
 };
 
 const norm = (s='') => String(s).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
@@ -2901,13 +2978,15 @@ function renderCards(list){
   el.grid.innerHTML='';
   el.empty.style.display=list.length?'none':'block';
   el.empty.textContent=t('empty');
-  list.forEach(p=>{
+  const visible=list.slice(0, state.visibleCount);
+  visible.forEach(p=>{
     const card=document.createElement('article');
     card.className='card';
     card.setAttribute('data-product-card', escapeHtml(p.id));
     const thumbUrl=(p.images&&p.images.length)?p.images[0]:'';
     const platformHtml=(p.platforms||[]).slice(0,3).map(x=>`<span class="platformChip">${escapeHtml(x)}</span>`).join('');
     const stockLabel = p.stock==='in_stock' ? t('inStock') : t('madeToOrder');
+    const stockClass = p.stock==='in_stock' ? 'badge badge--stock' : 'badge badge--order';
     const checkoutVariant=(p.variants||[]).find(v=>String(v?.variantId||'').trim()) || (String(p.defaultVariantId||'').trim()?{variantId:p.defaultVariantId,price:p.price||0,title:productTitle(p),images:p.images||[]}:null);
     const hasCheckout = !!checkoutVariant?.variantId;
     const hasShopLink = !!String(p.productUrl||'').trim();
@@ -2917,7 +2996,7 @@ function renderCards(list){
       <div class="thumb" data-open-detail="${escapeHtml(p.id)}" role="button" tabindex="0" aria-label="${escapeHtml(t('detailBtn'))}: ${escapeHtml(productTitle(p))}">
         ${thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">` : ''}
         <div class="thumbShade"></div>
-        <div class="badgeRow"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="badge">${escapeHtml(stockLabel)}</span></div></div>
+        <div class="badgeRow"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="${stockClass}">${escapeHtml(stockLabel)}</span></div></div>
       </div>
       <div class="cardBody">
         <div class="cardTopline"><div class="feedBadge">${escapeHtml(translateCategory(p.category)||p.category||t('universal'))}</div></div>
@@ -2944,6 +3023,10 @@ function renderCards(list){
     });
     el.grid.appendChild(card);
   });
+  if(el.loadMoreBtn){
+    el.loadMoreBtn.textContent = t('loadMoreBtn');
+    el.loadMoreBtn.style.display = list.length > visible.length ? '' : 'none';
+  }
 }
 function renderRecommended(){
   if(!el.recommendedGrid) return;
@@ -3011,8 +3094,8 @@ function renderMeta(list){
   if(el.kpiTopModel) el.kpiTopModel.textContent = topModel.model || '—';
   if(el.kpiTopModelSub) el.kpiTopModelSub.textContent = topModel.count ? `${topModel.count.toLocaleString(locale)} ${t('productsWord')}` : `0 ${t('productsWord')}`;
 
-  if(el.kpiShown) el.kpiShown.textContent = 'OPEN';
-  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Aktívny checkout' : 'Checkout active')}</span>`;
+  if(el.kpiShown) el.kpiShown.textContent = state.lang==='sk' ? 'Aktívny' : 'Open';
+  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Checkout otvorený' : 'Checkout open')}</span>`;
 
   const parts=[];
   if(state.onlyTop) parts.push(t('metaTop'));
@@ -3044,29 +3127,31 @@ function applyTranslations(){
   document.querySelectorAll('.langBtn').forEach(btn=>btn.classList.toggle('active', btn.dataset.lang===state.lang));
   if(document.getElementById('mVariantNote')) document.getElementById('mVariantNote').innerHTML = t('checkoutMissing');
   if(el.loadingText) el.loadingText.textContent = t('loadingText');
+  if(el.loadMoreBtn) el.loadMoreBtn.textContent = t('loadMoreBtn');
   applySeoForLang();
 }
 
 function bindEvents(){
-  el.q.addEventListener('input',()=>{state.q=el.q.value; renderAll();});
-  el.brand.addEventListener('change',()=>{state.brand=el.brand.value; renderAll();});
-  el.platform.addEventListener('change',()=>{state.platform=el.platform.value; renderAll();});
-  el.source.addEventListener('change',()=>{state.source=el.source.value; renderAll();});
-  el.stock.addEventListener('change',()=>{state.stock=el.stock.value; renderAll();});
-  el.sort.addEventListener('change',()=>{state.sort=el.sort.value; renderAll();});
-  el.minPrice.addEventListener('input',()=>{state.minPrice=el.minPrice.value; renderAll();});
-  el.maxPrice.addEventListener('input',()=>{state.maxPrice=el.maxPrice.value; renderAll();});
-  el.tagFilter.addEventListener('change',()=>{state.tag=el.tagFilter.value; renderAll();});
-  el.pricePreset.addEventListener('change',()=>{state.pricePreset=el.pricePreset.value; renderAll();});
-  el.onlyWithVariants.addEventListener('change',()=>{state.variantMode=el.onlyWithVariants.value; renderAll();});
-  el.checkoutReady.addEventListener('change',()=>{state.checkoutReady=el.checkoutReady.value; renderAll();});
+  el.q.addEventListener('input',()=>{state.q=el.q.value; state.visibleCount=20; renderAll();});
+  el.brand.addEventListener('change',()=>{state.brand=el.brand.value; state.visibleCount=20; renderAll();});
+  el.platform.addEventListener('change',()=>{state.platform=el.platform.value; state.visibleCount=20; renderAll();});
+  el.source.addEventListener('change',()=>{state.source=el.source.value; state.visibleCount=20; renderAll();});
+  el.stock.addEventListener('change',()=>{state.stock=el.stock.value; state.visibleCount=20; renderAll();});
+  el.sort.addEventListener('change',()=>{state.sort=el.sort.value; state.visibleCount=20; renderAll();});
+  el.minPrice.addEventListener('input',()=>{state.minPrice=el.minPrice.value; state.visibleCount=20; renderAll();});
+  el.maxPrice.addEventListener('input',()=>{state.maxPrice=el.maxPrice.value; state.visibleCount=20; renderAll();});
+  el.tagFilter.addEventListener('change',()=>{state.tag=el.tagFilter.value; state.visibleCount=20; renderAll();});
+  el.pricePreset.addEventListener('change',()=>{state.pricePreset=el.pricePreset.value; state.visibleCount=20; renderAll();});
+  el.onlyWithVariants.addEventListener('change',()=>{state.variantMode=el.onlyWithVariants.value; state.visibleCount=20; renderAll();});
+  el.checkoutReady.addEventListener('change',()=>{state.checkoutReady=el.checkoutReady.value; state.visibleCount=20; renderAll();});
   el.reset.addEventListener('click',()=>{
-    Object.assign(state,{q:'',category:'',brand:'',platform:'',source:'',stock:'',tag:'',minPrice:null,maxPrice:null,pricePreset:'',variantMode:'',checkoutReady:'',sort:'relevance',onlyTop:false});
+    Object.assign(state,{q:'',category:'',brand:'',platform:'',source:'',stock:'',tag:'',minPrice:null,maxPrice:null,pricePreset:'',variantMode:'',checkoutReady:'',sort:'relevance',onlyTop:false,visibleCount:20});
     ['q','brand','platform','source','stock','sort','minPrice','maxPrice','tagFilter','pricePreset','onlyWithVariants','checkoutReady'].forEach(id=>{ const n=document.getElementById(id); if(n) n.value = id==='sort' ? 'relevance' : ''; });
     renderAll();
   });
-  el.onlyDeals.addEventListener('click',()=>{ state.onlyTop=!state.onlyTop; el.onlyDeals.classList.toggle('btn--red', state.onlyTop); renderAll(); });
+  el.onlyDeals.addEventListener('click',()=>{ state.onlyTop=!state.onlyTop; state.visibleCount=20; el.onlyDeals.classList.toggle('btn--red', state.onlyTop); renderAll(); });
   document.querySelectorAll('.langBtn').forEach(btn=>btn.addEventListener('click',()=>{ state.lang=btn.dataset.lang; localStorage.setItem('racem_catalog_lang', state.lang); renderAll(); }));
+  el.loadMoreBtn?.addEventListener('click',()=>{ state.visibleCount += 20; renderAll(); });
   document.addEventListener('click',(e)=>{
     const detail=e.target.closest('[data-open-detail]');
     if(detail){
@@ -3212,7 +3297,9 @@ function openModal(id){
   m.title.textContent = productTitle(raw);
   m.sub.textContent = '';
   m.cat.textContent = translateCategory(raw.category || '') || 'Produkt';
-  m.stock.textContent = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? t('inStock') : t('madeToOrder');
+  const modalStock = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? 'in_stock' : 'made_to_order';
+  m.stock.textContent = modalStock === 'in_stock' ? t('inStock') : t('madeToOrder');
+  m.stock.className = modalStock === 'in_stock' ? 'badge badge--stock' : 'badge badge--order';
 
   const fitmentText = formatFitment(raw);
   const mountText = formatPlacement(raw);
