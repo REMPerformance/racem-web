@@ -759,39 +759,7 @@ overflow:auto;
 flex:1 1 auto;
 overscroll-behavior: contain;
     }
-    
-
-/* ===== CYBUL CART DRAWER CLONE ===== */
-.topBarRight{display:flex; align-items:center; gap:10px;}
-.icon-btn{position:relative; min-width:46px; height:46px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025)); display:grid; place-items:center; cursor:pointer; color:#fff; transition:.2s ease;}
-.icon-btn:hover{transform:translateY(-1px); border-color:rgba(179,31,36,.5); box-shadow:0 12px 28px rgba(179,31,36,.12);}
-.icon-btn .count{position:absolute; top:-6px; right:-6px; min-width:22px; height:22px; padding:0 6px; border-radius:999px; display:grid; place-items:center; background:linear-gradient(180deg, #e13b42, #b31f24); color:white; font-size:.75rem; font-weight:800; border:2px solid #070709;}
-.cartBar,.cartModalOverlay{display:none !important;}
-.drawer,.modal{position:fixed; inset:0; z-index:120; pointer-events:none;}
-.backdrop{position:absolute; inset:0; background:rgba(0,0,0,.56); backdrop-filter:blur(8px); opacity:0; transition:.25s ease;}
-.drawer-panel{position:absolute; top:0; right:0; height:100%; width:min(560px, 100vw); background:radial-gradient(circle at top right, rgba(179,31,36,.16), transparent 26%), linear-gradient(180deg, #12141a, #0b0d12); border-left:1px solid rgba(255,255,255,.08); transform:translateX(102%); transition:.28s ease; display:flex; flex-direction:column; box-shadow:-30px 0 80px rgba(0,0,0,.35);}
-.drawer.open,.modal.open{pointer-events:auto}
-.drawer.open .backdrop,.modal.open .backdrop{opacity:1}
-.drawer.open .drawer-panel{transform:translateX(0)}
-.drawer-head{padding:20px 20px 16px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; position:sticky; top:0; background:rgba(12,13,17,.92); backdrop-filter:blur(14px); z-index:2;}
-.drawer-head h3{margin:0; font-size:1.25rem}
-.drawer-close{width:44px; height:44px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.05); color:#fff; cursor:pointer;}
-.drawer-body{padding:18px 20px 22px; overflow:auto; display:flex; flex-direction:column; gap:14px; flex:1;}
-.cart-item{display:grid; grid-template-columns:92px 1fr auto; gap:14px; padding:14px; border-radius:20px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);}
-.cart-item img{width:92px; height:92px; object-fit:cover; border-radius:16px; background:#141821;}
-.cart-item h4{margin:0 0 8px; font-size:1rem}
-.cart-item .meta{color:var(--muted); font-size:.86rem; line-height:1.55}
-.qty-box{display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden; margin-top:10px;}
-.qty-box button{width:36px; height:36px; border:none; background:rgba(255,255,255,.04); cursor:pointer; color:#fff;}
-.qty-box span{min-width:40px; text-align:center; font-weight:800; display:grid; place-items:center; background:rgba(255,255,255,.02); height:36px;}
-.cart-price{font-weight:900; font-size:1rem; white-space:nowrap;}
-.cart-footer{border-top:1px solid rgba(255,255,255,.08); padding:18px 20px 20px; display:grid; gap:12px; background:rgba(12,13,17,.9); backdrop-filter:blur(14px);}
-.cart-summary{display:flex; justify-content:space-between; gap:12px; align-items:center;}
-.cart-summary strong{font-size:1.3rem}
-.small-note{color:var(--muted); font-size:.84rem; line-height:1.6;}
-@media (max-width: 640px){ .cart-item{grid-template-columns:78px 1fr;} .cart-item > div:last-child{grid-column:1 / -1;} }
-
-@media (max-width: 860px){
+    @media (max-width: 860px){
       .modalBody{grid-template-columns:1fr}
     }
      .gallery{
@@ -2470,13 +2438,25 @@ max-height:110px;
             <button class="langBtn active" type="button" data-lang="sk">SK</button>
             <button class="langBtn" type="button" data-lang="en">EN</button>
           </div>
-          <button class="icon-btn" id="cartOpenBtn" type="button" title="Cart" aria-label="Cart">
-            🛒
-            <span class="count" id="cartCount">0</span>
-          </button>
         </div>
       </div>
     </header>
+
+    <div class="cartBar" id="cartBar" aria-hidden="true">
+      <div class="cartBarInner">
+        <div class="cartBarLeft">
+          <div class="cartPill">
+            <span class="cartDot"></span>
+            <span id="cartBarCount">0</span> položiek
+          </div>
+          <div class="cartTotal" id="cartBarTotal">0 €</div>
+        </div>
+        <div class="cartBarRight">
+          <button class="btn" id="cartBarClear" type="button">Clear</button>
+          <button class="btn btn--red" id="cartBarOpen" type="button">View cart</button>
+        </div>
+      </div>
+    </div>
 
    <section class="hero">
   <div class="heroInner heroInner--single">
@@ -2720,28 +2700,37 @@ max-height:110px;
   </div>
 
 
-    <aside class="drawer" id="cartDrawer" aria-hidden="true">
-    <div class="backdrop" data-close-drawer></div>
-    <div class="drawer-panel">
-      <div class="drawer-head">
-        <div>
-          <h3 data-i18n="cartTitle">Košík</h3>
-          <div class="muted" data-i18n="cartSubtitle">Vybrané produkty pripravené na dokončenie objednávky</div>
-        </div>
-        <button class="drawer-close" data-close-drawer type="button">✕</button>
+    <div class="cartModalOverlay" id="cartModal" aria-hidden="true">
+    <div class="cartModalCard" role="dialog" aria-modal="true" aria-label="Cart">
+      <div class="cartModalHead">
+        <b data-i18n="cartTitle">Cart</b>
+        <button class="btn" id="closeCartModal" type="button" aria-label="Zatvoriť">Close</button>
       </div>
-      <div class="drawer-body" id="cartItems"></div>
-      <div class="cart-footer">
-        <div class="cart-summary">
-          <span data-i18n="cartTotal">Spolu</span>
-          <strong id="cartTotal">€0.00</strong>
+
+      <div class="cartBody" id="cartBody"></div>
+
+      <div class="cartFoot">
+        <div class="cartFootLeft">
+          <div class="cartFootLine">
+            <span data-i18n="cartItems">Items</span>
+            <b id="cartSumItems">0</b>
+          </div>
+          <div class="cartFootLine">
+            <span data-i18n="cartSubtotal">Subtotal</span>
+            <b id="cartSumPrice">0 €</b>
+          </div>
+          <div class="cartFootLine total">
+            <span data-i18n="cartTotal">Total</span>
+            <b id="cartSumTotal">0 €</b>
+          </div>
         </div>
-        <div class="small-note" data-i18n="cartNote">Pred dokončením objednávky si skontroluj vybrané produkty, varianty a množstvá.</div>
-        <button class="btn btn--red" id="checkoutBtn" type="button" data-i18n="checkoutBtn">Prejsť na Shopify checkout</button>
-        <button class="btn" id="clearCartBtn" type="button" data-i18n="clearCart">Vymazať košík</button>
+        <div class="cartFootRight">
+          <button class="btn" id="cartBack" type="button">Continue browsing</button>
+          <button class="btn btn--red" id="cartCheckout" type="button">Go to checkout</button>
+        </div>
       </div>
     </div>
-  </aside>
+  </div>
 
 <script>
 const FEED_URLS = ["./swagier.json","./cybul.json","./products.json","./sfxla-products.json"];
@@ -3366,7 +3355,7 @@ function openModal(id){
 function closeModal(){ m.overlay.classList.remove('open'); m.overlay.setAttribute('aria-hidden','true'); if(!document.getElementById('cartModal')?.classList.contains('show')) document.body.style.overflow=''; }
 function quickBuyByProductId(id){ const raw=PRODUCT_BY_ID.get(id); if(!raw) return; const variant=(raw.variants||[]).find(v=>v?.variantId) || (raw.defaultVariantId?{variantId:raw.defaultVariantId,price:raw.price||0,title:productTitle(raw)}:null); if(variant?.variantId) return window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(String(variant.variantId).trim())}:1`; if(raw.productUrl) return window.open(raw.productUrl,'_blank','noopener'); return openModal(id); }
 function goCheckout(){ if(m.buy?.dataset.mode==='shop') return openShop(activeProduct); if(!activeVariant?.variantId) return; window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(String(activeVariant.variantId).trim())}:1`; }
-function addActiveVariantToCart(){ if(!activeProduct || !activeVariant?.variantId) return; addToCart(activeProduct, activeVariant, 1); }
+function addActiveVariantToCart(){ if(!activeProduct || !activeVariant?.variantId) return; addToCart(activeProduct, activeVariant, 1); closeModal(); showCartAddedToast(productTitle(activeProduct)); pulseCartBar(); }
 
 const CART_KEY='racem_cart_v2'; let CART=[];
 function loadCart(){ try{ CART=JSON.parse(localStorage.getItem(CART_KEY)||'[]'); }catch(_){ CART=[]; } if(!Array.isArray(CART)) CART=[]; renderCartBar(); renderCartModal(); }
@@ -3374,43 +3363,19 @@ function saveCart(){ try{ localStorage.setItem(CART_KEY, JSON.stringify(CART)); 
 function cartCount(){ return CART.reduce((s,i)=>s + Math.max(1, Number(i.qty||1)),0); }
 function cartSumPrice(){ return CART.reduce((s,i)=>s + Number(i.price||0)*Math.max(1, Number(i.qty||1)),0); }
 function addToCart(product, variant, qty=1){ const variantId=String(variant?.variantId||'').trim(); if(!variantId) return; const ex=CART.find(i=>i.key===variantId); if(ex) ex.qty=Math.max(1, Number(ex.qty||1)+qty); else CART.push({key:variantId, variantId, productId:product.id, title:productTitle(product), variantName:variantTitle(variant), price:Number(variant.price||0), image:(variant.images&&variant.images[0]) || (product.images&&product.images[0]) || '', qty:Math.max(1, Number(qty||1))}); saveCart(); }
-function renderCartBar(){
-  const count = cartCount();
-  const countEl = document.getElementById('cartCount');
-  if (countEl){
-    countEl.textContent = String(count);
-    countEl.style.display = count > 0 ? 'grid' : 'none';
-  }
-}
-function renderCartModal(){
-  const body = document.getElementById('cartItems');
-  const totalEl = document.getElementById('cartTotal');
-  if(!body || !totalEl) return;
-  body.innerHTML='';
-  if(!CART.length){
-    body.innerHTML = `<div class="empty-state">${escapeHtml(t('cartEmpty'))}</div>`;
-    totalEl.textContent = euro(0);
-    return;
-  }
-  let total = 0;
-  body.innerHTML = CART.map(item => {
-    total += Number(item.price||0) * Math.max(1, Number(item.qty||1));
-    return `<div class="cart-item"><img src="${escapeHtml(item.image || '')}" alt="${escapeHtml(item.title || '')}" loading="lazy" decoding="async"><div><h4>${escapeHtml(item.title || '')}</h4><div class="meta">${escapeHtml(t('variantLabel'))}: ${escapeHtml(item.variantName||'—')}<br>${escapeHtml(t('pricePerPiece'))}: ${escapeHtml(euro(item.price))} / ks</div><div class="qty-box"><button type="button" data-act="dec" data-key="${escapeHtml(item.key)}">−</button><span>${Math.max(1, Number(item.qty||1))}</span><button type="button" data-act="inc" data-key="${escapeHtml(item.key)}">+</button></div></div><div style="display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; gap:10px;"><div class="cart-price">${escapeHtml(euro(Number(item.price||0) * Math.max(1, Number(item.qty||1))))}</div><button class="btn btn-ghost" type="button" data-act="remove" data-key="${escapeHtml(item.key)}">${escapeHtml(state.lang==='sk'?'Odstrániť':'Remove')}</button></div></div>`;
-  }).join('');
-  totalEl.textContent = euro(total);
-  document.getElementById('checkoutBtn').textContent = t('cartCheckout');
-  document.getElementById('clearCartBtn').textContent = t('cartClear');
-}
-function openCartModal(){ const cm=document.getElementById('cartDrawer'); if(!cm) return; renderCartModal(); cm.classList.add('open'); cm.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-function closeCartModal(){ const cm=document.getElementById('cartDrawer'); if(!cm) return; cm.classList.remove('open'); cm.setAttribute('aria-hidden','true'); if(!m.overlay.classList.contains('open')) document.body.style.overflow=''; }
+function renderCartBar(){ const bar=document.getElementById('cartBar'); if(!bar) return; const count=cartCount(); document.getElementById('cartBarCount').textContent=String(count); document.getElementById('cartBarTotal').textContent=euro(cartSumPrice()); bar.classList.toggle('show', count>0); bar.setAttribute('aria-hidden', count>0?'false':'true'); const pill=bar.querySelector('.cartPill'); if(pill) pill.lastChild && (pill.lastChild.textContent=' ' + t('piecesWord')); document.getElementById('cartBarOpen').textContent=t('cartView'); document.getElementById('cartBarClear').textContent=t('cartClear'); }
+function renderCartModal(){ const body=document.getElementById('cartBody'); if(!body) return; body.innerHTML=''; if(!CART.length){ body.innerHTML=`<div class="cartEmptyState">${escapeHtml(t('cartEmpty'))}</div>`; } else { CART.forEach(item=>{ const row=document.createElement('div'); row.className='cartItem'; row.innerHTML=`<div class="cartThumb">${item.image?`<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">`:''}</div><div class="cartInfo"><b>${escapeHtml(item.title)}</b><div class="cartMeta">${escapeHtml(t('variantLabel'))}: ${escapeHtml(item.variantName||'—')}<br>${escapeHtml(t('pricePerPiece'))}: ${escapeHtml(euro(item.price))} / ks<br></div></div><div class="cartControls"><div class="qtyBox"><button type="button" data-act="dec" data-key="${escapeHtml(item.key)}">−</button><span>${Math.max(1, Number(item.qty||1))}</span><button type="button" data-act="inc" data-key="${escapeHtml(item.key)}">+</button></div><button class="cartRemove" type="button" data-act="remove" data-key="${escapeHtml(item.key)}">${escapeHtml(state.lang==='sk'?'Odstrániť':'Remove')}</button></div>`; body.appendChild(row); }); }
+  document.getElementById('cartSumItems').textContent=String(cartCount()); document.getElementById('cartSumPrice').textContent=euro(cartSumPrice()); document.getElementById('cartSumTotal').textContent=euro(cartSumPrice()); document.getElementById('cartBack').textContent=t('cartContinue'); document.getElementById('cartCheckout').textContent=t('cartCheckout'); }
+function openCartModal(){ const cm=document.getElementById('cartModal'); if(!cm) return; renderCartModal(); cm.classList.add('show'); cm.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+function closeCartModal(){ const cm=document.getElementById('cartModal'); if(!cm) return; cm.classList.remove('show'); cm.setAttribute('aria-hidden','true'); if(!m.overlay.classList.contains('open')) document.body.style.overflow=''; }
 function changeCartQty(key, delta){ const item=CART.find(i=>i.key===key); if(!item) return; item.qty=Math.max(1, Number(item.qty||1)+delta); saveCart(); }
 function removeCartItem(key){ CART=CART.filter(i=>i.key!==key); saveCart(); }
 function clearCart(){ CART=[]; saveCart(); }
 function checkoutCart(){ const valid=CART.filter(i=>i.variantId && Number(i.qty)>0); if(!valid.length) return; const path=valid.map(i=>`${encodeURIComponent(i.variantId)}:${Math.max(1, Number(i.qty||1))}`).join(','); window.location.href=`https://shop.racem.sk/cart/${path}`; }
 
 document.addEventListener('click',(e)=>{ const act=e.target.closest('[data-act]'); if(act){ const key=act.getAttribute('data-key')||''; const type=act.getAttribute('data-act'); if(type==='inc') changeCartQty(key,1); if(type==='dec') changeCartQty(key,-1); if(type==='remove') removeCartItem(key); }});
-if(m.overlay && m.close && m.buy){ m.close.addEventListener('click', closeModal); m.overlay.addEventListener('click', (e)=>{ if(e.target===m.overlay) closeModal(); }); document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && m.overlay.classList.contains('open')) closeModal(); if(e.key==='Escape' && document.getElementById('cartDrawer')?.classList.contains('open')) closeCartModal(); }); m.buy.addEventListener('click', goCheckout); m.addCart?.addEventListener('click', addActiveVariantToCart); }
-document.getElementById('cartOpenBtn')?.addEventListener('click', openCartModal); document.querySelectorAll('[data-close-drawer]').forEach(btn => btn.addEventListener('click', closeCartModal)); document.getElementById('clearCartBtn')?.addEventListener('click', clearCart); document.getElementById('checkoutBtn')?.addEventListener('click', checkoutCart); document.getElementById('cartDrawer')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('cartDrawer')) closeCartModal(); });
+if(m.overlay && m.close && m.buy){ m.close.addEventListener('click', closeModal); m.overlay.addEventListener('click', (e)=>{ if(e.target===m.overlay) closeModal(); }); document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && m.overlay.classList.contains('open')) closeModal(); if(e.key==='Escape' && document.getElementById('cartModal')?.classList.contains('show')) closeCartModal(); }); m.buy.addEventListener('click', goCheckout); m.addCart?.addEventListener('click', addActiveVariantToCart); }
+document.getElementById('cartBarOpen')?.addEventListener('click', openCartModal); document.getElementById('closeCartModal')?.addEventListener('click', closeCartModal); document.getElementById('cartBack')?.addEventListener('click', closeCartModal); document.getElementById('cartBarClear')?.addEventListener('click', clearCart); document.getElementById('cartCheckout')?.addEventListener('click', checkoutCart); document.getElementById('cartModal')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('cartModal')) closeCartModal(); }); document.getElementById('cartBar')?.addEventListener('click',(e)=>{ if(e.target.closest('button')) return; openCartModal(); });
 
 function renderAll(){ applyTranslations(); buildBrandSelect(); buildPlatformSelect(); buildSourceSelect(); buildTagSelect(); buildChips(); buildFeedChips(); const list=applyFilters(); renderCards(list); renderRecommended(); renderMeta(list); loadCart(); }
 function syncStickyOffsets(){ const header=document.querySelector('header'); if(!header) return; const root=document.documentElement; const rect=header.getBoundingClientRect(); const top=Math.max(0, Math.round(rect.top)); const h=Math.round(header.offsetHeight || rect.height || 92); root.style.setProperty('--header-offset', top + 'px'); root.style.setProperty('--header-h', h + 'px'); root.style.setProperty('--cart-top', `calc(${top}px + ${h}px + 10px)`); }
@@ -3421,8 +3386,12 @@ window.addProductToCart = function(id){
   const product = PRODUCT_BY_ID.get(String(id));
   if(!product) return;
   const variant=(product.variants||[]).find(v=>String(v?.variantId||'').trim()) || (product.defaultVariantId?{variantId:product.defaultVariantId,price:product.price||0,title:productTitle(product),images:product.images||[]}:null);
-  if(variant?.variantId) addToCart(product, variant, 1);
-  else openModal(String(id));
+  if(variant?.variantId){
+    addToCart(product, variant, 1);
+    if(m?.overlay?.classList.contains('open')) closeModal();
+    showCartAddedToast(productTitle(product));
+    pulseCartBar();
+  } else openModal(String(id));
 };
 
 (async function init(){ const loadingStart = Date.now(); syncStickyOffsets(); if(el.year) el.year.textContent = new Date().getFullYear(); if(el.loadingText) el.loadingText.textContent = t('loadingText'); await loadFeed(); bindEvents(); renderAll(); loadCart(); const elapsed = Date.now() - loadingStart; const waitMore = Math.max(0, 2000 - elapsed); setTimeout(setLoadingDone, waitMore); })();
@@ -3441,6 +3410,166 @@ function updateLiveTime(){
 }
 setInterval(updateLiveTime,1000);
 updateLiveTime();
+</script>
+
+
+<style id="racem-card-cart-fixes">
+.bottomRow.bottomRow--compact{
+  align-items:end;
+  gap:10px;
+}
+.priceBlock{
+  min-width:0;
+  flex:1 1 auto;
+}
+.priceBlock .muted{
+  font-size:10px;
+  letter-spacing:.12em;
+  margin-bottom:4px;
+}
+.bottomRow .price,
+.priceBlock .price{
+  font-size:13px !important;
+  line-height:1 !important;
+  letter-spacing:.04em !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cardActions.cardActions--inline{
+  flex:0 0 auto;
+  align-items:center;
+  gap:8px;
+}
+.cardActions.cardActions--inline .btn{
+  min-width:0 !important;
+  padding:11px 14px !important;
+  font-size:11px !important;
+  letter-spacing:.08em !important;
+}
+.card .bottomRow{grid-template-columns:minmax(0,1fr) auto;display:grid;}
+
+.cartBar{
+  top:calc(var(--header-offset) + var(--header-h) - 26px) !important;
+  width:min(1180px, calc(100% - 34px)) !important;
+  border-radius:0 0 20px 20px !important;
+}
+.cartBarInner{
+  padding:8px 14px 10px !important;
+  gap:10px !important;
+}
+.cartPill{
+  padding:7px 11px !important;
+  font-size:11px !important;
+}
+.cartTotal{
+  font-size:13px !important;
+}
+.cartBarRight .btn{
+  padding:10px 13px !important;
+}
+.cartBar.cartBarPulse{
+  animation:cartBarPulseFx .6s ease;
+}
+@keyframes cartBarPulseFx{
+  0%{box-shadow:0 18px 48px rgba(0,0,0,.52), 0 0 0 1px rgba(179,31,36,.08), inset 0 1px 0 rgba(255,255,255,.04);}
+  50%{box-shadow:0 22px 70px rgba(0,0,0,.56), 0 0 0 1px rgba(179,31,36,.22), 0 0 34px rgba(179,31,36,.32), inset 0 1px 0 rgba(255,255,255,.05);}
+  100%{box-shadow:0 18px 48px rgba(0,0,0,.52), 0 0 0 1px rgba(179,31,36,.08), inset 0 1px 0 rgba(255,255,255,.04);}
+}
+.cartToast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:1700;
+  min-width:280px;
+  max-width:min(420px, calc(100vw - 28px));
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(46,229,138,.30);
+  background:linear-gradient(180deg, rgba(10,10,10,.96), rgba(16,16,16,.94));
+  box-shadow:0 20px 60px rgba(0,0,0,.42), 0 0 0 1px rgba(46,229,138,.12);
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  transform:translateY(18px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .24s ease, opacity .2s ease;
+}
+.cartToast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+.cartToastIcon{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:rgba(46,229,138,.14);
+  border:1px solid rgba(46,229,138,.28);
+  color:#7cffb2;
+  font-size:16px;
+  font-weight:700;
+}
+.cartToastText{min-width:0;}
+.cartToastTitle{
+  font-family:Oswald,sans-serif;
+  font-size:15px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:#fff;
+}
+.cartToastMeta{
+  margin-top:4px;
+  color:rgba(255,255,255,.72);
+  font-size:12px;
+  line-height:1.4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media (max-width: 760px){
+  .card .bottomRow{grid-template-columns:1fr;gap:10px;}
+  .cardActions.cardActions--inline{width:100%;justify-content:stretch;}
+  .cardActions.cardActions--inline .btn{flex:1;justify-content:center;}
+  .cartBar{top:calc(var(--header-offset) + var(--header-h) - 16px) !important;width:calc(100% - 18px) !important;}
+  .cartBarInner{padding:10px 10px 12px !important;}
+  .cartToast{right:10px;left:10px;bottom:10px;max-width:none;min-width:0;}
+}
+</style>
+<script id="racem-card-cart-fixes-script">
+(function(){
+  let cartToastTimer = null;
+  function ensureCartToast(){
+    let toast = document.getElementById('cartToast');
+    if(toast) return toast;
+    toast = document.createElement('div');
+    toast.id = 'cartToast';
+    toast.className = 'cartToast';
+    toast.setAttribute('aria-live','polite');
+    toast.innerHTML = '<div class="cartToastIcon">✓</div><div class="cartToastText"><div class="cartToastTitle">Pridané do košíka</div><div class="cartToastMeta"></div></div>';
+    document.body.appendChild(toast);
+    return toast;
+  }
+  window.showCartAddedToast = function(name){
+    const toast = ensureCartToast();
+    const meta = toast.querySelector('.cartToastMeta');
+    if(meta) meta.textContent = name ? String(name) : 'Produkt bol úspešne pridaný.';
+    toast.classList.add('show');
+    clearTimeout(cartToastTimer);
+    cartToastTimer = setTimeout(()=> toast.classList.remove('show'), 1800);
+  };
+  window.pulseCartBar = function(){
+    const bar = document.getElementById('cartBar');
+    if(!bar) return;
+    bar.classList.remove('cartBarPulse');
+    void bar.offsetWidth;
+    bar.classList.add('cartBarPulse');
+    setTimeout(()=>bar.classList.remove('cartBarPulse'), 700);
+  };
+})();
 </script>
 
 </body>
