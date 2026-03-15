@@ -2204,6 +2204,7 @@ max-height:110px;
 @media (max-width:900px){
   .recommendedGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .bottomRow--compact{grid-template-columns:1fr;display:grid!important}
+  .priceBlock{min-width:0;flex:1 1 auto;}
 }
 @media (max-width:620px){
   .recommendedGrid{grid-template-columns:1fr!important}
@@ -2387,15 +2388,37 @@ max-height:110px;
     color:#ffd27a;
     border-color:rgba(255,191,84,.34);
   }
-  .priceBlock{min-width:0;display:flex;flex-direction:column;gap:4px;}
-  .card .price{
-    font-size:clamp(22px, 2vw, 34px) !important;
-    line-height:.94;
-    white-space:nowrap;
-    letter-spacing:.03em;
+  .priceBlock{
+    min-width:136px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    flex:0 0 136px;
+    justify-content:flex-end;
   }
-  .bottomRow--compact{align-items:end;gap:10px;}
-  .cardActions{min-width:170px;}
+  .card .price{
+    font-size:clamp(30px, 2.2vw, 40px) !important;
+    line-height:1 !important;
+    white-space:nowrap;
+    letter-spacing:.01em;
+    font-weight:700;
+    overflow:visible;
+    text-overflow:clip;
+  }
+  .card .muted{
+    font-size:11px;
+    letter-spacing:.16em;
+  }
+  .bottomRow--compact{
+    display:grid !important;
+    grid-template-columns:minmax(136px,auto) minmax(0,1fr);
+    align-items:end !important;
+    gap:12px !important;
+  }
+  .cardActions{
+    min-width:0;
+    width:100%;
+  }
   .loadMoreWrap{
     display:flex;
     justify-content:center;
