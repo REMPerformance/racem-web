@@ -590,6 +590,32 @@
     }
 
 
+
+    .field--hide{display:none!important;}
+    .status-open{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:#7CFFB2;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .status-open-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:#2ee58a;
+      box-shadow:0 0 0 0 rgba(46,229,138,.7);
+      animation:statusPulse 1.25s infinite;
+      display:inline-block;
+    }
+    @keyframes statusPulse{
+      0%{ box-shadow:0 0 0 0 rgba(46,229,138,.7); opacity:1; }
+      70%{ box-shadow:0 0 0 10px rgba(46,229,138,0); opacity:1; }
+      100%{ box-shadow:0 0 0 0 rgba(46,229,138,0); opacity:.9; }
+    }
+
     footer{
       margin-top:18px;
       color:rgba(255,255,255,.45);
@@ -2271,9 +2297,9 @@ max-height:110px;
         <div class="stat-sub" id="kpiTopModelSub">0 produktov</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label" data-i18n="statShown">Zobrazené</div>
+        <div class="stat-label" data-i18n="statCheckoutStatus">Checkout status</div>
         <div class="stat-number" id="kpiShown">0</div>
-        <div class="stat-sub" id="kpiShownSub">0%</div>
+        <div class="stat-sub" id="kpiShownSub">OPEN</div>
       </div>
     </section>
 
@@ -2294,17 +2320,17 @@ max-height:110px;
           <input class="input" id="q" type="search" placeholder="e.g. widebody, diffuser, E46, coilovers..." autocomplete="off" />
         </div>
 
-        <div class="field">
+        <div class="field field--hide">
           <label for="brand" data-i18n="brandLabel">Brand</label>
           <select id="brand"><option value="" data-i18n="allOption">All</option></select>
         </div>
 
         <div class="field">
-          <label for="platform" data-i18n="platformLabel">Platform</label>
+          <label for="platform" data-i18n="platformLabel">Model</label>
           <select id="platform"><option value="" data-i18n="allOption">All</option></select>
         </div>
 
-        <div class="field">
+        <div class="field field--hide">
           <label for="source" data-i18n="sourceLabel">Feed</label>
           <select id="source"><option value="" data-i18n="allOption">All</option></select>
         </div>
@@ -2339,7 +2365,7 @@ max-height:110px;
           <label for="maxPrice" data-i18n="maxPriceLabel">Max price (€)</label>
           <input class="input" id="maxPrice" type="number" inputmode="numeric" placeholder="99999" min="0" />
         </div>
-        <div class="field">
+        <div class="field field--hide">
           <label for="tagFilter" data-i18n="tagLabel">Tag</label>
           <select id="tagFilter"><option value="" data-i18n="allOption">All</option></select>
         </div>
@@ -2353,7 +2379,7 @@ max-height:110px;
             <option value="1000-999999">1000 €+</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field field--hide">
           <label for="onlyWithVariants" data-i18n="variantModeLabel">Variant mode</label>
           <select id="onlyWithVariants">
             <option value="" data-i18n="everythingOption">Everything</option>
@@ -2361,7 +2387,7 @@ max-height:110px;
             <option value="single" data-i18n="singleVariant">Only single-variant products</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field field--hide">
           <label for="checkoutReady" data-i18n="checkoutReadyLabel">Checkout state</label>
           <select id="checkoutReady">
             <option value="" data-i18n="everythingOption">Everything</option>
@@ -2555,8 +2581,8 @@ const i18n = {
     heroBullet1Title:'Multi-feed', heroBullet1Text:'Načíta swagier.json, cybul.json, products.json a sfxla-products.json do jedného filtrovaného katalógu.',
     heroBullet2Title:'Pokročilé filtre', heroBullet2Text:'Hľadanie podľa platformy, tagu, výrobcu, kategórie, feedu, stavu skladu a cenového rozsahu.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Otvor detail, vyber validný variant, pridaj do košíka a skoč do Shopify košíka cez variant ID.',
-    statShown:'Zobrazené', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
-    searchLabel:'Vyhľadať', brandLabel:'Výrobca', platformLabel:'Platforma', sourceLabel:'Feed', stockLabel:'Dostupnosť', sortLabel:'Triedenie',
+    statShown:'Zobrazené', statCheckoutStatus:'Checkout status', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
+    searchLabel:'Vyhľadať', brandLabel:'Výrobca', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Dostupnosť', sortLabel:'Triedenie',
     minPriceLabel:'Min cena (€)', maxPriceLabel:'Max cena (€)', tagLabel:'Tag', pricePresetLabel:'Rýchly cenový filter', variantModeLabel:'Variant režim', checkoutReadyLabel:'Checkout stav',
     allOption:'Všetky', everythingOption:'Všetko', stockIn:'Skladom', stockOrder:'Na objednávku',
     sortRel:'Relevantnosť', sortPriceAsc:'Cena ↑', sortPriceDesc:'Cena ↓', sortNameAsc:'Názov A→Z', sortNameDesc:'Názov Z→A',
@@ -2583,8 +2609,8 @@ const i18n = {
     heroBullet1Title:'Multi-feed', heroBullet1Text:'Loads swagier.json, cybul.json, products.json and sfxla-products.json into one filtered catalog.',
     heroBullet2Title:'Advanced filtering', heroBullet2Text:'Search by platform, tag, manufacturer, category, feed, stock state and price range.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Open detail, pick a valid variant, add it to cart and jump to the Shopify cart with variant IDs.',
-    statShown:'Shown', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
-    searchLabel:'Search', brandLabel:'Brand', platformLabel:'Platform', sourceLabel:'Feed', stockLabel:'Availability', sortLabel:'Sort',
+    statShown:'Shown', statCheckoutStatus:'Checkout status', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
+    searchLabel:'Search', brandLabel:'Brand', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Availability', sortLabel:'Sort',
     minPriceLabel:'Min price (€)', maxPriceLabel:'Max price (€)', tagLabel:'Tag', pricePresetLabel:'Price quick filter', variantModeLabel:'Variant mode', checkoutReadyLabel:'Checkout state',
     allOption:'All', everythingOption:'Everything', stockIn:'In stock', stockOrder:'Made to order',
     sortRel:'Relevance', sortPriceAsc:'Price ↑', sortPriceDesc:'Price ↓', sortNameAsc:'Name A→Z', sortNameDesc:'Name Z→A',
@@ -2614,6 +2640,8 @@ const stripHtml = (s='') => String(s).replace(/<[^>]*>/g,' ').replace(/\s+/g,' '
 const t = (k) => (i18n[state.lang] && i18n[state.lang][k]) || k;
 const euro = (n) => `${Number(n||0).toLocaleString(state.lang==='sk'?'sk-SK':'en-GB')} €`;
 function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+const PLATFORM_FILTER_EXCLUDE = new Set(['1jz','1uz','1uz-fe','2jz','3uz','8p','automobil','m50','m52','m54','m57','m60','m62','mk4']);
 
 function applySeoForLang(){
   document.documentElement.lang = state.lang;
@@ -2714,7 +2742,14 @@ async function loadFeed(){
 
 function buildSelect(select, values, firstLabel){ if(!select) return; select.innerHTML = `<option value="">${escapeHtml(firstLabel)}</option>` + values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join(''); }
 function buildBrandSelect(){ buildSelect(el.brand, uniq(PRODUCTS.map(p=>p.brand)).sort((a,b)=>a.localeCompare(b)), t('allOption')); if(el.kpiBrands) el.kpiBrands.textContent = uniq(PRODUCTS.map(p=>p.brand)).length.toLocaleString(state.lang==='sk'?'sk-SK':'en-GB'); }
-function buildPlatformSelect(){ buildSelect(el.platform, uniq(PRODUCTS.flatMap(p=>p.platforms)).sort((a,b)=>a.localeCompare(b)), t('allOption')); }
+function buildPlatformSelect(){
+  const values = uniq(PRODUCTS.flatMap(p=>p.platforms))
+    .filter(Boolean)
+    .map(v=>String(v).trim())
+    .filter(v=>v && !PLATFORM_FILTER_EXCLUDE.has(norm(v)))
+    .sort((a,b)=>a.localeCompare(b, undefined, {numeric:true, sensitivity:'base'}));
+  buildSelect(el.platform, values, t('allOption'));
+}
 function buildSourceSelect(){ buildSelect(el.source, uniq(PRODUCTS.map(p=>p.source)).sort((a,b)=>a.localeCompare(b)), t('allOption')); }
 function buildTagSelect(){ buildSelect(el.tagFilter, uniq(PRODUCTS.flatMap(p=>p.tags)).sort((a,b)=>a.localeCompare(b)), t('allOption')); }
 function buildChips(){ const merged=uniq([...(FEED?.categories||[]), ...PRODUCTS.map(p=>p.category)]).filter(Boolean); el.chips.innerHTML=''; const all=document.createElement('div'); all.className='chip' + (state.category===''?' active':''); all.textContent=t('chipAll'); all.onclick=()=>{state.category=''; renderAll();}; el.chips.appendChild(all); merged.forEach(c=>{ const chip=document.createElement('div'); chip.className='chip' + (state.category===c?' active':''); chip.textContent=translateCategory(c)||c; chip.onclick=()=>{ state.category = state.category===c ? '' : c; renderAll(); }; el.chips.appendChild(chip); }); if(el.kpiCats) el.kpiCats.textContent = merged.length.toLocaleString(state.lang==='sk'?'sk-SK':'en-GB'); }
@@ -2858,7 +2893,6 @@ function renderMeta(list){
   const totalCount = PRODUCTS.length;
   const shownCount = list.length;
   if(el.kpiTotal) el.kpiTotal.textContent = totalCount.toLocaleString(locale);
-  if(el.kpiShown) el.kpiShown.textContent = shownCount.toLocaleString(locale);
 
   const range = getOverallPriceRange();
   if(el.kpiPriceRange) el.kpiPriceRange.textContent = range ? `${euro(range.min)} — ${euro(range.max)}` : '—';
@@ -2867,8 +2901,8 @@ function renderMeta(list){
   if(el.kpiTopModel) el.kpiTopModel.textContent = topModel.model || '—';
   if(el.kpiTopModelSub) el.kpiTopModelSub.textContent = topModel.count ? `${topModel.count.toLocaleString(locale)} ${t('productsWord')}` : `0 ${t('productsWord')}`;
 
-  const shownPct = totalCount ? Math.max(1, Math.round((shownCount / totalCount) * 100)) : 0;
-  if(el.kpiShownSub) el.kpiShownSub.textContent = `${shownPct}%`;
+  if(el.kpiShown) el.kpiShown.textContent = 'OPEN';
+  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Aktívny checkout' : 'Checkout active')}</span>`;
 
   const parts=[];
   if(state.onlyTop) parts.push(t('metaTop'));
