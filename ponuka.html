@@ -2299,7 +2299,7 @@ max-height:110px;
       <div class="stat-card">
         <div class="stat-label" data-i18n="statCheckoutStatus">Checkout status</div>
         <div class="stat-number" id="kpiShown">0</div>
-        <div class="stat-sub" id="kpiShownSub">OPEN</div>
+        <div class="stat-sub" id="kpiShownSub">Otvorený</div>
       </div>
     </section>
 
@@ -2902,7 +2902,7 @@ function renderMeta(list){
   if(el.kpiTopModelSub) el.kpiTopModelSub.textContent = topModel.count ? `${topModel.count.toLocaleString(locale)} ${t('productsWord')}` : `0 ${t('productsWord')}`;
 
   if(el.kpiShown) el.kpiShown.textContent = 'OPEN';
-  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Aktívny checkout' : 'Checkout active')}</span>`;
+  if(el.kpiShownSub) el.kpiShownSub.innerHTML = `<span class="status-open"><span class="status-open-dot"></span>${escapeHtml(state.lang==='sk' ? 'Checkout otvorený' : 'Checkout active')}</span>`;
 
   const parts=[];
   if(state.onlyTop) parts.push(t('metaTop'));
