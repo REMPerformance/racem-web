@@ -91,7 +91,6 @@ body{
   background: var(--bg);
   color: var(--text);
   overflow-x:hidden;
-  padding-top: 96px;
 }
 
     /* ✅ SR-ONLY (SEO text, neviditeľné pre ľudí) */
@@ -222,12 +221,9 @@ body{
 
     /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
 .topbar{
-  position: fixed;
+  position: sticky;
   top: var(--stickyOffset, 0px);
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
+  z-index: 100;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   background: rgba(10,10,10,0.82);
@@ -240,7 +236,7 @@ body{
 
 .nav-centered{
   width: 100%;
-  max-width: 980px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 16px 0;
   display: flex;
@@ -273,7 +269,7 @@ body{
       filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
     }
 
-    .nav-links{ display:flex; align-items:center; gap: 34px; }
+    .nav-links{ display:flex; align-items:center; justify-content:center; gap: 34px; flex-wrap:nowrap; }
     .nav-links a{
       position:relative;
       color: rgba(255,255,255,0.76);
@@ -2425,6 +2421,10 @@ body{
   position: sticky;
   top: var(--stickyOffset, 0px);
   z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,10,10,0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 /* MOBILE */
@@ -3561,17 +3561,6 @@ html, body{
     margin: 18px auto 0 !important;
   }
 }
-@media (max-width: 980px){
-  body{
-    padding-top: 118px;
-  }
-}
-
-@media (max-width: 560px){
-  body{
-    padding-top: 126px;
-  }
-}
 </style>
 </head>
 
@@ -4447,7 +4436,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   if (!bar || !el) return;
 
   const messages = [
-    "Odosielame aj do Českej Republiky.",,
+    "Odosielame aj do Českej Republiky.",
     "We ship across the European Union.",
     "Wysyłamy produkty do Polski.",
     "Szállítunk Magyarországra is.",
