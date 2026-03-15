@@ -2216,6 +2216,118 @@ max-height:110px;
 .thumb[data-open-detail]:hover .thumbImg, .recoMedia[data-open-detail]:hover img{transform:scale(1.03); transition:transform .22s ease;}
 .btn.btn--ghost{white-space:nowrap;}
 
+
+  /* ===== MODAL PRODUCT DETAIL FIXES ===== */
+  .modalBody{
+    display:grid;
+    grid-template-columns:minmax(420px,.92fr) minmax(360px,.88fr);
+    gap:18px;
+    align-items:start;
+  }
+  .gallery{
+    position:sticky;
+    top:18px;
+    align-self:start;
+    max-height:calc(92vh - 120px);
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow:hidden;
+  }
+  .galleryMain{
+    position:relative;
+    min-height:420px;
+    max-height:none !important;
+    overflow:hidden !important;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.08);
+    background:
+      radial-gradient(280px 140px at 50% 10%, rgba(179,31,36,.10), transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+      #0d0d0d;
+  }
+  .galleryMain img{
+    width:100%;
+    max-height:520px;
+    object-fit:contain;
+    display:block;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.08);
+    background:#0a0a0a;
+    padding:10px;
+    box-shadow:0 18px 48px rgba(0,0,0,.28);
+  }
+  .galleryThumbs{
+    display:flex !important;
+    gap:10px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:4px 2px 2px;
+    scrollbar-width:thin;
+  }
+  .galleryThumbs:empty{display:none !important;}
+  .gThumb{
+    width:96px;
+    height:72px;
+    border-radius:14px;
+    flex:0 0 auto;
+  }
+  .gThumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .modalSub:empty{display:none;}
+  .rowSplit--price{
+    align-items:flex-end;
+    gap:18px;
+  }
+  .priceLabel{
+    color:rgba(255,255,255,.55);
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .price{
+    font-family:Oswald,sans-serif;
+    font-size:38px;
+    line-height:1;
+    letter-spacing:.08em;
+    color:#fff;
+    text-shadow:0 0 18px rgba(255,255,255,.06), 0 0 30px rgba(179,31,36,.18);
+  }
+  .priceAccent{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px;
+    border-radius:18px;
+    border:1px solid rgba(179,31,36,.26);
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    box-shadow:0 18px 40px rgba(0,0,0,.24), 0 0 0 1px rgba(179,31,36,.10) inset;
+  }
+  .priceAccent::before{
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:999px;
+    background:linear-gradient(180deg, #d6292f, #b31f24);
+    box-shadow:0 0 14px rgba(214,41,47,.75);
+  }
+  @media (max-width: 980px){
+    .modalBody{grid-template-columns:1fr;}
+    .gallery{position:relative; top:auto; max-height:none;}
+    .galleryMain{min-height:300px;}
+    .galleryMain img{max-height:420px;}
+  }
+
 </style>
 </head>
 
@@ -2453,18 +2565,17 @@ max-height:110px;
       </div>
 
       <div class="modalBody">
-        <div class="gallery">
-          <div class="galleryMain galleryStack" id="mMain"></div>
+        <div class="gallery" id="mGallery">
+          <div class="galleryMain" id="mMain"></div>
           <div class="galleryThumbs" id="mThumbs"></div>
         </div>
 
         <div class="panelBox">
           <div class="rowSplit">
             <span class="badge" id="mCat">Kategória</span>
-            <span class="badge badge--red" id="mMan">Výrobca</span>
           </div>
 
-          <div class="rowSplit">
+          <div class="rowSplit rowSplit--price">
             <div>
               <div class="muted" data-i18n="modalPrice">Price</div>
               <div class="price" id="mPrice">—</div>
@@ -2478,11 +2589,11 @@ max-height:110px;
           <div class="sepLine"></div>
           <div>
             <div class="muted sectionKick" style="margin-bottom:8px;" data-i18n="modalInfo">Info</div>
-            <dl class="dl">
-              <div class="infoCard"><dt data-i18n="fitment">Fits</dt><dd id="mFitment">—</dd></div>
-              <div class="infoCard"><dt data-i18n="placement">Placement</dt><dd id="mMount">—</dd></div>
-              <div class="infoCard"><dt data-i18n="material">Material</dt><dd id="mMaterial">—</dd></div>
-              <div class="infoCard"><dt>Kategória</dt><dd id="mType">—</dd></div>
+            <dl class="dl" id="mInfoList">
+              <div class="infoCard" id="mFitmentCard"><dt data-i18n="fitment">Fits</dt><dd id="mFitment">—</dd></div>
+              <div class="infoCard" id="mMountCard"><dt data-i18n="placement">Placement</dt><dd id="mMount">—</dd></div>
+              <div class="infoCard" id="mMaterialCard"><dt data-i18n="material">Material</dt><dd id="mMaterial">—</dd></div>
+              <div class="infoCard" id="mTypeCard"><dt>Kategória</dt><dd id="mType">—</dd></div>
             </dl>
           </div>
 
@@ -2595,7 +2706,7 @@ const i18n = {
     cartTitle:'Košík', cartItems:'Položky', cartSubtotal:'Suma', cartTotal:'Spolu', cartContinue:'Pokračovať v ponuke', cartCheckout:'Prejsť na checkout', cartClear:'Vyprázdniť', cartView:'Zobraziť košík',
     empty:'Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.',
     feedLabel:'Feed', checkoutMissing:'Tento variant nemá doplnené variantId, preto checkout nebude fungovať.',
-    cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam katalóg', productsWord:'produktov',
+    cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam performance katalóg', productsWord:'produktov',
     seoTitle:'RACEM | Ponuka performance dielov', seoDesc:'RACEM ponuka performance dielov. Kombinovaný katalóg CYBUL, SWAGIER, SFXLA a RACEM s pokročilým filtrovaním podľa platformy, značky, kategórie, ceny a dostupnosti.'
   },
   en: {
@@ -2623,7 +2734,7 @@ const i18n = {
     cartTitle:'Cart', cartItems:'Items', cartSubtotal:'Subtotal', cartTotal:'Total', cartContinue:'Continue browsing', cartCheckout:'Go to checkout', cartClear:'Clear', cartView:'View cart',
     empty:'No products matched. Change the filters or search term.',
     feedLabel:'Feed', checkoutMissing:'This variant has no mapped variantId, so checkout will not work yet.',
-    cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading catalog', productsWord:'products',
+    cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading performance catalog', productsWord:'products',
     seoTitle:'RACEM | Performance Parts Catalog', seoDesc:'RACEM performance parts catalog. Combined CYBUL, SWAGIER, SFXLA and RACEM feeds with advanced filtering by platform, brand, category, price and availability.'
   }
 };
@@ -3006,12 +3117,17 @@ const m = {
   title:document.getElementById('mTitle'),
   sub:document.getElementById('mSub'),
   cat:document.getElementById('mCat'),
-  man:document.getElementById('mMan'),
   price:document.getElementById('mPrice'),
+  thumbs:document.getElementById('mThumbs'),
+  gallery:document.getElementById('mGallery'),
   stock:document.getElementById('mStock'),
   fitment:document.getElementById('mFitment'),
   mount:document.getElementById('mMount'),
   material:document.getElementById('mMaterial'),
+  fitmentCard:document.getElementById('mFitmentCard'),
+  mountCard:document.getElementById('mMountCard'),
+  materialCard:document.getElementById('mMaterialCard'),
+  typeCard:document.getElementById('mTypeCard'),
   main:document.getElementById('mMain'),
   variants:document.getElementById('mVariants'),
   note:document.getElementById('mVariantNote'),
@@ -3021,9 +3137,38 @@ const m = {
   desc:document.getElementById('mDesc')
 };
   
-let activeProduct=null; let activeVariant=null;
-function fillModalImages(images, title){ m.main.innerHTML = (images||[]).map(src=>`<img src="${escapeHtml(src)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async">`).join('') || `<div class="note">—</div>`; }
-function syncVariantUI(){ m.variants.querySelectorAll('.vOpt').forEach(btn=>btn.classList.toggle('active', btn.dataset.variantId===String(activeVariant?.variantId||''))); }
+let activeProduct=null; let activeVariant=null; let activeImages=[]; let activeImageIndex=0;
+function isMeaningfulValue(val, type='generic'){
+  const v=String(val||'').trim();
+  if(!v) return false;
+  const n=norm(v);
+  if(['—','-','n/a','na','neuvedene','neuvedený','neuvedeny','not specified','unknown','none'].includes(n)) return false;
+  if(type==='material' && ['universal','univerzalne','univerzálne'].includes(n)) return false;
+  if(type==='placement' && ['universal','univerzalne','univerzálne'].includes(n)) return false;
+  return true;
+}
+function renderMainImage(index=0){
+  activeImageIndex=Math.max(0, Math.min(index, Math.max(0, activeImages.length-1)));
+  const src=activeImages[activeImageIndex];
+  m.main.innerHTML = src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(productTitle(activeProduct)||'Produkt')}" loading="eager" decoding="async">` : `<div class="note">—</div>`;
+  m.thumbs.querySelectorAll('.gThumb').forEach((btn,i)=>btn.classList.toggle('active', i===activeImageIndex));
+}
+function fillModalImages(images, title){
+  activeImages = Array.isArray(images) ? images.filter(Boolean) : [];
+  m.thumbs.innerHTML='';
+  if(!activeImages.length){ m.main.innerHTML = `<div class="note">—</div>`; return; }
+  activeImages.forEach((src,idx)=>{
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='gThumb' + (idx===0 ? ' active' : '');
+    btn.setAttribute('aria-label', `${title} ${idx+1}`);
+    btn.innerHTML=`<img src="${escapeHtml(src)}" alt="${escapeHtml(title)} ${idx+1}" loading="lazy" decoding="async">`;
+    btn.addEventListener('click',()=>renderMainImage(idx));
+    m.thumbs.appendChild(btn);
+  });
+  renderMainImage(0);
+}
+function syncVariantUI(){ m.variants.querySelectorAll('.vOpt').forEach((btn,idx)=>{ const key=btn.dataset.variantKey || btn.dataset.variantId || String(idx); const activeKey=String(activeVariant?.variantId||activeVariant?.title||''); btn.classList.toggle('active', key===activeKey); }); }
 function openShop(product=activeProduct){
   const raw=product||activeProduct;
   const url=String(raw?.productUrl||'').trim();
@@ -3055,29 +3200,69 @@ function setModalCtaState(raw, variant){
 function setActiveVariant(v){
   activeVariant=v||null;
   if(!activeVariant){ m.price.textContent='—'; setModalCtaState(activeProduct, null); syncVariantUI(); return; }
-  m.price.textContent = activeVariant.price ? euro(activeVariant.price) : t('unavailable');
+  const priceText = activeVariant.price ? euro(activeVariant.price) : t('unavailable');
+  m.price.innerHTML = `<span class="priceAccent">${escapeHtml(priceText)}</span>`;
+  const vImages = uniq([...(Array.isArray(activeVariant.images)?activeVariant.images:[]), ...(Array.isArray(activeProduct?.images)?activeProduct.images:[])]);
+  if(vImages.length) fillModalImages(vImages, variantTitle(activeVariant) || productTitle(activeProduct));
   setModalCtaState(activeProduct, activeVariant);
   syncVariantUI();
 }
 function openModal(id){
   const raw=PRODUCT_BY_ID.get(id); if(!raw) return; activeProduct=raw;
   m.title.textContent = productTitle(raw);
-m.sub.textContent = productDesc(raw);
-m.cat.textContent = translateCategory(raw.category || '');
-m.man.textContent = raw.manufacturer || 'RACEM';
-m.stock.textContent = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? t('inStock') : t('madeToOrder');
-m.fitment.textContent = formatFitment(raw);
-m.mount.textContent = formatPlacement(raw);
-m.material.textContent = formatMaterial(raw);
+  m.sub.textContent = '';
+  m.cat.textContent = translateCategory(raw.category || '') || 'Produkt';
+  m.stock.textContent = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? t('inStock') : t('madeToOrder');
 
-if (m.type) m.type.textContent = translateCategory(raw.category || '') || '—';
-if (m.desc) m.desc.innerHTML = raw.descriptionHtml || raw.description || '—';
-  const images=uniq([...(raw.images||[]), ...(raw.variants||[]).flatMap(v=>Array.isArray(v.images)?v.images:[])]); fillModalImages(images, productTitle(raw));
-  const meaningful=getMeaningfulVariants(raw.variants||[]);
-  const vars = meaningful.length ? meaningful : ((raw.variants||[]).length ? (raw.variants||[]) : [{title:productTitle(raw),price:raw.price||0,variantId:raw.defaultVariantId||'',images:raw.images||[]}]);
+  const fitmentText = formatFitment(raw);
+  const mountText = formatPlacement(raw);
+  const materialText = formatMaterial(raw);
+  const typeText = translateCategory(raw.category || '') || '—';
+
+  m.fitment.textContent = fitmentText || '—';
+  m.mount.textContent = mountText || '—';
+  m.material.textContent = materialText || '—';
+  if (m.type) m.type.textContent = typeText;
+  if (m.desc) m.desc.innerHTML = raw.descriptionHtml || raw.description || '—';
+
+  if(m.fitmentCard) m.fitmentCard.style.display = isMeaningfulValue(fitmentText) ? '' : 'none';
+  if(m.mountCard) m.mountCard.style.display = isMeaningfulValue(mountText, 'placement') ? '' : 'none';
+  if(m.materialCard) m.materialCard.style.display = isMeaningfulValue(materialText, 'material') ? '' : 'none';
+  if(m.typeCard) m.typeCard.style.display = isMeaningfulValue(typeText) ? '' : 'none';
+
+  const images=uniq([...(raw.images||[]), ...(raw.variants||[]).flatMap(v=>Array.isArray(v.images)?v.images:[])]);
+  fillModalImages(images, productTitle(raw));
+
+  const rawVariants = Array.isArray(raw.variants) ? raw.variants : [];
+  const meaningful=getMeaningfulVariants(rawVariants);
+  const vars = meaningful.length ? meaningful : (rawVariants.length ? rawVariants : [{title:productTitle(raw),price:raw.price||0,variantId:raw.defaultVariantId||'',images:raw.images||[]}]);
+  const cleanedVars = vars.filter(v=>norm(String(v?.title||''))!=='default title');
+  const finalVars = cleanedVars.length ? cleanedVars : vars;
+
   m.variants.innerHTML='';
-  vars.forEach((v,idx)=>{ const btn=document.createElement('button'); btn.type='button'; btn.className='vOpt'; btn.dataset.variantId=String(v.variantId||''); btn.innerHTML=`<span>${escapeHtml(variantTitle(v) || ('Variant ' + (idx+1)))}</span><strong>${escapeHtml(v.price ? euro(v.price) : t('unavailable'))}</strong>`; btn.addEventListener('click',()=>setActiveVariant(v)); m.variants.appendChild(btn); });
-  setActiveVariant(vars.find(v=>v?.variantId) || vars[0] || null);
+  const showVariants = finalVars.length > 1;
+  const wrap = document.getElementById('mVariantsWrap');
+  if(wrap) wrap.style.display = showVariants ? '' : 'none';
+
+  finalVars.forEach((v,idx)=>{
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='vOpt';
+    btn.dataset.variantId=String(v.variantId||'');
+    btn.dataset.variantKey=String(v.variantId||v.title||idx);
+    const rawTitle = String(variantTitle(v)||'').trim();
+    const title = norm(rawTitle)==='default title' ? '' : rawTitle;
+    btn.innerHTML=`<span>${escapeHtml(title || ('Variant ' + (idx+1)))}</span><strong>${escapeHtml(v.price ? euro(v.price) : t('unavailable'))}</strong>`;
+    btn.addEventListener('click',()=>setActiveVariant(v));
+    m.variants.appendChild(btn);
+  });
+
+  const startVariant = finalVars.find(v=>String(v?.variantId||'').trim()) || finalVars[0] || null;
+  setActiveVariant(startVariant);
+  if(!showVariants && startVariant){
+    const fallbackPrice = startVariant.price ? euro(startVariant.price) : t('unavailable');
+    m.price.innerHTML = `<span class="priceAccent">${escapeHtml(fallbackPrice)}</span>`;
+  }
   m.overlay.classList.add('open'); m.overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
 }
 function closeModal(){ m.overlay.classList.remove('open'); m.overlay.setAttribute('aria-hidden','true'); if(!document.getElementById('cartModal')?.classList.contains('show')) document.body.style.overflow=''; }
