@@ -2486,6 +2486,32 @@ max-height:110px;
 .cardActions .btn:last-child{
   background:linear-gradient(135deg,#b31f24,#d6292f);
 }
+
+
+/* single action button on listing cards */
+.cardActions.cardActions--inline{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  width:100%;
+}
+.cardActions.cardActions--inline .btn{
+  width:100% !important;
+  min-width:0 !important;
+  height:46px;
+  justify-content:center;
+}
+.recoActions{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  width:100%;
+}
+.recoActions .btn{
+  width:100% !important;
+  min-width:0 !important;
+  height:46px;
+  justify-content:center;
+}
+
 </style>
 </head>
 
@@ -3085,7 +3111,6 @@ function renderCards(list){
         <div class="bottomRow bottomRow--compact">
           <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
           <div class="cardActions cardActions--inline">
-            <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}">${escapeHtml(t('detailBtn'))}</button>
             <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
           </div>
         </div>
@@ -3126,7 +3151,6 @@ function renderRecommended(){
       <div class="recoBottom">
         <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
         <div class="recoActions">
-          <button class="btn btn--ghost" type="button" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(t('detailBtn'))}</button>
           <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
         </div>
       </div>`;
