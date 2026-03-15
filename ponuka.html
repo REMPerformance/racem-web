@@ -3355,7 +3355,7 @@ function openModal(id){
 function closeModal(){ m.overlay.classList.remove('open'); m.overlay.setAttribute('aria-hidden','true'); if(!document.getElementById('cartModal')?.classList.contains('show')) document.body.style.overflow=''; }
 function quickBuyByProductId(id){ const raw=PRODUCT_BY_ID.get(id); if(!raw) return; const variant=(raw.variants||[]).find(v=>v?.variantId) || (raw.defaultVariantId?{variantId:raw.defaultVariantId,price:raw.price||0,title:productTitle(raw)}:null); if(variant?.variantId) return window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(String(variant.variantId).trim())}:1`; if(raw.productUrl) return window.open(raw.productUrl,'_blank','noopener'); return openModal(id); }
 function goCheckout(){ if(m.buy?.dataset.mode==='shop') return openShop(activeProduct); if(!activeVariant?.variantId) return; window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(String(activeVariant.variantId).trim())}:1`; }
-function addActiveVariantToCart(){ if(!activeProduct || !activeVariant?.variantId) return; addToCart(activeProduct, activeVariant, 1); }
+function addActiveVariantToCart(){ if(!activeProduct || !activeVariant?.variantId) return; addToCart(activeProduct, activeVariant, 1); closeModal(); showCartAddedToast(productTitle(activeProduct)); pulseCartBar(); }
 
 const CART_KEY='racem_cart_v2'; let CART=[];
 function loadCart(){ try{ CART=JSON.parse(localStorage.getItem(CART_KEY)||'[]'); }catch(_){ CART=[]; } if(!Array.isArray(CART)) CART=[]; renderCartBar(); renderCartModal(); }
@@ -3386,8 +3386,12 @@ window.addProductToCart = function(id){
   const product = PRODUCT_BY_ID.get(String(id));
   if(!product) return;
   const variant=(product.variants||[]).find(v=>String(v?.variantId||'').trim()) || (product.defaultVariantId?{variantId:product.defaultVariantId,price:product.price||0,title:productTitle(product),images:product.images||[]}:null);
-  if(variant?.variantId) addToCart(product, variant, 1);
-  else openModal(String(id));
+  if(variant?.variantId){
+    addToCart(product, variant, 1);
+    if(m?.overlay?.classList.contains('open')) closeModal();
+    showCartAddedToast(productTitle(product));
+    pulseCartBar();
+  } else openModal(String(id));
 };
 
 (async function init(){ const loadingStart = Date.now(); syncStickyOffsets(); if(el.year) el.year.textContent = new Date().getFullYear(); if(el.loadingText) el.loadingText.textContent = t('loadingText'); await loadFeed(); bindEvents(); renderAll(); loadCart(); const elapsed = Date.now() - loadingStart; const waitMore = Math.max(0, 2000 - elapsed); setTimeout(setLoadingDone, waitMore); })();
@@ -3406,6 +3410,166 @@ function updateLiveTime(){
 }
 setInterval(updateLiveTime,1000);
 updateLiveTime();
+</script>
+
+
+<style id="racem-card-cart-fixes">
+.bottomRow.bottomRow--compact{
+  align-items:end;
+  gap:10px;
+}
+.priceBlock{
+  min-width:0;
+  flex:1 1 auto;
+}
+.priceBlock .muted{
+  font-size:10px;
+  letter-spacing:.12em;
+  margin-bottom:4px;
+}
+.bottomRow .price,
+.priceBlock .price{
+  font-size:13px !important;
+  line-height:1 !important;
+  letter-spacing:.04em !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cardActions.cardActions--inline{
+  flex:0 0 auto;
+  align-items:center;
+  gap:8px;
+}
+.cardActions.cardActions--inline .btn{
+  min-width:0 !important;
+  padding:11px 14px !important;
+  font-size:11px !important;
+  letter-spacing:.08em !important;
+}
+.card .bottomRow{grid-template-columns:minmax(0,1fr) auto;display:grid;}
+
+.cartBar{
+  top:calc(var(--header-offset) + var(--header-h) - 26px) !important;
+  width:min(1180px, calc(100% - 34px)) !important;
+  border-radius:0 0 20px 20px !important;
+}
+.cartBarInner{
+  padding:8px 14px 10px !important;
+  gap:10px !important;
+}
+.cartPill{
+  padding:7px 11px !important;
+  font-size:11px !important;
+}
+.cartTotal{
+  font-size:13px !important;
+}
+.cartBarRight .btn{
+  padding:10px 13px !important;
+}
+.cartBar.cartBarPulse{
+  animation:cartBarPulseFx .6s ease;
+}
+@keyframes cartBarPulseFx{
+  0%{box-shadow:0 18px 48px rgba(0,0,0,.52), 0 0 0 1px rgba(179,31,36,.08), inset 0 1px 0 rgba(255,255,255,.04);}
+  50%{box-shadow:0 22px 70px rgba(0,0,0,.56), 0 0 0 1px rgba(179,31,36,.22), 0 0 34px rgba(179,31,36,.32), inset 0 1px 0 rgba(255,255,255,.05);}
+  100%{box-shadow:0 18px 48px rgba(0,0,0,.52), 0 0 0 1px rgba(179,31,36,.08), inset 0 1px 0 rgba(255,255,255,.04);}
+}
+.cartToast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:1700;
+  min-width:280px;
+  max-width:min(420px, calc(100vw - 28px));
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(46,229,138,.30);
+  background:linear-gradient(180deg, rgba(10,10,10,.96), rgba(16,16,16,.94));
+  box-shadow:0 20px 60px rgba(0,0,0,.42), 0 0 0 1px rgba(46,229,138,.12);
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  transform:translateY(18px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .24s ease, opacity .2s ease;
+}
+.cartToast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+.cartToastIcon{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:rgba(46,229,138,.14);
+  border:1px solid rgba(46,229,138,.28);
+  color:#7cffb2;
+  font-size:16px;
+  font-weight:700;
+}
+.cartToastText{min-width:0;}
+.cartToastTitle{
+  font-family:Oswald,sans-serif;
+  font-size:15px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:#fff;
+}
+.cartToastMeta{
+  margin-top:4px;
+  color:rgba(255,255,255,.72);
+  font-size:12px;
+  line-height:1.4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media (max-width: 760px){
+  .card .bottomRow{grid-template-columns:1fr;gap:10px;}
+  .cardActions.cardActions--inline{width:100%;justify-content:stretch;}
+  .cardActions.cardActions--inline .btn{flex:1;justify-content:center;}
+  .cartBar{top:calc(var(--header-offset) + var(--header-h) - 16px) !important;width:calc(100% - 18px) !important;}
+  .cartBarInner{padding:10px 10px 12px !important;}
+  .cartToast{right:10px;left:10px;bottom:10px;max-width:none;min-width:0;}
+}
+</style>
+<script id="racem-card-cart-fixes-script">
+(function(){
+  let cartToastTimer = null;
+  function ensureCartToast(){
+    let toast = document.getElementById('cartToast');
+    if(toast) return toast;
+    toast = document.createElement('div');
+    toast.id = 'cartToast';
+    toast.className = 'cartToast';
+    toast.setAttribute('aria-live','polite');
+    toast.innerHTML = '<div class="cartToastIcon">✓</div><div class="cartToastText"><div class="cartToastTitle">Pridané do košíka</div><div class="cartToastMeta"></div></div>';
+    document.body.appendChild(toast);
+    return toast;
+  }
+  window.showCartAddedToast = function(name){
+    const toast = ensureCartToast();
+    const meta = toast.querySelector('.cartToastMeta');
+    if(meta) meta.textContent = name ? String(name) : 'Produkt bol úspešne pridaný.';
+    toast.classList.add('show');
+    clearTimeout(cartToastTimer);
+    cartToastTimer = setTimeout(()=> toast.classList.remove('show'), 1800);
+  };
+  window.pulseCartBar = function(){
+    const bar = document.getElementById('cartBar');
+    if(!bar) return;
+    bar.classList.remove('cartBarPulse');
+    void bar.offsetWidth;
+    bar.classList.add('cartBarPulse');
+    setTimeout(()=>bar.classList.remove('cartBarPulse'), 700);
+  };
+})();
 </script>
 
 </body>
