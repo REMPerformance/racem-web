@@ -3434,39 +3434,59 @@ updateLiveTime();
 <style id="racem-card-cart-fixes">
 .bottomRow.bottomRow--compact{
   align-items:end;
-  gap:10px;
+  gap:12px;
 }
 .priceBlock{
-  min-width:0;
-  flex:1 1 auto;
+  min-width:120px;
+  flex:0 0 120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
 }
 .priceBlock .muted{
-  font-size:11px;
-  letter-spacing:.12em;
-  margin-bottom:5px;
+  font-size:10px;
+  letter-spacing:.14em;
+  margin-bottom:6px;
+  opacity:.72;
 }
 .bottomRow .price,
 .priceBlock .price{
-  font-size:18px !important;
-  line-height:1.08 !important;
-  letter-spacing:.06em !important;
-  font-weight:700 !important;
+  font-size:31px !important;
+  line-height:.94 !important;
+  letter-spacing:-.02em !important;
+  font-weight:800 !important;
   white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  font-variant-numeric:tabular-nums;
 }
 .cardActions.cardActions--inline{
-  flex:0 0 auto;
+  flex:1 1 auto;
   align-items:center;
   gap:8px;
+  min-width:0;
 }
 .cardActions.cardActions--inline .btn{
   min-width:0 !important;
-  padding:11px 14px !important;
+  padding:11px 12px !important;
   font-size:11px !important;
   letter-spacing:.08em !important;
 }
-.card .bottomRow{grid-template-columns:minmax(0,1fr) auto;display:grid;}
+.card .bottomRow{grid-template-columns:120px minmax(0,1fr);display:grid;}
+
+@media (max-width: 1100px){
+  .card .bottomRow{grid-template-columns:110px minmax(0,1fr);}
+  .priceBlock{min-width:110px;flex-basis:110px;}
+  .bottomRow .price,
+  .priceBlock .price{font-size:27px !important;}
+}
+
+@media (max-width: 900px){
+  .card .bottomRow{grid-template-columns:1fr;}
+  .priceBlock{min-width:0;flex-basis:auto;}
+  .bottomRow .price,
+  .priceBlock .price{font-size:30px !important;}
+}
 
 .cartBar{
   top:calc(var(--header-offset) + var(--header-h) - 26px) !important;
