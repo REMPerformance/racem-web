@@ -2678,9 +2678,7 @@ max-height:110px;
           <div id="mVariantsWrap">
             <div class="muted" style="margin-bottom:8px;" data-i18n="modalVariants">Variants</div>
             <div class="variants" id="mVariants"></div>
-            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;">
-              Tento variant nemá doplnené <b>variantId</b> v JSON feede, preto checkout nebude fungovať.
-            </div>
+            <div class="note" id="mVariantNote" style="margin-top:10px; display:none;"></div>
           </div>
 
           <div class="rowSplit" style="margin-top:auto;">
@@ -2782,8 +2780,7 @@ const i18n = {
     modalPrice:'Cena', modalAvailability:'Dostupnosť', modalInfo:'Info', modalVariants:'Varianty', modalProductDetail:'Detail produktu', fitment:'Pasuje na', placement:'Umiestnenie', material:'Materiál', linkLabel:'Link', closeBtn:'Zatvoriť',
     cartTitle:'Košík', cartItems:'Položky', cartSubtotal:'Suma', cartTotal:'Spolu', cartContinue:'Pokračovať v ponuke', cartCheckout:'Prejsť na checkout', cartClear:'Vyprázdniť', cartView:'Zobraziť košík',
     empty:'Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.',
-    feedLabel:'Feed', checkoutMissing:'Tento variant nemá doplnené variantId, preto checkout nebude fungovať.',
-    cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam performance katalóg', productsWord:'produktov', loadMoreBtn:'Načítať ďalšie',
+    feedLabel:'Feed',     cartEmpty:'Košík je zatiaľ prázdny.', variantLabel:'Variant', pricePerPiece:'Cena', piecesWord:'položiek', loadedFeeds:'Načítané feedy', loadingText:'Načítavam performance katalóg', productsWord:'produktov', loadMoreBtn:'Načítať ďalšie',
     seoTitle:'RACEM | Ponuka performance dielov', seoDesc:'RACEM ponuka performance dielov. Kombinovaný katalóg CYBUL, SWAGIER, SFXLA a RACEM s pokročilým filtrovaním podľa platformy, značky, kategórie, ceny a dostupnosti.'
   },
   en: {
@@ -2810,8 +2807,7 @@ const i18n = {
     modalPrice:'Price', modalAvailability:'Availability', modalInfo:'Info', modalVariants:'Variants', modalProductDetail:'Product detail', fitment:'Fits', placement:'Placement', material:'Material', linkLabel:'Link', closeBtn:'Close',
     cartTitle:'Cart', cartItems:'Items', cartSubtotal:'Subtotal', cartTotal:'Total', cartContinue:'Continue browsing', cartCheckout:'Go to checkout', cartClear:'Clear', cartView:'View cart',
     empty:'No products matched. Change the filters or search term.',
-    feedLabel:'Feed', checkoutMissing:'This variant has no mapped variantId, so checkout will not work yet.',
-    cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading performance catalog', productsWord:'products', loadMoreBtn:'Load more',
+    feedLabel:'Feed',     cartEmpty:'Your cart is empty for now.', variantLabel:'Variant', pricePerPiece:'Price', piecesWord:'items', loadedFeeds:'Loaded feeds', loadingText:'Loading performance catalog', productsWord:'products', loadMoreBtn:'Load more',
     seoTitle:'RACEM | Performance Parts Catalog', seoDesc:'RACEM performance parts catalog. Combined CYBUL, SWAGIER, SFXLA and RACEM feeds with advanced filtering by platform, brand, category, price and availability.'
   }
 };
@@ -3262,24 +3258,23 @@ function openShop(product=activeProduct){
 function setModalCtaState(raw, variant){
   const ok=!!String(variant?.variantId||'').trim();
   const hasShopLink=!!String(raw?.productUrl||'').trim();
+  m.note.style.display='none';
+  m.note.innerHTML='';
   if(ok){
     m.buy.disabled=false; m.addCart.disabled=false;
     m.buy.textContent=t('quickBuyBtn');
     m.addCart.textContent=t('addCartBtn');
     m.buy.dataset.mode='checkout';
-    m.note.style.display='none';
   }else if(hasShopLink){
     m.buy.disabled=false; m.addCart.disabled=true;
     m.buy.textContent=t('openShopBtn');
     m.addCart.textContent=t('addCartBtn');
     m.buy.dataset.mode='shop';
-    m.note.style.display='block';
   }else{
     m.buy.disabled=true; m.addCart.disabled=true;
     m.buy.textContent=t('moreBtn');
     m.addCart.textContent=t('addCartBtn');
     m.buy.dataset.mode='none';
-    m.note.style.display='block';
   }
 }
 function setActiveVariant(v){
@@ -3423,15 +3418,16 @@ updateLiveTime();
   flex:1 1 auto;
 }
 .priceBlock .muted{
-  font-size:10px;
+  font-size:11px;
   letter-spacing:.12em;
-  margin-bottom:4px;
+  margin-bottom:5px;
 }
 .bottomRow .price,
 .priceBlock .price{
-  font-size:13px !important;
-  line-height:1 !important;
-  letter-spacing:.04em !important;
+  font-size:18px !important;
+  line-height:1.08 !important;
+  letter-spacing:.06em !important;
+  font-weight:700 !important;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
