@@ -2840,7 +2840,12 @@ max-height:110px;
   </div>
 
 <script>
-const FEED_URLS = ["./swagier.json","./cybul.json","./products.json","./sfxla-products.json"];
+const FEED_SOURCES = [
+  { label: "SWAGIER", urls: ["./swagier.json"] },
+  { label: "CYBUL", urls: ["./cybul.json"] },
+  { label: "RACEM", urls: ["./products.json"] },
+  { label: "SFXLA", urls: ["./sfxla-products.json"] }
+];
 let FEED = null;
 let PRODUCTS = [];
 let PRODUCT_BY_ID = new Map();
@@ -2872,7 +2877,7 @@ const i18n = {
     heroEyebrow:'Celá ponuka',
     heroTitle:'Celá ponuka na jednom mieste.',
     heroLead:'Vyber si diely rýchlo, filtruj podľa auta, ceny alebo kategórie a otvor produkt bez zbytočného balastu.',
-    heroBullet1Title:'Multi-feed', heroBullet1Text:'Načíta swagier.json, cybul.json, products.json a sfxla-products.json do jedného filtrovaného katalógu.',
+    heroBullet1Title:'Multi-feed', heroBullet1Text:'Načíta swagier.json, cybul.json, RACEM feed a sfxla-products.json do jedného filtrovaného katalógu.',
     heroBullet2Title:'Pokročilé filtre', heroBullet2Text:'Hľadanie podľa platformy, tagu, výrobcu, kategórie, feedu, stavu skladu a cenového rozsahu.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Otvor detail, vyber validný variant, pridaj do košíka a skoč do Shopify košíka cez variant ID.',
     statShown:'Zobrazené', statCheckoutStatus:'Checkout status', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
@@ -2899,7 +2904,7 @@ const i18n = {
     heroEyebrow:'Full catalog',
     heroTitle:'Full catalog in one place.',
     heroLead:'Pick parts faster, filter by car, price or category, and open each product without unnecessary clutter.',
-    heroBullet1Title:'Multi-feed', heroBullet1Text:'Loads swagier.json, cybul.json, products.json and sfxla-products.json into one filtered catalog.',
+    heroBullet1Title:'Multi-feed', heroBullet1Text:'Loads swagier.json, cybul.json, the RACEM feed and sfxla-products.json into one filtered catalog.',
     heroBullet2Title:'Advanced filtering', heroBullet2Text:'Search by platform, tag, manufacturer, category, feed, stock state and price range.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Open detail, pick a valid variant, add it to cart and jump to the Shopify cart with variant IDs.',
     statShown:'Shown', statCheckoutStatus:'Checkout status', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
@@ -3001,33 +3006,102 @@ function productTitle(p){ return state.lang==='sk' ? (p.title||'') : translateSm
 function productDesc(p){ const short=(p.short||'').trim(); const base= short || stripHtml(p.descriptionHtml||'').slice(0,160); return translateSmart(base); }
 function variantTitle(v){ return state.lang==='sk' ? (v?.title||'') : translateSmart(v?.title||''); }
 
-async function loadFeed(){
-  const responses = await Promise.all(FEED_URLS.map(async (url)=>{
+function escapeHtmlText(value=''){
+  return String(value||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch] || ch));
+}
+function plainTextToHtml(value=''){
+  const text=String(value||'').trim();
+  if(!text) return '';
+  return text.split(/\n{2,}/).map(part=>`<p>${escapeHtmlText(part).replace(/\n/g,'<br>')}</p>`).join('');
+}
+function sanitizeFeedText(raw=''){
+  let txt=String(raw||'').replace(/^﻿/, '').trim();
+  txt=txt.replace(/,\s*,+/g, ',');
+  txt=txt.replace(/,\s*([}\]])/g, '$1');
+  return txt;
+}
+async function parseFeedResponse(res, url){
+  const raw=await res.text();
+  const attempts=[raw, sanitizeFeedText(raw)];
+  let lastErr=null;
+  for(const candidate of attempts){
     try{
-      const res=await fetch(url + '?v=' + Date.now(), {cache:'no-store'});
-      if(!res.ok) throw new Error(url + ': ' + res.status);
-      const json=await res.json();
-      if(!Array.isArray(json.products)) throw new Error('Invalid products array');
-      return { url, label: sourceLabelFromUrl(url), json };
-    }catch(err){ console.warn('[RACEM catalog]', err); return null; }
+      const json=JSON.parse(candidate);
+      if(!Array.isArray(json?.products)) throw new Error('Invalid products array');
+      return json;
+    }catch(err){ lastErr=err; }
+  }
+  throw new Error(`${url}: ${lastErr?.message || 'Invalid JSON'}`);
+}
+function normalizeVariant(variant, idx=0, fallbackTitle=''){
+  const priceCandidates=[variant?.price, variant?.priceEUR, variant?.compareAtPrice];
+  const price=priceCandidates.map(v=>Number(v)).find(v=>Number.isFinite(v) && v > 0) || 0;
+  const variantId=String(variant?.variantId ?? variant?.shopifyVariantId ?? '').trim();
+  const title=String(variant?.title || variant?.name || variant?.label || '').trim() || `Variant ${idx+1}`;
+  return {
+    ...variant,
+    title,
+    price,
+    variantId,
+    images:Array.isArray(variant?.images)?variant.images.filter(Boolean):[],
+    options:(variant && typeof variant.options==='object' && !Array.isArray(variant.options)) ? variant.options : (title && title!==fallbackTitle ? {Title:title} : {})
+  };
+}
+function normalizeProduct(rawProduct, sourceLabel='RACEM'){
+  const rawVariants=Array.isArray(rawProduct?.variants) ? rawProduct.variants : [];
+  const normalizedVariants=rawVariants.map((variant,idx)=>normalizeVariant(variant, idx, rawProduct?.title || '')).filter(Boolean);
+  const pricePool=normalizedVariants.map(v=>Number(v.price)).filter(v=>Number.isFinite(v) && v > 0);
+  const productLevelPrice=[rawProduct?.price, rawProduct?.priceEUR].map(v=>Number(v)).find(v=>Number.isFinite(v) && v > 0) || 0;
+  const fallbackPrice=pricePool.length ? Math.min(...pricePool) : productLevelPrice;
+  const defaultVariant=normalizedVariants.find(v=>String(v?.variantId||'').trim()) || normalizedVariants[0] || null;
+  const descriptionHtml=rawProduct?.descriptionHtml || plainTextToHtml(rawProduct?.description || '');
+  const images=uniq([...(Array.isArray(rawProduct?.images)?rawProduct.images:[]), ...normalizedVariants.flatMap(v=>Array.isArray(v.images)?v.images:[])]).filter(Boolean);
+  return {
+    ...rawProduct,
+    title:String(rawProduct?.title || rawProduct?.name || rawProduct?.id || 'Untitled product').trim(),
+    short:String(rawProduct?.short || '').trim(),
+    descriptionHtml,
+    category:String(rawProduct?.category || 'Uncategorized').trim() || 'Uncategorized',
+    manufacturer:String(rawProduct?.manufacturer || sourceLabel || 'RACEM').trim() || 'RACEM',
+    variants:normalizedVariants,
+    images,
+    price:fallbackPrice,
+    stockStatus:rawProduct?.stockStatus || rawProduct?.status || '',
+    productUrl:rawProduct?.productUrl || (rawProduct?.handle ? ('https://shop.racem.sk/products/' + rawProduct.handle) : ''),
+    defaultVariantId:String(defaultVariant?.variantId || '').trim(),
+    __sourceLabel: inferSource(rawProduct, sourceLabel)
+  };
+}
+async function loadFeed(){
+  const responses = await Promise.all(FEED_SOURCES.map(async (source)=>{
+    for(const url of source.urls){
+      try{
+        const res=await fetch(url + '?v=' + Date.now(), {cache:'no-store'});
+        if(!res.ok) throw new Error(url + ': ' + res.status);
+        const json=await parseFeedResponse(res, url);
+        return { url, label: source.label || sourceLabelFromUrl(url), json };
+      }catch(err){ console.warn('[RACEM catalog]', err); }
+    }
+    return null;
   }));
   const ok=responses.filter(Boolean);
+  const normalizedProducts = ok.flatMap(f => (f.json.products||[]).map(p => normalizeProduct(p, f.label)));
   FEED = {
     meta:{currency:'EUR', shopDomain:'shop.racem.sk'},
     categories: uniq(ok.flatMap(f=>Array.isArray(f.json.categories)?f.json.categories:[])),
-    products: ok.flatMap(f => (f.json.products||[]).map(p => ({...p, __sourceLabel: inferSource(p, f.label)})))
+    products: normalizedProducts
   };
   PRODUCT_BY_ID = new Map(FEED.products.map(p=>[p.id,p]));
   PRODUCTS = FEED.products.map(p => {
     const variants = Array.isArray(p.variants) ? p.variants : [];
     const prices = variants.map(v => Number(v.price)).filter(n => Number.isFinite(n) && n > 0);
-    const minPrice = prices.length ? Math.min(...prices) : 0;
-    const defaultVariant = variants.find(v => v?.variantId) || variants[0] || null;
-    const allImages = uniq([...(Array.isArray(p.images)?p.images:[]), ...variants.flatMap(v=>Array.isArray(v.images)?v.images:[])]);
+    const minPrice = prices.length ? Math.min(...prices) : (Number(p.price) > 0 ? Number(p.price) : 0);
+    const defaultVariant = variants.find(v => String(v?.variantId||'').trim()) || variants[0] || null;
+    const allImages = uniq([...(Array.isArray(p.images)?p.images:[]), ...variants.flatMap(v=>Array.isArray(v.images)?v.images:[])]).filter(Boolean);
     const tags = uniq(Array.isArray(p.tags)?p.tags.map(String):[]);
     const platforms = getFitmentList(p).slice(0,8);
     return {
-      id:p.id, handle:p.handle, title:p.title, short:p.short||'', descriptionHtml:p.descriptionHtml||'', category:p.category || 'Uncategorized', brand:p.manufacturer || 'RACEM', source:p.__sourceLabel || 'RACEM', stock:getDisplayStock(minPrice), price:minPrice, tags, top:tags.some(t=>norm(t)==='top'), images:allImages, productUrl:p.productUrl || (p.handle ? ('https://shop.racem.sk/products/' + p.handle) : ''), platforms, variants, defaultVariantId: defaultVariant?.variantId ? String(defaultVariant.variantId).trim() : '', hasMeaningfulVariants: getMeaningfulVariants(variants).length > 0, searchable: norm([p.title, stripHtml(p.descriptionHtml), p.category, p.manufacturer, tags.join(' '), platforms.join(' '), p.__sourceLabel].join(' '))
+      id:p.id, handle:p.handle, title:p.title, short:p.short||'', descriptionHtml:p.descriptionHtml||'', category:p.category || 'Uncategorized', brand:p.manufacturer || p.__sourceLabel || 'RACEM', source:p.__sourceLabel || 'RACEM', stock:p.stockStatus==='in_stock' ? 'in_stock' : getDisplayStock(minPrice), price:minPrice, tags, top:tags.some(t=>norm(t)==='top'), images:allImages, productUrl:p.productUrl || (p.handle ? ('https://shop.racem.sk/products/' + p.handle) : ''), platforms, variants, defaultVariantId: defaultVariant?.variantId ? String(defaultVariant.variantId).trim() : '', hasMeaningfulVariants: getMeaningfulVariants(variants).length > 0, searchable: norm([p.title, stripHtml(p.descriptionHtml), p.category, p.manufacturer, tags.join(' '), platforms.join(' '), p.__sourceLabel].join(' '))
     };
   });
 }
@@ -3399,7 +3473,7 @@ function openModal(id){
   m.title.textContent = productTitle(raw);
   m.sub.textContent = '';
   m.cat.textContent = translateCategory(raw.category || '') || 'Produkt';
-  const modalStock = getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? 'in_stock' : 'made_to_order';
+  const modalStock = String(raw?.stockStatus||'').trim()==='in_stock' ? 'in_stock' : (getDisplayStock((raw.variants || [])[0]?.price) === 'in_stock' ? 'in_stock' : 'made_to_order');
   m.stock.textContent = modalStock === 'in_stock' ? t('inStock') : t('madeToOrder');
   m.stock.className = modalStock === 'in_stock' ? 'badge badge--stock' : 'badge badge--order';
 
