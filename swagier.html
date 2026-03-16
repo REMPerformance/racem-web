@@ -143,6 +143,57 @@
       justify-content:flex-end;
     }
 
+    .lang-switch{
+      position:relative;
+      display:inline-grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center;
+      min-width:92px;
+      height:44px;
+      padding:4px;
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .lang-switch-thumb{
+      position:absolute;
+      top:4px;
+      left:4px;
+      width:calc(50% - 4px);
+      height:36px;
+      border-radius:999px;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 10px 24px rgba(179,31,36,.28);
+      transition:transform .24s ease;
+      pointer-events:none;
+    }
+
+    .lang-switch[data-lang="en"] .lang-switch-thumb{
+      transform:translateX(100%);
+    }
+
+    .lang-switch-btn{
+      position:relative;
+      z-index:1;
+      border:none;
+      background:none;
+      color:var(--soft);
+      font-weight:800;
+      letter-spacing:.08em;
+      height:100%;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+      text-transform:uppercase;
+      padding:0 14px;
+    }
+
+    .lang-switch-btn.active{
+      color:#fff;
+    }
+
     .ghost-btn,.cta-btn{
       border:none;
       cursor:pointer;
@@ -1643,13 +1694,19 @@
       </a>
 
       <div class="top-actions">
-  <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
+        <div class="lang-switch" id="langSwitch" data-lang="sk" aria-label="Language switch">
+          <span class="lang-switch-thumb"></span>
+          <button class="lang-switch-btn active" id="langSkBtn" type="button">SK</button>
+          <button class="lang-switch-btn" id="langEnBtn" type="button">EN</button>
+        </div>
 
-  <button class="ghost-btn cart-btn-top" id="cartBtn" type="button">
-    Košík
-    <span class="cart-count" id="cartCount">0</span>
-  </button>
-</div>
+        <button class="ghost-btn" id="homeBtn" type="button">Domovská stránka</button>
+
+        <button class="ghost-btn cart-btn-top" id="cartBtn" type="button">
+          <span id="cartBtnLabel">Košík</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -1673,7 +1730,7 @@
               </p>
 
               <div class="hero-actions">
-                <button class="ghost-btn" onclick="window.location.href='/'">Domovská stránka</button>
+                <button class="ghost-btn" id="heroHomeBtn" type="button">Domovská stránka</button>
               </div>
             </div>
 
@@ -1885,11 +1942,13 @@
   </div>
 
   <script>
-    const DATA_URL = './swagier.json';
+    const DATA_URL = './swagier_bilingual.json';
 
    const state = {
+  rawProducts: [],
   allProducts: [],
   filteredProducts: [],
+  lang: 'sk',
   activeCategory: null,
   activeBrand: null,
   search: '',
@@ -1947,8 +2006,323 @@
       cartTotal: document.getElementById('cartTotal'),
       closeCartCta: document.getElementById('closeCartCta'),
       cartCheckoutBtn: document.getElementById('cartCheckoutBtn'),
-      mobileFiltersMount: document.getElementById('mobileFiltersMount')
+      mobileFiltersMount: document.getElementById('mobileFiltersMount'),
+      langSwitch: document.getElementById('langSwitch'),
+      langSkBtn: document.getElementById('langSkBtn'),
+      langEnBtn: document.getElementById('langEnBtn'),
+      homeBtn: document.getElementById('homeBtn'),
+      heroHomeBtn: document.getElementById('heroHomeBtn'),
+      cartBtnLabel: document.getElementById('cartBtnLabel')
     };
+
+
+    const I18N = {
+      sk: {
+        metaDescription: 'Prémiová ponuka performance dielov v RACEM štýle.',
+        brandText: 'Performance Parts Selection',
+        home: 'Domovská stránka',
+        cart: 'Košík',
+        officialOffer: 'Oficiálna ponuka výrobcu',
+        heroTitleBefore: 'Výber dielov ',
+        heroTitleAccent: 'SWAGIER',
+        heroDesc: 'Karosárske a performance komponenty určené pre projekty, ktoré idú nad rámec sériového auta.',
+        products: 'Produktov',
+        categories: 'Kategórií',
+        models: 'Modelov',
+        priceRange: 'Cenový rozsah',
+        loadingCatalog: 'Načítavam katalóg a pripravujem prehľad ponuky…',
+        liveCatalog: 'Live katalóg',
+        loadedProducts: 'načítaných produktov',
+        activeView: 'Aktívne zobrazenie',
+        filteredResults: 'výsledkov s filtrom',
+        topCategory: 'Najčastejšia kategória',
+        dominantSegment: 'dominantný segment v tejto ponuke',
+        feedStatus: 'Status feed',
+        catalogOnline: 'katalóg je online',
+        catalogTitle: 'Katalóg produktov',
+        catalogCopy: 'Komponenty pre upravené vozidlá – od podvozku až po karosériu.',
+        filtersTitle: 'Filtre a výber',
+        reset: 'Reset',
+        searchProduct: 'Hľadať produkt',
+        searchPlaceholder: 'Názov, model auta, popis...',
+        category: 'Kategória',
+        carModel: 'Model auta',
+        price: 'Cena',
+        priceFrom: 'Od €',
+        priceTo: 'Do €',
+        actionsStates: 'Akcie a stavy',
+        saleOnly: 'Len zlacnené produkty',
+        featuredOnly: 'Len featured',
+        toolbarLive: 'Performance catalog live',
+        filters: 'Filtre',
+        results: 'výsledkov',
+        sortFeatured: 'Zoradiť: Odporúčané',
+        sortPriceAsc: 'Cena: Od najnižšej',
+        sortPriceDesc: 'Cena: Od najvyššej',
+        sortNameAsc: 'Názov: A → Z',
+        sortNameDesc: 'Názov: Z → A',
+        sortNewest: 'Najnovšie / featured',
+        emptyTitle: 'Nič sa nenašlo',
+        emptyDesc: 'Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov alebo širšie vyhľadávanie.',
+        emptyReset: 'Resetovať filtre',
+        footerLoad: 'Načítanie dát zo swagier_bilingual.json',
+        cartTitle: 'Tvoj košík',
+        continueBrowsing: 'Pokračovať v prehliadaní',
+        checkout: 'Prejsť k pokladni',
+        total: 'Spolu',
+        all: 'Všetko',
+        allModels: 'Všetky',
+        modelDetail: 'Model v detaile',
+        priceOnRequest: 'Na vyžiadanie',
+        quickPreview: 'Rýchly náhľad',
+        detail: 'Detail',
+        addToCart: 'Pridať do košíku',
+        searching: 'Vyhľadávaš:',
+        searchTag: 'Hľadanie',
+        categoryTag: 'Kategória',
+        modelTag: 'Model auta',
+        priceFromTag: 'Cena od',
+        priceToTag: 'Cena do',
+        saleOnlyTag: 'Len akcie',
+        featuredOnlyTag: 'Len featured',
+        categoryLabel: 'Kategória',
+        carModelLabel: 'Model auta',
+        manufacturer: 'Výrobca',
+        sku: 'SKU',
+        variant: 'Variant',
+        openInShop: 'Otvoriť v eshope',
+        defaultVersion: 'Základná verzia',
+        universal: 'UNIVERZÁLNE',
+        loadedProductsMeta: 'Načítaných {count} produktov zo swagier_bilingual.json',
+        heroHighlight: 'Katalóg obsahuje {count} položiek. Dominantná kategória je {category} a filtre sú nastavené podľa modelov áut.',
+        heroHighlightEmpty: 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.',
+        loadErrorTitle: 'swagier_bilingual.json sa nepodarilo načítať',
+        loadErrorDesc: 'Skontroluj, či je súbor swagier_bilingual.json v rovnakom priečinku ako táto HTML stránka.',
+        retry: 'Skúsiť znovu',
+        cartEmptyTitle: 'Košík je prázdny',
+        cartEmptyDesc: 'Zatiaľ si nepridal žiadny produkt.',
+        remove: 'Odstrániť',
+        invalidCheckout: 'V košíku nie je žiadny produkt s platným Shopify variant ID.'
+      },
+      en: {
+        metaDescription: 'Premium performance parts selection in RACEM style.',
+        brandText: 'Performance Parts Selection',
+        home: 'Home',
+        cart: 'Cart',
+        officialOffer: 'Official manufacturer offer',
+        heroTitleBefore: 'SWAGIER parts ',
+        heroTitleAccent: 'selection',
+        heroDesc: 'Body and performance components built for projects that go beyond a stock car.',
+        products: 'Products',
+        categories: 'Categories',
+        models: 'Models',
+        priceRange: 'Price range',
+        loadingCatalog: 'Loading catalog and preparing product overview…',
+        liveCatalog: 'Live catalog',
+        loadedProducts: 'products loaded',
+        activeView: 'Active view',
+        filteredResults: 'filtered results',
+        topCategory: 'Top category',
+        dominantSegment: 'dominant segment in this catalog',
+        feedStatus: 'Feed status',
+        catalogOnline: 'catalog is online',
+        catalogTitle: 'Product catalog',
+        catalogCopy: 'Components for modified cars — from suspension to bodywork.',
+        filtersTitle: 'Filters and selection',
+        reset: 'Reset',
+        searchProduct: 'Search product',
+        searchPlaceholder: 'Name, car model, description...',
+        category: 'Category',
+        carModel: 'Car model',
+        price: 'Price',
+        priceFrom: 'From €',
+        priceTo: 'To €',
+        actionsStates: 'Offers and states',
+        saleOnly: 'Discounted products only',
+        featuredOnly: 'Featured only',
+        toolbarLive: 'Performance catalog live',
+        filters: 'Filters',
+        results: 'results',
+        sortFeatured: 'Sort: Recommended',
+        sortPriceAsc: 'Price: Lowest first',
+        sortPriceDesc: 'Price: Highest first',
+        sortNameAsc: 'Name: A → Z',
+        sortNameDesc: 'Name: Z → A',
+        sortNewest: 'Newest / featured',
+        emptyTitle: 'Nothing found',
+        emptyDesc: 'The current filters are too narrow or the JSON does not contain matching products. Try resetting filters or using a broader search.',
+        emptyReset: 'Reset filters',
+        footerLoad: 'Loading data from swagier_bilingual.json',
+        cartTitle: 'Your cart',
+        continueBrowsing: 'Continue browsing',
+        checkout: 'Go to checkout',
+        total: 'Total',
+        all: 'All',
+        allModels: 'All',
+        modelDetail: 'Model in detail',
+        priceOnRequest: 'On request',
+        quickPreview: 'Quick preview',
+        detail: 'Detail',
+        addToCart: 'Add to cart',
+        searching: 'Searching:',
+        searchTag: 'Search',
+        categoryTag: 'Category',
+        modelTag: 'Car model',
+        priceFromTag: 'Price from',
+        priceToTag: 'Price to',
+        saleOnlyTag: 'Discounted only',
+        featuredOnlyTag: 'Featured only',
+        categoryLabel: 'Category',
+        carModelLabel: 'Car model',
+        manufacturer: 'Manufacturer',
+        sku: 'SKU',
+        variant: 'Variant',
+        openInShop: 'Open in shop',
+        defaultVersion: 'Base version',
+        universal: 'UNIVERSAL',
+        loadedProductsMeta: 'Loaded {count} products from swagier_bilingual.json',
+        heroHighlight: 'The catalog contains {count} items. The dominant category is {category} and the filters are set up around car models.',
+        heroHighlightEmpty: 'The JSON is loaded, but it does not contain any products yet.',
+        loadErrorTitle: 'Failed to load swagier_bilingual.json',
+        loadErrorDesc: 'Check whether swagier_bilingual.json is in the same folder as this HTML page.',
+        retry: 'Try again',
+        cartEmptyTitle: 'Cart is empty',
+        cartEmptyDesc: 'You have not added any products yet.',
+        remove: 'Remove',
+        invalidCheckout: 'There is no product in the cart with a valid Shopify variant ID.'
+      }
+    };
+
+    function detectInitialLanguage(){
+      const saved = localStorage.getItem('swagier_lang');
+      if(saved === 'sk' || saved === 'en') return saved;
+      const langs = [navigator.language, ...(navigator.languages || [])].filter(Boolean).map(v => String(v).toLowerCase());
+      const isSkOrCz = langs.some(v => v.startsWith('sk') || v.startsWith('cs') || v.startsWith('cz'));
+      return isSkOrCz ? 'sk' : 'en';
+    }
+
+    function t(key, vars = {}){
+      const dict = I18N[state.lang] || I18N.sk;
+      let value = dict[key] ?? I18N.sk[key] ?? key;
+      for (const [k,v] of Object.entries(vars)) value = String(value).replaceAll(`{${k}}`, v);
+      return value;
+    }
+
+    function getTranslated(obj, path, fallback = ''){
+      const parts = path.split('.');
+      let ref = obj;
+      for(const part of parts){
+        ref = ref?.[part];
+      }
+      if(ref && typeof ref === 'object') return ref[state.lang] ?? ref.sk ?? ref.en ?? fallback;
+      return ref ?? fallback;
+    }
+
+    function localeCode(){
+      return state.lang === 'en' ? 'en-GB' : 'sk-SK';
+    }
+
+    function refreshMappedProducts(){
+      state.allProducts = state.rawProducts.map(mapProduct);
+    }
+
+    function setLanguage(lang, persist = true){
+      state.lang = (lang === 'en') ? 'en' : 'sk';
+      if(persist) localStorage.setItem('swagier_lang', state.lang);
+      document.documentElement.lang = state.lang;
+      document.title = state.lang === 'en' ? 'RACEM | SWAGIER Catalog' : 'RACEM | SWAGIER Katalóg';
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if(metaDescription) metaDescription.setAttribute('content', t('metaDescription'));
+      els.langSwitch?.setAttribute('data-lang', state.lang);
+      els.langSkBtn?.classList.toggle('active', state.lang === 'sk');
+      els.langEnBtn?.classList.toggle('active', state.lang === 'en');
+      refreshMappedProducts();
+      updateStaticTexts();
+      buildFilterChips();
+      updateGlobalStats();
+      applyFilters();
+      updateCartUI();
+    }
+
+    function updateStaticTexts(){
+      const brandSpan = document.querySelector('.brand-text span');
+      if(brandSpan) brandSpan.textContent = t('brandText');
+      if(els.homeBtn) els.homeBtn.textContent = t('home');
+      if(els.heroHomeBtn) els.heroHomeBtn.textContent = t('home');
+      if(els.cartBtnLabel) els.cartBtnLabel.textContent = t('cart');
+      const eyebrow = document.querySelector('.eyebrow');
+      if(eyebrow) eyebrow.innerHTML = `<span class="eyebrow-dot"></span>${t('officialOffer')}`;
+      const heroTitle = document.querySelector('.hero h1');
+      if(heroTitle) heroTitle.innerHTML = `${escapeHtml(t('heroTitleBefore'))}<span class="accent">${escapeHtml(t('heroTitleAccent'))}</span>`;
+      const heroP = document.querySelector('.hero p');
+      if(heroP) heroP.textContent = t('heroDesc');
+      const statLabels = document.querySelectorAll('.hero-stat-label');
+      if(statLabels[0]) statLabels[0].textContent = t('products');
+      if(statLabels[1]) statLabels[1].textContent = t('categories');
+      if(statLabels[2]) statLabels[2].textContent = t('models');
+      if(statLabels[3]) statLabels[3].textContent = t('priceRange');
+      const hudLabels = document.querySelectorAll('.hud-label');
+      if(hudLabels[0]) hudLabels[0].textContent = t('liveCatalog');
+      if(hudLabels[1]) hudLabels[1].textContent = t('activeView');
+      if(hudLabels[2]) hudLabels[2].textContent = t('topCategory');
+      if(hudLabels[3]) hudLabels[3].textContent = t('feedStatus');
+      const hudSubs = document.querySelectorAll('.hud-sub');
+      if(hudSubs[0]) hudSubs[0].textContent = t('loadedProducts');
+      if(hudSubs[1]) hudSubs[1].textContent = t('filteredResults');
+      if(hudSubs[2]) hudSubs[2].textContent = t('dominantSegment');
+      if(hudSubs[3]) hudSubs[3].textContent = t('catalogOnline');
+      const sectionTitle = document.querySelector('.section-title');
+      if(sectionTitle) sectionTitle.textContent = t('catalogTitle');
+      const sectionCopy = document.querySelector('.section-copy');
+      if(sectionCopy) sectionCopy.textContent = t('catalogCopy');
+      const filterHead = document.querySelector('.filter-head h3');
+      if(filterHead) filterHead.textContent = t('filtersTitle');
+      if(els.resetAllBtn) els.resetAllBtn.textContent = t('reset');
+      const filterTitles = document.querySelectorAll('.filter-title');
+      if(filterTitles[0]) filterTitles[0].textContent = t('searchProduct');
+      if(filterTitles[1]) filterTitles[1].textContent = t('category');
+      if(filterTitles[2]) filterTitles[2].textContent = t('carModel');
+      if(filterTitles[3]) filterTitles[3].textContent = t('price');
+      if(filterTitles[4]) filterTitles[4].textContent = t('actionsStates');
+      if(els.searchInput) els.searchInput.placeholder = t('searchPlaceholder');
+      if(els.priceMin) els.priceMin.placeholder = t('priceFrom');
+      if(els.priceMax) els.priceMax.placeholder = t('priceTo');
+      const checks = document.querySelectorAll('.check span');
+      if(checks[0]) checks[0].textContent = t('saleOnly');
+      if(checks[1]) checks[1].textContent = t('featuredOnly');
+      if(els.toolbarInfo && !state.search) els.toolbarInfo.textContent = t('toolbarLive');
+      if(els.openMobileFilters) els.openMobileFilters.textContent = t('filters');
+      const resultMeta = document.querySelector('.result-meta');
+      if(resultMeta) resultMeta.textContent = t('results');
+      if(els.sortSelect){
+        const opts = els.sortSelect.options;
+        if(opts[0]) opts[0].text = t('sortFeatured');
+        if(opts[1]) opts[1].text = t('sortPriceAsc');
+        if(opts[2]) opts[2].text = t('sortPriceDesc');
+        if(opts[3]) opts[3].text = t('sortNameAsc');
+        if(opts[4]) opts[4].text = t('sortNameDesc');
+        if(opts[5]) opts[5].text = t('sortNewest');
+      }
+      const emptyTitle = document.querySelector('#emptyState h3');
+      const emptyDesc = document.querySelector('#emptyState p');
+      if(emptyTitle) emptyTitle.textContent = t('emptyTitle');
+      if(emptyDesc) emptyDesc.textContent = t('emptyDesc');
+      if(els.emptyResetBtn) els.emptyResetBtn.textContent = t('emptyReset');
+      const footerBrand = document.querySelector('.footer-wrap strong');
+      const footerTextNode = footerBrand?.parentNode;
+      if(footerTextNode && footerBrand) footerTextNode.lastChild.textContent = ` ${state.lang === 'en' ? 'performance catalog' : 'performance katalóg'}`;
+      const mobileHead = document.querySelector('.mobile-sheet-top h3');
+      if(mobileHead) mobileHead.textContent = t('filters');
+      const cartHead = document.querySelector('.cart-drawer-head h3');
+      if(cartHead) cartHead.textContent = t('cartTitle');
+      const cartTotalLabel = document.querySelector('.cart-total-row span');
+      if(cartTotalLabel) cartTotalLabel.textContent = t('total');
+      if(els.closeCartCta) els.closeCartCta.textContent = t('continueBrowsing');
+      if(els.cartCheckoutBtn) els.cartCheckoutBtn.textContent = t('checkout');
+      if(els.footerMeta && !state.rawProducts.length) els.footerMeta.textContent = t('footerLoad');
+      const closeBtns = [els.modalCloseBtn, els.closeMobileFilters, els.closeCartBtn];
+      closeBtns.forEach(btn => btn?.setAttribute('aria-label', state.lang === 'en' ? 'Close' : 'Zavrieť'));
+    }
 
     function getValue(obj, keys, fallback = null){
       for(const key of keys){
@@ -1975,8 +2349,8 @@
     }
 
     function formatPrice(value){
-      if(value === null || value === undefined || value === '' || Number.isNaN(Number(value))) return 'Na vyžiadanie';
-      return new Intl.NumberFormat('sk-SK', {
+      if(value === null || value === undefined || value === '' || Number.isNaN(Number(value))) return t('priceOnRequest');
+      return new Intl.NumberFormat(localeCode(), {
         style:'currency',
         currency:'EUR',
         maximumFractionDigits:2
@@ -2055,18 +2429,18 @@ function getVariantOptionsLabel(variant){
     }
 
     function getProductName(product){
-      return getValue(product, ['name', 'title', 'nazov', 'productName'], 'Produkt bez názvu');
+      return getTranslated(product, 'translations.title', getValue(product, ['name', 'title', 'nazov', 'productName'], state.lang === 'en' ? 'Untitled product' : 'Produkt bez názvu'));
     }
 
     function getProductDesc(product){
-      const raw = getValue(product, ['description', 'desc', 'popis', 'shortDescription'], null);
-      const html = getValue(product, ['descriptionHtml'], null);
-      const shortText = getValue(product, ['short'], null);
-      return stripHtml(raw || html || shortText || 'Bez doplnkového popisu.');
+      const raw = getTranslated(product, 'translations.short', getValue(product, ['description', 'desc', 'popis', 'shortDescription'], null));
+      const html = getTranslated(product, 'translations.descriptionHtml', getValue(product, ['descriptionHtml'], null));
+      const shortText = getTranslated(product, 'translations.short', getValue(product, ['short'], null));
+      return stripHtml(raw || html || shortText || (state.lang === 'en' ? 'No additional description.' : 'Bez doplnkového popisu.'));
     }
 
     function getCategory(product){
-      return getValue(product, ['category', 'kategoria', 'segment', 'type'], 'Ostatné');
+      return getTranslated(product, 'translations.category', getValue(product, ['category', 'kategoria', 'segment', 'type'], state.lang === 'en' ? 'Other' : 'Ostatné'));
     }
 
     function getCarModels(product){
@@ -2106,6 +2480,7 @@ function getVariantOptionsLabel(variant){
   _index: index,
   name: getProductName(raw),
   description: getProductDesc(raw),
+  categoryKey: getValue(raw, ['category', 'kategoria', 'segment', 'type'], null),
   category: getCategory(raw),
   carModels: getCarModels(raw),
   price: getPrice(raw),
@@ -2140,7 +2515,8 @@ function getVariantOptionsLabel(variant){
 
         list = list.filter(item => item && typeof item === 'object');
 
-        state.allProducts = list.map(mapProduct);
+        state.rawProducts = list;
+        refreshMappedProducts();
         buildFilterChips();
         updateGlobalStats();
         applyFilters();
@@ -2149,30 +2525,28 @@ function getVariantOptionsLabel(variant){
         els.loadingState.style.display = 'none';
         els.emptyState.style.display = 'block';
         els.emptyState.innerHTML = `
-          <h3>swagier.json sa nepodarilo načítať</h3>
-          <p>
-            Skontroluj, či je súbor <strong>swagier.json</strong> v rovnakom priečinku ako táto HTML stránka.
-          </p>
-          <button class="cta-btn" onclick="location.reload()">Skúsiť znovu</button>
+          <h3>${escapeHtml(t('loadErrorTitle'))}</h3>
+          <p>${escapeHtml(t('loadErrorDesc'))}</p>
+          <button class="cta-btn" onclick="location.reload()">${escapeHtml(t('retry'))}</button>
         `;
       }
     }
 
     function uniqueSorted(values){
-      return [...new Set(values.filter(Boolean).map(v => String(v).trim()))].sort((a,b)=>a.localeCompare(b,'sk'));
+      return [...new Set(values.filter(Boolean).map(v => String(v).trim()))].sort((a,b)=>a.localeCompare(b, localeCode()));
     }
 
     function buildFilterChips(){
-      const categories = uniqueSorted(state.allProducts.map(p => p.category));
+      const categories = uniqueSorted(state.allProducts.map(p => p.categoryKey || p.category));
       const carModels = uniqueSorted(state.allProducts.flatMap(p => p.carModels));
 
       els.categoryChips.innerHTML = `
-        <button class="chip ${state.activeCategory === null ? 'active' : ''}" data-cat="">Všetko</button>
-        ${categories.map(cat => `<button class="chip ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`).join('')}
+        <button class="chip ${state.activeCategory === null ? 'active' : ''}" data-cat="">${escapeHtml(t('all'))}</button>
+        ${categories.map(cat => `<button class="chip ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml((state.allProducts.find(p => (p.categoryKey || p.category) === cat)?.category) || cat)}</button>`).join('')}
       `;
 
       els.brandChips.innerHTML = `
-        <button class="chip ${state.activeBrand === null ? 'active' : ''}" data-brand="">Všetky</button>
+        <button class="chip ${state.activeBrand === null ? 'active' : ''}" data-brand="">${escapeHtml(t('allModels'))}</button>
         ${carModels.map(model => `<button class="chip ${state.activeBrand === model ? 'active' : ''}" data-brand="${escapeHtml(model)}">${escapeHtml(model)}</button>`).join('')}
       `;
 
@@ -2287,7 +2661,7 @@ function getVariantOptionsLabel(variant){
         });
       }
 
-      if(state.activeCategory) items = items.filter(p => p.category === state.activeCategory);
+      if(state.activeCategory) items = items.filter(p => (p.categoryKey || p.category) === state.activeCategory);
       if(state.activeBrand) items = items.filter(p => p.carModels.includes(state.activeBrand));
 
       const min = Number(state.priceMin);
@@ -2312,10 +2686,10 @@ function getVariantOptionsLabel(variant){
           items.sort((a,b)=>(b.price ?? -Infinity) - (a.price ?? -Infinity));
           break;
         case 'nameAsc':
-          items.sort((a,b)=>a.name.localeCompare(b.name, 'sk'));
+          items.sort((a,b)=>a.name.localeCompare(b.name, localeCode()));
           break;
         case 'nameDesc':
-          items.sort((a,b)=>b.name.localeCompare(a.name, 'sk'));
+          items.sort((a,b)=>b.name.localeCompare(a.name, localeCode()));
           break;
         case 'newest':
           items.sort((a,b)=>Number(b.featured) - Number(a.featured) || b._index - a._index);
@@ -2352,7 +2726,7 @@ function getVariantOptionsLabel(variant){
         const img = escapeHtml(p.image);
         const price = formatPrice(p.price);
         const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
-        const modelText = p.carModels.length ? p.carModels.slice(0, 3).join(' • ') : 'Model v detaile';
+        const modelText = p.carModels.length ? p.carModels.slice(0, 3).join(' • ') : t('modelDetail');
 
         return `
           <article class="product-card">
@@ -2360,7 +2734,7 @@ function getVariantOptionsLabel(variant){
               <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
               <div class="product-overlay">
                 <div class="product-actions-float">
-                  <button class="icon-btn preview-btn" data-index="${index}" title="Rýchly náhľad" aria-label="Rýchly náhľad">
+                  <button class="icon-btn preview-btn" data-index="${index}" title="${escapeHtml(t('quickPreview'))}" aria-label="${escapeHtml(t('quickPreview'))}">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M1 12S5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12z"></path>
                       <circle cx="12" cy="12" r="3"></circle>
@@ -2382,7 +2756,7 @@ function getVariantOptionsLabel(variant){
 
                 <div class="price-row">
                   <div class="price-block">
-                    <div class="price-label">Cena</div>
+                    <div class="price-label">${escapeHtml(t('price'))}</div>
                     <div class="price-main">
                       <span class="price">${price}</span>
                       ${oldPrice}
@@ -2391,8 +2765,8 @@ function getVariantOptionsLabel(variant){
                 </div>
 
                 <div class="product-footer">
-                  <button class="card-btn secondary preview-btn" data-index="${index}">Detail</button>
-                  <button class="card-btn primary add-cart-btn" data-index="${index}">Pridať do košíku</button>
+                  <button class="card-btn secondary preview-btn" data-index="${index}">${escapeHtml(t('detail'))}</button>
+                  <button class="card-btn primary add-cart-btn" data-index="${index}">${escapeHtml(t('addToCart'))}</button>
                 </div>
               </div>
             </div>
@@ -2420,13 +2794,13 @@ function getVariantOptionsLabel(variant){
     function renderActiveFilters(){
       const tags = [];
 
-      if(state.search) tags.push({ label:`Hľadanie: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
-      if(state.activeCategory) tags.push({ label:`Kategória: ${state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
-      if(state.activeBrand) tags.push({ label:`Model auta: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
-      if(state.priceMin !== '') tags.push({ label:`Cena od: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
-      if(state.priceMax !== '') tags.push({ label:`Cena do: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
-      if(state.saleOnly) tags.push({ label:`Len akcie`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
-      if(state.newOnly) tags.push({ label:`Len featured`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.search) tags.push({ label:`${t('searchTag')}: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.activeCategory) tags.push({ label:`${t('categoryTag')}: ${(state.allProducts.find(p => (p.categoryKey || p.category) === state.activeCategory)?.category) || state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
+      if(state.activeBrand) tags.push({ label:`${t('modelTag')}: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
+      if(state.priceMin !== '') tags.push({ label:`${t('priceFromTag')}: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.priceMax !== '') tags.push({ label:`${t('priceToTag')}: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.saleOnly) tags.push({ label:`${t('saleOnlyTag')}`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.newOnly) tags.push({ label:`${t('featuredOnlyTag')}`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
 
       els.activeFilters.innerHTML = tags.map((tag, idx)=>`
         <div class="active-tag">
@@ -2453,14 +2827,14 @@ function getVariantOptionsLabel(variant){
       els.heroBrands.textContent = carModels.length || '0';
       els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
       els.hudAllProducts.textContent = all.length || '0';
-      els.footerMeta.textContent = `Načítaných ${all.length || 0} produktov zo swagier.json`;
+      els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
 
       const topCategory = getTopCategory(all);
       els.hudTopCategory.textContent = topCategory || '—';
 
       els.heroHighlightText.textContent = all.length
-        ? `Katalóg obsahuje ${all.length} položiek. Dominantná kategória je ${topCategory || 'nezaradená'} a filtre sú nastavené podľa modelov áut.`
-        : 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.';
+        ? t('heroHighlight', { count: all.length, category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená') })
+        : t('heroHighlightEmpty');
     }
 
  function updateResultStats(){
@@ -2469,8 +2843,8 @@ function getVariantOptionsLabel(variant){
 
   if (els.toolbarInfo) {
     els.toolbarInfo.textContent = state.search
-      ? `Vyhľadávaš: ${state.search}`
-      : `Performance catalog live`;
+      ? `${t('searching')} ${state.search}`
+      : t('toolbarLive');
   }
 }
 
@@ -2544,7 +2918,7 @@ function renderModal(){
         variants.length > 1
           ? `
             <div class="variant-block">
-              <div class="variant-label">Variant</div>
+              <div class="variant-label">${escapeHtml(t('variant'))}</div>
               <div class="variant-chips">
                 ${variants.map((variant, i) => `
                   <button class="variant-chip ${i === state.modalVariantIndex ? 'active' : ''}" type="button" data-variant-index="${i}">
@@ -2558,33 +2932,33 @@ function renderModal(){
           : ''
       }
 
-      <div class="modal-desc">${escapeHtml(product.description)}</div>
+      <div class="modal-desc">${getTranslated(product.raw, 'translations.descriptionHtml', product.raw?.descriptionHtml) || escapeHtml(product.description)}</div>
 
       <div class="modal-specs">
         <div class="modal-spec">
-          <span>Kategória</span>
+          <span>${escapeHtml(t('categoryLabel'))}</span>
           <span>${escapeHtml(product.category || '—')}</span>
         </div>
 
         <div class="modal-spec">
-          <span>Model auta</span>
-          <span>${escapeHtml(product.carModels?.join(', ') || 'UNIVERZÁLNE')}</span>
+          <span>${escapeHtml(t('carModelLabel'))}</span>
+          <span>${escapeHtml(product.carModels?.join(', ') || t('universal'))}</span>
         </div>
 
         <div class="modal-spec">
-          <span>Výrobca</span>
+          <span>${escapeHtml(t('manufacturer'))}</span>
           <span>${escapeHtml(product.manufacturer || '—')}</span>
         </div>
 
         <div class="modal-spec">
-          <span>SKU</span>
+          <span>${escapeHtml(t('sku'))}</span>
           <span>${escapeHtml(activeVariant?.sku || '—')}</span>
         </div>
       </div>
 
       <div class="modal-actions">
-        <button class="card-btn primary" id="addToCartBtn">Pridať do košíka</button>
-        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">Otvoriť v eshope</a>
+        <button class="card-btn primary" id="addToCartBtn">${escapeHtml(t('addToCart'))}</button>
+        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">${escapeHtml(t('openInShop'))}</a>
       </div>
     </div>
   `;
@@ -2665,7 +3039,7 @@ function getShopifyCheckoutUrl(){
 function goToShopifyCheckout(){
   const checkoutUrl = getShopifyCheckoutUrl();
   if(!checkoutUrl){
-    alert('V košíku nie je žiadny produkt s platným Shopify variant ID.');
+    alert(t('invalidCheckout'));
     return;
   }
 
@@ -2686,8 +3060,8 @@ function updateCartUI(){
   if(!state.cart.length){
     els.cartItems.innerHTML = `
       <div class="empty-state" style="padding:18px;">
-        <h3 style="font-size:1.2rem;">Košík je prázdny</h3>
-        <p>Zatiaľ si nepridal žiadny produkt.</p>
+        <h3 style="font-size:1.2rem;">${escapeHtml(t('cartEmptyTitle'))}</h3>
+        <p>${escapeHtml(t('cartEmptyDesc'))}</p>
       </div>
     `;
     return;
@@ -2711,7 +3085,7 @@ function updateCartUI(){
             <button class="qty-btn" type="button" data-qty-action="plus" data-key="${escapeHtml(item.key)}">+</button>
           </div>
 
-          <button class="remove-btn" type="button" data-remove-key="${escapeHtml(item.key)}">Odstrániť</button>
+          <button class="remove-btn" type="button" data-remove-key="${escapeHtml(item.key)}">${escapeHtml(t('remove'))}</button>
         </div>
       </div>
     </div>
@@ -2821,6 +3195,11 @@ function closeCart(){
         }
       });
 
+      els.homeBtn?.addEventListener('click', ()=> window.location.href='/');
+      els.heroHomeBtn?.addEventListener('click', ()=> window.location.href='/');
+      els.langSkBtn?.addEventListener('click', ()=> setLanguage('sk'));
+      els.langEnBtn?.addEventListener('click', ()=> setLanguage('en'));
+
       els.openMobileFilters.addEventListener('click', ()=>{
         els.mobileFilterPanel.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -2851,7 +3230,10 @@ els.cartBackdrop?.addEventListener('click', closeCart);
       });
     }
 
+    state.lang = detectInitialLanguage();
     bindEvents();
+    updateStaticTexts();
+    setLanguage(state.lang, false);
     loadProducts();
     updateCartUI();
   </script>
