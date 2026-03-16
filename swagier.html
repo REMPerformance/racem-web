@@ -1941,7 +1941,37 @@
       .modal-main-image{min-height:270px}
       .modal-main-image{padding:12px 12px 82px}
     }
+/* MOBILE – PRODUCT DETAIL IMAGE FIX */
+@media (max-width: 768px) {
 
+  .product-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .product-detail img,
+  .modal img,
+  .detail-image img {
+    width: 100%;
+    max-height: 180px;   /* približne 2x menší obrazok */
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .product-detail .description,
+  .product-description {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .product-detail h2,
+  .product-title {
+    font-size: 18px;
+  }
+
+}
   </style>
 </head>
 <body>
