@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sk">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -2556,7 +2556,7 @@ max-height:110px;
         <div class="cartBarLeft">
           <div class="cartPill">
             <span class="cartDot"></span>
-            <span id="cartBarCount">0</span> položiek
+            <span id="cartBarCount">0</span> items
           </div>
           <div class="cartTotal" id="cartBarTotal">0 €</div>
         </div>
@@ -2570,24 +2570,24 @@ max-height:110px;
    <section class="hero">
   <div class="heroInner heroInner--single">
     <div class="heroText heroText--wide">
-      <h1 class="heroTitle heroTitle--singleLine">CELÁ <span class="racemRed">PONUKA</span> NA JEDNOM MIESTE</h1>
+      <h1 class="heroTitle heroTitle--singleLine" id="heroTitle">FULL <span class="racemRed">CATALOG</span> IN ONE PLACE</h1>
     </div>
   </div>
 </section>
 
     <section class="heroStats" aria-label="Catalog statistics">
       <div class="stat-card">
-        <div class="stat-label" data-i18n="statTotal">Spolu položiek</div>
+        <div class="stat-label" data-i18n="statTotal">Total items</div>
         <div class="stat-number" id="kpiTotal">0</div>
-        <div class="stat-sub" data-i18n="statTotalSub">Vo všetkých načítaných feedoch</div>
+        <div class="stat-sub" data-i18n="statTotalSub">Across all loaded feeds</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label" data-i18n="statPriceRange">Cenové rozmedzie</div>
+        <div class="stat-label" data-i18n="statPriceRange">Price range</div>
         <div class="stat-number" id="kpiPriceRange">0 € — 0 €</div>
-        <div class="stat-sub" data-i18n="statPriceRangeSub">Od najlacnejšieho po najdrahší diel</div>
+        <div class="stat-sub" data-i18n="statPriceRangeSub">From the lowest-priced to the highest-priced part</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label" data-i18n="statTopModel">Najsilnejší model</div>
+        <div class="stat-label" data-i18n="statTopModel">Top model by parts</div>
         <div class="stat-number" id="kpiTopModel">—</div>
         <div class="stat-sub" id="kpiTopModelSub">0 produktov</div>
       </div>
@@ -2602,7 +2602,7 @@ max-height:110px;
       <div class="sectionHead">
         <div>
           <div class="sectionEyebrow" data-i18n="recommendedEyebrow">Recommended selection</div>
-          <h2 class="sectionTitle" data-i18n="recommendedTitle">Odporúčané produkty</h2>
+          <h2 class="sectionTitle" data-i18n="recommendedTitle">Recommended products</h2>
         </div>
       </div>
       <div class="recommendedGrid" id="recommendedGrid"></div>
@@ -2710,11 +2710,11 @@ max-height:110px;
 
     <div class="line"></div>
 
-    <section aria-label="Výpis produktov">
+    <section aria-label="Product listing">
       <div class="grid" id="grid"></div>
-      <div class="loadMoreWrap"><button class="btn" id="loadMoreBtn" type="button">Načítať ďalšie</button></div>
+      <div class="loadMoreWrap"><button class="btn" id="loadMoreBtn" type="button">Load more</button></div>
       <div class="empty" id="empty" style="display:none;">
-        Nič som nenašiel. Skús zmeniť filtre alebo vyhľadávanie.
+        No products matched. Change the filters or search term.
       </div>
     </section>
 
@@ -2722,10 +2722,10 @@ max-height:110px;
       <div class="footerGrid footerGrid--simple">
         <div class="footerPanel footerPanel--wide">
           <h4>RACEM Catalog</h4>
-          <p data-i18n="footerLead">Výber performance dielov, bodykitov a hardware na jednom mieste. Menej omáčky, rýchlejší výber, jasnejší checkout.</p>
+          <p data-i18n="footerLead">Performance parts, body kits and hardware in one place. Less clutter, faster selection, clearer checkout.</p>
         </div>
         <div class="footerPanel">
-          <h4 data-i18n="footerContactTitle">Kontakt</h4>
+          <h4 data-i18n="footerContactTitle">Contact</h4>
           <p><a href="mailto:info@remperformance.sk">info@remperformance.sk</a><br><a href="https://www.racem.sk/">www.racem.sk</a><br><a href="https://shop.racem.sk/">shop.racem.sk</a></p>
         </div>
       </div>
@@ -2743,10 +2743,10 @@ max-height:110px;
     <div class="modal" role="dialog" aria-modal="true" aria-label="Product detail">
       <div class="modalHeader">
         <div style="min-width:0">
-          <h3 class="modalTitle" id="mTitle">Produkt</h3>
+          <h3 class="modalTitle" id="mTitle">Product</h3>
           <p class="modalSub" id="mSub">—</p>
         </div>
-        <button class="btn modalClose" id="mClose" type="button" aria-label="Zatvoriť">Close</button>
+        <button class="btn modalClose" id="mClose" type="button" aria-label="Close">Close</button>
       </div>
 
       <div class="modalBody">
@@ -2757,7 +2757,7 @@ max-height:110px;
 
         <div class="panelBox">
           <div class="rowSplit">
-            <span class="badge" id="mCat">Kategória</span>
+            <span class="badge" id="mCat">Category</span>
           </div>
 
           <div class="rowSplit rowSplit--price">
@@ -2778,7 +2778,7 @@ max-height:110px;
               <div class="infoCard" id="mFitmentCard"><dt data-i18n="fitment">Fits</dt><dd id="mFitment">—</dd></div>
               <div class="infoCard" id="mMountCard"><dt data-i18n="placement">Placement</dt><dd id="mMount">—</dd></div>
               <div class="infoCard" id="mMaterialCard"><dt data-i18n="material">Material</dt><dd id="mMaterial">—</dd></div>
-              <div class="infoCard" id="mTypeCard"><dt>Kategória</dt><dd id="mType">—</dd></div>
+              <div class="infoCard" id="mTypeCard"><dt data-i18n="categoryLabel">Category</dt><dd id="mType">—</dd></div>
             </dl>
           </div>
 
@@ -2811,7 +2811,7 @@ max-height:110px;
     <div class="cartModalCard" role="dialog" aria-modal="true" aria-label="Cart">
       <div class="cartModalHead">
         <b data-i18n="cartTitle">Cart</b>
-        <button class="btn" id="closeCartModal" type="button" aria-label="Zatvoriť">Close</button>
+        <button class="btn" id="closeCartModal" type="button" aria-label="Close">Close</button>
       </div>
 
       <div class="cartBody" id="cartBody"></div>
@@ -2850,8 +2850,23 @@ let FEED = null;
 let PRODUCTS = [];
 let PRODUCT_BY_ID = new Map();
 
+const LANG_STORAGE_KEY = 'racem_catalog_lang';
+
+function resolveLang(lang=''){
+  const value = String(lang || '').toLowerCase();
+  if(value.startsWith('sk') || value.startsWith('cs') || value.startsWith('cz')) return 'sk';
+  return 'en';
+}
+
+function detectPreferredLang(){
+  const saved = localStorage.getItem(LANG_STORAGE_KEY);
+  if(saved) return resolveLang(saved);
+  const browserLangs = [ ...(navigator.languages || []), navigator.language, navigator.userLanguage ].filter(Boolean);
+  return browserLangs.some(lang => ['sk','cs','cz'].some(prefix => String(lang).toLowerCase().startsWith(prefix))) ? 'sk' : 'en';
+}
+
 const state = {
-  lang: localStorage.getItem('racem_catalog_lang') || 'sk',
+  lang: detectPreferredLang(),
   q: '',
   category: '',
   brand: '',
@@ -2874,6 +2889,8 @@ const i18n = {
     pageTitle:'RACEM | Ponuka performance dielov',
     metaDescription:'RACEM ponuka performance dielov. Kombinovaný katalóg CYBUL, SWAGIER, SFXLA a RACEM s pokročilým filtrovaním podľa platformy, značky, kategórie, ceny a dostupnosti.',
     navHome:'Domov', navContact:'Kontakt', navTerms:'VOP',
+    heroTitleHtml:'CELÁ <span class="racemRed">PONUKA</span> NA JEDNOM MIESTE',
+    categoryLabel:'Kategória',
     heroEyebrow:'Celá ponuka',
     heroTitle:'Celá ponuka na jednom mieste.',
     heroLead:'Vyber si diely rýchlo, filtruj podľa auta, ceny alebo kategórie a otvor produkt bez zbytočného balastu.',
@@ -2881,6 +2898,7 @@ const i18n = {
     heroBullet2Title:'Pokročilé filtre', heroBullet2Text:'Hľadanie podľa platformy, tagu, výrobcu, kategórie, feedu, stavu skladu a cenového rozsahu.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Otvor detail, vyber validný variant, pridaj do košíka a skoč do Shopify košíka cez variant ID.',
     statShown:'Zobrazené', statCheckoutStatus:'Checkout status', statTotal:'Spolu položiek', statPriceRange:'Cenové rozmedzie', statTopModel:'Najviac dielov pre model', statTotalSub:'Vo všetkých načítaných feedoch', statPriceRangeSub:'Od najlacnejšieho po najdrahší diel', statTopModelSub:'Produktov pre top model', statShownSub:'Z aktuálneho výberu', statCats:'Kategórie', statBrands:'Značky',
+    checkoutMissing:'Vyber variant s validným checkout mappingom.', pieceUnit:'ks', toastAddedTitle:'Pridané do košíka', toastAddedMeta:'Produkt bol úspešne pridaný.',
     searchLabel:'Vyhľadať', brandLabel:'Výrobca', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Dostupnosť', sortLabel:'Triedenie',
     minPriceLabel:'Min cena (€)', maxPriceLabel:'Max cena (€)', tagLabel:'Tag', pricePresetLabel:'Rýchly cenový filter', variantModeLabel:'Variant režim', checkoutReadyLabel:'Checkout stav',
     allOption:'Všetky', everythingOption:'Všetko', stockIn:'Skladom', stockOrder:'Na objednávku',
@@ -2901,13 +2919,16 @@ const i18n = {
     pageTitle:'RACEM | Performance Parts Catalog',
     metaDescription:'RACEM performance parts catalog. Combined CYBUL, SWAGIER, SFXLA and RACEM feeds with advanced filtering by platform, brand, category, price and availability.',
     navHome:'Home', navContact:'Contact', navTerms:'Terms',
+    heroTitleHtml:'FULL <span class="racemRed">CATALOG</span> IN ONE PLACE',
+    categoryLabel:'Category',
     heroEyebrow:'Full catalog',
     heroTitle:'Full catalog in one place.',
     heroLead:'Pick parts faster, filter by car, price or category, and open each product without unnecessary clutter.',
     heroBullet1Title:'Multi-feed', heroBullet1Text:'Loads swagier.json, cybul.json, the RACEM feed and sfxla-products.json into one filtered catalog.',
     heroBullet2Title:'Advanced filtering', heroBullet2Text:'Search by platform, tag, manufacturer, category, feed, stock state and price range.',
     heroBullet3Title:'RACEM checkout flow', heroBullet3Text:'Open detail, pick a valid variant, add it to cart and jump to the Shopify cart with variant IDs.',
-    statShown:'Shown', statCheckoutStatus:'Checkout status', statTotal:'Total items', statCats:'Categories', statBrands:'Brands',
+    statShown:'Shown', statCheckoutStatus:'Checkout status', statTotal:'Total items', statPriceRange:'Price range', statTopModel:'Top model by parts', statTotalSub:'Across all loaded feeds', statPriceRangeSub:'From the lowest-priced to the highest-priced part', statTopModelSub:'Products for the top model', statShownSub:'From the current selection', statCats:'Categories', statBrands:'Brands',
+    checkoutMissing:'Choose a variant with a valid checkout mapping.', pieceUnit:'pc', toastAddedTitle:'Added to cart', toastAddedMeta:'The product was added successfully.',
     searchLabel:'Search', brandLabel:'Brand', platformLabel:'Model', sourceLabel:'Feed', stockLabel:'Availability', sortLabel:'Sort',
     minPriceLabel:'Min price (€)', maxPriceLabel:'Max price (€)', tagLabel:'Tag', pricePresetLabel:'Price quick filter', variantModeLabel:'Variant mode', checkoutReadyLabel:'Checkout state',
     allOption:'All', everythingOption:'Everything', stockIn:'In stock', stockOrder:'Made to order',
@@ -3300,8 +3321,14 @@ function openProductDetail(id){
 
 function applyTranslations(){
   document.querySelectorAll('[data-i18n]').forEach(node=>{ const key=node.getAttribute('data-i18n'); if(i18n[state.lang]?.[key]) node.textContent=i18n[state.lang][key]; });
+  const heroTitle = document.getElementById('heroTitle');
+  if(heroTitle) heroTitle.innerHTML = t('heroTitleHtml');
   el.q.placeholder = state.lang==='sk' ? 'napr. widebody, difúzor, E46, coilovers...' : 'e.g. widebody, diffuser, E46, coilovers...';
   document.querySelectorAll('.langBtn').forEach(btn=>btn.classList.toggle('active', btn.dataset.lang===state.lang));
+  const modalClose = document.getElementById('mClose');
+  if(modalClose) modalClose.setAttribute('aria-label', t('closeBtn'));
+  const cartClose = document.getElementById('closeCartModal');
+  if(cartClose) cartClose.setAttribute('aria-label', t('closeBtn'));
   if(document.getElementById('mVariantNote')) document.getElementById('mVariantNote').innerHTML = t('checkoutMissing');
   if(el.loadingText) el.loadingText.textContent = t('loadingText');
   if(el.loadMoreBtn) el.loadMoreBtn.textContent = t('loadMoreBtn');
@@ -3327,7 +3354,7 @@ function bindEvents(){
     renderAll();
   });
   el.onlyDeals.addEventListener('click',()=>{ state.onlyTop=!state.onlyTop; state.visibleCount=20; el.onlyDeals.classList.toggle('btn--red', state.onlyTop); renderAll(); });
-  document.querySelectorAll('.langBtn').forEach(btn=>btn.addEventListener('click',()=>{ state.lang=btn.dataset.lang; localStorage.setItem('racem_catalog_lang', state.lang); renderAll(); }));
+  document.querySelectorAll('.langBtn').forEach(btn=>btn.addEventListener('click',()=>{ state.lang=resolveLang(btn.dataset.lang); localStorage.setItem(LANG_STORAGE_KEY, state.lang); renderAll(); }));
   el.loadMoreBtn?.addEventListener('click',()=>{ state.visibleCount += 20; renderAll(); });
   document.addEventListener('click',(e)=>{
     const detail=e.target.closest('[data-open-detail]');
@@ -3540,7 +3567,7 @@ function cartCount(){ return CART.reduce((s,i)=>s + Math.max(1, Number(i.qty||1)
 function cartSumPrice(){ return CART.reduce((s,i)=>s + Number(i.price||0)*Math.max(1, Number(i.qty||1)),0); }
 function addToCart(product, variant, qty=1){ const variantId=String(variant?.variantId||'').trim(); if(!variantId) return; const ex=CART.find(i=>i.key===variantId); if(ex) ex.qty=Math.max(1, Number(ex.qty||1)+qty); else CART.push({key:variantId, variantId, productId:product.id, title:productTitle(product), variantName:variantTitle(variant), price:Number(variant.price||0), image:(variant.images&&variant.images[0]) || (product.images&&product.images[0]) || '', qty:Math.max(1, Number(qty||1))}); saveCart(); }
 function renderCartBar(){ const bar=document.getElementById('cartBar'); if(!bar) return; const count=cartCount(); document.getElementById('cartBarCount').textContent=String(count); document.getElementById('cartBarTotal').textContent=euro(cartSumPrice()); bar.classList.toggle('show', count>0); bar.setAttribute('aria-hidden', count>0?'false':'true'); const pill=bar.querySelector('.cartPill'); if(pill) pill.lastChild && (pill.lastChild.textContent=' ' + t('piecesWord')); document.getElementById('cartBarOpen').textContent=t('cartView'); document.getElementById('cartBarClear').textContent=t('cartClear'); }
-function renderCartModal(){ const body=document.getElementById('cartBody'); if(!body) return; body.innerHTML=''; if(!CART.length){ body.innerHTML=`<div class="cartEmptyState">${escapeHtml(t('cartEmpty'))}</div>`; } else { CART.forEach(item=>{ const row=document.createElement('div'); row.className='cartItem'; row.innerHTML=`<div class="cartThumb">${item.image?`<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">`:''}</div><div class="cartInfo"><b>${escapeHtml(item.title)}</b><div class="cartMeta">${escapeHtml(t('variantLabel'))}: ${escapeHtml(item.variantName||'—')}<br>${escapeHtml(t('pricePerPiece'))}: ${escapeHtml(euro(item.price))} / ks<br></div></div><div class="cartControls"><div class="qtyBox"><button type="button" data-act="dec" data-key="${escapeHtml(item.key)}">−</button><span>${Math.max(1, Number(item.qty||1))}</span><button type="button" data-act="inc" data-key="${escapeHtml(item.key)}">+</button></div><button class="cartRemove" type="button" data-act="remove" data-key="${escapeHtml(item.key)}">${escapeHtml(state.lang==='sk'?'Odstrániť':'Remove')}</button></div>`; body.appendChild(row); }); }
+function renderCartModal(){ const body=document.getElementById('cartBody'); if(!body) return; body.innerHTML=''; if(!CART.length){ body.innerHTML=`<div class="cartEmptyState">${escapeHtml(t('cartEmpty'))}</div>`; } else { CART.forEach(item=>{ const row=document.createElement('div'); row.className='cartItem'; row.innerHTML=`<div class="cartThumb">${item.image?`<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">`:''}</div><div class="cartInfo"><b>${escapeHtml(item.title)}</b><div class="cartMeta">${escapeHtml(t('variantLabel'))}: ${escapeHtml(item.variantName||'—')}<br>${escapeHtml(t('pricePerPiece'))}: ${escapeHtml(euro(item.price))} / ${escapeHtml(t('pieceUnit'))}<br></div></div><div class="cartControls"><div class="qtyBox"><button type="button" data-act="dec" data-key="${escapeHtml(item.key)}">−</button><span>${Math.max(1, Number(item.qty||1))}</span><button type="button" data-act="inc" data-key="${escapeHtml(item.key)}">+</button></div><button class="cartRemove" type="button" data-act="remove" data-key="${escapeHtml(item.key)}">${escapeHtml(state.lang==='sk'?'Odstrániť':'Remove')}</button></div>`; body.appendChild(row); }); }
   document.getElementById('cartSumItems').textContent=String(cartCount()); document.getElementById('cartSumPrice').textContent=euro(cartSumPrice()); document.getElementById('cartSumTotal').textContent=euro(cartSumPrice()); document.getElementById('cartBack').textContent=t('cartContinue'); document.getElementById('cartCheckout').textContent=t('cartCheckout'); }
 function openCartModal(){ const cm=document.getElementById('cartModal'); if(!cm) return; renderCartModal(); cm.classList.add('show'); cm.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
 function closeCartModal(){ const cm=document.getElementById('cartModal'); if(!cm) return; cm.classList.remove('show'); cm.setAttribute('aria-hidden','true'); if(!m.overlay.classList.contains('open')) document.body.style.overflow=''; }
@@ -3746,14 +3773,16 @@ updateLiveTime();
     toast.id = 'cartToast';
     toast.className = 'cartToast';
     toast.setAttribute('aria-live','polite');
-    toast.innerHTML = '<div class="cartToastIcon">✓</div><div class="cartToastText"><div class="cartToastTitle">Pridané do košíka</div><div class="cartToastMeta"></div></div>';
+    toast.innerHTML = `<div class="cartToastIcon">✓</div><div class="cartToastText"><div class="cartToastTitle">${t('toastAddedTitle')}</div><div class="cartToastMeta"></div></div>`;
     document.body.appendChild(toast);
     return toast;
   }
   window.showCartAddedToast = function(name){
     const toast = ensureCartToast();
     const meta = toast.querySelector('.cartToastMeta');
-    if(meta) meta.textContent = name ? String(name) : 'Produkt bol úspešne pridaný.';
+    const title = toast.querySelector('.cartToastTitle');
+    if(title) title.textContent = t('toastAddedTitle');
+    if(meta) meta.textContent = name ? String(name) : t('toastAddedMeta');
     toast.classList.add('show');
     clearTimeout(cartToastTimer);
     cartToastTimer = setTimeout(()=> toast.classList.remove('show'), 1800);
