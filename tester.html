@@ -3,66 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RACEM | Turbo & Kompresor Kity</title>
-  <meta name="description" content="RACEM ponuka turbo kitov, kompresor kitov a stavby výkonových setov na mieru." />
+  <title>RACEM | Malý výkon? Nafúkni ho.</title>
+  <meta name="description" content="Turbo a kompresor kity, interaktívna mapa komponentov, kits.json feed a skladanie na mieru by REM Performance." />
   <style>
     :root{
-      --bg:#050505;
-      --bg-soft:#0b0b0d;
-      --panel:#101014;
-      --panel-2:#15151a;
+      --bg:#050506;
+      --bg2:#0a0b0d;
+      --panel:#0e1014;
+      --panel2:#13161b;
+      --card:#11131a;
       --line:rgba(255,255,255,.08);
-      --text:#f5f5f5;
-      --muted:#a8a8b3;
+      --line2:rgba(179,31,36,.35);
+      --text:#f4f6fb;
+      --muted:#a2a9b8;
+      --muted2:#7f8696;
       --red:#b31f24;
-      --red-2:#e03137;
-      --red-glow:rgba(179,31,36,.35);
-      --white-glow:rgba(255,255,255,.08);
-      --radius:22px;
-      --shadow:0 25px 80px rgba(0,0,0,.45);
-      --max:1360px;
+      --red2:#e43a41;
+      --redGlow:rgba(179,31,36,.32);
+      --whiteGlow:rgba(255,255,255,.08);
+      --radius:24px;
+      --shadow:0 30px 90px rgba(0,0,0,.45);
+      --max:1380px;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(179,31,36,.16), transparent 26%),
-        radial-gradient(circle at 85% 10%, rgba(179,31,36,.10), transparent 20%),
-        linear-gradient(180deg, #070707 0%, #050505 100%);
       color:var(--text);
-      font-family:Inter,Arial,Helvetica,sans-serif;
-      line-height:1.5;
+      font-family:Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(179,31,36,.14), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(179,31,36,.08), transparent 24%),
+        linear-gradient(180deg, #050506 0%, #08090b 100%);
       overflow-x:hidden;
     }
-
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.08;
-      background-image:
+      opacity:.07;
+      background:
         linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
-      background-size:40px 40px;
-      mask-image:linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.12));
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.85), rgba(0,0,0,.25));
     }
 
     a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-    .wrap{width:min(var(--max), calc(100% - 32px)); margin:0 auto}
+    img{display:block;max-width:100%}
+    .wrap{width:min(var(--max), calc(100% - 30px)); margin:0 auto}
+    .hidden{display:none !important}
 
     .topbar{
       position:sticky;
       top:0;
       z-index:40;
-      backdrop-filter: blur(16px);
-      background:rgba(5,5,5,.74);
-      border-bottom:1px solid rgba(255,255,255,.06);
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,6,.72);
+      border-bottom:1px solid rgba(255,255,255,.05);
     }
-
     .topbar-inner{
       min-height:76px;
       display:flex;
@@ -70,663 +71,679 @@
       justify-content:space-between;
       gap:18px;
     }
-
     .brand{
       display:flex;
       align-items:center;
       gap:14px;
       min-width:0;
     }
-
-    .brand-badge{
-      width:48px;height:48px;border-radius:14px;
-      background:
-        linear-gradient(135deg, rgba(179,31,36,.25), rgba(179,31,36,.05)),
-        #101014;
-      border:1px solid rgba(179,31,36,.35);
-      box-shadow:0 0 0 1px rgba(255,255,255,.03) inset, 0 0 24px rgba(179,31,36,.2);
+    .brand-mark{
+      width:48px;height:48px;border-radius:15px;
       display:grid;place-items:center;
+      background:
+        linear-gradient(135deg, rgba(179,31,36,.28), rgba(179,31,36,.08)),
+        #12151b;
+      border:1px solid rgba(179,31,36,.36);
+      box-shadow:0 0 0 1px rgba(255,255,255,.03) inset, 0 0 26px rgba(179,31,36,.16);
       font-weight:900;
-      letter-spacing:.08em;
-      color:#fff;
+      letter-spacing:.12em;
     }
-
-    .brand-copy{min-width:0}
+    .brand-copy p{margin:0}
     .brand-title{
-      margin:0;
-      font-size:1rem;
+      text-transform:uppercase;
       font-weight:900;
       letter-spacing:.18em;
-      text-transform:uppercase;
+      font-size:1rem;
     }
     .brand-sub{
-      margin:2px 0 0;
-      font-size:.82rem;
       color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      font-size:.82rem;
+      margin-top:4px !important;
     }
-
     .nav{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-
     .nav a{
-      color:#d9d9e1;
-      font-size:.92rem;
       padding:10px 14px;
       border-radius:999px;
+      color:#dfe3eb;
       border:1px solid transparent;
       transition:.18s ease;
+      font-size:.93rem;
     }
     .nav a:hover{
-      border-color:rgba(255,255,255,.1);
       background:rgba(255,255,255,.03);
+      border-color:rgba(255,255,255,.08);
       color:#fff;
     }
-
-    .cta{
+    .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
       min-height:48px;
       padding:0 18px;
-      border-radius:14px;
-      border:1px solid rgba(179,31,36,.38);
-      background:linear-gradient(135deg, var(--red-2), var(--red));
+      border-radius:15px;
+      border:1px solid rgba(255,255,255,.08);
       color:#fff;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      transition:.18s ease;
+      cursor:pointer;
+      font:inherit;
       font-weight:800;
-      letter-spacing:.02em;
-      box-shadow:0 12px 30px rgba(179,31,36,.28);
-      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
     }
-    .cta:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.05);
-      box-shadow:0 18px 36px rgba(179,31,36,.34);
+    .btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.16)}
+    .btn.red{
+      background:linear-gradient(135deg, var(--red2), var(--red));
+      border-color:rgba(179,31,36,.45);
+      box-shadow:0 16px 34px rgba(179,31,36,.26);
     }
-    .cta.secondary{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-      border-color:rgba(255,255,255,.12);
-      box-shadow:none;
-    }
+    .btn.red:hover{filter:brightness(1.04)}
 
     .hero{
-      padding:56px 0 26px;
+      padding:52px 0 28px;
     }
-
-    .hero-grid{
+    .hero-shell{
       display:grid;
-      grid-template-columns: minmax(0,1.15fr) minmax(320px,.85fr);
+      grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
       gap:22px;
       align-items:stretch;
     }
-
+    .hero-main,
+    .hero-side-card,
+    .compare-card,
+    .products-card,
+    .custom-card,
+    .contact-card{
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.07);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        #0c0f14;
+      box-shadow:var(--shadow);
+    }
     .hero-main{
       position:relative;
       overflow:hidden;
-      border-radius:32px;
-      border:1px solid rgba(255,255,255,.08);
-      background:
-        linear-gradient(135deg, rgba(179,31,36,.20), rgba(179,31,36,0) 42%),
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
-        #0b0b0d;
-      box-shadow:var(--shadow);
       padding:34px;
       min-height:520px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      isolation:isolate;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(179,31,36,.18), transparent 35%),
+        linear-gradient(135deg, rgba(179,31,36,.10), rgba(179,31,36,0) 42%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        #0c0f14;
     }
-
-    .hero-main::before{
+    .hero-main::after{
       content:"";
       position:absolute;
-      right:-80px;
-      top:-60px;
-      width:360px;height:360px;border-radius:50%;
-      background:radial-gradient(circle, rgba(179,31,36,.35), transparent 68%);
-      filter:blur(8px);
-      z-index:-1;
+      right:-90px;
+      top:-100px;
+      width:340px;height:340px;border-radius:50%;
+      background:radial-gradient(circle, rgba(179,31,36,.2), transparent 70%);
+      pointer-events:none;
     }
 
-    .hero-tag{
+    .eyebrow{
       display:inline-flex;
-      width:max-content;
       align-items:center;
       gap:10px;
+      width:max-content;
       padding:10px 14px;
       border-radius:999px;
-      background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.08);
-      color:#ececf3;
-      font-size:.84rem;
+      background:rgba(255,255,255,.03);
       text-transform:uppercase;
-      letter-spacing:.12em;
+      letter-spacing:.13em;
+      font-size:.78rem;
       font-weight:800;
+      color:#f5f7fb;
     }
 
-    .hero h1{
-      margin:18px 0 14px;
-      font-size:clamp(2.6rem, 6vw, 5.4rem);
-      line-height:.95;
-      letter-spacing:-.05em;
+    .hero-title{
+      margin:18px 0 12px;
+      font-size:clamp(2.6rem, 7vw, 5.8rem);
+      line-height:.92;
+      letter-spacing:-.06em;
       text-transform:uppercase;
-      max-width:860px;
+      max-width:820px;
     }
-
-    .hero h1 .accent{
+    .hero-title .accent{
       color:#fff;
-      text-shadow:0 0 24px rgba(179,31,36,.22);
+      text-shadow:0 0 22px rgba(179,31,36,.24);
     }
-
-    .hero p{
-      margin:0;
+    .hero-text{
       max-width:780px;
-      color:#cbccd6;
-      font-size:1.05rem;
+      color:#d4d8e3;
+      font-size:1.06rem;
+      margin:0;
     }
-
     .hero-actions{
       display:flex;
       gap:12px;
       flex-wrap:wrap;
-      margin-top:26px;
+      margin-top:24px;
     }
 
-    .hero-metrics{
+    .hero-meter{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
       gap:12px;
       margin-top:26px;
     }
-
-    .metric{
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08);
+    .meter{
       padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.03);
     }
-    .metric strong{
+    .meter strong{
       display:block;
-      font-size:1.5rem;
+      font-size:1.42rem;
       letter-spacing:-.03em;
     }
-    .metric span{
+    .meter span{
       color:var(--muted);
-      font-size:.88rem;
+      font-size:.87rem;
     }
 
     .hero-side{
       display:grid;
       gap:22px;
     }
-
-    .info-card, .config-card, .card, .contact-card{
-      border-radius:28px;
-      border:1px solid rgba(255,255,255,.08);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)),
-        #0d0d11;
-      box-shadow:var(--shadow);
-    }
-
-    .info-card{
-      padding:26px;
+    .hero-side-card{
+      padding:24px;
+      min-height:249px;
       position:relative;
       overflow:hidden;
-      min-height:248px;
     }
-
-    .info-card::after{
+    .hero-side-card::before{
       content:"";
       position:absolute;
-      inset:auto -80px -110px auto;
-      width:260px;height:260px;border-radius:50%;
-      background:radial-gradient(circle, rgba(179,31,36,.25), transparent 68%);
-      pointer-events:none;
+      right:-80px;
+      bottom:-80px;
+      width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(179,31,36,.2), transparent 70%);
     }
-
-    .eyebrow{
-      font-size:.78rem;
-      font-weight:800;
-      letter-spacing:.14em;
+    .hero-side-card h3{
+      margin:14px 0 10px;
+      font-size:1.6rem;
+      line-height:1;
       text-transform:uppercase;
-      color:#cfcfd8;
-      opacity:.92;
-    }
-
-    .bigline{
-      margin:10px 0 12px;
-      font-size:1.65rem;
-      line-height:1.05;
-      text-transform:uppercase;
-      font-weight:900;
       letter-spacing:-.03em;
     }
-
-    .muted{
+    .hero-side-card p{
+      margin:0;
       color:var(--muted);
     }
-
-    .panel-list{
+    .mini-list{
       display:grid;
       gap:12px;
-      margin-top:16px;
+      margin-top:18px;
     }
-
-    .panel-item{
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
+    .mini-item{
       padding:14px;
       border-radius:16px;
       background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.07);
     }
+    .mini-item strong{display:block}
+    .mini-item span{color:var(--muted);font-size:.92rem}
 
-    .dot{
-      width:10px;height:10px;border-radius:50%;
-      background:var(--red-2);
-      box-shadow:0 0 12px rgba(179,31,36,.55);
-      flex:0 0 auto;
-      margin-top:6px;
-    }
-
-    section{
-      padding:26px 0;
-    }
-
+    section{padding:26px 0}
     .section-head{
       display:flex;
       justify-content:space-between;
-      align-items:end;
+      align-items:flex-end;
       gap:18px;
       margin-bottom:18px;
     }
-
     .section-head h2{
-      margin:0;
-      font-size:clamp(1.5rem, 3vw, 2.5rem);
-      text-transform:uppercase;
+      margin:10px 0 0;
+      font-size:clamp(1.55rem, 3vw, 2.5rem);
+      line-height:.98;
       letter-spacing:-.04em;
+      text-transform:uppercase;
     }
-
     .section-head p{
       margin:0;
       color:var(--muted);
       max-width:760px;
     }
 
-    .product-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:20px;
+    .compare-card{
+      padding:24px;
     }
-
-    .card{
-      overflow:hidden;
-      position:relative;
-    }
-
-    .card-top{
-      padding:24px 24px 0;
-    }
-
-    .card-badges{
+    .compare-top{
       display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    .badge{
-      display:inline-flex;
+      justify-content:space-between;
       align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .switch{
+      display:inline-grid;
+      grid-template-columns:1fr 1fr;
       gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
+      background:rgba(255,255,255,.03);
+      padding:8px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.08);
-      color:#ececf2;
-      font-size:.8rem;
-      font-weight:700;
-      letter-spacing:.04em;
-      text-transform:uppercase;
+    }
+    .switch button{
+      min-width:140px;
     }
 
-    .product-title{
-      margin:0;
-      font-size:2rem;
-      line-height:.95;
-      letter-spacing:-.04em;
-      text-transform:uppercase;
+    .compare-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:start;
     }
 
-    .product-sub{
-      margin:10px 0 0;
-      color:#d2d2da;
-      max-width:800px;
-    }
-
-    .visual{
-      position:relative;
-      min-height:240px;
-      margin:18px 24px 0;
-      border-radius:24px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.06);
+    .map-shell{
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.07);
       background:
-        radial-gradient(circle at 20% 20%, rgba(179,31,36,.24), transparent 30%),
-        linear-gradient(135deg, #121218, #09090c);
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,.18), transparent 30%),
+        linear-gradient(135deg, #11141b, #090b0f);
+      min-height:430px;
+      position:relative;
+      overflow:hidden;
+      padding:18px;
+    }
+
+    .map-panel{
+      position:relative;
+      width:100%;
+      min-height:394px;
+    }
+
+    .node{
+      position:absolute;
       display:flex;
       align-items:center;
       justify-content:center;
-    }
-
-    .engine-layout{
-      position:relative;
-      width:min(100%, 540px);
-      aspect-ratio:16/10;
-    }
-
-    .part{
-      position:absolute;
+      text-align:center;
+      padding:12px 14px;
       border-radius:22px;
       border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.03),
-        0 16px 38px rgba(0,0,0,.28);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       color:#fff;
-      text-transform:uppercase;
-      font-weight:800;
-      font-size:.76rem;
+      font-weight:900;
       letter-spacing:.08em;
-      text-align:center;
-      padding:10px;
-    }
-
-    .part.red{
-      border-color:rgba(179,31,36,.44);
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.18s ease;
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,.03),
-        0 0 0 1px rgba(179,31,36,.22),
-        0 22px 42px rgba(179,31,36,.18);
-      background:linear-gradient(180deg, rgba(179,31,36,.35), rgba(179,31,36,.10));
+        0 14px 30px rgba(0,0,0,.25);
     }
-
-    .part.small{font-size:.68rem}
-
-    .flow{
+    .node:hover{
+      transform:translateY(-2px) scale(1.02);
+      border-color:rgba(255,255,255,.24);
+    }
+    .node.red{
+      border-color:rgba(179,31,36,.42);
+      background:linear-gradient(180deg, rgba(179,31,36,.42), rgba(179,31,36,.14));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.03),
+        0 0 0 1px rgba(179,31,36,.18),
+        0 18px 40px rgba(179,31,36,.16);
+    }
+    .node.active{
+      outline:2px solid rgba(228,58,65,.65);
+      box-shadow:
+        0 0 0 1px rgba(228,58,65,.24),
+        0 0 26px rgba(179,31,36,.26),
+        inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+    .node.small{font-size:.72rem}
+    .map-line{
       position:absolute;
       border-top:2px dashed rgba(255,255,255,.18);
       transform-origin:left center;
-    }
-    .flow.red{border-top-color:rgba(224,49,55,.7)}
-
-    .card-bottom{
-      padding:22px 24px 24px;
-    }
-
-    .specs{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .spec{
-      border-radius:16px;
-      padding:14px;
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-    }
-    .spec label{
-      display:block;
-      font-size:.78rem;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.11em;
-      margin-bottom:6px;
-      font-weight:800;
-    }
-    .spec strong{
-      display:block;
-      font-size:1.02rem;
-    }
-
-    .feature-list{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px 14px;
-      margin:0 0 20px;
-      padding:0;
-      list-style:none;
-    }
-    .feature-list li{
-      position:relative;
-      padding-left:18px;
-      color:#e2e2e9;
-    }
-    .feature-list li::before{
-      content:"";
-      position:absolute;
-      left:0;top:.55em;
-      width:8px;height:8px;border-radius:50%;
-      background:var(--red-2);
-      box-shadow:0 0 10px rgba(179,31,36,.45);
-    }
-
-    .price-row{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:16px;
-      padding-top:18px;
-      border-top:1px solid rgba(255,255,255,.08);
-      flex-wrap:wrap;
-    }
-
-    .price-block small{
-      display:block;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .price{
-      font-size:2rem;
-      line-height:1;
-      font-weight:900;
-      letter-spacing:-.05em;
-    }
-
-    .actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .config-card{
-      padding:28px;
-      display:grid;
-      grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
-      gap:24px;
-      align-items:start;
-      overflow:hidden;
-      position:relative;
-    }
-
-    .config-card::before{
-      content:"";
-      position:absolute;
-      right:-120px;
-      top:-120px;
-      width:320px;height:320px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(179,31,36,.18), transparent 66%);
       pointer-events:none;
+      opacity:.9;
     }
+    .map-line.red{border-top-color:rgba(228,58,65,.76)}
 
-    .build-steps{
+    .info-stack{
       display:grid;
-      gap:12px;
-      margin-top:18px;
+      gap:14px;
     }
-
-    .build-step{
-      display:grid;
-      grid-template-columns:auto 1fr;
-      gap:12px;
-      padding:16px;
-      border-radius:16px;
+    .info-box{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.07);
       background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
+      padding:18px;
     }
-
-    .step-no{
-      width:34px;height:34px;border-radius:12px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg, var(--red), var(--red-2));
-      font-weight:900;
-      box-shadow:0 10px 22px rgba(179,31,36,.26);
+    .info-box h3{
+      margin:0 0 8px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-size:1.08rem;
     }
-
-    .option-grid{
+    .info-box p{
+      margin:0;
+      color:var(--muted);
+    }
+    .delta-grid{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:12px;
       margin-top:8px;
     }
-
-    .option{
-      border-radius:18px;
-      padding:16px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    .delta{
+      border-radius:16px;
+      padding:14px;
+      background:#10131a;
       border:1px solid rgba(255,255,255,.07);
     }
-
-    .option strong{
+    .delta label{
       display:block;
-      margin-bottom:6px;
       text-transform:uppercase;
-      letter-spacing:.04em;
+      letter-spacing:.11em;
+      font-size:.75rem;
+      color:var(--muted2);
+      font-weight:800;
+      margin-bottom:6px;
     }
+    .delta strong{font-size:1rem}
 
-    .contact-card{
-      padding:28px;
+    .bars{
       display:grid;
-      grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);
-      gap:22px;
-      align-items:start;
+      gap:12px;
+      margin-top:10px;
+    }
+    .bar-row{
+      display:grid;
+      grid-template-columns:116px 1fr 56px;
+      gap:12px;
+      align-items:center;
+    }
+    .bar-row span{
+      color:#eef1f7;
+      font-weight:700;
+      font-size:.92rem;
+    }
+    .bar-track{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.05);
+    }
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(179,31,36,.8), rgba(228,58,65,1));
+      box-shadow:0 0 14px rgba(179,31,36,.28);
+    }
+    .bar-fill.gray{
+      background:linear-gradient(90deg, rgba(180,188,205,.35), rgba(236,241,250,.8));
+      box-shadow:none;
+    }
+    .legend{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      color:var(--muted);
+      font-size:.88rem;
+    }
+    .legend b{
+      color:#fff;
+      font-weight:800;
     }
 
-    .contact-box{
-      padding:18px;
-      border-radius:20px;
+    .products-card{
+      padding:24px;
+    }
+    .feed-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .feed-count{
+      color:var(--muted);
+      font-size:.94rem;
+    }
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+    .kit-card{
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
+        #11141a;
+      overflow:hidden;
+      position:relative;
+    }
+    .kit-top{
+      padding:22px 22px 14px;
+    }
+    .kit-badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:800;
+    }
+    .kit-card h3{
+      margin:0;
+      font-size:1.58rem;
+      line-height:1;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+    }
+    .kit-card p{
+      margin:12px 0 0;
+      color:#d3d9e4;
+    }
+    .kit-specs{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin:14px 22px 0;
+    }
+    .kit-spec{
+      border-radius:16px;
+      padding:14px;
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
     }
+    .kit-spec label{
+      display:block;
+      color:var(--muted2);
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .kit-spec strong{font-size:.98rem}
+    .kit-list{
+      list-style:none;
+      margin:16px 22px 0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+    .kit-list li{
+      position:relative;
+      padding-left:18px;
+      color:#e8ecf4;
+    }
+    .kit-list li::before{
+      content:"";
+      position:absolute;
+      left:0; top:.55em;
+      width:8px;height:8px;border-radius:50%;
+      background:var(--red2);
+      box-shadow:0 0 10px rgba(179,31,36,.42);
+    }
+    .kit-bottom{
+      padding:18px 22px 22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:14px;
+      flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.07);
+      margin-top:18px;
+    }
+    .price small{
+      display:block;
+      color:var(--muted2);
+      text-transform:uppercase;
+      letter-spacing:.11em;
+      font-size:.74rem;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .price strong{
+      font-size:1.9rem;
+      line-height:1;
+      letter-spacing:-.05em;
+    }
+    .feed-empty{
+      border-radius:22px;
+      padding:26px;
+      border:1px dashed rgba(255,255,255,.12);
+      color:var(--muted);
+      background:rgba(255,255,255,.02);
+      display:none;
+    }
 
+    .custom-card{
+      padding:26px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .custom-card h3{
+      margin:12px 0 10px;
+      font-size:1.9rem;
+      line-height:.98;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+    }
+    .steps{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+    .step{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+    }
+    .step-no{
+      width:36px;height:36px;border-radius:12px;
+      display:grid;place-items:center;
+      font-weight:900;
+      background:linear-gradient(135deg, var(--red), var(--red2));
+      box-shadow:0 12px 24px rgba(179,31,36,.24);
+    }
+
+    .contact-card{
+      padding:26px;
+      display:grid;
+      grid-template-columns:minmax(0,.92fr) minmax(320px,1.08fr);
+      gap:20px;
+    }
+    .contact-box{
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.03);
+      padding:18px;
+    }
     .contact-list{
       display:grid;
       gap:12px;
-      margin-top:18px;
+      margin-top:16px;
     }
-
     .contact-item{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
       padding:14px 16px;
       border-radius:16px;
       background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
     }
-
     .contact-item span{
-      font-size:.8rem;
-      color:var(--muted);
+      display:block;
+      color:var(--muted2);
+      font-size:.76rem;
       text-transform:uppercase;
       letter-spacing:.1em;
       font-weight:800;
+      margin-bottom:6px;
     }
-
     .contact-item strong{
-      font-size:1rem;
       word-break:break-word;
+      font-size:1rem;
     }
 
-    .contact-form{
-      display:grid;
-      gap:12px;
-    }
-
-    .contact-form .row{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .field{
-      display:grid;
-      gap:8px;
-    }
-
+    form{display:grid;gap:12px}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .field{display:grid;gap:8px}
     .field label{
-      font-size:.8rem;
-      color:#d8d8df;
+      font-size:.78rem;
       text-transform:uppercase;
       letter-spacing:.1em;
+      color:#dbe1eb;
       font-weight:800;
     }
-
-    .field input,
-    .field select,
-    .field textarea{
+    .field input,.field select,.field textarea{
       width:100%;
-      border:1px solid rgba(255,255,255,.08);
-      background:#111117;
+      border:1px solid rgba(255,255,255,.09);
+      background:#10131a;
       color:#fff;
-      border-radius:14px;
+      border-radius:15px;
       padding:14px 15px;
       font:inherit;
       outline:none;
-      transition:border-color .18s ease, box-shadow .18s ease;
+      transition:.18s ease;
     }
-
-    .field textarea{
-      min-height:160px;
-      resize:vertical;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus{
-      border-color:rgba(179,31,36,.52);
+    .field textarea{min-height:170px;resize:vertical}
+    .field input:focus,.field select:focus,.field textarea:focus{
+      border-color:rgba(179,31,36,.5);
       box-shadow:0 0 0 4px rgba(179,31,36,.12);
     }
 
-    .foot{
-      padding:34px 0 54px;
-      color:#9e9eaa;
+    footer{
+      padding:34px 0 52px;
+      color:var(--muted);
       font-size:.92rem;
     }
-
     .footline{
       border-top:1px solid rgba(255,255,255,.08);
       padding-top:18px;
@@ -736,16 +753,15 @@
       flex-wrap:wrap;
     }
 
-    @media (max-width: 1100px){
-      .hero-grid,
-      .config-card,
+    @media (max-width:1100px){
+      .hero-shell,
+      .compare-grid,
+      .custom-card,
       .contact-card{
         grid-template-columns:1fr;
       }
-      .hero-main{min-height:auto}
     }
-
-    @media (max-width: 780px){
+    @media (max-width:820px){
       .topbar-inner{
         min-height:auto;
         padding:14px 0;
@@ -753,17 +769,24 @@
         flex-direction:column;
       }
       .nav{width:100%;justify-content:flex-start}
-      .hero{padding-top:26px}
-      .hero-main{padding:22px;border-radius:24px}
-      .hero h1{font-size:clamp(2rem, 13vw, 3.3rem)}
-      .hero-metrics{grid-template-columns:1fr}
-      .product-grid{grid-template-columns:1fr}
-      .specs, .feature-list, .option-grid, .contact-form .row{grid-template-columns:1fr}
-      .visual{min-height:200px;margin:16px 16px 0}
-      .card-top,.card-bottom,.info-card,.config-card,.contact-card{padding:20px}
-      .section-head{align-items:flex-start;flex-direction:column}
-      .actions{justify-content:flex-start}
-      .price{font-size:1.72rem}
+      .hero-main{padding:22px;min-height:auto}
+      .hero-title{font-size:clamp(2.1rem, 12vw, 3.9rem)}
+      .hero-meter,
+      .cards,
+      .kit-specs,
+      .row{
+        grid-template-columns:1fr;
+      }
+      .section-head{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .map-shell{min-height:360px}
+      .map-panel{min-height:324px}
+      .node{font-size:.68rem;padding:10px 12px}
+      .bar-row{grid-template-columns:96px 1fr 44px}
+      .switch button{min-width:120px}
+      .compare-card,.products-card,.custom-card,.contact-card{padding:20px}
     }
   </style>
 </head>
@@ -771,320 +794,283 @@
   <header class="topbar">
     <div class="wrap topbar-inner">
       <div class="brand">
-        <div class="brand-badge">RM</div>
+        <div class="brand-mark">RM</div>
         <div class="brand-copy">
           <p class="brand-title">RACEM</p>
-          <p class="brand-sub">Turbo kity · Kompresor kity · Stavba výkonu na mieru</p>
+          <p class="brand-sub">Turbo kity · Kompresor kity · Výkonové sety</p>
         </div>
       </div>
 
       <nav class="nav">
-        <a href="#produkty">Produkty</a>
-        <a href="#na-mieru">Na mieru</a>
+        <a href="#compare">Mapa / graf</a>
+        <a href="#kits">Ponuka</a>
+        <a href="#custom">Na mieru</a>
         <a href="#kontakt">Kontakt</a>
-        <a class="cta" href="#kontakt">Poslať dopyt</a>
+        <a class="btn red" href="#kontakt">Poslať dopyt</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-main">
+      <div class="wrap hero-shell">
+        <article class="hero-main">
           <div>
-            <div class="hero-tag">RACEM Performance Division</div>
-            <h1>Turbo a kompresor <span class="accent">kity</span> bez kompromisov</h1>
-            <p>
-              Stránka je postavená v RACEM štýle — tmavý motorsport vizuál, ostré línie, agresívny feeling a jasný fokus na výkon.
-              Zatiaľ sú natvrdo vložené 2 ukážkové produkty. Neskôr sem len napojíš JSON a budeš to vedieť rozšíriť na celý katalóg.
+            <div class="eyebrow">Turbo & kompresor kity by REM Performance</div>
+            <h1 class="hero-title">Malý výkon? <span class="accent">Nafúkni ho.</span></h1>
+            <p class="hero-text">
+              Tvoje auto nemusí zostať pomalé. Či chceš ostrejší nástup výkonu, väčší strop pre ďalší build,
+              alebo len konečne setup, ktorý dáva zmysel pre tvoj konkrétny motor — tu začína výber správneho riešenia.
             </p>
 
             <div class="hero-actions">
-              <a class="cta" href="#produkty">Pozrieť ponuku</a>
-              <a class="cta secondary" href="#na-mieru">Vyskladať kit na mieru</a>
-            </div>
-
-            <div class="hero-metrics">
-              <div class="metric">
-                <strong>2</strong>
-                <span>Ukážkové produkty natvrdo</span>
-              </div>
-              <div class="metric">
-                <strong>1:1</strong>
-                <span>RACEM vizuál pripravený na ďalší rozvoj</span>
-              </div>
-              <div class="metric">
-                <strong>Custom</strong>
-                <span>Možnosť stavby kitu podľa auta a cieľa</span>
-              </div>
+              <a class="btn red" href="#compare">Pozrieť rozdiel</a>
+              <a class="btn" href="#kits">Zobraziť kity</a>
+              <a class="btn" href="#custom">Skladanie na mieru</a>
             </div>
           </div>
-        </div>
+
+          <div class="hero-meter">
+            <div class="meter">
+              <strong>Turbo</strong>
+              <span>vyšší výkonový strop a agresívnejší charakter</span>
+            </div>
+            <div class="meter">
+              <strong>Kompresor</strong>
+              <span>okamžitejší záťah a lineárnejší ťah</span>
+            </div>
+            <div class="meter">
+              <strong>Tvoj motor</strong>
+              <span>rozhoduje, čo je dobré riešenie a čo je blbosť</span>
+            </div>
+          </div>
+        </article>
 
         <div class="hero-side">
-          <article class="info-card">
-            <div class="eyebrow">Pre koho je to</div>
-            <div class="bigline">Street / Track / Drift / Show build</div>
-            <p class="muted">
-              Pre zákazníkov, ktorí nechcú len “nejaké diely”, ale chcú výkonový setup, ktorý dáva zmysel technicky aj vizuálne.
+          <article class="hero-side-card">
+            <div class="eyebrow">Pre tvoje auto</div>
+            <h3>Nie univerzálna rozprávka. Konkrétny setup.</h3>
+            <p>
+              Každý kit má zmysel len vtedy, keď sedí na motor, cieľ výkonu, použitie auta a rozpočet. Preto je nižšie
+              porovnanie a zároveň možnosť vyskladať build na mieru.
             </p>
 
-            <div class="panel-list">
-              <div class="panel-item">
-                <div class="dot"></div>
-                <div>
-                  <strong>Turbo kity</strong><br />
-                  <span class="muted">pre maximálny výkonový potenciál a ďalší rast</span>
-                </div>
+            <div class="mini-list">
+              <div class="mini-item">
+                <strong>Street / daily</strong>
+                <span>okamžitá odozva, použiteľnosť a čistý priebeh výkonu</span>
               </div>
-              <div class="panel-item">
-                <div class="dot"></div>
-                <div>
-                  <strong>Kompresor kity</strong><br />
-                  <span class="muted">pre lineárny nástup výkonu a ostrú odozvu</span>
-                </div>
+              <div class="mini-item">
+                <strong>Track / drift / race</strong>
+                <span>väčší potenciál, ďalší upgrade a tvrdší charakter auta</span>
               </div>
             </div>
           </article>
 
-          <article class="info-card">
-            <div class="eyebrow">Čo vieš ďalej doplniť</div>
-            <div class="bigline">JSON feed, filtre, platformy, dopyty</div>
-            <p class="muted">
-              Táto verzia je pripravená tak, aby si ju neskôr vedel prerobiť na dynamický katalóg.
-              Stačí napojiť JSON a môžeš pridávať ďalšie platformy, ceny, varianty, dostupnosť aj inquiry flow.
+          <article class="hero-side-card">
+            <div class="eyebrow">Interaktívne</div>
+            <h3>Klikni na súčiastku a otvor ponuku</h3>
+            <p>
+              V mape nižšie vieš klikať na sanie, wastegate, intercooler, charge pipe, brackets a ďalšie body.
+              Každý bod ťa presmeruje na príslušnú ponuku dielov.
             </p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="produkty">
+    <section id="compare">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Mapa / graf</div>
+            <h2>Turbo vs kompresor kit</h2>
+          </div>
+          <p>
+            Toto nie je teória pre každého. Je to rýchle porovnanie charakteru auta. Prepínač mení mapu aj výkonové porovnanie nižšie.
+          </p>
+        </div>
+
+        <article class="compare-card">
+          <div class="compare-top">
+            <div>
+              <div class="eyebrow">Interaktívna mapa komponentov</div>
+            </div>
+            <div class="switch" role="tablist" aria-label="Turbo alebo kompresor">
+              <button class="btn red mode-btn" data-mode="turbo" aria-pressed="true">Turbo kit</button>
+              <button class="btn mode-btn" data-mode="kompresor" aria-pressed="false">Kompresor kit</button>
+            </div>
+          </div>
+
+          <div class="compare-grid">
+            <div class="map-shell">
+              <div id="turboMap" class="map-panel">
+                <a class="node small" href="sanie.html" style="left:18%; top:8%; width:128px; height:58px;">Sanie</a>
+                <a class="node" href="turbo-kity.html" style="left:12%; top:30%; width:168px; height:100px;">Motor</a>
+                <a class="node red active" href="turbo-kity.html" style="left:54%; top:31%; width:120px; height:108px;">Turbo</a>
+                <a class="node small" href="downpipe.html" style="left:74%; top:8%; width:118px; height:58px;">Downpipe</a>
+                <a class="node small" href="wastegate.html" style="left:9%; top:69%; width:122px; height:54px;">Wastegate</a>
+                <a class="node small" href="intercoolery.html" style="left:37%; top:65%; width:132px; height:54px;">Intercooler</a>
+
+                <div class="map-line" style="left:180px; top:142px; width:118px; transform:rotate(-8deg);"></div>
+                <div class="map-line red" style="left:299px; top:157px; width:86px; transform:rotate(-67deg);"></div>
+                <div class="map-line red" style="left:298px; top:193px; width:126px; transform:rotate(31deg);"></div>
+                <div class="map-line" style="left:149px; top:250px; width:86px; transform:rotate(-8deg);"></div>
+              </div>
+
+              <div id="kompresorMap" class="map-panel hidden">
+                <a class="node small red" href="remenice.html" style="left:20%; top:9%; width:104px; height:50px;">Pulley kit</a>
+                <a class="node" href="kompresor-kity.html" style="left:17%; top:30%; width:188px; height:100px;">Motor</a>
+                <a class="node red active" href="kompresor-kity.html" style="left:56%; top:18%; width:154px; height:92px;">Kompresor</a>
+                <a class="node small" href="throttle.html" style="left:83%; top:32%; width:104px; height:58px;">Throttle</a>
+                <a class="node small" href="charge-pipe.html" style="left:71%; top:63%; width:128px; height:54px;">Charge pipe</a>
+                <a class="node small" href="brackets.html" style="left:12%; top:77%; width:124px; height:52px;">Brackets</a>
+
+                <div class="map-line red" style="left:122px; top:48px; width:68px; transform:rotate(-9deg);"></div>
+                <div class="map-line red" style="left:305px; top:112px; width:102px; transform:rotate(28deg);"></div>
+                <div class="map-line" style="left:214px; top:157px; width:140px; transform:rotate(-4deg);"></div>
+                <div class="map-line red" style="left:247px; top:122px; width:104px; transform:rotate(-25deg);"></div>
+              </div>
+            </div>
+
+            <div class="info-stack">
+              <div class="info-box">
+                <h3 id="modeTitle">Turbo kit — charakter auta</h3>
+                <p id="modeText">
+                  Keď chceš z auta dostať viac výkonu hore, mať väčší upgrade potenciál a build smerovať agresívnejšie.
+                  Dáva zmysel hlavne tam, kde chceš výkonový strop a ďalší rast.
+                </p>
+
+                <div class="delta-grid">
+                  <div class="delta">
+                    <label>Charakter</label>
+                    <strong id="charValue">Agresívnejší, ostrejší hore</strong>
+                  </div>
+                  <div class="delta">
+                    <label>Použitie</label>
+                    <strong id="useValue">Track / drift / high HP street</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-box">
+                <h3>RACEM mini graf</h3>
+                <div class="bars">
+                  <div class="bar-row">
+                    <span>Nástup</span>
+                    <div class="bar-track"><div id="barResponse" class="bar-fill gray" style="width:58%"></div></div>
+                    <b id="valResponse">58</b>
+                  </div>
+                  <div class="bar-row">
+                    <span>Peak výkon</span>
+                    <div class="bar-track"><div id="barPeak" class="bar-fill" style="width:92%"></div></div>
+                    <b id="valPeak">92</b>
+                  </div>
+                  <div class="bar-row">
+                    <span>Street feel</span>
+                    <div class="bar-track"><div id="barStreet" class="bar-fill gray" style="width:62%"></div></div>
+                    <b id="valStreet">62</b>
+                  </div>
+                  <div class="bar-row">
+                    <span>Upgrade</span>
+                    <div class="bar-track"><div id="barUpgrade" class="bar-fill" style="width:95%"></div></div>
+                    <b id="valUpgrade">95</b>
+                  </div>
+                </div>
+                <div class="legend">
+                  <span><b>Turbo:</b> väčší výkonový strop</span>
+                  <span><b>Kompresor:</b> okamžitejší ťah</span>
+                </div>
+              </div>
+
+              <div class="info-box">
+                <h3>Klikateľné body</h3>
+                <p>
+                  Klik na komponent vľavo môže viesť na kategóriu dielov:
+                  sanie, downpipe, wastegate, intercooler, pulley kit, charge pipe, brackets a podobne.
+                  Zatiaľ sú tam pripravené linky ako placeholder.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="kits">
       <div class="wrap">
         <div class="section-head">
           <div>
             <div class="eyebrow">Ponuka</div>
-            <h2>Ukážkové výkonové sety</h2>
+            <h2>Kity načítané z kits.json</h2>
           </div>
           <p>
-            Zatiaľ sú tu natvrdo vložené dve hlavné kategórie. Vizuál je komplet prerobený, nie je to len prefarbené — celá stránka ide po RACEM atmosfére.
+            Nižšie je pripravený renderer pre <code>kits.json</code>. Ak súbor nenájde, ukážu sa 2 demo produkty, aby stránka nebola prázdna.
           </p>
         </div>
 
-        <div class="product-grid">
-          <article class="card">
-            <div class="card-top">
-              <div class="card-badges">
-                <span class="badge">Turbo kit</span>
-                <span class="badge">High power setup</span>
-              </div>
-              <h3 class="product-title">RACEM TurboKit Stage Street/Track</h3>
-              <p class="product-sub">
-                Setup pre zákazníka, ktorý chce výrazný nárast výkonu, ďalší upgrade potenciál a poctivý základ pre ostrý build.
-              </p>
+        <article class="products-card">
+          <div class="feed-head">
+            <div>
+              <div class="eyebrow">Dynamický feed</div>
             </div>
+            <div class="feed-count" id="feedCount">Načítavam ponuku...</div>
+          </div>
 
-            <div class="visual">
-              <div class="engine-layout">
-                <div class="part" style="left:9%; top:35%; width:31%; height:30%;">Motor</div>
-                <div class="part red" style="left:57%; top:28%; width:22%; height:32%;">Turbo</div>
-                <div class="part small" style="left:69%; top:5%; width:21%; height:18%;">Downpipe</div>
-                <div class="part small" style="left:17%; top:9%; width:22%; height:16%;">Sanie</div>
-                <div class="part small" style="left:39%; top:68%; width:24%; height:16%;">Intercooler</div>
-                <div class="part small red" style="left:6%; top:72%; width:22%; height:14%;">Wastegate</div>
-                <div class="flow" style="left:38%; top:47%; width:120px; transform:rotate(-8deg);"></div>
-                <div class="flow red" style="left:57%; top:48%; width:90px; transform:rotate(-65deg);"></div>
-                <div class="flow red" style="left:57%; top:54%; width:130px; transform:rotate(30deg);"></div>
-                <div class="flow" style="left:34%; top:76%; width:80px; transform:rotate(-8deg);"></div>
-              </div>
-            </div>
-
-            <div class="card-bottom">
-              <div class="specs">
-                <div class="spec">
-                  <label>Určenie</label>
-                  <strong>Street / Track build</strong>
-                </div>
-                <div class="spec">
-                  <label>Možnosti</label>
-                  <strong>Viac stage úrovní</strong>
-                </div>
-                <div class="spec">
-                  <label>Obsah</label>
-                  <strong>Turbo, potrubie, IC, hardware</strong>
-                </div>
-                <div class="spec">
-                  <label>Doplnky</label>
-                  <strong>ECU, palivo, vstrek, montáž</strong>
-                </div>
-              </div>
-
-              <ul class="feature-list">
-                <li>vysoký výkonový strop</li>
-                <li>ideálne pre ďalší rast setupu</li>
-                <li>možnosť riešenia podľa cieľa auta</li>
-                <li>vhodné aj pre agresívnejšie mapy</li>
-              </ul>
-
-              <div class="price-row">
-                <div class="price-block">
-                  <small>Od ceny</small>
-                  <div class="price">od 2 990 €</div>
-                </div>
-                <div class="actions">
-                  <a class="cta secondary" href="#kontakt">Chcem dopyt</a>
-                  <a class="cta" href="#na-mieru">Vyskladať na mieru</a>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-top">
-              <div class="card-badges">
-                <span class="badge">Kompresor kit</span>
-                <span class="badge">Instant response</span>
-              </div>
-              <h3 class="product-title">RACEM KompresorKit Response Line</h3>
-              <p class="product-sub">
-                Riešenie pre tých, ktorí chcú okamžitú odozvu, lineárny nástup výkonu a výrazne živšie auto bez “turbo lag” charakteru.
-              </p>
-            </div>
-
-            <div class="visual">
-              <div class="engine-layout">
-                <div class="part" style="left:12%; top:35%; width:34%; height:30%;">Motor</div>
-                <div class="part red" style="left:44%; top:18%; width:28%; height:24%;">Kompresor</div>
-                <div class="part small" style="left:73%; top:30%; width:18%; height:15%;">Throttle</div>
-                <div class="part small" style="left:58%; top:58%; width:24%; height:16%;">Charge pipe</div>
-                <div class="part small red" style="left:16%; top:11%; width:19%; height:14%;">Pulley kit</div>
-                <div class="part small" style="left:8%; top:72%; width:23%; height:13%;">Brackets</div>
-                <div class="flow red" style="left:34%; top:21%; width:100px; transform:rotate(-10deg);"></div>
-                <div class="flow" style="left:50%; top:36%; width:96px; transform:rotate(6deg);"></div>
-                <div class="flow red" style="left:34%; top:50%; width:102px; transform:rotate(-20deg);"></div>
-              </div>
-            </div>
-
-            <div class="card-bottom">
-              <div class="specs">
-                <div class="spec">
-                  <label>Určenie</label>
-                  <strong>Street / OEM+ performance</strong>
-                </div>
-                <div class="spec">
-                  <label>Charakter</label>
-                  <strong>Rýchla a lineárna odozva</strong>
-                </div>
-                <div class="spec">
-                  <label>Obsah</label>
-                  <strong>Kompresor, držiaky, remenica, vedenie</strong>
-                </div>
-                <div class="spec">
-                  <label>Doplnky</label>
-                  <strong>ECU tune, palivo, chladenie</strong>
-                </div>
-              </div>
-
-              <ul class="feature-list">
-                <li>okamžitý záťah odspodu</li>
-                <li>výborný feeling na bežnú aj ostrú jazdu</li>
-                <li>čistejší power delivery charakter</li>
-                <li>možnosť custom prispôsobenia</li>
-              </ul>
-
-              <div class="price-row">
-                <div class="price-block">
-                  <small>Od ceny</small>
-                  <div class="price">od 3 390 €</div>
-                </div>
-                <div class="actions">
-                  <a class="cta secondary" href="#kontakt">Chcem dopyt</a>
-                  <a class="cta" href="#na-mieru">Vyskladať na mieru</a>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
+          <div class="cards" id="kitsGrid"></div>
+          <div class="feed-empty" id="feedEmpty">Produkty sa nepodarilo načítať. Skontroluj, či je <strong>kits.json</strong> vedľa HTML súboru a či má správnu štruktúru.</div>
+        </article>
       </div>
     </section>
 
-    <section id="na-mieru">
+    <section id="custom">
       <div class="wrap">
         <div class="section-head">
           <div>
             <div class="eyebrow">Custom build</div>
-            <h2>Vyskladanie kitu na mieru</h2>
+            <h2>Skladanie na mieru by REM Performance</h2>
           </div>
           <p>
-            Toto je dôležitá sekcia, lebo veľa ľudí nechce univerzálny set. Chcú riešenie podľa auta, rozpočtu, cieľa a plánovaného výkonu. Presne sem ich potrebuješ stiahnuť.
+            Pre autá, kde nestačí hotový kit. Pošli motor, cieľ výkonu, použitie auta a rozpočet. Na tom sa potom stavia reálny návrh.
           </p>
         </div>
 
-        <article class="config-card">
+        <article class="custom-card">
           <div>
-            <div class="eyebrow">Ako to funguje</div>
-            <div class="bigline">Pošli auto, cieľ a rozpočet. Zvyšok nastavíme.</div>
-            <p class="muted">
-              Na mieru vieš riešiť napríklad typ motora, platformu, cieľ výkonu, použitie auta, hardware, palivový systém, riadenie motora aj finálne ladenie.
+            <div class="eyebrow">Ako to ide</div>
+            <h3>Tvoje auto. Tvoj cieľ. Normálny plán.</h3>
+            <p style="margin:0;color:var(--muted);">
+              Reálne buildy nevznikajú tak, že si niekto len náhodne klikne “turbo”. Najprv sa musí vyriešiť, čo auto znesie a kam s ním chceš ísť.
             </p>
 
-            <div class="build-steps">
-              <div class="build-step">
+            <div class="steps">
+              <div class="step">
                 <div class="step-no">1</div>
-                <div>
-                  <strong>Auto a motor</strong><br>
-                  <span class="muted">napr. BMW E46 M52TUB25, 1.8T, 2JZ, B58, TFSI, N54...</span>
-                </div>
+                <div><strong>Auto / motor</strong><br><span style="color:var(--muted)">napr. E46 M52TUB25, N54, 1.8T, 2JZ...</span></div>
               </div>
-              <div class="build-step">
+              <div class="step">
                 <div class="step-no">2</div>
-                <div>
-                  <strong>Cieľ výkonu a použitie</strong><br>
-                  <span class="muted">street, drift, track, sprint, show build, daily performance</span>
-                </div>
+                <div><strong>Cieľ výkonu a použitie</strong><br><span style="color:var(--muted)">street, drift, track, sprint, daily</span></div>
               </div>
-              <div class="build-step">
+              <div class="step">
                 <div class="step-no">3</div>
-                <div>
-                  <strong>Rozpočet a preferencie</strong><br>
-                  <span class="muted">budget build, stredná trieda, top-spec riešenie</span>
-                </div>
+                <div><strong>Budget a priority</strong><br><span style="color:var(--muted)">budget build, stred, top-spec, future upgrade</span></div>
               </div>
             </div>
           </div>
 
-          <div>
-            <div class="eyebrow">Čo sa dá riešiť</div>
-            <div class="option-grid">
-              <div class="option">
-                <strong>Turbo / kompresor</strong>
-                <span class="muted">výber hlavného systému podľa cieľa auta</span>
-              </div>
-              <div class="option">
-                <strong>Palivový systém</strong>
-                <span class="muted">pumpa, vstrekovače, regulácia, hadice</span>
-              </div>
-              <div class="option">
-                <strong>Chladenie</strong>
-                <span class="muted">intercooler, oil cooling, vedenie</span>
-              </div>
-              <div class="option">
-                <strong>Riadenie motora</strong>
-                <span class="muted">ECU, mapovanie, senzory, boost control</span>
-              </div>
-              <div class="option">
-                <strong>Montážny hardware</strong>
-                <span class="muted">držiaky, spoje, príslušenstvo, potrubie</span>
-              </div>
-              <div class="option">
-                <strong>Kompletný build</strong>
-                <span class="muted">set pripravený podľa konkrétneho projektu</span>
-              </div>
+          <div class="contact-box">
+            <div class="eyebrow">Čo vieš riešiť</div>
+            <div class="contact-list">
+              <div class="contact-item"><span>Turbo / kompresor</span><strong>výber hlavného systému podľa cieľa</strong></div>
+              <div class="contact-item"><span>Palivo / chladenie</span><strong>vstrek, pumpa, intercooler, oil cooling</strong></div>
+              <div class="contact-item"><span>Riadenie motora</span><strong>ECU, tuning, boost control, senzory</strong></div>
+              <div class="contact-item"><span>Kompletný set</span><strong>build vyskladaný pre konkrétny motor</strong></div>
             </div>
 
-            <div class="hero-actions" style="margin-top:20px;">
-              <a class="cta" href="#kontakt">Chcem kit na mieru</a>
-              <a class="cta secondary" href="mailto:info@remperformance.sk">info@remperformance.sk</a>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;">
+              <a class="btn red" href="#kontakt">Chcem riešiť svoj build</a>
+              <a class="btn" href="mailto:info@remperformance.sk">info@remperformance.sk</a>
             </div>
           </div>
         </article>
@@ -1096,20 +1082,20 @@
         <div class="section-head">
           <div>
             <div class="eyebrow">Kontakt</div>
-            <h2>Dopyt na kit alebo stavbu na mieru</h2>
+            <h2>Napíš, čo jazdíš a čo chceš dosiahnuť</h2>
           </div>
           <p>
-            Toto ber ako pripravený základ. Neskôr sem vieš napojiť Formspree, backend formulár alebo mail handling. Zatiaľ je tam plne pripravený vizuálny blok aj kontaktné údaje.
+            Formulár je pripravený vizuálne. Vieš ho neskôr napojiť na Formspree alebo vlastný backend.
           </p>
         </div>
 
         <article class="contact-card">
           <div>
             <div class="contact-box">
-              <div class="eyebrow">RACEM / REM Performance</div>
-              <div class="bigline">Napíš čo jazdíš a čo chceš dosiahnuť</div>
-              <p class="muted">
-                Čím presnejší dopyt pošleš, tým lepšie sa vie pripraviť návrh kitu. Kľudne pošli motor, auto, cieľ výkonu, budget a či chceš turbo alebo kompresor.
+              <div class="eyebrow">REM Performance</div>
+              <h3 style="margin:12px 0 10px;font-size:1.85rem;line-height:1;letter-spacing:-.04em;text-transform:uppercase;">Turbo, kompresor alebo build na mieru</h3>
+              <p style="margin:0;color:var(--muted);">
+                Čím presnejší dopyt pošleš, tým rýchlejšie sa dá navrhnúť rozumný setup.
               </p>
             </div>
 
@@ -1119,17 +1105,17 @@
                 <strong><a href="mailto:info@remperformance.sk">info@remperformance.sk</a></strong>
               </div>
               <div class="contact-item">
-                <span>Typ dopytu</span>
-                <strong>Turbo kity · Kompresor kity · Custom performance build</strong>
+                <span>Pošli do správy</span>
+                <strong>Značka / model / motor / cieľ HP / použitie auta / budget</strong>
               </div>
               <div class="contact-item">
-                <span>Odporúčané info v správe</span>
-                <strong>Značka / model / motor / cieľ výkonu / použitie auta / rozpočet</strong>
+                <span>Vhodné pre</span>
+                <strong>Hotový kit aj individuálne vyskladaný performance setup</strong>
               </div>
             </div>
           </div>
 
-          <form class="contact-form" onsubmit="event.preventDefault(); alert('Formulár je zatiaľ len vizuálny základ. Neskôr sem vieš napojiť Formspree alebo vlastný backend.');">
+          <form onsubmit="event.preventDefault(); alert('Formulár je pripravený ako frontend. Na odosielanie ho napoj na Formspree alebo vlastný backend.');">
             <div class="row">
               <div class="field">
                 <label>Meno</label>
@@ -1147,8 +1133,8 @@
                 <select>
                   <option>Turbo kit</option>
                   <option>Kompresor kit</option>
-                  <option>Kit na mieru</option>
-                  <option>Konzultácia projektu</option>
+                  <option>Build na mieru</option>
+                  <option>Konzultácia</option>
                 </select>
               </div>
               <div class="field">
@@ -1159,11 +1145,12 @@
 
             <div class="field">
               <label>Detaily projektu</label>
-              <textarea placeholder="Napíš cieľ výkonu, použitie auta, rozpočet, preferenciu turbo/kompresor a ďalšie dôležité info."></textarea>
+              <textarea placeholder="BMW E46 323i&#10;M52TUB25&#10;cieľ 350-400 hp&#10;street + drift&#10;budget 4k-6k"></textarea>
             </div>
 
-            <div>
-              <button class="cta" type="submit">Odoslať dopyt</button>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn red" type="submit">Odoslať dopyt</button>
+              <a class="btn" href="mailto:info@remperformance.sk">Napísať email</a>
             </div>
           </form>
         </article>
@@ -1171,11 +1158,199 @@
     </section>
   </main>
 
-  <footer class="foot">
+  <footer>
     <div class="wrap footline">
-      <div>© RACEM / REM Performance — Turbo & Kompresor ponuka</div>
-      <div>Pripravené na napojenie produktového JSON feedu</div>
+      <div>© RACEM / REM Performance — Turbo & kompresor kity</div>
+      <div>Interaktívna mapa komponentov · kits.json feed · custom build</div>
     </div>
   </footer>
+
+  <script>
+    const compareModes = {
+      turbo: {
+        title: 'Turbo kit — charakter auta',
+        text: 'Keď chceš z auta dostať viac výkonu hore, mať väčší upgrade potenciál a build smerovať agresívnejšie. Dáva zmysel hlavne tam, kde chceš výkonový strop a ďalší rast.',
+        character: 'Agresívnejší, ostrejší hore',
+        usage: 'Track / drift / high HP street',
+        bars: { response: 58, peak: 92, street: 62, upgrade: 95 },
+        responseGray: true,
+        peakGray: false,
+        streetGray: true,
+        upgradeGray: false
+      },
+      kompresor: {
+        title: 'Kompresor kit — charakter auta',
+        text: 'Keď chceš okamžitejší záťah, lineárnejší priebeh výkonu a auto, ktoré reaguje čistejšie hneď odspodu. Dáva zmysel hlavne pre street charakter a mechanický feeling.',
+        character: 'Lineárny, okamžitejší odspodu',
+        usage: 'Street / daily / OEM+ performance',
+        bars: { response: 92, peak: 72, street: 91, upgrade: 64 },
+        responseGray: false,
+        peakGray: true,
+        streetGray: false,
+        upgradeGray: true
+      }
+    };
+
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const turboMap = document.getElementById('turboMap');
+    const kompresorMap = document.getElementById('kompresorMap');
+    const modeTitle = document.getElementById('modeTitle');
+    const modeText = document.getElementById('modeText');
+    const charValue = document.getElementById('charValue');
+    const useValue = document.getElementById('useValue');
+    const barResponse = document.getElementById('barResponse');
+    const barPeak = document.getElementById('barPeak');
+    const barStreet = document.getElementById('barStreet');
+    const barUpgrade = document.getElementById('barUpgrade');
+    const valResponse = document.getElementById('valResponse');
+    const valPeak = document.getElementById('valPeak');
+    const valStreet = document.getElementById('valStreet');
+    const valUpgrade = document.getElementById('valUpgrade');
+
+    function setBar(el, value, gray){
+      el.style.width = value + '%';
+      el.classList.toggle('gray', !!gray);
+    }
+
+    function setMode(mode){
+      const cfg = compareModes[mode];
+      modeButtons.forEach(btn => {
+        const active = btn.dataset.mode === mode;
+        btn.classList.toggle('red', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      turboMap.classList.toggle('hidden', mode !== 'turbo');
+      kompresorMap.classList.toggle('hidden', mode !== 'kompresor');
+
+      modeTitle.textContent = cfg.title;
+      modeText.textContent = cfg.text;
+      charValue.textContent = cfg.character;
+      useValue.textContent = cfg.usage;
+
+      setBar(barResponse, cfg.bars.response, cfg.responseGray);
+      setBar(barPeak, cfg.bars.peak, cfg.peakGray);
+      setBar(barStreet, cfg.bars.street, cfg.streetGray);
+      setBar(barUpgrade, cfg.bars.upgrade, cfg.upgradeGray);
+
+      valResponse.textContent = cfg.bars.response;
+      valPeak.textContent = cfg.bars.peak;
+      valStreet.textContent = cfg.bars.street;
+      valUpgrade.textContent = cfg.bars.upgrade;
+    }
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    });
+
+    setMode('turbo');
+
+    const demoKits = [
+      {
+        name: 'Turbo Kit BMW E46 M52TUB25 Stage 2',
+        type: 'Turbo kit',
+        engine: 'M52TUB25',
+        power: '350–500 hp',
+        use: 'Street / drift',
+        price: 'od 2 990 €',
+        bullets: [
+          'vyšší výkonový strop',
+          'upgrade ready setup',
+          'vhodné pre ďalší rast projektu'
+        ]
+      },
+      {
+        name: 'Kompresor Kit BMW E46 M52TUB25 Response',
+        type: 'Kompresor kit',
+        engine: 'M52TUB25',
+        power: '260–380 hp',
+        use: 'Street / OEM+',
+        price: 'od 3 390 €',
+        bullets: [
+          'okamžitejší záťah',
+          'lineárnejší priebeh výkonu',
+          'čistejší street charakter auta'
+        ]
+      }
+    ];
+
+    const kitsGrid = document.getElementById('kitsGrid');
+    const feedCount = document.getElementById('feedCount');
+    const feedEmpty = document.getElementById('feedEmpty');
+
+    function renderKits(items){
+      kitsGrid.innerHTML = '';
+      if(!Array.isArray(items) || !items.length){
+        feedEmpty.style.display = 'block';
+        feedCount.textContent = '0 produktov';
+        return;
+      }
+      feedEmpty.style.display = 'none';
+      feedCount.textContent = items.length + ' produktov v ponuke';
+
+      items.forEach(item => {
+        const bullets = Array.isArray(item.bullets) ? item.bullets : [];
+        const card = document.createElement('article');
+        card.className = 'kit-card';
+        card.innerHTML = `
+          <div class="kit-top">
+            <div class="kit-badges">
+              <span class="badge">${item.type || 'Kit'}</span>
+              ${item.engine ? `<span class="badge">${item.engine}</span>` : ''}
+            </div>
+            <h3>${item.name || 'Bez názvu'}</h3>
+            <p>${item.description || 'Výkonový kit pripravený pre konkrétny motor a použitie auta.'}</p>
+          </div>
+
+          <div class="kit-specs">
+            <div class="kit-spec">
+              <label>Motor</label>
+              <strong>${item.engine || '—'}</strong>
+            </div>
+            <div class="kit-spec">
+              <label>Výkon</label>
+              <strong>${item.power || '—'}</strong>
+            </div>
+            <div class="kit-spec">
+              <label>Použitie</label>
+              <strong>${item.use || '—'}</strong>
+            </div>
+          </div>
+
+          <ul class="kit-list">
+            ${bullets.map(b => `<li>${b}</li>`).join('')}
+          </ul>
+
+          <div class="kit-bottom">
+            <div class="price">
+              <small>Cena</small>
+              <strong>${item.price || 'na dopyt'}</strong>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <a class="btn" href="${item.url || '#kontakt'}">Detail</a>
+              <a class="btn red" href="#kontakt">Dopyt</a>
+            </div>
+          </div>
+        `;
+        kitsGrid.appendChild(card);
+      });
+    }
+
+    async function loadKits(){
+      try{
+        const res = await fetch('./kits.json', { cache: 'no-store' });
+        if(!res.ok) throw new Error('kits.json not found');
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : []);
+        if(!items.length) throw new Error('empty feed');
+        renderKits(items);
+      }catch(err){
+        renderKits(demoKits);
+        feedCount.textContent = 'Demo režim — 2 ukážkové produkty';
+      }
+    }
+
+    loadKits();
+  </script>
 </body>
 </html>
