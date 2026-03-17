@@ -967,7 +967,31 @@
       const stockMinVals = makeCurveValues('stockMin', stockMin || 0);
       const stockMaxVals = makeCurveValues('stockMax', stockMax || stockMin || 0);
       const upgradeVals = makeCurveValues('upgrade', upgrade || stockMax || stockMin || 0);
-      const set = (id, attr, value) => { const el = document.getElementById(prefix + id); if(el) el.setAttribute(attr, value); };
+
+      const resolveId = (id) => {
+        const mainMap = {
+          UpgradeArea: 'upgradeArea',
+          StockMinGlow: 'stockMinGlow',
+          StockMaxGlow: 'stockMaxGlow',
+          UpgradeGlow: 'upgradeGlow',
+          StockMinLine: 'stockMinLine',
+          StockMaxLine: 'stockMaxLine',
+          UpgradeLine: 'upgradeLine',
+          StockMinDots: 'stockMinDots',
+          StockMaxDots: 'stockMaxDots',
+          UpgradeDots: 'upgradeDots'
+        };
+        if(prefix){
+          return prefix + id;
+        }
+        return mainMap[id] || (id.charAt(0).toLowerCase() + id.slice(1));
+      };
+
+      const set = (id, attr, value) => {
+        const el = document.getElementById(resolveId(id));
+        if(el) el.setAttribute(attr, value);
+      };
+
       set('UpgradeArea','d', makeAreaPath(upgradeVals, maxY));
       set('StockMinGlow','points', makePolyline(stockMinVals, maxY));
       set('StockMaxGlow','points', makePolyline(stockMaxVals, maxY));
@@ -975,10 +999,20 @@
       set('StockMinLine','points', makePolyline(stockMinVals, maxY));
       set('StockMaxLine','points', makePolyline(stockMaxVals, maxY));
       set('UpgradeLine','points', makePolyline(upgradeVals, maxY));
-      const a = document.getElementById(prefix + 'StockMinDots'); if(a) a.innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
-      const b = document.getElementById(prefix + 'StockMaxDots'); if(b) b.innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
-      const c = document.getElementById(prefix + 'UpgradeDots'); if(c) c.innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
-      animateSvgSeries([prefix+'StockMinGlow',prefix+'StockMaxGlow',prefix+'UpgradeGlow',prefix+'StockMinLine',prefix+'StockMaxLine',prefix+'UpgradeLine']);
+
+      const a = document.getElementById(resolveId('StockMinDots')); if(a) a.innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
+      const b = document.getElementById(resolveId('StockMaxDots')); if(b) b.innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
+      const c = document.getElementById(resolveId('UpgradeDots')); if(c) c.innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
+
+      animateSvgSeries([
+        resolveId('StockMinGlow'),
+        resolveId('StockMaxGlow'),
+        resolveId('UpgradeGlow'),
+        resolveId('StockMinLine'),
+        resolveId('StockMaxLine'),
+        resolveId('UpgradeLine')
+      ]);
+
       return { maxY, stockMinVals, stockMaxVals, upgradeVals };
     }
     function applyAxisLabels(prefix, maxY){
