@@ -650,6 +650,15 @@
                     <line class="guide-line" x1="48" y1="106" x2="684" y2="106"></line>
                     <line class="guide-line" x1="48" y1="152" x2="684" y2="152"></line>
                     <line class="guide-line" x1="48" y1="199" x2="684" y2="199"></line>
+                    <text class="axis-label" x="10" y="248">0</text>
+                    <text class="axis-label" x="8" y="202" id="sideYAxis25">25%</text>
+                    <text class="axis-label" x="8" y="156" id="sideYAxis50">50%</text>
+                    <text class="axis-label" x="8" y="110" id="sideYAxis75">75%</text>
+                    <text class="axis-label" x="8" y="64" id="sideYAxis100">100%</text>
+                    <text class="axis-label" x="62" y="270">Low</text>
+                    <text class="axis-label" x="220" y="270">Mid</text>
+                    <text class="axis-label" x="382" y="270">Power band</text>
+                    <text class="axis-label" x="620" y="270">Peak</text>
                     <path id="sideUpgradeArea" fill="url(#sideUpgradeAreaGrad)" stroke="none"></path>
                     <polyline id="sideStockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
                     <polyline id="sideStockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
@@ -972,6 +981,21 @@
       animateSvgSeries([prefix+'StockMinGlow',prefix+'StockMaxGlow',prefix+'UpgradeGlow',prefix+'StockMinLine',prefix+'StockMaxLine',prefix+'UpgradeLine']);
       return { maxY, stockMinVals, stockMaxVals, upgradeVals };
     }
+    function applyAxisLabels(prefix, maxY){
+      const map = {
+        '25': Math.round(maxY * 0.25),
+        '50': Math.round(maxY * 0.5),
+        '75': Math.round(maxY * 0.75),
+        '100': Math.round(maxY)
+      };
+      Object.entries(map).forEach(([key, value])=>{
+        const baseId = `${prefix}YAxis${key}`;
+        const fallbackId = prefix === '' ? `yAxis${key}` : baseId;
+        const el = document.getElementById(baseId) || document.getElementById(fallbackId);
+        if(el) el.textContent = `${value} PS`;
+      });
+    }
+
     function renderBarStage(el, items){
       if(!el) return;
       el.classList.remove('animating');
@@ -1043,30 +1067,33 @@
       }).join('');
     }
     function animateSvgSeries(ids){
-      ids.forEach(id=>{
+      ids.forEach((id, idx)=>{
         const el = document.getElementById(id);
         if(!el) return;
         el.classList.remove('drawn');
         el.style.opacity = '1';
         el.style.visibility = 'visible';
+        let len = 0;
         try{
-          if(typeof el.getTotalLength === 'function'){
-            const len = Math.max(1, Math.ceil(el.getTotalLength()));
-            el.style.strokeDasharray = `${len}`;
-            el.style.strokeDashoffset = `${len}`;
-          }else{
-            el.style.strokeDasharray = 'none';
-            el.style.strokeDashoffset = '0';
-          }
-        }catch(_err){
+          if(typeof el.getTotalLength === 'function') len = Math.max(1, Math.ceil(el.getTotalLength()));
+        }catch(_err){ len = 0; }
+        if(len > 0){
+          el.style.strokeDasharray = `${len}`;
+          el.style.strokeDashoffset = `${len}`;
+        }else{
           el.style.strokeDasharray = 'none';
           el.style.strokeDashoffset = '0';
         }
         void el.getBoundingClientRect();
-        requestAnimationFrame(()=>{
+        setTimeout(()=>{
           el.classList.add('drawn');
           el.style.strokeDashoffset = '0';
-        });
+          if(!len) el.style.strokeDasharray = 'none';
+        }, 40 + idx * 35);
+        setTimeout(()=>{
+          el.style.strokeDasharray = 'none';
+          el.style.strokeDashoffset = '0';
+        }, 1250 + idx * 35);
       });
     }
     function getProductImage(product){
@@ -1157,10 +1184,15 @@
       document.getElementById('chartLead').textContent = lead;
 
       const chartData = renderLineChart('', stockMin, stockMax, upgrade);
-      document.getElementById('yAxis25').textContent = `${Math.round(chartData.maxY*0.25)} PS`;
-      document.getElementById('yAxis50').textContent = `${Math.round(chartData.maxY*0.5)} PS`;
-      document.getElementById('yAxis75').textContent = `${Math.round(chartData.maxY*0.75)} PS`;
-      document.getElementById('yAxis100').textContent = `${Math.round(chartData.maxY)} PS`;
+      applyAxisLabels('', chartData.maxY);
+      const sideChartData = renderLineChart('side', stockMin, stockMax, upgrade);
+      applyAxisLabels('side', sideChartData.maxY);
+      setTimeout(()=>{
+        renderLineChart('', stockMin, stockMax, upgrade);
+        renderLineChart('side', stockMin, stockMax, upgrade);
+        applyAxisLabels('', chartData.maxY);
+        applyAxisLabels('side', sideChartData.maxY);
+      }, 90);
       renderBarStage(document.getElementById('barsStage'), [
         { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/chartData.maxY)*100)}%`, cls:'silver' },
         { label:'Stock max', value:`${stockMax} PS`, height: `${Math.max(12,(stockMax/chartData.maxY)*100)}%`, cls:'silver' },
@@ -1403,7 +1435,12 @@
       variantSelect.onchange = updateVariantMeta;
       updateVariantMeta();
       document.getElementById('modalBuyNow').onclick = ()=>buyNow(p, Number(variantSelect.value || 0));
-      renderLineChart('modal', stockMin, stockMax, upgrade);
+      const modalChartData = renderLineChart('modal', stockMin, stockMax, upgrade);
+      applyAxisLabels('modal', modalChartData.maxY);
+      setTimeout(()=>{
+        renderLineChart('modal', stockMin, stockMax, upgrade);
+        applyAxisLabels('modal', modalChartData.maxY);
+      }, 90);
       const gainPct = Number(p?.powerClaim?.deltaPercentVsStockMin || 0);
       const barBase = Math.max(700, upgrade, stockMax, stockMin, 100);
       renderBarStage(document.getElementById('modalBars'), [
@@ -1484,6 +1521,12 @@
         const remaining = Math.max(0, 2400 - elapsed);
         setTimeout(()=>{
           if(loader) loader.classList.add('hidden');
+          if(state.data){
+            renderCharts();
+            renderCompareSummary();
+            renderCompareComponentText();
+            renderSwitchActive();
+          }
         }, remaining);
       }
     }
