@@ -311,6 +311,32 @@
       .component-map{min-height:420px}
       .brand-sub{white-space:normal}
     }
+
+    .modal-card{width:min(1220px,100%); padding:22px 22px 24px; max-height:94vh}
+    .modal-layout{display:grid; grid-template-columns:minmax(340px,.9fr) minmax(0,1.1fr); gap:18px}
+    .modal-gallery-panel,.modal-info-panel,.modal-wide-panel{padding:16px; border-radius:22px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015))}
+    .modal-wide-panel{grid-column:1/-1}
+    .modal-main-image{position:relative; border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0b1016; aspect-ratio:1/1; min-height:320px}
+    .modal-main-image img{width:100%; height:100%; object-fit:cover; display:block}
+    .modal-main-fallback{width:100%; height:100%; min-height:320px; display:grid; place-items:center; font-family:Oxanium,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#fff; background:radial-gradient(circle at 18% 18%, rgba(179,31,36,.22), transparent 28%), linear-gradient(180deg,#10151b,#0a0e13)}
+    .modal-thumbs{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:12px}
+    .modal-thumb{position:relative; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0b1016; cursor:pointer; aspect-ratio:1/1; padding:0}
+    .modal-thumb img{width:100%; height:100%; object-fit:cover; display:block}
+    .modal-thumb.active{border-color:rgba(255,92,101,.8); box-shadow:0 0 0 1px rgba(255,92,101,.18), 0 0 18px rgba(179,31,36,.14)}
+    .modal-grid-2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+    .modal-grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+    .variant-box{margin-top:14px; display:grid; gap:10px}
+    .variant-select{width:100%; min-height:48px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:#0b1016; color:#fff; padding:12px 14px; font-weight:700}
+    .variant-meta{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+    .json-list{display:grid; gap:10px; margin:0; padding:0; list-style:none}
+    .json-item{padding:12px 13px; border-radius:14px; border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.03); color:#d9e0ea; line-height:1.45}
+    .json-item b{color:#fff}
+    .modal-mini-chart{height:260px}
+    .modal-bars{min-height:220px; padding-top:2px}
+    .buy-inline{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:center}
+    .muted-note{color:var(--muted); font-size:.85rem; line-height:1.45}
+    @media (max-width:980px){.modal-layout{grid-template-columns:1fr}.modal-wide-panel{grid-column:auto}.modal-grid-2,.modal-grid-3,.variant-meta,.buy-inline{grid-template-columns:1fr}.modal-thumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
   </style>
 </head>
 <body>
@@ -471,7 +497,7 @@
               <div class="empty-card">Načítavam produkty…</div>
             </div>
             <aside class="product-side is-empty" id="productSide">
-              <div class="side-graph-card chooser-card select-note"><div class="eyebrow">Vyber kit</div><h3>Grafy sa zobrazia až po výbere produktu</h3><p>Klikni na kartu alebo na tlačidlo „Zobraziť v grafe“. Potom sa na pravej strane odomkne výkonová sekcia, KPI a breakdown.</p></div>
+              <div class="side-graph-card chooser-card select-note"><div class="eyebrow">Vyber kit</div><h3>Grafy sa zobrazia až po výbere produktu</h3><p>Klikni na kartu, „Detail“ alebo „Kúpiť ihneď“. Pravý panel sa odomkne po výbere produktu a popup ukáže plnú galériu, grafy aj všetky dostupné dáta z JSONu.</p></div>
               <div class="side-graph-card data-card">
                 <div class="eyebrow">Vybraný produkt</div>
                 <h3 id="productFocusTitle">Načítavam…</h3>
@@ -568,20 +594,86 @@
         </div>
         <button class="close-btn" id="closeModal" type="button">×</button>
       </div>
-      <div class="info-grid">
-        <div class="modal-section">
-          <h3 class="power-title">Výkonové porovnanie</h3>
-          <div class="kpi-grid" id="modalKpis"></div>
-          <div class="component-detail" style="margin-top:14px">
-            <div class="detail-kicker">Claim</div>
-            <div class="detail-title" id="modalClaim">—</div>
-            <div class="detail-text" id="modalClaimText">—</div>
+      <div class="modal-layout">
+        <section class="modal-gallery-panel">
+          <div class="modal-main-image" id="modalMainImageWrap">
+            <img id="modalMainImage" alt="Produkt">
+            <div class="modal-main-fallback" id="modalMainFallback" style="display:none">REM Performance</div>
           </div>
-        </div>
-        <div class="modal-section">
-          <h3 class="power-title">Detaily</h3>
-          <ul class="list" id="modalList"></ul>
-        </div>
+          <div class="modal-thumbs" id="modalThumbs"></div>
+          <div class="variant-box">
+            <div class="eyebrow">Variant / checkout</div>
+            <select class="variant-select" id="modalVariantSelect"></select>
+            <div class="variant-meta" id="modalVariantMeta"></div>
+            <div class="buy-inline">
+              <div class="muted-note" id="modalBuyNote">Vybraný variant sa po kliknutí odošle priamo do Shopify košíka.</div>
+              <button class="btn primary" id="modalBuyNow" type="button">Kúpiť ihneď</button>
+            </div>
+          </div>
+        </section>
+        <section class="modal-info-panel">
+          <div class="modal-section" style="padding:0;border:0;background:transparent">
+            <h3 class="power-title">Výkonové KPI</h3>
+            <div class="kpi-grid" id="modalKpis"></div>
+            <div class="component-detail" style="margin-top:14px">
+              <div class="detail-kicker">Claim</div>
+              <div class="detail-title" id="modalClaim">—</div>
+              <div class="detail-text" id="modalClaimText">—</div>
+            </div>
+          </div>
+          <div class="modal-grid-2" style="margin-top:14px">
+            <div class="modal-section">
+              <h3 class="power-title">Power curve</h3>
+              <div class="line-chart-wrap modal-mini-chart">
+                <svg viewBox="0 0 700 290" preserveAspectRatio="none" aria-label="Produktový detail graf">
+                  <defs>
+                    <linearGradient id="modalUpgradeAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(223,51,58,.32)"/>
+                      <stop offset="100%" stop-color="rgba(223,51,58,0)"/>
+                    </linearGradient>
+                  </defs>
+                  <line class="axis-line" x1="48" y1="20" x2="48" y2="246"></line>
+                  <line class="axis-line" x1="48" y1="246" x2="684" y2="246"></line>
+                  <line class="guide-line" x1="48" y1="60" x2="684" y2="60"></line>
+                  <line class="guide-line" x1="48" y1="106" x2="684" y2="106"></line>
+                  <line class="guide-line" x1="48" y1="152" x2="684" y2="152"></line>
+                  <line class="guide-line" x1="48" y1="199" x2="684" y2="199"></line>
+                  <text class="axis-label" x="10" y="248">0</text>
+                  <text class="axis-label" x="62" y="270">Low</text>
+                  <text class="axis-label" x="220" y="270">Mid</text>
+                  <text class="axis-label" x="382" y="270">Power band</text>
+                  <text class="axis-label" x="620" y="270">Peak</text>
+                  <path id="modalUpgradeArea" fill="url(#modalUpgradeAreaGrad)" stroke="none"></path>
+                  <polyline id="modalStockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="modalStockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="modalUpgradeGlow" fill="none" stroke="rgba(179,31,36,.24)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="modalStockMinLine" fill="none" stroke="#d8dde6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="modalStockMaxLine" fill="none" stroke="#9aa4b2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="modalUpgradeLine" fill="none" stroke="#d83a40" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <g id="modalStockMinDots"></g>
+                  <g id="modalStockMaxDots"></g>
+                  <g id="modalUpgradeDots"></g>
+                </svg>
+              </div>
+            </div>
+            <div class="modal-section">
+              <h3 class="power-title">Instant compare</h3>
+              <div class="bars-stage modal-bars" id="modalBars"></div>
+            </div>
+          </div>
+        </section>
+        <section class="modal-wide-panel">
+          <div class="modal-grid-2">
+            <div>
+              <h3 class="power-title">Detailný breakdown</h3>
+              <ul class="json-list" id="modalList"></ul>
+            </div>
+            <div>
+              <h3 class="power-title">Technické dáta z feedu</h3>
+              <div class="modal-grid-3" id="modalDataCards"></div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -597,7 +689,9 @@
     const state = {
       data: null,
       currentIndex: 0,
-      compareMode: 'turbo'
+      compareMode: 'turbo',
+      modalIndex: null,
+      modalVariantIndex: 0
     };
 
     const compareCopy = {
@@ -628,8 +722,8 @@
       return `${v}${suffix}`;
     }
     function pickPrice(product){
-      if(product?.price?.amount) return product.price.amount;
-      if(product?.price?.amountMin && product?.price?.amountMax) return `${euro(product.price.amountMin)} – ${euro(product.price.amountMax)}`;
+      if(product?.price?.amount !== undefined && product?.price?.amount !== null) return euro(product.price.amount);
+      if(product?.price?.amountMin !== undefined && product?.price?.amountMax !== undefined) return `${euro(product.price.amountMin)} – ${euro(product.price.amountMax)}`;
       if(product?.variants?.length){
         const nums = product.variants.map(v => v.price).filter(v => typeof v === 'number');
         if(nums.length){
@@ -646,6 +740,75 @@
       return [];
     }
     function getGraphPreset(data, key){ return Array.isArray(data?.graphPresets?.[key]) ? data.graphPresets[key] : []; }
+
+    function getVariantId(variant){
+      return variant?.shopifyVariantId || variant?.shopifyvariantid || variant?.variantId || variant?.variantid || null;
+    }
+    function getFirstBuyableVariant(product){
+      if(!product?.variants?.length) return {variant:null,index:-1};
+      const idx = product.variants.findIndex(v => getVariantId(v));
+      if(idx >= 0) return {variant:product.variants[idx], index:idx};
+      return {variant:product.variants[0], index:0};
+    }
+    function getAllImages(product){
+      const out = [];
+      const add = (v)=>{ if(!v) return; if(typeof v === 'string') out.push(v); else if(typeof v === 'object') out.push(v.src || v.url || v.image || ''); };
+      if(Array.isArray(product?.images)) product.images.forEach(add);
+      add(product?.image); add(product?.imageUrl); add(product?.img);
+      return [...new Set(out.filter(Boolean))];
+    }
+    function buyNow(product, variantIndex = 0){
+      if(!product) return;
+      const variant = product?.variants?.[variantIndex] || getFirstBuyableVariant(product).variant;
+      const variantId = getVariantId(variant);
+      if(variantId){
+        window.location.href = `https://shop.racem.sk/cart/${variantId}:1`;
+        return;
+      }
+      if(product?.handle){
+        window.location.href = `https://shop.racem.sk/products/${product.handle}`;
+        return;
+      }
+      window.location.href = 'mailto:info@remperformance.sk?subject=' + encodeURIComponent(`Dopyt: ${product.title || 'produkt'}`);
+    }
+    function makeCurveValues(kind, value){
+      const multipliers = kind === 'upgrade' ? [0.18, 0.34, 0.57, 0.81, 1] : kind === 'stockMax' ? [0.34, 0.51, 0.7, 0.88, 1] : [0.3, 0.46, 0.64, 0.82, 1];
+      return multipliers.map(m => Math.round(value * m));
+    }
+    function renderLineChart(prefix, stockMin, stockMax, upgrade){
+      const maxY = Math.max(700, upgrade, stockMax, stockMin, 100);
+      const stockMinVals = makeCurveValues('stockMin', stockMin || 0);
+      const stockMaxVals = makeCurveValues('stockMax', stockMax || stockMin || 0);
+      const upgradeVals = makeCurveValues('upgrade', upgrade || stockMax || stockMin || 0);
+      const set = (id, attr, value) => { const el = document.getElementById(prefix + id); if(el) el.setAttribute(attr, value); };
+      set('UpgradeArea','d', makeAreaPath(upgradeVals, maxY));
+      set('StockMinGlow','points', makePolyline(stockMinVals, maxY));
+      set('StockMaxGlow','points', makePolyline(stockMaxVals, maxY));
+      set('UpgradeGlow','points', makePolyline(upgradeVals, maxY));
+      set('StockMinLine','points', makePolyline(stockMinVals, maxY));
+      set('StockMaxLine','points', makePolyline(stockMaxVals, maxY));
+      set('UpgradeLine','points', makePolyline(upgradeVals, maxY));
+      const a = document.getElementById(prefix + 'StockMinDots'); if(a) a.innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
+      const b = document.getElementById(prefix + 'StockMaxDots'); if(b) b.innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
+      const c = document.getElementById(prefix + 'UpgradeDots'); if(c) c.innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
+      animateSvgSeries([prefix+'StockMinGlow',prefix+'StockMaxGlow',prefix+'UpgradeGlow',prefix+'StockMinLine',prefix+'StockMaxLine',prefix+'UpgradeLine']);
+      return { maxY, stockMinVals, stockMaxVals, upgradeVals };
+    }
+    function renderBarStage(el, items){
+      if(!el) return;
+      el.classList.remove('animating');
+      el.innerHTML = items.map(b => `
+        <div class="bar-col">
+          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}" style="height:0%"></div></div>
+          <div class="bar-label">${b.label}</div>
+          <div class="bar-value">${b.value}</div>
+        </div>`).join('');
+      void el.getBoundingClientRect();
+      el.classList.add('animating');
+      requestAnimationFrame(()=>{
+        el.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 110*i));
+      });
+    }
 
     function buildHero(products){
       const cards = document.getElementById('heroMiniCards');
@@ -802,49 +965,18 @@
       const lead = `${product.title} · stock ${stockMin}-${stockMax} PS · upgrade ${upgrade} PS`;
       document.getElementById('chartLead').textContent = lead;
 
-      const maxY = Math.max(upgrade, stockMax, stockMin, 100);
-      const stockMinVals = [stockMin*0.34, stockMin*0.49, stockMin*0.66, stockMin*0.83, stockMin];
-      const stockMaxVals = [stockMax*0.37, stockMax*0.54, stockMax*0.73, stockMax*0.89, stockMax];
-      const upgradeVals = [upgrade*0.18, upgrade*0.39, upgrade*0.63, upgrade*0.84, upgrade];
-
-      document.getElementById('upgradeArea').setAttribute('d', makeAreaPath(upgradeVals, maxY));
-      document.getElementById('stockMinGlow').setAttribute('points', makePolyline(stockMinVals, maxY));
-      document.getElementById('stockMaxGlow').setAttribute('points', makePolyline(stockMaxVals, maxY));
-      document.getElementById('upgradeGlow').setAttribute('points', makePolyline(upgradeVals, maxY));
-      document.getElementById('stockMinLine').setAttribute('points', makePolyline(stockMinVals, maxY));
-      document.getElementById('stockMaxLine').setAttribute('points', makePolyline(stockMaxVals, maxY));
-      document.getElementById('upgradeLine').setAttribute('points', makePolyline(upgradeVals, maxY));
-      document.getElementById('stockMinDots').innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
-      document.getElementById('stockMaxDots').innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
-      document.getElementById('upgradeDots').innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
-
-      document.getElementById('yAxis25').textContent = `${Math.round(maxY*0.25)} PS`;
-      document.getElementById('yAxis50').textContent = `${Math.round(maxY*0.5)} PS`;
-      document.getElementById('yAxis75').textContent = `${Math.round(maxY*0.75)} PS`;
-      document.getElementById('yAxis100').textContent = `${Math.round(maxY)} PS`;
-      animateSvgSeries(['stockMinGlow','stockMaxGlow','upgradeGlow','stockMinLine','stockMaxLine','upgradeLine']);
-
-      const bars = [
-        { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/maxY)*100)}%`, cls:'silver' },
-        { label:'Stock max', value:`${stockMax} PS`, height: `${Math.max(12,(stockMax/maxY)*100)}%`, cls:'silver' },
-        { label:'Upgrade', value:`${upgrade} PS`, height: `${Math.max(12,(upgrade/maxY)*100)}%`, cls:'red' },
+      const chartData = renderLineChart('', stockMin, stockMax, upgrade);
+      document.getElementById('yAxis25').textContent = `${Math.round(chartData.maxY*0.25)} PS`;
+      document.getElementById('yAxis50').textContent = `${Math.round(chartData.maxY*0.5)} PS`;
+      document.getElementById('yAxis75').textContent = `${Math.round(chartData.maxY*0.75)} PS`;
+      document.getElementById('yAxis100').textContent = `${Math.round(chartData.maxY)} PS`;
+      renderBarStage(document.getElementById('barsStage'), [
+        { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/chartData.maxY)*100)}%`, cls:'silver' },
+        { label:'Stock max', value:`${stockMax} PS`, height: `${Math.max(12,(stockMax/chartData.maxY)*100)}%`, cls:'silver' },
+        { label:'Upgrade', value:`${upgrade} PS`, height: `${Math.max(12,(upgrade/chartData.maxY)*100)}%`, cls:'red' },
         { label:'Gain %', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, height: `${Math.max(12, Math.min(100, product?.powerClaim?.deltaPercentVsStockMin || 0))}%`, cls:'red' }
-      ];
-      const barsStage = document.getElementById('barsStage');
-      barsStage.classList.remove('animating');
-      barsStage.innerHTML = bars.map(b => `
-        <div class="bar-col">
-          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}" style="height:0%"></div></div>
-          <div class="bar-label">${b.label}</div>
-          <div class="bar-value">${b.value}</div>
-        </div>`).join('');
-      void barsStage.getBoundingClientRect();
-      barsStage.classList.add('animating');
-      requestAnimationFrame(()=>{
-        barsStage.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 110*i));
-      });
-
-      renderProductSide(product, {stockMin, stockMax, upgrade, maxY, stockMinVals, stockMaxVals, upgradeVals});
+      ]);
+      renderProductSide(product, {stockMin, stockMax, upgrade, ...chartData});
     }
 
     function renderProductSide(product, chartData = null){
@@ -954,6 +1086,8 @@
         const gain = p?.powerClaim?.deltaPercentVsStockMin;
         const chips = [p.engineFamily, p.productType, p?.turbo?.model, p?.productClaims?.claimedPowerText].filter(Boolean).slice(0,4);
         const image = getProductImage(p);
+        const {variant} = getFirstBuyableVariant(p);
+        const canDirectBuy = !!getVariantId(variant);
         return `
           <article class="product-card ${i===state.currentIndex?'is-active':''}" data-card-index="${i}">
             <div class="product-media">
@@ -973,20 +1107,21 @@
                 <div class="product-spec"><b>Stock PS</b><span>${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS</span></div>
                 <div class="product-spec"><b>Upgrade PS</b><span>${fmt(p?.powerClaim?.upgradedPs,' PS')}</span></div>
                 <div class="product-spec"><b>Gain</b><span>${gain !== undefined ? `${gain.toFixed(2)} %` : '—'}</span></div>
-                <div class="product-spec"><b>Torque</b><span>${p?.powerClaim?.upgradedNm ? `${p.powerClaim.upgradedNm} Nm` : 'údaj chýba'}</span></div>
+                <div class="product-spec"><b>Varianty</b><span>${p?.variants?.length || 0} ks${canDirectBuy ? ' · checkout ready' : ''}</span></div>
               </div>
               <div class="product-actions">
-                <button class="btn primary" type="button" data-detail="${i}">Detail</button>
-                <button class="btn secondary" type="button" data-focus="${i}">Zobraziť v grafe</button>
+                <button class="btn secondary" type="button" data-detail="${i}">Detail</button>
+                <button class="btn primary" type="button" data-buy="${i}">Kúpiť ihneď</button>
               </div>
             </div>
           </article>`;
       }).join('');
       grid.querySelectorAll('[data-detail]').forEach(btn => btn.addEventListener('click', (e)=>{ e.stopPropagation(); openModal(Number(btn.dataset.detail)); }));
-      grid.querySelectorAll('[data-focus]').forEach(btn => btn.addEventListener('click', (e)=>{
+      grid.querySelectorAll('[data-buy]').forEach(btn => btn.addEventListener('click', (e)=>{
         e.stopPropagation();
-        selectProduct(Number(btn.dataset.focus), {scroll:true});
-        window.location.hash = 'ponuka';
+        const idx = Number(btn.dataset.buy);
+        selectProduct(idx, {scroll:false});
+        buyNow(products[idx], getFirstBuyableVariant(products[idx]).index);
       }));
       grid.querySelectorAll('.product-card').forEach(card => {
         const idx = Number(card.dataset.cardIndex);
@@ -1000,28 +1135,91 @@
     function openModal(index){
       const p = getProducts(state.data)[index];
       if(!p) return;
+      state.modalIndex = index;
+      const images = getAllImages(p);
+      const stockMin = p?.powerClaim?.stockPsRange?.[0] || 0;
+      const stockMax = p?.powerClaim?.stockPsRange?.[1] || stockMin;
+      const upgrade = p?.powerClaim?.upgradedPs || stockMax;
       document.getElementById('modalType').textContent = p.productType || 'Produkt';
       document.getElementById('modalTitle').textContent = p.title || 'Detail';
       document.getElementById('modalSubtitle').textContent = `${p.engineFamily || '—'} · ${pickPrice(p)}`;
-      document.getElementById('modalClaim').textContent = p?.productClaims?.claimedPowerText || `${fmt(p?.powerClaim?.upgradedPs,' PS')}`;
-      document.getElementById('modalClaimText').textContent = p?.productClaims?.fitmentText || p?.productClaims?.positioning || 'Detaily sú načítané priamo z JSONu.';
+      document.getElementById('modalClaim').textContent = p?.productClaims?.claimedPowerText || `${fmt(upgrade,' PS')}`;
+      document.getElementById('modalClaimText').textContent = p?.productClaims?.fitmentText || p?.productClaims?.positioning || 'Detaily sú načítané priamo z JSON feedu produktu.';
       const kpis = [
-        {k:'Stock',v:`${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS`},
-        {k:'Upgrade',v:fmt(p?.powerClaim?.upgradedPs,' PS')},
-        {k:'Gain',v:fmt((p?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')},
-        {k:'Nm stock',v:`${fmt(p?.powerClaim?.stockNmRange?.[0],'')} – ${fmt(p?.powerClaim?.stockNmRange?.[1],'')} Nm`},
-        {k:'Turbo',v:p?.turbo?.model || p?.turbo?.construction?.[0] || '—'},
+        {k:'Stock',v:`${fmt(stockMin,'')} – ${fmt(stockMax,'')} PS`},
+        {k:'Upgrade',v:fmt(upgrade,' PS')},
+        {k:'Gain',v:p?.powerClaim?.deltaPercentVsStockMin !== undefined ? `${Number(p.powerClaim.deltaPercentVsStockMin).toFixed(2)} %` : '—'},
+        {k:'Stock Nm',v:`${fmt(p?.powerClaim?.stockNmRange?.[0],'')} – ${fmt(p?.powerClaim?.stockNmRange?.[1],'')} Nm`},
+        {k:'Upgrade Nm',v:fmt(p?.powerClaim?.upgradedNm,' Nm')},
         {k:'SKU',v:p?.price?.sku || p?.variants?.[0]?.sku || '—'}
       ];
       document.getElementById('modalKpis').innerHTML = kpis.map(item=>`<div class="kpi"><b>${item.k}</b><span>${item.v}</span></div>`).join('');
-      const details = [];
-      if(p.engineCodesFromProduct?.length) details.push(`Engine codes: ${p.engineCodesFromProduct.join(', ')}`);
-      if(p.kitIncludes?.length) details.push(...p.kitIncludes.map(x=>`Kit obsahuje: ${x}`));
-      if(p.productClaims?.requiredSupportingMods?.length) details.push(`Supporting mods: ${p.productClaims.requiredSupportingMods.join(', ')}`);
-      if(p.productClaims?.recommendedEngineSafetyMods?.length) details.push(`Safety mods: ${p.productClaims.recommendedEngineSafetyMods.join(', ')}`);
-      if(p.variants?.length) details.push(`Varianty: ${p.variants.map(v=>`${v.name} (${euro(v.price)})`).join(', ')}`);
-      if(!details.length) details.push('Pre tento produkt nie sú v JSONe ďalšie detailné položky.');
-      document.getElementById('modalList').innerHTML = details.map(x=>`<li>${x}</li>`).join('');
+      const detailLines = [];
+      if(p.engineCodesFromProduct?.length) detailLines.push(`<b>Engine codes</b><br>${p.engineCodesFromProduct.join(', ')}`);
+      if(p.kitIncludes?.length) detailLines.push(`<b>Kit obsahuje</b><br>${p.kitIncludes.join('<br>')}`);
+      if(p.productClaims?.requiredSupportingMods?.length) detailLines.push(`<b>Supporting mods</b><br>${p.productClaims.requiredSupportingMods.join(', ')}`);
+      if(p.productClaims?.recommendedEngineSafetyMods?.length) detailLines.push(`<b>Odporúčané safety mods</b><br>${p.productClaims.recommendedEngineSafetyMods.join(', ')}`);
+      if(p.turbo?.construction?.length) detailLines.push(`<b>Turbo konštrukcia</b><br>${p.turbo.construction.join('<br>')}`);
+      if(p.turbo?.upgrades?.length) detailLines.push(`<b>Turbo upgrade prvky</b><br>${p.turbo.upgrades.join('<br>')}`);
+      if(p.turbo?.cooling?.length) detailLines.push(`<b>Chladenie turba</b><br>${p.turbo.cooling.join(', ')}`);
+      if(p.productClaims?.claimedBoostText) detailLines.push(`<b>Boost claim</b><br>${p.productClaims.claimedBoostText}`);
+      if(p.productClaims?.recommendedUse?.length) detailLines.push(`<b>Použitie</b><br>${p.productClaims.recommendedUse.join(', ')}`);
+      if(!detailLines.length) detailLines.push('<b>Detaily</b><br>Pre tento produkt nie sú v JSONe ďalšie špecifické polia.');
+      document.getElementById('modalList').innerHTML = detailLines.map(x=>`<li class="json-item">${x}</li>`).join('');
+      const dataCards = [
+        ['Engine family', p.engineFamily],
+        ['Typ produktu', p.productType],
+        ['Turbo model', p?.turbo?.model],
+        ['Bearing', p?.turbo?.bearingType],
+        ['Thrust', p?.turbo?.thrustBearing],
+        ['Part number', p?.turbo?.partNumber],
+        ['Stock kW', p?.powerClaim?.stockKwRange ? `${p.powerClaim.stockKwRange[0]} – ${p.powerClaim.stockKwRange[1]} kW` : null],
+        ['Upgrade kW', p?.powerClaim?.upgradedKw ? `${p.powerClaim.upgradedKw} kW` : null],
+        ['Handle', p.handle]
+      ].filter(x=>x[1]);
+      document.getElementById('modalDataCards').innerHTML = dataCards.map(([k,v])=>`<div class="kpi"><b>${k}</b><span>${v}</span></div>`).join('');
+      const mainImg = document.getElementById('modalMainImage');
+      const mainFallback = document.getElementById('modalMainFallback');
+      const thumbs = document.getElementById('modalThumbs');
+      const showImage = (src)=>{
+        if(src){ mainImg.src = src; mainImg.style.display = 'block'; mainFallback.style.display = 'none'; }
+        else{ mainImg.removeAttribute('src'); mainImg.style.display = 'none'; mainFallback.style.display = 'grid'; }
+        thumbs.querySelectorAll('.modal-thumb').forEach(btn=>btn.classList.toggle('active', btn.dataset.src === src));
+      };
+      thumbs.innerHTML = images.map((src,idx)=>`<button type="button" class="modal-thumb ${idx===0?'active':''}" data-src="${src}"><img src="${src}" alt="thumb ${idx+1}"></button>`).join('');
+      thumbs.querySelectorAll('.modal-thumb').forEach(btn=>btn.addEventListener('click', ()=>showImage(btn.dataset.src)));
+      showImage(images[0] || '');
+      const variantSelect = document.getElementById('modalVariantSelect');
+      const variantMeta = document.getElementById('modalVariantMeta');
+      const variants = p?.variants?.length ? p.variants : [{name:'Default', price:p?.price?.amount ?? null, sku:p?.price?.sku || null}];
+      const first = getFirstBuyableVariant(p);
+      variantSelect.innerHTML = variants.map((v,idx)=>`<option value="${idx}">${v.name || 'Variant'}${typeof v.price === 'number' ? ` · ${euro(v.price)}` : ''}${getVariantId(v) ? ' · cart ready' : ''}</option>`).join('');
+      variantSelect.value = String(first.index >= 0 ? first.index : 0);
+      const updateVariantMeta = ()=>{
+        state.modalVariantIndex = Number(variantSelect.value || 0);
+        const v = variants[state.modalVariantIndex] || {};
+        const variantId = getVariantId(v);
+        variantMeta.innerHTML = [
+          ['Cena', typeof v.price === 'number' ? euro(v.price) : pickPrice(p)],
+          ['SKU', v.sku || '—'],
+          ['Shopify variant', variantId || 'chýba']
+        ].map(([k,val])=>`<div class="kpi"><b>${k}</b><span>${val}</span></div>`).join('');
+        document.getElementById('modalBuyNote').textContent = variantId
+          ? 'Vybraný variant má Shopify Variant ID. Kliknutie ide priamo do checkout flow cez cart URL.'
+          : 'Tomuto variantu chýba Shopify Variant ID. Button ťa pošle na produkt alebo na mail.';
+      };
+      variantSelect.onchange = updateVariantMeta;
+      updateVariantMeta();
+      document.getElementById('modalBuyNow').onclick = ()=>buyNow(p, Number(variantSelect.value || 0));
+      renderLineChart('modal', stockMin, stockMax, upgrade);
+      const gainPct = Number(p?.powerClaim?.deltaPercentVsStockMin || 0);
+      const barBase = Math.max(700, upgrade, stockMax, stockMin, 100);
+      renderBarStage(document.getElementById('modalBars'), [
+        {label:'Stock min', value:`${stockMin} PS`, height:`${Math.max(12,(stockMin/barBase)*100)}%`, cls:'silver'},
+        {label:'Stock max', value:`${stockMax} PS`, height:`${Math.max(12,(stockMax/barBase)*100)}%`, cls:'silver'},
+        {label:'Upgrade', value:`${upgrade} PS`, height:`${Math.max(12,(upgrade/barBase)*100)}%`, cls:'red'},
+        {label:'Gain', value:`${gainPct.toFixed(2)} %`, height:`${Math.max(12, Math.min(100, gainPct))}%`, cls:'red'}
+      ]);
       document.getElementById('productModal').classList.add('open');
       document.getElementById('productModal').setAttribute('aria-hidden','false');
     }
@@ -1052,9 +1250,18 @@
     async function boot(){
       bindCompare();
       try{
-        const res = await fetch('./kits.json', {cache:'no-store'});
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+        const candidates = ['./kits.json','./kits (1).json','./kits_with_images.json'];
+        let data = null;
+        let lastErr = null;
+        for(const path of candidates){
+          try{
+            const res = await fetch(path, {cache:'no-store'});
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            data = await res.json();
+            break;
+          }catch(err){ lastErr = err; }
+        }
+        if(!data) throw lastErr || new Error('JSON sa nenačítal');
         state.data = data;
         const products = getProducts(data);
         if(!products.length) throw new Error('V kits.json nie je products[], items[] ani pole produktov, alebo je feed prázdny.');
@@ -1072,7 +1279,7 @@
         const chartLead = document.getElementById('chartLead');
         if(heroMiniCards) heroMiniCards.innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
         if(metricGrid) metricGrid.innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
-        if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať <strong>./kits.json</strong>. Skontroluj názov súboru, cestu a JSON syntax.</div>`;
+        if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať JSON feed. Skontroluj názov súboru, cestu a syntax. Skúša sa kits.json, kits (1).json aj kits_with_images.json.</div>`;
         if(chartLead) chartLead.textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
       }
     }
