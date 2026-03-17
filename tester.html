@@ -389,9 +389,83 @@
     font-size: clamp(44px, 12vw, 74px);
   }
 }
+
+    .page-loader{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,.18), transparent 24%),
+        linear-gradient(180deg, rgba(5,5,6,.98), rgba(9,11,14,.985));
+      opacity:1;
+      visibility:visible;
+      transition:opacity .55s ease, visibility .55s ease;
+    }
+    .page-loader.hidden{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .loader-box{
+      width:min(520px, calc(100% - 32px));
+      padding:28px 24px;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)), #0d1015;
+      box-shadow:0 24px 70px rgba(0,0,0,.34);
+      text-align:center;
+    }
+    .loader-title{
+      margin:0 0 8px;
+      font-family:Oxanium,sans-serif;
+      font-size:clamp(1.25rem, 4vw, 2rem);
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .loader-text{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .loader-bar{
+      margin:18px 0 10px;
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .loader-fill{
+      width:0%;
+      height:100%;
+      border-radius:inherit;
+      background:linear-gradient(90deg, #6a1014, #df333a, #b31f24);
+      box-shadow:0 0 22px rgba(179,31,36,.35);
+      animation:loaderFill 2.4s cubic-bezier(.22,1,.36,1) forwards;
+    }
+    @keyframes loaderFill{
+      from{width:0%}
+      to{width:100%}
+    }
+
   </style>
 </head>
+
 <body>
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-box">
+      <div class="eyebrow" style="margin:0 auto 14px">REM Performance</div>
+      <h2 class="loader-title">Načítavam výkonové dáta</h2>
+      <p class="loader-text">Pripravujem grafy, produkty a porovnania kitov.</p>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+      <p class="loader-text" style="font-size:.9rem">Boost build in progress…</p>
+    </div>
+  </div>
+
   <header class="topbar">
     <div class="wrap topbar-inner">
       <div class="brand">
@@ -877,6 +951,9 @@
       return multipliers.map(m => Math.round(value * m));
     }
     function renderLineChart(prefix, stockMin, stockMax, upgrade){
+      stockMin = Number(stockMin) || 0;
+      stockMax = Number(stockMax) || stockMin || 0;
+      upgrade = Number(upgrade) || stockMax || stockMin || 0;
       const maxY = Math.max(700, upgrade, stockMax, stockMin, 100);
       const stockMinVals = makeCurveValues('stockMin', stockMin || 0);
       const stockMaxVals = makeCurveValues('stockMax', stockMax || stockMin || 0);
@@ -970,13 +1047,26 @@
         const el = document.getElementById(id);
         if(!el) return;
         el.classList.remove('drawn');
-        if(typeof el.getTotalLength === 'function'){
-          const len = Math.ceil(el.getTotalLength());
-          el.style.strokeDasharray = `${len}`;
-          el.style.strokeDashoffset = `${len}`;
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        try{
+          if(typeof el.getTotalLength === 'function'){
+            const len = Math.max(1, Math.ceil(el.getTotalLength()));
+            el.style.strokeDasharray = `${len}`;
+            el.style.strokeDashoffset = `${len}`;
+          }else{
+            el.style.strokeDasharray = 'none';
+            el.style.strokeDashoffset = '0';
+          }
+        }catch(_err){
+          el.style.strokeDasharray = 'none';
+          el.style.strokeDashoffset = '0';
         }
         void el.getBoundingClientRect();
-        requestAnimationFrame(()=>el.classList.add('drawn'));
+        requestAnimationFrame(()=>{
+          el.classList.add('drawn');
+          el.style.strokeDashoffset = '0';
+        });
       });
     }
     function getProductImage(product){
@@ -1351,6 +1441,8 @@
 
     async function boot(){
       bindCompare();
+      const bootStartedAt = performance.now();
+      const loader = document.getElementById('pageLoader');
       try{
         const candidates = ['./kits.json','./kits.json','./kits.json'];
         let data = null;
@@ -1372,7 +1464,11 @@
         renderEngineSwitch(products);
         updateCompareLayout();
         renderProducts(products);
-        renderChartsEmpty();
+        state.currentIndex = 0;
+        renderCharts();
+        renderCompareSummary();
+        renderCompareComponentText();
+        renderSwitchActive();
       }catch(err){
         console.error('KITS LOAD ERROR:', err);
         const heroMiniCards = document.getElementById('heroMiniCards');
@@ -1383,6 +1479,12 @@
         if(metricGrid) metricGrid.innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
         if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať ponuku produktov. Skontroluj názov súboru, cestu a syntax.</div>`;
         if(chartLead) chartLead.textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
+      } finally {
+        const elapsed = performance.now() - bootStartedAt;
+        const remaining = Math.max(0, 2400 - elapsed);
+        setTimeout(()=>{
+          if(loader) loader.classList.add('hidden');
+        }, remaining);
       }
     }
     boot();
