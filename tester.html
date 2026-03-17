@@ -389,7 +389,7 @@
             <h2 class="side-title">Stock vs úprava bez omáčky</h2>
             <p class="hero-text">Zákazník hneď vidí, čo má sériovo a kam ho vie konkrétny kit dostať. To je predajnejšie než len vypísať názov produktu a cenu.</p>
             <div class="feature-list">
-              <div class="feature-item"><strong>Live údaje z JSON</strong><span>Výkon, stock baseline, gain %, varianty, engine family, supporting mods.</span></div>
+              <div class="feature-item"><strong>Live údaje o kite</strong><span>Výkon, stock baseline, gain %, varianty, engine family, supporting mods.</span></div>
               <div class="feature-item"><strong>Bez ručného prepisovania</strong><span>Keď vymeníš obsah kits.json, prerenderujú sa karty aj grafy.</span></div>
             </div>
           </aside>
@@ -399,7 +399,7 @@
             <h2 class="side-title">Grafy, produkty, detail, porovnanie</h2>
             <div class="feature-list">
               <div class="feature-item"><strong>HP / stock / gain</strong><span>Hore live graf, dole porovnanie motorov a v detaile KPI boxy.</span></div>
-              <div class="feature-item"><strong>Interaktívna mapa</strong><span>Turbo a kompresor prepínač ostal, ale vpravo už ide reálne summary podľa vybraného motora z JSON.</span></div>
+              <div class="feature-item"><strong>Interaktívna mapa</strong><span>Turbo a kompresor prepínač ostal, ale vpravo už ide reálne summary podľa vybraného motora.</span></div>
             </div>
           </aside>
         </div>
@@ -492,10 +492,10 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <div class="eyebrow">Produktový feed</div>
+            <div class="eyebrow">Ponuka kitov</div>
             <h2>Kity z main / kits.json</h2>
           </div>
-          <p>Každá karta ťahá názov, cenu, stock PS, upgrade PS, gain percent, engine family, typ produktu a ďalšie údaje priamo z JSONu.</p>
+          <p>Každá karta zobrazuje názov, cenu, stock PS, upgrade PS, gain percent, engine family, typ produktu a ďalšie údaje.</p>
         </div>
         <div class="products-wrap">
           <div class="products-layout">
@@ -503,12 +503,12 @@
               <div class="empty-card">Načítavam produkty…</div>
             </div>
             <aside class="product-side is-empty" id="productSide">
-              <div class="side-graph-card chooser-card select-note"><div class="eyebrow">Vyber kit</div><h3>Grafy sa zobrazia až po výbere produktu</h3><p>Klikni na kartu, „Detail“ alebo „Kúpiť ihneď“. Pravý panel sa odomkne po výbere produktu a popup ukáže plnú galériu, grafy aj všetky dostupné dáta z JSONu.</p></div>
+              <div class="side-graph-card chooser-card select-note"><div class="eyebrow">Vyber kit</div><h3>Grafy sa zobrazia až po výbere produktu</h3><p>Klikni na kartu, „Detail“ alebo „Kúpiť ihneď“. Pravý panel sa odomkne po výbere produktu a popup ukáže plnú galériu, grafy aj všetky dostupné informácie o kite.</p></div>
               <div class="side-graph-card data-card">
                 <div class="eyebrow">Vybraný produkt</div>
                 <h3 id="productFocusTitle">Načítavam…</h3>
                 <p id="productFocusLead">Po kliknutí na produkt sa tu zobrazí jeho výkonové porovnanie.</p>
-                <p class="product-side-desc" id="productSideDescription">Tu sa zobrazí krátky popis produktu z JSON feedu.</p>
+                <p class="product-side-desc" id="productSideDescription">Tu sa zobrazí krátky popis vybraného produktu.</p>
                 <div class="product-focus-kpis" id="productFocusKpis"></div>
               </div>
               <div class="side-graph-card data-card">
@@ -613,7 +613,7 @@
             <select class="variant-select" id="modalVariantSelect"></select>
             <div class="variant-meta" id="modalVariantMeta"></div>
             <div class="buy-inline">
-              <div class="muted-note" id="modalBuyNote">Vybraný variant sa po kliknutí odošle priamo do Shopify košíka.</div>
+              <div class="muted-note" id="modalBuyNote">Po kliknutí sa vybraný produkt odošle priamo do košíka.</div>
               <button class="btn primary" id="modalBuyNow" type="button">Kúpiť ihneď</button>
             </div>
           </div>
@@ -680,7 +680,7 @@
               <ul class="json-list" id="modalList"></ul>
             </div>
             <div>
-              <h3 class="power-title">Technické dáta z feedu</h3>
+              <h3 class="power-title">Technické dáta</h3>
               <div class="modal-grid-3" id="modalDataCards"></div>
             </div>
           </div>
@@ -757,7 +757,7 @@
       ]);
       if(parts.length) return parts.join(' · ');
       if(product.kitIncludes?.length) return `Kit obsahuje: ${product.kitIncludes.slice(0,4).join(', ')}`;
-      return 'Detailný popis sa skladá priamo z technických polí dostupných v JSON feede.';
+      return 'Detailný popis sa skladá z dostupných technických údajov o produkte.';
     }
     function getLongDescription(product){
       if(!product) return 'Bez popisu.';
@@ -870,7 +870,7 @@
       const maxGain = Math.max(...products.map(p => p?.powerClaim?.deltaPercentVsStockMin || 0));
       const strongest = products.find(p => (p?.powerClaim?.upgradedPs || 0) === maxUpgrade);
       cards.innerHTML = `
-        <div class="mini-card"><strong>${products.length} produkt${products.length === 1 ? '' : 'y'}</strong><span>Napojené na jeden JSON feed.</span></div>
+        <div class="mini-card"><strong>${products.length} produkt${products.length === 1 ? '' : 'y'}</strong><span>Aktívna ponuka pripravená na nákup.</span></div>
         <div class="mini-card"><strong>${fmt(maxUpgrade,' PS')}</strong><span>Najvyšší claimovaný výkon${strongest ? ` · ${strongest.title}` : ''}</span></div>
         <div class="mini-card"><strong>${fmt(maxGain.toFixed(2),' %')}</strong><span>Najväčší percentuálny gain vs stock minimum.</span></div>
       `;
@@ -880,7 +880,7 @@
       const products = getProducts(data);
       const graph = getGraphPreset(data, 'powerGainPercentVsStockMin');
       if(!products.length){
-        document.getElementById('metricGrid').innerHTML = `<div class="metric-card"><strong>Bez dát</strong><span>V JSONe nie sú produkty.</span></div>`;
+        document.getElementById('metricGrid').innerHTML = `<div class="metric-card"><strong>Bez dát</strong><span>V ponuke momentálne nie sú produkty.</span></div>`;
         return;
       }
       const maxUpgrade = Math.max(...products.map(p => p?.powerClaim?.upgradedPs || 0));
@@ -888,10 +888,10 @@
       const bestGain = Math.max(...graph.map(g => g.gainPercent || 0));
       const highestPrice = Math.max(...products.map(p => p?.price?.amount || p?.price?.amountMax || 0));
       document.getElementById('metricGrid').innerHTML = `
-        <div class="metric-card"><strong>Najnižší stock baseline</strong><span class="big">${fmt(minStock,' PS')}</span><span>Najslabší sériový základ v tomto feede.</span></div>
+        <div class="metric-card"><strong>Najnižší stock baseline</strong><span class="big">${fmt(minStock,' PS')}</span><span>Najslabší sériový základ v aktuálnej ponuke.</span></div>
         <div class="metric-card"><strong>Najvyšší cieľ výkonu</strong><span class="big red">${fmt(maxUpgrade,' PS')}</span><span>Najvyšší claimovaný výkon po úprave.</span></div>
         <div class="metric-card"><strong>Najväčší gain</strong><span class="big good">${fmt(bestGain.toFixed(2),' %')}</span><span>Nárast oproti stock minimu.</span></div>
-        <div class="metric-card"><strong>Najdrahší kit</strong><span class="big">${euro(highestPrice)}</span><span>Najvyššia cena v aktuálnom JSONe.</span></div>
+        <div class="metric-card"><strong>Najdrahší kit</strong><span class="big">${euro(highestPrice)}</span><span>Najvyššia cena v aktuálnej ponuke.</span></div>
       `;
     }
 
@@ -1098,7 +1098,7 @@
       engineEl.textContent = product.engineFamily || '—';
       titleEl.textContent = product.title || '—';
       const summary = [
-        {label:'Stock výkon', value:`${fmt(product?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(product?.powerClaim?.stockPsRange?.[1],'')} PS`, sub:'Sériový baseline z JSONu'},
+        {label:'Stock výkon', value:`${fmt(product?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(product?.powerClaim?.stockPsRange?.[1],'')} PS`, sub:'Sériový baseline produktu'},
         {label:'Po úprave', value:`${fmt(product?.powerClaim?.upgradedPs,' PS')}`, sub:'Claimovaný výkon'},
         {label:'Gain vs min', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, sub:'Percentuálny nárast'},
         {label:'Cena', value:`${pickPrice(product)}`, sub:'Výsledná cena / rozsah'},
@@ -1207,7 +1207,6 @@
         {k:'Gain',v:p?.powerClaim?.deltaPercentVsStockMin !== undefined ? `${Number(p.powerClaim.deltaPercentVsStockMin).toFixed(2)} %` : '—'},
         {k:'Stock Nm',v:`${fmt(p?.powerClaim?.stockNmRange?.[0],'')} – ${fmt(p?.powerClaim?.stockNmRange?.[1],'')} Nm`},
         {k:'Upgrade Nm',v:fmt(p?.powerClaim?.upgradedNm,' Nm')},
-        {k:'SKU',v:p?.price?.sku || p?.variants?.[0]?.sku || '—'}
       ];
       document.getElementById('modalKpis').innerHTML = kpis.map(item=>`<div class="kpi"><b>${item.k}</b><span>${item.v}</span></div>`).join('');
       document.getElementById('modalDescription').textContent = getLongDescription(p);
@@ -1222,7 +1221,7 @@
       if(p.turbo?.cooling?.length) detailLines.push(`<b>Chladenie turba</b><br>${p.turbo.cooling.join(', ')}`);
       if(p.productClaims?.claimedBoostText) detailLines.push(`<b>Boost claim</b><br>${p.productClaims.claimedBoostText}`);
       if(p.productClaims?.recommendedUse?.length) detailLines.push(`<b>Použitie</b><br>${p.productClaims.recommendedUse.join(', ')}`);
-      if(!detailLines.length) detailLines.push('<b>Detaily</b><br>Pre tento produkt nie sú v JSONe ďalšie špecifické polia.');
+      if(!detailLines.length) detailLines.push('<b>Detaily</b><br>Pre tento produkt nie sú dostupné ďalšie špecifické údaje.');
       document.getElementById('modalList').innerHTML = detailLines.map(x=>`<li class="json-item">${x}</li>`).join('');
       const dataCards = [
         ['Engine family', p.engineFamily],
@@ -1249,7 +1248,7 @@
       showImage(images[0] || '');
       const variantSelect = document.getElementById('modalVariantSelect');
       const variantMeta = document.getElementById('modalVariantMeta');
-      const variants = p?.variants?.length ? p.variants : [{name:'Default', price:p?.price?.amount ?? null, sku:p?.price?.sku || null}];
+      const variants = p?.variants?.length ? p.variants : [{name:'Default', price:p?.price?.amount ?? null}];
       const first = getFirstBuyableVariant(p);
       variantSelect.innerHTML = variants.map((v,idx)=>`<option value="${idx}">${v.name || 'Variant'}${typeof v.price === 'number' ? ` · ${euro(v.price)}` : ''}${getVariantId(v) ? ' · cart ready' : ''}</option>`).join('');
       variantSelect.value = String(first.index >= 0 ? first.index : 0);
@@ -1259,12 +1258,10 @@
         const variantId = getVariantId(v);
         variantMeta.innerHTML = [
           ['Cena', typeof v.price === 'number' ? euro(v.price) : pickPrice(p)],
-          ['SKU', v.sku || '—'],
-          ['Shopify variant', variantId || 'chýba']
         ].map(([k,val])=>`<div class="kpi"><b>${k}</b><span>${val}</span></div>`).join('');
         document.getElementById('modalBuyNote').textContent = variantId
-          ? 'Vybraný variant má Shopify Variant ID. Kliknutie ide priamo do checkout flow cez cart URL.'
-          : 'Tomuto variantu chýba Shopify Variant ID. Button ťa pošle na produkt alebo na mail.';
+          ? 'Vybraný variant je pripravený na okamžité vloženie do košíka.'
+          : 'Tomuto variantu chýba priame vloženie do košíka. Tlačidlo ťa pošle na produkt alebo na mail.';
       };
       variantSelect.onchange = updateVariantMeta;
       updateVariantMeta();
@@ -1319,10 +1316,10 @@
             break;
           }catch(err){ lastErr = err; }
         }
-        if(!data) throw lastErr || new Error('JSON sa nenačítal');
+        if(!data) throw lastErr || new Error('Ponuka sa nenačítala');
         state.data = data;
         const products = getProducts(data);
-        if(!products.length) throw new Error('V kits.json nie je products[], items[] ani pole produktov, alebo je feed prázdny.');
+        if(!products.length) throw new Error('V súbore nie sú dostupné produkty, alebo je ponuka prázdna.');
         buildHero(products);
         buildMetrics({ ...data, products });
         renderEngineSwitch(products);
@@ -1337,7 +1334,7 @@
         const chartLead = document.getElementById('chartLead');
         if(heroMiniCards) heroMiniCards.innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
         if(metricGrid) metricGrid.innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
-        if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať JSON feed. Skontroluj názov súboru, cestu a syntax. Skúša sa kits.json, kits (1).json aj kits_with_images.json.</div>`;
+        if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať ponuku produktov. Skontroluj názov súboru, cestu a syntax.</div>`;
         if(chartLead) chartLead.textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
       }
     }
