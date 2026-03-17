@@ -324,6 +324,12 @@
     .modal-thumb img{width:100%; height:100%; object-fit:cover; display:block}
     .modal-thumb.active{border-color:rgba(255,92,101,.8); box-shadow:0 0 0 1px rgba(255,92,101,.18), 0 0 18px rgba(179,31,36,.14)}
     .modal-grid-2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+    .modal-chart-stack{display:grid; grid-template-columns:1fr; gap:14px; margin-top:14px}
+    .product-desc{color:#dbe2ec; font-size:.92rem; line-height:1.55; opacity:.92}
+    .product-desc strong{color:#fff}
+    .product-side-desc{margin:0 0 12px; color:#dbe2ec; line-height:1.55}
+    .modal-desc-card{margin-top:14px; padding:16px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015))}
+    .modal-desc-card .detail-text{font-size:.95rem}
     .modal-grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
     .variant-box{margin-top:14px; display:grid; gap:10px}
     .variant-select{width:100%; min-height:48px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:#0b1016; color:#fff; padding:12px 14px; font-weight:700}
@@ -502,6 +508,7 @@
                 <div class="eyebrow">Vybraný produkt</div>
                 <h3 id="productFocusTitle">Načítavam…</h3>
                 <p id="productFocusLead">Po kliknutí na produkt sa tu zobrazí jeho výkonové porovnanie.</p>
+                <p class="product-side-desc" id="productSideDescription">Tu sa zobrazí krátky popis produktu z JSON feedu.</p>
                 <div class="product-focus-kpis" id="productFocusKpis"></div>
               </div>
               <div class="side-graph-card data-card">
@@ -620,8 +627,12 @@
               <div class="detail-title" id="modalClaim">—</div>
               <div class="detail-text" id="modalClaimText">—</div>
             </div>
+            <div class="modal-desc-card">
+              <div class="detail-kicker">Popis produktu</div>
+              <div class="detail-text" id="modalDescription">—</div>
+            </div>
           </div>
-          <div class="modal-grid-2" style="margin-top:14px">
+          <div class="modal-chart-stack">
             <div class="modal-section">
               <h3 class="power-title">Power curve</h3>
               <div class="line-chart-wrap modal-mini-chart">
@@ -716,6 +727,49 @@
     function euro(v){
       if(v === null || v === undefined) return '—';
       return new Intl.NumberFormat('sk-SK', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(v);
+    }
+    function escapeHtml(value=''){
+      return String(value)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+    function stripHtml(value=''){
+      return String(value || '').replace(/<br\s*\/?/gi,'\n').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+    }
+    function uniq(arr){
+      return [...new Set((arr || []).filter(Boolean).map(v => String(v).trim()).filter(Boolean))];
+    }
+    function getPrimaryDescription(product){
+      if(!product) return 'Bez detailného popisu.';
+      const direct = [product.description, product.shortDescription, product.summary, product.text, product.body_html, product.bodyHtml]
+        .map(stripHtml)
+        .find(Boolean);
+      if(direct) return direct;
+      const claims = product.productClaims || {};
+      const parts = uniq([
+        claims.fitmentText,
+        claims.positioning,
+        claims.claimedPowerText ? `Výkonový cieľ: ${claims.claimedPowerText}` : '',
+        claims.claimedBoostText ? `Boost: ${claims.claimedBoostText}` : ''
+      ]);
+      if(parts.length) return parts.join(' · ');
+      if(product.kitIncludes?.length) return `Kit obsahuje: ${product.kitIncludes.slice(0,4).join(', ')}`;
+      return 'Detailný popis sa skladá priamo z technických polí dostupných v JSON feede.';
+    }
+    function getLongDescription(product){
+      if(!product) return 'Bez popisu.';
+      const claims = product.productClaims || {};
+      const lines = uniq([
+        getPrimaryDescription(product),
+        claims.recommendedUse?.length ? `Použitie: ${claims.recommendedUse.join(', ')}` : '',
+        claims.requiredSupportingMods?.length ? `Odporúčané supporting mods: ${claims.requiredSupportingMods.join(', ')}` : '',
+        claims.recommendedEngineSafetyMods?.length ? `Odporúčané safety úpravy: ${claims.recommendedEngineSafetyMods.join(', ')}` : '',
+        product.kitIncludes?.length ? `Obsah kitu: ${product.kitIncludes.join(', ')}` : ''
+      ]);
+      return lines.join('\n');
     }
     function fmt(v, suffix=''){
       if(v === null || v === undefined || Number.isNaN(v)) return '—';
@@ -990,7 +1044,9 @@
       const upgradeVals = chartData?.upgradeVals ?? [upgrade*0.18, upgrade*0.39, upgrade*0.63, upgrade*0.84, upgrade];
 
       document.getElementById('productFocusTitle').textContent = product.title || 'Produkt';
-      document.getElementById('productFocusLead').textContent = `${product.engineFamily || '—'} · ${pickPrice(product)}`;
+      document.getElementById('productFocusLead').innerHTML = `${product.engineFamily || '—'} · ${pickPrice(product)}`;
+      const existingSideDesc = document.getElementById('productSideDescription');
+      if(existingSideDesc) existingSideDesc.textContent = getPrimaryDescription(product);
       document.getElementById('productFocusKpis').innerHTML = `
         <div class="kpi"><b>Stock</b><span>${stockMin}–${stockMax} PS</span></div>
         <div class="kpi"><b>Upgrade</b><span>${upgrade} PS</span></div>
@@ -1144,7 +1200,7 @@
       document.getElementById('modalTitle').textContent = p.title || 'Detail';
       document.getElementById('modalSubtitle').textContent = `${p.engineFamily || '—'} · ${pickPrice(p)}`;
       document.getElementById('modalClaim').textContent = p?.productClaims?.claimedPowerText || `${fmt(upgrade,' PS')}`;
-      document.getElementById('modalClaimText').textContent = p?.productClaims?.fitmentText || p?.productClaims?.positioning || 'Detaily sú načítané priamo z JSON feedu produktu.';
+      document.getElementById('modalClaimText').textContent = getLongDescription(p);
       const kpis = [
         {k:'Stock',v:`${fmt(stockMin,'')} – ${fmt(stockMax,'')} PS`},
         {k:'Upgrade',v:fmt(upgrade,' PS')},
@@ -1154,7 +1210,9 @@
         {k:'SKU',v:p?.price?.sku || p?.variants?.[0]?.sku || '—'}
       ];
       document.getElementById('modalKpis').innerHTML = kpis.map(item=>`<div class="kpi"><b>${item.k}</b><span>${item.v}</span></div>`).join('');
+      document.getElementById('modalDescription').textContent = getLongDescription(p);
       const detailLines = [];
+      detailLines.push(`<b>Popis</b><br>${escapeHtml(getLongDescription(p)).replace(/\n/g,'<br>')}`);
       if(p.engineCodesFromProduct?.length) detailLines.push(`<b>Engine codes</b><br>${p.engineCodesFromProduct.join(', ')}`);
       if(p.kitIncludes?.length) detailLines.push(`<b>Kit obsahuje</b><br>${p.kitIncludes.join('<br>')}`);
       if(p.productClaims?.requiredSupportingMods?.length) detailLines.push(`<b>Supporting mods</b><br>${p.productClaims.requiredSupportingMods.join(', ')}`);
