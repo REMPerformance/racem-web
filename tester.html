@@ -324,8 +324,7 @@
         </div>
       </div>
       <nav class="nav">
-        <a href="#porovnanie">Porovnanie</a>
-        <a href="#grafy">Grafy</a>
+                <a href="#grafy">Grafy</a>
         <a href="#ponuka">Ponuka</a>
         <a href="#kontakt" class="primary">Kontakt</a>
       </nav>
@@ -454,54 +453,6 @@
             </div>
           </div>
         </article>
-      </div>
-    </section>
-
-    <section class="section" id="porovnanie">
-      <div class="wrap">
-        <div class="compare-strip">
-          <div class="power-map-header">
-            <div class="power-map-kicker">INTERAKTÍVNA MAPA KOMPONENTOV</div>
-            <div class="power-map-switch" role="tablist" aria-label="Prepínač kitu">
-              <button class="kit-switch-btn active" data-kit="turbo" type="button">Turbo kit</button>
-              <button class="kit-switch-btn" data-kit="supercharger" type="button">Kompresor kit</button>
-            </div>
-          </div>
-
-          <div class="compare-grid">
-            <div class="compare-left">
-              <div class="component-map" id="componentMap">
-                <svg class="map-svg" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
-                  <path class="flow-path" d="M190 145 C250 145, 300 180, 365 220"></path>
-                  <path class="flow-path" d="M228 300 C290 292, 332 288, 395 286"></path>
-                  <path class="boost-path" d="M612 196 C648 226, 680 268, 706 320"></path>
-                  <path class="boost-path" d="M702 330 C652 372, 612 402, 552 435"></path>
-                  <path class="flow-path" d="M398 430 C318 446, 248 470, 184 505"></path>
-                </svg>
-                <div class="engine-core" aria-hidden="true"></div>
-                <button class="comp-node node-intake active" style="left:8%; top:12%; width:170px; height:70px" type="button" data-component="intake"><span>Sanie<small>air entry</small></span></button>
-                <button class="comp-node node-engine" style="left:11%; top:44%; width:190px; height:112px; font-size:19px" type="button" data-component="engine"><span>Motor<small>base platform</small></span></button>
-                <button class="comp-node node-main" style="right:18%; top:24%; width:160px; height:126px; font-size:20px" type="button" data-component="main"><span>Turbo<small>boost unit</small></span></button>
-                <button class="comp-node node-downpipe" style="right:7%; top:10%; width:160px; height:70px" type="button" data-component="aux"><span>Downpipe<small>outlet flow</small></span></button>
-                <button class="comp-node node-intercooler" style="right:14%; bottom:14%; width:178px; height:72px" type="button" data-component="cooling"><span>Intercooler<small>charge cooling</small></span></button>
-                <button class="comp-node node-wastegate" style="left:8%; bottom:12%; width:160px; height:70px" type="button" data-component="control"><span>Wastegate<small>boost control</small></span></button>
-              </div>
-            </div>
-            <div class="compare-right">
-              <div class="summary-card">
-                <strong>Vybraný motor</strong>
-                <span id="selectedEngineFamily">Načítavam…</span>
-                <span class="big" id="selectedTitle">—</span>
-              </div>
-              <div class="summary-list" id="compareSummary"></div>
-              <div class="component-detail">
-                <div class="detail-kicker">Vybraný komponent</div>
-                <div class="detail-title" id="detailTitle">Sanie</div>
-                <div class="detail-text" id="detailText">Základ pre stabilný prietok vzduchu do systému.</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -934,16 +885,19 @@
 
     function renderCompareSummary(){
       const product = getProducts(state.data)[state.currentIndex];
-      if(!product) return;
-      document.getElementById('selectedEngineFamily').textContent = product.engineFamily || '—';
-      document.getElementById('selectedTitle').textContent = product.title || '—';
+      const engineEl = document.getElementById('selectedEngineFamily');
+      const titleEl = document.getElementById('selectedTitle');
+      const summaryEl = document.getElementById('compareSummary');
+      if(!product || !engineEl || !titleEl || !summaryEl) return;
+      engineEl.textContent = product.engineFamily || '—';
+      titleEl.textContent = product.title || '—';
       const summary = [
         {label:'Stock výkon', value:`${fmt(product?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(product?.powerClaim?.stockPsRange?.[1],'')} PS`, sub:'Sériový baseline z JSONu'},
         {label:'Po úprave', value:`${fmt(product?.powerClaim?.upgradedPs,' PS')}`, sub:'Claimovaný výkon'},
         {label:'Gain vs min', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, sub:'Percentuálny nárast'},
         {label:'Cena', value:`${pickPrice(product)}`, sub:'Výsledná cena / rozsah'},
       ];
-      document.getElementById('compareSummary').innerHTML = summary.map(item => `
+      summaryEl.innerHTML = summary.map(item => `
         <div class="summary-card">
           <strong>${item.label}</strong>
           <span class="big">${item.value}</span>
@@ -955,6 +909,7 @@
       const isTurbo = state.compareMode === 'turbo';
       document.querySelectorAll('.kit-switch-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.kit === state.compareMode));
       const map = document.getElementById('componentMap');
+      if(!map) return;
       map.querySelector('.node-downpipe span').innerHTML = isTurbo ? 'Downpipe<small>outlet flow</small>' : 'Chladenie<small>thermal control</small>';
       map.querySelector('.node-main span').innerHTML = isTurbo ? 'Turbo<small>boost unit</small>' : 'Kompresor<small>driven boost</small>';
       map.querySelector('.node-wastegate span').innerHTML = isTurbo ? 'Wastegate<small>boost control</small>' : 'Remeň<small>drive path</small>';
@@ -963,11 +918,14 @@
     }
 
     function renderCompareComponentText(component = null){
+      const titleEl = document.getElementById('detailTitle');
+      const textEl = document.getElementById('detailText');
+      if(!titleEl || !textEl) return;
       const activeNode = component || document.querySelector('.comp-node.active')?.dataset.component || 'intake';
       const entry = compareCopy[state.compareMode][activeNode];
       if(!entry) return;
-      document.getElementById('detailTitle').textContent = entry.title;
-      document.getElementById('detailText').textContent = entry.text;
+      titleEl.textContent = entry.title;
+      textEl.textContent = entry.text;
     }
 
     function renderProducts(products){
@@ -1060,13 +1018,17 @@
         btn.classList.add('active');
         renderCompareComponentText(btn.dataset.component);
       }));
-      document.getElementById('closeModal').addEventListener('click', ()=>{
-        document.getElementById('productModal').classList.remove('open');
-        document.getElementById('productModal').setAttribute('aria-hidden','true');
-      });
-      document.getElementById('productModal').addEventListener('click', (e)=>{
-        if(e.target.id === 'productModal') document.getElementById('closeModal').click();
-      });
+      const closeModal = document.getElementById('closeModal');
+      const productModal = document.getElementById('productModal');
+      if(closeModal && productModal){
+        closeModal.addEventListener('click', ()=>{
+          productModal.classList.remove('open');
+          productModal.setAttribute('aria-hidden','true');
+        });
+        productModal.addEventListener('click', (e)=>{
+          if(e.target.id === 'productModal') closeModal.click();
+        });
+      }
     }
 
     async function boot(){
