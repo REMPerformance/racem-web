@@ -2,1814 +2,666 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-
-  <title>RACEM GROUP | Network Hub</title>
-  <meta name="description" content="RACEM Group – značky, jazdci, garáže, eventy a partneri. Klikni a otvor detail spolupráce, kontakt, región, status a štatistiky." />
-  <meta name="robots" content="index,follow" />
-
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RACEM | Turbo & Kompresor Kity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Oxanium:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#070709;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.04);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.62);
+      --bg:#050505;
+      --bg2:#0b0b0d;
+      --panel:#101014;
+      --panel2:#16161c;
+      --line:rgba(255,255,255,.08);
+      --text:#f4f4f4;
+      --muted:#a5a7af;
       --red:#b31f24;
-      --red2:#ff2b2f;
-      --ok: #2ecc71;
-      --warn:#f1c40f;
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --glass: blur(12px);
-      --radius: 18px;
-      --wrap: 1200px;
-
-      --glass2: rgba(255,255,255,.045);
-      --glass3: rgba(255,255,255,.03);
-      --stroke2: rgba(255,255,255,.14);
-      --glowRed: 0 0 22px rgba(255,43,47,.22);
-      --glowRed2: 0 0 44px rgba(179,31,36,.18);
+      --red2:#e53935;
+      --glow:0 0 0 1px rgba(179,31,36,.35),0 0 18px rgba(179,31,36,.20),0 18px 50px rgba(0,0,0,.55);
+      --radius:22px;
+      --radius-sm:16px;
+      --max:1380px;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:
-        radial-gradient(1000px 500px at 20% -10%, rgba(179,31,36,.25), transparent 60%),
-        radial-gradient(900px 450px at 90% 10%, rgba(255,43,47,.12), transparent 55%),
-        radial-gradient(900px 600px at 50% 120%, rgba(179,31,36,.12), transparent 55%),
-        var(--bg);
+      font-family:'Oxanium',system-ui,sans-serif;
       color:var(--text);
-      font-family: Oxanium, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(179,31,36,.18), transparent 32%),
+        radial-gradient(circle at 85% 20%, rgba(229,57,53,.12), transparent 28%),
+        linear-gradient(180deg,#090909 0%,#050505 45%,#09090b 100%);
       overflow-x:hidden;
     }
 
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--wrap); margin:0 auto; padding:0 18px}
-
-    header{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: var(--glass);
-      background: rgba(5,5,6,.68);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .nav{
-      height:66px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:16px;
-    }
-    .brand{display:flex; align-items:center; gap:12px}
-    .brand img{
-      height:36px;
-      width:auto;
-      display:block;
-      filter: drop-shadow(0 14px 26px rgba(0,0,0,.68));
-    }
-
-    .navlinks{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-    .navlinks a{
-      position:relative;
-      padding:10px 2px;
-      font-size:12px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      opacity:.84;
-      transition: .22s ease;
-      user-select:none;
-      outline:none;
-    }
-    .navlinks a:before{
+    body::before{
       content:"";
-      position:absolute;
-      inset:-6px -10px;
-      border-radius: 999px;
-      background: radial-gradient(120px 28px at 50% 55%, rgba(179,31,36,.20), transparent 60%);
-      opacity:0;
-      transition:.22s ease;
+      position:fixed;
+      inset:0;
       pointer-events:none;
-      filter: blur(1px);
-    }
-    .navlinks a:after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:0;
-      height:2px;
-      width:0%;
-      background: linear-gradient(90deg, rgba(255,43,47,.95), rgba(179,31,36,.80));
-      transition: .22s ease;
-      border-radius:99px;
-      box-shadow: 0 0 18px rgba(255,43,47,.28);
-    }
-    .navlinks a:hover{opacity:1;text-shadow: 0 0 14px rgba(255,43,47,.22);}
-    .navlinks a:hover:before{opacity:1}
-    .navlinks a:hover:after{width:100%}
-    .navlinks a.active{opacity:1}
-    .navlinks a.active:after{width:100%}
-    .navlinks .cta{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(179,31,36,.55);
-      background: linear-gradient(180deg, rgba(179,31,36,.30), rgba(179,31,36,.10));
-    }
-    .navlinks .cta:after{display:none}
-    .navlinks .cta:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 18px 50px rgba(179,31,36,.22);
+      opacity:.08;
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 70px 70px;
+      mask-image: radial-gradient(circle at center, black, transparent 85%);
     }
 
-    .hero{padding: 32px 0 18px;}
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      align-items:stretch;
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(var(--max),calc(100% - 32px));margin:0 auto}
+
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(14px);
+      background:rgba(5,5,5,.72);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .card{
-      background: var(--panel);
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: var(--glass);
+    .topbar-inner{
+      display:flex;align-items:center;justify-content:space-between;gap:18px;
+      min-height:78px;
     }
-    .heroLeft{
-      padding: 18px 18px 16px;
+    .brand{
+      display:flex;align-items:center;gap:14px;
+      font-family:'Oswald',sans-serif;
+      letter-spacing:.08em;text-transform:uppercase;
+    }
+    .brand-badge{
+      width:44px;height:44px;border-radius:12px;
+      background:linear-gradient(135deg,var(--red),#7c1217);
+      box-shadow:var(--glow);
+      display:grid;place-items:center;font-size:1.1rem;font-weight:700;
+    }
+    .brand small{display:block;color:var(--muted);font-family:'Oxanium';letter-spacing:.12em;font-size:.7rem}
+    nav{display:flex;gap:22px;flex-wrap:wrap}
+    nav a{color:#d5d8dd;font-size:.92rem}
+    nav a:hover{color:#fff}
+    .nav-cta{
+      padding:12px 18px;border-radius:999px;
+      border:1px solid rgba(179,31,36,.45);
+      background:linear-gradient(180deg,rgba(179,31,36,.18),rgba(179,31,36,.08));
+      box-shadow:var(--glow);
+      font-weight:700;
+    }
+
+    .hero{padding:74px 0 34px;position:relative;overflow:hidden}
+    .hero-grid{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:stretch;
+    }
+    .hero-main,.hero-side,.card,.tier,.faq-item,.process-step,.platform-card,.contact-box,.offer-box,.highlight-box{
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:0 10px 35px rgba(0,0,0,.30);
       position:relative;
       overflow:hidden;
     }
-    .heroLeft:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(720px 300px at 10% 10%, rgba(179,31,36,.26), transparent 62%),
-        radial-gradient(720px 300px at 85% 20%, rgba(255,43,47,.12), transparent 62%);
-      opacity:.95;
+    .hero-main::before,.hero-side::before,.card::before,.tier::before,.faq-item::before,.process-step::before,.platform-card::before,.contact-box::before,.offer-box::before,.highlight-box::before{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(179,31,36,.09), transparent 34%, transparent 68%, rgba(179,31,36,.06));
       pointer-events:none;
     }
-    .heroLeft > *{position:relative}
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      font-size:12px; color:var(--muted);
-      letter-spacing:.18em;
-      text-transform:uppercase;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.14);
-    }
-    h1{
-      margin:10px 0 8px;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size: 34px;
-      line-height:1.05;
-    }
-    .sub{
-      margin:0 0 14px;
-      color: var(--muted);
-      font-size:14px;
-      line-height:1.6;
-      max-width: 72ch;
-    }
-
-    /* ===== HERO STATS ===== */
-    .statsWrap{ margin-top:14px; display:grid; gap:12px; }
-    .statsHead{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-    }
-    .statsHead b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:12px;
-      color: rgba(255,255,255,.86);
-    }
-    .statsGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:10px;
-    }
-    .statCard{
-      position:relative;
-      border-radius: 16px;
-      border:1px solid var(--stroke2);
-      background:
-        radial-gradient(520px 220px at 12% 0%, rgba(179,31,36,.18), transparent 58%),
-        radial-gradient(520px 220px at 92% 20%, rgba(255,43,47,.10), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
-      padding: 12px 12px 11px;
-      overflow:hidden;
-      box-shadow: 0 18px 55px rgba(0,0,0,.48);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-      isolation:isolate;
-    }
-    .statCard:before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: linear-gradient(90deg, rgba(255,43,47,.0), rgba(255,43,47,.08), rgba(255,43,47,.0));
-      transform: translateX(-60%);
-      animation: statShine 5.6s ease-in-out infinite;
-      opacity:.7;
-      pointer-events:none;
-      z-index:0;
-    }
-    @keyframes statShine{
-      0%, 55% { transform: translateX(-60%); opacity:.0; }
-      70%     { opacity:.8; }
-      100%    { transform: translateX(60%); opacity:.0; }
-    }
-    .statCard:after{
-      content:"";
-      position:absolute;
-      left:0; top:0;
-      width:100%; height:2px;
-      background: linear-gradient(90deg, rgba(255,43,47,.9), rgba(179,31,36,.55));
-      opacity:.9;
-      z-index:1;
-      pointer-events:none;
-    }
-    .statCard:hover{
-      transform: translateY(-1px);
-      border-color: rgba(179,31,36,.45);
-      box-shadow: 0 26px 80px rgba(0,0,0,.62);
-    }
-    .statTopRow{
-      position:relative;
-      z-index:2;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .statLabel{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .statIcon{
-      width:34px; height:34px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      display:grid;
-      place-items:center;
-      box-shadow: var(--glowRed2);
-      flex:0 0 auto;
-    }
-    .statIcon svg{ width:18px; height:18px; opacity:.9; filter: drop-shadow(var(--glowRed)); }
-    .statTitle{ display:flex; flex-direction:column; gap:4px; min-width:0; }
-    .statTitle b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      font-size:11px;
-      color: rgba(255,255,255,.84);
-    }
-    .statTitle span{
-      color: rgba(255,255,255,.60);
-      font-size:11px;
-      letter-spacing:.06em;
-      line-height:1.25;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 34ch;
-    }
-    .statValue{
-      font-family: Oswald, sans-serif;
-      font-size:26px;
-      letter-spacing:.06em;
-      line-height:1;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 14px 34px rgba(0,0,0,.7);
-      text-align:right;
-      white-space:nowrap;
-    }
-    .statSub{
-      position:relative;
-      z-index:2;
-      margin-top:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding-top:10px;
-      border-top: 1px dashed rgba(255,255,255,.12);
-      color: rgba(255,255,255,.62);
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-    }
-    .statHint{ display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
-    .statPip{
-      width:8px; height:8px;
+    .hero-main{padding:38px 34px;min-height:540px;display:flex;flex-direction:column;justify-content:space-between}
+    .hero-eyebrow,.section-tag{
+      display:inline-flex;align-items:center;gap:10px;
+      width:max-content;
+      padding:10px 14px;
       border-radius:999px;
-      background: var(--ok);
-      box-shadow: 0 0 0 6px rgba(46,204,113,.10);
+      border:1px solid rgba(179,31,36,.35);
+      background:rgba(179,31,36,.09);
+      color:#ffe1e1;
+      font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
     }
-    .statPip.red{ background: var(--red2); box-shadow: 0 0 0 6px rgba(255,43,47,.10); }
-    .statPip.warn{ background: var(--warn); box-shadow: 0 0 0 6px rgba(241,196,15,.10); }
-    .statWide{ grid-column: 1 / -1; }
-
-    .liveBox{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      border-radius: 16px;
-      padding:12px;
-      color: rgba(255,255,255,.72);
-      font-size:12px;
-      letter-spacing:.06em;
-      line-height:1.6;
-      margin-top:12px;
-    }
-    .liveBox b{
-      font-family:Oswald, sans-serif;
-      letter-spacing:.12em;
+    .hero h1{
+      font-family:'Oswald',sans-serif;
+      font-size:clamp(3rem,7vw,6.2rem);
+      line-height:.92;
       text-transform:uppercase;
-      color:rgba(255,255,255,.90);
+      letter-spacing:.03em;
+      margin:22px 0 18px;
+      max-width:900px;
     }
-    .liveBox .subline{margin-top:6px;color:rgba(255,255,255,.62)}
-
-    /* ===== Globe panel ===== */
-    .heroRight{
-      padding: 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow:hidden;
-      position:relative;
+    .hero h1 span{color:#ff5a56;text-shadow:0 0 20px rgba(229,57,53,.28)}
+    .hero p{
+      max-width:840px;
+      color:#cfd2d8;
+      font-size:1.02rem;
+      line-height:1.75;
+      margin:0 0 28px;
     }
-    .globeTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .globeTop b{
-      font-size:12px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-    }
-    .globeTop span{
-      font-size:12px;
-      color:var(--muted);
-      letter-spacing:.08em;
-      white-space:nowrap;
-    }
-    canvas#globe{
-      width:100%;
-      height: 290px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(520px 240px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,.25)),
-        rgba(0,0,0,.15);
-      display:block;
-    }
-    .globeInfo{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 16px;
-      padding: 12px;
-      display:grid;
-      gap:10px;
-    }
-    .globeInfoTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .globeInfoTop b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    .globeInfoTop span{
-      color: var(--muted);
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-
-    .miniList{display:grid; gap:8px;}
-    .miniItem{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      padding:10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      cursor:pointer;
-      transition: .18s ease;
-    }
-    .miniItem:hover{ border-color: rgba(179,31,36,.45); transform: translateY(-1px); }
-    .miniLeft{display:flex; flex-direction:column; gap:6px; min-width:0;}
-    .miniLeft b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.08em;
-      font-size:14px;
-      white-space:normal;
-      overflow:visible;
-    }
-    .miniLeft span{
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      line-height:1.35;
-    }
-    .miniRight{display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex:0 0 auto;}
-    .miniBadge{
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      padding:6px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(46,204,113,.35);
-      background: rgba(46,204,113,.10);
-      color: rgba(255,255,255,.86);
-      white-space:nowrap;
-    }
-    .miniDot{
-      width:8px; height:8px;
-      border-radius:999px;
-      background: var(--red2);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
-      margin-top:2px;
-    }
-
-    /* Controls */
-    .controls{
-      padding: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .field{
-      flex: 1 1 220px;
-      display:flex; align-items:center; gap:10px;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .field input{
-      width:100%;
-      background:transparent;
-      border:0;
-      outline:none;
-      color:var(--text);
-      font-size:13px;
-      letter-spacing:.06em;
-    }
-    .select{
-      flex: 0 0 220px;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      outline:none;
-      font-size:13px;
-      letter-spacing:.06em;
-    }
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px}
     .btn{
-      padding: 11px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(179,31,36,.55);
-      background: linear-gradient(180deg, rgba(179,31,36,.30), rgba(179,31,36,.12));
-      color: var(--text);
-      font-weight:700;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      transition:.18s ease;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:54px;padding:0 24px;border-radius:16px;
+      font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:.9rem;
+      transition:.25s ease;cursor:pointer;
     }
-    .btn:hover{box-shadow: 0 18px 50px rgba(179,31,36,.20); transform: translateY(-1px);}
-    .btn:active{transform: translateY(1px)}
-    .btn.ghost{
-      border-color: rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      font-weight:600;
+    .btn-primary{
+      background:linear-gradient(180deg,var(--red2),var(--red));
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:var(--glow);
     }
-    .btn.ghost:hover{box-shadow:none; transform:none}
+    .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.06)}
+    .btn-secondary{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      color:#fff;
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,.08)}
 
-    /* Grid */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
     }
-    .tile{
-      padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      position:relative;
-      overflow:hidden;
-      cursor:pointer;
-      transition:.18s ease;
-      isolation:isolate;
+    .stat{
+      padding:18px;border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
     }
-    .tile:hover{
-      border-color: rgba(179,31,36,.50);
-      transform: translateY(-1px);
-      box-shadow: 0 26px 80px rgba(0,0,0,.62);
-    }
-    .tile:before{
-      content:"";
-      position:absolute; inset:-2px;
+    .stat strong{display:block;font-size:1.8rem;font-family:'Oswald';letter-spacing:.04em}
+    .stat span{display:block;color:var(--muted);font-size:.82rem;line-height:1.45}
+
+    .hero-side{padding:18px;display:grid;grid-template-rows:auto auto 1fr;gap:18px;min-height:540px}
+    .hero-visual{
+      min-height:210px;border-radius:20px;position:relative;overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
       background:
-        radial-gradient(520px 180px at 10% 10%, rgba(179,31,36,.18), transparent 60%),
-        radial-gradient(520px 180px at 90% 40%, rgba(255,43,47,.10), transparent 60%);
-      opacity:.65;
-      pointer-events:none;
-      z-index:0;
+        radial-gradient(circle at 22% 50%, rgba(229,57,53,.38), transparent 24%),
+        radial-gradient(circle at 78% 46%, rgba(179,31,36,.24), transparent 22%),
+        linear-gradient(145deg,#16161a,#09090b 45%,#131317);
     }
-    .tile > *{position:relative; z-index:1}
-
-    .tileTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    .hero-visual::before,
+    .hero-visual::after{
+      content:"";position:absolute;border-radius:999px;filter:blur(6px);
     }
-    .tileName{display:flex; flex-direction:column; gap:6px; min-width:0;}
-    .tileName b{
-      font-family: Oswald, sans-serif;
-      font-size:18px;
-      letter-spacing:.06em;
-      white-space:normal;
-      overflow:visible;
-    }
-    .tileName span{
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      line-height:1.35
-    }
-
-    .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
-    .badge{
-      font-size:11px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      padding:6px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.82);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .badge.red{border-color: rgba(179,31,36,.55); background: rgba(179,31,36,.12)}
-    .badge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.10)}
-    .badge.warn{border-color: rgba(241,196,15,.35); background: rgba(241,196,15,.10)}
-    .badge.type{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06)}
-
-    .thumb{
-      height: 96px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(520px 200px at 30% 30%, rgba(179,31,36,.18), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.20));
-      overflow:hidden;
-      position:relative;
-    }
-    .thumb img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-      opacity:.92;
-      filter: contrast(1.02) saturate(1.05);
-    }
-    .thumb .overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.60));
-    }
-
-    .meta{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px;
-      padding: 10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-    }
-    .metaItem b{
-      display:block;
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted)
-    }
-    .metaItem span{
-      display:block;
-      margin-top:6px;
-      font-size:13px;
-      letter-spacing:.04em;
-      line-height:1.25
-    }
-
-    .desc{
-      margin:0;
-      color: var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    .foot{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-radius: 14px;
-      padding: 10px 10px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .foot span{
-      color: rgba(255,255,255,.70);
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .foot i{
-      font-style:normal;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.10em;
-      color: rgba(255,255,255,.92);
-      text-shadow: 0 12px 28px rgba(0,0,0,.6);
-    }
-
-    section.block{padding: 14px 0 26px}
-    .sectionTitle{
-      display:flex; align-items:end; justify-content:space-between;
-      gap:12px;
-      margin: 4px 0 10px;
-    }
-    .sectionTitle h2{
-      margin:0;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:22px;
-    }
-    .sectionTitle p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-      max-width: 62ch;
-    }
-
-    /* Modal */
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.66);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:200;
-      padding: 18px;
-    }
-    .modal{
-      width:min(1040px, 100%);
-      max-height: 88vh;
-      overflow:auto;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(10,10,12,.78);
-      box-shadow: 0 30px 90px rgba(0,0,0,.7);
-    }
-    .modalHeader{
-      position:sticky; top:0;
-      background: rgba(10,10,12,.88);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid rgba(255,255,255,.10);
-      padding: 14px 14px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-    }
-    .modalHeader .left b{
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:22px;
-      display:block;
-    }
-    .modalHeader .left span{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      margin-top:4px;
-      line-height:1.35;
-    }
-    .modalHeader .right{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .actionBtn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border:1px solid rgba(179,31,36,.55);
-      background: linear-gradient(90deg, rgba(255,43,47,.90), rgba(179,31,36,.78));
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:12px;
-      box-shadow: 0 20px 60px rgba(179,31,36,.22);
-      transition:.18s ease;
-      white-space:nowrap;
-    }
-    .actionBtn:hover{transform: translateY(-1px); box-shadow: 0 24px 80px rgba(179,31,36,.30);}
-    .close{
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor:pointer;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size:12px;
-      font-weight:700;
-    }
-    .modalBody{
-      padding: 14px;
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:12px;
-    }
-    .modalPanel{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 16px;
-      padding: 12px;
-    }
-    .modalPanel h3{
-      margin:0 0 10px;
-      font-family: Oswald, sans-serif;
-      letter-spacing:.06em;
-      font-size:18px;
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    .kv .item{
-      position:relative;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(280px 120px at 15% 0%, rgba(179,31,36,.10), transparent 60%),
-        rgba(0,0,0,.18);
-      border-radius: 14px;
-      padding: 12px 12px 11px;
-      overflow:hidden;
-      transition: .18s ease;
-    }
-    .kv .item:before{
-      content:"";
-      position:absolute;
-      left:10px; top:10px;
-      width:9px; height:9px;
-      border-radius:3px;
-      background: rgba(255,43,47,.75);
-      box-shadow: 0 0 0 6px rgba(255,43,47,.10);
+    .hero-visual::before{
+      width:62%;height:62%;left:-10%;top:18%;
+      background:conic-gradient(from 130deg, transparent, rgba(255,90,86,.75), transparent 60%);
       opacity:.75;
     }
-    .kv .item:hover{
-      border-color: rgba(179,31,36,.45);
-      transform: translateY(-1px);
+    .hero-visual::after{
+      width:48%;height:48%;right:-6%;bottom:10%;
+      background:conic-gradient(from 300deg, transparent, rgba(255,255,255,.35), transparent 65%);
+      opacity:.55;
     }
-    .kv .item b{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+    .visual-label{
+      position:absolute;left:18px;right:18px;bottom:18px;
+      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
-    .kv .item span{
-      display:block;
-      margin-top:6px;
-      font-size:13px;
-      letter-spacing:.04em;
-      line-height:1.35;
+    .chip{padding:10px 12px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.1);font-size:.78rem;color:#eceef0}
+
+    .offer-box,.highlight-box{padding:22px}
+    .offer-box h3,.highlight-box h3{margin:0 0 10px;font-family:'Oswald';text-transform:uppercase;letter-spacing:.04em;font-size:1.5rem}
+    .offer-box p,.highlight-box p{margin:0;color:#c9ccd3;line-height:1.65}
+    .mini-list{display:grid;gap:12px;margin-top:16px}
+    .mini-item{
+      padding:14px 15px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+      display:flex;justify-content:space-between;gap:18px;align-items:center;
+    }
+    .mini-item b{font-size:.95rem}
+    .mini-item span{font-size:.82rem;color:var(--muted);text-align:right}
+
+    section{padding:28px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+    .section-head h2{
+      margin:0;font-family:'Oswald';text-transform:uppercase;letter-spacing:.04em;
+      font-size:clamp(2rem,4vw,3.6rem);line-height:.96;
+    }
+    .section-head p{max-width:760px;margin:10px 0 0;color:#c4c8cf;line-height:1.75}
+
+    .cards-2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{padding:26px}
+    .card h3{margin:0 0 14px;font-family:'Oswald';font-size:1.8rem;text-transform:uppercase;letter-spacing:.04em}
+    .card p{margin:0;color:#c9ccd3;line-height:1.75}
+    .bullet-list{display:grid;gap:12px;margin-top:18px}
+    .bullet{
+      display:flex;gap:12px;align-items:flex-start;
+      color:#eceff3;line-height:1.55;
+      padding:12px 14px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
+    }
+    .bullet::before{
+      content:"";width:10px;height:10px;border-radius:50%;background:linear-gradient(180deg,var(--red2),var(--red));flex:none;margin-top:.45rem;box-shadow:0 0 12px rgba(229,57,53,.45)
     }
 
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-    .gallery img{
-      width:100%;
-      height: 140px;
-      object-fit:cover;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-    }
+    .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .tier{padding:26px;display:flex;flex-direction:column;gap:18px}
+    .tier.top{box-shadow:var(--glow)}
+    .tier-kicker{color:#ffb4b4;font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;font-weight:800}
+    .tier h3{margin:0;font-family:'Oswald';font-size:2rem;text-transform:uppercase;line-height:.95}
+    .tier .price{font-family:'Oswald';font-size:2.4rem;line-height:1;color:#fff}
+    .tier .price small{font-size:.9rem;color:#aeb4bc;font-family:'Oxanium'}
+    .tier p{margin:0;color:#c6cad1;line-height:1.7}
 
-    footer{
-      padding: 22px 0 40px;
-      color: var(--muted);
-      font-size:12px;
-      letter-spacing:.06em;
-    }
+    .platforms{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .platform-card{padding:20px}
+    .platform-card h4{margin:0 0 8px;font-family:'Oswald';font-size:1.3rem;letter-spacing:.04em;text-transform:uppercase}
+    .platform-card p{margin:0;color:#c3c8cf;font-size:.92rem;line-height:1.65}
 
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr; }
-      .grid{grid-template-columns: repeat(2, 1fr); }
-      .modalBody{grid-template-columns: 1fr; }
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .process-step{padding:22px}
+    .step-no{font-family:'Oswald';font-size:2.1rem;color:#ff5b58;line-height:1;margin-bottom:14px}
+    .process-step h4{margin:0 0 8px;font-family:'Oswald';font-size:1.28rem;text-transform:uppercase}
+    .process-step p{margin:0;color:#c2c7cf;line-height:1.7;font-size:.95rem}
+
+    .faq{display:grid;gap:14px}
+    .faq-item{padding:22px}
+    .faq-item h4{margin:0 0 8px;font-size:1.05rem}
+    .faq-item p{margin:0;color:#c1c6ce;line-height:1.75}
+
+    .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
+    .contact-box{padding:28px}
+    .contact-box h3{margin:0 0 12px;font-family:'Oswald';text-transform:uppercase;font-size:2rem;line-height:.95}
+    .contact-box p{margin:0 0 16px;color:#c7ccd3;line-height:1.75}
+    .contact-list{display:grid;gap:12px;margin-top:18px}
+    .contact-item{padding:15px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+    .contact-item strong{display:block;margin-bottom:4px}
+    .contact-item span{color:#bcc1c9;font-size:.93rem}
+
+    footer{padding:26px 0 40px;color:#98a0aa}
+    .footer-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin-bottom:20px}
+    .footer-row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+    @media (max-width:1180px){
+      .hero-grid,.contact-grid{grid-template-columns:1fr}
+      .cards-3,.tiers,.process,.platforms{grid-template-columns:repeat(2,1fr)}
     }
-    @media (max-width: 560px){
-      h1{font-size:28px}
-      .grid{grid-template-columns: 1fr; }
-      .gallery{grid-template-columns: repeat(2, 1fr); }
-      .statsGrid{ grid-template-columns: 1fr; }
-      .statValue{ font-size:24px; }
-      .select{flex: 1 1 220px}
+    @media (max-width:820px){
+      nav{display:none}
+      .hero-main,.hero-side,.card,.tier,.contact-box,.offer-box,.highlight-box,.faq-item,.process-step,.platform-card{border-radius:20px}
+      .hero{padding-top:34px}
+      .hero-main{padding:26px 20px;min-height:auto}
+      .hero-side{min-height:auto}
+      .hero-stats,.cards-2,.cards-3,.tiers,.platforms,.process{grid-template-columns:1fr}
+      .section-head h2{font-size:2.35rem}
+      .hero h1{font-size:3rem}
+      .topbar-inner{min-height:68px}
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="wrap">
-      <div class="nav">
-        <a class="brand" href="index.html" aria-label="RACEM">
-          <img src="racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
-        </a>
-
-        <nav class="navlinks" aria-label="Menu">
-          <a class="active" href="#network">Sieť</a>
-          <a href="#categories">Kategórie</a>
-          <a class="cta" href="https://www.racem.sk" target="_blank" rel="noreferrer">Domov</a>
-        </nav>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">R</div>
+        <div>
+          <div>RACEM</div>
+          <small>Turbo & Kompresor Division</small>
+        </div>
       </div>
+      <nav>
+        <a href="#ponuka">Ponuka</a>
+        <a href="#baliky">Balíky</a>
+        <a href="#platformy">Platformy</a>
+        <a href="#proces">Proces</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="nav-cta" href="#kontakt">Vyžiadať kalkuláciu</a>
     </div>
   </header>
 
   <main>
-    <div class="wrap">
-      <!-- HERO -->
-      <section class="hero">
-        <div class="heroGrid">
-          <!-- LEFT -->
-          <div class="card heroLeft">
-            <div class="kicker"><span class="dot"></span> racem group • network hub</div>
-
-            <h1>
-              <img src="assets/rmgroup.png" alt="RACEM Group" style="max-height:92px;width:auto;display:block" onerror="this.style.display='none'">
-              <span style="display:block;margin-top:8px;">Ekosystém spoluprác</span>
-            </h1>
-
-            <p class="sub">
-              Všetko na jednom mieste: <b>značky</b>, <b>jazdci</b>, <b>garáže</b>, <b>eventy</b> a <b>partneri</b>.
-              Klikni na kartu → otvorí sa detail spolupráce (status, región, typ, kontakt, poznámky a médiá).
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-main">
+          <div>
+            <span class="hero-eyebrow">RACEM Performance Systems</span>
+            <h1>Turbo kity a <span>kompresor kity</span> na mieru</h1>
+            <p>
+              Chceš auto, ktoré nebude len hlasné, ale bude aj reálne tlačiť? Tu nezačíname pri univerzálnych hračkách z internetu. RACEM rieši kompletné turbo a kompresor riešenia pre street buildy, fast road setupy, drift, sprint aj tvrdé projektové autá. Od výberu hardvéru až po skladbu setu, odporúčané doplnky a celkový smer buildu.
             </p>
-
-            <div class="statsWrap">
-              <div class="statsHead">
-                <div><b>prehľad siete</b></div>
-              </div>
-
-              <div class="statsGrid" aria-label="Štatistiky RACEM Group">
-                <div class="statCard">
-                  <div class="statTopRow">
-                    <div class="statLabel">
-                      <div class="statIcon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M4 14c2.2-2.8 5-4 8-4s5.8 1.2 8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M6.5 17c1.4-1.7 3.2-2.5 5.5-2.5s4.1.8 5.5 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M12 20h0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-                        </svg>
-                      </div>
-                      <div class="statTitle">
-                        <b>Aktívne spolupráce</b>
-                        <span>online / v procese</span>
-                      </div>
-                    </div>
-                    <div class="statValue" id="sActive">—</div>
-                  </div>
-                  <div class="statSub">
-                    <span class="statHint"><span class="statPip"></span>live</span>
-                    <span>RACEM</span>
-                  </div>
-                </div>
-
-                <div class="statCard">
-                  <div class="statTopRow">
-                    <div class="statLabel">
-                      <div class="statIcon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
-                          <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2" opacity=".55"/>
-                        </svg>
-                      </div>
-                      <div class="statTitle">
-                        <b>Entity spolu</b>
-                        <span>značky + ľudia + garáže</span>
-                      </div>
-                    </div>
-                    <div class="statValue" id="sTotal">—</div>
-                  </div>
-                  <div class="statSub">
-                    <span class="statHint"><span class="statPip warn"></span>mix</span>
-                    <span>NETWORK</span>
-                  </div>
-                </div>
-
-                <div class="statCard">
-                  <div class="statTopRow">
-                    <div class="statLabel">
-                      <div class="statIcon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M12 3l3 6 6 .8-4.4 4.3 1 6-5.6-3-5.6 3 1-6L3 9.8 9 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                      <div class="statTitle">
-                        <b>Top kategória</b>
-                        <span>najviac záznamov</span>
-                      </div>
-                    </div>
-                    <div class="statValue" id="sTopType">—</div>
-                  </div>
-                  <div class="statSub">
-                    <span class="statHint"><span class="statPip red"></span>focus</span>
-                    <span>PRIORITA</span>
-                  </div>
-                </div>
-
-                <div class="statCard">
-                  <div class="statTopRow">
-                    <div class="statLabel">
-                      <div class="statIcon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M7 16l3-8h4l3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M6 16h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                        </svg>
-                      </div>
-                      <div class="statTitle">
-                        <b>Top región</b>
-                        <span>najviac spoluprác</span>
-                      </div>
-                    </div>
-                    <div class="statValue" id="sTopRegion">—</div>
-                  </div>
-                  <div class="statSub">
-                    <span class="statHint"><span class="statPip"></span>map</span>
-                    <span>ZONE</span>
-                  </div>
-                </div>
-
-                <div class="statCard statWide">
-                  <div class="statTopRow">
-                    <div class="statLabel">
-                      <div class="statIcon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                          <path d="M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M6 17V7l6-3 6 3v10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                      <div class="statTitle">
-                        <b>RACEM pipeline</b>
-                        <span>čo sa práve deje v sieti</span>
-                      </div>
-                    </div>
-
-                    <div class="statValue" style="font-size:18px" id="sPipeline">—</div>
-                  </div>
-
-                  <div class="statSub" style="margin-top:12px;">
-                    <span class="statHint"><span class="statPip warn"></span>work</span>
-                    <span>STATUS</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="liveBox">
-                <b>Live poznámka</b>
-                <div class="subline">
-                  Toto je interný “hub” štýl stránky. Keď doplníš reálne entity, bude to pôsobiť ako profesionálny press kit / partner dashboard.
-                </div>
-              </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#baliky">Pozrieť ponuku</a>
+              <a class="btn btn-secondary" href="#kontakt">Kontaktovať RACEM</a>
             </div>
           </div>
 
-          <!-- RIGHT (GLOBE) -->
-          <div class="card heroRight">
-            <div class="globeTop">
-              <b>Mapa siete</b>
-              <span id="globeInfoTime">--:--:-- • stav systému</span>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>Stage 1–3+</strong>
+              <span>Od rozumného street setupu až po extrémne zostavy s rezervou na ďalší rast výkonu.</span>
             </div>
-
-            <canvas id="globe" aria-label="RACEM Globe"></canvas>
-
-            <div class="globeInfo">
-              <div class="globeInfoTop">
-                <b>Rýchly zoznam</b>
-                <span id="syncText">SYNC: lokálne</span>
-              </div>
-
-              <div class="miniList" id="miniList"></div>
-
-              <p style="margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.5;">
-                Tip: klikni na položku → otvor detail + globus ju krátko zameria.
-              </p>
+            <div class="stat">
+              <strong>Street / Track</strong>
+              <span>Balíky orientované na použitie auta. Nie všetko musí byť hneď overkill.</span>
+            </div>
+            <div class="stat">
+              <strong>Individuálne</strong>
+              <span>Výber komponentov, platformy, priestoru v motorovom priestore a cieľového výkonu.</span>
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- NETWORK GRID -->
-      <section id="network" class="block">
-        <div class="card controls">
-          <div class="field">
-            <span style="color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;">Search</span>
-            <input id="q" type="text" placeholder="napr. CSR, SFXLA, jazdec, garáž, event..." autocomplete="off" />
-          </div>
-
-          <select id="type" class="select" title="Filter typ">
-            <option value="all">Všetky typy</option>
-            <option value="brand">Značky</option>
-            <option value="driver">Jazdci</option>
-            <option value="garage">Garáže</option>
-            <option value="event">Eventy</option>
-            <option value="partner">Partneri</option>
-          </select>
-
-          <select id="region" class="select" title="Filter región">
-            <option value="all">Všetky regióny</option>
-            <option value="SK">SK</option>
-            <option value="CZ">CZ</option>
-            <option value="EU">EU</option>
-            <option value="US">US</option>
-            <option value="ME">Middle East</option>
-          </select>
-
-          <select id="status" class="select" title="Filter status">
-            <option value="all">Všetky statusy</option>
-            <option value="active">Aktívne</option>
-            <option value="in_progress">V procese</option>
-            <option value="paused">Pozastavené</option>
-          </select>
-
-          <button class="btn ghost" id="reset">Reset</button>
-          <button class="btn" id="openCats">Kategórie</button>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="grid" id="grid"></div>
-      </section>
-
-      <!-- CATEGORIES -->
-      <section id="categories" class="block">
-        <div class="sectionTitle">
-          <h2>Kategórie</h2>
-          <p>Rozdelenie spoluprác a odporúčaný “deal model”, aby si vedel rýchlo škálovať sieť bez chaosu.</p>
-        </div>
-
-        <div class="grid">
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>Značky</b>
-                <span>distribúcia / reseller</span>
-              </div>
-              <div class="badges"><span class="badge type">brand</span><span class="badge ok">core</span></div>
+        <div class="hero-side">
+          <div class="hero-visual">
+            <div class="visual-label">
+              <span class="chip">TURBO SYSTEMS</span>
+              <span class="chip">SUPERCHARGER SYSTEMS</span>
+              <span class="chip">RACEM SPEC</span>
             </div>
-            <p class="desc">Najlepšie funguje: stránka značky + produkty + reálne fotky na autách + event coverage.</p>
-            <div class="foot"><span>tip</span><i>“Powered by RACEM”</i></div>
           </div>
 
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>Jazdci</b>
-                <span>promo / content</span>
-              </div>
-              <div class="badges"><span class="badge type">driver</span><span class="badge warn">media</span></div>
+          <div class="offer-box">
+            <h3>Čo riešime</h3>
+            <p>
+              Kompletný koncept buildu, výber vhodného kitu, podporné diely, odporúčané úpravy motora, pohonu, paliva, chladenia a reálne usmernenie podľa rozpočtu. Nie slepý predaj dielu bez rozmýšľania.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <h3>Rýchly prehľad</h3>
+            <div class="mini-list">
+              <div class="mini-item"><b>Turbo kity</b><span>väčší potenciál výkonu / vyšší tlak / širší tuning priestor</span></div>
+              <div class="mini-item"><b>Kompresor kity</b><span>okamžitá odozva / lineárny nástup / silný street charakter</span></div>
+              <div class="mini-item"><b>Doplnky</b><span>intercooler, palivo, sanie, zvody, chladenie, ECU, spojka</span></div>
             </div>
-            <p class="desc">Track / drift / show. Daj jasné: čo dostane, čo musí spraviť (posty, eventy, polepy, video).</p>
-            <div class="foot"><span>tip</span><i>zmluva + príloha dielov</i></div>
-          </div>
-
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>Garáže</b>
-                <span>montáž / servis</span>
-              </div>
-              <div class="badges"><span class="badge type">garage</span><span class="badge ok">local</span></div>
-            </div>
-            <p class="desc">Partner montáže = dôvera zákazníka. Daj “odporúčané garáže” + kvalitatívne kritériá.</p>
-            <div class="foot"><span>tip</span><i>fotky “pred/po”</i></div>
-          </div>
-
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>Eventy</b>
-                <span>stánok / sponzor</span>
-              </div>
-              <div class="badges"><span class="badge type">event</span><span class="badge red">reach</span></div>
-            </div>
-            <p class="desc">Chceš byť vidieť? Eventy = najlepší “brand lift” v komunite. Najmä keď máš auto s dielmi.</p>
-            <div class="foot"><span>tip</span><i>banner + merch + video</i></div>
-          </div>
-
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>Partneri</b>
-                <span>služby / logistika</span>
-              </div>
-              <div class="badges"><span class="badge type">partner</span><span class="badge warn">support</span></div>
-            </div>
-            <p class="desc">Foto/video, polepy, preprava, dielňa, sklad. Čokoľvek čo zvyšuje rýchlosť a kvalitu delivery.</p>
-            <div class="foot"><span>tip</span><i>fix ceny + SLA</i></div>
-          </div>
-
-          <div class="card tile" style="cursor:default">
-            <div class="tileTop">
-              <div class="tileName">
-                <b>RACEM Group</b>
-                <span>jednotný štandard</span>
-              </div>
-              <div class="badges"><span class="badge red">system</span><span class="badge ok">scale</span></div>
-            </div>
-            <p class="desc">Každá spolupráca má mať: status, región, typ, kontakt, prínos a “čo treba dodať”. Bez toho je to chaos.</p>
-            <div class="foot"><span>tip</span><i>dashboard mindset</i></div>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <div class="wrap">
-          © <span id="year"></span> RACEM / REM Performance — RACEM Group Network Hub
-        </div>
-      </footer>
-    </div>
-
-    <!-- MODAL -->
-    <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Detail spolupráce">
-      <div class="modal" id="modal">
-        <div class="modalHeader">
-          <div class="left">
-            <b id="mName">—</b>
-            <span id="mMeta">—</span>
-          </div>
-          <div class="right">
-            <a class="actionBtn" id="mAction" href="#" target="_blank" rel="noreferrer">Otvoriť →</a>
-            <button class="close" id="close">Close</button>
-          </div>
-        </div>
-
-        <div class="modalBody">
-          <div class="modalPanel">
-            <h3>Info</h3>
-            <div class="kv" id="mKV"></div>
-
-            <div style="height:12px"></div>
-
-            <h3>Spolupráca</h3>
-            <div class="kv" id="mDeal"></div>
-
-            <div style="height:12px"></div>
-
-            <h3>Poznámky / checklist</h3>
-            <div id="mNotes" style="color:var(--muted);font-size:13px;line-height:1.65;"></div>
-          </div>
-
-          <div class="modalPanel">
-            <h3>Galéria</h3>
-            <div class="gallery" id="mGallery"></div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section id="ponuka">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Celková ponuka</span>
+            <h2>Ktorý smer je pre tvoje auto správny</h2>
+          </div>
+          <p>
+            Turbo a kompresor nie sú dve rovnaké cesty. Obe vedia byť brutálne, ale každá funguje inak. Ak si vyberieš zle, len si kúpiš drahší problém. Preto to treba skladať podľa motora, priestoru, prevodovky, použitia auta a cieľa výkonu.
+          </p>
+        </div>
+
+        <div class="cards-2">
+          <article class="card">
+            <h3>Turbo kity</h3>
+            <p>
+              Ideálne pre buildy, kde chceš vyšší výkonový strop, možnosť ďalšieho rastu a poriadny tlak. Správne zvolený turbo setup vie urobiť z auta úplne inú ligu, ale potrebuje premyslený základ a nie improvizáciu na kolene.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">Vhodné pre ľudí, ktorí chcú výrazný nárast výkonu a neskôr plánujú ísť ešte vyššie.</div>
+              <div class="bullet">Možnosť voliť charakter od responzívneho fast road setupu až po agresívny top-end build.</div>
+              <div class="bullet">Vyžaduje správne riešené teplo, tlak, palivo, mapovanie a mechanický základ.</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Kompresor kity</h3>
+            <p>
+              Presná voľba pre tých, čo chcú okamžitú odozvu, silný záťah odspodu a pocit veľkého motora bez čakania. Na street aute dáva kompresor často brutálne príjemný charakter a veľmi návykový priebeh výkonu.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">Okamžitý nástup výkonu bez klasického turbo oneskorenia.</div>
+              <div class="bullet">Výborné pre street, fast road a autá, kde chceš zachovať čitateľné správanie.</div>
+              <div class="bullet">Vhodné riešenie aj pre platformy, kde chceš čistý a relatívne kompaktný setup.</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="baliky">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">RACEM balíky</span>
+            <h2>Tri úrovne ponuky</h2>
+          </div>
+          <p>
+            Ceny závisia od platformy, dostupnosti dielov, požadovaného výkonu a rozsahu podpory. Nižšie je štruktúra, podľa ktorej sa dá postaviť ponuka. Finálna kalkulácia sa skladá individuálne.
+          </p>
+        </div>
+
+        <div class="tiers">
+          <article class="tier">
+            <span class="tier-kicker">Entry / Street</span>
+            <h3>Street Build</h3>
+            <div class="price">Od 2 500 € <small>bez montáže / podľa platformy</small></div>
+            <p>
+              Základ pre zákazníka, ktorý chce výrazne živšie auto bez toho, aby hneď išiel do extrému. Vhodné pre daily/street autá a prvý seriózny forced induction build.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">Základný kit alebo jadro buildu podľa platformy</div>
+              <div class="bullet">Odporúčané palivové a chladiace minimum</div>
+              <div class="bullet">Nastavené na spoľahlivý street charakter</div>
+            </div>
+          </article>
+
+          <article class="tier top">
+            <span class="tier-kicker">Best choice / Fast road</span>
+            <h3>Performance Build</h3>
+            <div class="price">Od 4 900 € <small>komplexnejší setup</small></div>
+            <p>
+              Najrozumnejšia voľba pre ľudí, ktorí to myslia vážne. Lepšie komponenty, väčšia rezerva, premyslenejší balík a priestor pre neskoršie úpravy bez toho, aby si všetko prerábal od nuly.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">Turbo alebo kompresor riešenie s lepším celkovým základom</div>
+              <div class="bullet">Silnejšie doplnky pre palivo, chladenie a dýchanie motora</div>
+              <div class="bullet">Určené pre brutálny street setup, drift alebo ostrý weekend build</div>
+            </div>
+          </article>
+
+          <article class="tier">
+            <span class="tier-kicker">Track / Extreme</span>
+            <h3>Race Build</h3>
+            <div class="price">Od 8 500 € <small>open-end projekt</small></div>
+            <p>
+              Keď už nechceš kompromis, ale reálny projekt. Tu sa rieši celý systém auta, nie len samotný kit. Motor, palivo, teploty, prevodovka, spojka, diferenciál, ECU, bezpečnosť a ďalšie veci okolo.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">Výkonová rezerva pre tvrdé zaťaženie a ďalšie zvyšovanie</div>
+              <div class="bullet">Vhodné pre drift, track, sprint a extrémne buildy</div>
+              <div class="bullet">Vyžaduje seriózny rozpočet a správne priority</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Čo môže byť súčasťou</span>
+            <h2>Obsah ponuky podľa buildu</h2>
+          </div>
+          <p>
+            Nie každý kit znamená to isté. Niekde je v krabici len polka reality a zvyšok ťa dobehne neskôr. RACEM preto stavia ponuku tak, aby bolo jasné, čo je jadro a čo je nutná podpora.
+          </p>
+        </div>
+
+        <div class="cards-3">
+          <article class="card">
+            <h3>Hardvér systému</h3>
+            <div class="bullet-list">
+              <div class="bullet">Turbo / kompresor jednotka</div>
+              <div class="bullet">Zvody, držiaky, remenice, potrubie, sacie časti</div>
+              <div class="bullet">Wastegate, blow-off, bypass, oil/coolant vedenia</div>
+              <div class="bullet">Intercooler, charge piping, hadice, spojky</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Podporné diely</h3>
+            <div class="bullet-list">
+              <div class="bullet">Vstrekovače, pumpa, regulácia paliva</div>
+              <div class="bullet">Chladenie oleja a vody podľa výkonu</div>
+              <div class="bullet">Výfuk, downpipe, sanie, filterbox / open intake</div>
+              <div class="bullet">Spojka, zotrvačník, prípadne spevnenie pohonu</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Strategická časť</h3>
+            <div class="bullet-list">
+              <div class="bullet">Cieľ výkonu a očakávané správanie auta</div>
+              <div class="bullet">Odporúčania k vnútornostiam motora a bezpečnej hranici</div>
+              <div class="bullet">Doporučenie pre ECU a ladenie</div>
+              <div class="bullet">Rozdelenie na minimum / optimum / maximum budget</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="platformy">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Platformy</span>
+            <h2>Na čo sa vieme pozrieť</h2>
+          </div>
+          <p>
+            RACEM štýl nie je o jednej značke. Priorita sú performance platformy a autá, kde má forced induction zmysel. Finálne možnosti vždy závisia od konkrétneho motora a priestoru v aute.
+          </p>
+        </div>
+
+        <div class="platforms">
+          <article class="platform-card">
+            <h4>BMW</h4>
+            <p>E36, E46, E39, E60, E90 a ďalšie platformy vrátane radových šestiek a vybraných turbo/diesel buildov.</p>
+          </article>
+          <article class="platform-card">
+            <h4>VAG</h4>
+            <p>Golf, Audi, Seat, Škoda a ďalšie autá, kde sa rieši rýchly street build aj silnejší performance setup.</p>
+          </article>
+          <article class="platform-card">
+            <h4>JDM</h4>
+            <p>Vybrané platformy Mazda, Nissan, Honda, Toyota. Od responzívnych street buildov po výrazné výkonové projekty.</p>
+          </article>
+          <article class="platform-card">
+            <h4>Individuál</h4>
+            <p>Ak máš projekt mimo bežného katalógu, stále sa to dá riešiť. Len treba ísť priamo a bez ilúzií.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="proces">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Ako to prebieha</span>
+            <h2>Proces od dopytu po finálny smer buildu</h2>
+          </div>
+          <p>
+            Ak chceš normálnu ponuku, nestačí napísať „koľko stojí turbo na moje auto“. Treba vedieť, aký motor máš, čo už je upravené, aký výkon chceš, na čo auto používaš a aký je rozpočet. Inak je to len tipovanie.
+          </p>
+        </div>
+
+        <div class="process">
+          <article class="process-step">
+            <div class="step-no">01</div>
+            <h4>Zadanie auta</h4>
+            <p>Značka, model, motor, ročník, aktuálne úpravy, prevodovka, pohon a aké sú limity auta práve teraz.</p>
+          </article>
+          <article class="process-step">
+            <div class="step-no">02</div>
+            <h4>Cieľ buildu</h4>
+            <p>Street, drift, track, sprint, show car alebo daily. Každý cieľ posúva výber kitu iným smerom.</p>
+          </article>
+          <article class="process-step">
+            <div class="step-no">03</div>
+            <h4>Návrh balíka</h4>
+            <p>Odporučenie turbo alebo kompresor smeru, nutných doplnkov a úrovne rozpočtu, kde to ešte dáva zmysel.</p>
+          </article>
+          <article class="process-step">
+            <div class="step-no">04</div>
+            <h4>Kalkulácia</h4>
+            <p>Finálna cenová ponuka podľa dostupnosti dielov, platformy a toho, či riešiš len kit alebo celý systém.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">FAQ</span>
+            <h2>Najčastejšie otázky</h2>
+          </div>
+          <p>
+            Tieto otázky padajú stále. A áno, niektoré odpovede sú tvrdé, ale presne také treba pri performance buildoch počuť.
+          </p>
+        </div>
+
+        <div class="faq">
+          <article class="faq-item">
+            <h4>Je lepšie turbo alebo kompresor?</h4>
+            <p>Neexistuje univerzálna odpoveď. Turbo je často lepšie na vyšší výkonový potenciál. Kompresor býva fantastický na okamžitú odozvu a charakter auta. Správna odpoveď je: záleží od motora, cieľa a rozpočtu.</p>
+          </article>
+          <article class="faq-item">
+            <h4>Stačí mi kúpiť samotný kit?</h4>
+            <p>Často nie. Práve toto je chyba, na ktorej ľudia vyhoria. Samotný kit je len jadro. Bez paliva, chladenia, ECU a rozumného zvyšku vieš veľmi rýchlo kúpiť drahú katastrofu.</p>
+          </article>
+          <article class="faq-item">
+            <h4>Dá sa to spraviť lacno?</h4>
+            <p>Dá sa to spraviť lacnejšie. Ale ak chceš lacno a zároveň spoľahlivo pri vysokom výkone, tam sa už realita začne hádať s predstavou. Práve preto treba vedieť, kde šetriť a kde určite nie.</p>
+          </article>
+          <article class="faq-item">
+            <h4>Viete spraviť aj ponuku na individuálny projekt?</h4>
+            <p>Áno. Práve tam má RACEM zmysel. Pri netypických buildoch je len dôležité poslať čo najviac konkrétnych informácií a nehrať sa na univerzálny set pre všetkých.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <div class="wrap contact-grid">
+        <div class="contact-box">
+          <span class="section-tag">Kontakt</span>
+          <h3>Pošli dopyt a pripravíme smer ponuky</h3>
+          <p>
+            Pošli čo najviac detailov: auto, motor, úpravy, výkonový cieľ, rozpočet a či chceš turbo alebo kompresor, prípadne či si otvorený obom možnostiam. Čím konkrétnejší vstup, tým menej omáčky a tým lepšia ponuka.
+          </p>
+          <div class="contact-list">
+            <div class="contact-item">
+              <strong>Čo poslať</strong>
+              <span>Značka / model / motor / ročník / úpravy / cieľ výkonu / použitie auta / rozpočet</span>
+            </div>
+            <div class="contact-item">
+              <strong>Výsledok</strong>
+              <span>Odporučený smer buildu, rozsah dielov a realistická kalkulácia podľa projektu</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-box">
+          <span class="section-tag">RACEM</span>
+          <h3>Performance dopyt</h3>
+          <div class="contact-list">
+            <div class="contact-item">
+              <strong>E-mail</strong>
+              <span>info@remperformance.sk</span>
+            </div>
+            <div class="contact-item">
+              <strong>Typ dopytu</strong>
+              <span>Turbo kity / Kompresor kity / Kompletné forced induction buildy</span>
+            </div>
+            <div class="contact-item">
+              <strong>Poznámka</strong>
+              <span>Ak chceš len orientačný smer, dá sa. Ak chceš presnú ponuku, treba presné dáta.</span>
+            </div>
+          </div>
+          <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn btn-primary" href="mailto:info@remperformance.sk?subject=RACEM%20-%20Dopyt%20na%20turbo%20alebo%20kompresor%20kit">Napísať e-mail</a>
+            <a class="btn btn-secondary" href="#">RACEM Spec Inquiry</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    // =========================
-    // DATA: RACEM GROUP NETWORK (DEMO)
-    // =========================
-    const NETWORK = [
-      // --- BRANDS (add your real ones here)
-      {
-        id:"csr",
-        type:"brand",
-        name:"CSR Automotive",
-        region:"EU",
-        country:"Nemecko",
-        status:"active",
-        about:"Bodykity a aero diely (EU). Stabilná kvalita, veľké pokrytie značiek a rýchlejšie dodania.",
-        tags:["aero","bodykits","EU"],
-        contact:"B2B / veľkoobchod",
-        deal:"Distribúcia / reseller",
-        actionLabel:"Otvoriť CSR page",
-        actionUrl:"csr-automotive.html",
-        media:["img/group/csr.jpg"],
-        lat:51.1657, lon:10.4515
-      },
-      {
-        id:"sfxla",
-        type:"brand",
-        name:"StreetFighter LA (SFXLA)",
-        region:"US",
-        country:"Kalifornia",
-        status:"active",
-        about:"Widebody a race diely. Agresívny fitment. Doprava air/sea podľa rozmerov.",
-        tags:["widebody","race","US"],
-        contact:"SFXLA USA",
-        deal:"Distribúcia / import",
-        actionLabel:"Otvoriť SFXLA page",
-        actionUrl:"streetfighter-la.html",
-        media:["img/group/sfxla.jpg"],
-        lat:34.0522, lon:-118.2437
-      },
-      {
-        id:"veilside",
-        type:"brand",
-        name:"VeilSide",
-        region:"JP",
-        country:"Japonsko",
-        status:"in_progress",
-        about:"Ikonické aero a bodykit dizajny. U teba to pôsobí premium – stačí správne odprezentovať.",
-        tags:["aero","JDM","premium"],
-        contact:"—",
-        deal:"v procese",
-        actionLabel:"Otvoriť web",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/veilside.jpg"],
-        lat:35.6762, lon:139.6503
-      },
-      {
-        id:"pandem",
-        type:"brand",
-        name:"Pandem / Rocket Bunny",
-        region:"JP",
-        country:"Japonsko",
-        status:"in_progress",
-        about:"Široké kity a agresívne línie. Výborné na show aj street buildy.",
-        tags:["widebody","JDM"],
-        contact:"—",
-        deal:"v procese",
-        actionLabel:"Otvoriť web",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/pandem.jpg"],
-        lat:35.6762, lon:139.6503
-      },
-
-      // --- DRIVERS (demo placeholders)
-      {
-        id:"driver1",
-        type:"driver",
-        name:"Jazdec / Drifter #1",
-        region:"SK",
-        country:"Slovensko",
-        status:"active",
-        about:"Pro / semi-pro jazdec. Auto v polepoch RACEM + content z eventov.",
-        tags:["drift","content","promo"],
-        contact:"IG / manažér",
-        deal:"Diely ↔ mediálna protihodnota",
-        actionLabel:"Kontakt",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/driver1.jpg"],
-        lat:48.1486, lon:17.1077
-      },
-
-      // --- GARAGES (demo)
-      {
-        id:"garage1",
-        type:"garage",
-        name:"Garáž / dielňa #1",
-        region:"SK",
-        country:"Západné Slovensko",
-        status:"in_progress",
-        about:"Montáže bodykitov, lakovanie, fitting. Partner na realizácie pre zákazníkov.",
-        tags:["montáž","fitment","service"],
-        contact:"telefón/email",
-        deal:"Odporúčaná montáž (SLA + ceny)",
-        actionLabel:"Zobraziť",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/garage1.jpg"],
-        lat:48.8945, lon:18.0444
-      },
-
-      // --- EVENTS (demo)
-      {
-        id:"event1",
-        type:"event",
-        name:"Event / zraz #1",
-        region:"SK",
-        country:"Slovensko",
-        status:"paused",
-        about:"Zraz, expo, drift day. Priestor pre stánok, rollup, promo auto a obsah.",
-        tags:["event","expo"],
-        contact:"organizátor",
-        deal:"Sponzoring / promo",
-        actionLabel:"Info",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/event1.jpg"],
-        lat:48.7260, lon:19.1410
-      },
-
-      // --- PARTNERS (demo)
-      {
-        id:"partner1",
-        type:"partner",
-        name:"Partner #1 (Foto/Video)",
-        region:"SK",
-        country:"Slovensko",
-        status:"active",
-        about:"Obsah pre IG/WEB: fotky produktov, reels, event coverage.",
-        tags:["media","content"],
-        contact:"IG / email",
-        deal:"Fix ceny + výstupy",
-        actionLabel:"Kontakt",
-        actionUrl:"https://www.racem.sk",
-        media:["img/group/partner1.jpg"],
-        lat:48.1486, lon:17.1077
-      }
-    ];
-
-    window.NETWORK = NETWORK;
-
-    // =========================
-    // Globe focus (same logic)
-    // =========================
-    window.__globeFocus = {
-      focusLat: null,
-      focusLon: null,
-      freezeUntil: 0,
-      focusFor: (lat, lon, ms=2800) => {
-        window.__globeFocus.focusLat = lat;
-        window.__globeFocus.focusLon = lon;
-        window.__globeFocus.freezeUntil = Date.now() + ms;
-      },
-      clear: () => {
-        window.__globeFocus.focusLat = null;
-        window.__globeFocus.focusLon = null;
-        window.__globeFocus.freezeUntil = 0;
-      }
-    };
-
-    // =========================
-    // Helpers
-    // =========================
-    const $ = (s) => document.querySelector(s);
-    const grid = $("#grid");
-    const q = $("#q");
-    const type = $("#type");
-    const region = $("#region");
-    const status = $("#status");
-    const reset = $("#reset");
-
-    function escapeHTML(s){
-      return String(s ?? "").replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
-    }
-
-    function typeLabel(t){
-      if(t === "brand") return "Značka";
-      if(t === "driver") return "Jazdec";
-      if(t === "garage") return "Garáž";
-      if(t === "event") return "Event";
-      if(t === "partner") return "Partner";
-      return "—";
-    }
-
-    function statusBadge(s){
-      if(s === "active") return `<span class="badge ok">ACTIVE</span>`;
-      if(s === "in_progress") return `<span class="badge warn">IN PROGRESS</span>`;
-      if(s === "paused") return `<span class="badge">PAUSED</span>`;
-      return `<span class="badge">—</span>`;
-    }
-
-    function cardHTML(x){
-      const tBadge = `<span class="badge type">${escapeHTML(typeLabel(x.type))}</span>`;
-      const rBadge = `<span class="badge red">${escapeHTML(x.region || "—")}</span>`;
-      const sBadge = statusBadge(x.status);
-      const img = (x.media && x.media[0]) ? `<img src="${x.media[0]}" alt="${escapeHTML(x.name)}" onerror="this.remove()">` : "";
-      const tagLine = (x.tags||[]).slice(0,3).join(" / ") || "—";
-
-      return `
-        <div class="card tile" data-id="${x.id}">
-          <div class="tileTop">
-            <div class="tileName">
-              <b title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</b>
-              <span>${escapeHTML(x.country || "—")} • ${escapeHTML(x.region || "—")} • ${escapeHTML(tagLine)}</span>
-            </div>
-            <div class="badges">${tBadge}${rBadge}${sBadge}</div>
-          </div>
-
-          <div class="thumb">
-            ${img}
-            <div class="overlay"></div>
-          </div>
-
-          <div class="meta">
-            <div class="metaItem">
-              <b>Typ</b>
-              <span>${escapeHTML(typeLabel(x.type))}</span>
-            </div>
-            <div class="metaItem">
-              <b>Status</b>
-              <span>${escapeHTML((x.status || "—").replaceAll("_"," "))}</span>
-            </div>
-            <div class="metaItem">
-              <b>Spolupráca</b>
-              <span>${escapeHTML(x.deal || "—")}</span>
-            </div>
-            <div class="metaItem">
-              <b>Kontakt</b>
-              <span>${escapeHTML(x.contact || "—")}</span>
-            </div>
-          </div>
-
-          <p class="desc">${escapeHTML(x.about || "")}</p>
-
-          <div class="foot">
-            <span>klikni pre detail</span>
-            <i>OPEN →</i>
-          </div>
-        </div>
-      `;
-    }
-
-    function applyFilters(){
-      const qs = (q.value || "").trim().toLowerCase();
-      const t = type.value;
-      const r = region.value;
-      const st = status.value;
-
-      const out = NETWORK.filter(x => {
-        const hay = [
-          x.name, x.type, x.region, x.country, x.about, x.deal, x.contact,
-          ...(x.tags||[])
-        ].join(" ").toLowerCase();
-
-        const okQ  = !qs || hay.includes(qs);
-        const okT  = (t === "all") || (x.type === t);
-        const okR  = (r === "all") || (x.region === r);
-        const okSt = (st === "all") || (x.status === st);
-        return okQ && okT && okR && okSt;
-      });
-
-      grid.innerHTML = out.map(cardHTML).join("");
-
-      grid.querySelectorAll(".tile").forEach(el => {
-        el.addEventListener("click", () => {
-          const item = NETWORK.find(x => x.id === el.dataset.id);
-          if(!item) return;
-
-          if(typeof item.lat === "number" && typeof item.lon === "number"){
-            window.__globeFocus.focusFor(item.lat, item.lon, 2800);
-          }
-          openModal(item.id);
-        });
-      });
-
-      renderMiniList(out);
-      updateStats();
-    }
-
-    // =========================
-    // Stats
-    // =========================
-    function updateStats(){
-      const total = NETWORK.length;
-      const active = NETWORK.filter(x => x.status === "active" || x.status === "in_progress").length;
-
-      const countsByType = {};
-      const countsByRegion = {};
-      const countsByStatus = { active:0, in_progress:0, paused:0 };
-
-      for(const x of NETWORK){
-        countsByType[x.type] = (countsByType[x.type] || 0) + 1;
-        countsByRegion[x.region] = (countsByRegion[x.region] || 0) + 1;
-        if(countsByStatus[x.status] !== undefined) countsByStatus[x.status] += 1;
-      }
-
-      const topType = Object.entries(countsByType).sort((a,b)=>b[1]-a[1])[0];
-      const topRegion = Object.entries(countsByRegion).sort((a,b)=>b[1]-a[1])[0];
-
-      $("#sActive").textContent = String(active);
-      $("#sTotal").textContent = String(total);
-      $("#sTopType").textContent = topType ? typeLabel(topType[0]) : "—";
-      $("#sTopRegion").textContent = topRegion ? topRegion[0] : "—";
-
-      const pipe = [];
-      if(countsByStatus.in_progress) pipe.push(`${countsByStatus.in_progress} v procese`);
-      if(countsByStatus.active) pipe.push(`${countsByStatus.active} aktívne`);
-      if(countsByStatus.paused) pipe.push(`${countsByStatus.paused} pause`);
-      $("#sPipeline").textContent = pipe.length ? pipe.join(" • ") : "—";
-    }
-
-    // =========================
-    // Modal
-    // =========================
-    const modalBack = $("#modalBack");
-    const closeBtn = $("#close");
-
-    function openModal(id){
-      const x = NETWORK.find(s => s.id === id);
-      if(!x) return;
-
-      $("#mName").textContent = x.name;
-      $("#mMeta").textContent = `${typeLabel(x.type)} • ${x.country || "—"} • ${x.region || "—"} • ${String(x.status||"—").replaceAll("_"," ")}`;
-
-      const btn = $("#mAction");
-      btn.textContent = x.actionLabel || "Otvoriť →";
-      btn.href = x.actionUrl || "https://www.racem.sk";
-
-      const kv = [
-        ["Typ", typeLabel(x.type)],
-        ["Status", String(x.status||"—").replaceAll("_"," ")],
-        ["Región", x.region || "—"],
-        ["Krajina", x.country || "—"],
-        ["Tagy", (x.tags||[]).join(", ") || "—"],
-        ["Kontakt", x.contact || "—"],
-      ];
-
-      $("#mKV").innerHTML = kv.map(([k,v]) => `
-        <div class="item">
-          <b>${escapeHTML(k)}</b>
-          <span>${escapeHTML(v)}</span>
-        </div>
-      `).join("");
-
-      const deal = [
-        ["Model", x.deal || "—"],
-        ["Prínos", x.type === "brand" ? "produkty / distribúcia" :
-                  x.type === "driver" ? "reach / obsah / eventy" :
-                  x.type === "garage" ? "montáž / kvalita" :
-                  x.type === "event" ? "brand lift / komunita" : "support"],
-        ["Cieľ", "zvýšiť predaje a viditeľnosť"],
-        ["Poznámka", "drž rovnaký štandard výstupov (posty, fotky, dôkazy)."]
-      ];
-
-      $("#mDeal").innerHTML = deal.map(([k,v]) => `
-        <div class="item">
-          <b>${escapeHTML(k)}</b>
-          <span>${escapeHTML(v)}</span>
-        </div>
-      `).join("");
-
-      $("#mNotes").innerHTML = `
-        <ul style="margin:0;padding-left:18px;">
-          <li>Máme jasne definované výstupy (čo dodá partner a čo dodá RACEM).</li>
-          <li>Každý záznam má mať minimálne 1 fotku + link + kontakt.</li>
-          <li>Keď je status <b>in_progress</b>, doplň: “čo chýba” (cena, termín, podpis, doprava).</li>
-        </ul>
-      `;
-
-      const g = $("#mGallery");
-      const media = (x.media||[]).slice(0,6);
-      g.innerHTML = media.map(src => `
-        <img src="${src}" alt="${escapeHTML(x.name)}" onerror="this.remove()">
-      `).join("");
-
-      modalBack.style.display = "flex";
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeModal(){
-      modalBack.style.display = "none";
-      document.body.style.overflow = "";
-    }
-    closeBtn.addEventListener("click", closeModal);
-    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
-    window.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
-
-    // =========================
-    // Mini list (right panel)
-    // =========================
-    function miniRowHTML(x){
-      const tagLine = (x.tags||[]).slice(0,2).join(" / ") || "—";
-      return `
-        <div class="miniItem" data-id="${x.id}">
-          <div class="miniLeft">
-            <b>${escapeHTML(x.name)}</b>
-            <span>${escapeHTML(typeLabel(x.type))} • ${escapeHTML(x.region||"—")} • ${escapeHTML(tagLine)}</span>
-          </div>
-          <div class="miniRight">
-            <span class="miniBadge">${escapeHTML((x.status||"—").replaceAll("_"," ").toUpperCase())}</span>
-            <span class="miniDot"></span>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMiniList(list){
-      const box = document.getElementById("miniList");
-      if(!box) return;
-
-      // top 5: active first
-      const sorted = [...list].sort((a,b) => {
-        const pr = (s) => s === "active" ? 0 : (s === "in_progress" ? 1 : 2);
-        return pr(a.status) - pr(b.status);
-      }).slice(0,5);
-
-      box.innerHTML = sorted.map(miniRowHTML).join("");
-
-      box.querySelectorAll(".miniItem").forEach(el => {
-        el.addEventListener("click", () => {
-          const id = el.dataset.id;
-          const item = NETWORK.find(x => x.id === id);
-          if(!item) return;
-
-          if(typeof item.lat === "number" && typeof item.lon === "number"){
-            window.__globeFocus.focusFor(item.lat, item.lon, 2800);
-          }
-          openModal(id);
-        });
-      });
-    }
-
-    function updateTime(){
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2,"0");
-      const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-      const el = document.getElementById("globeInfoTime");
-      if(el) el.textContent = `${t} • stav systému`;
-    }
-
-    // Wire UI
-    q.addEventListener("input", applyFilters);
-    type.addEventListener("change", applyFilters);
-    region.addEventListener("change", applyFilters);
-    status.addEventListener("change", applyFilters);
-
-    reset.addEventListener("click", () => {
-      q.value = "";
-      type.value = "all";
-      region.value = "all";
-      status.value = "all";
-      applyFilters();
-    });
-
-    $("#openCats").addEventListener("click", () => { location.hash = "#categories"; });
-
-    // init
-    $("#year").textContent = new Date().getFullYear();
-    applyFilters();
-    updateStats();
-    updateTime();
-    setInterval(updateTime, 1000);
-  </script>
-
-  <!-- ===== COBE Globe ===== -->
-  <script type="module">
-    import createGlobe from "https://cdn.skypack.dev/cobe";
-
-    const canvas = document.getElementById("globe");
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    function fitCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-    }
-    fitCanvas();
-    window.addEventListener("resize", fitCanvas);
-
-    const RACEM_ORIGIN = { lat: 48.6690, lon: 19.6990 }; // SK center-ish
-    const NETWORK = window.NETWORK || [];
-    const focus = window.__globeFocus;
-
-    function buildMarkers(now=Date.now()) {
-      const pulse = (base, amp, speed) => base + (Math.sin(now / speed) * amp);
-
-      const markers = [
-        { location: [RACEM_ORIGIN.lat, RACEM_ORIGIN.lon], size: 0.095 }
-      ];
-
-      for(const x of NETWORK){
-        if(typeof x.lat !== "number" || typeof x.lon !== "number") continue;
-
-        const isBrand = x.type === "brand";
-        const isActive = x.status === "active";
-        const base = isBrand ? 0.11 : 0.085;
-        const size = isActive ? pulse(base, 0.018, 360) : base;
-
-        markers.push({ location: [x.lat, x.lon], size });
-      }
-
-      return markers;
-    }
-
-    function latLonToPhiTheta(lat, lon){
-      const phi = (lon * Math.PI) / 180;
-      const theta = (lat * Math.PI) / 180;
-      return { phi, theta };
-    }
-
-    let currentPhi = -1.25;
-    let currentTheta = 0.20;
-
-    let dragging = false;
-    let dragStartX = 0;
-    let dragPhiStart = 0;
-
-    createGlobe(canvas, {
-      devicePixelRatio: dpr,
-      width: canvas.width,
-      height: canvas.height,
-
-      phi: 0,
-      theta: 0.25,
-      dark: 1.15,
-      diffuse: 1.25,
-      mapSamples: 40000,
-      mapBrightness: 6,
-
-      baseColor: [0.08, 0.09, 0.10],
-      glowColor: [0.70, 0.10, 0.12],
-      markerColor: [1.0, 0.17, 0.19],
-      backgroundColor: [0, 0, 0, 0],
-
-      markers: buildMarkers(Date.now()),
-
-      onRender: (state) => {
-        state.width = canvas.width;
-        state.height = canvas.height;
-
-        const now = Date.now();
-        const hasFocus = focus
-          && typeof focus.focusLat === "number"
-          && typeof focus.focusLon === "number"
-          && now < focus.freezeUntil;
-
-        if(hasFocus){
-          const t = latLonToPhiTheta(focus.focusLat, focus.focusLon);
-          const targetPhi = t.phi;
-          const targetTheta = Math.max(-1.2, Math.min(1.2, -t.theta * 0.55));
-
-          currentPhi += (targetPhi - currentPhi) * 0.07;
-          currentTheta += (targetTheta - currentTheta) * 0.07;
-
-          state.phi = currentPhi;
-          state.theta = currentTheta;
-        } else {
-          if(focus && now >= focus.freezeUntil) focus.clear();
-          if (!dragging) currentPhi += 0.0022;
-          state.phi = currentPhi;
-          state.theta = currentTheta;
-        }
-
-        state.markers = buildMarkers(now);
-      }
-    });
-
-    canvas.style.cursor = "grab";
-    canvas.addEventListener("pointerdown", (e) => {
-      dragging = true;
-      canvas.setPointerCapture(e.pointerId);
-      canvas.style.cursor = "grabbing";
-      dragStartX = e.clientX;
-      dragPhiStart = currentPhi;
-      if(window.__globeFocus) window.__globeFocus.clear();
-    });
-    canvas.addEventListener("pointerup", () => {
-      dragging = false;
-      canvas.style.cursor = "grab";
-    });
-    canvas.addEventListener("pointerout", () => {
-      dragging = false;
-      canvas.style.cursor = "grab";
-    });
-    canvas.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - dragStartX;
-      currentPhi = dragPhiStart + dx * 0.006;
-    });
-  </script>
+  <footer>
+    <div class="wrap">
+      <div class="footer-line"></div>
+      <div class="footer-row">
+        <div>RACEM — Turbo & Kompresor Kity</div>
+        <div>Built in RACEM style · Dark · Aggressive · Performance focused</div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
