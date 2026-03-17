@@ -639,7 +639,12 @@
       }
       return 'Na dopyt';
     }
-    function getProducts(data){ return Array.isArray(data?.products) ? data.products : []; }
+    function getProducts(data){
+      if (Array.isArray(data?.products)) return data.products;
+      if (Array.isArray(data?.items)) return data.items;
+      if (Array.isArray(data)) return data;
+      return [];
+    }
     function getGraphPreset(data, key){ return Array.isArray(data?.graphPresets?.[key]) ? data.graphPresets[key] : []; }
 
     function buildHero(products){
@@ -657,6 +662,10 @@
     function buildMetrics(data){
       const products = getProducts(data);
       const graph = getGraphPreset(data, 'powerGainPercentVsStockMin');
+      if(!products.length){
+        document.getElementById('metricGrid').innerHTML = `<div class="metric-card"><strong>Bez dát</strong><span>V JSONe nie sú produkty.</span></div>`;
+        return;
+      }
       const maxUpgrade = Math.max(...products.map(p => p?.powerClaim?.upgradedPs || 0));
       const minStock = Math.min(...products.map(p => p?.powerClaim?.stockPsRange?.[0] || Infinity));
       const bestGain = Math.max(...graph.map(g => g.gainPercent || 0));
@@ -750,15 +759,24 @@
     }
 
     function renderChartsEmpty(){
-      document.getElementById('chartLead').textContent = 'Grafy sa zobrazia až po výbere konkrétneho kitu nižšie.';
-      document.getElementById('barsStage').innerHTML = `<div class="empty-card" style="width:100%;min-height:220px;display:grid;place-items:center;text-align:center"><div><strong>Vyber si kit</strong><span>Potom sa sem vykreslí stock minimum, stock maximum, upgrade a gain.</span></div></div>`;
-      document.getElementById('productFocusTitle').textContent = 'Žiadny kit nie je vybraný';
-      document.getElementById('productFocusLead').textContent = 'Klikni na produkt v zozname. Pravý panel sa potom odomkne.';
-      document.getElementById('productFocusKpis').innerHTML = '';
-      document.getElementById('productBarsStage').innerHTML = '';
-      document.getElementById('compareSummary').innerHTML = `<div class="summary-card"><strong>Vyber produkt</strong><span class="big">Grafy a údaje sa načítajú po kliknutí na kit.</span><span>Takto to je čistejšie a zákazník nie je zavalený dátami hneď po otvorení.</span></div>`;
-      document.getElementById('selectedEngineFamily').textContent = 'Vyber kit z ponuky';
-      document.getElementById('selectedTitle').textContent = '—';
+      const chartLead = document.getElementById('chartLead');
+      const barsStage = document.getElementById('barsStage');
+      const productFocusTitle = document.getElementById('productFocusTitle');
+      const productFocusLead = document.getElementById('productFocusLead');
+      const productFocusKpis = document.getElementById('productFocusKpis');
+      const productBarsStage = document.getElementById('productBarsStage');
+      const compareSummary = document.getElementById('compareSummary');
+      const selectedEngineFamily = document.getElementById('selectedEngineFamily');
+      const selectedTitle = document.getElementById('selectedTitle');
+      if(chartLead) chartLead.textContent = 'Grafy sa zobrazia až po výbere konkrétneho kitu nižšie.';
+      if(barsStage) barsStage.innerHTML = `<div class="empty-card" style="width:100%;min-height:220px;display:grid;place-items:center;text-align:center"><div><strong>Vyber si kit</strong><span>Potom sa sem vykreslí stock minimum, stock maximum, upgrade a gain.</span></div></div>`;
+      if(productFocusTitle) productFocusTitle.textContent = 'Žiadny kit nie je vybraný';
+      if(productFocusLead) productFocusLead.textContent = 'Klikni na produkt v zozname. Pravý panel sa potom odomkne.';
+      if(productFocusKpis) productFocusKpis.innerHTML = '';
+      if(productBarsStage) productBarsStage.innerHTML = '';
+      if(compareSummary) compareSummary.innerHTML = `<div class="summary-card"><strong>Vyber produkt</strong><span class="big">Grafy a údaje sa načítajú po kliknutí na kit.</span><span>Takto to je čistejšie a zákazník nie je zavalený dátami hneď po otvorení.</span></div>`;
+      if(selectedEngineFamily) selectedEngineFamily.textContent = 'Vyber kit z ponuky';
+      if(selectedTitle) selectedTitle.textContent = '—';
       setChartVisibility(false);
       document.querySelectorAll('.product-card').forEach(card => card.classList.remove('is-active'));
     }
@@ -1039,19 +1057,23 @@
         const data = await res.json();
         state.data = data;
         const products = getProducts(data);
-        if(!products.length) throw new Error('V kits.json nie je products[] alebo je prázdne.');
+        if(!products.length) throw new Error('V kits.json nie je products[], items[] ani pole produktov, alebo je feed prázdny.');
         buildHero(products);
-        buildMetrics(data);
+        buildMetrics({ ...data, products });
         renderEngineSwitch(products);
         updateCompareLayout();
         renderProducts(products);
         renderChartsEmpty();
       }catch(err){
-        console.error(err);
-        document.getElementById('heroMiniCards').innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
-        document.getElementById('metricGrid').innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
-        document.getElementById('productsGrid').innerHTML = `<div class="empty-card">Neviem načítať <strong>./kits.json</strong>. Skontroluj názov súboru, cestu a JSON syntax.</div>`;
-        document.getElementById('chartLead').textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
+        console.error('KITS LOAD ERROR:', err);
+        const heroMiniCards = document.getElementById('heroMiniCards');
+        const metricGrid = document.getElementById('metricGrid');
+        const productsGrid = document.getElementById('productsGrid');
+        const chartLead = document.getElementById('chartLead');
+        if(heroMiniCards) heroMiniCards.innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
+        if(metricGrid) metricGrid.innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
+        if(productsGrid) productsGrid.innerHTML = `<div class="empty-card">Neviem načítať <strong>./kits.json</strong>. Skontroluj názov súboru, cestu a JSON syntax.</div>`;
+        if(chartLead) chartLead.textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
       }
     }
     boot();
