@@ -342,7 +342,40 @@
     .buy-inline{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:center}
     .muted-note{color:var(--muted); font-size:.85rem; line-height:1.45}
     @media (max-width:980px){.modal-layout{grid-template-columns:1fr}.modal-wide-panel{grid-column:auto}.modal-grid-2,.modal-grid-3,.variant-meta,.buy-inline{grid-template-columns:1fr}.modal-thumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.hero-mega {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 70vh; /* zaberie väčšinu sekcie */
+  
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  line-height: 0.9;
+  
+  letter-spacing: 2px;
+}
 
+.hero-mega .line1 {
+  font-size: clamp(48px, 8vw, 140px);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.hero-mega .line2 {
+  font-size: clamp(56px, 9vw, 160px);
+  color: #B31F24;
+  font-weight: 800;
+  text-shadow: 0 0 30px rgba(179,31,36,0.6);
+}
+    .hero-mega {
+  transform: scale(1.05);
+}
+
+.hero-mega .line2 {
+  text-shadow:
+    0 0 20px rgba(179,31,36,0.8),
+    0 0 40px rgba(179,31,36,0.4);
+}
   </style>
 </head>
 <body>
@@ -369,7 +402,10 @@
         <article class="hero-main">
           <div>
             <div class="eyebrow">Turbo &amp; kompresor kity by REM Performance</div>
-            <h1 class="hero-title"><span class="row-lock">Malý výkon? Nafúkni ho.</span></h1>
+           <h1 class="hero-mega">
+  <span class="line1">MALÝ VÝKON?</span>
+  <span class="line2">NAFÚKNI HO.</span>
+</h1>
           </div>
           <div>
             <div class="hero-subheads">
