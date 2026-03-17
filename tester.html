@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REM Performance Kits</title>
-  <meta name="description" content="REM Performance Kits - turbo a kompresor kity" />
+  <title>REM Performance | Malo výkonu? Nafúkni ho.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,11 +21,11 @@
       --red2:#df333a;
       --silver:#c9ced8;
       --silver2:#8f98a6;
+      --green:#53d18f;
       --glow:0 0 25px rgba(179,31,36,.22);
       --radius:26px;
       --max:1360px;
     }
-
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -55,438 +54,160 @@
     .wrap{width:min(var(--max), calc(100% - 28px)); margin:0 auto}
 
     .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,6,.76);
-      border-bottom:1px solid rgba(255,255,255,.06);
+      position:sticky; top:0; z-index:50; backdrop-filter:blur(14px);
+      background:rgba(5,5,6,.76); border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .topbar-inner{
-      min-height:82px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-    }
+    .topbar-inner{min-height:82px; display:flex; align-items:center; justify-content:space-between; gap:18px}
+    .brand{display:flex; align-items:center; gap:14px; min-width:0}
     .logo{
-      width:54px;
-      height:54px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
+      width:54px; height:54px; border-radius:16px; display:grid; place-items:center;
       background:linear-gradient(135deg, rgba(179,31,36,.30), rgba(179,31,36,.08)), #12151a;
-      border:1px solid rgba(179,31,36,.34);
-      box-shadow:var(--glow), inset 0 0 0 1px rgba(255,255,255,.04);
-      font-family:Oxanium, sans-serif;
-      font-weight:800;
-      letter-spacing:.08em;
+      border:1px solid rgba(179,31,36,.34); box-shadow:var(--glow), inset 0 0 0 1px rgba(255,255,255,.04);
+      font-family:Oxanium, sans-serif; font-weight:800; letter-spacing:.08em;
     }
-    .brand-title{
-      font-family:Oxanium, sans-serif;
-      font-size:1.25rem;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      white-space:nowrap;
-    }
-    .nav{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .nav a{
-      padding:10px 16px;
-      border-radius:999px;
-      color:#e8edf6;
-      border:1px solid transparent;
-      transition:.18s ease;
-      font-weight:600;
-    }
-    .nav a:hover{
-      background:rgba(255,255,255,.04);
-      border-color:rgba(255,255,255,.08);
-    }
+    .brand-copy{display:flex; flex-direction:column; gap:2px}
+    .brand-title{font-family:Oxanium, sans-serif; font-size:1.25rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap}
+    .brand-sub{font-size:.82rem; color:var(--muted); white-space:nowrap}
+    .nav{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+    .nav a{padding:10px 16px; border-radius:999px; color:#e8edf6; border:1px solid transparent; transition:.18s ease; font-weight:600}
+    .nav a:hover{background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.08)}
+    .nav a.primary{background:linear-gradient(180deg,var(--red2),var(--red)); box-shadow:var(--glow)}
 
-    .hero{
-      padding:26px 0 20px;
+    .hero{padding:26px 0 18px}
+    .hero-grid{display:grid; grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr); gap:16px; align-items:stretch}
+    .hero-stack{display:grid; grid-template-rows:auto auto; gap:16px}
+    .hero-main,.hero-side,.live-card,.stats-strip,.products-wrap,.modal-card,.compare-strip{
+      border-radius:28px; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012)), #0d1015;
+      box-shadow:0 24px 70px rgba(0,0,0,.34); overflow:hidden; position:relative;
     }
-    .hero-grid{
-      display:grid;
-      grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);
-      gap:16px;
-      align-items:stretch;
+    .hero-main::before,.hero-side::before,.live-card::before,.products-wrap::before,.compare-strip::before{
+      content:""; position:absolute; inset:auto -120px -120px auto; width:300px; height:300px; border-radius:50%;
+      background:radial-gradient(circle, rgba(179,31,36,.18), transparent 68%); pointer-events:none;
     }
-    .hero-stack{
-      display:grid;
-      grid-template-rows:auto auto;
-      gap:16px;
+    .hero-main{padding:16px 18px 14px; min-height:240px; display:flex; flex-direction:column; justify-content:space-between}
+    .hero-side{padding:14px 16px; display:flex; flex-direction:column; justify-content:flex-start; min-height:130px}
+    .eyebrow{display:inline-flex; width:max-content; align-items:center; padding:7px 11px; border-radius:999px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); color:#eef2f8; text-transform:uppercase; letter-spacing:.11em; font-size:.66rem; font-weight:800}
+    .hero-title{margin:12px 0 10px; font-family:Oxanium, sans-serif; font-size:clamp(1.9rem, 3.7vw, 3.35rem); line-height:.92; text-transform:uppercase; letter-spacing:-.05em; max-width:760px}
+    .hero-title .row-lock{white-space:nowrap; display:inline-block}
+    .hero-text{margin:0; max-width:760px; color:#d2d8e2; font-size:.92rem; line-height:1.45}
+    .hero-subheads{margin-top:14px; display:flex; gap:10px; flex-wrap:nowrap}
+    .hero-subheads div{flex:1; padding:12px 14px; border-radius:16px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); font-family:Oxanium, sans-serif; font-weight:800; font-size:.9rem; text-transform:uppercase; letter-spacing:.08em; min-width:0; text-align:center}
+    .mini-cards,.feature-list,.hero-actions,.metric-grid,.product-grid,.info-grid{display:grid; gap:10px}
+    .mini-cards{margin-top:14px; grid-template-columns:repeat(3, minmax(0,1fr))}
+    .mini-card,.feature-item,.metric-card,.product-card,.empty-card,.summary-card{padding:13px; border-radius:16px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015)); min-height:72px}
+    .feature-list{margin-top:12px; gap:8px}
+    .feature-item strong,.mini-card strong,.metric-card strong,.summary-card strong{display:block; font-size:.87rem; margin-bottom:4px}
+    .feature-item span,.mini-card span,.metric-card span,.summary-card span{color:var(--muted); font-size:.8rem; line-height:1.35}
+    .hero-actions{grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:12px 16px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#fff; font-weight:800; text-transform:uppercase;
+      letter-spacing:.06em; transition:.2s ease; cursor:pointer;
     }
-    .hero-main,
-    .hero-side,
-    .live-card{
-      border-radius:28px;
-      border:1px solid rgba(255,255,255,.08);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012)),
-        #0d1015;
-      box-shadow:0 24px 70px rgba(0,0,0,.34);
-      overflow:hidden;
-      position:relative;
-    }
-    .hero-main{
-      padding:16px 18px 14px;
-      min-height:200px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-    .hero-main::before,
-    .hero-side::before,
-    .live-card::before{
-      content:"";
-      position:absolute;
-      inset:auto -120px -120px auto;
-      width:300px;
-      height:300px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(179,31,36,.18), transparent 68%);
-      pointer-events:none;
-    }
-    .eyebrow{
-      display:inline-flex;
-      width:max-content;
-      align-items:center;
-      padding:7px 11px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      color:#eef2f8;
-      text-transform:uppercase;
-      letter-spacing:.11em;
-      font-size:.66rem;
-      font-weight:800;
-    }
-    .hero-title{
-      margin:12px 0 10px;
-      font-family:Oxanium, sans-serif;
-      font-size:clamp(1.9rem, 3.7vw, 3.35rem);
-      line-height:.92;
-      text-transform:uppercase;
-      letter-spacing:-.05em;
-      max-width:760px;
-    }
-    .hero-title .row-lock{
-      white-space:nowrap;
-      display:inline-block;
-    }
-    .hero-text{
-      margin:0;
-      max-width:760px;
-      color:#d2d8e2;
-      font-size:.92rem;
-      line-height:1.45;
-    }
-    .hero-subheads{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:nowrap;
-    }
-    .hero-subheads div{
-      flex:1;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      font-family:Oxanium, sans-serif;
-      font-weight:800;
-      font-size:.9rem;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      min-width:0;
-      text-align:center;
-    }
-    .hero-side{
-      padding:14px 16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      min-height:130px;
-    }
-    .side-kicker{
-      font-family:Oxanium, sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.1em;
-      color:var(--silver);
-      font-size:.9rem;
-      font-weight:700;
-    }
-    .side-title{
-      margin:10px 0 8px;
-      font-family:Oxanium, sans-serif;
-      font-size:clamp(1.15rem, 2vw, 1.65rem);
-      line-height:1;
-      letter-spacing:-.04em;
-      text-transform:uppercase;
-    }
+    .btn:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.16)}
+    .btn.primary{background:linear-gradient(180deg,var(--red2),var(--red)); box-shadow:var(--glow); border-color:rgba(255,80,90,.35)}
+    .btn.secondary{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03))}
 
-    .hero-copy{
-      max-width:640px;
-    }
-    .feature-list{
-      margin-top:12px;
-      display:grid;
-      gap:8px;
-    }
-    .feature-item{
-      padding:11px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015));
-    }
-    .feature-item strong{
-      display:block;
-      font-size:.9rem;
-      margin-bottom:3px;
-    }
-    .feature-item span{
-      color:var(--muted);
-      font-size:.82rem;
-      line-height:1.35;
-    }
-    .mini-cards{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-    }
-    .mini-card{
-      padding:13px 13px 12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015));
-      min-height:72px;
-    }
-    .mini-card strong{
-      display:block;
-      font-size:.87rem;
-      margin-bottom:4px;
-    }
-    .mini-card span{
-      color:var(--muted);
-      font-size:.8rem;
-      line-height:1.3;
-    }
+    .section{padding:18px 0 54px}
+    .section-head{display:flex; justify-content:space-between; gap:16px; align-items:flex-end; margin-bottom:18px}
+    .section-head h2{margin:10px 0 0; font-family:Oxanium, sans-serif; font-size:clamp(1.5rem, 3vw, 2.6rem); line-height:.95; text-transform:uppercase; letter-spacing:-.04em}
+    .section-head p{margin:0; max-width:700px; color:var(--muted)}
 
-    .section{
-      padding:18px 0 54px;
-    }
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:flex-end;
-      margin-bottom:18px;
-    }
-    .section-head h2{
-      margin:10px 0 0;
-      font-family:Oxanium, sans-serif;
-      font-size:clamp(1.5rem, 3vw, 2.6rem);
-      line-height:.95;
-      text-transform:uppercase;
-      letter-spacing:-.04em;
-    }
-    .section-head p{
-      margin:0;
-      max-width:700px;
-      color:var(--muted);
-    }
+    .stats-strip,.compare-strip,.products-wrap{padding:18px}
+    .metric-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .metric-card .big{display:block; font-family:Oxanium,sans-serif; font-size:1.45rem; line-height:1; margin:4px 0 6px}
+    .metric-card .good{color:var(--green)}
+    .metric-card .red{color:#ff6b74}
 
-    .live-card{
-      padding:28px;
-    }
-    .charts-grid{
-      display:grid;
-      grid-template-columns:1.08fr .92fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    .panel{
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.08);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
-        #11151b;
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-      min-height:350px;
-    }
-    .panel h3{
-      margin:0 0 8px;
-      font-family:Oxanium, sans-serif;
-      font-size:1.15rem;
-      text-transform:uppercase;
-      letter-spacing:.07em;
-    }
-    .panel p{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:.95rem;
-    }
+    .live-card{padding:22px}
+    .charts-grid{display:grid; grid-template-columns:1.08fr .92fr; gap:18px; align-items:stretch}
+    .panel{border-radius:24px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)), #11151b; padding:20px; position:relative; overflow:hidden; min-height:350px}
+    .panel h3,.side-title,.power-title,.product-title{margin:0 0 8px; font-family:Oxanium, sans-serif; font-size:1.15rem; text-transform:uppercase; letter-spacing:.07em}
+    .panel p{margin:0 0 18px; color:var(--muted); font-size:.95rem}
+    .chart-panel-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:16px}
+    .chart-engine-switch{display:flex; flex-wrap:wrap; gap:8px}
+    .chart-switch-btn{border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#fff; border-radius:999px; padding:8px 12px; font-weight:700; cursor:pointer}
+    .chart-switch-btn.active{background:linear-gradient(180deg,var(--red2),var(--red)); border-color:rgba(255,80,90,.35)}
 
-    .line-chart-wrap{
-      position:relative;
-      height:260px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.06);
-      background:
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      background-size:100% 25%, 12.5% 100%, auto;
-      overflow:hidden;
-    }
-    .line-chart-wrap svg{
-      width:100%;
-      height:100%;
-      display:block;
-    }
-    .metric-legend{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:14px;
-      color:#e9edf5;
-      font-size:.9rem;
-      font-weight:600;
-    }
-    .metric-legend span{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .metric-legend i{
-      width:14px;
-      height:14px;
-      border-radius:999px;
-      display:inline-block;
-    }
+    .line-chart-wrap{position:relative; height:260px; border-radius:18px; border:1px solid rgba(255,255,255,.06); background:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); background-size:100% 25%, 12.5% 100%, auto; overflow:hidden}
+    .line-chart-wrap svg{width:100%; height:100%; display:block}
+    .metric-legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; color:#e9edf5; font-size:.9rem; font-weight:600}
+    .metric-legend span{display:inline-flex; align-items:center; gap:8px}
+    .metric-legend i{width:14px; height:14px; border-radius:999px; display:inline-block}
 
-    .bars-stage{
-      min-height:260px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      padding-top:20px;
-      opacity:0;
-      transform:translateY(14px);
-      transition:.45s ease;
-    }
-    .bars-stage.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-    .bar-col{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:12px;
-      justify-content:flex-end;
-      min-width:0;
-    }
-    .bar-stick-wrap{
-      width:100%;
-      max-width:64px;
-      height:210px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      border-radius:18px 18px 0 0;
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-      border:1px solid rgba(255,255,255,.05);
-      padding:8px;
-    }
-    .bar-stick{
-      width:100%;
-      height:0;
-      border-radius:14px 14px 4px 4px;
-      transition:height .9s cubic-bezier(.2,.7,.1,1);
-      box-shadow:0 10px 26px rgba(0,0,0,.25);
-    }
+    .bars-stage{min-height:260px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding-top:20px; opacity:1; transform:translateY(0)}
+    .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:12px; justify-content:flex-end; min-width:0}
+    .bar-stick-wrap{width:100%; max-width:64px; height:210px; display:flex; align-items:flex-end; justify-content:center; border-radius:18px 18px 0 0; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.05); padding:8px}
+    .bar-stick{width:100%; height:0; border-radius:14px 14px 4px 4px; transition:height .9s cubic-bezier(.2,.7,.1,1); box-shadow:0 10px 26px rgba(0,0,0,.25)}
     .bar-stick.red{background:linear-gradient(180deg, var(--red2), var(--red)); box-shadow:0 0 18px rgba(179,31,36,.25)}
     .bar-stick.silver{background:linear-gradient(180deg, #e7ebf2, #9aa4b2)}
-    .bar-label{
-      font-family:Oxanium, sans-serif;
-      font-size:.84rem;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      text-align:center;
-      color:#eff2f8;
-    }
-    .bar-value{
-      color:var(--muted);
-      font-size:.85rem;
-      font-weight:700;
-    }
+    .bar-label{font-family:Oxanium, sans-serif; font-size:.84rem; letter-spacing:.06em; text-transform:uppercase; text-align:center; color:#eff2f8}
+    .bar-value{color:var(--muted); font-size:.85rem; font-weight:700; text-align:center}
 
-    footer{
-      padding:12px 0 42px;
-      color:var(--muted);
-      font-size:.92rem;
-    }
-    .footline{
-      border-top:1px solid rgba(255,255,255,.08);
-      padding-top:18px;
-    }
+    .compare-strip{margin-top:16px}
+    .compare-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:16px}
+    .compare-left,.compare-right{padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(18,24,34,.82), rgba(12,16,24,.94))}
+    .power-map-header{display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:18px; flex-wrap:wrap}
+    .power-map-kicker{display:inline-flex; align-items:center; min-height:52px; padding:0 18px; border-radius:999px; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(18,24,34,.95), rgba(11,16,24,.92)); color:#fff; font-size:13px; font-weight:800; letter-spacing:.16em; text-transform:uppercase}
+    .power-map-switch{display:inline-flex; padding:8px; gap:10px; border-radius:20px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(20,24,32,.92), rgba(13,17,24,.92))}
+    .kit-switch-btn{min-width:170px; height:48px; border:0; border-radius:15px; background:transparent; color:#fff; font-size:14px; font-weight:800; cursor:pointer; transition:.25s ease}
+    .kit-switch-btn.active{background:linear-gradient(180deg, #ef3b44, #b91f25); box-shadow:0 0 26px rgba(227,45,52,.35), inset 0 1px 0 rgba(255,255,255,.18)}
+    .component-map{position:relative; width:100%; min-height:500px; border-radius:26px; border:1px solid rgba(255,255,255,.06); background:radial-gradient(circle at 18% 18%, rgba(179,31,36,.18), transparent 18%), radial-gradient(circle at 50% 52%, rgba(5,10,20,.6), transparent 35%), linear-gradient(180deg, rgba(9,14,22,.98), rgba(3,7,14,.98)); overflow:hidden}
+    .comp-node{position:absolute; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg, rgba(25,31,43,.88), rgba(14,18,28,.95)); color:#fff; border-radius:22px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; cursor:pointer; transition:.22s ease; box-shadow:inset 0 1px 0 rgba(255,255,255,.04); padding:0 12px; text-align:center}
+    .comp-node:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.16)}
+    .comp-node.active,.comp-node.node-main{background:linear-gradient(180deg, rgba(115,17,26,.95), rgba(57,7,12,.96)); border-color:rgba(255,68,78,.8); box-shadow:0 0 24px rgba(231,42,52,.35), inset 0 1px 0 rgba(255,255,255,.09)}
+    .map-line{position:absolute; border-top:2px dashed rgba(255,70,80,.72); opacity:.9}
+    .line-a{left:45%; top:22%; width:78px; transform:rotate(-72deg)} .line-b{left:44%; top:48%; width:108px; transform:rotate(31deg)} .line-c{left:22%; top:34%; width:124px; border-top-color:rgba(255,255,255,.18); transform:rotate(-8deg)} .line-d{left:23%; top:62%; width:88px; border-top-color:rgba(255,255,255,.16); transform:rotate(-8deg)}
+    .component-detail{margin-top:14px; padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(16,21,31,.86), rgba(10,14,21,.96))}
+    .detail-kicker{color:rgba(255,255,255,.65); font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:900; margin-bottom:8px}
+    .detail-title{color:#fff; font-size:26px; font-weight:900; margin-bottom:8px}
+    .detail-text{color:rgba(255,255,255,.76); line-height:1.55; font-size:15px}
+    .summary-list{display:grid; gap:10px; margin-top:14px}
+    .summary-card .big{display:block; font-family:Oxanium,sans-serif; font-size:1.35rem; margin-top:4px}
 
-    @media (max-width:980px){
-      .hero-grid,
-      .charts-grid{
-        grid-template-columns:1fr;
-      }
-    }
+    .products-wrap{position:relative}
+    .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .product-card{display:flex; flex-direction:column; gap:12px; min-height:280px}
+    .product-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
+    .product-tag{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em}
+    .product-price{font-family:Oxanium,sans-serif; font-size:1.25rem; white-space:nowrap}
+    .product-sub{color:var(--muted); font-size:.88rem; line-height:1.4}
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .chip{padding:7px 10px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:#e9edf5; font-size:.78rem; font-weight:700}
+    .product-specs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+    .product-spec{padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06)}
+    .product-spec b{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; color:#cbd3de; margin-bottom:4px}
+    .product-actions{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:auto}
+
+    .modal{position:fixed; inset:0; background:rgba(0,0,0,.65); backdrop-filter:blur(10px); display:none; align-items:center; justify-content:center; padding:18px; z-index:90}
+    .modal.open{display:flex}
+    .modal-card{width:min(980px,100%); padding:20px; max-height:92vh; overflow:auto}
+    .modal-head{display:flex; justify-content:space-between; gap:14px; align-items:flex-start; margin-bottom:18px}
+    .close-btn{width:46px; height:46px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#fff; font-size:1.3rem; cursor:pointer}
+    .info-grid{grid-template-columns:1.1fr .9fr}
+    .modal-section{padding:16px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015))}
+    .list{margin:0; padding-left:18px; color:#d7dde7; line-height:1.55}
+    .list li+li{margin-top:6px}
+    .kpi-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px}
+    .kpi{padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.03)}
+    .kpi b{display:block; font-size:.72rem; color:#cdd5df; text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px}
+    .kpi span{font-family:Oxanium,sans-serif; font-size:1.1rem}
+
+    .loading{padding:20px; text-align:center; color:var(--muted)}
+    footer{padding:12px 0 42px; color:var(--muted); font-size:.92rem}
+    .footline{border-top:1px solid rgba(255,255,255,.08); padding-top:18px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+    @media (max-width:1100px){.hero-grid,.charts-grid,.compare-grid,.info-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:760px){
-      .topbar-inner{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
-        flex-direction:column;
-      }
-      .nav{justify-content:flex-start}
-      .hero-main,
-      .hero-side,
-      .live-card{
-        padding:18px;
-      }
-      .hero-main{min-height:auto}
-      .mini-cards{grid-template-columns:1fr}
-      .hero-title .row-lock{white-space:normal}
-      .hero-subheads{
-        flex-direction:column;
-        flex-wrap:wrap;
-      }
-      .hero-subheads div{
-        min-width:0;
-        width:100%;
-      }
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .bar-label{font-size:.72rem}
-      .bars-stage{gap:8px}
+      .topbar-inner{min-height:auto; padding:14px 0; align-items:flex-start; flex-direction:column}
+      .nav{justify-content:flex-start}.hero-main,.hero-side,.live-card,.products-wrap,.stats-strip,.compare-strip{padding:18px}.hero-main{min-height:auto}
+      .mini-cards,.product-grid,.metric-grid,.product-specs,.product-actions,.kpi-grid,.hero-actions{grid-template-columns:1fr}
+      .hero-title .row-lock{white-space:normal}.hero-subheads{flex-direction:column; flex-wrap:wrap}.hero-subheads div{min-width:0; width:100%}
+      .section-head{flex-direction:column; align-items:flex-start}.bar-label{font-size:.72rem}.bars-stage{gap:8px}
+      .power-map-kicker{width:100%; justify-content:center}.power-map-switch{width:100%}.kit-switch-btn{min-width:0; flex:1}
+      .component-map{min-height:420px}
+      .brand-sub{white-space:normal}
     }
   </style>
 </head>
@@ -495,13 +216,16 @@
     <div class="wrap topbar-inner">
       <div class="brand">
         <div class="logo">RM</div>
-        <div class="brand-title">REM Performance Kits</div>
+        <div class="brand-copy">
+          <div class="brand-title">REM Performance</div>
+          <div class="brand-sub">Turbo kity · Kompresor kity · Custom buildy</div>
+        </div>
       </div>
-
       <nav class="nav">
+        <a href="#porovnanie">Porovnanie</a>
+        <a href="#grafy">Grafy</a>
         <a href="#ponuka">Ponuka</a>
-        <a href="#kontakt">Kontakt</a>
-        <a href="#domov">Domov</a>
+        <a href="#kontakt" class="primary">Kontakt</a>
       </nav>
     </div>
   </header>
@@ -511,67 +235,137 @@
       <div class="wrap hero-grid">
         <article class="hero-main">
           <div>
-            <div class="eyebrow">Turbo & Kompresor kity by REM Performance</div>
-            <h1 class="hero-title"><span class="row-lock">Maly vykon? Nafukni ho.</span></h1>
-            <p class="hero-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, massa nec pharetra luctus, turpis magna congue metus, vitae tristique sapien nisl nec justo.</p>
+            <div class="eyebrow">Turbo &amp; kompresor kity by REM Performance</div>
+            <h1 class="hero-title"><span class="row-lock">Malý výkon? Nafúkni ho.</span></h1>
+            <p class="hero-text">Tento blok je napojený na <strong>kits.json</strong> v main. Stránka z neho vytiahne produkty, stock vs upravený výkon, porovnanie motorov, gain percentá aj detaily vhodné na grafy a produktové karty.</p>
           </div>
-
           <div>
             <div class="hero-subheads">
-              <div>TURBO KITS</div>
-              <div>KOMPRESOR KITS</div>
+              <div>Turbo Kity</div>
+              <div>Kompresor Kity</div>
             </div>
-
-            <div class="mini-cards">
-              <div class="mini-card">
-                <strong>Lorem ipsum</strong>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-              </div>
-              <div class="mini-card">
-                <strong>Lorem ipsum</strong>
-                <span>Integer posuere erat a ante venenatis dapibus posuere velit.</span>
-              </div>
-              <div class="mini-card">
-                <strong>Lorem ipsum</strong>
-                <span>Donec ullamcorper nulla non metus auctor fringilla.</span>
-              </div>
+            <div class="mini-cards" id="heroMiniCards">
+              <div class="mini-card"><strong>Načítavam dáta</strong><span>Čakám na kits.json</span></div>
             </div>
           </div>
         </article>
 
         <div class="hero-stack">
           <aside class="hero-side">
-
             <div class="eyebrow">Pre tvoje auto</div>
-            <h2 class="side-title">Lorem ipsum dolor sit amet. Consectetur adipiscing elit.</h2>
-            <p class="hero-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, massa nec pharetra luctus, turpis magna congue metus, vitae tristique sapien nisl nec justo.</p>
-
+            <h2 class="side-title">Stock vs úprava bez omáčky</h2>
+            <p class="hero-text">Zákazník hneď vidí, čo má sériovo a kam ho vie konkrétny kit dostať. To je predajnejšie než len vypísať názov produktu a cenu.</p>
             <div class="feature-list">
-              <div class="feature-item">
-                <strong>Lorem ipsum</strong>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-              </div>
-              <div class="feature-item">
-                <strong>Lorem ipsum</strong>
-                <span>Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</span>
-              </div>
+              <div class="feature-item"><strong>Live údaje z JSON</strong><span>Výkon, stock baseline, gain %, varianty, engine family, supporting mods.</span></div>
+              <div class="feature-item"><strong>Bez ručného prepisovania</strong><span>Keď vymeníš obsah kits.json, prerenderujú sa karty aj grafy.</span></div>
             </div>
           </aside>
 
           <aside class="hero-side">
-            <div class="eyebrow">Lorem ipsum</div>
-            <h2 class="side-title">Lorem ipsum consectetur adipiscing.</h2>
+            <div class="eyebrow">Čo je napojené</div>
+            <h2 class="side-title">Grafy, produkty, detail, porovnanie</h2>
             <div class="feature-list">
-              <div class="feature-item">
-                <strong>Lorem ipsum</strong>
-                <span>Lorem ipsum dolor sit amet.</span>
-              </div>
-              <div class="feature-item">
-                <strong>Lorem ipsum</strong>
-                <span>Integer posuere erat a ante venenatis.</span>
-              </div>
+              <div class="feature-item"><strong>HP / stock / gain</strong><span>Hore live graf, dole porovnanie motorov a v detaile KPI boxy.</span></div>
+              <div class="feature-item"><strong>Interaktívna mapa</strong><span>Turbo a kompresor prepínač ostal, ale vpravo už ide reálne summary podľa vybraného motora z JSON.</span></div>
             </div>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="stats-strip">
+          <div class="metric-grid" id="metricGrid">
+            <div class="metric-card"><strong>Štatistiky</strong><span>Načítavam kits.json…</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="grafy">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Live dáta</div>
+            <h2>Grafy z kits.json</h2>
+          </div>
+          <p>Vľavo ide line chart podľa vybraného motora. Vpravo je rýchle porovnanie stock minima, stock maxima a claimovaného upgrade výkonu.</p>
+        </div>
+        <article class="live-card">
+          <div class="charts-grid">
+            <div class="panel">
+              <div class="chart-panel-head">
+                <div>
+                  <h3>HP / Stock / Upgrade</h3>
+                  <p id="chartLead">Načítavam produkty…</p>
+                </div>
+                <div class="chart-engine-switch" id="engineSwitch"></div>
+              </div>
+              <div class="line-chart-wrap">
+                <svg viewBox="0 0 700 260" preserveAspectRatio="none" aria-label="HP graf">
+                  <polyline id="stockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="upgradeGlow" fill="none" stroke="rgba(179,31,36,.22)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMinLine" fill="none" stroke="#d8dde6" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMaxLine" fill="none" stroke="#9aa4b2" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="upgradeLine" fill="none" stroke="#d83a40" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                </svg>
+              </div>
+              <div class="metric-legend">
+                <span><i style="background:#d8dde6"></i>Stock min</span>
+                <span><i style="background:#9aa4b2"></i>Stock max</span>
+                <span><i style="background:linear-gradient(180deg,#df333a,#b31f24)"></i>Upgrade</span>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Rýchly bar comparison</h3>
+              <p>Nie žiadny fake graf. Reálne čísla z `powerClaim` a `graphPresets`.</p>
+              <div class="bars-stage" id="barsStage"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="porovnanie">
+      <div class="wrap">
+        <div class="compare-strip">
+          <div class="power-map-header">
+            <div class="power-map-kicker">INTERAKTÍVNA MAPA KOMPONENTOV</div>
+            <div class="power-map-switch" role="tablist" aria-label="Prepínač kitu">
+              <button class="kit-switch-btn active" data-kit="turbo" type="button">Turbo kit</button>
+              <button class="kit-switch-btn" data-kit="supercharger" type="button">Kompresor kit</button>
+            </div>
+          </div>
+
+          <div class="compare-grid">
+            <div class="compare-left">
+              <div class="component-map" id="componentMap">
+                <button class="comp-node node-intake active" style="left:20%; top:10%; width:128px; height:56px" type="button" data-component="intake"><span>Sanie</span></button>
+                <button class="comp-node node-downpipe" style="right:11%; top:10%; width:128px; height:56px" type="button" data-component="aux"><span>Downpipe</span></button>
+                <button class="comp-node node-engine" style="left:14%; top:28%; width:168px; height:100px; font-size:18px" type="button" data-component="engine"><span>Motor</span></button>
+                <button class="comp-node node-main" style="left:54%; top:34%; width:126px; height:110px; font-size:18px" type="button" data-component="main"><span>Turbo</span></button>
+                <button class="comp-node node-wastegate" style="left:11%; bottom:18%; width:122px; height:56px" type="button" data-component="control"><span>Wastegate</span></button>
+                <button class="comp-node node-intercooler" style="left:38%; bottom:21%; width:132px; height:56px" type="button" data-component="cooling"><span>Intercooler</span></button>
+                <span class="map-line line-a"></span><span class="map-line line-b"></span><span class="map-line line-c"></span><span class="map-line line-d"></span>
+              </div>
+            </div>
+            <div class="compare-right">
+              <div class="summary-card">
+                <strong>Vybraný motor</strong>
+                <span id="selectedEngineFamily">Načítavam…</span>
+                <span class="big" id="selectedTitle">—</span>
+              </div>
+              <div class="summary-list" id="compareSummary"></div>
+              <div class="component-detail">
+                <div class="detail-kicker">Vybraný komponent</div>
+                <div class="detail-title" id="detailTitle">Sanie</div>
+                <div class="detail-text" id="detailText">Základ pre stabilný prietok vzduchu do systému.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -580,175 +374,389 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <div class="eyebrow">Interaktívne</div>
-            <h2>Lorem ipsum dolor sit amet</h2>
+            <div class="eyebrow">Produktový feed</div>
+            <h2>Kity z main / kits.json</h2>
           </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, massa nec pharetra luctus, turpis magna congue metus, vitae tristique sapien nisl nec justo.</p>
+          <p>Každá karta ťahá názov, cenu, stock PS, upgrade PS, gain percent, engine family, typ produktu a ďalšie údaje priamo z JSONu.</p>
         </div>
+        <div class="products-wrap">
+          <div id="productsGrid" class="product-grid">
+            <div class="empty-card">Načítavam produkty…</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <article class="live-card">
-          <div class="charts-grid">
-            <div class="panel">
-              <h3>HP / NM Live Graph</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-              <div class="line-chart-wrap">
-                <svg viewBox="0 0 700 260" preserveAspectRatio="none" aria-label="HP a NM graf">
-                  <polyline id="hpLineGlow" fill="none" stroke="rgba(179,31,36,.20)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"
-                    points="0,215 55,210 110,202 165,190 220,172 275,150 330,126 385,103 440,84 495,72 550,63 605,58 660,56" />
-                  <polyline id="nmLineGlow" fill="none" stroke="rgba(233,238,246,.14)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"
-                    points="0,220 55,206 110,186 165,158 220,132 275,108 330,92 385,80 440,76 495,79 550,88 605,102 660,120" />
-
-                  <polyline id="hpLine" fill="none" stroke="#d83a40" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"
-                    points="0,215 55,210 110,202 165,190 220,172 275,150 330,126 385,103 440,84 495,72 550,63 605,58 660,56" />
-                  <polyline id="nmLine" fill="none" stroke="#d8dde6" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"
-                    points="0,220 55,206 110,186 165,158 220,132 275,108 330,92 385,80 440,76 495,79 550,88 605,102 660,120" />
-                </svg>
-              </div>
-
-              <div class="metric-legend">
-                <span><i style="background:linear-gradient(180deg,#df333a,#b31f24)"></i> HP</span>
-                <span><i style="background:linear-gradient(180deg,#eef2f8,#9aa4b2)"></i> NM</span>
-              </div>
+    <section class="section" id="kontakt">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Kontakt</div>
+            <h2>Custom build by REM Performance</h2>
+          </div>
+          <p>Keď hotový kit nestačí, pošli motor, cieľ výkonu, využitie auta a rozpočet. Riešiť setup bez týchto 4 vecí je len tipovanie.</p>
+        </div>
+        <div class="products-wrap">
+          <div class="info-grid">
+            <div class="modal-section">
+              <h3 class="power-title">Čo poslať do dopytu</h3>
+              <ul class="list">
+                <li>Značka, model a presný motor</li>
+                <li>Aktuálny stav auta a existujúce úpravy</li>
+                <li>Cieľový výkon a použitie auta</li>
+                <li>Reálny budget</li>
+              </ul>
             </div>
-
-            <div class="panel">
-              <h3>Gear Ratio Bars</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-              <div class="bars-stage" id="barsStage">
-                <div class="bar-col">
-                  <div class="bar-stick-wrap"><div class="bar-stick silver" data-height="88%"></div></div>
-                  <div class="bar-label">1st</div>
-                  <div class="bar-value">3.82</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-stick-wrap"><div class="bar-stick red" data-height="70%"></div></div>
-                  <div class="bar-label">2nd</div>
-                  <div class="bar-value">2.20</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-stick-wrap"><div class="bar-stick silver" data-height="55%"></div></div>
-                  <div class="bar-label">3rd</div>
-                  <div class="bar-value">1.52</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-stick-wrap"><div class="bar-stick red" data-height="43%"></div></div>
-                  <div class="bar-label">4th</div>
-                  <div class="bar-value">1.22</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar-stick-wrap"><div class="bar-stick silver" data-height="31%"></div></div>
-                  <div class="bar-label">5th</div>
-                  <div class="bar-value">1.00</div>
-                </div>
+            <div class="modal-section">
+              <h3 class="power-title">Kontakt</h3>
+              <div class="kpi-grid">
+                <div class="kpi"><b>Email</b><span>info@remperformance.sk</span></div>
+                <div class="kpi"><b>Typ</b><span>Turbo / Kompresor</span></div>
+                <div class="kpi"><b>Build</b><span>Na mieru</span></div>
+              </div>
+              <div class="hero-actions" style="margin-top:16px">
+                <a class="btn primary" href="mailto:info@remperformance.sk">Napísať email</a>
+                <a class="btn secondary" href="#ponuka">Pozrieť kity</a>
               </div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer id="kontakt">
-    <div class="wrap footline">REM Performance Kits — lorem ipsum footer text</div>
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" id="modalType">Produkt</div>
+          <h3 class="product-title" id="modalTitle">Detail</h3>
+          <p class="hero-text" id="modalSubtitle">—</p>
+        </div>
+        <button class="close-btn" id="closeModal" type="button">×</button>
+      </div>
+      <div class="info-grid">
+        <div class="modal-section">
+          <h3 class="power-title">Výkonové porovnanie</h3>
+          <div class="kpi-grid" id="modalKpis"></div>
+          <div class="component-detail" style="margin-top:14px">
+            <div class="detail-kicker">Claim</div>
+            <div class="detail-title" id="modalClaim">—</div>
+            <div class="detail-text" id="modalClaimText">—</div>
+          </div>
+        </div>
+        <div class="modal-section">
+          <h3 class="power-title">Detaily</h3>
+          <ul class="list" id="modalList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap footline">
+      <div>© REM Performance / RACEM</div>
+      <div>Napojené na kits.json v root/main</div>
+    </div>
   </footer>
 
   <script>
-    const hpLine = document.getElementById('hpLine');
-    const nmLine = document.getElementById('nmLine');
-    const hpLineGlow = document.getElementById('hpLineGlow');
-    const nmLineGlow = document.getElementById('nmLineGlow');
-    const barsStage = document.getElementById('barsStage');
-    const bars = document.querySelectorAll('.bar-stick');
+    const state = {
+      data: null,
+      currentIndex: 0,
+      compareMode: 'turbo'
+    };
 
-    function animateStroke(el, duration){
-      const length = el.getTotalLength();
-      el.style.strokeDasharray = length;
-      el.style.strokeDashoffset = length;
-      el.getBoundingClientRect();
-      el.style.transition = `stroke-dashoffset ${duration}ms cubic-bezier(.22,.65,.18,1)`;
-      el.style.strokeDashoffset = '0';
+    const compareCopy = {
+      turbo: {
+        intake: { title: 'Sanie', text: 'Pri turbe rieši stabilný prietok vzduchu, menší odpor a lepšiu reakciu pred samotným nástupom boostu.' },
+        aux: { title: 'Downpipe', text: 'Znižuje protitlak za turbom a pomáha rýchlejšiemu roztočeniu. Keď je zle riešený, brzdí celý setup.' },
+        engine: { title: 'Motor', text: 'Tu sa láme chleba. Zdravý základ rozhoduje, či vyšší tlak bude fungovať alebo len odloží problém.' },
+        main: { title: 'Turbo', text: 'Hlavný zdroj výkonového stropu. Určuje charakter nástupu, vrch aj potenciál ďalšieho rastu.' },
+        control: { title: 'Wastegate', text: 'Riadi boost a drží konzistentný tlak. Bez nej je výkon nepresný a rizikový.' },
+        cooling: { title: 'Intercooler', text: 'Chladí stlačený vzduch. Bez neho teploty rastú a výkon sa rýchlo rozpadá.' }
+      },
+      supercharger: {
+        intake: { title: 'Sanie', text: 'Pri kompresore pomáha okamžitej odozve a lineárnemu plneniu v celom rozsahu.' },
+        aux: { title: 'Chladenie', text: 'Kompresor tlačí priebežne, preto manažment tepla rozhoduje o stabilite výkonu.' },
+        engine: { title: 'Motor', text: 'Aj lineárny setup potrebuje zdravý motor. Kompresor zaťažuje základ priebežne, nie len hore.' },
+        main: { title: 'Kompresor', text: 'Dáva okamžitý nástup a čitateľný street feeling. Menej drámy, viac odozvy.' },
+        control: { title: 'Remeň', text: 'Prenos výkonu na kompresor musí byť stabilný. Preklz remeňa vie zabiť celý výsledok.' },
+        cooling: { title: 'Charge / cooling okruh', text: 'Spája systém a drží airflow aj teplotu v rozumných číslach.' }
+      }
+    };
+
+    function euro(v){
+      if(v === null || v === undefined) return '—';
+      return new Intl.NumberFormat('sk-SK', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(v);
+    }
+    function fmt(v, suffix=''){
+      if(v === null || v === undefined || Number.isNaN(v)) return '—';
+      return `${v}${suffix}`;
+    }
+    function pickPrice(product){
+      if(product?.price?.amount) return product.price.amount;
+      if(product?.price?.amountMin && product?.price?.amountMax) return `${euro(product.price.amountMin)} – ${euro(product.price.amountMax)}`;
+      if(product?.variants?.length){
+        const nums = product.variants.map(v => v.price).filter(v => typeof v === 'number');
+        if(nums.length){
+          const min = Math.min(...nums), max = Math.max(...nums);
+          return min === max ? euro(min) : `${euro(min)} – ${euro(max)}`;
+        }
+      }
+      return 'Na dopyt';
+    }
+    function getProducts(data){ return Array.isArray(data?.products) ? data.products : []; }
+    function getGraphPreset(data, key){ return Array.isArray(data?.graphPresets?.[key]) ? data.graphPresets[key] : []; }
+
+    function buildHero(products){
+      const cards = document.getElementById('heroMiniCards');
+      const maxUpgrade = Math.max(...products.map(p => p?.powerClaim?.upgradedPs || 0));
+      const maxGain = Math.max(...products.map(p => p?.powerClaim?.deltaPercentVsStockMin || 0));
+      const strongest = products.find(p => (p?.powerClaim?.upgradedPs || 0) === maxUpgrade);
+      cards.innerHTML = `
+        <div class="mini-card"><strong>${products.length} produkt${products.length === 1 ? '' : 'y'}</strong><span>Napojené na jeden JSON feed.</span></div>
+        <div class="mini-card"><strong>${fmt(maxUpgrade,' PS')}</strong><span>Najvyšší claimovaný výkon${strongest ? ` · ${strongest.title}` : ''}</span></div>
+        <div class="mini-card"><strong>${fmt(maxGain.toFixed(2),' %')}</strong><span>Najväčší percentuálny gain vs stock minimum.</span></div>
+      `;
     }
 
-    function startBars(){
-      barsStage.classList.add('show');
-      bars.forEach((bar, i) => {
-        setTimeout(() => {
-          bar.style.height = bar.dataset.height;
-        }, i * 180);
+    function buildMetrics(data){
+      const products = getProducts(data);
+      const graph = getGraphPreset(data, 'powerGainPercentVsStockMin');
+      const maxUpgrade = Math.max(...products.map(p => p?.powerClaim?.upgradedPs || 0));
+      const minStock = Math.min(...products.map(p => p?.powerClaim?.stockPsRange?.[0] || Infinity));
+      const bestGain = Math.max(...graph.map(g => g.gainPercent || 0));
+      const highestPrice = Math.max(...products.map(p => p?.price?.amount || p?.price?.amountMax || 0));
+      document.getElementById('metricGrid').innerHTML = `
+        <div class="metric-card"><strong>Najnižší stock baseline</strong><span class="big">${fmt(minStock,' PS')}</span><span>Najslabší sériový základ v tomto feede.</span></div>
+        <div class="metric-card"><strong>Najvyšší cieľ výkonu</strong><span class="big red">${fmt(maxUpgrade,' PS')}</span><span>Najvyšší claimovaný výkon po úprave.</span></div>
+        <div class="metric-card"><strong>Najväčší gain</strong><span class="big good">${fmt(bestGain.toFixed(2),' %')}</span><span>Nárast oproti stock minimu.</span></div>
+        <div class="metric-card"><strong>Najdrahší kit</strong><span class="big">${euro(highestPrice)}</span><span>Najvyššia cena v aktuálnom JSONe.</span></div>
+      `;
+    }
+
+    function makePolyline(values, maxY){
+      const width = 660, height = 220, left = 20, top = 20;
+      const step = values.length > 1 ? width / (values.length - 1) : width;
+      return values.map((v,i) => {
+        const x = left + i*step;
+        const y = top + (1 - (v/maxY)) * height;
+        return `${x},${y}`;
+      }).join(' ');
+    }
+
+    function renderEngineSwitch(products){
+      const el = document.getElementById('engineSwitch');
+      el.innerHTML = products.map((p,i)=>`<button type="button" class="chart-switch-btn ${i===state.currentIndex?'active':''}" data-index="${i}">${p.engineFamily || p.title}</button>`).join('');
+      el.querySelectorAll('.chart-switch-btn').forEach(btn => btn.addEventListener('click', ()=>{
+        state.currentIndex = Number(btn.dataset.index);
+        renderCharts();
+        renderCompareSummary();
+        renderCompareComponentText();
+        renderSwitchActive();
+      }));
+    }
+
+    function renderSwitchActive(){
+      document.querySelectorAll('.chart-switch-btn').forEach((btn, idx)=>btn.classList.toggle('active', idx===state.currentIndex));
+    }
+
+    function renderCharts(){
+      const products = getProducts(state.data);
+      const product = products[state.currentIndex];
+      if(!product) return;
+      const stockMin = product?.powerClaim?.stockPsRange?.[0] || 0;
+      const stockMax = product?.powerClaim?.stockPsRange?.[1] || stockMin;
+      const upgrade = product?.powerClaim?.upgradedPs || stockMax;
+      const lead = `${product.title} · stock ${stockMin}-${stockMax} PS · upgrade ${upgrade} PS`;
+      document.getElementById('chartLead').textContent = lead;
+
+      const maxY = Math.max(upgrade, stockMax, stockMin, 100);
+      const stockMinVals = [stockMin*0.38, stockMin*0.55, stockMin*0.72, stockMin*0.86, stockMin];
+      const stockMaxVals = [stockMax*0.40, stockMax*0.60, stockMax*0.78, stockMax*0.91, stockMax];
+      const upgradeVals = [upgrade*0.25, upgrade*0.45, upgrade*0.68, upgrade*0.86, upgrade];
+      const ids = {
+        stockMinGlow:'stockMinGlow', stockMaxGlow:'stockMaxGlow', upgradeGlow:'upgradeGlow',
+        stockMinLine:'stockMinLine', stockMaxLine:'stockMaxLine', upgradeLine:'upgradeLine'
+      };
+      document.getElementById(ids.stockMinGlow).setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById(ids.stockMaxGlow).setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById(ids.upgradeGlow).setAttribute('points', makePolyline(upgradeVals, maxY));
+      document.getElementById(ids.stockMinLine).setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById(ids.stockMaxLine).setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById(ids.upgradeLine).setAttribute('points', makePolyline(upgradeVals, maxY));
+
+      const bars = [
+        { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/maxY)*100)}%`, cls:'silver' },
+        { label:'Stock max', value:`${stockMax} PS`, height: `${Math.max(12,(stockMax/maxY)*100)}%`, cls:'silver' },
+        { label:'Upgrade', value:`${upgrade} PS`, height: `${Math.max(12,(upgrade/maxY)*100)}%`, cls:'red' },
+        { label:'Gain %', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, height: `${Math.max(12, Math.min(100, product?.powerClaim?.deltaPercentVsStockMin || 0))}%`, cls:'red' }
+      ];
+      const barsStage = document.getElementById('barsStage');
+      barsStage.innerHTML = bars.map(b => `
+        <div class="bar-col">
+          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}"></div></div>
+          <div class="bar-label">${b.label}</div>
+          <div class="bar-value">${b.value}</div>
+        </div>`).join('');
+      requestAnimationFrame(()=>{
+        barsStage.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 120*i));
       });
     }
 
-    function bootCharts(){
-      animateStroke(hpLineGlow, 2200);
-      animateStroke(nmLineGlow, 2200);
-      setTimeout(() => animateStroke(hpLine, 1800), 120);
-      setTimeout(() => animateStroke(nmLine, 1800), 220);
-      setTimeout(startBars, 2550);
+    function renderCompareSummary(){
+      const product = getProducts(state.data)[state.currentIndex];
+      if(!product) return;
+      document.getElementById('selectedEngineFamily').textContent = product.engineFamily || '—';
+      document.getElementById('selectedTitle').textContent = product.title || '—';
+      const summary = [
+        {label:'Stock výkon', value:`${fmt(product?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(product?.powerClaim?.stockPsRange?.[1],'')} PS`, sub:'Sériový baseline z JSONu'},
+        {label:'Po úprave', value:`${fmt(product?.powerClaim?.upgradedPs,' PS')}`, sub:'Claimovaný výkon'},
+        {label:'Gain vs min', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, sub:'Percentuálny nárast'},
+        {label:'Cena', value:`${pickPrice(product)}`, sub:'Výsledná cena / rozsah'},
+      ];
+      document.getElementById('compareSummary').innerHTML = summary.map(item => `
+        <div class="summary-card">
+          <strong>${item.label}</strong>
+          <span class="big">${item.value}</span>
+          <span>${item.sub}</span>
+        </div>`).join('');
     }
 
-    window.addEventListener('load', bootCharts);
+    function updateCompareLayout(){
+      const isTurbo = state.compareMode === 'turbo';
+      document.querySelectorAll('.kit-switch-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.kit === state.compareMode));
+      const map = document.getElementById('componentMap');
+      map.querySelector('.node-downpipe span').textContent = isTurbo ? 'Downpipe' : 'Chladenie';
+      map.querySelector('.node-main span').textContent = isTurbo ? 'Turbo' : 'Kompresor';
+      map.querySelector('.node-wastegate span').textContent = isTurbo ? 'Wastegate' : 'Remeň';
+      map.querySelector('.node-intercooler span').textContent = isTurbo ? 'Intercooler' : 'Charge pipe';
+      renderCompareComponentText();
+    }
+
+    function renderCompareComponentText(component = null){
+      const activeNode = component || document.querySelector('.comp-node.active')?.dataset.component || 'intake';
+      const entry = compareCopy[state.compareMode][activeNode];
+      if(!entry) return;
+      document.getElementById('detailTitle').textContent = entry.title;
+      document.getElementById('detailText').textContent = entry.text;
+    }
+
+    function renderProducts(products){
+      const grid = document.getElementById('productsGrid');
+      if(!products.length){ grid.innerHTML = '<div class="empty-card">V kits.json nie sú žiadne produkty.</div>'; return; }
+      grid.innerHTML = products.map((p,i) => {
+        const price = pickPrice(p);
+        const gain = p?.powerClaim?.deltaPercentVsStockMin;
+        const chips = [p.engineFamily, p.productType, p?.turbo?.model, p?.productClaims?.claimedPowerText].filter(Boolean).slice(0,4);
+        return `
+          <article class="product-card">
+            <div class="product-top">
+              <div>
+                <div class="product-tag">${p.productType || 'produkt'}</div>
+                <h3 class="product-title" style="margin-top:10px">${p.title || 'Bez názvu'}</h3>
+              </div>
+              <div class="product-price">${price}</div>
+            </div>
+            <div class="product-sub">${p.engineFamily || '—'}${p.engineCodesFromProduct?.length ? ` · ${p.engineCodesFromProduct.join(', ')}` : ''}</div>
+            <div class="chips">${chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+            <div class="product-specs">
+              <div class="product-spec"><b>Stock PS</b><span>${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS</span></div>
+              <div class="product-spec"><b>Upgrade PS</b><span>${fmt(p?.powerClaim?.upgradedPs,' PS')}</span></div>
+              <div class="product-spec"><b>Gain</b><span>${gain !== undefined ? `${gain.toFixed(2)} %` : '—'}</span></div>
+              <div class="product-spec"><b>Torque</b><span>${p?.powerClaim?.upgradedNm ? `${p.powerClaim.upgradedNm} Nm` : 'údaj chýba'}</span></div>
+            </div>
+            <div class="product-actions">
+              <button class="btn primary" type="button" data-detail="${i}">Detail</button>
+              <button class="btn secondary" type="button" data-focus="${i}">Zobraziť v grafe</button>
+            </div>
+          </article>`;
+      }).join('');
+      grid.querySelectorAll('[data-detail]').forEach(btn => btn.addEventListener('click', ()=>openModal(Number(btn.dataset.detail))));
+      grid.querySelectorAll('[data-focus]').forEach(btn => btn.addEventListener('click', ()=>{
+        state.currentIndex = Number(btn.dataset.focus);
+        renderCharts();
+        renderCompareSummary();
+        renderCompareComponentText();
+        renderSwitchActive();
+        window.location.hash = 'grafy';
+      }));
+    }
+
+    function openModal(index){
+      const p = getProducts(state.data)[index];
+      if(!p) return;
+      document.getElementById('modalType').textContent = p.productType || 'Produkt';
+      document.getElementById('modalTitle').textContent = p.title || 'Detail';
+      document.getElementById('modalSubtitle').textContent = `${p.engineFamily || '—'} · ${pickPrice(p)}`;
+      document.getElementById('modalClaim').textContent = p?.productClaims?.claimedPowerText || `${fmt(p?.powerClaim?.upgradedPs,' PS')}`;
+      document.getElementById('modalClaimText').textContent = p?.productClaims?.fitmentText || p?.productClaims?.positioning || 'Detaily sú načítané priamo z JSONu.';
+      const kpis = [
+        {k:'Stock',v:`${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS`},
+        {k:'Upgrade',v:fmt(p?.powerClaim?.upgradedPs,' PS')},
+        {k:'Gain',v:fmt((p?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')},
+        {k:'Nm stock',v:`${fmt(p?.powerClaim?.stockNmRange?.[0],'')} – ${fmt(p?.powerClaim?.stockNmRange?.[1],'')} Nm`},
+        {k:'Turbo',v:p?.turbo?.model || p?.turbo?.construction?.[0] || '—'},
+        {k:'SKU',v:p?.price?.sku || p?.variants?.[0]?.sku || '—'}
+      ];
+      document.getElementById('modalKpis').innerHTML = kpis.map(item=>`<div class="kpi"><b>${item.k}</b><span>${item.v}</span></div>`).join('');
+      const details = [];
+      if(p.engineCodesFromProduct?.length) details.push(`Engine codes: ${p.engineCodesFromProduct.join(', ')}`);
+      if(p.kitIncludes?.length) details.push(...p.kitIncludes.map(x=>`Kit obsahuje: ${x}`));
+      if(p.productClaims?.requiredSupportingMods?.length) details.push(`Supporting mods: ${p.productClaims.requiredSupportingMods.join(', ')}`);
+      if(p.productClaims?.recommendedEngineSafetyMods?.length) details.push(`Safety mods: ${p.productClaims.recommendedEngineSafetyMods.join(', ')}`);
+      if(p.variants?.length) details.push(`Varianty: ${p.variants.map(v=>`${v.name} (${euro(v.price)})`).join(', ')}`);
+      if(!details.length) details.push('Pre tento produkt nie sú v JSONe ďalšie detailné položky.');
+      document.getElementById('modalList').innerHTML = details.map(x=>`<li>${x}</li>`).join('');
+      document.getElementById('productModal').classList.add('open');
+      document.getElementById('productModal').setAttribute('aria-hidden','false');
+    }
+
+    function bindCompare(){
+      document.querySelectorAll('.kit-switch-btn').forEach(btn => btn.addEventListener('click', ()=>{
+        state.compareMode = btn.dataset.kit;
+        updateCompareLayout();
+      }));
+      document.querySelectorAll('.comp-node').forEach(btn => btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.comp-node').forEach(n=>n.classList.remove('active'));
+        btn.classList.add('active');
+        renderCompareComponentText(btn.dataset.component);
+      }));
+      document.getElementById('closeModal').addEventListener('click', ()=>{
+        document.getElementById('productModal').classList.remove('open');
+        document.getElementById('productModal').setAttribute('aria-hidden','true');
+      });
+      document.getElementById('productModal').addEventListener('click', (e)=>{
+        if(e.target.id === 'productModal') document.getElementById('closeModal').click();
+      });
+    }
+
+    async function boot(){
+      bindCompare();
+      try{
+        const res = await fetch('./kits.json', {cache:'no-store'});
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        state.data = data;
+        const products = getProducts(data);
+        if(!products.length) throw new Error('V kits.json nie je products[] alebo je prázdne.');
+        buildHero(products);
+        buildMetrics(data);
+        renderEngineSwitch(products);
+        renderCharts();
+        renderCompareSummary();
+        updateCompareLayout();
+        renderProducts(products);
+      }catch(err){
+        console.error(err);
+        document.getElementById('heroMiniCards').innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
+        document.getElementById('metricGrid').innerHTML = `<div class="metric-card"><strong>kits.json sa nenačítal</strong><span>${err.message}</span></div>`;
+        document.getElementById('productsGrid').innerHTML = `<div class="empty-card">Neviem načítať <strong>./kits.json</strong>. Skontroluj názov súboru, cestu a JSON syntax.</div>`;
+        document.getElementById('chartLead').textContent = 'Grafy sa nedajú vyrenderovať bez validného kits.json.';
+      }
+    }
+    boot();
   </script>
-
-<section style="margin-top:40px;padding:20px;background:#0b0b0b;border-radius:20px;">
-  <h2 style="color:white;margin-bottom:20px;">INTERAKTÍVNA MAPA KOMPONENTOV</h2>
-
-  <div style="display:flex;gap:20px;flex-wrap:wrap;">
-
-    <!-- LEFT MAP -->
-    <div style="flex:1;min-width:300px;background:#111;border-radius:15px;padding:20px;color:white;">
-      <h3>TURBO MAPA</h3>
-      <button>Turbo</button>
-      <button>Sanie</button>
-      <button>Intercooler</button>
-      <button>Wastegate</button>
-      <button>Downpipe</button>
-    </div>
-
-    <!-- RIGHT GRAPHS -->
-    <div style="flex:1;min-width:300px;background:#111;border-radius:15px;padding:20px;color:white;">
-
-      <h3>RACEM MINI GRAF</h3>
-
-      <div>Nástup
-        <div style="background:#333;height:8px;border-radius:5px;">
-          <div style="width:58%;background:red;height:8px;border-radius:5px;"></div>
-        </div>
-      </div>
-
-      <div>Peak výkon
-        <div style="background:#333;height:8px;border-radius:5px;">
-          <div style="width:92%;background:red;height:8px;border-radius:5px;"></div>
-        </div>
-      </div>
-
-      <div>Street feel
-        <div style="background:#333;height:8px;border-radius:5px;">
-          <div style="width:62%;background:red;height:8px;border-radius:5px;"></div>
-        </div>
-      </div>
-
-      <div>Upgrade
-        <div style="background:#333;height:8px;border-radius:5px;">
-          <div style="width:95%;background:red;height:8px;border-radius:5px;"></div>
-        </div>
-      </div>
-
-      <hr style="margin:20px 0;">
-
-      <h3>POROVNANIE</h3>
-
-      <div>Turbo vs Kompresor
-        <div style="background:#333;height:8px;border-radius:5px;">
-          <div style="width:70%;background:red;height:8px;border-radius:5px;"></div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
 </body>
 </html>
