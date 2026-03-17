@@ -133,19 +133,52 @@
     .line-chart-wrap{
       position:relative; height:290px; border-radius:22px; border:1px solid rgba(255,255,255,.07);
       background:
-        radial-gradient(circle at 70% 12%, rgba(179,31,36,.08), transparent 24%),
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.01));
-      background-size:auto, 100% 20%, 12.5% 100%, auto;
+        radial-gradient(circle at 16% 16%, rgba(179,31,36,.16), transparent 18%),
+        radial-gradient(circle at 86% 10%, rgba(255,255,255,.055), transparent 14%),
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(10,14,21,.98), rgba(6,9,14,.98));
+      background-size:auto, auto, 100% 20%, 12.5% 100%, auto;
       overflow:hidden;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.03), inset 0 -40px 80px rgba(0,0,0,.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03), inset 0 -60px 120px rgba(0,0,0,.24), 0 20px 40px rgba(0,0,0,.22);
+      isolation:isolate;
     }
+    .line-chart-wrap::before{
+      content:"REM Performance";
+      position:absolute;
+      inset:50% auto auto 50%;
+      transform:translate(-50%,-46%);
+      font-family:Oxanium,sans-serif;
+      font-size:clamp(1.8rem, 5vw, 4rem);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.26em;
+      color:rgba(255,255,255,.035);
+      white-space:nowrap;
+      pointer-events:none;
+      z-index:0;
+    }
+    .line-chart-wrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 28%, transparent 72%, rgba(0,0,0,.18));
+      pointer-events:none;
+      z-index:0;
+    }
+    .line-chart-wrap svg,.line-chart-empty{position:relative; z-index:1}
     .line-chart-wrap svg{width:100%; height:100%; display:block}
     .line-chart-wrap .axis-label{fill:#96a0af; font-size:12px; font-weight:700; letter-spacing:.04em}
     .line-chart-wrap .axis-line{stroke:rgba(255,255,255,.08); stroke-width:1.5}
     .line-chart-wrap .guide-line{stroke:rgba(255,255,255,.06); stroke-width:1; stroke-dasharray:5 7}
-    .line-chart-wrap .dot{filter:drop-shadow(0 0 10px rgba(179,31,36,.28))}
+    .line-chart-wrap .dot{filter:drop-shadow(0 0 12px rgba(179,31,36,.30))}
+    .line-chart-wrap .dot.upgrade{filter:drop-shadow(0 0 16px rgba(217,58,64,.42))}
+    .line-chart-empty{
+      position:absolute; inset:0; display:grid; place-items:center; text-align:center; padding:24px;
+      background:linear-gradient(180deg, rgba(5,8,13,.18), rgba(5,8,13,.38));
+    }
+    .line-chart-empty strong{display:block; font-family:Oxanium,sans-serif; font-size:1.1rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px}
+    .line-chart-empty span{display:block; max-width:360px; color:var(--muted); line-height:1.45}
     .line-chart-wrap polyline{
       stroke-dasharray:1000;
       stroke-dashoffset:1000;
@@ -174,12 +207,22 @@
     .power-map-switch{display:inline-flex; padding:8px; gap:10px; border-radius:20px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(20,24,32,.92), rgba(13,17,24,.92))}
     .kit-switch-btn{min-width:170px; height:48px; border:0; border-radius:15px; background:transparent; color:#fff; font-size:14px; font-weight:800; cursor:pointer; transition:.25s ease}
     .kit-switch-btn.active{background:linear-gradient(180deg, #ef3b44, #b91f25); box-shadow:0 0 26px rgba(227,45,52,.35), inset 0 1px 0 rgba(255,255,255,.18)}
-    .component-map{position:relative; width:100%; min-height:500px; border-radius:26px; border:1px solid rgba(255,255,255,.06); background:radial-gradient(circle at 18% 18%, rgba(179,31,36,.18), transparent 18%), radial-gradient(circle at 50% 52%, rgba(5,10,20,.6), transparent 35%), linear-gradient(180deg, rgba(9,14,22,.98), rgba(3,7,14,.98)); overflow:hidden}
-    .comp-node{position:absolute; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg, rgba(25,31,43,.88), rgba(14,18,28,.95)); color:#fff; border-radius:22px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; cursor:pointer; transition:.22s ease; box-shadow:inset 0 1px 0 rgba(255,255,255,.04); padding:0 12px; text-align:center}
-    .comp-node:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.16)}
-    .comp-node.active,.comp-node.node-main{background:linear-gradient(180deg, rgba(115,17,26,.95), rgba(57,7,12,.96)); border-color:rgba(255,68,78,.8); box-shadow:0 0 24px rgba(231,42,52,.35), inset 0 1px 0 rgba(255,255,255,.09)}
-    .map-line{position:absolute; border-top:2px dashed rgba(255,70,80,.72); opacity:.9}
-    .line-a{left:45%; top:22%; width:78px; transform:rotate(-72deg)} .line-b{left:44%; top:48%; width:108px; transform:rotate(31deg)} .line-c{left:22%; top:34%; width:124px; border-top-color:rgba(255,255,255,.18); transform:rotate(-8deg)} .line-d{left:23%; top:62%; width:88px; border-top-color:rgba(255,255,255,.16); transform:rotate(-8deg)}
+    .component-map{position:relative; width:100%; min-height:520px; border-radius:30px; border:1px solid rgba(255,255,255,.06); background:radial-gradient(circle at 16% 18%, rgba(179,31,36,.18), transparent 16%), radial-gradient(circle at 78% 16%, rgba(255,255,255,.05), transparent 12%), linear-gradient(180deg, rgba(10,14,22,.98), rgba(4,7,13,.99)); overflow:hidden; isolation:isolate}
+    .component-map::before{content:"REM Performance"; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); font-family:Oxanium,sans-serif; font-size:clamp(2rem,6vw,4.8rem); font-weight:800; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.035); white-space:nowrap; pointer-events:none; z-index:0}
+    .component-map::after{content:"AIRFLOW / BOOST LAYOUT"; position:absolute; left:22px; bottom:18px; font-family:Oxanium,sans-serif; font-size:.82rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.3); pointer-events:none; z-index:0}
+    .map-svg{position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none}
+    .map-svg path{fill:none; stroke-linecap:round; stroke-width:3}
+    .map-svg .boost-path{stroke:rgba(255,63,73,.78); stroke-dasharray:8 10; filter:drop-shadow(0 0 8px rgba(179,31,36,.2))}
+    .map-svg .flow-path{stroke:rgba(193,201,214,.22); stroke-dasharray:8 12}
+    .engine-core{position:absolute; left:50%; top:53%; transform:translate(-50%,-50%); width:min(44%,280px); aspect-ratio:1/1; z-index:1; border-radius:32px; border:1px solid rgba(255,255,255,.08); background:radial-gradient(circle at 50% 42%, rgba(255,255,255,.045), transparent 32%), linear-gradient(180deg, rgba(20,26,36,.94), rgba(9,14,22,.98)); box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 20px 50px rgba(0,0,0,.28)}
+    .engine-core::before{content:"POWER UNIT"; position:absolute; top:24px; left:24px; font-family:Oxanium,sans-serif; font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.36)}
+    .engine-core::after{content:""; position:absolute; inset:22% 18%; border-radius:26px; border:1px solid rgba(255,255,255,.06); background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)); box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+    .comp-node{position:absolute; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.09); background:linear-gradient(180deg, rgba(18,24,36,.92), rgba(10,14,21,.98)); color:#fff; border-radius:20px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; cursor:pointer; transition:.22s ease; box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 8px 24px rgba(0,0,0,.18); padding:0 14px; text-align:center; z-index:2}
+    .comp-node:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.18)}
+    .comp-node.active,.comp-node.node-main{background:linear-gradient(180deg, rgba(181,38,45,.95), rgba(105,18,24,.97)); border-color:rgba(255,92,101,.82); box-shadow:0 0 24px rgba(231,42,52,.35), inset 0 1px 0 rgba(255,255,255,.12)}
+    .comp-node small{display:block; font-size:.62rem; letter-spacing:.18em; color:rgba(255,255,255,.62); margin-top:2px}
+    .comp-node.active small,.comp-node.node-main small{color:rgba(255,255,255,.76)}
+    .map-line{display:none}
     .component-detail{margin-top:14px; padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(16,21,31,.86), rgba(10,14,21,.96))}
     .detail-kicker{color:rgba(255,255,255,.65); font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:900; margin-bottom:8px}
     .detail-title{color:#fff; font-size:26px; font-weight:900; margin-bottom:8px}
@@ -218,6 +261,9 @@
     .product-side{
       position:sticky; top:98px; display:grid; gap:16px;
     }
+    .product-side.is-empty .select-note{display:block}
+    .product-side.is-empty .data-card{display:none}
+    .product-side .select-note{display:none}
     .side-graph-card{
       padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012)), #0e1218;
@@ -358,7 +404,8 @@
                 </div>
                 <div class="chart-engine-switch" id="engineSwitch"></div>
               </div>
-              <div class="line-chart-wrap">
+              <div class="line-chart-wrap" id="mainChartWrap">
+                <div class="line-chart-empty" id="mainChartEmpty"><div><strong>Vyber si kit nižšie</strong><span>Graf sa odomkne až keď zákazník klikne na konkrétny kit. Potom sa vykreslí stock vs upgrade aj porovnanie.</span></div></div>
                 <svg viewBox="0 0 700 290" preserveAspectRatio="none" aria-label="HP graf">
                   <defs>
                     <linearGradient id="upgradeAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -424,13 +471,20 @@
           <div class="compare-grid">
             <div class="compare-left">
               <div class="component-map" id="componentMap">
-                <button class="comp-node node-intake active" style="left:20%; top:10%; width:128px; height:56px" type="button" data-component="intake"><span>Sanie</span></button>
-                <button class="comp-node node-downpipe" style="right:11%; top:10%; width:128px; height:56px" type="button" data-component="aux"><span>Downpipe</span></button>
-                <button class="comp-node node-engine" style="left:14%; top:28%; width:168px; height:100px; font-size:18px" type="button" data-component="engine"><span>Motor</span></button>
-                <button class="comp-node node-main" style="left:54%; top:34%; width:126px; height:110px; font-size:18px" type="button" data-component="main"><span>Turbo</span></button>
-                <button class="comp-node node-wastegate" style="left:11%; bottom:18%; width:122px; height:56px" type="button" data-component="control"><span>Wastegate</span></button>
-                <button class="comp-node node-intercooler" style="left:38%; bottom:21%; width:132px; height:56px" type="button" data-component="cooling"><span>Intercooler</span></button>
-                <span class="map-line line-a"></span><span class="map-line line-b"></span><span class="map-line line-c"></span><span class="map-line line-d"></span>
+                <svg class="map-svg" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="flow-path" d="M190 145 C250 145, 300 180, 365 220"></path>
+                  <path class="flow-path" d="M228 300 C290 292, 332 288, 395 286"></path>
+                  <path class="boost-path" d="M612 196 C648 226, 680 268, 706 320"></path>
+                  <path class="boost-path" d="M702 330 C652 372, 612 402, 552 435"></path>
+                  <path class="flow-path" d="M398 430 C318 446, 248 470, 184 505"></path>
+                </svg>
+                <div class="engine-core" aria-hidden="true"></div>
+                <button class="comp-node node-intake active" style="left:8%; top:12%; width:170px; height:70px" type="button" data-component="intake"><span>Sanie<small>air entry</small></span></button>
+                <button class="comp-node node-engine" style="left:11%; top:44%; width:190px; height:112px; font-size:19px" type="button" data-component="engine"><span>Motor<small>base platform</small></span></button>
+                <button class="comp-node node-main" style="right:18%; top:24%; width:160px; height:126px; font-size:20px" type="button" data-component="main"><span>Turbo<small>boost unit</small></span></button>
+                <button class="comp-node node-downpipe" style="right:7%; top:10%; width:160px; height:70px" type="button" data-component="aux"><span>Downpipe<small>outlet flow</small></span></button>
+                <button class="comp-node node-intercooler" style="right:14%; bottom:14%; width:178px; height:72px" type="button" data-component="cooling"><span>Intercooler<small>charge cooling</small></span></button>
+                <button class="comp-node node-wastegate" style="left:8%; bottom:12%; width:160px; height:70px" type="button" data-component="control"><span>Wastegate<small>boost control</small></span></button>
               </div>
             </div>
             <div class="compare-right">
@@ -465,17 +519,19 @@
             <div id="productsGrid" class="product-grid">
               <div class="empty-card">Načítavam produkty…</div>
             </div>
-            <aside class="product-side">
-              <div class="side-graph-card">
+            <aside class="product-side is-empty" id="productSide">
+              <div class="side-graph-card chooser-card select-note"><div class="eyebrow">Vyber kit</div><h3>Grafy sa zobrazia až po výbere produktu</h3><p>Klikni na kartu alebo na tlačidlo „Zobraziť v grafe“. Potom sa na pravej strane odomkne výkonová sekcia, KPI a breakdown.</p></div>
+              <div class="side-graph-card data-card">
                 <div class="eyebrow">Vybraný produkt</div>
                 <h3 id="productFocusTitle">Načítavam…</h3>
                 <p id="productFocusLead">Po kliknutí na produkt sa tu zobrazí jeho výkonové porovnanie.</p>
                 <div class="product-focus-kpis" id="productFocusKpis"></div>
               </div>
-              <div class="side-graph-card">
+              <div class="side-graph-card data-card">
                 <div class="eyebrow">Power curve</div>
                 <h3 class="product-focus-title">Stock vs upgrade</h3>
-                <div class="line-chart-wrap compact-chart">
+                <div class="line-chart-wrap compact-chart" id="sideChartWrap">
+                  <div class="line-chart-empty" id="sideChartEmpty"><div><strong>Vyber kit</strong><span>Po kliknutí na kartu sa sem prekreslí realistickejší výkonový graf produktu.</span></div></div>
                   <svg viewBox="0 0 700 290" preserveAspectRatio="none" aria-label="Produktový HP graf">
                     <defs>
                       <linearGradient id="sideUpgradeAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -502,7 +558,7 @@
                   </svg>
                 </div>
               </div>
-              <div class="side-graph-card">
+              <div class="side-graph-card data-card">
                 <div class="eyebrow">Instant compare</div>
                 <h3 class="product-focus-title">Rýchly breakdown</h3>
                 <div class="bars-stage compact-bars" id="productBarsStage"></div>
@@ -682,7 +738,7 @@
       return values.map((v,i) => {
         const x = left + i*step;
         const y = top + (1 - (v/maxY)) * height;
-        return `<circle class="dot" cx="${x}" cy="${y}" r="5.5" fill="${fill}" stroke="rgba(8,10,14,.9)" stroke-width="2.5"></circle>`;
+        return `<circle class="dot ${fill==='#d83a40' ? 'upgrade' : ''}" cx="${x}" cy="${y}" r="5.5" fill="${fill}" stroke="rgba(8,10,14,.9)" stroke-width="2.5"></circle>`;
       }).join('');
     }
     function animateSvgSeries(ids){
@@ -733,10 +789,44 @@
       document.querySelectorAll('.chart-switch-btn').forEach((btn, idx)=>btn.classList.toggle('active', idx===state.currentIndex));
     }
 
+    function setChartVisibility(isVisible){
+      const mainEmpty = document.getElementById('mainChartEmpty');
+      const sideEmpty = document.getElementById('sideChartEmpty');
+      if(mainEmpty) mainEmpty.style.display = isVisible ? 'none' : 'grid';
+      if(sideEmpty) sideEmpty.style.display = isVisible ? 'none' : 'grid';
+      const side = document.getElementById('productSide');
+      if(side) side.classList.toggle('is-empty', !isVisible);
+    }
+
+    function renderChartsEmpty(){
+      document.getElementById('chartLead').textContent = 'Grafy sa zobrazia až po výbere konkrétneho kitu nižšie.';
+      document.getElementById('barsStage').innerHTML = `<div class="empty-card" style="width:100%;min-height:220px;display:grid;place-items:center;text-align:center"><div><strong>Vyber si kit</strong><span>Potom sa sem vykreslí stock minimum, stock maximum, upgrade a gain.</span></div></div>`;
+      document.getElementById('productFocusTitle').textContent = 'Žiadny kit nie je vybraný';
+      document.getElementById('productFocusLead').textContent = 'Klikni na produkt v zozname. Pravý panel sa potom odomkne.';
+      document.getElementById('productFocusKpis').innerHTML = '';
+      document.getElementById('productBarsStage').innerHTML = '';
+      document.getElementById('compareSummary').innerHTML = `<div class="summary-card"><strong>Vyber produkt</strong><span class="big">Grafy a údaje sa načítajú po kliknutí na kit.</span><span>Takto to je čistejšie a zákazník nie je zavalený dátami hneď po otvorení.</span></div>`;
+      document.getElementById('selectedEngineFamily').textContent = 'Vyber kit z ponuky';
+      document.getElementById('selectedTitle').textContent = '—';
+      setChartVisibility(false);
+      document.querySelectorAll('.product-card').forEach(card => card.classList.remove('is-active'));
+    }
+
+    function selectProduct(index, options = {}){
+      state.currentIndex = index;
+      renderCharts();
+      renderCompareSummary();
+      renderCompareComponentText();
+      renderSwitchActive();
+      document.querySelectorAll('.product-card').forEach((card, i)=>card.classList.toggle('is-active', i===index));
+      if(options.scroll) document.getElementById('productSide')?.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+
     function renderCharts(){
       const products = getProducts(state.data);
       const product = products[state.currentIndex];
-      if(!product) return;
+      if(!product){ renderChartsEmpty(); return; }
+      setChartVisibility(true);
       const stockMin = product?.powerClaim?.stockPsRange?.[0] || 0;
       const stockMax = product?.powerClaim?.stockPsRange?.[1] || stockMin;
       const upgrade = product?.powerClaim?.upgradedPs || stockMax;
@@ -865,10 +955,10 @@
       const isTurbo = state.compareMode === 'turbo';
       document.querySelectorAll('.kit-switch-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.kit === state.compareMode));
       const map = document.getElementById('componentMap');
-      map.querySelector('.node-downpipe span').textContent = isTurbo ? 'Downpipe' : 'Chladenie';
-      map.querySelector('.node-main span').textContent = isTurbo ? 'Turbo' : 'Kompresor';
-      map.querySelector('.node-wastegate span').textContent = isTurbo ? 'Wastegate' : 'Remeň';
-      map.querySelector('.node-intercooler span').textContent = isTurbo ? 'Intercooler' : 'Charge pipe';
+      map.querySelector('.node-downpipe span').innerHTML = isTurbo ? 'Downpipe<small>outlet flow</small>' : 'Chladenie<small>thermal control</small>';
+      map.querySelector('.node-main span').innerHTML = isTurbo ? 'Turbo<small>boost unit</small>' : 'Kompresor<small>driven boost</small>';
+      map.querySelector('.node-wastegate span').innerHTML = isTurbo ? 'Wastegate<small>boost control</small>' : 'Remeň<small>drive path</small>';
+      map.querySelector('.node-intercooler span').innerHTML = isTurbo ? 'Intercooler<small>charge cooling</small>' : 'Charge pipe<small>boost routing</small>';
       renderCompareComponentText();
     }
 
@@ -916,20 +1006,17 @@
             </div>
           </article>`;
       }).join('');
-      grid.querySelectorAll('[data-detail]').forEach(btn => btn.addEventListener('click', ()=>openModal(Number(btn.dataset.detail))));
-      grid.querySelectorAll('[data-focus]').forEach(btn => btn.addEventListener('click', ()=>{
-        state.currentIndex = Number(btn.dataset.focus);
-        renderCharts();
-        renderCompareSummary();
-        renderCompareComponentText();
-        renderSwitchActive();
+      grid.querySelectorAll('[data-detail]').forEach(btn => btn.addEventListener('click', (e)=>{ e.stopPropagation(); openModal(Number(btn.dataset.detail)); }));
+      grid.querySelectorAll('[data-focus]').forEach(btn => btn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        selectProduct(Number(btn.dataset.focus), {scroll:true});
         window.location.hash = 'ponuka';
       }));
       grid.querySelectorAll('.product-card').forEach(card => {
         const idx = Number(card.dataset.cardIndex);
-        card.addEventListener('mouseenter', ()=> {
-          state.currentIndex = idx;
-          renderProductSide(products[idx]);
+        card.addEventListener('click', (e)=>{
+          if(e.target.closest('button')) return;
+          selectProduct(idx, {scroll:false});
         });
       });
     }
@@ -994,10 +1081,9 @@
         buildHero(products);
         buildMetrics(data);
         renderEngineSwitch(products);
-        renderCharts();
-        renderCompareSummary();
         updateCompareLayout();
         renderProducts(products);
+        renderChartsEmpty();
       }catch(err){
         console.error(err);
         document.getElementById('heroMiniCards').innerHTML = `<div class="mini-card"><strong>Chyba načítania</strong><span>${err.message}</span></div>`;
