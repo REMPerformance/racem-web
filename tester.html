@@ -130,13 +130,34 @@
     .chart-switch-btn{border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#fff; border-radius:999px; padding:8px 12px; font-weight:700; cursor:pointer}
     .chart-switch-btn.active{background:linear-gradient(180deg,var(--red2),var(--red)); border-color:rgba(255,80,90,.35)}
 
-    .line-chart-wrap{position:relative; height:260px; border-radius:18px; border:1px solid rgba(255,255,255,.06); background:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); background-size:100% 25%, 12.5% 100%, auto; overflow:hidden}
+    .line-chart-wrap{
+      position:relative; height:290px; border-radius:22px; border:1px solid rgba(255,255,255,.07);
+      background:
+        radial-gradient(circle at 70% 12%, rgba(179,31,36,.08), transparent 24%),
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.01));
+      background-size:auto, 100% 20%, 12.5% 100%, auto;
+      overflow:hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03), inset 0 -40px 80px rgba(0,0,0,.18);
+    }
     .line-chart-wrap svg{width:100%; height:100%; display:block}
+    .line-chart-wrap .axis-label{fill:#96a0af; font-size:12px; font-weight:700; letter-spacing:.04em}
+    .line-chart-wrap .axis-line{stroke:rgba(255,255,255,.08); stroke-width:1.5}
+    .line-chart-wrap .guide-line{stroke:rgba(255,255,255,.06); stroke-width:1; stroke-dasharray:5 7}
+    .line-chart-wrap .dot{filter:drop-shadow(0 0 10px rgba(179,31,36,.28))}
+    .line-chart-wrap polyline{
+      stroke-dasharray:1000;
+      stroke-dashoffset:1000;
+      transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1);
+    }
+    .line-chart-wrap polyline.drawn{stroke-dashoffset:0}
     .metric-legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; color:#e9edf5; font-size:.9rem; font-weight:600}
     .metric-legend span{display:inline-flex; align-items:center; gap:8px}
     .metric-legend i{width:14px; height:14px; border-radius:999px; display:inline-block}
 
     .bars-stage{min-height:260px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding-top:20px; opacity:1; transform:translateY(0)}
+    .bars-stage.animating .bar-stick{transition:height .95s cubic-bezier(.22,1,.36,1), opacity .45s ease; opacity:.9}
     .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:12px; justify-content:flex-end; min-width:0}
     .bar-stick-wrap{width:100%; max-width:64px; height:210px; display:flex; align-items:flex-end; justify-content:center; border-radius:18px 18px 0 0; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,.05); padding:8px}
     .bar-stick{width:100%; height:0; border-radius:14px 14px 4px 4px; transition:height .9s cubic-bezier(.2,.7,.1,1); box-shadow:0 10px 26px rgba(0,0,0,.25)}
@@ -167,8 +188,23 @@
     .summary-card .big{display:block; font-family:Oxanium,sans-serif; font-size:1.35rem; margin-top:4px}
 
     .products-wrap{position:relative}
-    .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .product-card{display:flex; flex-direction:column; gap:12px; min-height:280px}
+    .products-layout{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr); gap:18px; align-items:start}
+    .product-grid{grid-template-columns:1fr}
+    .product-card{display:grid; grid-template-columns:220px minmax(0,1fr); gap:16px; min-height:280px; align-items:start}
+    .product-media{
+      position:relative; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)), #0c1016;
+      min-height:240px;
+    }
+    .product-media img{display:block; width:100%; height:100%; min-height:240px; object-fit:cover}
+    .product-media-fallback{
+      min-height:240px; display:grid; place-items:center; padding:20px; text-align:center;
+      color:#e9edf5; font-family:Oxanium,sans-serif; font-size:1.1rem; text-transform:uppercase; letter-spacing:.08em;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179,31,36,.16), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+    }
+    .product-body{display:flex; flex-direction:column; gap:12px; min-width:0}
     .product-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
     .product-tag{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em}
     .product-price{font-family:Oxanium,sans-serif; font-size:1.25rem; white-space:nowrap}
@@ -179,6 +215,25 @@
     .product-spec{padding:10px 11px; border-radius:14px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06)}
     .product-spec b{display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.09em; color:#cbd3de; margin-bottom:4px}
     .product-actions{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:auto}
+    .product-side{
+      position:sticky; top:98px; display:grid; gap:16px;
+    }
+    .side-graph-card{
+      padding:18px; border-radius:24px; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012)), #0e1218;
+      box-shadow:0 18px 50px rgba(0,0,0,.28);
+    }
+    .side-graph-card .eyebrow{margin-bottom:10px}
+    .side-graph-card h3{margin:0 0 8px; font-family:Oxanium,sans-serif; font-size:1.15rem; text-transform:uppercase; letter-spacing:.06em}
+    .side-graph-card p{margin:0 0 14px; color:var(--muted)}
+    .compact-chart{height:220px}
+    .compact-bars{min-height:210px; padding-top:4px}
+    .product-focus-title{font-family:Oxanium,sans-serif; font-size:1.35rem; text-transform:uppercase; margin:0 0 8px}
+    .product-focus-sub{color:var(--muted); margin:0 0 10px}
+    .product-focus-kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+    .product-focus-kpis .kpi{padding:10px 12px}
+    .product-card.is-active{border-color:rgba(255,80,90,.32); box-shadow:0 0 0 1px rgba(255,80,90,.08), 0 24px 60px rgba(0,0,0,.28), 0 0 35px rgba(179,31,36,.08)}
+    .product-card.is-active .product-media{border-color:rgba(255,80,90,.28)}
 
     .modal{position:fixed; inset:0; background:rgba(0,0,0,.65); backdrop-filter:blur(10px); display:none; align-items:center; justify-content:center; padding:18px; z-index:90}
     .modal.open{display:flex}
@@ -198,11 +253,12 @@
     footer{padding:12px 0 42px; color:var(--muted); font-size:.92rem}
     .footline{border-top:1px solid rgba(255,255,255,.08); padding-top:18px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
 
-    @media (max-width:1100px){.hero-grid,.charts-grid,.compare-grid,.info-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:1100px){.hero-grid,.charts-grid,.compare-grid,.info-grid,.products-layout{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-side{position:static}}
     @media (max-width:760px){
       .topbar-inner{min-height:auto; padding:14px 0; align-items:flex-start; flex-direction:column}
       .nav{justify-content:flex-start}.hero-main,.hero-side,.live-card,.products-wrap,.stats-strip,.compare-strip{padding:18px}.hero-main{min-height:auto}
-      .mini-cards,.product-grid,.metric-grid,.product-specs,.product-actions,.kpi-grid,.hero-actions{grid-template-columns:1fr}
+      .mini-cards,.metric-grid,.product-specs,.product-actions,.kpi-grid,.hero-actions{grid-template-columns:1fr}
+      .product-card{grid-template-columns:1fr}
       .hero-title .row-lock{white-space:normal}.hero-subheads{flex-direction:column; flex-wrap:wrap}.hero-subheads div{min-width:0; width:100%}
       .section-head{flex-direction:column; align-items:flex-start}.bar-label{font-size:.72rem}.bars-stage{gap:8px}
       .power-map-kicker{width:100%; justify-content:center}.power-map-switch{width:100%}.kit-switch-btn{min-width:0; flex:1}
@@ -303,13 +359,38 @@
                 <div class="chart-engine-switch" id="engineSwitch"></div>
               </div>
               <div class="line-chart-wrap">
-                <svg viewBox="0 0 700 260" preserveAspectRatio="none" aria-label="HP graf">
-                  <polyline id="stockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                  <polyline id="stockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                  <polyline id="upgradeGlow" fill="none" stroke="rgba(179,31,36,.22)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                  <polyline id="stockMinLine" fill="none" stroke="#d8dde6" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                  <polyline id="stockMaxLine" fill="none" stroke="#9aa4b2" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
-                  <polyline id="upgradeLine" fill="none" stroke="#d83a40" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <svg viewBox="0 0 700 290" preserveAspectRatio="none" aria-label="HP graf">
+                  <defs>
+                    <linearGradient id="upgradeAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(223,51,58,.34)"/>
+                      <stop offset="100%" stop-color="rgba(223,51,58,0)"/>
+                    </linearGradient>
+                  </defs>
+                  <line class="axis-line" x1="48" y1="20" x2="48" y2="246"></line>
+                  <line class="axis-line" x1="48" y1="246" x2="684" y2="246"></line>
+                  <line class="guide-line" x1="48" y1="60" x2="684" y2="60"></line>
+                  <line class="guide-line" x1="48" y1="106" x2="684" y2="106"></line>
+                  <line class="guide-line" x1="48" y1="152" x2="684" y2="152"></line>
+                  <line class="guide-line" x1="48" y1="199" x2="684" y2="199"></line>
+                  <text class="axis-label" x="10" y="248">0</text>
+                  <text class="axis-label" x="8" y="202" id="yAxis25">25%</text>
+                  <text class="axis-label" x="8" y="156" id="yAxis50">50%</text>
+                  <text class="axis-label" x="8" y="110" id="yAxis75">75%</text>
+                  <text class="axis-label" x="8" y="64" id="yAxis100">100%</text>
+                  <text class="axis-label" x="62" y="270">Low</text>
+                  <text class="axis-label" x="220" y="270">Mid</text>
+                  <text class="axis-label" x="382" y="270">Power band</text>
+                  <text class="axis-label" x="620" y="270">Peak</text>
+                  <path id="upgradeArea" fill="url(#upgradeAreaGrad)" stroke="none"></path>
+                  <polyline id="stockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="upgradeGlow" fill="none" stroke="rgba(179,31,36,.24)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMinLine" fill="none" stroke="#d8dde6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="stockMaxLine" fill="none" stroke="#9aa4b2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <polyline id="upgradeLine" fill="none" stroke="#d83a40" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <g id="stockMinDots"></g>
+                  <g id="stockMaxDots"></g>
+                  <g id="upgradeDots"></g>
                 </svg>
               </div>
               <div class="metric-legend">
@@ -380,8 +461,53 @@
           <p>Každá karta ťahá názov, cenu, stock PS, upgrade PS, gain percent, engine family, typ produktu a ďalšie údaje priamo z JSONu.</p>
         </div>
         <div class="products-wrap">
-          <div id="productsGrid" class="product-grid">
-            <div class="empty-card">Načítavam produkty…</div>
+          <div class="products-layout">
+            <div id="productsGrid" class="product-grid">
+              <div class="empty-card">Načítavam produkty…</div>
+            </div>
+            <aside class="product-side">
+              <div class="side-graph-card">
+                <div class="eyebrow">Vybraný produkt</div>
+                <h3 id="productFocusTitle">Načítavam…</h3>
+                <p id="productFocusLead">Po kliknutí na produkt sa tu zobrazí jeho výkonové porovnanie.</p>
+                <div class="product-focus-kpis" id="productFocusKpis"></div>
+              </div>
+              <div class="side-graph-card">
+                <div class="eyebrow">Power curve</div>
+                <h3 class="product-focus-title">Stock vs upgrade</h3>
+                <div class="line-chart-wrap compact-chart">
+                  <svg viewBox="0 0 700 290" preserveAspectRatio="none" aria-label="Produktový HP graf">
+                    <defs>
+                      <linearGradient id="sideUpgradeAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="rgba(223,51,58,.30)"/>
+                        <stop offset="100%" stop-color="rgba(223,51,58,0)"/>
+                      </linearGradient>
+                    </defs>
+                    <line class="axis-line" x1="48" y1="20" x2="48" y2="246"></line>
+                    <line class="axis-line" x1="48" y1="246" x2="684" y2="246"></line>
+                    <line class="guide-line" x1="48" y1="60" x2="684" y2="60"></line>
+                    <line class="guide-line" x1="48" y1="106" x2="684" y2="106"></line>
+                    <line class="guide-line" x1="48" y1="152" x2="684" y2="152"></line>
+                    <line class="guide-line" x1="48" y1="199" x2="684" y2="199"></line>
+                    <path id="sideUpgradeArea" fill="url(#sideUpgradeAreaGrad)" stroke="none"></path>
+                    <polyline id="sideStockMinGlow" fill="none" stroke="rgba(216,221,230,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="sideStockMaxGlow" fill="none" stroke="rgba(160,170,182,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="sideUpgradeGlow" fill="none" stroke="rgba(179,31,36,.24)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="sideStockMinLine" fill="none" stroke="#d8dde6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="sideStockMaxLine" fill="none" stroke="#9aa4b2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="sideUpgradeLine" fill="none" stroke="#d83a40" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <g id="sideStockMinDots"></g>
+                    <g id="sideStockMaxDots"></g>
+                    <g id="sideUpgradeDots"></g>
+                  </svg>
+                </div>
+              </div>
+              <div class="side-graph-card">
+                <div class="eyebrow">Instant compare</div>
+                <h3 class="product-focus-title">Rýchly breakdown</h3>
+                <div class="bars-stage compact-bars" id="productBarsStage"></div>
+              </div>
+            </aside>
           </div>
         </div>
       </div>
@@ -537,13 +663,58 @@
     }
 
     function makePolyline(values, maxY){
-      const width = 660, height = 220, left = 20, top = 20;
+      const width = 612, height = 226, left = 54, top = 20;
       const step = values.length > 1 ? width / (values.length - 1) : width;
       return values.map((v,i) => {
         const x = left + i*step;
         const y = top + (1 - (v/maxY)) * height;
         return `${x},${y}`;
       }).join(' ');
+    }
+    function makeAreaPath(values, maxY){
+      const points = makePolyline(values, maxY).split(' ');
+      if(!points.length) return '';
+      return `M ${points[0]} L ${points.slice(1).join(' L ')} L 666,246 L 54,246 Z`;
+    }
+    function makeDots(values, maxY, fill){
+      const width = 612, height = 226, left = 54, top = 20;
+      const step = values.length > 1 ? width / (values.length - 1) : width;
+      return values.map((v,i) => {
+        const x = left + i*step;
+        const y = top + (1 - (v/maxY)) * height;
+        return `<circle class="dot" cx="${x}" cy="${y}" r="5.5" fill="${fill}" stroke="rgba(8,10,14,.9)" stroke-width="2.5"></circle>`;
+      }).join('');
+    }
+    function animateSvgSeries(ids){
+      ids.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.classList.remove('drawn');
+        if(typeof el.getTotalLength === 'function'){
+          const len = Math.ceil(el.getTotalLength());
+          el.style.strokeDasharray = `${len}`;
+          el.style.strokeDashoffset = `${len}`;
+        }
+        void el.getBoundingClientRect();
+        requestAnimationFrame(()=>el.classList.add('drawn'));
+      });
+    }
+    function getProductImage(product){
+      const tryList = [];
+      if(Array.isArray(product?.images)) tryList.push(...product.images);
+      if(product?.image) tryList.push(product.image);
+      if(product?.imageUrl) tryList.push(product.imageUrl);
+      if(product?.img) tryList.push(product.img);
+      for(const item of tryList){
+        if(!item) continue;
+        if(typeof item === 'string') return item;
+        if(typeof item === 'object'){
+          if(item.src) return item.src;
+          if(item.url) return item.url;
+          if(item.image) return item.image;
+        }
+      }
+      return '';
     }
 
     function renderEngineSwitch(products){
@@ -573,19 +744,26 @@
       document.getElementById('chartLead').textContent = lead;
 
       const maxY = Math.max(upgrade, stockMax, stockMin, 100);
-      const stockMinVals = [stockMin*0.38, stockMin*0.55, stockMin*0.72, stockMin*0.86, stockMin];
-      const stockMaxVals = [stockMax*0.40, stockMax*0.60, stockMax*0.78, stockMax*0.91, stockMax];
-      const upgradeVals = [upgrade*0.25, upgrade*0.45, upgrade*0.68, upgrade*0.86, upgrade];
-      const ids = {
-        stockMinGlow:'stockMinGlow', stockMaxGlow:'stockMaxGlow', upgradeGlow:'upgradeGlow',
-        stockMinLine:'stockMinLine', stockMaxLine:'stockMaxLine', upgradeLine:'upgradeLine'
-      };
-      document.getElementById(ids.stockMinGlow).setAttribute('points', makePolyline(stockMinVals, maxY));
-      document.getElementById(ids.stockMaxGlow).setAttribute('points', makePolyline(stockMaxVals, maxY));
-      document.getElementById(ids.upgradeGlow).setAttribute('points', makePolyline(upgradeVals, maxY));
-      document.getElementById(ids.stockMinLine).setAttribute('points', makePolyline(stockMinVals, maxY));
-      document.getElementById(ids.stockMaxLine).setAttribute('points', makePolyline(stockMaxVals, maxY));
-      document.getElementById(ids.upgradeLine).setAttribute('points', makePolyline(upgradeVals, maxY));
+      const stockMinVals = [stockMin*0.34, stockMin*0.49, stockMin*0.66, stockMin*0.83, stockMin];
+      const stockMaxVals = [stockMax*0.37, stockMax*0.54, stockMax*0.73, stockMax*0.89, stockMax];
+      const upgradeVals = [upgrade*0.18, upgrade*0.39, upgrade*0.63, upgrade*0.84, upgrade];
+
+      document.getElementById('upgradeArea').setAttribute('d', makeAreaPath(upgradeVals, maxY));
+      document.getElementById('stockMinGlow').setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById('stockMaxGlow').setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById('upgradeGlow').setAttribute('points', makePolyline(upgradeVals, maxY));
+      document.getElementById('stockMinLine').setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById('stockMaxLine').setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById('upgradeLine').setAttribute('points', makePolyline(upgradeVals, maxY));
+      document.getElementById('stockMinDots').innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
+      document.getElementById('stockMaxDots').innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
+      document.getElementById('upgradeDots').innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
+
+      document.getElementById('yAxis25').textContent = `${Math.round(maxY*0.25)} PS`;
+      document.getElementById('yAxis50').textContent = `${Math.round(maxY*0.5)} PS`;
+      document.getElementById('yAxis75').textContent = `${Math.round(maxY*0.75)} PS`;
+      document.getElementById('yAxis100').textContent = `${Math.round(maxY)} PS`;
+      animateSvgSeries(['stockMinGlow','stockMaxGlow','upgradeGlow','stockMinLine','stockMaxLine','upgradeLine']);
 
       const bars = [
         { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/maxY)*100)}%`, cls:'silver' },
@@ -594,15 +772,74 @@
         { label:'Gain %', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, height: `${Math.max(12, Math.min(100, product?.powerClaim?.deltaPercentVsStockMin || 0))}%`, cls:'red' }
       ];
       const barsStage = document.getElementById('barsStage');
+      barsStage.classList.remove('animating');
       barsStage.innerHTML = bars.map(b => `
         <div class="bar-col">
-          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}"></div></div>
+          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}" style="height:0%"></div></div>
           <div class="bar-label">${b.label}</div>
           <div class="bar-value">${b.value}</div>
         </div>`).join('');
+      void barsStage.getBoundingClientRect();
+      barsStage.classList.add('animating');
       requestAnimationFrame(()=>{
-        barsStage.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 120*i));
+        barsStage.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 110*i));
       });
+
+      renderProductSide(product, {stockMin, stockMax, upgrade, maxY, stockMinVals, stockMaxVals, upgradeVals});
+    }
+
+    function renderProductSide(product, chartData = null){
+      if(!product) return;
+      const stockMin = chartData?.stockMin ?? product?.powerClaim?.stockPsRange?.[0] ?? 0;
+      const stockMax = chartData?.stockMax ?? product?.powerClaim?.stockPsRange?.[1] ?? stockMin;
+      const upgrade = chartData?.upgrade ?? product?.powerClaim?.upgradedPs ?? stockMax;
+      const maxY = chartData?.maxY ?? Math.max(upgrade, stockMax, stockMin, 100);
+      const stockMinVals = chartData?.stockMinVals ?? [stockMin*0.34, stockMin*0.49, stockMin*0.66, stockMin*0.83, stockMin];
+      const stockMaxVals = chartData?.stockMaxVals ?? [stockMax*0.37, stockMax*0.54, stockMax*0.73, stockMax*0.89, stockMax];
+      const upgradeVals = chartData?.upgradeVals ?? [upgrade*0.18, upgrade*0.39, upgrade*0.63, upgrade*0.84, upgrade];
+
+      document.getElementById('productFocusTitle').textContent = product.title || 'Produkt';
+      document.getElementById('productFocusLead').textContent = `${product.engineFamily || '—'} · ${pickPrice(product)}`;
+      document.getElementById('productFocusKpis').innerHTML = `
+        <div class="kpi"><b>Stock</b><span>${stockMin}–${stockMax} PS</span></div>
+        <div class="kpi"><b>Upgrade</b><span>${upgrade} PS</span></div>
+        <div class="kpi"><b>Gain</b><span>${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}</span></div>
+        <div class="kpi"><b>Typ</b><span>${product.productType || '—'}</span></div>
+      `;
+
+      document.getElementById('sideUpgradeArea').setAttribute('d', makeAreaPath(upgradeVals, maxY));
+      document.getElementById('sideStockMinGlow').setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById('sideStockMaxGlow').setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById('sideUpgradeGlow').setAttribute('points', makePolyline(upgradeVals, maxY));
+      document.getElementById('sideStockMinLine').setAttribute('points', makePolyline(stockMinVals, maxY));
+      document.getElementById('sideStockMaxLine').setAttribute('points', makePolyline(stockMaxVals, maxY));
+      document.getElementById('sideUpgradeLine').setAttribute('points', makePolyline(upgradeVals, maxY));
+      document.getElementById('sideStockMinDots').innerHTML = makeDots(stockMinVals, maxY, '#d8dde6');
+      document.getElementById('sideStockMaxDots').innerHTML = makeDots(stockMaxVals, maxY, '#9aa4b2');
+      document.getElementById('sideUpgradeDots').innerHTML = makeDots(upgradeVals, maxY, '#d83a40');
+      animateSvgSeries(['sideStockMinGlow','sideStockMaxGlow','sideUpgradeGlow','sideStockMinLine','sideStockMaxLine','sideUpgradeLine']);
+
+      const sideBars = [
+        { label:'Stock min', value:`${stockMin} PS`, height: `${Math.max(12,(stockMin/maxY)*100)}%`, cls:'silver' },
+        { label:'Stock max', value:`${stockMax} PS`, height: `${Math.max(12,(stockMax/maxY)*100)}%`, cls:'silver' },
+        { label:'Upgrade', value:`${upgrade} PS`, height: `${Math.max(12,(upgrade/maxY)*100)}%`, cls:'red' },
+        { label:'Gain', value:`${fmt((product?.powerClaim?.deltaPercentVsStockMin || 0).toFixed(2),' %')}`, height: `${Math.max(12, Math.min(100, product?.powerClaim?.deltaPercentVsStockMin || 0))}%`, cls:'red' }
+      ];
+      const sideStage = document.getElementById('productBarsStage');
+      sideStage.classList.remove('animating');
+      sideStage.innerHTML = sideBars.map(b => `
+        <div class="bar-col">
+          <div class="bar-stick-wrap"><div class="bar-stick ${b.cls}" data-height="${b.height}" style="height:0%"></div></div>
+          <div class="bar-label">${b.label}</div>
+          <div class="bar-value">${b.value}</div>
+        </div>`).join('');
+      void sideStage.getBoundingClientRect();
+      sideStage.classList.add('animating');
+      requestAnimationFrame(()=>{
+        sideStage.querySelectorAll('.bar-stick').forEach((bar, i)=>setTimeout(()=>{bar.style.height = bar.dataset.height;}, 100*i));
+      });
+
+      document.querySelectorAll('.product-card').forEach((card, idx)=>card.classList.toggle('is-active', idx === state.currentIndex));
     }
 
     function renderCompareSummary(){
@@ -650,26 +887,32 @@
         const price = pickPrice(p);
         const gain = p?.powerClaim?.deltaPercentVsStockMin;
         const chips = [p.engineFamily, p.productType, p?.turbo?.model, p?.productClaims?.claimedPowerText].filter(Boolean).slice(0,4);
+        const image = getProductImage(p);
         return `
-          <article class="product-card">
-            <div class="product-top">
-              <div>
-                <div class="product-tag">${p.productType || 'produkt'}</div>
-                <h3 class="product-title" style="margin-top:10px">${p.title || 'Bez názvu'}</h3>
+          <article class="product-card ${i===state.currentIndex?'is-active':''}" data-card-index="${i}">
+            <div class="product-media">
+              ${image ? `<img src="${image}" alt="${p.title || 'Produkt'}" loading="lazy">` : `<div class="product-media-fallback">REM<br>Performance</div>`}
+            </div>
+            <div class="product-body">
+              <div class="product-top">
+                <div>
+                  <div class="product-tag">${p.productType || 'produkt'}</div>
+                  <h3 class="product-title" style="margin-top:10px">${p.title || 'Bez názvu'}</h3>
+                </div>
+                <div class="product-price">${price}</div>
               </div>
-              <div class="product-price">${price}</div>
-            </div>
-            <div class="product-sub">${p.engineFamily || '—'}${p.engineCodesFromProduct?.length ? ` · ${p.engineCodesFromProduct.join(', ')}` : ''}</div>
-            <div class="chips">${chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
-            <div class="product-specs">
-              <div class="product-spec"><b>Stock PS</b><span>${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS</span></div>
-              <div class="product-spec"><b>Upgrade PS</b><span>${fmt(p?.powerClaim?.upgradedPs,' PS')}</span></div>
-              <div class="product-spec"><b>Gain</b><span>${gain !== undefined ? `${gain.toFixed(2)} %` : '—'}</span></div>
-              <div class="product-spec"><b>Torque</b><span>${p?.powerClaim?.upgradedNm ? `${p.powerClaim.upgradedNm} Nm` : 'údaj chýba'}</span></div>
-            </div>
-            <div class="product-actions">
-              <button class="btn primary" type="button" data-detail="${i}">Detail</button>
-              <button class="btn secondary" type="button" data-focus="${i}">Zobraziť v grafe</button>
+              <div class="product-sub">${p.engineFamily || '—'}${p.engineCodesFromProduct?.length ? ` · ${p.engineCodesFromProduct.join(', ')}` : ''}</div>
+              <div class="chips">${chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+              <div class="product-specs">
+                <div class="product-spec"><b>Stock PS</b><span>${fmt(p?.powerClaim?.stockPsRange?.[0],'')} – ${fmt(p?.powerClaim?.stockPsRange?.[1],'')} PS</span></div>
+                <div class="product-spec"><b>Upgrade PS</b><span>${fmt(p?.powerClaim?.upgradedPs,' PS')}</span></div>
+                <div class="product-spec"><b>Gain</b><span>${gain !== undefined ? `${gain.toFixed(2)} %` : '—'}</span></div>
+                <div class="product-spec"><b>Torque</b><span>${p?.powerClaim?.upgradedNm ? `${p.powerClaim.upgradedNm} Nm` : 'údaj chýba'}</span></div>
+              </div>
+              <div class="product-actions">
+                <button class="btn primary" type="button" data-detail="${i}">Detail</button>
+                <button class="btn secondary" type="button" data-focus="${i}">Zobraziť v grafe</button>
+              </div>
             </div>
           </article>`;
       }).join('');
@@ -680,8 +923,15 @@
         renderCompareSummary();
         renderCompareComponentText();
         renderSwitchActive();
-        window.location.hash = 'grafy';
+        window.location.hash = 'ponuka';
       }));
+      grid.querySelectorAll('.product-card').forEach(card => {
+        const idx = Number(card.dataset.cardIndex);
+        card.addEventListener('mouseenter', ()=> {
+          state.currentIndex = idx;
+          renderProductSide(products[idx]);
+        });
+      });
     }
 
     function openModal(index){
