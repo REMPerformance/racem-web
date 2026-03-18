@@ -4000,11 +4000,11 @@ function deliverySummary(p){
         const imgEl = card.querySelector(".pMedia img");
         setSafeImage(imgEl, imgSrc, null);
 
-        card.addEventListener("click", () => openProduct(p));
+        card.addEventListener("click", () => openProductPage(p));
         card.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
             e.preventDefault();
-            openProduct(p);
+            openProductPage(p);
           }
         });
 
@@ -4015,6 +4015,18 @@ function deliverySummary(p){
     function renderAll(){
       renderProducts();
       updateCarActive();
+    }
+
+    function productDetailUrl(p){
+      const slug = String(p?.id || "").trim();
+      if (!slug) return null;
+      return `/products/generated/${encodeURIComponent(slug)}.html`;
+    }
+
+    function openProductPage(p){
+      const url = productDetailUrl(p);
+      if (!url) return;
+      window.location.href = url;
     }
 
     // Modal elements
