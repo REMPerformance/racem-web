@@ -2936,7 +2936,157 @@
   }
 }
 
-  </style>
+  
+
+/* === MOBILE FIX PACK: modal text/image/buttons === */
+@media (max-width: 900px){
+  .modal{ padding: 8px; align-items:flex-end; }
+  .modalCard{
+    width: 100%;
+    max-height: 96vh;
+    border-radius: 18px 18px 0 0;
+  }
+  .modalBody{
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    padding: 10px;
+    overflow: auto;
+  }
+  .mImg{
+    min-height: 240px !important;
+    height: auto;
+  }
+  .mImg img{
+    padding: 10px;
+    max-height: 52vh;
+    object-fit: contain;
+  }
+  .zoomHint{
+    top: 10px;
+    font-size: 10px;
+    letter-spacing: .14em;
+    padding: 7px 10px;
+  }
+  .imgNav{
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+  }
+  .thumbRow{
+    position: static;
+    margin-top: 10px;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    padding: 6px;
+  }
+  .mInfo{
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0;
+    overflow: visible !important;
+  }
+  .mScroll{
+    overflow: visible !important;
+    padding-right: 0;
+    max-height: none;
+  }
+  .mDesc{
+    font-size: 14px;
+    line-height: 1.72;
+    padding-top: 10px;
+  }
+  .priceBlock{
+    margin-top: 12px;
+    padding: 14px 14px 13px;
+  }
+  .priceBig{
+    font-size: 26px;
+    line-height: 1.08;
+    margin-left: 0;
+  }
+  .priceSub{
+    margin-left: 0;
+    font-size: 12px;
+    white-space: normal;
+  }
+  .mActions{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-top: 12px;
+  }
+  .mActions .btn{
+    width: 100%;
+    justify-content: center;
+    padding: 13px 14px;
+    font-size: 13px;
+    letter-spacing: .12em;
+  }
+}
+
+@media (max-width: 640px){
+  .productGrid{
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 10px !important;
+  }
+  .pCard{
+    min-width: 0;
+  }
+  .pMedia{
+    height: 118px !important;
+    aspect-ratio: auto;
+  }
+  .pBody{
+    padding: 10px;
+    gap: 8px;
+  }
+  .pName{
+    font-size: 11px !important;
+    line-height: 1.2;
+    letter-spacing: .06em !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 40px;
+  }
+  .pBottom{
+    align-items: stretch;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .pBottom > div{
+    width: 100%;
+  }
+  .price{
+    font-size: 12px !important;
+    letter-spacing: .08em !important;
+    white-space: normal;
+  }
+  .shipMini{
+    font-size: 9px;
+    white-space: normal;
+    line-height: 1.35;
+  }
+  .animated-button,
+  .detailBtn,
+  .detailBtnn,
+  .pBottom button{
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+}
+
+/* tap target for opening full image */
+.mImg,
+#mImg,
+#zoomHint{
+  cursor: zoom-in;
+}
+
+</style>
 </head>
 
 <body>
@@ -5786,6 +5936,40 @@ console.log("CSR script loaded OK");
 </script>
 
 
+
+
+<script>
+(function(){
+  const modalImgWrap = document.querySelector('#productModal .mImg');
+  const modalImg = document.getElementById('mImg');
+  const zoomHint = document.getElementById('zoomHint');
+  const galleryModal = document.getElementById('galleryModal');
+  const gFull = document.getElementById('gFull');
+  const gNoImg = document.getElementById('gNoImg');
+
+  function openFullProductImage(){
+    try{
+      if (!window.activeProduct || !galleryModal || !gFull) return;
+      const imgs = typeof getProductImages === 'function' ? getProductImages(window.activeProduct) : [];
+      if (!imgs || !imgs.length) return;
+      const idx = Number.isFinite(window.activeImgIndex) ? window.activeImgIndex : 0;
+      const src = imgs[idx] || imgs[0];
+      if (typeof setSafeImage === 'function') setSafeImage(gFull, src, gNoImg || null);
+      else gFull.src = src;
+      galleryModal.classList.add('show');
+      galleryModal.setAttribute('aria-hidden', 'false');
+    }catch(e){}
+  }
+
+  [modalImgWrap, modalImg, zoomHint].forEach(el => {
+    if(!el) return;
+    el.addEventListener('click', function(e){
+      if (e.target && e.target.closest && e.target.closest('.imgNav, .thumbRow, .thumb')) return;
+      openFullProductImage();
+    }, {passive:true});
+  });
+})();
+</script>
 
 </body>
 </html>
