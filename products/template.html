@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>{{TITLE}} | SFXLA | RACEM</title>
+  <meta name="description" content="{{SHORT}}">
+  <link rel="canonical" href="https://racem.sk/products/{{SLUG}}.html">
+  <style>
+    body{
+      margin:0;
+      background:#070707;
+      color:#fff;
+      font-family:Arial, sans-serif;
+      line-height:1.6;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:32px 18px 60px;
+    }
+    .topbar{
+      margin-bottom:24px;
+    }
+    .topbar a{
+      color:#fff;
+      text-decoration:none;
+      opacity:.8;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:28px;
+    }
+    .gallery img{
+      width:100%;
+      display:block;
+      border-radius:18px;
+      margin-bottom:12px;
+      background:#111;
+    }
+    .panel{
+      background:#101010;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      line-height:1.1;
+      font-size:40px;
+    }
+    .short{
+      font-size:18px;
+      opacity:.9;
+      margin:0 0 18px;
+    }
+    .meta{
+      display:grid;
+      gap:10px;
+      margin:18px 0 22px;
+    }
+    .meta div{
+      background:#161616;
+      border-radius:12px;
+      padding:10px 12px;
+    }
+    .variants{
+      margin-top:18px;
+    }
+    .variant{
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      margin-bottom:10px;
+      background:#141414;
+    }
+    .desc{
+      white-space:pre-line;
+      margin-top:24px;
+      font-size:16px;
+      opacity:.95;
+    }
+    .buy{
+      display:inline-block;
+      margin-top:20px;
+      background:#b31f24;
+      color:#fff;
+      text-decoration:none;
+      padding:14px 18px;
+      border-radius:12px;
+      font-weight:700;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns:1fr; }
+      h1{ font-size:30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a href="/sfxla.html">← Späť na SFXLA katalóg</a>
+    </div>
+
+    <div class="grid">
+      <div class="gallery panel">
+        {{GALLERY}}
+      </div>
+
+      <div class="panel">
+        <h1>{{TITLE}}</h1>
+        <p class="short">{{SHORT}}</p>
+
+        <div class="meta">
+          <div><strong>Kategória:</strong> {{CATEGORY}}</div>
+          <div><strong>Dodanie:</strong> {{DELIVERY}}</div>
+          <div><strong>Doprava:</strong> {{SHIPPING}}</div>
+          <div><strong>Stav:</strong> {{STOCK}}</div>
+        </div>
+
+        <div class="variants">
+          <h2>Varianty</h2>
+          {{VARIANTS}}
+        </div>
+
+        <div class="desc">{{DESCRIPTION}}</div>
+
+        <a class="buy" href="{{SHOPIFY_URL}}">Objednať / prejsť na checkout</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
