@@ -3,27 +3,71 @@ const RACEMCart = {
 
   get() {
     try {
-      return JSON.parse(localStorage.getItem(this.KEY) || "[]");
+      const cart = JSON.parse(localStorage.getItem(this.KEY) || "[]");
+      return Array.isArray(cart) ? cart.map((item) => this.normalizeItem(item)) : [];
     } catch (e) {
       return [];
     }
   },
 
   save(cart) {
-    localStorage.setItem(this.KEY, JSON.stringify(cart));
+    const normalized = Array.isArray(cart)
+      ? cart.map((item) => this.normalizeItem(item))
+      : [];
+    localStorage.setItem(this.KEY, JSON.stringify(normalized));
     this.updateBadge();
-    window.dispatchEvent(new CustomEvent("racem:cart-updated", { detail: { cart } }));
+    window.dispatchEvent(new CustomEvent("racem:cart-updated", { detail: { cart: normalized } }));
+  },
+
+  normalizePrice(item) {
+    const raw =
+      item?.price ??
+      item?.priceEUR ??
+      item?.priceValue ??
+      item?.finalPrice ??
+      item?.amount ??
+      0;
+
+    const num = Number(raw);
+    return Number.isFinite(num) ? num : 0;
+  },
+
+  normalizeItem(item) {
+    const normalizedPrice = this.normalizePrice(item);
+
+    return {
+      ...item,
+      key:
+        item?.key ||
+        item?.shopifyVariantId ||
+        item?.variantId ||
+        item?.productId ||
+        item?.title ||
+        "",
+      productId: item?.productId || "",
+      title: item?.title || "Produkt",
+      short: item?.short || "",
+      variantName: item?.variantName || item?.name || "Variant",
+      shopifyVariantId: item?.shopifyVariantId || item?.variantId || "",
+      variantId: item?.variantId || item?.shopifyVariantId || "",
+      price: normalizedPrice,
+      priceEUR: normalizedPrice,
+      image: item?.image || "",
+      qty: Math.max(1, Number(item?.qty || 1)),
+      url: item?.url || ""
+    };
   },
 
   add(item) {
     const cart = this.get();
+    const normalizedItem = this.normalizeItem(item);
 
     const variantKey =
-      item.shopifyVariantId ||
-      item.variantId ||
-      item.key ||
-      item.productId ||
-      item.title;
+      normalizedItem.shopifyVariantId ||
+      normalizedItem.variantId ||
+      normalizedItem.key ||
+      normalizedItem.productId ||
+      normalizedItem.title;
 
     const existing = cart.find((i) => {
       const existingKey =
@@ -36,21 +80,22 @@ const RACEMCart = {
     });
 
     if (existing) {
-      existing.qty = Number(existing.qty || 1) + Number(item.qty || 1);
+      existing.qty = Number(existing.qty || 1) + Number(normalizedItem.qty || 1);
+
+      if ((!existing.price || Number(existing.price) === 0) && normalizedItem.price > 0) {
+        existing.price = normalizedItem.price;
+      }
+      if ((!existing.priceEUR || Number(existing.priceEUR) === 0) && normalizedItem.priceEUR > 0) {
+        existing.priceEUR = normalizedItem.priceEUR;
+      }
+      if ((!existing.image || existing.image === "") && normalizedItem.image) {
+        existing.image = normalizedItem.image;
+      }
+      if ((!existing.url || existing.url === "") && normalizedItem.url) {
+        existing.url = normalizedItem.url;
+      }
     } else {
-      cart.push({
-        key: item.key || variantKey,
-        productId: item.productId || "",
-        title: item.title || "Produkt",
-        short: item.short || "",
-        variantName: item.variantName || "Variant",
-        shopifyVariantId: item.shopifyVariantId || item.variantId || "",
-        variantId: item.variantId || item.shopifyVariantId || "",
-        price: Number(item.price ?? item.priceEUR ?? item.priceValue ?? 0),
-        image: item.image || "",
-        qty: Number(item.qty || 1),
-        url: item.url || ""
-      });
+      cart.push(normalizedItem);
     }
 
     this.save(cart);
@@ -99,7 +144,7 @@ const RACEMCart = {
 
   total() {
     return this.get().reduce((sum, i) => {
-      return sum + Number(i.price || 0) * Number(i.qty || 0);
+      return sum + this.normalizePrice(i) * Number(i.qty || 0);
     }, 0);
   },
 
@@ -149,5 +194,6 @@ window.checkoutCart = function () {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  window.RACEMCart.updateBadge();
+  const cart = window.RACEMCart.get();
+  window.RACEMCart.save(cart);
 });
