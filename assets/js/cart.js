@@ -1,141 +1,119 @@
-(function () {
-  const STORAGE_KEY = "racem_cart";
+// RACEM CART SYSTEM
 
-  function readCart() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      return [];
-    }
-  }
+const RACEMCart = {
+  KEY: "racem_cart",
 
-  function writeCart(cart) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    updateBadges();
-    window.dispatchEvent(new CustomEvent("racem:cart-updated", { detail: { cart } }));
-  }
+  get() {
+    return JSON.parse(localStorage.getItem(this.KEY) || "[]");
+  },
 
-  function totalCount(cart) {
-    return cart.reduce((sum, item) => sum + Math.max(1, Number(item.qty || 1)), 0);
-  }
+  save(cart) {
+    localStorage.setItem(this.KEY, JSON.stringify(cart));
+    this.updateBadge();
+  },
 
-  function updateBadges() {
-    const count = totalCount(readCart());
-    document.querySelectorAll("[data-cart-count]").forEach(el => {
-      el.textContent = String(count);
-    });
-  }
+  add(item) {
+    const cart = this.get();
 
-  // 🔥 TOAST
-  function ensureToast() {
-    let toast = document.getElementById("racem-cart-toast");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "racem-cart-toast";
-      toast.innerHTML = '<span class="toast-check">✓</span><span>Produkt bol pridaný do košíka</span>';
-      document.body.appendChild(toast);
-    }
-    return toast;
-  }
-
-  function showCartToast(message = "Produkt bol pridaný do košíka") {
-    const toast = ensureToast();
-    toast.querySelector("span:last-child").textContent = message;
-    toast.classList.remove("show");
-    void toast.offsetWidth;
-    toast.classList.add("show");
-
-    clearTimeout(toast._hideTimer);
-    toast._hideTimer = setTimeout(() => {
-      toast.classList.remove("show");
-    }, 2200);
-  }
-
-  // 🔥 ICON BUMP
-  function bumpCartIcons() {
-    document.querySelectorAll("[data-cart-icon]").forEach(el => {
-      el.classList.remove("cart-bump");
-      void el.offsetWidth;
-      el.classList.add("cart-bump");
-    });
-  }
-
-  function add(item) {
-    if (!item || !item.shopifyVariantId) return false;
-
-    const cart = readCart();
-    const key = item.key || `${item.productId || "product"}__${item.shopifyVariantId}`;
-    const existing = cart.find(x => String(x.key) === String(key));
+    const existing = cart.find(
+      (i) => i.variantId === item.variantId
+    );
 
     if (existing) {
-      existing.qty = Math.max(1, Number(existing.qty || 1)) + 1;
+      existing.qty += 1;
     } else {
       cart.push({
-        key,
-        productId: item.productId || "",
-        title: item.title || "Produkt",
-        variantName: item.variantName || "Variant",
-        shopifyVariantId: String(item.shopifyVariantId),
-        priceEUR: Number(item.priceEUR || 0),
-        image: item.image || "/assets/placeholder.webp",
-        url: item.url || window.location.pathname,
-        qty: 1
+        ...item,
+        qty: 1,
       });
     }
 
-    writeCart(cart);
+    this.save(cart);
+    this.animateAdd();
+  },
 
-    // 🔥 ANIMÁCIA
-    showCartToast();
-    bumpCartIcons();
+  remove(variantId) {
+    let cart = this.get();
+    cart = cart.filter((i) => i.variantId !== variantId);
+    this.save(cart);
+    location.reload();
+  },
 
-    return true;
-  }
+  setQty(variantId, qty) {
+    const cart = this.get();
 
-  function remove(key) {
-    const cart = readCart().filter(item => String(item.key) !== String(key));
-    writeCart(cart);
-  }
+    const item = cart.find((i) => i.variantId === variantId);
+    if (!item) return;
 
-  function setQty(key, qty) {
-    const amount = Math.max(1, Number(qty || 1));
-    const cart = readCart().map(item => {
-      if (String(item.key) === String(key)) item.qty = amount;
-      return item;
-    });
-    writeCart(cart);
-  }
+    item.qty = Math.max(1, qty);
+    this.save(cart);
+    location.reload();
+  },
 
-  function clear() {
-    writeCart([]);
-  }
+  clear() {
+    localStorage.removeItem(this.KEY);
+    this.updateBadge();
+    location.reload();
+  },
 
-  function checkout() {
-    const cart = readCart();
+  count() {
+    return this.get().reduce((sum, i) => sum + i.qty, 0);
+  },
 
-    if (!cart.length) {
-      alert("Košík je prázdny.");
-      return;
-    }
+  total() {
+    return this.get().reduce((sum, i) => sum + i.price * i.qty, 0);
+  },
 
-    const parts = cart.map(item =>
-      `${item.shopifyVariantId}:${Math.max(1, Number(item.qty || 1))}`
-    );
+  updateBadge() {
+    const el = document.querySelector(".cart-count");
+    if (!el) return;
+    el.textContent = this.count();
+  },
 
-    window.location.href = `https://shop.racem.sk/cart/${parts.join(",")}`;
-  }
+  animateAdd() {
+    const btn = document.querySelector(".add-to-cart-btn");
+    if (!btn) return;
 
-  window.RACEMCart = {
-    get: readCart,
-    add,
-    remove,
-    setQty,
-    clear,
-    checkout,
-    updateBadges
-  };
+    btn.classList.add("added");
+    btn.innerText = "Pridané ✓";
 
-  document.addEventListener("DOMContentLoaded", updateBadges);
-})();
+    setTimeout(() => {
+      btn.classList.remove("added");
+      btn.innerText = "Pridať do košíka";
+    }, 1200);
+  },
+
+  checkout() {
+    const cart = this.get();
+
+    if (!cart.length) return;
+
+    let url = "https://shop.racem.sk/cart/";
+
+    const items = cart.map((i) => `${i.variantId}:${i.qty}`).join(",");
+
+    window.location.href = url + items;
+  },
+};
+
+// INIT
+document.addEventListener("DOMContentLoaded", () => {
+  RACEMCart.updateBadge();
+});
+
+// GLOBAL HANDLERS
+function addToCart(data) {
+  RACEMCart.add(data);
+}
+
+function removeFromCart(id) {
+  RACEMCart.remove(id);
+}
+
+function changeQty(id, qty) {
+  RACEMCart.setQty(id, qty);
+}
+
+function checkoutCart() {
+  RACEMCart.checkout();
+}
