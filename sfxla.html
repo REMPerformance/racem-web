@@ -2914,6 +2914,78 @@ footer{
   z-index: 5;
 }
 
+
+    .nav-cart{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      min-height:48px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color:#fff;
+      text-decoration:none;
+      font-family:"Oswald", system-ui, sans-serif;
+      font-size:16px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .nav-cart:hover{
+      transform: translateY(-2px);
+      border-color: rgba(179,31,36,0.42);
+      background: rgba(179,31,36,0.18);
+    }
+    .nav-cart-count{
+      min-width:24px;
+      height:24px;
+      padding:0 7px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(179,31,36,0.95), rgba(140,20,24,0.92));
+      border:1px solid rgba(255,255,255,0.16);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      box-shadow: 0 8px 22px rgba(179,31,36,0.28);
+    }
+    #racem-cart-toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 18px;
+      border-radius:14px;
+      background:linear-gradient(180deg,#151515,#0d0d0d);
+      border:1px solid rgba(179,31,36,.45);
+      color:#fff;
+      box-shadow:0 18px 48px rgba(0,0,0,.45);
+      transform:translateY(16px);
+      opacity:0;
+      pointer-events:none;
+      transition:all .28s ease;
+      font-weight:700;
+    }
+    #racem-cart-toast.show{ transform:translateY(0); opacity:1; }
+    #racem-cart-toast .toast-check{
+      width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:999px;background:#b31f24;color:#fff;font-size:14px;font-weight:900;
+    }
+    .cart-bump{ animation:racemCartBump .42s ease; }
+    @keyframes racemCartBump{
+      0%{transform:scale(1)}
+      30%{transform:scale(1.14)}
+      55%{transform:scale(.94)}
+      100%{transform:scale(1)}
+    }
+
   </style>
 </head>
 
@@ -2934,6 +3006,11 @@ footer{
         <a href="#auta">Ponuka</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
+
+      <a href="/cart.html" class="nav-cart cart-link" id="navCartBtn" data-cart-icon aria-label="Košík">
+        <span>Košík</span>
+        <span class="nav-cart-count" id="navCartCount" data-cart-count>0</span>
+      </a>
     </div>
   </div>
 
@@ -3428,19 +3505,6 @@ footer{
     }
 
     let CART = []; 
-    const CART_STORAGE_KEY = "racem_cart_v1";
-    function saveCart(){
-      try{ localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(CART)); }catch(e){}
-    }
-    function loadCart(){
-      try{
-        const raw = localStorage.getItem(CART_STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) CART = parsed;
-      }catch(e){ CART = []; }
-    }
-    loadCart();
 // položka: { key, productId, title, carId, variantName, priceEUR, shippingEUR, delivery, image, qty }
 
 function cartKey(prodId, variantName){
@@ -3554,6 +3618,37 @@ window.addEventListener("resize", syncCartBarOffset);
 window.addEventListener("load", syncCartBarOffset);
 
 
+function ensureCartToast(){
+  let toast = document.getElementById("racem-cart-toast");
+  if (!toast){
+    toast = document.createElement("div");
+    toast.id = "racem-cart-toast";
+    toast.innerHTML = '<span class="toast-check">✓</span><span>Produkt bol pridaný do košíka</span>';
+    document.body.appendChild(toast);
+  }
+  return toast;
+}
+
+function showCartToast(message = "Produkt bol pridaný do košíka"){
+  const toast = ensureCartToast();
+  const textNode = toast.querySelector("span:last-child");
+  if (textNode) textNode.textContent = message;
+  toast.classList.remove("show");
+  void toast.offsetWidth;
+  toast.classList.add("show");
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+function bumpCartIcons(){
+  document.querySelectorAll(".cart-link, .cart-button, [data-cart-icon]").forEach(el => {
+    el.classList.remove("cart-bump");
+    void el.offsetWidth;
+    el.classList.add("cart-bump");
+  });
+}
+
+
     function renderCartBar(){
   const bar = $("#cartBar");
   if (!bar) return;
@@ -3562,6 +3657,8 @@ window.addEventListener("load", syncCartBarOffset);
   const sum = cartSumPrice();
 
   $("#cartBarCount").textContent = String(count);
+  const navCount = $("#navCartCount");
+  if (navCount) navCount.textContent = String(count);
   $("#cartBarTotal").textContent = fmtEUR(sum);
 
   bar.classList.toggle("show", count > 0);
@@ -3613,7 +3710,6 @@ function addActiveToCart(){
     });
   }
 
-  saveCart();
   renderCartBar();
 }
 
@@ -3662,7 +3758,6 @@ function addActiveToCart(){
 
       row.querySelector('[data-act="dec"]').addEventListener("click", () => {
   item.qty = Math.max(1, (item.qty || 1) - 1);
-  saveCart();
   renderCartModal();
   renderCartBar();
   renderOrderSummaryUI();
@@ -3670,7 +3765,6 @@ function addActiveToCart(){
 });
 row.querySelector('[data-act="inc"]').addEventListener("click", () => {
   item.qty = (item.qty || 1) + 1;
-  saveCart();
   renderCartModal();
   renderCartBar();
   renderOrderSummaryUI();
@@ -3678,7 +3772,6 @@ row.querySelector('[data-act="inc"]').addEventListener("click", () => {
 });
 row.querySelector(".cartRemove").addEventListener("click", () => {
   CART = CART.filter(x => x.key !== item.key);
-  saveCart();
   renderCartModal();
   renderCartBar();
   renderOrderSummaryUI();
@@ -3725,7 +3818,6 @@ if (cartModal) cartModal.addEventListener("click", (e)=>{ if(e.target===cartModa
 
 if (cartBarClear) cartBarClear.addEventListener("click", () => {
   CART = [];
-  saveCart();
   renderCartBar();
   renderCartModal();
 });
@@ -3736,6 +3828,17 @@ if (cartCheckout) cartCheckout.addEventListener("click", () => {
   closeModal(cartModal);
   goToShopifyCheckout();
 });
+
+const navCartBtn = $("#navCartBtn");
+if (navCartBtn) {
+  navCartBtn.addEventListener("click", (e) => {
+    if (cartCount() > 0 && cartModal) {
+      e.preventDefault();
+      openCartModal();
+    }
+  });
+}
+
 
     renderOrderSummaryUI(); // ✅ keď je order modal otvorený, refreshne sumár
 
@@ -4411,7 +4514,6 @@ const oSumPrice = document.querySelector("#o_sumPrice");
 
     if (cartBarClear) cartBarClear.addEventListener("click", () => {
   CART = [];
-  saveCart();
   renderCartBar();
   if (cartModal?.classList.contains("show")) closeModal(cartModal);
 });
