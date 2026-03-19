@@ -672,8 +672,8 @@
         </div>
 
         <div class="buy-stack">
-          <a class="buy-main" href="{{ADD_TO_CART_URL}}">Pridať do košíka</a>
-          <a class="buy-secondary" href="{{BUY_NOW_URL}}">Kúpiť ihneď</a>
+          <a id="addToCartBtn" class="buy-main" href="{{ADD_TO_CART_URL}}">Pridať do košíka</a>
+          <a id="buyNowBtn" class="buy-secondary" href="{{BUY_NOW_URL}}">Kúpiť ihneď</a>
         </div>
       </div>
     </section>
@@ -720,5 +720,44 @@
     </section>
 
   </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const variantButtons = Array.from(document.querySelectorAll(".variant[data-variant-id]"));
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const buyNowBtn = document.getElementById("buyNowBtn");
+  const priceMain = document.querySelector(".price-main");
+
+  function applyVariant(button) {
+    if (!button) return;
+
+    variantButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    const variantId = (button.dataset.variantId || "").trim();
+    const priceText = (button.dataset.priceText || "").trim();
+
+    if (variantId) {
+      addToCartBtn.href = `https://shop.racem.sk/cart/${variantId}:1`;
+      buyNowBtn.href = `https://shop.racem.sk/cart/${variantId}:1?checkout`;
+    } else {
+      addToCartBtn.href = "https://shop.racem.sk/";
+      buyNowBtn.href = "https://shop.racem.sk/";
+    }
+
+    if (priceMain && priceText) {
+      priceMain.textContent = priceText;
+    }
+  }
+
+  variantButtons.forEach(button => {
+    button.addEventListener("click", () => applyVariant(button));
+  });
+
+  const defaultVariant = document.querySelector(".variant.active[data-variant-id]") || variantButtons[0];
+  if (defaultVariant) applyVariant(defaultVariant);
+});
+</script>
+
 </body>
 </html>
