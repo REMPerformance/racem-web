@@ -1,130 +1,103 @@
-// RACEM CART SYSTEM (localStorage based)
+(function () {
+  const STORAGE_KEY = "racem_cart";
 
-const CART_KEY = "racem_cart";
+  function readCart() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
 
-// načítanie košíka
-function getCart() {
-  return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-}
+  function writeCart(cart) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    updateBadges();
+    window.dispatchEvent(new CustomEvent("racem:cart-updated", { detail: { cart } }));
+  }
 
-// uloženie košíka
-function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateCartCount();
-}
+  function totalCount(cart) {
+    return cart.reduce((sum, item) => sum + Math.max(1, Number(item.qty || 1)), 0);
+  }
 
-// pridanie do košíka
-function addToCart(product) {
-  let cart = getCart();
-
-  const existing = cart.find(
-    item => item.variantId === product.variantId
-  );
-
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({
-      variantId: product.variantId,
-      title: product.title,
-      variantName: product.variantName,
-      price: product.price,
-      image: product.image,
-      qty: 1
+  function updateBadges() {
+    const count = totalCount(readCart());
+    document.querySelectorAll("[data-cart-count]").forEach(el => {
+      el.textContent = String(count);
     });
   }
 
-  saveCart(cart);
-  alert("Pridané do košíka");
-}
+  function add(item) {
+    if (!item || !item.shopifyVariantId) return false;
 
-// odstránenie položky
-function removeFromCart(variantId) {
-  let cart = getCart().filter(item => item.variantId !== variantId);
-  saveCart(cart);
-  renderCart();
-}
+    const cart = readCart();
+    const key = item.key || `${item.productId || "product"}__${item.shopifyVariantId}`;
+    const existing = cart.find(x => String(x.key) === String(key));
 
-// zmena množstva
-function changeQty(variantId, qty) {
-  let cart = getCart();
-
-  cart = cart.map(item => {
-    if (item.variantId === variantId) {
-      item.qty = Math.max(1, qty);
+    if (existing) {
+      existing.qty = Math.max(1, Number(existing.qty || 1)) + Math.max(1, Number(item.qty || 1));
+    } else {
+      cart.push({
+        key,
+        productId: item.productId || "",
+        title: item.title || "Produkt",
+        variantName: item.variantName || "Variant",
+        shopifyVariantId: String(item.shopifyVariantId),
+        priceEUR: Number(item.priceEUR || 0),
+        image: item.image || "/assets/placeholder.webp",
+        url: item.url || window.location.pathname,
+        qty: Math.max(1, Number(item.qty || 1))
+      });
     }
-    return item;
-  });
 
-  saveCart(cart);
-  renderCart();
-}
-
-// počet položiek v ikone
-function updateCartCount() {
-  const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-
-  const el = document.getElementById("cart-count");
-  if (el) el.textContent = count;
-}
-
-// render košíka (cart.html)
-function renderCart() {
-  const container = document.getElementById("cart-items");
-  if (!container) return;
-
-  const cart = getCart();
-
-  if (cart.length === 0) {
-    container.innerHTML = "<p>Košík je prázdny</p>";
-    return;
+    writeCart(cart);
+    return true;
   }
 
-  let total = 0;
-
-  container.innerHTML = cart.map(item => {
-    total += item.price * item.qty;
-
-    return `
-      <div class="cart-item">
-        <img src="${item.image}" />
-        <div>
-          <strong>${item.title}</strong><br>
-          ${item.variantName}<br>
-          ${item.price} €
-        </div>
-        <div>
-          <button onclick="changeQty('${item.variantId}', ${item.qty - 1})">-</button>
-          ${item.qty}
-          <button onclick="changeQty('${item.variantId}', ${item.qty + 1})">+</button>
-        </div>
-        <button onclick="removeFromCart('${item.variantId}')">X</button>
-      </div>
-    `;
-  }).join("");
-
-  const totalEl = document.getElementById("cart-total");
-  if (totalEl) totalEl.textContent = total + " €";
-}
-
-// checkout → Shopify
-function goToCheckout() {
-  const cart = getCart();
-
-  if (cart.length === 0) {
-    alert("Košík je prázdny");
-    return;
+  function remove(key) {
+    const cart = readCart().filter(item => String(item.key) !== String(key));
+    writeCart(cart);
   }
 
-  const items = cart.map(item => `${item.variantId}:${item.qty}`).join(",");
+  function setQty(key, qty) {
+    const amount = Math.max(1, Number(qty || 1));
+    const cart = readCart().map(item => {
+      if (String(item.key) === String(key)) item.qty = amount;
+      return item;
+    });
+    writeCart(cart);
+  }
 
-  const url = `https://shop.racem.sk/cart/${items}`;
-  window.location.href = url;
-}
+  function clear() {
+    writeCart([]);
+  }
 
-// init
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-  renderCart();
-});
+  function checkout() {
+    const cart = readCart();
+
+    if (!cart.length) {
+      alert("Košík je prázdny.");
+      return;
+    }
+
+    const parts = cart.map(item =>
+      `${item.shopifyVariantId}:${Math.max(1, Number(item.qty || 1))}`
+    );
+
+    const url = `https://shop.racem.sk/cart/${parts.join(",")}`;
+    window.location.href = url;
+  }
+
+  window.RACEMCart = {
+    get: readCart,
+    add,
+    remove,
+    setQty,
+    clear,
+    checkout,
+    updateBadges
+  };
+
+  document.addEventListener("DOMContentLoaded", updateBadges);
+})();
