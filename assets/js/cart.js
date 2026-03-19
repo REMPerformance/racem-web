@@ -28,6 +28,40 @@
     });
   }
 
+  // 🔥 TOAST
+  function ensureToast() {
+    let toast = document.getElementById("racem-cart-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "racem-cart-toast";
+      toast.innerHTML = '<span class="toast-check">✓</span><span>Produkt bol pridaný do košíka</span>';
+      document.body.appendChild(toast);
+    }
+    return toast;
+  }
+
+  function showCartToast(message = "Produkt bol pridaný do košíka") {
+    const toast = ensureToast();
+    toast.querySelector("span:last-child").textContent = message;
+    toast.classList.remove("show");
+    void toast.offsetWidth;
+    toast.classList.add("show");
+
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
+  // 🔥 ICON BUMP
+  function bumpCartIcons() {
+    document.querySelectorAll("[data-cart-icon]").forEach(el => {
+      el.classList.remove("cart-bump");
+      void el.offsetWidth;
+      el.classList.add("cart-bump");
+    });
+  }
+
   function add(item) {
     if (!item || !item.shopifyVariantId) return false;
 
@@ -36,7 +70,7 @@
     const existing = cart.find(x => String(x.key) === String(key));
 
     if (existing) {
-      existing.qty = Math.max(1, Number(existing.qty || 1)) + Math.max(1, Number(item.qty || 1));
+      existing.qty = Math.max(1, Number(existing.qty || 1)) + 1;
     } else {
       cart.push({
         key,
@@ -47,11 +81,16 @@
         priceEUR: Number(item.priceEUR || 0),
         image: item.image || "/assets/placeholder.webp",
         url: item.url || window.location.pathname,
-        qty: Math.max(1, Number(item.qty || 1))
+        qty: 1
       });
     }
 
     writeCart(cart);
+
+    // 🔥 ANIMÁCIA
+    showCartToast();
+    bumpCartIcons();
+
     return true;
   }
 
@@ -85,8 +124,7 @@
       `${item.shopifyVariantId}:${Math.max(1, Number(item.qty || 1))}`
     );
 
-    const url = `https://shop.racem.sk/cart/${parts.join(",")}`;
-    window.location.href = url;
+    window.location.href = `https://shop.racem.sk/cart/${parts.join(",")}`;
   }
 
   window.RACEMCart = {
