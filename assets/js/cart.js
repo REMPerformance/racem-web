@@ -1,10 +1,12 @@
-// RACEM CART SYSTEM
-
 const RACEMCart = {
   KEY: "racem_cart",
 
   get() {
-    return JSON.parse(localStorage.getItem(this.KEY) || "[]");
+    try {
+      return JSON.parse(localStorage.getItem(this.KEY) || "[]");
+    } catch (e) {
+      return [];
+    }
   },
 
   save(cart) {
@@ -15,105 +17,116 @@ const RACEMCart = {
   add(item) {
     const cart = this.get();
 
+    const variantKey =
+      item.variantId ||
+      item.shopifyVariantId ||
+      item.id ||
+      item.title;
+
     const existing = cart.find(
-      (i) => i.variantId === item.variantId
+      (i) =>
+        (i.variantId || i.shopifyVariantId || i.id || i.title) === variantKey
     );
 
     if (existing) {
-      existing.qty += 1;
+      existing.qty = (existing.qty || 1) + (item.qty || 1);
     } else {
       cart.push({
         ...item,
-        qty: 1,
+        variantId: item.variantId || item.shopifyVariantId || item.id || "",
+        shopifyVariantId: item.shopifyVariantId || item.variantId || item.id || "",
+        price: Number(item.price || item.priceEUR || item.priceValue || 0),
+        qty: item.qty || 1
       });
     }
 
     this.save(cart);
-    this.animateAdd();
   },
 
   remove(variantId) {
     let cart = this.get();
-    cart = cart.filter((i) => i.variantId !== variantId);
+    cart = cart.filter(
+      (i) =>
+        (i.variantId || i.shopifyVariantId || i.id || i.title) !== variantId
+    );
     this.save(cart);
-    location.reload();
   },
 
   setQty(variantId, qty) {
     const cart = this.get();
+    const item = cart.find(
+      (i) =>
+        (i.variantId || i.shopifyVariantId || i.id || i.title) === variantId
+    );
 
-    const item = cart.find((i) => i.variantId === variantId);
     if (!item) return;
 
-    item.qty = Math.max(1, qty);
+    item.qty = Math.max(1, Number(qty) || 1);
     this.save(cart);
-    location.reload();
   },
 
   clear() {
     localStorage.removeItem(this.KEY);
     this.updateBadge();
-    location.reload();
   },
 
   count() {
-    return this.get().reduce((sum, i) => sum + i.qty, 0);
+    return this.get().reduce((sum, i) => sum + (Number(i.qty) || 0), 0);
   },
 
   total() {
-    return this.get().reduce((sum, i) => sum + i.price * i.qty, 0);
+    return this.get().reduce(
+      (sum, i) => sum + (Number(i.price) || 0) * (Number(i.qty) || 0),
+      0
+    );
   },
 
   updateBadge() {
-    const el = document.querySelector(".cart-count");
-    if (!el) return;
-    el.textContent = this.count();
-  },
+    const els = document.querySelectorAll(".cart-count");
+    const count = this.count();
 
-  animateAdd() {
-    const btn = document.querySelector(".add-to-cart-btn");
-    if (!btn) return;
-
-    btn.classList.add("added");
-    btn.innerText = "Pridané ✓";
-
-    setTimeout(() => {
-      btn.classList.remove("added");
-      btn.innerText = "Pridať do košíka";
-    }, 1200);
+    els.forEach((el) => {
+      el.textContent = count;
+      el.style.display = count > 0 ? "inline-flex" : "none";
+    });
   },
 
   checkout() {
     const cart = this.get();
-
     if (!cart.length) return;
 
-    let url = "https://shop.racem.sk/cart/";
+    const items = cart
+      .filter((i) => i.shopifyVariantId || i.variantId)
+      .map((i) => `${i.shopifyVariantId || i.variantId}:${i.qty}`)
+      .join(",");
 
-    const items = cart.map((i) => `${i.variantId}:${i.qty}`).join(",");
+    if (!items) {
+      alert("V košíku nie sú platné Shopify varianty.");
+      return;
+    }
 
-    window.location.href = url + items;
-  },
+    window.location.href = `https://shop.racem.sk/cart/${items}`;
+  }
 };
 
-// INIT
+window.RACEMCart = RACEMCart;
+
+window.addToCart = function (data) {
+  window.RACEMCart.add(data);
+};
+
+window.removeFromCart = function (id) {
+  window.RACEMCart.remove(id);
+};
+
+window.changeQty = function (id, qty) {
+  window.RACEMCart.setQty(id, qty);
+};
+
+window.checkoutCart = function () {
+  window.RACEMCart.checkout();
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-  RACEMCart.updateBadge();
+  window.RACEMCart.updateBadge();
 });
-
-// GLOBAL HANDLERS
-function addToCart(data) {
-  RACEMCart.add(data);
-}
-
-function removeFromCart(id) {
-  RACEMCart.remove(id);
-}
-
-function changeQty(id, qty) {
-  RACEMCart.setQty(id, qty);
-}
-
-function checkoutCart() {
-  RACEMCart.checkout();
-}
