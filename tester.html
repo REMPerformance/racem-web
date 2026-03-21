@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RACEM | CNC71</title>
+  <title>RACEM | CNC71 Catalog</title>
   <meta name="description" content="Prémiová ponuka performance dielov v RACEM štýle." />
   <meta name="theme-color" content="#0a0a0c" />
 
@@ -395,6 +395,23 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      border-radius:24px;
+      padding-top:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 18px 50px rgba(0,0,0,.22);
+    }
+
+    .hero-panel::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      right:18px;
+      top:0;
+      height:2px;
+      border-radius:999px;
+      background:linear-gradient(90deg, transparent, var(--red-2), transparent);
+      opacity:.9;
     }
 
     .hero-stat-grid{
@@ -409,6 +426,49 @@
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(12px);
+      min-height:98px;
+    }
+
+    .hero-stat-live{
+      background:linear-gradient(180deg, rgba(48,196,119,.08), rgba(255,255,255,.03));
+    }
+
+    .hero-live-value{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#dfffea;
+    }
+
+    .live-dot{
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 0 0 rgba(48,196,119,.7);
+      animation:livePulse 1.4s infinite;
+      flex:none;
+    }
+
+    @keyframes livePulse{
+      0%{box-shadow:0 0 0 0 rgba(48,196,119,.72); opacity:1}
+      70%{box-shadow:0 0 0 12px rgba(48,196,119,0); opacity:.9}
+      100%{box-shadow:0 0 0 0 rgba(48,196,119,0); opacity:1}
+    }
+
+    .racem-clock{
+      display:inline-flex;
+      align-items:center;
+      min-height:36px;
+      padding:0 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.08);
+      color:#f5f7fb;
+      font-family:"Oxanium",sans-serif;
+      font-size:.82rem;
+      letter-spacing:.18em;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 8px 20px rgba(0,0,0,.18);
     }
 
     .hero-stat-label{
@@ -451,7 +511,18 @@
     .section{padding:16px 0 24px;position:relative;z-index:2}
 
     .stats-strip{
-      display:grid;
+      display:none;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+      margin-top:6px;
+    }
+
+    /* disabled legacy stats strip */
+
+    .stats-strip-hidden{display:none}
+
+    .stats-strip{
+      display:none;
       grid-template-columns:repeat(4, minmax(0,1fr));
       gap:16px;
       margin-top:6px;
@@ -1981,7 +2052,7 @@
       <a class="brand" href="/">
         <img class="brand-logo" src="assets/racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
         <div class="brand-text">
-          <span>Performance Parts Selection</span>
+          <span class="racem-clock" id="racemClock">--:--:-- CET</span>
         </div>
       </a>
 
@@ -2031,15 +2102,15 @@
               <div class="hero-panel">
                 <div class="hero-stat-grid">
                   <div class="hero-stat">
-                    <div class="hero-stat-label">Produktov</div>
+                    <div class="hero-stat-label">Dominantný model</div>
                     <div class="hero-stat-value" id="heroProducts">—</div>
                   </div>
-                  <div class="hero-stat">
-                    <div class="hero-stat-label">Kategórií</div>
-                    <div class="hero-stat-value" id="heroCategories">—</div>
+                  <div class="hero-stat hero-stat-live">
+                    <div class="hero-stat-label">Checkout otvorený</div>
+                    <div class="hero-stat-value hero-live-value" id="heroCategories"><span class="live-dot"></span><span>LIVE</span></div>
                   </div>
                   <div class="hero-stat">
-                    <div class="hero-stat-label">Modelov</div>
+                    <div class="hero-stat-label">Najčastejšia kategória</div>
                     <div class="hero-stat-value" id="heroBrands">—</div>
                   </div>
                   <div class="hero-stat">
@@ -2053,32 +2124,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="stats-strip section">
-          <div class="hud-card">
-            <div class="hud-label">Live katalóg</div>
-            <div class="hud-value" id="hudAllProducts">—</div>
-            <div class="hud-sub">načítaných produktov</div>
-          </div>
-
-          <div class="hud-card">
-            <div class="hud-label">Aktívne zobrazenie</div>
-            <div class="hud-value" id="hudVisibleProducts">—</div>
-            <div class="hud-sub">výsledkov s filtrom</div>
-          </div>
-
-          <div class="hud-card">
-            <div class="hud-label">Najčastejšia kategória</div>
-            <div class="hud-value" id="hudTopCategory">—</div>
-            <div class="hud-sub">dominantný segment v tejto ponuke</div>
-          </div>
-
-          <div class="hud-card">
-            <div class="hud-label">Status feed</div>
-            <div class="hud-value">LIVE</div>
-            <div class="hud-sub">katalóg je online</div>
           </div>
         </div>
       </div>
@@ -2311,19 +2356,19 @@
     const I18N = {
       sk: {
         metaDescription: 'Prémiová ponuka performance dielov v RACEM štýle.',
-        brandText: 'Performance Parts Selection',
+        brandText: 'RACEM CLOCK',
         home: 'Domov',
         cart: 'Košík',
         officialOffer: 'Oficiálna ponuka výrobcu',
         heroTitleBefore: 'Výber dielov ',
         heroTitleAccent: 'CNC71',
         heroDesc: 'Karosárske a performance komponenty určené pre projekty, ktoré idú nad rámec sériového auta.',
-        products: 'Produktov',
-        categories: 'Kategórií',
-        models: 'Modelov',
+        products: 'Dominantný model',
+        categories: 'Checkout otvorený',
+        models: 'Najčastejšia kategória',
         priceRange: 'Cenový rozsah',
         loadingCatalog: 'Načítavam katalóg a pripravujem prehľad ponuky…',
-        liveCatalog: 'Live katalóg',
+        liveCatalog: 'Checkout status',
         loadedProducts: 'načítaných produktov',
         activeView: 'Aktívne zobrazenie',
         filteredResults: 'výsledkov s filtrom',
@@ -2386,7 +2431,7 @@
         defaultVersion: 'Základná verzia',
         universal: 'UNIVERZÁLNE',
         loadedProductsMeta: 'Načítaných {count} produktov zo cnc71.json',
-        heroHighlight: 'Katalóg obsahuje {count} položiek. Dominantná kategória je {category} a filtre sú nastavené podľa modelov áut.',
+        heroHighlight: 'Katalóg obsahuje {count} položiek. Dominantný model je {model} a najčastejšia kategória je {category}.',
         heroHighlightEmpty: 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.',
         loadErrorTitle: 'cnc71.json sa nepodarilo načítať',
         loadErrorDesc: 'Skontroluj, či je súbor cnc71.json v rovnakom priečinku ako táto HTML stránka.',
@@ -2398,19 +2443,19 @@
       },
       en: {
         metaDescription: 'Premium performance parts selection in RACEM style.',
-        brandText: 'Performance Parts Selection',
+        brandText: 'RACEM CLOCK',
         home: 'Home',
         cart: 'Cart',
         officialOffer: 'Official manufacturer offer',
         heroTitleBefore: 'CNC71 parts ',
         heroTitleAccent: 'selection',
         heroDesc: 'Body and performance components built for projects that go beyond a stock car.',
-        products: 'Products',
-        categories: 'Categories',
-        models: 'Models',
+        products: 'Dominant platform',
+        categories: 'Checkout open',
+        models: 'Top category',
         priceRange: 'Price range',
         loadingCatalog: 'Loading catalog and preparing product overview…',
-        liveCatalog: 'Live catalog',
+        liveCatalog: 'Checkout status',
         loadedProducts: 'products loaded',
         activeView: 'Active view',
         filteredResults: 'filtered results',
@@ -2473,7 +2518,7 @@
         defaultVersion: 'Base version',
         universal: 'UNIVERSAL',
         loadedProductsMeta: 'Loaded {count} products from cnc71.json',
-        heroHighlight: 'The catalog contains {count} items. The dominant category is {category} and the filters are set up around car models.',
+        heroHighlight: 'The catalog contains {count} items. The dominant platform is {model} and the top category is {category}.',
         heroHighlightEmpty: 'The JSON is loaded, but it does not contain any products yet.',
         loadErrorTitle: 'Failed to load cnc71.json',
         loadErrorDesc: 'Check whether cnc71.json is in the same folder as this HTML page.',
@@ -2538,7 +2583,7 @@
 
     function updateStaticTexts(){
       const brandSpan = document.querySelector('.brand-text span');
-      if(brandSpan) brandSpan.textContent = t('brandText');
+      updateRacemClock();
       if(els.homeBtn) els.homeBtn.textContent = t('home');
       if(els.heroHomeBtn) els.heroHomeBtn.textContent = t('home');
       if(els.cartBtnLabel) els.cartBtnLabel.textContent = t('cart');
@@ -3108,30 +3153,28 @@ function getVariantOptionsLabel(variant){
 
     function updateGlobalStats(){
       const all = state.allProducts;
-      const categories = uniqueSorted(all.map(p => p.category));
-      const carModels = uniqueSorted(all.flatMap(p => p.carModels));
       const prices = all.map(p => p.price).filter(v => v !== null && !Number.isNaN(v));
       const minPrice = prices.length ? Math.min(...prices) : null;
       const maxPrice = prices.length ? Math.max(...prices) : null;
-
-      els.heroProducts.textContent = all.length || '0';
-      els.heroCategories.textContent = categories.length || '0';
-      els.heroBrands.textContent = carModels.length || '0';
-      els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
-      els.hudAllProducts.textContent = all.length || '0';
-      els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
-
       const topCategory = getTopCategory(all);
-      els.hudTopCategory.textContent = topCategory || '—';
+      const topModel = getTopModel(all);
+
+      els.heroProducts.textContent = topModel || '—';
+      if(els.heroCategories) els.heroCategories.innerHTML = '<span class="live-dot"></span><span>LIVE</span>';
+      els.heroBrands.textContent = topCategory || '—';
+      els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
+      if(els.hudAllProducts) els.hudAllProducts.textContent = all.length || '0';
+      els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
+      if(els.hudTopCategory) els.hudTopCategory.textContent = topCategory || '—';
 
       els.heroHighlightText.textContent = all.length
-        ? t('heroHighlight', { count: all.length, category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená') })
+        ? t('heroHighlight', { count: all.length, category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená'), model: topModel || (state.lang === 'en' ? 'unknown' : 'neznámy') })
         : t('heroHighlightEmpty');
     }
 
  function updateResultStats(){
   els.resultCount.textContent = state.filteredProducts.length;
-  els.hudVisibleProducts.textContent = state.filteredProducts.length;
+  if(els.hudVisibleProducts) els.hudVisibleProducts.textContent = state.filteredProducts.length;
 
   if (els.toolbarInfo) {
     els.toolbarInfo.textContent = state.search
@@ -3139,6 +3182,38 @@ function getVariantOptionsLabel(variant){
       : t('toolbarLive');
   }
 }
+
+
+    function getTopModel(list){
+      const counter = {};
+      for(const p of list){
+        for(const model of (p.carModels || [])){
+          const key = String(model || '').trim();
+          if(!key) continue;
+          counter[key] = (counter[key] || 0) + 1;
+        }
+      }
+      return Object.entries(counter).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0], localeCode()))[0]?.[0] || null;
+    }
+
+    function updateRacemClock(){
+      const el = document.getElementById('racemClock');
+      if(!el) return;
+      try{
+        const now = new Date();
+        const parts = new Intl.DateTimeFormat('sk-SK', {
+          timeZone: 'Europe/Bratislava',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).format(now);
+        el.textContent = `${parts} CET/CEST`;
+      }catch(_err){
+        const now = new Date();
+        el.textContent = now.toLocaleTimeString('sk-SK', {hour12:false});
+      }
+    }
 
     function getTopCategory(list){
       const counter = {};
@@ -3526,6 +3601,8 @@ els.cartBackdrop?.addEventListener('click', closeCart);
     bindEvents();
     updateStaticTexts();
     setLanguage(state.lang, false);
+    updateRacemClock();
+    setInterval(updateRacemClock, 1000);
     loadProducts();
     updateCartUI();
   </script>
