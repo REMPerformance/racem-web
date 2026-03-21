@@ -1,0 +1,3533 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RACEM | CNC71</title>
+  <meta name="description" content="Prémiová ponuka performance dielov v RACEM štýle." />
+  <meta name="theme-color" content="#0a0a0c" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#050506;
+      --bg-2:#09090b;
+      --panel:#0d0d11;
+      --panel-2:#111218;
+      --panel-3:#171922;
+      --line:rgba(255,255,255,.08);
+      --line-strong:rgba(255,255,255,.14);
+      --text:#f4f4f6;
+      --muted:#9b9eaa;
+      --soft:#c7cad3;
+      --red:#b31f24;
+      --red-2:#e33c43;
+      --red-3:#7f1216;
+      --gold:#d5a85b;
+      --green:#30c477;
+      --orange:#ff9e45;
+      --danger:#ff5252;
+      --shadow:0 20px 70px rgba(0,0,0,.5);
+      --container:min(1540px, calc(100vw - 32px));
+      --header-h:78px;
+      --grid-gap:16px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(255,255,255,.035), transparent 32%),
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,.025), transparent 18%),
+        linear-gradient(180deg, #060607 0%, #050506 45%, #060607 100%);
+      color:var(--text);
+      font-family:"Inter",system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.011) 1px, transparent 1px);
+      background-size:100% 28px, 28px 100%;
+      mask-image:radial-gradient(circle at center, black 45%, transparent 100%);
+      opacity:.18;
+      z-index:0;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.035), transparent 18%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,.025), transparent 12%),
+        radial-gradient(circle at 60% 75%, rgba(255,255,255,.02), transparent 18%);
+      filter:blur(55px);
+      animation:floatAmbient 14s ease-in-out infinite alternate;
+      z-index:0;
+    }
+
+    @keyframes floatAmbient{
+      0%{transform:translate3d(0,0,0) scale(1)}
+      100%{transform:translate3d(1.5%,-1.5%,0) scale(1.04)}
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    button,input,select{font:inherit}
+    .container{width:var(--container);margin:0 auto;position:relative;z-index:2}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      backdrop-filter:blur(16px);
+      background:linear-gradient(180deg, rgba(8,8,10,.95), rgba(8,8,10,.78));
+      border-bottom:1px solid rgba(255,255,255,.07);
+      box-shadow:0 10px 40px rgba(0,0,0,.28);
+    }
+
+    .topbar-inner{
+      min-height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .brand-logo{
+      width:154px;
+      max-width:40vw;
+      height:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 4px 16px rgba(0,0,0,.35));
+      flex:none;
+    }
+
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    .brand-text span{
+      color:var(--muted);
+      font-size:.74rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .lang-switch{
+      position:relative;
+      display:inline-grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center;
+      min-width:92px;
+      height:44px;
+      padding:4px;
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .lang-switch-thumb{
+      position:absolute;
+      top:4px;
+      left:4px;
+      width:calc(50% - 4px);
+      height:36px;
+      border-radius:999px;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 10px 24px rgba(179,31,36,.28);
+      transition:transform .24s ease;
+      pointer-events:none;
+    }
+
+    .lang-switch[data-lang="en"] .lang-switch-thumb{
+      transform:translateX(100%);
+    }
+
+    .lang-switch-btn{
+      position:relative;
+      z-index:1;
+      border:none;
+      background:none;
+      color:var(--soft);
+      font-weight:800;
+      letter-spacing:.08em;
+      height:100%;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+      text-transform:uppercase;
+      padding:0 14px;
+    }
+
+    .lang-switch-btn.active{
+      color:#fff;
+    }
+
+    .ghost-btn,.cta-btn{
+      border:none;
+      cursor:pointer;
+      transition:.25s ease;
+      position:relative;
+    }
+
+    .ghost-btn{
+      height:44px;
+      padding:0 18px;
+      border-radius:999px;
+      color:#fff;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      font-weight:700;
+    }
+
+    .ghost-btn:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.16);
+    }
+
+    .cta-btn{
+      height:46px;
+      padding:0 18px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:700;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 10px 28px rgba(179,31,36,.28);
+    }
+
+    .cta-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(179,31,36,.4);
+    }
+
+    .hero{
+      padding:34px 0 20px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-wrap{
+      position:relative;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      overflow:hidden;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.03), transparent 38%),
+        radial-gradient(circle at 70% 25%, rgba(255,255,255,.045), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+        #0a0b0f;
+      box-shadow:var(--shadow);
+      min-height:500px;
+    }
+
+    .hero-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,.03), transparent 28%),
+        repeating-linear-gradient(90deg, transparent 0 48px, rgba(255,255,255,.018) 48px 49px);
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .hero-wrap::after{
+      content:"CNC71";
+      position:absolute;
+      right:-12px;
+      bottom:-18px;
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:clamp(72px, 12vw, 220px);
+      letter-spacing:.12em;
+      color:rgba(255,255,255,.035);
+      pointer-events:none;
+      line-height:.8;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:28px;
+      padding:40px;
+      min-height:500px;
+      align-items:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:#f7f7f8;
+      text-transform:uppercase;
+      font-size:.72rem;
+      letter-spacing:.14em;
+      margin-bottom:18px;
+      backdrop-filter:blur(10px);
+    }
+
+    .eyebrow-dot{
+      width:9px;height:9px;border-radius:50%;
+      background:var(--red-2);
+      box-shadow:0 0 0 6px rgba(179,31,36,.16), 0 0 16px rgba(179,31,36,.4);
+      animation:pulse 1.8s infinite;
+      flex:none;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.18);opacity:.8}
+    }
+
+    .hero h1{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      font-size:clamp(1.95rem, 4vw, 3.85rem);
+      line-height:.96;
+      letter-spacing:.01em;
+      font-weight:800;
+      max-width:820px;
+    }
+
+    .hero h1 .accent{
+      color:var(--red-2);
+      text-shadow:0 0 28px rgba(179,31,36,.22);
+    }
+
+    .hero p{
+      margin:18px 0 0;
+      max-width:780px;
+      color:var(--soft);
+      font-size:1.03rem;
+      line-height:1.72;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:28px;
+    }
+
+    .hero-card{
+      position:relative;
+      padding:24px;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02)),
+        rgba(8,9,12,.84);
+      min-height:360px;
+      overflow:hidden;
+      box-shadow:0 18px 60px rgba(0,0,0,.34);
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background:
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,.08), transparent 18%),
+        radial-gradient(circle at 35% 70%, rgba(255,255,255,.05), transparent 16%);
+      filter:blur(34px);
+      animation:heroGlow 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow{
+      0%{transform:translate3d(0,0,0) scale(1)}
+      100%{transform:translate3d(-2%,2%,0) scale(1.06)}
+    }
+
+    .tech-lines{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(transparent 0 calc(100% - 1px), rgba(255,255,255,.05) calc(100% - 1px)),
+        linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(255,255,255,.03) calc(100% - 1px));
+      background-size:100% 60px, 60px 100%;
+      mask-image:radial-gradient(circle at center, black 48%, transparent 100%);
+      opacity:.35;
+    }
+
+    .hero-panel{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .hero-stat-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+
+    .hero-stat{
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(12px);
+    }
+
+    .hero-stat-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.7rem;
+      margin-bottom:8px;
+    }
+
+    .hero-stat-value{
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:1.6rem;
+      line-height:1;
+    }
+
+    .hero-highlight{
+      margin-top:16px;
+      border-radius:20px;
+      padding:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .hero-highlight small{
+      display:block;
+      color:var(--muted);
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .hero-highlight strong{
+      display:block;
+      font-size:1.16rem;
+      line-height:1.42;
+    }
+
+    .section{padding:16px 0 24px;position:relative;z-index:2}
+
+    .stats-strip{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+      margin-top:6px;
+    }
+
+    .hud-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      padding:18px 18px 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 16px 50px rgba(0,0,0,.25);
+    }
+
+    .hud-card::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;width:100%;height:2px;
+      background:linear-gradient(90deg, transparent, var(--red-2), transparent);
+      opacity:.75;
+    }
+
+    .hud-label{
+      color:var(--muted);
+      font-size:.72rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .hud-value{
+      font-family:"Oxanium",sans-serif;
+      font-weight:800;
+      font-size:1.75rem;
+      line-height:1;
+      margin-bottom:6px;
+    }
+
+    .hud-sub{color:var(--soft);font-size:.94rem}
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .section-title{
+      font-family:"Oxanium",sans-serif;
+      font-size:clamp(1.5rem, 3vw, 2.45rem);
+      line-height:1;
+      margin:0;
+      letter-spacing:.02em;
+    }
+
+    .section-copy{
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.7;
+    }
+
+    .shop-layout{
+      display:grid;
+      grid-template-columns:320px minmax(0,1fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .filters{
+      position:sticky;
+      top:calc(var(--header-h) + 14px);
+      max-height:calc(100vh - var(--header-h) - 28px);
+      overflow:auto;
+      scrollbar-width:thin;
+      border-radius:26px;
+      padding:18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 18px 56px rgba(0,0,0,.28);
+    }
+
+    .filters::-webkit-scrollbar{width:8px}
+    .filters::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
+
+    .filter-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:16px;
+    }
+
+    .filter-head h3{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      letter-spacing:.06em;
+      font-size:1.05rem;
+    }
+
+    .reset-link{
+      font-size:.84rem;
+      color:var(--red-2);
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .filter-group{
+      padding:16px 0;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .filter-group:first-of-type{border-top:none;padding-top:0}
+
+    .filter-title{
+      margin:0 0 12px;
+      font-weight:700;
+      color:#fff;
+      font-size:.95rem;
+    }
+
+    .search-wrap{position:relative}
+
+    .input,.select{
+      width:100%;
+      height:50px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#11131a;
+      color:#fff;
+      outline:none;
+      padding:0 16px;
+      transition:.22s ease;
+    }
+
+    .input{padding-left:48px}
+    .input:focus,.select:focus{
+      border-color:rgba(179,31,36,.55);
+      box-shadow:0 0 0 4px rgba(179,31,36,.12);
+    }
+
+    .search-ico{
+      position:absolute;
+      left:16px;top:50%;
+      transform:translateY(-50%);
+      width:16px;height:16px;
+      opacity:.7;
+      pointer-events:none;
+    }
+
+    .search-ico svg{display:block;width:100%;height:100%}
+
+    .price-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .chip-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .chip{
+      border:1px solid rgba(255,255,255,.08);
+      background:#12141b;
+      color:#d9dbe2;
+      padding:11px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.22s ease;
+      font-size:.9rem;
+      line-height:1;
+      user-select:none;
+    }
+
+    .chip:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.16);
+      background:#181b24;
+      color:#fff;
+    }
+
+    .chip.active{
+      color:#fff;
+      border-color:rgba(179,31,36,.45);
+      background:linear-gradient(135deg, rgba(179,31,36,.25), rgba(179,31,36,.10));
+      box-shadow:0 0 0 4px rgba(179,31,36,.08);
+    }
+
+    .checks{display:grid;gap:10px}
+
+    .check{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--soft);
+      cursor:pointer;
+      user-select:none;
+      min-width:0;
+    }
+
+    .check input{
+      appearance:none;
+      width:18px;height:18px;
+      border-radius:5px;
+      border:1px solid rgba(255,255,255,.16);
+      background:#11131a;
+      display:grid;
+      place-items:center;
+      margin:0;
+      flex:none;
+      transition:.2s ease;
+    }
+
+    .check input:checked{
+      border-color:var(--red-2);
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 0 0 4px rgba(179,31,36,.12);
+    }
+
+    .check input:checked::before{
+      content:"";
+      width:8px;height:8px;border-radius:2px;background:white;
+    }
+
+    .results-shell{min-width:0}
+
+    .results-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+      border-radius:22px;
+      padding:14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 16px 44px rgba(0,0,0,.22);
+      position:sticky;
+      top:calc(var(--header-h) + 12px);
+      z-index:25;
+      backdrop-filter:blur(12px);
+    }
+
+    .toolbar-left,.toolbar-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .result-count{color:#fff;font-weight:700}
+    .result-meta{color:var(--muted);font-size:.94rem}
+
+    .toolbar-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:42px;
+      padding:0 14px;
+      border-radius:999px;
+      background:#11131a;
+      border:1px solid rgba(255,255,255,.08);
+      color:#f3f4f7;
+      font-size:.92rem;
+    }
+
+    .mobile-filter-btn{
+      display:none;
+      height:42px;
+      padding:0 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#11131a;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .active-filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .active-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(179,31,36,.24);
+      background:rgba(179,31,36,.12);
+      color:#fff;
+      font-size:.88rem;
+    }
+
+    .active-tag button{
+      width:20px;height:20px;border:none;border-radius:50%;
+      background:rgba(255,255,255,.1);color:#fff;cursor:pointer;
+      padding:0;line-height:1;
+    }
+
+    .products{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:var(--grid-gap);
+    }
+
+    .product-card{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+      border-radius:24px;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
+        #0b0d11;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 18px 50px rgba(0,0,0,.24);
+      transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+      isolation:isolate;
+    }
+
+    .product-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent, rgba(179,31,36,.04));
+      opacity:0;
+      transition:.28s ease;
+      pointer-events:none;
+    }
+
+    .product-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(179,31,36,.28);
+      box-shadow:0 24px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(179,31,36,.08);
+    }
+
+    .product-card:hover::before{opacity:1}
+
+    .product-media{
+      position:relative;
+      aspect-ratio:1 / 0.86;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.12), transparent 22%),
+        linear-gradient(180deg, #13151d, #0d0f15);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .product-media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(255,255,255,.07), transparent 30%);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .product-media img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      object-position:center;
+      padding:14px;
+      transform:scale(1.01);
+      transition:transform .45s ease, filter .3s ease;
+      position:relative;
+      z-index:1;
+      background:linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,.00));
+    }
+
+    .product-card:hover .product-media img{
+      transform:scale(1.05);
+      filter:contrast(1.04) saturate(1.04);
+    }
+
+    .product-overlay{
+      position:absolute;
+      inset:auto 12px 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      z-index:3;
+      pointer-events:none;
+    }
+
+    .product-actions-float{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      pointer-events:auto;
+    }
+
+    .icon-btn{
+      width:42px;height:42px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(12,13,18,.72);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.22s ease;
+      backdrop-filter:blur(12px);
+    }
+
+    .icon-btn:hover{
+      background:rgba(179,31,36,.22);
+      border-color:rgba(179,31,36,.35);
+      transform:translateY(-2px);
+    }
+
+    .product-body{
+      padding:16px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      flex:1;
+    }
+
+    .product-meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .product-title{
+      margin:0;
+      font-size:1rem;
+      line-height:1.38;
+      font-weight:800;
+      color:#fff;
+      min-height:2.7em;
+    }
+
+    .product-desc{
+      color:#b8bcc7;
+      font-size:.9rem;
+      line-height:1.65;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:4.45em;
+    }
+
+    .spec-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      min-height:34px;
+    }
+
+    .spec-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 11px;
+      border-radius:999px;
+      background:#12141b;
+      border:1px solid rgba(255,255,255,.06);
+      color:#d9dde6;
+      font-size:.8rem;
+      max-width:100%;
+    }
+
+    .price-row{
+      margin-top:auto;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      padding-top:6px;
+    }
+
+    .price-block{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .price-label{
+      color:var(--muted);
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .price-main{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .price{
+      font-family:"Oxanium",sans-serif;
+      font-size:1.55rem;
+      line-height:1;
+      font-weight:800;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .old-price{
+      color:#8f94a0;
+      text-decoration:line-through;
+      font-size:.92rem;
+      white-space:nowrap;
+    }
+
+    .product-footer{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:12px;
+      align-items:stretch;
+    }
+
+    .card-btn{
+      width:100%;
+      min-width:0;
+      min-height:48px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.01em;
+      transition:.25s ease;
+      font-size:.88rem;
+      line-height:1.15;
+      text-align:center;
+      padding:10px 12px;
+      white-space:normal;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .card-btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--red-2), var(--red));
+      box-shadow:0 12px 28px rgba(179,31,36,.24);
+    }
+
+    .card-btn.primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(179,31,36,.34);
+    }
+
+    .card-btn.secondary{
+      color:#fff;
+      background:#11131a;
+    }
+
+    .card-btn.secondary:hover{
+      background:#171a22;
+      border-color:rgba(255,255,255,.16);
+    }
+
+    .loading-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:var(--grid-gap);
+    }
+
+    .skeleton{
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      background:#0b0d11;
+    }
+
+    .skeleton-media{
+      aspect-ratio:1 / 0.86;
+      background:linear-gradient(90deg, #11131a, #1a1d26, #11131a);
+      background-size:200% 100%;
+      animation:shimmer 1.4s linear infinite;
+    }
+
+    .skeleton-body{padding:18px}
+
+    .skeleton-line{
+      height:12px;border-radius:999px;margin-bottom:10px;
+      background:linear-gradient(90deg, #11131a, #1a1d26, #11131a);
+      background-size:200% 100%;
+      animation:shimmer 1.4s linear infinite;
+    }
+
+    @keyframes shimmer{
+      0%{background-position:200% 0}
+      100%{background-position:-200% 0}
+    }
+
+    .empty-state{
+      border-radius:28px;
+      padding:46px 24px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+    }
+
+    .empty-state h3{
+      margin:0 0 10px;
+      font-family:"Oxanium",sans-serif;
+      font-size:1.8rem;
+    }
+
+    .empty-state p{
+      margin:0 auto 18px;
+      color:var(--muted);
+      max-width:640px;
+      line-height:1.7;
+    }
+
+    .footer{padding:26px 0 40px}
+
+    .footer-wrap{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:20px;
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(4,5,8,.72);
+      backdrop-filter:blur(14px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      opacity:0;
+      visibility:hidden;
+      transition:.26s ease;
+      z-index:1200;
+    }
+
+    .modal.open{opacity:1;visibility:visible}
+
+    .modal-card{
+      width:min(1180px, 100%);
+      height:min(88vh, 980px);
+      overflow:hidden;
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
+        #0b0d11;
+      box-shadow:0 30px 90px rgba(0,0,0,.45);
+      position:relative;
+    }
+
+    .modal-close{
+      position:sticky;
+      top:14px;
+      float:right;
+      margin:14px 14px 0 0;
+      width:46px;height:46px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(12,13,18,.78);
+      color:#fff;
+      cursor:pointer;
+      z-index:2;
+      backdrop-filter:blur(12px);
+    }
+
+    .modal-grid{
+      display:grid;
+      grid-template-columns:minmax(420px, .95fr) minmax(0, 1.05fr);
+      gap:0;
+      height:100%;
+      min-height:0;
+    }
+
+    .modal-media{
+      position:relative;
+      min-height:0;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(179,31,36,.12), transparent 25%),
+        linear-gradient(180deg, #12151d, #0c0f14);
+      border-right:1px solid rgba(255,255,255,.06);
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+      padding:18px;
+      overflow:auto;
+    }
+
+    .modal-media img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .modal-content{
+      padding:24px 24px 30px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      overflow:auto;
+      min-height:0;
+    }
+
+    .modal-title{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+      font-size:2rem;
+      line-height:1.08;
+    }
+
+    .modal-desc{
+      color:var(--soft);
+      line-height:1.82;
+      font-size:1rem;
+    }
+
+    .modal-specs{display:grid;gap:10px}
+
+    .modal-spec{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#11131a;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .modal-spec span:first-child{color:var(--muted)}
+    .modal-spec span:last-child{text-align:right;color:#fff;font-weight:700}
+
+    .mobile-filter-panel{
+      position:fixed;
+      inset:0;
+      z-index:1150;
+      background:rgba(3,4,7,.72);
+      backdrop-filter:blur(12px);
+      opacity:0;
+      visibility:hidden;
+      transition:.24s ease;
+    }
+
+    .mobile-filter-panel.open{opacity:1;visibility:visible}
+
+    .mobile-filter-sheet{
+      position:absolute;
+      right:0;top:0;bottom:0;
+      width:min(92vw, 400px);
+      background:#0b0d11;
+      border-left:1px solid rgba(255,255,255,.08);
+      padding:18px;
+      overflow:auto;
+      transform:translateX(100%);
+      transition:.28s ease;
+      box-shadow:-20px 0 60px rgba(0,0,0,.35);
+    }
+
+    .mobile-filter-panel.open .mobile-filter-sheet{transform:translateX(0)}
+
+    .mobile-sheet-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .mobile-sheet-top h3{
+      margin:0;
+      font-family:"Oxanium",sans-serif;
+    }
+
+.cart-btn-top{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding-right:10px;
+}
+
+.cart-count{
+  min-width:24px;
+  height:24px;
+  padding:0 7px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, var(--red-2), var(--red));
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  box-shadow:0 8px 20px rgba(179,31,36,.28);
+}
+
+.cart-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(4,5,8,.62);
+  backdrop-filter:blur(10px);
+  opacity:0;
+  visibility:hidden;
+  transition:.25s ease;
+  z-index:1240;
+}
+
+.cart-backdrop.open{
+  opacity:1;
+  visibility:visible;
+}
+
+.cart-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:min(470px, 100vw);
+  height:100vh;
+  background:
+    radial-gradient(circle at top right, rgba(179,31,36,.18), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015)),
+    #090b0f;
+  border-left:1px solid rgba(255,255,255,.08);
+  box-shadow:-28px 0 80px rgba(0,0,0,.48);
+  transform:translateX(100%);
+  transition:.28s ease;
+  z-index:1250;
+  display:flex;
+  flex-direction:column;
+}
+
+.cart-drawer.open{
+  transform:translateX(0);
+}
+
+.cart-drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:20px 20px 14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+}
+
+.cart-drawer-head h3{
+  margin:0;
+  font-family:"Oxanium",sans-serif;
+  font-size:1.2rem;
+}
+
+.cart-items{
+  flex:1;
+  overflow:auto;
+  padding:16px 18px;
+  display:grid;
+  gap:12px;
+}
+
+.cart-item{
+  display:grid;
+  grid-template-columns:94px minmax(0,1fr);
+  gap:12px;
+  padding:12px;
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.018)), #10131a;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 16px 40px rgba(0,0,0,.18);
+}
+
+.cart-item img{
+  width:94px;
+  height:94px;
+  object-fit:contain;
+  border-radius:16px;
+  background:#0b0d12;
+  padding:10px;
+}
+
+.cart-item-title{
+  margin:0 0 6px;
+  font-size:.96rem;
+  font-weight:800;
+  line-height:1.34;
+}
+
+.cart-item-meta{
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.55;
+}
+
+.cart-item-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:12px;
+}
+
+.qty-wrap{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px;
+  border-radius:999px;
+  background:#0d1016;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.qty-btn{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+  background:#171a22;
+  color:#fff;
+  cursor:pointer;
+  transition:.22s ease;
+}
+
+.qty-btn:hover{
+  background:rgba(179,31,36,.22);
+  border-color:rgba(179,31,36,.34);
+}
+
+.qty-value{
+  min-width:18px;
+  text-align:center;
+  font-weight:800;
+}
+
+.remove-btn{
+  border:none;
+  background:none;
+  color:#ff8f8f;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.cart-footer{
+  padding:16px 18px 18px;
+  border-top:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  display:grid;
+  gap:14px;
+}
+
+.cart-total-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:1rem;
+}
+
+.cart-note{
+  color:var(--muted);
+  font-size:.86rem;
+  line-height:1.55;
+}
+
+.cart-footer-actions{
+  display:grid;
+  gap:10px;
+}
+
+.cart-secondary-cta,
+.cart-cta{
+  width:100%;
+}
+
+.cart-cta[disabled],
+.cart-secondary-cta[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
+.modal-stage{
+  position:relative;
+  width:100%;
+  min-height:min(74vh, 760px);
+  border-radius:26px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255,255,255,.06), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+    #0d1016;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.modal-main-image{
+  width:100%;
+  height:100%;
+  min-height:min(74vh, 760px);
+  object-fit:contain;
+  object-position:left top;
+  padding:20px 20px 112px;
+}
+
+.modal-thumb-rail{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  gap:0;
+  overflow:auto hidden;
+  background:linear-gradient(180deg, rgba(5,6,9,0), rgba(5,6,9,.9) 32%, rgba(5,6,9,.98));
+  padding:12px 12px 12px;
+}
+
+.modal-thumb{
+  width:88px;
+  height:88px;
+  flex:none;
+  border-radius:0;
+  border:none;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-right:1px solid rgba(255,255,255,.06);
+  background:rgba(16,19,26,.94);
+  padding:8px;
+  cursor:pointer;
+  transition:.22s ease;
+}
+
+.modal-thumb:first-child{
+  border-top-left-radius:14px;
+  border-bottom-left-radius:14px;
+}
+
+.modal-thumb:last-child{
+  border-top-right-radius:14px;
+  border-bottom-right-radius:14px;
+  border-right:none;
+}
+
+.modal-thumb.active{
+  background:linear-gradient(135deg, rgba(179,31,36,.34), rgba(179,31,36,.14));
+  box-shadow:inset 0 0 0 1px rgba(179,31,36,.35);
+}
+
+.modal-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.variant-block{
+  display:grid;
+  gap:10px;
+}
+
+.variant-label{
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:.78rem;
+}
+
+.variant-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.variant-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:46px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#11131a;
+  color:#fff;
+  cursor:pointer;
+  transition:.22s ease;
+  font-weight:700;
+}
+
+.variant-chip small{
+  color:var(--muted);
+  font-weight:600;
+}
+
+.variant-chip:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.16);
+}
+
+.variant-chip.active{
+  background:linear-gradient(135deg, rgba(179,31,36,.30), rgba(179,31,36,.14));
+  border-color:rgba(179,31,36,.42);
+  box-shadow:0 0 0 4px rgba(179,31,36,.08);
+}
+
+.modal-price{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.modal-price .price{
+  font-size:2rem;
+}
+
+.modal-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:auto;
+}
+
+@media (max-width: 1024px){
+  .modal-card{
+    height:min(92vh, 980px);
+  }
+
+  .modal-grid{
+    grid-template-columns:1fr;
+  }
+
+  .modal-media{
+    padding:16px;
+    min-height:340px;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+
+  .modal-stage,
+  .modal-main-image{
+    min-height:360px;
+  }
+
+  .modal-main-image{
+    object-position:center;
+    padding-bottom:108px;
+  }
+
+  .cart-drawer{
+    width:100vw;
+  }
+}
+
+@media (max-width: 760px){
+  .modal-actions{
+    grid-template-columns:1fr;
+  }
+
+  .modal-thumb{
+    width:78px;
+    height:78px;
+  }
+
+  .variant-chip{
+    width:100%;
+    justify-content:space-between;
+  }
+}
+@media (max-width: 1450px){
+      .products,.loading-grid{grid-template-columns:repeat(3, minmax(0,1fr))}
+    }
+
+    @media (max-width: 1200px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 1024px){
+      .shop-layout{grid-template-columns:1fr}
+      .filters{display:none}
+      .mobile-filter-btn{display:inline-flex;align-items:center}
+      .stats-strip{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .modal-grid{grid-template-columns:1fr}
+      .modal-media{min-height:340px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+      .products,.loading-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+    }
+
+    @media (max-width: 760px){
+      :root{--container:min(100vw - 22px, 100vw - 22px)}
+      .hero-grid{padding:22px}
+      .hero-wrap{min-height:auto}
+      .hero-card{min-height:auto}
+      .stats-strip{grid-template-columns:1fr}
+      .products,.loading-grid{grid-template-columns:1fr}
+      .results-toolbar{padding:12px}
+      .section-title{line-height:1.1}
+      .hero h1{font-size:clamp(1.8rem, 8vw, 2.8rem)}
+      .product-footer{flex-direction:column}
+      .card-btn{width:100%}
+      .hero-actions{flex-direction:column}
+      .hero-actions > *{width:100%}
+      .footer-wrap{align-items:flex-start;flex-direction:column}
+      .price-row{flex-direction:column;align-items:flex-start}
+      .brand-logo{width:126px}
+    }
+  
+
+    /* MOBILE REWORK: 2 COLUMNS + BETTER PRODUCT DETAIL */
+    @media (max-width: 760px){
+      :root{
+        --container:min(100vw - 16px, 100vw - 16px);
+        --grid-gap:10px;
+        --header-h:68px;
+      }
+
+      body{overflow-x:hidden}
+      .container{width:min(100vw - 16px, 100vw - 16px)}
+      .topbar-inner{
+        min-height:68px;
+        gap:8px;
+        padding:8px 0;
+        align-items:center;
+      }
+      .brand{gap:8px; min-width:0; flex:1}
+      .brand-logo{width:106px; max-width:30vw}
+      .brand-text{display:none}
+      .top-actions{gap:6px; flex-wrap:nowrap}
+      .lang-switch{min-width:82px; height:38px}
+      .lang-switch-thumb{height:30px}
+      .lang-switch-btn{font-size:.76rem; padding:0 10px}
+      .ghost-btn,.cta-btn{height:40px; padding:0 12px; font-size:.82rem}
+      .cart-btn-top{gap:6px; padding-right:6px}
+      .cart-count{min-width:20px; height:20px; font-size:.72rem}
+
+      .hero{padding:16px 0 12px}
+      .hero-grid{padding:16px}
+      .hero-wrap{border-radius:20px; min-height:auto}
+      .hero-card{min-height:auto}
+      .hero h1{font-size:clamp(1.5rem, 7vw, 2.2rem); line-height:1.02}
+      .hero p{font-size:.94rem; line-height:1.6}
+      .hero-actions{flex-direction:column; gap:10px}
+      .hero-actions > *{width:100%}
+      .stats-strip{grid-template-columns:1fr; gap:10px}
+
+      .results-toolbar{padding:10px; border-radius:18px}
+      .section-title{line-height:1.06; font-size:1.4rem}
+      .shop-layout{gap:14px}
+
+      .products,
+      .loading-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+        gap:10px;
+      }
+
+      .product-card{border-radius:18px}
+      .product-media{
+        aspect-ratio:1 / 1;
+      }
+      .product-media img{
+        padding:10px;
+      }
+      .product-overlay{
+        inset:auto 8px 8px 8px;
+      }
+      .product-actions-float{gap:6px}
+      .icon-btn{
+        width:36px;
+        height:36px;
+      }
+      .product-body{
+        padding:10px 10px 12px;
+        gap:10px;
+      }
+      .product-title{
+        font-size:.92rem;
+        line-height:1.25;
+        min-height:2.5em;
+      }
+      .product-desc{
+        font-size:.8rem;
+        line-height:1.45;
+        -webkit-line-clamp:2;
+        min-height:2.9em;
+      }
+      .spec-row{
+        gap:6px;
+        min-height:0;
+      }
+      .spec-pill{
+        padding:7px 9px;
+        font-size:.72rem;
+      }
+      .price-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+        padding-top:0;
+      }
+      .price-label{
+        font-size:.68rem;
+      }
+      .price-main{gap:6px}
+      .price{
+        font-size:1.16rem;
+      }
+      .old-price{
+        font-size:.78rem;
+      }
+      .product-footer{
+        grid-template-columns:1fr;
+        gap:8px;
+        margin-top:8px;
+      }
+      .card-btn{
+        min-height:42px;
+        padding:10px;
+        border-radius:13px;
+        font-size:.8rem;
+      }
+
+      .footer{padding:20px 0 30px}
+      .footer-wrap{align-items:flex-start; flex-direction:column; gap:8px}
+
+      .modal{
+        padding:0;
+        align-items:flex-end;
+      }
+      .modal-card{
+        width:100%;
+        height:100dvh;
+        max-height:100dvh;
+        border-radius:18px 18px 0 0;
+        border-left:none;
+        border-right:none;
+        border-bottom:none;
+      }
+      .modal-close{
+        position:absolute;
+        top:10px;
+        right:10px;
+        margin:0;
+        width:40px;
+        height:40px;
+        z-index:6;
+        background:rgba(8,10,14,.88);
+      }
+      .modal-grid{
+        grid-template-columns:1fr !important;
+        grid-template-rows:auto 1fr;
+        height:100%;
+      }
+      .modal-media{
+        padding:10px;
+        min-height:unset;
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.06);
+        overflow:visible;
+      }
+      .modal-stage{
+        min-height:300px;
+        border-radius:16px;
+      }
+      .modal-main-image{
+        min-height:300px;
+        padding:14px 14px 86px;
+        object-position:center top;
+      }
+      .modal-thumb-rail{
+        padding:8px;
+        gap:8px;
+      }
+      .modal-thumb{
+        width:62px;
+        height:62px;
+        border-radius:12px !important;
+        border:1px solid rgba(255,255,255,.06);
+      }
+      .modal-thumb:last-child{
+        border-right:1px solid rgba(255,255,255,.06);
+      }
+      .modal-content{
+        padding:14px 14px 18px;
+        gap:14px;
+      }
+      .modal-title{
+        font-size:1.32rem;
+        line-height:1.1;
+        padding-right:42px;
+      }
+      .modal-desc{
+        font-size:.92rem;
+        line-height:1.62;
+      }
+      .modal-specs{gap:8px}
+      .modal-spec{
+        padding:10px 12px;
+        border-radius:13px;
+        font-size:.88rem;
+        gap:10px;
+      }
+      .modal-spec span:last-child{
+        max-width:58%;
+        word-break:break-word;
+      }
+      .variant-block{gap:8px}
+      .variant-label{font-size:.7rem}
+      .variant-chips{gap:8px}
+      .variant-chip{
+        width:100%;
+        justify-content:space-between;
+        min-height:44px;
+        padding:10px 12px;
+        border-radius:14px;
+        font-size:.84rem;
+      }
+      .modal-price{
+        gap:8px;
+      }
+      .modal-price .price{
+        font-size:1.55rem;
+      }
+      .modal-actions{
+        grid-template-columns:1fr;
+        gap:8px;
+        margin-top:4px;
+        position:sticky;
+        bottom:0;
+        padding-top:10px;
+        background:linear-gradient(180deg, rgba(11,13,17,0), rgba(11,13,17,.82) 22%, rgba(11,13,17,1) 100%);
+      }
+
+      .cart-drawer{width:100vw}
+      .cart-drawer-head{padding:16px 14px 12px}
+      .cart-items{padding:12px}
+      .cart-item{
+        grid-template-columns:74px minmax(0,1fr);
+        gap:10px;
+        padding:10px;
+        border-radius:16px;
+      }
+      .cart-item img{
+        width:74px;
+        height:74px;
+        border-radius:12px;
+        padding:8px;
+      }
+      .cart-item-title{font-size:.88rem}
+      .cart-item-meta{font-size:.78rem}
+      .cart-item-actions{flex-wrap:wrap; gap:8px}
+      .cart-footer{padding:14px 12px calc(14px + env(safe-area-inset-bottom))}
+    }
+
+    @media (max-width: 390px){
+      .products,
+      .loading-grid{
+        gap:8px;
+      }
+      .product-body{padding:9px 9px 10px}
+      .product-title{font-size:.86rem}
+      .product-desc{font-size:.76rem}
+      .price{font-size:1.05rem}
+      .card-btn{font-size:.77rem; min-height:40px}
+      .modal-stage,
+      .modal-main-image{min-height:270px}
+      .modal-main-image{padding:12px 12px 82px}
+    }
+/* MOBILE – PRODUCT DETAIL IMAGE FIX */
+@media (max-width: 768px) {
+
+  .product-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .product-detail img,
+  .modal img,
+  .detail-image img {
+    width: 100%;
+    max-height: 180px;   /* približne 2x menší obrazok */
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .product-detail .description,
+  .product-description {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .product-detail h2,
+  .product-title {
+    font-size: 18px;
+  }
+
+}
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/">
+        <img class="brand-logo" src="assets/racem-logo.png" alt="RACEM logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <span>Performance Parts Selection</span>
+        </div>
+      </a>
+
+      <div class="top-actions">
+        <div class="lang-switch" id="langSwitch" data-lang="sk" aria-label="Language switch">
+          <span class="lang-switch-thumb"></span>
+          <button class="lang-switch-btn active" id="langSkBtn" type="button">SK</button>
+          <button class="lang-switch-btn" id="langEnBtn" type="button">EN</button>
+        </div>
+
+        <button class="ghost-btn" id="homeBtn" type="button">Domovská stránka</button>
+
+        <button class="ghost-btn cart-btn-top" id="cartBtn" type="button">
+          <span id="cartBtnLabel">Košík</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-wrap">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Oficiálna ponuka výrobcu
+              </div>
+
+              <h1>
+                Výber dielov <span class="accent">CNC71</span>
+              </h1>
+
+              <p>
+                Karosárske a performance komponenty určené pre projekty, ktoré idú nad rámec sériového auta.
+              </p>
+
+              <div class="hero-actions">
+                <button class="ghost-btn" id="heroHomeBtn" type="button">Domov</button>
+              </div>
+            </div>
+
+            <div class="hero-card">
+              <div class="tech-lines"></div>
+              <div class="hero-panel">
+                <div class="hero-stat-grid">
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Produktov</div>
+                    <div class="hero-stat-value" id="heroProducts">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Kategórií</div>
+                    <div class="hero-stat-value" id="heroCategories">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Modelov</div>
+                    <div class="hero-stat-value" id="heroBrands">—</div>
+                  </div>
+                  <div class="hero-stat">
+                    <div class="hero-stat-label">Cenový rozsah</div>
+                    <div class="hero-stat-value" id="heroPriceRange">—</div>
+                  </div>
+                </div>
+
+                <div class="hero-highlight">
+                  <strong id="heroHighlightText">Načítavam katalóg a pripravujem prehľad ponuky…</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-strip section">
+          <div class="hud-card">
+            <div class="hud-label">Live katalóg</div>
+            <div class="hud-value" id="hudAllProducts">—</div>
+            <div class="hud-sub">načítaných produktov</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Aktívne zobrazenie</div>
+            <div class="hud-value" id="hudVisibleProducts">—</div>
+            <div class="hud-sub">výsledkov s filtrom</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Najčastejšia kategória</div>
+            <div class="hud-value" id="hudTopCategory">—</div>
+            <div class="hud-sub">dominantný segment v tejto ponuke</div>
+          </div>
+
+          <div class="hud-card">
+            <div class="hud-label">Status feed</div>
+            <div class="hud-value">LIVE</div>
+            <div class="hud-sub">katalóg je online</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="catalog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Katalóg produktov</h2>
+            <div class="section-copy">
+              Komponenty pre upravené vozidlá – od podvozku až po karosériu.
+            </div>
+          </div>
+        </div>
+
+        <div class="shop-layout">
+          <aside class="filters" id="desktopFilters">
+            <div class="filter-head">
+              <h3>Filtre a výber</h3>
+              <span class="reset-link" id="resetAllBtn">Reset</span>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Hľadať produkt</div>
+              <div class="search-wrap">
+                <div class="search-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="M20 20L17 17"></path>
+                  </svg>
+                </div>
+                <input id="searchInput" class="input" type="text" placeholder="Názov, model auta, popis..." />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Kategória</div>
+              <div class="chip-grid" id="categoryChips"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Model auta</div>
+              <div class="chip-grid" id="brandChips"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Cena</div>
+              <div class="price-grid">
+                <input id="priceMin" class="input" type="number" min="0" step="1" placeholder="Od €" style="padding-left:16px;" />
+                <input id="priceMax" class="input" type="number" min="0" step="1" placeholder="Do €" style="padding-left:16px;" />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">Akcie a stavy</div>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="saleOnly"> <span>Len zlacnené produkty</span></label>
+                <label class="check"><input type="checkbox" id="newOnly"> <span>Len featured</span></label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="results-shell">
+            <div class="results-toolbar">
+              <div class="toolbar-left">
+                <div class="toolbar-pill" id="toolbarInfo">Performance catalog live</div>
+                <button class="mobile-filter-btn" id="openMobileFilters">Filtre</button>
+                <div class="toolbar-pill">
+                  <strong class="result-count" id="resultCount">0</strong>
+                  <span class="result-meta">výsledkov</span>
+                </div>
+              </div>
+
+              <div class="toolbar-right">
+                <select class="select" id="sortSelect" style="min-width:240px;">
+                  <option value="featured">Zoradiť: Odporúčané</option>
+                  <option value="priceAsc">Cena: Od najnižšej</option>
+                  <option value="priceDesc">Cena: Od najvyššej</option>
+                  <option value="nameAsc">Názov: A → Z</option>
+                  <option value="nameDesc">Názov: Z → A</option>
+                  <option value="newest">Najnovšie / featured</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="active-filters" id="activeFilters"></div>
+
+            <div id="loadingState" class="loading-grid">
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:36%"></div><div class="skeleton-line" style="width:84%"></div><div class="skeleton-line" style="width:71%"></div><div class="skeleton-line" style="width:48%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:32%"></div><div class="skeleton-line" style="width:88%"></div><div class="skeleton-line" style="width:66%"></div><div class="skeleton-line" style="width:54%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:29%"></div><div class="skeleton-line" style="width:81%"></div><div class="skeleton-line" style="width:74%"></div><div class="skeleton-line" style="width:52%; margin-top:20px;"></div></div></div>
+              <div class="skeleton"><div class="skeleton-media"></div><div class="skeleton-body"><div class="skeleton-line" style="width:34%"></div><div class="skeleton-line" style="width:77%"></div><div class="skeleton-line" style="width:70%"></div><div class="skeleton-line" style="width:50%; margin-top:20px;"></div></div></div>
+            </div>
+
+            <div class="products" id="productsGrid" style="display:none;"></div>
+
+            <div id="emptyState" class="empty-state" style="display:none;">
+              <h3>Nič sa nenašlo</h3>
+              <p>Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov alebo širšie vyhľadávanie.</p>
+              <button class="cta-btn" id="emptyResetBtn">Resetovať filtre</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-wrap">
+      <div><strong>RACEM</strong> performance catalog</div>
+      <div id="footerMeta">Načítanie dát zo cnc71.json</div>
+    </div>
+  </footer>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Zavrieť">✕</button>
+      <div class="modal-grid" id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-head">
+    <h3>Tvoj košík</h3>
+    <button class="modal-close" id="closeCartBtn" aria-label="Zavrieť">✕</button>
+  </div>
+
+  <div class="cart-items" id="cartItems"></div>
+
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Spolu</span>
+      <strong id="cartTotal">0,00 €</strong>
+    </div>
+    <div class="cart-footer-actions">
+      <button class="ghost-btn cart-secondary-cta" type="button" id="closeCartCta">Pokračovať v prehliadaní</button>
+      <button class="cta-btn cart-cta" type="button" id="cartCheckoutBtn">Prejsť k pokladni</button>
+    </div>
+  </div>
+</aside>
+
+  <div class="mobile-filter-panel" id="mobileFilterPanel">
+    <div class="mobile-filter-sheet">
+      <div class="mobile-sheet-top">
+        <h3>Filtre</h3>
+        <button class="modal-close" id="closeMobileFilters" aria-label="Zavrieť">✕</button>
+      </div>
+      <div id="mobileFiltersMount"></div>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = './cnc71.json';
+
+   const state = {
+  rawProducts: [],
+  allProducts: [],
+  filteredProducts: [],
+  lang: 'sk',
+  activeCategory: null,
+  activeBrand: null,
+  search: '',
+  priceMin: '',
+  priceMax: '',
+  saleOnly: false,
+  newOnly: false,
+  sort: 'featured',
+
+  cart: [],
+  modalProduct: null,
+  modalVariantIndex: 0,
+  modalImageIndex: 0
+};
+
+    const els = {
+      productsGrid: document.getElementById('productsGrid'),
+      loadingState: document.getElementById('loadingState'),
+      emptyState: document.getElementById('emptyState'),
+      categoryChips: document.getElementById('categoryChips'),
+      brandChips: document.getElementById('brandChips'),
+      searchInput: document.getElementById('searchInput'),
+      priceMin: document.getElementById('priceMin'),
+      priceMax: document.getElementById('priceMax'),
+      sortSelect: document.getElementById('sortSelect'),
+      resultCount: document.getElementById('resultCount'),
+      activeFilters: document.getElementById('activeFilters'),
+      saleOnly: document.getElementById('saleOnly'),
+      newOnly: document.getElementById('newOnly'),
+      resetAllBtn: document.getElementById('resetAllBtn'),
+      emptyResetBtn: document.getElementById('emptyResetBtn'),
+      heroProducts: document.getElementById('heroProducts'),
+      heroCategories: document.getElementById('heroCategories'),
+      heroBrands: document.getElementById('heroBrands'),
+      heroPriceRange: document.getElementById('heroPriceRange'),
+      heroHighlightText: document.getElementById('heroHighlightText'),
+      hudAllProducts: document.getElementById('hudAllProducts'),
+      hudVisibleProducts: document.getElementById('hudVisibleProducts'),
+      hudTopCategory: document.getElementById('hudTopCategory'),
+      footerMeta: document.getElementById('footerMeta'),
+      toolbarInfo: document.getElementById('toolbarInfo'),
+      productModal: document.getElementById('productModal'),
+      modalContent: document.getElementById('modalContent'),
+      modalCloseBtn: document.getElementById('modalCloseBtn'),
+      openMobileFilters: document.getElementById('openMobileFilters'),
+      mobileFilterPanel: document.getElementById('mobileFilterPanel'),
+      closeMobileFilters: document.getElementById('closeMobileFilters'),
+      desktopFilters: document.getElementById('desktopFilters'),
+      cartBtn: document.getElementById('cartBtn'),
+      cartCount: document.getElementById('cartCount'),
+      cartDrawer: document.getElementById('cartDrawer'),
+      cartBackdrop: document.getElementById('cartBackdrop'),
+      closeCartBtn: document.getElementById('closeCartBtn'),
+      cartItems: document.getElementById('cartItems'),
+      cartTotal: document.getElementById('cartTotal'),
+      closeCartCta: document.getElementById('closeCartCta'),
+      cartCheckoutBtn: document.getElementById('cartCheckoutBtn'),
+      mobileFiltersMount: document.getElementById('mobileFiltersMount'),
+      langSwitch: document.getElementById('langSwitch'),
+      langSkBtn: document.getElementById('langSkBtn'),
+      langEnBtn: document.getElementById('langEnBtn'),
+      homeBtn: document.getElementById('homeBtn'),
+      heroHomeBtn: document.getElementById('heroHomeBtn'),
+      cartBtnLabel: document.getElementById('cartBtnLabel')
+    };
+
+
+    const I18N = {
+      sk: {
+        metaDescription: 'Prémiová ponuka performance dielov v RACEM štýle.',
+        brandText: 'Performance Parts Selection',
+        home: 'Domov',
+        cart: 'Košík',
+        officialOffer: 'Oficiálna ponuka výrobcu',
+        heroTitleBefore: 'Výber dielov ',
+        heroTitleAccent: 'CNC71',
+        heroDesc: 'Karosárske a performance komponenty určené pre projekty, ktoré idú nad rámec sériového auta.',
+        products: 'Produktov',
+        categories: 'Kategórií',
+        models: 'Modelov',
+        priceRange: 'Cenový rozsah',
+        loadingCatalog: 'Načítavam katalóg a pripravujem prehľad ponuky…',
+        liveCatalog: 'Live katalóg',
+        loadedProducts: 'načítaných produktov',
+        activeView: 'Aktívne zobrazenie',
+        filteredResults: 'výsledkov s filtrom',
+        topCategory: 'Najčastejšia kategória',
+        dominantSegment: 'dominantný segment v tejto ponuke',
+        feedStatus: 'Status feed',
+        catalogOnline: 'katalóg je online',
+        catalogTitle: 'Katalóg produktov',
+        catalogCopy: 'Komponenty pre upravené vozidlá – od podvozku až po karosériu.',
+        filtersTitle: 'Filtre a výber',
+        reset: 'Reset',
+        searchProduct: 'Hľadať produkt',
+        searchPlaceholder: 'Názov, model auta, popis...',
+        category: 'Kategória',
+        carModel: 'Model auta',
+        price: 'Cena',
+        priceFrom: 'Od €',
+        priceTo: 'Do €',
+        actionsStates: 'Akcie a stavy',
+        saleOnly: 'Len zlacnené produkty',
+        featuredOnly: 'Len featured',
+        toolbarLive: 'Performance catalog live',
+        filters: 'Filtre',
+        results: 'výsledkov',
+        sortFeatured: 'Zoradiť: Odporúčané',
+        sortPriceAsc: 'Cena: Od najnižšej',
+        sortPriceDesc: 'Cena: Od najvyššej',
+        sortNameAsc: 'Názov: A → Z',
+        sortNameDesc: 'Názov: Z → A',
+        sortNewest: 'Najnovšie / featured',
+        emptyTitle: 'Nič sa nenašlo',
+        emptyDesc: 'Aktuálne filtre sú príliš úzke alebo JSON neobsahuje zhodné produkty. Skús reset filtrov alebo širšie vyhľadávanie.',
+        emptyReset: 'Resetovať filtre',
+        footerLoad: 'Načítanie dát zo cnc71.json',
+        cartTitle: 'Tvoj košík',
+        continueBrowsing: 'Pokračovať v prehliadaní',
+        checkout: 'Prejsť k pokladni',
+        total: 'Spolu',
+        all: 'Všetko',
+        allModels: 'Všetky',
+        modelDetail: 'Model v detaile',
+        priceOnRequest: 'Na vyžiadanie',
+        quickPreview: 'Rýchly náhľad',
+        detail: 'Detail',
+        addToCart: 'Pridať do košíku',
+        searching: 'Vyhľadávaš:',
+        searchTag: 'Hľadanie',
+        categoryTag: 'Kategória',
+        modelTag: 'Model auta',
+        priceFromTag: 'Cena od',
+        priceToTag: 'Cena do',
+        saleOnlyTag: 'Len akcie',
+        featuredOnlyTag: 'Len featured',
+        categoryLabel: 'Kategória',
+        carModelLabel: 'Model auta',
+        manufacturer: 'Výrobca',
+        sku: 'SKU',
+        variant: 'Variant',
+        openInShop: 'Otvoriť v eshope',
+        defaultVersion: 'Základná verzia',
+        universal: 'UNIVERZÁLNE',
+        loadedProductsMeta: 'Načítaných {count} produktov zo cnc71.json',
+        heroHighlight: 'Katalóg obsahuje {count} položiek. Dominantná kategória je {category} a filtre sú nastavené podľa modelov áut.',
+        heroHighlightEmpty: 'JSON je načítaný, ale zatiaľ neobsahuje žiadne produkty.',
+        loadErrorTitle: 'cnc71.json sa nepodarilo načítať',
+        loadErrorDesc: 'Skontroluj, či je súbor cnc71.json v rovnakom priečinku ako táto HTML stránka.',
+        retry: 'Skúsiť znovu',
+        cartEmptyTitle: 'Košík je prázdny',
+        cartEmptyDesc: 'Zatiaľ si nepridal žiadny produkt.',
+        remove: 'Odstrániť',
+        invalidCheckout: 'V košíku nie je žiadny produkt s platným Shopify variant ID.'
+      },
+      en: {
+        metaDescription: 'Premium performance parts selection in RACEM style.',
+        brandText: 'Performance Parts Selection',
+        home: 'Home',
+        cart: 'Cart',
+        officialOffer: 'Official manufacturer offer',
+        heroTitleBefore: 'CNC71 parts ',
+        heroTitleAccent: 'selection',
+        heroDesc: 'Body and performance components built for projects that go beyond a stock car.',
+        products: 'Products',
+        categories: 'Categories',
+        models: 'Models',
+        priceRange: 'Price range',
+        loadingCatalog: 'Loading catalog and preparing product overview…',
+        liveCatalog: 'Live catalog',
+        loadedProducts: 'products loaded',
+        activeView: 'Active view',
+        filteredResults: 'filtered results',
+        topCategory: 'Top category',
+        dominantSegment: 'dominant segment in this catalog',
+        feedStatus: 'Feed status',
+        catalogOnline: 'catalog is online',
+        catalogTitle: 'Product catalog',
+        catalogCopy: 'Components for modified cars — from suspension to bodywork.',
+        filtersTitle: 'Filters and selection',
+        reset: 'Reset',
+        searchProduct: 'Search product',
+        searchPlaceholder: 'Name, car model, description...',
+        category: 'Category',
+        carModel: 'Car model',
+        price: 'Price',
+        priceFrom: 'From €',
+        priceTo: 'To €',
+        actionsStates: 'Offers and states',
+        saleOnly: 'Discounted products only',
+        featuredOnly: 'Featured only',
+        toolbarLive: 'Performance catalog live',
+        filters: 'Filters',
+        results: 'results',
+        sortFeatured: 'Sort: Recommended',
+        sortPriceAsc: 'Price: Lowest first',
+        sortPriceDesc: 'Price: Highest first',
+        sortNameAsc: 'Name: A → Z',
+        sortNameDesc: 'Name: Z → A',
+        sortNewest: 'Newest / featured',
+        emptyTitle: 'Nothing found',
+        emptyDesc: 'The current filters are too narrow or the JSON does not contain matching products. Try resetting filters or using a broader search.',
+        emptyReset: 'Reset filters',
+        footerLoad: 'Loading data from cnc71.json',
+        cartTitle: 'Your cart',
+        continueBrowsing: 'Continue browsing',
+        checkout: 'Go to checkout',
+        total: 'Total',
+        all: 'All',
+        allModels: 'All',
+        modelDetail: 'Model in detail',
+        priceOnRequest: 'On request',
+        quickPreview: 'Quick preview',
+        detail: 'Detail',
+        addToCart: 'Add to cart',
+        searching: 'Searching:',
+        searchTag: 'Search',
+        categoryTag: 'Category',
+        modelTag: 'Car model',
+        priceFromTag: 'Price from',
+        priceToTag: 'Price to',
+        saleOnlyTag: 'Discounted only',
+        featuredOnlyTag: 'Featured only',
+        categoryLabel: 'Category',
+        carModelLabel: 'Car model',
+        manufacturer: 'Manufacturer',
+        sku: 'SKU',
+        variant: 'Variant',
+        openInShop: 'Open in shop',
+        defaultVersion: 'Base version',
+        universal: 'UNIVERSAL',
+        loadedProductsMeta: 'Loaded {count} products from cnc71.json',
+        heroHighlight: 'The catalog contains {count} items. The dominant category is {category} and the filters are set up around car models.',
+        heroHighlightEmpty: 'The JSON is loaded, but it does not contain any products yet.',
+        loadErrorTitle: 'Failed to load cnc71.json',
+        loadErrorDesc: 'Check whether cnc71.json is in the same folder as this HTML page.',
+        retry: 'Try again',
+        cartEmptyTitle: 'Cart is empty',
+        cartEmptyDesc: 'You have not added any products yet.',
+        remove: 'Remove',
+        invalidCheckout: 'There is no product in the cart with a valid Shopify variant ID.'
+      }
+    };
+
+    function detectInitialLanguage(){
+      const saved = localStorage.getItem('cnc71_lang');
+      if(saved === 'sk' || saved === 'en') return saved;
+      const langs = [navigator.language, ...(navigator.languages || [])].filter(Boolean).map(v => String(v).toLowerCase());
+      const isSkOrCz = langs.some(v => v.startsWith('sk') || v.startsWith('cs') || v.startsWith('cz'));
+      return isSkOrCz ? 'sk' : 'en';
+    }
+
+    function t(key, vars = {}){
+      const dict = I18N[state.lang] || I18N.sk;
+      let value = dict[key] ?? I18N.sk[key] ?? key;
+      for (const [k,v] of Object.entries(vars)) value = String(value).replaceAll(`{${k}}`, v);
+      return value;
+    }
+
+    function getTranslated(obj, path, fallback = ''){
+      const parts = path.split('.');
+      let ref = obj;
+      for(const part of parts){
+        ref = ref?.[part];
+      }
+      if(ref && typeof ref === 'object') return ref[state.lang] ?? ref.sk ?? ref.en ?? fallback;
+      return ref ?? fallback;
+    }
+
+    function localeCode(){
+      return state.lang === 'en' ? 'en-GB' : 'sk-SK';
+    }
+
+    function refreshMappedProducts(){
+      state.allProducts = state.rawProducts.map(mapProduct);
+    }
+
+    function setLanguage(lang, persist = true){
+      state.lang = (lang === 'en') ? 'en' : 'sk';
+      if(persist) localStorage.setItem('cnc71_lang', state.lang);
+      document.documentElement.lang = state.lang;
+      document.title = state.lang === 'en' ? 'RACEM | CNC71 Catalog' : 'RACEM | CNC71 Katalóg';
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if(metaDescription) metaDescription.setAttribute('content', t('metaDescription'));
+      els.langSwitch?.setAttribute('data-lang', state.lang);
+      els.langSkBtn?.classList.toggle('active', state.lang === 'sk');
+      els.langEnBtn?.classList.toggle('active', state.lang === 'en');
+      refreshMappedProducts();
+      updateStaticTexts();
+      buildFilterChips();
+      updateGlobalStats();
+      applyFilters();
+      updateCartUI();
+    }
+
+    function updateStaticTexts(){
+      const brandSpan = document.querySelector('.brand-text span');
+      if(brandSpan) brandSpan.textContent = t('brandText');
+      if(els.homeBtn) els.homeBtn.textContent = t('home');
+      if(els.heroHomeBtn) els.heroHomeBtn.textContent = t('home');
+      if(els.cartBtnLabel) els.cartBtnLabel.textContent = t('cart');
+      const eyebrow = document.querySelector('.eyebrow');
+      if(eyebrow) eyebrow.innerHTML = `<span class="eyebrow-dot"></span>${t('officialOffer')}`;
+      const heroTitle = document.querySelector('.hero h1');
+      if(heroTitle) heroTitle.innerHTML = `${escapeHtml(t('heroTitleBefore'))}<span class="accent">${escapeHtml(t('heroTitleAccent'))}</span>`;
+      const heroP = document.querySelector('.hero p');
+      if(heroP) heroP.textContent = t('heroDesc');
+      const statLabels = document.querySelectorAll('.hero-stat-label');
+      if(statLabels[0]) statLabels[0].textContent = t('products');
+      if(statLabels[1]) statLabels[1].textContent = t('categories');
+      if(statLabels[2]) statLabels[2].textContent = t('models');
+      if(statLabels[3]) statLabels[3].textContent = t('priceRange');
+      const hudLabels = document.querySelectorAll('.hud-label');
+      if(hudLabels[0]) hudLabels[0].textContent = t('liveCatalog');
+      if(hudLabels[1]) hudLabels[1].textContent = t('activeView');
+      if(hudLabels[2]) hudLabels[2].textContent = t('topCategory');
+      if(hudLabels[3]) hudLabels[3].textContent = t('feedStatus');
+      const hudSubs = document.querySelectorAll('.hud-sub');
+      if(hudSubs[0]) hudSubs[0].textContent = t('loadedProducts');
+      if(hudSubs[1]) hudSubs[1].textContent = t('filteredResults');
+      if(hudSubs[2]) hudSubs[2].textContent = t('dominantSegment');
+      if(hudSubs[3]) hudSubs[3].textContent = t('catalogOnline');
+      const sectionTitle = document.querySelector('.section-title');
+      if(sectionTitle) sectionTitle.textContent = t('catalogTitle');
+      const sectionCopy = document.querySelector('.section-copy');
+      if(sectionCopy) sectionCopy.textContent = t('catalogCopy');
+      const filterHead = document.querySelector('.filter-head h3');
+      if(filterHead) filterHead.textContent = t('filtersTitle');
+      if(els.resetAllBtn) els.resetAllBtn.textContent = t('reset');
+      const filterTitles = document.querySelectorAll('.filter-title');
+      if(filterTitles[0]) filterTitles[0].textContent = t('searchProduct');
+      if(filterTitles[1]) filterTitles[1].textContent = t('category');
+      if(filterTitles[2]) filterTitles[2].textContent = t('carModel');
+      if(filterTitles[3]) filterTitles[3].textContent = t('price');
+      if(filterTitles[4]) filterTitles[4].textContent = t('actionsStates');
+      if(els.searchInput) els.searchInput.placeholder = t('searchPlaceholder');
+      if(els.priceMin) els.priceMin.placeholder = t('priceFrom');
+      if(els.priceMax) els.priceMax.placeholder = t('priceTo');
+      const checks = document.querySelectorAll('.check span');
+      if(checks[0]) checks[0].textContent = t('saleOnly');
+      if(checks[1]) checks[1].textContent = t('featuredOnly');
+      if(els.toolbarInfo && !state.search) els.toolbarInfo.textContent = t('toolbarLive');
+      if(els.openMobileFilters) els.openMobileFilters.textContent = t('filters');
+      const resultMeta = document.querySelector('.result-meta');
+      if(resultMeta) resultMeta.textContent = t('results');
+      if(els.sortSelect){
+        const opts = els.sortSelect.options;
+        if(opts[0]) opts[0].text = t('sortFeatured');
+        if(opts[1]) opts[1].text = t('sortPriceAsc');
+        if(opts[2]) opts[2].text = t('sortPriceDesc');
+        if(opts[3]) opts[3].text = t('sortNameAsc');
+        if(opts[4]) opts[4].text = t('sortNameDesc');
+        if(opts[5]) opts[5].text = t('sortNewest');
+      }
+      const emptyTitle = document.querySelector('#emptyState h3');
+      const emptyDesc = document.querySelector('#emptyState p');
+      if(emptyTitle) emptyTitle.textContent = t('emptyTitle');
+      if(emptyDesc) emptyDesc.textContent = t('emptyDesc');
+      if(els.emptyResetBtn) els.emptyResetBtn.textContent = t('emptyReset');
+      const footerBrand = document.querySelector('.footer-wrap strong');
+      const footerTextNode = footerBrand?.parentNode;
+      if(footerTextNode && footerBrand) footerTextNode.lastChild.textContent = ` ${state.lang === 'en' ? 'performance catalog' : 'performance katalóg'}`;
+      const mobileHead = document.querySelector('.mobile-sheet-top h3');
+      if(mobileHead) mobileHead.textContent = t('filters');
+      const cartHead = document.querySelector('.cart-drawer-head h3');
+      if(cartHead) cartHead.textContent = t('cartTitle');
+      const cartTotalLabel = document.querySelector('.cart-total-row span');
+      if(cartTotalLabel) cartTotalLabel.textContent = t('total');
+      if(els.closeCartCta) els.closeCartCta.textContent = t('continueBrowsing');
+      if(els.cartCheckoutBtn) els.cartCheckoutBtn.textContent = t('checkout');
+      if(els.footerMeta && !state.rawProducts.length) els.footerMeta.textContent = t('footerLoad');
+      const closeBtns = [els.modalCloseBtn, els.closeMobileFilters, els.closeCartBtn];
+      closeBtns.forEach(btn => btn?.setAttribute('aria-label', state.lang === 'en' ? 'Close' : 'Zavrieť'));
+    }
+
+    function getValue(obj, keys, fallback = null){
+      for(const key of keys){
+        const value = obj?.[key];
+        if(value !== undefined && value !== null && value !== '') return value;
+      }
+      return fallback;
+    }
+
+    function normalizeArray(value){
+      if(Array.isArray(value)) return value.filter(Boolean);
+      if(typeof value === 'string') return value.split(',').map(v => v.trim()).filter(Boolean);
+      return [];
+    }
+
+    function normalizeText(value=''){
+      return String(value).toLowerCase().trim();
+    }
+
+    function stripHtml(html=''){
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      return (div.textContent || div.innerText || '').trim();
+    }
+
+    function formatPrice(value){
+      if(value === null || value === undefined || value === '' || Number.isNaN(Number(value))) return t('priceOnRequest');
+      return new Intl.NumberFormat(localeCode(), {
+        style:'currency',
+        currency:'EUR',
+        maximumFractionDigits:2
+      }).format(Number(value));
+    }
+
+    function escapeHtml(str=''){
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function firstVariant(product){
+      const variants = normalizeArray(product.variants);
+      return variants[0] || null;
+    }
+
+    function getVariants(product){
+  return normalizeArray(product?.raw?.variants || product?.variants);
+}
+
+function getActiveVariant(product){
+  const variants = getVariants(product);
+  return variants[state.modalVariantIndex] || variants[0] || null;
+}
+
+function getAllImages(product, variant = null){
+  const baseImages = normalizeArray(
+    getValue(product?.raw || product, ['images', 'gallery', 'photos', 'imageUrls'], [])
+  );
+
+  const variantImages = normalizeArray(variant?.images);
+  return [...new Set([...variantImages, ...baseImages].filter(Boolean))];
+}
+
+function getVariantOptionsLabel(variant){
+  if(!variant) return 'Základná verzia';
+
+  const options = variant.options && typeof variant.options === 'object'
+    ? Object.values(variant.options).filter(Boolean)
+    : [];
+
+  if(options.length){
+    return options.join(' / ');
+  }
+
+  return variant.title && variant.title !== 'Default Title'
+    ? variant.title
+    : 'Základná verzia';
+}
+
+    function getImage(product){
+      const variant = firstVariant(product);
+      const variantImgs = normalizeArray(variant?.images);
+      const imgs = normalizeArray(getValue(product, ['images', 'gallery', 'photos', 'imageUrls'], []));
+      return variantImgs[0] || getValue(product, ['image', 'img', 'thumbnail', 'photo', 'cover'], imgs[0] || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80');
+    }
+
+    function getPrice(product){
+      const variant = firstVariant(product);
+      const direct = getValue(product, ['price', 'cena', 'finalPrice', 'regular_price', 'regularPrice'], null);
+      const variantPrice = getValue(variant || {}, ['price'], null);
+      const value = direct ?? variantPrice;
+      return value !== null ? Number(value) : null;
+    }
+
+    function getOldPrice(product){
+      const variant = firstVariant(product);
+      const direct = getValue(product, ['compareAtPrice', 'oldPrice', 'povodnaCena', 'saleCompareAt'], null);
+      const variantPrice = getValue(variant || {}, ['compareAtPrice'], null);
+      const value = direct ?? variantPrice;
+      return value !== null ? Number(value) : null;
+    }
+
+    function getProductName(product){
+      return getTranslated(product, 'translations.title', getValue(product, ['name', 'title', 'nazov', 'productName'], state.lang === 'en' ? 'Untitled product' : 'Produkt bez názvu'));
+    }
+
+    function getProductDesc(product){
+      const raw = getTranslated(product, 'translations.short', getValue(product, ['description', 'desc', 'popis', 'shortDescription'], null));
+      const html = getTranslated(product, 'translations.descriptionHtml', getValue(product, ['descriptionHtml'], null));
+      const shortText = getTranslated(product, 'translations.short', getValue(product, ['short'], null));
+      return stripHtml(raw || html || shortText || (state.lang === 'en' ? 'No additional description.' : 'Bez doplnkového popisu.'));
+    }
+
+    function getCategory(product){
+      return getTranslated(product, 'translations.category', getValue(product, ['category', 'kategoria', 'segment', 'type'], state.lang === 'en' ? 'Other' : 'Ostatné'));
+    }
+
+    function getCarModels(product){
+      const direct = normalizeArray(getValue(product, ['carModels', 'models', 'vehicleModels', 'fitmentModels'], []));
+      const fitment = normalizeArray(product?.fitment);
+      const fits = normalizeArray(product?.fits);
+      const platforms = normalizeArray(product?.platforms);
+      const model = getValue(product, ['model', 'vehicleModel'], null);
+
+      const combined = uniqueSorted([
+        ...direct,
+        ...fitment,
+        ...fits,
+        ...platforms,
+        ...(model ? [model] : [])
+      ].filter(Boolean));
+
+      return combined.filter(item => {
+        const v = String(item).trim();
+        return v && v.toLowerCase() !== 'automobil';
+      });
+    }
+
+    function isFeatured(product){
+      return Boolean(getValue(product, ['featured', 'isFeatured', 'new', 'isNew', 'top', 'highlight'], false));
+    }
+
+    function isOnSale(product){
+      const oldPrice = getOldPrice(product);
+      const price = getPrice(product);
+      return Boolean((oldPrice && price && oldPrice > price) || getValue(product, ['sale', 'isSale', 'discount'], false));
+    }
+
+    function mapProduct(raw, index){
+      return {
+  raw,
+  _index: index,
+  name: getProductName(raw),
+  description: getProductDesc(raw),
+  categoryKey: getValue(raw, ['category', 'kategoria', 'segment', 'type'], null),
+  category: getCategory(raw),
+  carModels: getCarModels(raw),
+  price: getPrice(raw),
+  oldPrice: getOldPrice(raw),
+  image: getImage(raw),
+  featured: isFeatured(raw),
+  onSale: isOnSale(raw),
+  url: getValue(raw, ['productUrl', 'url', 'link', 'href'], '#'),
+  materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
+  location: getValue(raw, ['placement', 'location', 'umiestnenie'], null),
+  manufacturer: getValue(raw, ['manufacturer'], null),
+
+  variants: normalizeArray(raw.variants),
+  images: normalizeArray(getValue(raw, ['images', 'gallery', 'photos', 'imageUrls'], []))
+};
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch(DATA_URL, {cache:'no-store'});
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        let list = [];
+        if (Array.isArray(json)) list = json;
+        else if (Array.isArray(json.products)) list = json.products;
+        else if (Array.isArray(json.items)) list = json.items;
+        else if (Array.isArray(json.data)) list = json.data;
+        else if (Array.isArray(json.catalog)) list = json.catalog;
+        else if (Array.isArray(json.result)) list = json.result;
+        else list = [];
+
+        list = list.filter(item => item && typeof item === 'object');
+
+        state.rawProducts = list;
+        refreshMappedProducts();
+        buildFilterChips();
+        updateGlobalStats();
+        applyFilters();
+      } catch(err){
+        console.error(err);
+        els.loadingState.style.display = 'none';
+        els.emptyState.style.display = 'block';
+        els.emptyState.innerHTML = `
+          <h3>${escapeHtml(t('loadErrorTitle'))}</h3>
+          <p>${escapeHtml(t('loadErrorDesc'))}</p>
+          <button class="cta-btn" onclick="location.reload()">${escapeHtml(t('retry'))}</button>
+        `;
+      }
+    }
+
+    function uniqueSorted(values){
+      return [...new Set(values.filter(Boolean).map(v => String(v).trim()))].sort((a,b)=>a.localeCompare(b, localeCode()));
+    }
+
+    function buildFilterChips(){
+      const categories = uniqueSorted(state.allProducts.map(p => p.categoryKey || p.category));
+      const carModels = uniqueSorted(state.allProducts.flatMap(p => p.carModels));
+
+      els.categoryChips.innerHTML = `
+        <button class="chip ${state.activeCategory === null ? 'active' : ''}" data-cat="">${escapeHtml(t('all'))}</button>
+        ${categories.map(cat => `<button class="chip ${state.activeCategory === cat ? 'active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml((state.allProducts.find(p => (p.categoryKey || p.category) === cat)?.category) || cat)}</button>`).join('')}
+      `;
+
+      els.brandChips.innerHTML = `
+        <button class="chip ${state.activeBrand === null ? 'active' : ''}" data-brand="">${escapeHtml(t('allModels'))}</button>
+        ${carModels.map(model => `<button class="chip ${state.activeBrand === model ? 'active' : ''}" data-brand="${escapeHtml(model)}">${escapeHtml(model)}</button>`).join('')}
+      `;
+
+      [...els.categoryChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          state.activeCategory = btn.dataset.cat || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      [...els.brandChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          state.activeBrand = btn.dataset.brand || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      mountMobileFilters();
+    }
+
+    function mountMobileFilters(){
+      els.mobileFiltersMount.innerHTML = els.desktopFilters.innerHTML;
+
+      const mount = els.mobileFiltersMount;
+      const searchInput = mount.querySelector('#searchInput');
+      const priceMin = mount.querySelector('#priceMin');
+      const priceMax = mount.querySelector('#priceMax');
+      const saleOnly = mount.querySelector('#saleOnly');
+      const newOnly = mount.querySelector('#newOnly');
+      const resetAllBtn = mount.querySelector('#resetAllBtn');
+      const categoryChips = mount.querySelector('#categoryChips');
+      const brandChips = mount.querySelector('#brandChips');
+
+      searchInput.value = state.search;
+      priceMin.value = state.priceMin;
+      priceMax.value = state.priceMax;
+      saleOnly.checked = state.saleOnly;
+      newOnly.checked = state.newOnly;
+
+      searchInput.addEventListener('input', ()=>{
+        state.search = searchInput.value.trim();
+        els.searchInput.value = state.search;
+        applyFilters();
+      });
+
+      priceMin.addEventListener('input', ()=>{
+        state.priceMin = priceMin.value;
+        els.priceMin.value = state.priceMin;
+        applyFilters();
+      });
+
+      priceMax.addEventListener('input', ()=>{
+        state.priceMax = priceMax.value;
+        els.priceMax.value = state.priceMax;
+        applyFilters();
+      });
+
+      saleOnly.addEventListener('change', ()=>{
+        state.saleOnly = saleOnly.checked;
+        els.saleOnly.checked = state.saleOnly;
+        applyFilters();
+      });
+
+      newOnly.addEventListener('change', ()=>{
+        state.newOnly = newOnly.checked;
+        els.newOnly.checked = state.newOnly;
+        applyFilters();
+      });
+
+      resetAllBtn.addEventListener('click', resetFilters);
+
+      [...categoryChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          state.activeCategory = btn.dataset.cat || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+
+      [...brandChips.querySelectorAll('.chip')].forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          state.activeBrand = btn.dataset.brand || null;
+          buildFilterChips();
+          applyFilters();
+        });
+      });
+    }
+
+    function syncDesktopState(){
+      els.searchInput.value = state.search;
+      els.priceMin.value = state.priceMin;
+      els.priceMax.value = state.priceMax;
+      els.saleOnly.checked = state.saleOnly;
+      els.newOnly.checked = state.newOnly;
+    }
+
+    function applyFilters(){
+      let items = [...state.allProducts];
+
+      if(state.search){
+        const q = normalizeText(state.search);
+        items = items.filter(p => {
+          const hay = [
+            p.name, p.description, p.category, p.manufacturer || '',
+            ...(p.carModels || []),
+            ...(p.materials || []),
+            p.location || ''
+          ].join(' | ').toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      if(state.activeCategory) items = items.filter(p => (p.categoryKey || p.category) === state.activeCategory);
+      if(state.activeBrand) items = items.filter(p => p.carModels.includes(state.activeBrand));
+
+      const min = Number(state.priceMin);
+      const max = Number(state.priceMax);
+
+      if(state.priceMin !== '' && !Number.isNaN(min)){
+        items = items.filter(p => p.price !== null && p.price >= min);
+      }
+
+      if(state.priceMax !== '' && !Number.isNaN(max)){
+        items = items.filter(p => p.price !== null && p.price <= max);
+      }
+
+      if(state.saleOnly) items = items.filter(p => p.onSale);
+      if(state.newOnly) items = items.filter(p => p.featured);
+
+      switch(state.sort){
+        case 'priceAsc':
+          items.sort((a,b)=>(a.price ?? Infinity) - (b.price ?? Infinity));
+          break;
+        case 'priceDesc':
+          items.sort((a,b)=>(b.price ?? -Infinity) - (a.price ?? -Infinity));
+          break;
+        case 'nameAsc':
+          items.sort((a,b)=>a.name.localeCompare(b.name, localeCode()));
+          break;
+        case 'nameDesc':
+          items.sort((a,b)=>b.name.localeCompare(a.name, localeCode()));
+          break;
+        case 'newest':
+          items.sort((a,b)=>Number(b.featured) - Number(a.featured) || b._index - a._index);
+          break;
+        default:
+          items.sort((a,b)=>{
+            const scoreA = Number(a.featured) * 4 + Number(a.onSale) * 2 + (a.price !== null ? 1 : 0);
+            const scoreB = Number(b.featured) * 4 + Number(b.onSale) * 2 + (b.price !== null ? 1 : 0);
+            return scoreB - scoreA || a._index - b._index;
+          });
+      }
+
+      state.filteredProducts = items;
+      renderProducts();
+      renderActiveFilters();
+      updateResultStats();
+    }
+
+    function renderProducts(){
+      els.loadingState.style.display = 'none';
+
+      if(!state.filteredProducts.length){
+        els.productsGrid.style.display = 'none';
+        els.emptyState.style.display = 'block';
+        return;
+      }
+
+      els.emptyState.style.display = 'none';
+      els.productsGrid.style.display = 'grid';
+
+      els.productsGrid.innerHTML = state.filteredProducts.map((p, index) => {
+        const title = escapeHtml(p.name);
+        const desc = escapeHtml(p.description);
+        const img = escapeHtml(p.image);
+        const price = formatPrice(p.price);
+        const oldPrice = p.oldPrice && p.oldPrice > (p.price ?? 0) ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : '';
+        const modelText = p.carModels.length ? p.carModels.slice(0, 3).join(' • ') : t('modelDetail');
+
+        return `
+          <article class="product-card">
+            <div class="product-media">
+              <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'">
+              <div class="product-overlay">
+                <div class="product-actions-float">
+                  <button class="icon-btn preview-btn" data-index="${index}" title="${escapeHtml(t('quickPreview'))}" aria-label="${escapeHtml(t('quickPreview'))}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M1 12S5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-body">
+              <div class="product-meta">
+                <h3 class="product-title">${title}</h3>
+                <div class="product-desc">${desc}</div>
+
+                <div class="spec-row">
+                  <span class="spec-pill">${escapeHtml(modelText)}</span>
+                  ${p.location ? `<span class="spec-pill">${escapeHtml(p.location)}</span>` : ''}
+                </div>
+
+                <div class="price-row">
+                  <div class="price-block">
+                    <div class="price-label">${escapeHtml(t('price'))}</div>
+                    <div class="price-main">
+                      <span class="price">${price}</span>
+                      ${oldPrice}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="product-footer">
+                  <button class="card-btn secondary preview-btn" data-index="${index}">${escapeHtml(t('detail'))}</button>
+                  <button class="card-btn primary add-cart-btn" data-index="${index}">${escapeHtml(t('addToCart'))}</button>
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      els.productsGrid.querySelectorAll('.preview-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const index = Number(btn.dataset.index);
+          const product = state.filteredProducts[index];
+          if(product) openModal(product);
+        });
+      });
+
+      els.productsGrid.querySelectorAll('.add-cart-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const index = Number(btn.dataset.index);
+          const product = state.filteredProducts[index];
+          if(product) addToCart(product, { closeProduct:false });
+        });
+      });
+    }
+
+    function renderActiveFilters(){
+      const tags = [];
+
+      if(state.search) tags.push({ label:`${t('searchTag')}: ${state.search}`, action:() => { state.search=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.activeCategory) tags.push({ label:`${t('categoryTag')}: ${(state.allProducts.find(p => (p.categoryKey || p.category) === state.activeCategory)?.category) || state.activeCategory}`, action:() => { state.activeCategory=null; buildFilterChips(); applyFilters(); }});
+      if(state.activeBrand) tags.push({ label:`${t('modelTag')}: ${state.activeBrand}`, action:() => { state.activeBrand=null; buildFilterChips(); applyFilters(); }});
+      if(state.priceMin !== '') tags.push({ label:`${t('priceFromTag')}: ${state.priceMin} €`, action:() => { state.priceMin=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.priceMax !== '') tags.push({ label:`${t('priceToTag')}: ${state.priceMax} €`, action:() => { state.priceMax=''; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.saleOnly) tags.push({ label:`${t('saleOnlyTag')}`, action:() => { state.saleOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+      if(state.newOnly) tags.push({ label:`${t('featuredOnlyTag')}`, action:() => { state.newOnly=false; syncDesktopState(); mountMobileFilters(); applyFilters(); }});
+
+      els.activeFilters.innerHTML = tags.map((tag, idx)=>`
+        <div class="active-tag">
+          <span>${escapeHtml(tag.label)}</span>
+          <button type="button" data-tag-index="${idx}">×</button>
+        </div>
+      `).join('');
+
+      [...els.activeFilters.querySelectorAll('button')].forEach((btn, idx)=>{
+        btn.addEventListener('click', ()=>tags[idx].action());
+      });
+    }
+
+    function updateGlobalStats(){
+      const all = state.allProducts;
+      const categories = uniqueSorted(all.map(p => p.category));
+      const carModels = uniqueSorted(all.flatMap(p => p.carModels));
+      const prices = all.map(p => p.price).filter(v => v !== null && !Number.isNaN(v));
+      const minPrice = prices.length ? Math.min(...prices) : null;
+      const maxPrice = prices.length ? Math.max(...prices) : null;
+
+      els.heroProducts.textContent = all.length || '0';
+      els.heroCategories.textContent = categories.length || '0';
+      els.heroBrands.textContent = carModels.length || '0';
+      els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
+      els.hudAllProducts.textContent = all.length || '0';
+      els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
+
+      const topCategory = getTopCategory(all);
+      els.hudTopCategory.textContent = topCategory || '—';
+
+      els.heroHighlightText.textContent = all.length
+        ? t('heroHighlight', { count: all.length, category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená') })
+        : t('heroHighlightEmpty');
+    }
+
+ function updateResultStats(){
+  els.resultCount.textContent = state.filteredProducts.length;
+  els.hudVisibleProducts.textContent = state.filteredProducts.length;
+
+  if (els.toolbarInfo) {
+    els.toolbarInfo.textContent = state.search
+      ? `${t('searching')} ${state.search}`
+      : t('toolbarLive');
+  }
+}
+
+    function getTopCategory(list){
+      const counter = {};
+      for(const p of list) counter[p.category] = (counter[p.category] || 0) + 1;
+      const sorted = Object.entries(counter).sort((a,b)=>b[1]-a[1]);
+      return sorted[0]?.[0] || null;
+    }
+
+    function openModal(product){
+  state.modalProduct = product;
+  state.modalVariantIndex = 0;
+  state.modalImageIndex = 0;
+  renderModal();
+  els.productModal.classList.add('open');
+  els.productModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  els.productModal.classList.remove('open');
+  els.productModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function renderModal(){
+  const product = state.modalProduct;
+  if(!product) return;
+
+  const variants = getVariants(product);
+  const activeVariant = getActiveVariant(product);
+  const images = getAllImages(product, activeVariant);
+  const activeImage = images[state.modalImageIndex] || images[0] || product.image;
+
+  const price = formatPrice(activeVariant?.price ?? product.price);
+  const oldPriceValue = activeVariant?.compareAtPrice ?? product.oldPrice;
+  const oldPrice = oldPriceValue ? `<span class="old-price">${formatPrice(oldPriceValue)}</span>` : '';
+
+  els.modalContent.innerHTML = `
+    <div class="modal-media">
+      <div class="modal-stage">
+        <img
+          class="modal-main-image"
+          src="${escapeHtml(activeImage)}"
+          alt="${escapeHtml(product.name)}"
+          onerror="this.src='https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80'"
+        >
+
+        ${images.length > 1 ? `
+          <div class="modal-thumb-rail">
+            ${images.map((img, i) => `
+              <button class="modal-thumb ${i === state.modalImageIndex ? 'active' : ''}" type="button" data-image-index="${i}">
+                <img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)}">
+              </button>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+    </div>
+
+    <div class="modal-content">
+      <h2 class="modal-title">${escapeHtml(product.name)}</h2>
+
+      <div class="modal-price">
+        <span class="price">${price}</span>
+        ${oldPrice}
+      </div>
+
+      ${
+        variants.length > 1
+          ? `
+            <div class="variant-block">
+              <div class="variant-label">${escapeHtml(t('variant'))}</div>
+              <div class="variant-chips">
+                ${variants.map((variant, i) => `
+                  <button class="variant-chip ${i === state.modalVariantIndex ? 'active' : ''}" type="button" data-variant-index="${i}">
+                    <span>${escapeHtml(getVariantOptionsLabel(variant))}</span>
+                    <small>${formatPrice(variant.price)}</small>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `
+          : ''
+      }
+
+      <div class="modal-desc">${getTranslated(product.raw, 'translations.descriptionHtml', product.raw?.descriptionHtml) || escapeHtml(product.description)}</div>
+
+      <div class="modal-specs">
+        <div class="modal-spec">
+          <span>${escapeHtml(t('categoryLabel'))}</span>
+          <span>${escapeHtml(product.category || '—')}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>${escapeHtml(t('carModelLabel'))}</span>
+          <span>${escapeHtml(product.carModels?.join(', ') || t('universal'))}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>${escapeHtml(t('manufacturer'))}</span>
+          <span>${escapeHtml(product.manufacturer || '—')}</span>
+        </div>
+
+        <div class="modal-spec">
+          <span>${escapeHtml(t('sku'))}</span>
+          <span>${escapeHtml(activeVariant?.sku || '—')}</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="card-btn primary" id="addToCartBtn">${escapeHtml(t('addToCart'))}</button>
+        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">${escapeHtml(t('openInShop'))}</a>
+      </div>
+    </div>
+  `;
+
+  els.modalContent.querySelectorAll('[data-image-index]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.modalImageIndex = Number(btn.dataset.imageIndex);
+      renderModal();
+    });
+  });
+
+  els.modalContent.querySelectorAll('[data-variant-index]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.modalVariantIndex = Number(btn.dataset.variantIndex);
+      state.modalImageIndex = 0;
+      renderModal();
+    });
+  });
+
+  const addBtn = document.getElementById('addToCartBtn');
+  if(addBtn){
+    addBtn.addEventListener('click', () => addToCart(product, { closeProduct:true }));
+  }
+}
+function getCartItemKey(product, variant){
+  return `${product.raw?.id || product.name}__${variant?.id || 'default'}`;
+}
+
+function addToCart(product, options = {}){
+  const { closeProduct = true } = options;
+  const variant = getActiveVariant(product);
+  const images = getAllImages(product, variant);
+  const image = images[0] || product.image;
+
+  const item = {
+    key: getCartItemKey(product, variant),
+    productId: product.raw?.id || product.name,
+    variantId: Number(variant?.variantId || variant?.id || 0),
+    productUrl: product.raw?.productUrl || product.url || '',
+    name: product.name,
+    variantTitle: getVariantOptionsLabel(variant),
+    sku: variant?.sku || '',
+    price: Number(variant?.price ?? product.price ?? 0),
+    qty: 1,
+    image
+  };
+
+  const existing = state.cart.find(x => x.key === item.key);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    state.cart.push(item);
+  }
+
+  updateCartUI();
+  if(closeProduct) closeModal();
+  openCart();
+}
+
+function getShopifyCheckoutUrl(){
+  const validItems = state.cart.filter(item => Number.isFinite(Number(item.variantId)) && Number(item.variantId) > 0 && item.qty > 0);
+  if(!validItems.length) return '';
+
+  const baseUrl = validItems.find(item => item.productUrl)?.productUrl || 'https://shop.racem.sk';
+  let origin = 'https://shop.racem.sk';
+
+  try {
+    origin = new URL(baseUrl).origin;
+  } catch(err) {}
+
+  const cartPath = validItems
+    .map(item => `${encodeURIComponent(String(item.variantId))}:${encodeURIComponent(String(item.qty))}`)
+    .join(',');
+
+  return `${origin}/cart/${cartPath}`;
+}
+
+function goToShopifyCheckout(){
+  const checkoutUrl = getShopifyCheckoutUrl();
+  if(!checkoutUrl){
+    alert(t('invalidCheckout'));
+    return;
+  }
+
+  window.location.href = checkoutUrl;
+}
+
+function updateCartUI(){
+  const count = state.cart.reduce((sum, item) => sum + item.qty, 0);
+  const total = state.cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+  const checkoutUrl = getShopifyCheckoutUrl();
+
+  if(els.cartCount) els.cartCount.textContent = count;
+  if(els.cartTotal) els.cartTotal.textContent = formatPrice(total);
+  if(els.cartCheckoutBtn) els.cartCheckoutBtn.disabled = !checkoutUrl;
+
+  if(!els.cartItems) return;
+
+  if(!state.cart.length){
+    els.cartItems.innerHTML = `
+      <div class="empty-state" style="padding:18px;">
+        <h3 style="font-size:1.2rem;">${escapeHtml(t('cartEmptyTitle'))}</h3>
+        <p>${escapeHtml(t('cartEmptyDesc'))}</p>
+      </div>
+    `;
+    return;
+  }
+
+  els.cartItems.innerHTML = state.cart.map(item => `
+    <div class="cart-item">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+      <div>
+        <h4 class="cart-item-title">${escapeHtml(item.name)}</h4>
+        <div class="cart-item-meta">
+          ${escapeHtml(item.variantTitle)}<br>
+          ${item.sku ? `SKU: ${escapeHtml(item.sku)}<br>` : ''}
+          ${formatPrice(item.price)}
+        </div>
+
+        <div class="cart-item-actions">
+          <div class="qty-wrap">
+            <button class="qty-btn" type="button" data-qty-action="minus" data-key="${escapeHtml(item.key)}">−</button>
+            <strong class="qty-value">${item.qty}</strong>
+            <button class="qty-btn" type="button" data-qty-action="plus" data-key="${escapeHtml(item.key)}">+</button>
+          </div>
+
+          <button class="remove-btn" type="button" data-remove-key="${escapeHtml(item.key)}">${escapeHtml(t('remove'))}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  els.cartItems.querySelectorAll('[data-qty-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = state.cart.find(x => x.key === btn.dataset.key);
+      if(!item) return;
+
+      if(btn.dataset.qtyAction === 'plus') item.qty += 1;
+      if(btn.dataset.qtyAction === 'minus') item.qty -= 1;
+
+      state.cart = state.cart.filter(x => x.qty > 0);
+      updateCartUI();
+    });
+  });
+
+  els.cartItems.querySelectorAll('[data-remove-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.cart = state.cart.filter(x => x.key !== btn.dataset.removeKey);
+      updateCartUI();
+    });
+  });
+}
+
+function openCart(){
+  els.cartDrawer?.classList.add('open');
+  els.cartBackdrop?.classList.add('open');
+}
+
+function closeCart(){
+  els.cartDrawer?.classList.remove('open');
+  els.cartBackdrop?.classList.remove('open');
+}
+    function resetFilters(){
+      state.activeCategory = null;
+      state.activeBrand = null;
+      state.search = '';
+      state.priceMin = '';
+      state.priceMax = '';
+      state.saleOnly = false;
+      state.newOnly = false;
+      state.sort = 'featured';
+
+      els.searchInput.value = '';
+      els.priceMin.value = '';
+      els.priceMax.value = '';
+      els.saleOnly.checked = false;
+      els.newOnly.checked = false;
+      els.sortSelect.value = 'featured';
+
+      buildFilterChips();
+      mountMobileFilters();
+      applyFilters();
+    }
+
+    function bindEvents(){
+      els.searchInput.addEventListener('input', ()=>{
+        state.search = els.searchInput.value.trim();
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.priceMin.addEventListener('input', ()=>{
+        state.priceMin = els.priceMin.value;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.priceMax.addEventListener('input', ()=>{
+        state.priceMax = els.priceMax.value;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.sortSelect.addEventListener('change', ()=>{
+        state.sort = els.sortSelect.value;
+        applyFilters();
+      });
+
+      els.saleOnly.addEventListener('change', ()=>{
+        state.saleOnly = els.saleOnly.checked;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.newOnly.addEventListener('change', ()=>{
+        state.newOnly = els.newOnly.checked;
+        mountMobileFilters();
+        applyFilters();
+      });
+
+      els.resetAllBtn.addEventListener('click', resetFilters);
+      els.emptyResetBtn.addEventListener('click', resetFilters);
+
+      els.modalCloseBtn.addEventListener('click', closeModal);
+      els.productModal.addEventListener('click', (e)=>{
+        if(e.target === els.productModal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape'){
+          closeModal();
+          els.mobileFilterPanel.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+
+      els.homeBtn?.addEventListener('click', ()=> window.location.href='/');
+      els.heroHomeBtn?.addEventListener('click', ()=> window.location.href='/');
+      els.langSkBtn?.addEventListener('click', ()=> setLanguage('sk'));
+      els.langEnBtn?.addEventListener('click', ()=> setLanguage('en'));
+
+      els.openMobileFilters.addEventListener('click', ()=>{
+        els.mobileFilterPanel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+
+      els.modalCloseBtn?.addEventListener('click', closeModal);
+
+els.productModal?.addEventListener('click', (e) => {
+  if(e.target === els.productModal) closeModal();
+});
+
+els.cartBtn?.addEventListener('click', openCart);
+els.closeCartBtn?.addEventListener('click', closeCart);
+els.closeCartCta?.addEventListener('click', closeCart);
+els.cartCheckoutBtn?.addEventListener('click', goToShopifyCheckout);
+els.cartBackdrop?.addEventListener('click', closeCart);
+
+      els.closeMobileFilters.addEventListener('click', ()=>{
+        els.mobileFilterPanel.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+
+      els.mobileFilterPanel.addEventListener('click', (e)=>{
+        if(e.target === els.mobileFilterPanel){
+          els.mobileFilterPanel.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    state.lang = detectInitialLanguage();
+    bindEvents();
+    updateStaticTexts();
+    setLanguage(state.lang, false);
+    loadProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
