@@ -3465,60 +3465,7 @@ body{
   overflow: visible !important;
 }
 
-.hero-grid{
-  position: relative;
-}
-
-.headline{
-  position: relative;
-  z-index: 2;
-}
-
-.heroPanel.globePanel{
-  position: absolute !important;
-  right: -6vw !important;
-  top: -6vh !important;
-  width: min(720px, 52vw) !important;
-  height: min(720px, 52vw) !important;
-  margin: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  z-index: 1 !important;
-}
-
-.heroPanel.globePanel canvas{
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-@media (max-width: 980px){
-  .heroPanel.globePanel{
-    position: relative !important;
-    right: auto !important;
-    top: auto !important;
-    width: min(420px, 86vw) !important;
-    height: min(420px, 86vw) !important;
-    margin: 18px auto 0 !important;
-  }
-}
-
-/* tooltip komplet vypnuty */
-#globeTip,
-.globeTip,
-.globe-tooltip{
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-}
-
-
-
-/* ===== FINAL GLOBE FIX: mimo dohladu bez posunu layoutu ===== */
+/* ===== FINAL GLOBE FIX ===== */
 html, body{
   overflow-x: hidden !important;
 }
@@ -3528,18 +3475,37 @@ html, body{
   overflow: hidden !important;
 }
 
-.heroPanel.globePanel{
-  position: absolute !important;
-  right: -7vw !important;
-  top: -8vh !important;
-  width: min(720px, 52vw) !important;
-  height: min(720px, 52vw) !important;
-  margin: 0 !important;
-  pointer-events: auto !important;
-  z-index: 5 !important;
+.hero-grid{
+  position: relative !important;
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 50px;
+  align-items: center;
 }
 
-.heroPanel.globePanel canvas{
+.headline{
+  position: relative;
+  z-index: 2;
+}
+
+.heroPanel.globePanel{
+  position: absolute !important;
+  right: -2vw !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: min(560px, 40vw) !important;
+  height: min(560px, 40vw) !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.heroPanel.globePanel canvas,
+#racemGlobe{
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
@@ -3547,32 +3513,33 @@ html, body{
   display: block !important;
 }
 
+#globeTip,
+.globeTip,
+.globe-tooltip{
+  display: none !important;
+}
+
 @media (max-width: 980px){
   .hero{
     overflow: visible !important;
+  }
+
+  .hero-grid{
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
   }
 
   .heroPanel.globePanel{
     position: relative !important;
     right: 0 !important;
     top: 0 !important;
+    transform: none !important;
     width: min(420px, 86vw) !important;
     height: min(420px, 86vw) !important;
     margin: 18px auto 0 !important;
   }
 }
-  .heroPanel.globePanel {
-  position: relative;
-  width: min(560px, 42vw);
-  height: min(560px, 42vw);
-  margin-left: auto;
-}
 
-#racemGlobe {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
 </style>
 </head>
 
