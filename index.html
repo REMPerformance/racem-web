@@ -3561,6 +3561,18 @@ html, body{
     margin: 18px auto 0 !important;
   }
 }
+  .heroPanel.globePanel {
+  position: relative;
+  width: min(560px, 42vw);
+  height: min(560px, 42vw);
+  margin-left: auto;
+}
+
+#racemGlobe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 </style>
 </head>
 
@@ -4629,75 +4641,97 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   ];
 
   const canvas = document.getElementById("racemGlobe");
-if (!canvas) {
+  if (!canvas) {
     console.warn("Canvas #racemGlobe not found");
-  }
+  } else {
+    let phi = 0;
+    const THETA = 0.22;
+    let globe = null;
+    let ro = null;
 
-  let phi = 0;
-  const THETA = 0.22;
+    function rgb(hex) {
+      const h = hex.replace("#", "").trim();
+      const n = parseInt(h, 16);
+      const r = (n >> 16) & 255;
+      const g = (n >> 8) & 255;
+      const b = n & 255;
+      return [r / 255, g / 255, b / 255];
+    }
 
-  function rgb(hex){
-    const h = hex.replace("#","").trim();
-    const n = parseInt(h, 16);
-    const r = (n >> 16) & 255;
-    const g = (n >> 8) & 255;
-    const b = n & 255;
-    return [r/255, g/255, b/255];
-  }
+    const RACEM_RED = rgb("#b31f24");
 
-  const RACEM_RED = rgb("#b31f24");
+    function sizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  function sizeCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = Math.max(2, Math.floor(rect.width * dpr));
-    const h = Math.max(2, Math.floor(rect.height * dpr));
-    canvas.width = w;
-    canvas.height = h;
-    return { w, h, dpr };
-  }
+      const cssWidth = Math.max(2, Math.floor(rect.width));
+      const cssHeight = Math.max(2, Math.floor(rect.height));
 
-  // ===== init globe =====
-  const init = () => {
-    const { w, h, dpr } = sizeCanvas();
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
 
-    const globe = createGlobe(canvas, {
-      devicePixelRatio: dpr,
-      width: w,
-      height: h,
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        dpr
+      };
+    }
 
-      phi: 0,
-      theta: THETA,
+    function buildGlobe() {
+      const { width, height, dpr } = sizeCanvas();
 
-      dark: 0,
-      diffuse: 1.25,
-      scale: 1.08,
-      mapSamples: 22000,
-      mapBrightness: 1.35,
-
-      baseColor: [0.06, 0.06, 0.07],
-      glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
-      markerColor: [0.95, 0.32, 0.34],
-
-      markers: LOCATIONS.map(l => ({
-        location: [l.lat, l.lon],
-        size: 0.085,
-      })),
-
-      onRender: (state) => {
-        state.phi = phi;
-        phi += 0.0032;
+      if (typeof globe === "function") {
+        globe();
+        globe = null;
       }
-    });
-// resize observer
-    const ro = new ResizeObserver(() => {
-      const { w, h, dpr } = sizeCanvas();
-      globe.resize({ width: w, height: h, devicePixelRatio: dpr });
-    });
-    ro.observe(canvas);
-  };
 
-  requestAnimationFrame(() => requestAnimationFrame(init));
+      globe = createGlobe(canvas, {
+        devicePixelRatio: dpr,
+        width,
+        height,
+
+        phi: 0,
+        theta: THETA,
+
+        dark: 0,
+        diffuse: 1.25,
+        scale: 1.08,
+        mapSamples: 22000,
+        mapBrightness: 1.35,
+
+        baseColor: [0.06, 0.06, 0.07],
+        glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
+        markerColor: [0.95, 0.32, 0.34],
+
+        markers: LOCATIONS.map(l => ({
+          location: [l.lat, l.lon],
+          size: 0.085,
+        })),
+
+        onRender: (state) => {
+          state.phi = phi;
+          phi += 0.0032;
+        }
+      });
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        buildGlobe();
+
+        ro = new ResizeObserver(() => {
+          buildGlobe();
+        });
+
+        ro.observe(canvas);
+      });
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (ro) ro.disconnect();
+      if (typeof globe === "function") globe();
+    });
+  }
 </script>
 
 
