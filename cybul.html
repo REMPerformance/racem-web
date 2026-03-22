@@ -2026,6 +2026,7 @@
 
         return {
           ...p,
+          _productUrl: `products-cybul/${slugify(p.handle || p.title || p.id || `product-${idx}`)}.html`,
           _index: idx,
           _images: allImages,
           _buyableVariants: buyableVariants,
@@ -2276,7 +2277,7 @@
             </div>
           </article>`;
       }).join('');
-      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => btn.addEventListener('click', () => openProductModal(btn.dataset.id)));
+      els.featuredScroller.querySelectorAll('.feature-open').forEach(btn => btn.addEventListener('click', () => navigateToProduct(btn.dataset.id)));
     }
 
     function renderHeroShowcase(){
@@ -2410,7 +2411,7 @@
       }).join('');
 
       els.productsGrid.querySelectorAll('[data-open]').forEach(el => {
-        el.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openProductModal(el.dataset.open); });
+        el.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); navigateToProduct(el.dataset.open); });
       });
       els.productsGrid.querySelectorAll('[data-add]').forEach(el => {
         el.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); addProductToCart(el.dataset.add); });
@@ -2421,6 +2422,17 @@
           toggleFavorite(el.dataset.favorite);
         });
       });
+    }
+
+    function getProductUrl(product){
+      if (!product) return '#';
+      return product._productUrl || `products-cybul/${slugify(product.handle || product.title || product.id || 'produkt')}.html`;
+    }
+
+    function navigateToProduct(productOrId){
+      const product = typeof productOrId === 'string' ? getProductById(productOrId) : productOrId;
+      if (!product) return;
+      window.location.href = getProductUrl(product);
     }
 
     function getProductById(id){
@@ -2541,7 +2553,7 @@
       }).join('')}</div>`;
       els.favoritesItems.querySelectorAll('[data-favorite-open]').forEach(el => el.addEventListener('click', () => {
         closeFavorites();
-        openProductModal(el.dataset.favoriteOpen);
+        navigateToProduct(el.dataset.favoriteOpen);
       }));
       els.favoritesItems.querySelectorAll('[data-favorite-add]').forEach(el => el.addEventListener('click', () => addProductToCart(el.dataset.favoriteAdd)));
       els.favoritesItems.querySelectorAll('[data-favorite-remove]').forEach(el => el.addEventListener('click', () => toggleFavorite(el.dataset.favoriteRemove)));
