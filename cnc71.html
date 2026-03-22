@@ -2278,8 +2278,11 @@
     </div>
   </div>
 
+  <script src="assets/js/cart.js"></script>
   <script>
     const DATA_URL = './cnc71.json';
+    const PRODUCT_PAGES_DIR = './products-cnc71';
+    const CART_STORAGE_KEY = 'racem_cart';
 
    const state = {
   rawProducts: [],
@@ -2826,6 +2829,7 @@ function getVariantOptionsLabel(variant){
   featured: isFeatured(raw),
   onSale: isOnSale(raw),
   url: getValue(raw, ['productUrl', 'url', 'link', 'href'], '#'),
+  pageUrl: getProductPageUrl({ raw, name: getProductName(raw) }),
   materials: normalizeArray(getValue(raw, ['materials', 'material', 'materiál'], [])),
   location: getValue(raw, ['placement', 'location', 'umiestnenie'], null),
   manufacturer: getValue(raw, ['manufacturer'], null),
@@ -2871,6 +2875,79 @@ function getVariantOptionsLabel(variant){
 
     function uniqueSorted(values){
       return [...new Set(values.filter(Boolean).map(v => String(v).trim()))].sort((a,b)=>a.localeCompare(b, localeCode()));
+    }
+
+    function slugify(value){
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[–—]/g, '-')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || 'produkt';
+    }
+
+    function getProductPageUrl(product){
+      const raw = product?.raw || product || {};
+      const handle = raw.handle || raw.id || slugify(raw.title || raw.name || product?.name || 'produkt');
+      return `${PRODUCT_PAGES_DIR}/${handle}.html`;
+    }
+
+    function getPersistedCart(){
+      try{
+        if(window.RACEMCart?.get) return window.RACEMCart.get();
+        const parsed = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      }catch(err){
+        return [];
+      }
+    }
+
+    function persistCart(){
+      try{
+        if(window.RACEMCart?.save){
+          window.RACEMCart.save(state.cart);
+        } else {
+          localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart));
+        }
+      }catch(err){
+        console.warn('Cart persistence failed', err);
+      }
+    }
+
+    function hydrateCart(){
+      const saved = getPersistedCart();
+      state.cart = Array.isArray(saved) ? saved.map(item => ({
+        key: String(item.key || item.shopifyVariantId || item.variantId || item.productId || item.title || ''),
+        productId: item.productId || '',
+        variantId: Number(item.shopifyVariantId || item.variantId || 0),
+        shopifyVariantId: String(item.shopifyVariantId || item.variantId || ''),
+        productUrl: item.productUrl || item.url || '',
+        pageUrl: item.pageUrl || item.url || '',
+        name: item.name || item.title || 'Produkt',
+        title: item.title || item.name || 'Produkt',
+        short: item.short || '',
+        variantTitle: item.variantTitle || item.variantName || 'Základná verzia',
+        variantName: item.variantName || item.variantTitle || 'Základná verzia',
+        sku: item.sku || '',
+        price: Number(item.price || item.priceEUR || 0) || 0,
+        qty: Math.max(1, Number(item.qty || 1)),
+        image: item.image || ''
+      })) : [];
+    }
+
+    function getTopCarModel(list){
+      const counter = {};
+      for(const p of list){
+        for(const model of (p.carModels || [])){
+          counter[model] = (counter[model] || 0) + 1;
+        }
+      }
+      const sorted = Object.entries(counter).sort((a,b) => b[1] - a[1]);
+      return sorted[0]?.[0] || null;
     }
 
     function buildFilterChips(){
@@ -3102,7 +3179,7 @@ function getVariantOptionsLabel(variant){
                 </div>
 
                 <div class="product-footer">
-                  <button class="card-btn secondary preview-btn" data-index="${index}">${escapeHtml(t('detail'))}</button>
+                  <a class="card-btn secondary" href="${escapeHtml(p.pageUrl || '#')}">${escapeHtml(t('detail'))}</a>
                   <button class="card-btn primary add-cart-btn" data-index="${index}">${escapeHtml(t('addToCart'))}</button>
                 </div>
               </div>
@@ -3151,28 +3228,29 @@ function getVariantOptionsLabel(variant){
       });
     }
 
-    function updateGlobalStats(){
-      const all = state.allProducts;
-      const prices = all.map(p => p.price).filter(v => v !== null && !Number.isNaN(v));
-      const minPrice = prices.length ? Math.min(...prices) : null;
-      const maxPrice = prices.length ? Math.max(...prices) : null;
-      const topCategory = getTopCategory(all);
-      const topModel = getTopModel(all);
+   function updateGlobalStats(){
+     const all = state.allProducts;
+     const prices = all.map(p => p.price).filter(v => v !== null && !Number.isNaN(v));
+     const minPrice = prices.length ? Math.min(...prices) : null;
+     const maxPrice = prices.length ? Math.max(...prices) : null;
+     const topCategory = getTopCategory(all);
+     const topModel = getTopCarModel(all);
 
-      els.heroProducts.textContent = topModel || '—';
-      if(els.heroCategories) els.heroCategories.innerHTML = '<span class="live-dot"></span><span>LIVE</span>';
-      els.heroBrands.textContent = topCategory || '—';
-      els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
-      if(els.hudAllProducts) els.hudAllProducts.textContent = all.length || '0';
-      els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
-      if(els.hudTopCategory) els.hudTopCategory.textContent = topCategory || '—';
+     els.heroProducts.textContent = topModel || '—';
+     els.heroBrands.textContent = topCategory || '—';
+     els.heroPriceRange.textContent = (minPrice !== null && maxPrice !== null) ? `${Math.round(minPrice)}–${Math.round(maxPrice)}€` : '—';
+     if(els.footerMeta) els.footerMeta.textContent = t('loadedProductsMeta', { count: all.length || 0 });
 
-      els.heroHighlightText.textContent = all.length
-        ? t('heroHighlight', { count: all.length, category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená'), model: topModel || (state.lang === 'en' ? 'unknown' : 'neznámy') })
-        : t('heroHighlightEmpty');
-    }
+     els.heroHighlightText.textContent = all.length
+       ? t('heroHighlight', {
+           count: all.length,
+           model: topModel || (state.lang === 'en' ? 'n/a' : '—'),
+           category: topCategory || (state.lang === 'en' ? 'uncategorized' : 'nezaradená')
+         })
+       : t('heroHighlightEmpty');
+   }
 
- function updateResultStats(){
+function updateResultStats(){
   els.resultCount.textContent = state.filteredProducts.length;
   if(els.hudVisibleProducts) els.hudVisibleProducts.textContent = state.filteredProducts.length;
 
@@ -3325,7 +3403,7 @@ function renderModal(){
 
       <div class="modal-actions">
         <button class="card-btn primary" id="addToCartBtn">${escapeHtml(t('addToCart'))}</button>
-        <a class="card-btn secondary" href="${escapeHtml(product.url || '#')}" target="_blank" rel="noopener">${escapeHtml(t('openInShop'))}</a>
+        <a class="card-btn secondary" href="${escapeHtml(product.pageUrl || getProductPageUrl(product))}">${escapeHtml(t('detail'))}</a>
       </div>
     </div>
   `;
@@ -3364,13 +3442,19 @@ function addToCart(product, options = {}){
     key: getCartItemKey(product, variant),
     productId: product.raw?.id || product.name,
     variantId: Number(variant?.variantId || variant?.id || 0),
+    shopifyVariantId: String(variant?.variantId || variant?.id || ''),
     productUrl: product.raw?.productUrl || product.url || '',
+    pageUrl: product.pageUrl || getProductPageUrl(product),
     name: product.name,
+    title: product.name,
+    short: product.description || '',
     variantTitle: getVariantOptionsLabel(variant),
+    variantName: getVariantOptionsLabel(variant),
     sku: variant?.sku || '',
     price: Number(variant?.price ?? product.price ?? 0),
     qty: 1,
-    image
+    image,
+    url: product.pageUrl || getProductPageUrl(product)
   };
 
   const existing = state.cart.find(x => x.key === item.key);
@@ -3380,6 +3464,7 @@ function addToCart(product, options = {}){
     state.cart.push(item);
   }
 
+  persistCart();
   updateCartUI();
   if(closeProduct) closeModal();
   openCart();
@@ -3436,11 +3521,11 @@ function updateCartUI(){
 
   els.cartItems.innerHTML = state.cart.map(item => `
     <div class="cart-item">
-      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || item.name)}">
       <div>
-        <h4 class="cart-item-title">${escapeHtml(item.name)}</h4>
+        <h4 class="cart-item-title">${escapeHtml(item.title || item.name)}</h4>
         <div class="cart-item-meta">
-          ${escapeHtml(item.variantTitle)}<br>
+          ${escapeHtml(item.variantTitle || item.variantName)}<br>
           ${item.sku ? `SKU: ${escapeHtml(item.sku)}<br>` : ''}
           ${formatPrice(item.price)}
         </div>
@@ -3467,6 +3552,7 @@ function updateCartUI(){
       if(btn.dataset.qtyAction === 'minus') item.qty -= 1;
 
       state.cart = state.cart.filter(x => x.qty > 0);
+      persistCart();
       updateCartUI();
     });
   });
@@ -3474,6 +3560,7 @@ function updateCartUI(){
   els.cartItems.querySelectorAll('[data-remove-key]').forEach(btn => {
     btn.addEventListener('click', () => {
       state.cart = state.cart.filter(x => x.key !== btn.dataset.removeKey);
+      persistCart();
       updateCartUI();
     });
   });
@@ -3598,6 +3685,7 @@ els.cartBackdrop?.addEventListener('click', closeCart);
     }
 
     state.lang = detectInitialLanguage();
+    hydrateCart();
     bindEvents();
     updateStaticTexts();
     setLanguage(state.lang, false);
@@ -3605,6 +3693,10 @@ els.cartBackdrop?.addEventListener('click', closeCart);
     setInterval(updateRacemClock, 1000);
     loadProducts();
     updateCartUI();
+    window.addEventListener('racem:cart-updated', () => {
+      hydrateCart();
+      updateCartUI();
+    });
   </script>
 </body>
 </html>
