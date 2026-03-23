@@ -10,9 +10,9 @@
 <!-- ✅ SEO -->
 <title>RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity | REM Performance</title>
 <meta content="RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy." name="description"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="index,follow" name="robots"/>
-<meta content="#b31f24" name="theme-color"/>
+<meta content="#b31f24" name="theme-color">
 <link href="https://racem.sk/" rel="canonical"/>
 <!-- ✅ Open Graph -->
 <meta content="website" property="og:type"/>
@@ -3637,22 +3637,35 @@ html, body{
 .rf-select{
   width:100%;
   appearance:none;
+  -webkit-appearance:none;
   outline:none;
-  min-height:58px;
-  padding:0 18px;
-  border-radius:17px;
+  min-height:60px;
+  padding:0 52px 0 18px;
+  border-radius:18px;
   border:1px solid rgba(255,255,255,0.10);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
-    linear-gradient(90deg, rgba(179,31,36,0.06), transparent 38%);
+    linear-gradient(180deg, rgba(18,18,18,0.98), rgba(6,6,6,0.98)),
+    linear-gradient(90deg, rgba(179,31,36,0.08), transparent 44%);
   color:#fff;
   font-size:15px;
   font-weight:800;
   letter-spacing:.02em;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.03),
-    0 10px 26px rgba(0,0,0,0.22);
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    inset 0 0 0 1px rgba(255,255,255,0.02),
+    0 14px 30px rgba(0,0,0,0.32);
   transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+  background-image:
+    linear-gradient(180deg, rgba(18,18,18,0.98), rgba(6,6,6,0.98)),
+    linear-gradient(90deg, rgba(179,31,36,0.08), transparent 44%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.82)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat, no-repeat, no-repeat;
+  background-position:0 0, 0 0, calc(100% - 18px) 50%;
+  background-size:auto, auto, 14px;
+}
+.rf-select option{
+  background:#090909;
+  color:#fff;
 }
 .rf-select:hover{
   border-color:rgba(255,255,255,0.17);
@@ -3674,6 +3687,183 @@ html, body{
   font-size:12px;
   color:rgba(255,255,255,0.48);
   letter-spacing:.04em;
+}
+
+.rf-field{ position:relative; }
+.rf-brand-spot{
+  position:relative;
+  min-height:0;
+  max-height:0;
+  margin-top:0;
+  border-radius:26px;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-12px);
+  pointer-events:none;
+  border:0 solid rgba(255,255,255,0.08);
+  background:
+    linear-gradient(135deg, rgba(179,31,36,0.14), rgba(8,8,8,0.94) 42%, rgba(0,0,0,0.98)),
+    radial-gradient(circle at 82% 22%, rgba(179,31,36,0.22), transparent 24%),
+    radial-gradient(circle at 12% 88%, rgba(255,255,255,0.06), transparent 22%);
+  box-shadow:none;
+  transition:
+    max-height .38s ease,
+    margin-top .32s ease,
+    opacity .24s ease,
+    transform .32s ease,
+    border-width .24s ease,
+    box-shadow .32s ease;
+}
+.rf-brand-spot.is-active{
+  min-height:210px;
+  max-height:260px;
+  margin-top:18px;
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+  border-width:1px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.40);
+}
+.rf-brand-spot::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size:34px 34px;
+  opacity:.22;
+  pointer-events:none;
+}
+.rf-brand-spot::after{
+  content:"";
+  position:absolute;
+  inset:0 auto auto 0;
+  width:100%;
+  height:1px;
+  background:linear-gradient(90deg, rgba(179,31,36,0), rgba(179,31,36,0.85), rgba(255,255,255,0.26), rgba(179,31,36,0));
+  pointer-events:none;
+}
+.rf-brand-media,
+.rf-brand-overlay{ position:absolute; inset:0; }
+.rf-brand-media{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:26px;
+}
+.rf-brand-placeholder{
+  width:min(100%, 520px);
+  aspect-ratio:16/8;
+  border-radius:22px;
+  border:1px dashed rgba(255,255,255,0.20);
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  text-align:center;
+  color:rgba(255,255,255,0.56);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:12px;
+}
+.rf-brand-placeholder strong{
+  color:#fff;
+  letter-spacing:.22em;
+  font-size:15px;
+}
+.rf-brand-overlay{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+  padding:20px;
+}
+.rf-brand-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(0,0,0,0.46);
+  backdrop-filter:blur(10px);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:#fff;
+  box-shadow:0 12px 28px rgba(0,0,0,0.32);
+}
+.rf-brand-chip i{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  display:block;
+  background:var(--red);
+  box-shadow:0 0 14px rgba(179,31,36,0.75);
+}
+.rf-brand-card{
+  margin-left:auto;
+  min-width:240px;
+  max-width:320px;
+  padding:18px 18px 16px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:linear-gradient(180deg, rgba(0,0,0,0.60), rgba(8,8,8,0.86));
+  box-shadow:0 18px 44px rgba(0,0,0,0.46);
+  transform:translateY(18px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease, transform .28s ease;
+}
+.rf-brand-spot.is-active .rf-brand-card{
+  opacity:1;
+  transform:translateY(0);
+}
+.rf-brand-eyebrow{
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.48);
+  margin-bottom:10px;
+}
+.rf-brand-logoMark{
+  width:78px;
+  height:78px;
+  border-radius:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, rgba(179,31,36,0.22), rgba(255,255,255,0.05));
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 28px rgba(0,0,0,0.28);
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:.14em;
+  color:#fff;
+  margin-bottom:14px;
+}
+.rf-brand-name{
+  font-size:22px;
+  line-height:1.05;
+  font-weight:1000;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#fff;
+}
+.rf-brand-sub{
+  margin-top:8px;
+  color:rgba(255,255,255,0.68);
+  font-size:13px;
+  line-height:1.5;
+}
+@media (max-width: 640px){
+  .rf-brand-spot{ min-height:240px; }
+  .rf-brand-overlay{ flex-direction:column; align-items:stretch; }
+  .rf-brand-card{ min-width:unset; max-width:none; margin-left:0; }
 }
 @media (max-width: 1200px){
   .headline{
@@ -3918,6 +4108,7 @@ html, body{
 </label>
 </div>
 <p class="rf-hint">Po výbere modelu ťa presmerujeme na ponuku s pripraveným filtrom.</p>
+<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"><div style="width:100%;height:220px;display:flex;align-items:center;justify-content:center;color:#888;font-weight:600;letter-spacing:2px;">PLACEHOLDER</div></div>
 </div>
 </div>
 </div>
@@ -4787,7 +4978,36 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   (function(){
     const brandEl = document.getElementById("rfBrand");
     const modelEl = document.getElementById("rfModel");
+    const brandSpotEl = document.getElementById("rfBrandSpot");
+    const brandChipTextEl = document.getElementById("rfBrandChipText");
+    const brandCardEl = document.getElementById("rfBrandCard");
+    const brandLogoMarkEl = document.getElementById("rfBrandLogoMark");
+    const brandNameEl = document.getElementById("rfBrandName");
+    const brandSubEl = document.getElementById("rfBrandSub");
+    const brandPlaceholderEl = document.getElementById("rfBrandPlaceholder");
     if(!brandEl || !modelEl) return;
+
+    const BRAND_META = {
+      bmw: { label:"BMW", mark:"BMW", text:"OEM+ platformy, drift builds, street aj track základ.", visual:"Placeholder pre BMW logo / video" },
+      audi: { label:"Audi", mark:"AUDI", text:"B platformy, TT a OEM+ aero výber pre daily aj show buildy.", visual:"Placeholder pre Audi logo / video" },
+      volkswagen: { label:"Volkswagen", mark:"VW", text:"Golf platformy, Scirocco a obľúbené VAG performance riešenia.", visual:"Placeholder pre Volkswagen logo / video" },
+      mercedes: { label:"Mercedes-Benz", mark:"MB", text:"C a E platformy, street luxury vibe s agresívnym RACEM presahom.", visual:"Placeholder pre Mercedes logo / video" },
+      mazda: { label:"Mazda", mark:"MZD", text:"MX-5 a Mazda platformy pre stance, grip aj ľahké športové buildy.", visual:"Placeholder pre Mazda logo / video" },
+      nissan: { label:"Nissan", mark:"NSN", text:"Z-ká, Silvia a JDM základ pre drift a street kultúru.", visual:"Placeholder pre Nissan logo / video" },
+      skoda: { label:"Škoda", mark:"SKD", text:"Octavia a Fabia platformy pre VAG street a daily performance projekty.", visual:"Placeholder pre Škoda logo / video" },
+      seat: { label:"SEAT", mark:"SEA", text:"Leon a Ibiza platformy, VAG základ s agresívnym vizuálom.", visual:"Placeholder pre SEAT logo / video" },
+      toyota: { label:"Toyota", mark:"TYT", text:"GT86, Supra a JDM performance ikony pripravené na ďalší level.", visual:"Placeholder pre Toyota logo / video" },
+      porsche: { label:"Porsche", mark:"911", text:"Prémiové platformy pre čistý street, trackday a aero setupy.", visual:"Placeholder pre Porsche logo / video" },
+      ford: { label:"Ford", mark:"FRD", text:"Focus RS, Mustang a hot-hatch / muscle kombinácia.", visual:"Placeholder pre Ford logo / video" },
+      honda: { label:"Honda", mark:"HND", text:"Civic a S2000 línia pre JDM, time attack aj clean street buildy.", visual:"Placeholder pre Honda logo / video" },
+      subaru: { label:"Subaru", mark:"SUB", text:"Impreza a BRZ platformy pre AWD performance aj boxer kultúru.", visual:"Placeholder pre Subaru logo / video" },
+      lexus: { label:"Lexus", mark:"LXS", text:"IS a RC platformy pre OEM+ a performance luxury buildy.", visual:"Placeholder pre Lexus logo / video" },
+      mitsubishi: { label:"Mitsubishi", mark:"EVO", text:"Lancer Evolution a JDM turbo scéna bez kompromisov.", visual:"Placeholder pre Mitsubishi logo / video" },
+      hyundai: { label:"Hyundai", mark:"HYU", text:"N platformy a moderný hot-hatch performance segment.", visual:"Placeholder pre Hyundai logo / video" },
+      kia: { label:"KIA", mark:"KIA", text:"Stinger a Ceed GT pre moderný street performance setup.", visual:"Placeholder pre KIA logo / video" },
+      peugeot: { label:"Peugeot", mark:"PGT", text:"GTI a francúzske hot-hatche pripravené na výraznejší build.", visual:"Placeholder pre Peugeot logo / video" },
+      renault: { label:"Renault", mark:"RS", text:"Megane RS a Clio RS pre ostrý FWD performance smer.", visual:"Placeholder pre Renault logo / video" } 
+    };
 
     const VEHICLES = {
       bmw: [
@@ -4814,25 +5034,103 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
         { value:"w205", label:"W205 C-Class", query:"mercedes w205" },
         { value:"c207", label:"C207 E-Class Coupe", query:"mercedes c207" }
       ],
+      mazda: [
+        { value:"mx5-nc", label:"MX-5 NC", query:"mazda mx5 nc" },
+        { value:"mx5-nd", label:"MX-5 ND", query:"mazda mx5 nd" },
+        { value:"rx8", label:"RX-8", query:"mazda rx8" }
+      ],
       nissan: [
         { value:"350z", label:"350Z", query:"nissan 350z" },
         { value:"370z", label:"370Z", query:"nissan 370z" },
         { value:"s14", label:"Silvia S14", query:"nissan s14" }
       ],
+      skoda: [
+        { value:"octavia-2", label:"Octavia II", query:"skoda octavia 2" },
+        { value:"octavia-3", label:"Octavia III", query:"skoda octavia 3" },
+        { value:"fabia", label:"Fabia", query:"skoda fabia" }
+      ],
+      seat: [
+        { value:"leon-1p", label:"Leon 1P", query:"seat leon 1p" },
+        { value:"leon-5f", label:"Leon 5F", query:"seat leon 5f" },
+        { value:"ibiza-6j", label:"Ibiza 6J", query:"seat ibiza 6j" }
+      ],
       toyota: [
         { value:"gt86", label:"GT86 / BRZ", query:"toyota gt86" },
-        { value:"supra-a90", label:"Supra A90", query:"toyota supra a90" }
+        { value:"supra-a90", label:"Supra A90", query:"toyota supra a90" },
+        { value:"yaris-gr", label:"GR Yaris", query:"toyota gr yaris" }
+      ],
+      porsche: [
+        { value:"997", label:"911 (997)", query:"porsche 997" },
+        { value:"991", label:"911 (991)", query:"porsche 991" },
+        { value:"cayman-981", label:"Cayman 981", query:"porsche cayman 981" }
+      ],
+      ford: [
+        { value:"focus-mk2-rs", label:"Focus MK2 RS", query:"ford focus mk2 rs" },
+        { value:"focus-mk3-st", label:"Focus MK3 ST", query:"ford focus mk3 st" },
+        { value:"mustang-s550", label:"Mustang S550", query:"ford mustang s550" }
+      ],
+      honda: [
+        { value:"civic-eg", label:"Civic EG", query:"honda civic eg" },
+        { value:"civic-fk8", label:"Civic FK8 Type R", query:"honda civic fk8" },
+        { value:"s2000", label:"S2000", query:"honda s2000" }
+      ],
+      subaru: [
+        { value:"impreza-gd", label:"Impreza GD", query:"subaru impreza gd" },
+        { value:"wrx-sti-va", label:"WRX STI VA", query:"subaru wrx sti va" },
+        { value:"brz", label:"BRZ", query:"subaru brz" }
+      ],
+      lexus: [
+        { value:"is200", label:"IS200 / IS300", query:"lexus is200" },
+        { value:"isf", label:"IS F", query:"lexus is f" },
+        { value:"rcf", label:"RC F", query:"lexus rc f" }
+      ],
+      mitsubishi: [
+        { value:"evo8", label:"Lancer EVO VIII", query:"mitsubishi evo 8" },
+        { value:"evo9", label:"Lancer EVO IX", query:"mitsubishi evo 9" },
+        { value:"evo10", label:"Lancer EVO X", query:"mitsubishi evo x" }
+      ],
+      hyundai: [
+        { value:"i30n", label:"i30 N", query:"hyundai i30 n" },
+        { value:"veloster-n", label:"Veloster N", query:"hyundai veloster n" },
+        { value:"genesis-coupe", label:"Genesis Coupe", query:"hyundai genesis coupe" }
+      ],
+      kia: [
+        { value:"stinger", label:"Stinger GT", query:"kia stinger gt" },
+        { value:"ceed-gt", label:"Ceed GT", query:"kia ceed gt" },
+        { value:"proceed-gt", label:"ProCeed GT", query:"kia proceed gt" }
+      ],
+      peugeot: [
+        { value:"206-gti", label:"206 GTI", query:"peugeot 206 gti" },
+        { value:"308-gti", label:"308 GTI", query:"peugeot 308 gti" },
+        { value:"rcz", label:"RCZ", query:"peugeot rcz" }
+      ],
+      renault: [
+        { value:"clio-rs", label:"Clio RS", query:"renault clio rs" },
+        { value:"megane-rs", label:"Megane RS", query:"renault megane rs" },
+        { value:"twingo-rs", label:"Twingo RS", query:"renault twingo rs" }
       ]
     };
 
-    const BRAND_LABELS = {
-      bmw:"BMW",
-      audi:"Audi",
-      volkswagen:"Volkswagen",
-      mercedes:"Mercedes-Benz",
-      nissan:"Nissan",
-      toyota:"Toyota"
-    };
+    const BRAND_LABELS = Object.fromEntries(Object.entries(BRAND_META).map(([key, value]) => [key, value.label]));
+
+    function updateBrandVisual(brand){
+      if(!brand || !BRAND_META[brand]){
+        if(brandSpotEl) brandSpotEl.classList.remove('is-active');
+        if(brandChipTextEl) brandChipTextEl.textContent = 'Najprv vyber značku';
+        if(brandLogoMarkEl) brandLogoMarkEl.textContent = '--';
+        if(brandNameEl) brandNameEl.textContent = 'Čaká na výber';
+        if(brandSubEl) brandSubEl.textContent = 'Po výbere značky sa tu vysunie RACEM placeholder pre logo alebo video.';
+        if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = '<strong>RACEM VISUAL SLOT</strong><span>Sem pôjde logo, foto alebo video vybraného výrobcu</span>';
+        return;
+      }
+      const meta = BRAND_META[brand];
+      if(brandSpotEl) brandSpotEl.classList.add('is-active');
+      if(brandChipTextEl) brandChipTextEl.textContent = `${meta.label} pripravené`;
+      if(brandLogoMarkEl) brandLogoMarkEl.textContent = meta.mark;
+      if(brandNameEl) brandNameEl.textContent = meta.label;
+      if(brandSubEl) brandSubEl.textContent = meta.text;
+      if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = `<strong>${meta.label}</strong><span>${meta.visual}</span>`;
+    }
 
     function fillBrands(){
       Object.entries(BRAND_LABELS).forEach(([value,label]) => {
@@ -4888,6 +5186,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
 
     brandEl.addEventListener('change', () => {
       renderModels(brandEl.value);
+      updateBrandVisual(brandEl.value);
     });
 
     modelEl.addEventListener('change', () => {
@@ -4896,6 +5195,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
 
     fillBrands();
     renderModels('');
+    updateBrandVisual('');
   })();
   </script>
 <script>
