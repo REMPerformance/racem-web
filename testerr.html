@@ -1,38 +1,34 @@
 <!DOCTYPE html>
+
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <!-- ✅ SEO -->
-  <title>RACEM | Bodykity, certifikované aero, turbo & kompresor kity | REM Performance</title>
-  <meta name="description" content="RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy." />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#b31f24" />
-  <link rel="canonical" href="https://racem.sk/" />
-
-  <!-- ✅ Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="RACEM" />
-  <meta property="og:locale" content="sk_SK" />
-  <meta property="og:title" content="RACEM | Bodykity, certifikované aero, turbo & kompresor kity" />
-  <meta property="og:description" content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance." />
-  <meta property="og:url" content="https://racem.sk/" />
-  <meta property="og:image" content="https://racem.sk/assets/og-racem.jpg" />
-
-  <!-- ✅ Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="RACEM | Bodykity, certifikované aero, turbo & kompresor kity" />
-  <meta name="twitter:description" content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy." />
-  <meta name="twitter:image" content="https://racem.sk/assets/og-racem.jpg" />
-
-  <!-- ✅ Structured data -->
-  <script type="application/ld+json">
+<meta charset="utf-8"/>
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon"/>
+<!-- ✅ SEO -->
+<title>RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity | REM Performance</title>
+<meta content="RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy." name="description"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="index,follow" name="robots"/>
+<meta content="#b31f24" name="theme-color"/>
+<link href="https://racem.sk/" rel="canonical"/>
+<!-- ✅ Open Graph -->
+<meta content="website" property="og:type"/>
+<meta content="RACEM" property="og:site_name"/>
+<meta content="sk_SK" property="og:locale"/>
+<meta content="RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity" property="og:title"/>
+<meta content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor &amp; podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance." property="og:description"/>
+<meta content="https://racem.sk/" property="og:url"/>
+<meta content="https://racem.sk/assets/og-racem.jpg" property="og:image"/>
+<!-- ✅ Twitter -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity" name="twitter:title"/>
+<meta content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor &amp; podvozok, turbo/kompresor kity, hviezdne stropy." name="twitter:description"/>
+<meta content="https://racem.sk/assets/og-racem.jpg" name="twitter:image"/>
+<!-- ✅ Structured data -->
+<script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@graph":[
@@ -62,7 +58,6 @@
     ]
   }
   </script>
-
 <style>
     :root{
       --red:#b31f24;
@@ -403,7 +398,6 @@ body{
   display:flex;
   flex-direction:column;
   gap:18px;
-  transform: translateY(-34px); 
 }
     .subline{ font-size:16px; color: var(--muted); max-width: 980px; }
     .ctaRow{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px}
@@ -3549,17 +3543,34 @@ html, body{
 }
 .headline{
   position: relative;
-  padding-right: min(470px, 34vw);
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
+  align-items:start;
+  gap:42px;
+  transform: translateY(-34px);
+}
+.hero-copy{
+  min-width:0;
 }
 .hero-filter-center{
-  position:absolute;
-  top:6px;
-  right:0;
+  position:relative;
+  top:auto;
+  right:auto;
   display:block;
-  width:min(430px, 32vw);
+  width:100%;
   margin:0;
   z-index:8;
+  align-self:start;
 }
+
+/* HERO FILTER POSITION FIX */
+.hero-filter-center{
+  justify-self:end;
+  align-self:start;
+  margin-top:170px;
+  margin-left:100px;
+}
+
 
 /* ===== RACEM VEHICLE FILTER PANEL ===== */
 .racemFilterPanel{
@@ -3666,21 +3677,22 @@ html, body{
 }
 @media (max-width: 1200px){
   .headline{
-    padding-right:min(390px, 34vw);
-  }
-  .hero-filter-center{
-    width:min(360px, 31vw);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    gap:28px;
   }
   .rf-title{ font-size:28px; }
 }
 @media (max-width: 980px){
   .headline{
-    padding-right:0;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    transform:none;
   }
   .hero-filter-center{
     position:static;
     width:min(620px, 100%);
-    margin:28px 0 0;
+    margin:8px 0 0;
   }
   .racemFilterPanel{
     width:100% !important;
@@ -3692,712 +3704,489 @@ html, body{
   .rf-title{ font-size:26px; }
   .racemFilterPanel .rf-shell::before{ inset:-18px -14px; border-radius:24px; }
 }
-.hero-filter-center {
-  display: none !important;   /* hide original position inside hero */
-}
-/* =============================================
-   Vehicle selector – fixed top-right corner
-============================================== */
-.vehicle-quick-selector {
-  position: fixed;
-  top: calc(var(--stickyOffset, 0px) + 12px);   /* below topbar / shipping bar */
-  right: 24px;
-  z-index: 90;                                  /* below modal, above most content */
-  max-width: 360px;
-  width: calc(100% - 48px);
-  pointer-events: auto;
+
+
+
+
+
+/* FORCE MOVE FILTER RIGHT */
+.hero-filter-center{
+  transform: translateX(190px) !important;
 }
 
-#racemVehiclePanel {
-  background: rgba(20, 20, 20, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.65);
-  padding: 18px 20px;
-  color: white;
-}
-
-.rf-title {
-  margin: 0 0 14px;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--red);
-}
-
-.rf-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.rf-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.rf-label {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--muted2);
-}
-
-.rf-select {
-  background: rgba(30, 30, 30, 0.9);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  padding: 9px 12px;
-  font-size: 13.5px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
-
-.rf-select:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.rf-hint {
-  margin: 12px 0 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--muted);
-  text-align: center;
-}
-
-/* ─── Responsive ──────────────────────────────────────── */
-
-@media (max-width: 1100px) {
-  .vehicle-quick-selector {
-    right: 18px;
-  }
-}
-
-@media (max-width: 980px) {
-  .vehicle-quick-selector {
-    top: calc(var(--stickyOffset, 0px) + 8px);
-    right: 16px;
-    max-width: 340px;
-  }
-
-  #racemVehiclePanel {
-    padding: 16px;
-  }
-
-  .rf-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-}
-
-@media (max-width: 560px) {
-  .vehicle-quick-selector {
-    right: 12px;
-    left: 12px;
-    width: calc(100% - 24px);
-    max-width: none;
-  }
-
-  .rf-title {
-    font-size: 14px;
-  }
-
-  .rf-select {
-    font-size: 13px;
-    padding: 8px 30px 8px 12px;
-  }
-}
 </style>
-</head>
-
-  <body id="top">
-  <div class="bg"></div>
-  <div class="noise"></div>
-    <img class="rmgroup-bg" src="assets/rmgroup.png" alt="" aria-hidden="true">
-
-    <!-- SHIPPING BAR (rotating + closable) -->
-<div class="shipbar" id="shipbar" role="status" aria-live="polite">
-  <div class="shipbar-inner">
-    <div class="shipbar-flags" aria-hidden="true" title="CZ • PL • HU • AT • EU">
-      <span class="flag">🇨🇿</span>
-      <span class="flag">🇵🇱</span>
-      <span class="flag">🇭🇺</span>
-      <span class="flag">🇦🇹</span>
-      <span class="flag">🇪🇺</span>
-    </div>
-
-    <div class="shipbar-textwrap">
-      <div class="shipbar-text" id="shipbarText">Odosielame do CZ, PL, HU, AT a celej EÚ.</div>
-    </div>
-
-    <button class="shipbar-close" id="shipbarClose" type="button" aria-label="Zavrieť">
+</meta></head>
+<body id="top">
+<div class="bg"></div>
+<div class="noise"></div>
+<img alt="" aria-hidden="true" class="rmgroup-bg" src="assets/rmgroup.png"/>
+<!-- SHIPPING BAR (rotating + closable) -->
+<div aria-live="polite" class="shipbar" id="shipbar" role="status">
+<div class="shipbar-inner">
+<div aria-hidden="true" class="shipbar-flags" title="CZ • PL • HU • AT • EU">
+<span class="flag">🇨🇿</span>
+<span class="flag">🇵🇱</span>
+<span class="flag">🇭🇺</span>
+<span class="flag">🇦🇹</span>
+<span class="flag">🇪🇺</span>
+</div>
+<div class="shipbar-textwrap">
+<div class="shipbar-text" id="shipbarText">Odosielame do CZ, PL, HU, AT a celej EÚ.</div>
+</div>
+<button aria-label="Zavrieť" class="shipbar-close" id="shipbarClose" type="button">
       ✕
     </button>
-  </div>
 </div>
-
-
-
-
-  <div class="topbar">
-    <div class="wrap nav nav-centered nav-wrap-rel">
-
-      
-
-      <nav class="nav-links">
-        <a href="ponua.html">Naša ponuka</a>
-        <a href="#bodykity">Body Kits</a>
-        <a href="mobilny-autoservis.html">Mobilný autoservis</a>
-        <a href="hviezdne-stropy.html" class="nav-stars">Hviezdne stropy</a>
-        <div class="lang-switch" aria-label="Language switcher">
-        <button class="lang-btn" type="button" data-lang="sk">SK</button>
-        <span class="lang-sep">/</span>
-        <button class="lang-btn" type="button" data-lang="en">EN</button>
-      </div>
-       
-       <a href="https://www.racem.sk/remperformance" class="nav-remx">
-  <span class="nav-remx-label">REM Performance</span>
-  <span class="nav-remx-sub">division</span>
+</div>
+<div class="topbar">
+<div class="wrap nav nav-centered nav-wrap-rel">
+<nav class="nav-links">
+<a href="ponua.html">Naša ponuka</a>
+<a href="#bodykity">Body Kits</a>
+<a href="mobilny-autoservis.html">Mobilný autoservis</a>
+<a class="nav-stars" href="hviezdne-stropy.html">Hviezdne stropy</a>
+<div aria-label="Language switcher" class="lang-switch">
+<button class="lang-btn" data-lang="sk" type="button">SK</button>
+<span class="lang-sep">/</span>
+<button class="lang-btn" data-lang="en" type="button">EN</button>
+</div>
+<a class="nav-remx" href="https://www.racem.sk/remperformance">
+<span class="nav-remx-label">REM Performance</span>
+<span class="nav-remx-sub">division</span>
 </a>
-      </nav>
-    </div>
-  </div>
-<div class="vehicle-quick-selector" aria-label="Rýchly výber vozidla">
-  <div class="racemFilterPanel reveal" id="racemVehiclePanel">
-    <div class="rf-shell">
-      <h3 class="rf-title">Vyber si svoj model</h3>
-
-      <div class="rf-grid">
-        <label class="rf-field">
-          <span class="rf-label">Značka</span>
-          <select id="rfBrand" class="rf-select" aria-label="Vyber značku auta">
-            <option value="">Vyber značku</option>
-          </select>
-        </label>
-
-        <label class="rf-field">
-          <span class="rf-label">Model</span>
-          <select id="rfModel" class="rf-select" aria-label="Vyber model auta" disabled>
-            <option value="">Najprv vyber značku</option>
-          </select>
-        </label>
-      </div>
-
-      <p class="rf-hint">Po výbere modelu ťa presmerujeme na ponuku s pripraveným filtrom.</p>
-    </div>
-  </div>
+</nav>
 </div>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-main">
-        <div class="headline">
-          <h1 class="hero-title">
-            <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
-              <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
-            </a>
-          </h1>
-
-          <span class="sr-only">
+</div>
+<!-- HERO -->
+<section class="hero">
+<div class="wrap">
+<div class="hero-main">
+<div class="headline">
+<div class="hero-copy">
+<h1 class="hero-title">
+<a aria-label="Kontakt" class="hero-logo-link" href="#kontakt">
+<img alt="RACEM" class="hero-logo-inline" src="assets/racem-logo.png"/>
+</a>
+</h1>
+<span class="sr-only">
   RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.
 </span>
-
-          <!-- SERVICES UNDER LOGO -->
-          <div class="heroServices">
-            <div class="hsItem">
-              <span class="hsBar"></span>
-              <div class="hsText">
-                <div class="hsTitle">Turbokits &amp; Kompresorkits</div>
-                <div class="hsSub">Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov</div>
-              </div>
-            </div>
-
-            <div class="hsItem">
-              <span class="hsBar"></span>
-              <div class="hsText">
-                <div class="hsTitle">BODYKITS &amp; AERO</div>
-                <div class="hsSub">Najväčší autorizovaný predajca bodykitov na Slovensku</div>
-              </div>
-            </div>
-
-            <div class="hsItem">
-              <span class="hsBar"></span>
-              <div class="hsText">
-                <div class="hsTitle">Naše služby</div>
-                <div class="hsSub">Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla</div>
-              </div>
-            </div>
-
-            <div class="hsItem">
-              <span class="hsBar"></span>
-              <div class="hsText">
-                <div class="hsTitle">Performance a športové diely</div>
-                <div class="hsSub">Široká ponuka dielov a doplnkov pre vaše autá</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+<!-- SERVICES UNDER LOGO -->
+<div class="heroServices">
+<div class="hsItem">
+<span class="hsBar"></span>
+<div class="hsText">
+<div class="hsTitle">Turbokits &amp; Kompresorkits</div>
+<div class="hsSub">Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov</div>
+</div>
+</div>
+<div class="hsItem">
+<span class="hsBar"></span>
+<div class="hsText">
+<div class="hsTitle">BODYKITS &amp; AERO</div>
+<div class="hsSub">Najväčší autorizovaný predajca bodykitov na Slovensku</div>
+</div>
+</div>
+<div class="hsItem">
+<span class="hsBar"></span>
+<div class="hsText">
+<div class="hsTitle">Naše služby</div>
+<div class="hsSub">Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla</div>
+</div>
+</div>
+<div class="hsItem">
+<span class="hsBar"></span>
+<div class="hsText">
+<div class="hsTitle">Performance a športové diely</div>
+<div class="hsSub">Široká ponuka dielov a doplnkov pre vaše autá</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hero-filter-center">
+<div class="racemFilterPanel reveal" id="racemVehiclePanel">
+<div class="rf-shell">
+<h3 class="rf-title">Vyber si svoj model</h3>
+<div class="rf-grid">
+<label class="rf-field">
+<span class="rf-label">Značka</span>
+<select aria-label="Vyber značku auta" class="rf-select" id="rfBrand">
+<option value="">Vyber značku</option>
+</select>
+</label>
+<label class="rf-field">
+<span class="rf-label">Model</span>
+<select aria-label="Vyber model auta" class="rf-select" disabled="" id="rfModel">
+<option value="">Najprv vyber značku</option>
+</select>
+</label>
+</div>
+<p class="rf-hint">Po výbere modelu ťa presmerujeme na ponuku s pripraveným filtrom.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="vsetky-produkty">
-    <div class="wrap">
-      <div class="panel reveal products-teaser-panel">
-        <span class="pill">
-          <span class="dot"></span>
+<div class="wrap">
+<div class="panel reveal products-teaser-panel">
+<span class="pill">
+<span class="dot"></span>
           všetky produkty • performance • styling • motorsport
         </span>
-
-        <h2 class="products-teaser-title">Všetky produkty</h2>
-
-        <p class="products-teaser-sub">
+<h2 class="products-teaser-title">Všetky produkty</h2>
+<p class="products-teaser-sub">
           Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.
         </p>
-
-        <div id="productsCarousel" class="products-carousel" aria-label="Výber produktov"></div>
-
-        <div class="products-teaser-cta">
-          <a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- BODYKITY / ZNAČKY (INDEX) -->
-  <section id="bodykity">
-    <div class="wrap">
-      <div class="panel reveal" style="padding:34px;">
-        <span class="pill">
-          <span class="dot"></span>
+<div aria-label="Výber produktov" class="products-carousel" id="productsCarousel"></div>
+<div class="products-teaser-cta">
+<a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
+</div>
+</div>
+</div>
+</section>
+<!-- BODYKITY / ZNAČKY (INDEX) -->
+<section id="bodykity">
+<div class="wrap">
+<div class="panel reveal" style="padding:34px;">
+<span class="pill">
+<span class="dot"></span>
           widebody • stance • drift • performance
         </span>
-
-        <div class="brands-head" style="margin-top:14px;">
-          <div>
-            <h2 class="brands-title">Všetko pre tvoj projekt</h2>
-            <p style="font-size:16px; max-width:980px; margin-top:10px;">
+<div class="brands-head" style="margin-top:14px;">
+<div>
+<h2 class="brands-title">Všetko pre tvoj projekt</h2>
+<p style="font-size:16px; max-width:980px; margin-top:10px;">
               Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.
             </p>
-          </div>
-
-          <a class="brands-cta" href="distribucia-kitov.html">
+</div>
+<a class="brands-cta" href="distribucia-kitov.html">
             Objavuj RACEM Group
             <span class="ctaArrow">→</span>
-          </a>
-        </div>
-
-        <div class="brands-wrap">
-          <div class="brand-grid" aria-label="Značky body kitov">
-            <!-- StreetFighter LA -->
-            <a class="brand-link" href="sfxla.html" title="StreetFighter LA (SFXLA)">
-              <div class="brand-tile brand-tile--white">
-                <div class="brand-inner">
-                  <img class="brand-logo" src="assets/SFXLA_small.avif" alt="StreetFighter LA logo" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="brand-name">SFXLA</div>
-            </a>
-            <a class="brand-link" href="csr.html" title="CSR Automotive">
-              <div class="brand-tile brand-tile--white">
-                <div class="brand-inner">
-                  <img class="brand-logo" src="assets/CSR-Logo-Shop_transparent.svg" alt="CSR Automotive logo" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="brand-name">CSR</div>
-            </a>
-            <a class="brand-link" href="cybul.html" title="CYBUL Radical Solutions">
-              <div class="brand-tile brand-tile--white">
-                <div class="brand-inner">
-                  <img class="brand-logo" src="assets/8189.jpg" alt="Cybul Logo" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="brand-name">CYBUL</div>
-            </a>
-             <a class="brand-link" href="swagier.html" title="Swagier Custom Parts">
-              <div class="brand-tile brand-tile--white">
-                <div class="brand-inner">
-                  <img class="brand-logo" src="assets/swagier.svg" alt="Swagier Logo" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="brand-name">Swagier</div>
-            </a>
-             <a class="brand-link" href="cnc71.html" title="CNC71">
-              <div class="brand-tile brand-tile--white">
-                <div class="brand-inner">
-                  <img class="brand-logo" src="/cnc71.svg" alt="CNC71 Logo" loading="lazy" decoding="async">
-                </div>
-              </div>
-              <div class="brand-name">CNC71</div>
-             </a>
-          </div>
-        </div>
-
-    <!-- FULL WIDTH BUTTON (MENŠÍ) -->
+</a>
+</div>
+<div class="brands-wrap">
+<div aria-label="Značky body kitov" class="brand-grid">
+<!-- StreetFighter LA -->
+<a class="brand-link" href="sfxla.html" title="StreetFighter LA (SFXLA)">
+<div class="brand-tile brand-tile--white">
+<div class="brand-inner">
+<img alt="StreetFighter LA logo" class="brand-logo" decoding="async" loading="lazy" src="assets/SFXLA_small.avif"/>
+</div>
+</div>
+<div class="brand-name">SFXLA</div>
+</a>
+<a class="brand-link" href="csr.html" title="CSR Automotive">
+<div class="brand-tile brand-tile--white">
+<div class="brand-inner">
+<img alt="CSR Automotive logo" class="brand-logo" decoding="async" loading="lazy" src="assets/CSR-Logo-Shop_transparent.svg"/>
+</div>
+</div>
+<div class="brand-name">CSR</div>
+</a>
+<a class="brand-link" href="cybul.html" title="CYBUL Radical Solutions">
+<div class="brand-tile brand-tile--white">
+<div class="brand-inner">
+<img alt="Cybul Logo" class="brand-logo" decoding="async" loading="lazy" src="assets/8189.jpg"/>
+</div>
+</div>
+<div class="brand-name">CYBUL</div>
+</a>
+<a class="brand-link" href="swagier.html" title="Swagier Custom Parts">
+<div class="brand-tile brand-tile--white">
+<div class="brand-inner">
+<img alt="Swagier Logo" class="brand-logo" decoding="async" loading="lazy" src="assets/swagier.svg"/>
+</div>
+</div>
+<div class="brand-name">Swagier</div>
+</a>
+<a class="brand-link" href="cnc71.html" title="CNC71">
+<div class="brand-tile brand-tile--white">
+<div class="brand-inner">
+<img alt="CNC71 Logo" class="brand-logo" decoding="async" loading="lazy" src="/cnc71.svg"/>
+</div>
+</div>
+<div class="brand-name">CNC71</div>
+</a>
+</div>
+</div>
+<!-- FULL WIDTH BUTTON (MENŠÍ) -->
 <div class="brands-ctaRow">
-  <a href="https://www.racem.sk/ponuka" class="brands-ctaFull">
+<a class="brands-ctaFull" href="https://www.racem.sk/ponuka">
     ZOBRAZIŤ VŠETKO
   </a>
 </div>
-
-      </div>
-    </div>
-  </section>
-
-
-
-
-    <!-- KTO SME -->
-  <section id="kto-sme">
-    <div class="wrap">
-      <div class="split">
-
-        <!-- RACEM GROUP -->
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> racem group • komunita</span>
-          <h2 style="margin-top:18px;">Staň sa súčasťou RACEM Group</h2>
-
-          <p style="font-size:16px;">
+</div>
+</div>
+</section>
+<!-- KTO SME -->
+<section id="kto-sme">
+<div class="wrap">
+<div class="split">
+<!-- RACEM GROUP -->
+<div class="panel reveal">
+<span class="pill"><span class="dot"></span> racem group • komunita</span>
+<h2 style="margin-top:18px;">Staň sa súčasťou RACEM Group</h2>
+<p style="font-size:16px;">
             Ak chceš <b>zľavy na bodykity, aero a vybrané diely</b>, môžeš sa stať súčasťou <b>RACEM Group</b>.
           </p>
-
-          <p class="muted2" style="margin-top:10px;">
+<p class="muted2" style="margin-top:10px;">
 Si tím, jazdec, garáž alebo organizátor zrazov?  
 Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, športové aj vybrané náhradné autodiely.
 </p>
-
-          <p class="muted2" style="margin-top:10px;">
+<p class="muted2" style="margin-top:10px;">
             Ak sa chceš stať súčasťou RACEM Group napíš nám: <b>„RACEM Group – členstvo“</b>.
             Viac informácií o spolupráci ti pošleme po kontakte.
           </p>
-
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
-            <a class="btn btnPrimary btnArrow" href="distribucia-kitov.html">Objavuj RACEM Group <span class="arr">→</span></a>
-          </div>
-        </div>
-
-        <!-- NOVÁ SEKCIA: TURBOKITY & KOMPRESOR KITY S ORANŽOVOU PÁSKOU -->
-        <div class="panel reveal">
-          <span class="pill"><span class="dot"></span> turbo kity • kompresor kity</span>
-          <h2 style="margin-top:18px;">Turbo &amp; kompresor kity</h2>
-
-          <!-- ORANŽOVÁ KONŠTRUKČNÁ PÁSKA -->
-          <div class="construction-tape">Pripravujeme pre Vás</div>
-
-          <!-- ZABLUROVANÝ TEXT -->
-          <div class="blurred-content">
-            <p style="font-size:16px;">
+<div class="ctaRow" style="margin-top:14px;">
+<a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
+<a class="btn btnPrimary btnArrow" href="distribucia-kitov.html">Objavuj RACEM Group <span class="arr">→</span></a>
+</div>
+</div>
+<!-- NOVÁ SEKCIA: TURBOKITY & KOMPRESOR KITY S ORANŽOVOU PÁSKOU -->
+<div class="panel reveal">
+<span class="pill"><span class="dot"></span> turbo kity • kompresor kity</span>
+<h2 style="margin-top:18px;">Turbo &amp; kompresor kity</h2>
+<!-- ORANŽOVÁ KONŠTRUKČNÁ PÁSKA -->
+<div class="construction-tape">Pripravujeme pre Vás</div>
+<!-- ZABLUROVANÝ TEXT -->
+<div class="blurred-content">
+<p style="font-size:16px;">
               Výkonné turbodúchadlá a kompresory pre váš motor. Od jednoduchých stage kitov až po plne custom riešenia pre maximálny boost.
             </p>
-            <p class="muted2" style="margin-top:10px;">
-              • Kompletné kity vrátane intercoolerov, wastegate, blow-off<br>
-              • Kompatibilita s VW, BMW, Audi, Mercedes, Porsche a ďalšími<br>
-              • Montáž + ECU remap na mieste alebo v dielni<br>
-            </p>
-          </div>
-
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-   <!-- VŠETKY PRODUKTY -->
-  
-
-
-  <!-- MOBILNÝ AUTOSERVIS -->
-  <section id="autoservis">
-    <div class="wrap">
-      <div class="split">
-
-        <div class="reveal">
-          <span class="pill">
-            <span class="dot"></span>
+<p class="muted2" style="margin-top:10px;">
+              • Kompletné kity vrátane intercoolerov, wastegate, blow-off<br/>
+              • Kompatibilita s VW, BMW, Audi, Mercedes, Porsche a ďalšími<br/>
+              • Montáž + ECU remap na mieste alebo v dielni<br/>
+</p>
+</div>
+<div class="ctaRow" style="margin-top:14px;">
+<a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- VŠETKY PRODUKTY -->
+<!-- MOBILNÝ AUTOSERVIS -->
+<section id="autoservis">
+<div class="wrap">
+<div class="split">
+<div class="reveal">
+<span class="pill">
+<span class="dot"></span>
             mobilný autoservis • obhliadky • pomoc na ceste
           </span>
-
-          <h2 style="margin-top:18px;">
+<h2 style="margin-top:18px;">
             Váš servis na cestách
           </h2>
-
-          <p style="font-size:16px;">
+<p style="font-size:16px;">
             Keď nechcete presúvať auto do servisu alebo platiť odťah,
             <b>prídeme za vami</b>.
             Doma, vo firme, na sídlisku alebo priamo pri poruche.
           </p>
-
-          <p class="muted2">
+<p class="muted2">
             Riešime bežný servis, diagnostiku, obhliadky áut,
             predkontrolu pred STK/EK a pomoc pri poruchách.
             Ak sa oprava nedá spraviť na mieste, navrhneme
             najrozumnejší ďalší postup.
           </p>
-
-          <div class="ctaRow" style="margin-top:16px;">
-            <a class="btn btnPrimary btnArrow" href="mobilny-autoservis.html">
+<div class="ctaRow" style="margin-top:16px;">
+<a class="btn btnPrimary btnArrow" href="mobilny-autoservis.html">
               Zistiť viac <span class="arr">→</span>
-            </a>
-            <a class="btn btnGhost" href="#kontakt">
+</a>
+<a class="btn btnGhost" href="#kontakt">
               Kontakt
             </a>
-          </div>
-        </div>
-
-        <div class="panel reveal service-card"
-             data-go="mobilny-autoservis.html"
-             style="padding:28px;">
-          <div class="service-top">
-            <div class="service-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path fill="currentColor"
-                  d="M18.92 7.01C18.72 6.42 18.16 6 17.5 6h-11
+</div>
+</div>
+<div class="panel reveal service-card" data-go="mobilny-autoservis.html" style="padding:28px;">
+<div class="service-top">
+<div aria-hidden="true" class="service-icon">
+<svg viewbox="0 0 24 24">
+<path d="M18.92 7.01C18.72 6.42 18.16 6 17.5 6h-11
                      c-.66 0-1.22.42-1.42 1.01L3 13v7
                      c0 .55.45 1 1 1h1c.55 0 1-.45
                      1-1v-1h12v1c0 .55.45 1 1 1h1
-                     c.55 0 1-.45 1-1v-7l-2.08-5.99z"/>
-              </svg>
-            </div>
-
-            <div style="flex:1;">
-              <h3 style="margin:0 0 6px 0;">
+                     c.55 0 1-.45 1-1v-7l-2.08-5.99z" fill="currentColor"></path>
+</svg>
+</div>
+<div style="flex:1;">
+<h3 style="margin:0 0 6px 0;">
                 Služby mobilného autoservisu
               </h3>
-              <p class="muted2" style="margin:0;">
+<p class="muted2" style="margin:0;">
                 Menej presunov, menej stresu, viac času.
               </p>
-            </div>
-
-            <div class="service-arrow">→</div>
-          </div>
-
-          <div class="service-pills">
-            <span class="mini-chip"><span class="mini-dot"></span> servis u vás</span>
-            <span class="mini-chip"><span class="mini-dot"></span> obhliadky áut</span>
-            <span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
-            <span class="mini-chip"><span class="mini-dot"></span> pomoc na ceste</span>
-          </div>
-
-          <div class="ctaRow" style="margin-top:14px;">
-            <a class="btn btnGhost btnArrow" href="mobilny-autoservis.html" style="width:100%; justify-content:center;">
+</div>
+<div class="service-arrow">→</div>
+</div>
+<div class="service-pills">
+<span class="mini-chip"><span class="mini-dot"></span> servis u vás</span>
+<span class="mini-chip"><span class="mini-dot"></span> obhliadky áut</span>
+<span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
+<span class="mini-chip"><span class="mini-dot"></span> pomoc na ceste</span>
+</div>
+<div class="ctaRow" style="margin-top:14px;">
+<a class="btn btnGhost btnArrow" href="mobilny-autoservis.html" style="width:100%; justify-content:center;">
               Zistiť viac <span class="arr">→</span>
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  
-  <!-- KONTAKT -->
-  <section id="kontakt">
-    <div class="wrap">
-      <h2 class="reveal">Kontakt</h2>
-      <p class="reveal">
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- KONTAKT -->
+<section id="kontakt">
+<div class="wrap">
+<h2 class="reveal">Kontakt</h2>
+<p class="reveal">
         Kontaktuj náš tím
       </p>
-
-      <div class="panel reveal contact-flex">
-        <div class="contact-left">
-          <h3>KONTAKT</h3>
-          <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
-          <p class="muted2">
+<div class="panel reveal contact-flex">
+<div class="contact-left">
+<h3>KONTAKT</h3>
+<p class="muted2"><b>Email:</b> info@remperformance.sk</p>
+<p class="muted2">
             Vyhľadanie dielov, návrh alternatív a individuálne konzultácie robíme zdarma.
           </p>
-
-          <form id="contactForm" class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST">
-            <div>
-              <label for="contactName">Meno a priezvisko</label>
-              <input id="contactName" name="meno" type="text" placeholder="Meno a priezvisko" required>
-            </div>
-
-            <div class="contact-row">
-              <div>
-                <label for="contactEmail">Email</label>
-                <input id="contactEmail" name="email" type="email" placeholder="tvoj@email.sk" required>
-              </div>
-              <div>
-                <label for="contactPhone">Telefón</label>
-                <input id="contactPhone" name="telefon" type="text" placeholder="+421..." required>
-              </div>
-            </div>
-
-            <div>
-              <label for="kontaktMsg">Správa</label>
-              <textarea id="kontaktMsg" name="sprava" placeholder="Napíš tvoju správu sem..."></textarea>
-            </div>
-
-            <div class="contact-actions">
-              <button type="submit" class="btn btnPrimary">Odoslať</button>
-            </div>
-          </form>
-        </div>
-
-        <div class="company-box">
-          <h3>ČO SA DEJE PO ODOSLANÍ</h3>
-
-          <p class="muted2 step-1">
-            <b>1. Pozrieme sa na tvoju požiadavku</b><br>
+<form action="https://formspree.io/f/mwvekvgy" class="contact-box" id="contactForm" method="POST">
+<div>
+<label for="contactName">Meno a priezvisko</label>
+<input id="contactName" name="meno" placeholder="Meno a priezvisko" required="" type="text"/>
+</div>
+<div class="contact-row">
+<div>
+<label for="contactEmail">Email</label>
+<input id="contactEmail" name="email" placeholder="tvoj@email.sk" required="" type="email"/>
+</div>
+<div>
+<label for="contactPhone">Telefón</label>
+<input id="contactPhone" name="telefon" placeholder="+421..." required="" type="text"/>
+</div>
+</div>
+<div>
+<label for="kontaktMsg">Správa</label>
+<textarea id="kontaktMsg" name="sprava" placeholder="Napíš tvoju správu sem..."></textarea>
+</div>
+<div class="contact-actions">
+<button class="btn btnPrimary" type="submit">Odoslať</button>
+</div>
+</form>
+</div>
+<div class="company-box">
+<h3>ČO SA DEJE PO ODOSLANÍ</h3>
+<p class="muted2 step-1">
+<b>1. Pozrieme sa na tvoju požiadavku</b><br/>
             Podľa tvojich detailov vyberáme riešenie, ktoré dáva zmysel – nie len prvú vec z katalógu.
           </p>
-
-          <p class="muted2 step-2">
-            <b>2. Overíme dostupnosť u dodávateľov</b><br>
+<p class="muted2 step-2">
+<b>2. Overíme dostupnosť u dodávateľov</b><br/>
             Pozrieme sklad u partnerov (SR, ČR, EÚ, USA, JP), stav dielu, reálnu cenu, dodaciu lehotu,
             cenu dodania.
           </p>
-
-          <p class="muted2 step-3">
-            <b>3. Pošleme ti ponuku na e-mail</b><br>
+<p class="muted2 step-3">
+<b>3. Pošleme ti ponuku na e-mail</b><br/>
             Dostaneš prehľadnú ponuku – diel, stav, cena, doprava, fotky, dodacia lehota, pôvod.
             Ak súhlasíš, objednávku potvrdíš a diel dovezieme k tebe.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL PREVIEW -->
-  <div class="modal-overlay" id="stockModal">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" type="button" aria-label="Zavrieť náhľad">✕</button>
-
-      <div class="modal-media">
-        <button class="modal-arrow modal-prev" type="button" aria-label="Predchádzajúci obrázok">‹</button>
-        <img id="modalImage" src="" alt="">
-        <button class="modal-arrow modal-next" type="button" aria-label="Nasledujúci obrázok">›</button>
-        <div class="modal-counter" id="modalCounter">1 / 1</div>
-      </div>
-
-      <div class="modal-info">
-        <h3 class="modal-title" id="modalTitle"></h3>
-
-        <div class="modal-location" id="modalLocation" style="display:none;">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor"
-              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0
+</div>
+</div>
+</div>
+</section>
+<!-- MODAL PREVIEW -->
+<div class="modal-overlay" id="stockModal">
+<div aria-labelledby="modalTitle" aria-modal="true" class="modal" role="dialog">
+<button aria-label="Zavrieť náhľad" class="modal-close" type="button">✕</button>
+<div class="modal-media">
+<button aria-label="Predchádzajúci obrázok" class="modal-arrow modal-prev" type="button">‹</button>
+<img alt="" id="modalImage" src=""/>
+<button aria-label="Nasledujúci obrázok" class="modal-arrow modal-next" type="button">›</button>
+<div class="modal-counter" id="modalCounter">1 / 1</div>
+</div>
+<div class="modal-info">
+<h3 class="modal-title" id="modalTitle"></h3>
+<div class="modal-location" id="modalLocation" style="display:none;">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0
                  9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12
-                 2.5 2.5S13.38 11.5 12 11.5z"/>
-          </svg>
-          <span id="modalLocationText"></span>
-        </div>
-
-        <div class="modal-tags" id="modalTags"></div>
-
-        <p class="modal-note muted2" id="modalNote"></p>
-
-        <div class="modal-price-wrap">
-          <div class="modal-price" id="modalPrice"></div>
-          <div class="modal-price-suffix" id="modalPriceSuffix"></div>
-        </div>
-
-        <div class="modal-meta">
-          <span class="chip" id="modalCondition" style="display:none;"></span>
-          <span class="chip chip--stock" id="modalStockLabel" style="display:none;"></span>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn btnPrimary" type="button" id="modalInterestBtn">Mám záujem o tento diel</button>
-          <button class="btn btnGhost" type="button" id="modalCloseBtn">Zavrieť</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-  <div class="wrap foot footer-layout">
-    <div>
+                 2.5 2.5S13.38 11.5 12 11.5z" fill="currentColor"></path>
+</svg>
+<span id="modalLocationText"></span>
+</div>
+<div class="modal-tags" id="modalTags"></div>
+<p class="modal-note muted2" id="modalNote"></p>
+<div class="modal-price-wrap">
+<div class="modal-price" id="modalPrice"></div>
+<div class="modal-price-suffix" id="modalPriceSuffix"></div>
+</div>
+<div class="modal-meta">
+<span class="chip" id="modalCondition" style="display:none;"></span>
+<span class="chip chip--stock" id="modalStockLabel" style="display:none;"></span>
+</div>
+<div class="modal-actions">
+<button class="btn btnPrimary" id="modalInterestBtn" type="button">Mám záujem o tento diel</button>
+<button class="btn btnGhost" id="modalCloseBtn" type="button">Zavrieť</button>
+</div>
+</div>
+</div>
+</div>
+<footer>
+<div class="wrap foot footer-layout">
+<div>
       Prevádzkovateľ webu –
-      <a href="https://www.racem.sk/remperformance" class="footer-brand">
-        <span class="red"><b>REM Performance</b></span>
-      </a>
-    </div>
-
-    <div class="footer-center">
+      <a class="footer-brand" href="https://www.racem.sk/remperformance">
+<span class="red"><b>REM Performance</b></span>
+</a>
+</div>
+<div class="footer-center">
       © 2026 REM Performance
     </div>
-
-    <div class="muted2">
+<div class="muted2">
       Performance diely • bodykity • aero • turbo kity • mobilný autoservis
     </div>
-  </div>
-
-  <div class="wrap footer-bottom">
-    <div class="footer-bottom-row">
-      <div class="footer-socials" aria-label="Instagram profily RACEM">
-        <!-- RACEM.SK -->
-        <a
-          href="https://www.instagram.com/racem.sk/"
-          target="_blank"
-          rel="noopener"
-          class="footer-social ig"
-          aria-label="Instagram RACEM"
-          title="RACEM Instagram"
-        >
-          <svg viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
-          </svg>
-        </a>
-
-        <!-- MAS RACEM -->
-        <a
-          href="https://www.instagram.com/mas_racem/"
-          target="_blank"
-          rel="noopener"
-          class="footer-social ig"
-          aria-label="Instagram MAS RACEM"
-          title="MAS RACEM Instagram"
-        >
-          <svg viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
-          </svg>
-        </a>
-      </div>
-
-      <div class="footer-links">
-        <a href="#kontakt">Kontakt</a>
-        <a href="#podmienky">Obchodné podmienky</a>
-      </div>
-    </div>
-  </div>
+</div>
+<div class="wrap footer-bottom">
+<div class="footer-bottom-row">
+<div aria-label="Instagram profily RACEM" class="footer-socials">
+<!-- RACEM.SK -->
+<a aria-label="Instagram RACEM" class="footer-social ig" href="https://www.instagram.com/racem.sk/" rel="noopener" target="_blank" title="RACEM Instagram">
+<svg aria-hidden="true" viewbox="0 0 16 16">
+<path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
+</svg>
+</a>
+<!-- MAS RACEM -->
+<a aria-label="Instagram MAS RACEM" class="footer-social ig" href="https://www.instagram.com/mas_racem/" rel="noopener" target="_blank" title="MAS RACEM Instagram">
+<svg aria-hidden="true" viewbox="0 0 16 16">
+<path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
+</svg>
+</a>
+</div>
+<div class="footer-links">
+<a href="#kontakt">Kontakt</a>
+<a href="#podmienky">Obchodné podmienky</a>
+</div>
+</div>
+</div>
 </footer>
-
-
-  <!-- RACEM COOKIES (bottom-right widget, 1 button) -->
-  <div class="cookieBar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Cookies">
-    <div class="cookieIco" aria-hidden="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M21 12.6c-1.1.6-2.7.9-4 .5-2-.6-3.4-2.5-3.4-4.6 0-1.6.8-3.1 2.1-4-5.8-.8-10.7 3.7-10.7 9.5 0 5 4.1 9 9.1 9 4.7 0 8.6-3.5 8.9-8.2Z" stroke="white" stroke-width="1.8" opacity="0.85"/>
-        <path d="M8.2 14.1h.01M11.2 16.7h.01M12.7 12.2h.01M9.9 18.6h.01" stroke="white" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
-      </svg>
-    </div>
-
-    <div class="cookieText">
+<!-- RACEM COOKIES (bottom-right widget, 1 button) -->
+<div aria-label="Cookies" aria-live="polite" class="cookieBar" id="cookieBar" role="dialog">
+<div aria-hidden="true" class="cookieIco">
+<svg fill="none" height="18" viewbox="0 0 24 24" width="18">
+<path d="M21 12.6c-1.1.6-2.7.9-4 .5-2-.6-3.4-2.5-3.4-4.6 0-1.6.8-3.1 2.1-4-5.8-.8-10.7 3.7-10.7 9.5 0 5 4.1 9 9.1 9 4.7 0 8.6-3.5 8.9-8.2Z" opacity="0.85" stroke="white" stroke-width="1.8"></path>
+<path d="M8.2 14.1h.01M11.2 16.7h.01M12.7 12.2h.01M9.9 18.6h.01" opacity="0.55" stroke="white" stroke-linecap="round" stroke-width="2.4"></path>
+</svg>
+</div>
+<div class="cookieText">
       Používame <b>cookies / úložisko</b> na správne fungovanie stránky a základnú analytiku.
       <a href="vop.html#cookies">Viac info</a>.
     </div>
-
-    <button class="cookieBtn" id="cookieAccept" type="button">Akceptovať</button>
-  </div>
-
-  <!-- ✅ SCRIPT 1: všetko okrem globusu -->
-  <script>
+<button class="cookieBtn" id="cookieAccept" type="button">Akceptovať</button>
+</div>
+<!-- ✅ SCRIPT 1: všetko okrem globusu -->
+<script>
     // ===== MODAL STATE =====
     const stockModal = document.getElementById('stockModal');
     const modalImg = document.getElementById('modalImage');
@@ -4897,9 +4686,8 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       runAnalyticsIfAllowed();
     });
   </script>
-
-  <!-- ✅ SCRIPT 2: RACEM vehicle selector -->
-  <script>
+<!-- ✅ SCRIPT 2: RACEM vehicle selector -->
+<script>
   (function(){
     const brandEl = document.getElementById("rfBrand");
     const modelEl = document.getElementById("rfModel");
@@ -5014,11 +4802,6 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     renderModels('');
   })();
   </script>
-
-
-
-
-
 <script>
 (function(){
   const container = document.getElementById("productsCarousel");
@@ -5058,9 +4841,6 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     });
 })();
 </script>
-
-
-
 <script>
 (function(){
   const STORAGE_KEY = 'racem_lang';
@@ -5311,6 +5091,5 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   });
 })();
 </script>
-
 </body>
 </html>
