@@ -1,0 +1,5012 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- ✅ SEO -->
+  <title>RACEM | Bodykity, certifikované aero, turbo & kompresor kity | REM Performance</title>
+  <meta name="description" content="RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#b31f24" />
+  <link rel="canonical" href="https://racem.sk/" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RACEM" />
+  <meta property="og:locale" content="sk_SK" />
+  <meta property="og:title" content="RACEM | Bodykity, certifikované aero, turbo & kompresor kity" />
+  <meta property="og:description" content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance." />
+  <meta property="og:url" content="https://racem.sk/" />
+  <meta property="og:image" content="https://racem.sk/assets/og-racem.jpg" />
+
+  <!-- ✅ Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RACEM | Bodykity, certifikované aero, turbo & kompresor kity" />
+  <meta name="twitter:description" content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy." />
+  <meta name="twitter:image" content="https://racem.sk/assets/og-racem.jpg" />
+
+  <!-- ✅ Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Organization",
+        "@id":"https://racem.sk/#org",
+        "name":"RACEM (REM Performance)",
+        "url":"https://racem.sk/",
+        "logo":"https://racem.sk/assets/racem-logo.png"
+      },
+      {
+        "@type":"WebSite",
+        "@id":"https://racem.sk/#website",
+        "name":"RACEM",
+        "url":"https://racem.sk/",
+        "publisher":{"@id":"https://racem.sk/#org"}
+      },
+      {
+        "@type":"WebPage",
+        "@id":"https://racem.sk/#webpage",
+        "url":"https://racem.sk/",
+        "name":"RACEM | Bodykity, certifikované aero, turbo & kompresor kity | REM Performance",
+        "description":"RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy.",
+        "isPartOf":{"@id":"https://racem.sk/#website"},
+        "about":{"@id":"https://racem.sk/#org"}
+      }
+    ]
+  }
+  </script>
+
+<style>
+    :root{
+      --red:#b31f24;
+      --bg:#0b0b0b;
+      --panel:#141414;
+      --text:#ffffff;
+      --muted:#cfcfcf;
+      --muted2:#9b9b9b;
+      --line: rgba(255,255,255,0.08);
+      --shadow: 0 20px 60px rgba(0,0,0,0.55);
+
+      /* fialový vesmír pre hviezdne stropy */
+      --violet:#7c3aed;
+      --violet2:#a855f7;
+
+      /* STOCK COLLAPSE (JS doplní presné hodnoty) */
+      --stockCollapsed: 240px; /* fallback */
+      --stockExpanded: 1200px; /* fallback */
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x:hidden;
+}
+
+    /* ✅ SR-ONLY (SEO text, neviditeľné pre ľudí) */
+    .sr-only{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
+    }
+
+    /* ====== BACKGROUND LAYERS ====== */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-5;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(179,31,36,0.18), transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(179,31,36,0.10), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 60%);
+    }
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.55;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 44px);
+      transform: translateZ(0);
+      animation: gridMove 24s linear infinite;
+    }
+    @keyframes gridMove{
+      from{ background-position: 0 0, 0 0; }
+      to{ background-position: 600px 0, 0 600px; }
+    }
+    .noise{
+      position:fixed;
+      inset:-20%;
+      z-index:-4;
+      pointer-events:none;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+      animation: noiseMove 10s steps(10) infinite;
+    }
+    @keyframes noiseMove{
+      0%{transform:translate(0,0)}
+      20%{transform:translate(-3%,2%)}
+      40%{transform:translate(4%,-2%)}
+      60%{transform:translate(-2%,-4%)}
+      80%{transform:translate(3%,3%)}
+      100%{transform:translate(0,0)}
+    }
+
+    /* ====== FULL-WIDTH WRAP ====== */
+    .wrap{
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:0 6vw;
+    }
+
+    section{padding:110px 0; position:relative}
+
+    .pill{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: rgba(20,20,20,0.6);
+      border-radius:999px;
+      color: var(--muted);
+      font-size:12px;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      width: fit-content;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background: var(--red);
+      box-shadow: 0 0 18px rgba(179,31,36,.7);
+    }
+
+    h1,h2,h3{
+      margin:0 0 16px 0;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    h1{font-size:62px; line-height:1.03}
+    h2{font-size:40px}
+    h3{font-size:18px}
+    p{
+      margin:0 0 14px 0;
+      color: var(--muted);
+      line-height:1.65;
+      max-width: 980px;
+    }
+    .red{color:var(--red)}
+    .muted2{color:var(--muted2)}
+
+    /* ===== HERO TITLE INLINE LOGO ===== */
+    .hero-title{
+  display:flex;
+  align-items:center;        
+  justify-content:flex-start;
+  gap:14px;
+}
+   .hero-slogan-image{
+  display:block;
+  transform: translateY(0); 
+}
+
+
+    .hero-logo-inline{
+      height:128px;
+      width:auto;
+      object-fit:contain;
+      vertical-align:middle;
+    }
+    .hero-dash{ color: var(--muted2); }
+    .hero-slogan-image{
+      height:45px;
+      width:auto;
+      object-fit:contain;
+    }
+
+    /* ====== NAV (CENTERED + BIG LOGO + UNDERGLOW) ====== */
+.topbar{
+  position: sticky;
+  top: var(--stickyOffset, 0px);
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,10,10,0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.nav{
+  width: 100%;
+}
+
+.nav-centered{
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.nav-links{ 
+  display:flex; 
+  align-items:center;
+  gap: 34px; 
+}
+
+
+    .brand-mini{
+      display:flex;
+      align-items:center;
+      text-decoration:none;
+    }
+    .brand-mini img{
+      height: 56px;
+      width:auto;
+      display:block;
+      object-fit:contain;
+      transition: transform .45s ease, filter .45s ease;
+    }
+    .brand-mini:hover img{
+      transform: scale(1.08) rotate(-2deg);
+      filter: drop-shadow(0 10px 24px rgba(179,31,36,.28));
+    }
+
+    .nav-links{ display:flex; align-items:center; justify-content:center; gap: 34px; flex-wrap:nowrap; }
+    .nav-links a{
+      position:relative;
+      color: rgba(255,255,255,0.76);
+      text-decoration:none;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      white-space: nowrap;
+      transition: color .25s ease, text-shadow .25s ease;
+      padding: 6px 0;
+    }
+    .nav-links a:hover{
+      color:#fff;
+      text-shadow: 0 0 14px rgba(179,31,36,0.25);
+    }
+  
+.nav-links a.nav-remx:hover::after{ width:auto !important; }
+
+    /* ===== HVIEZDNE STROPY – hover efekt ===== */
+    .nav-links a.nav-stars{
+      position:relative;
+      padding:6px 18px;
+      border-radius:999px;
+      overflow:visible;
+    }
+    .nav-links a.nav-stars::before{
+      content:"";
+      position:absolute;
+      left:-10px;
+      right:-10px;
+      top:-4px;
+      bottom:-4px;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,0.90) 0 1px, transparent 3px),
+        radial-gradient(circle at 70% 40%, rgba(255,255,255,0.85) 0 2px, transparent 4px),
+        radial-gradient(circle at 40% 75%, rgba(255,255,255,0.80) 0 1px, transparent 3px),
+        linear-gradient(135deg, rgba(124,58,237,0.95), rgba(168,85,247,0.90));
+      opacity:0;
+      transform:scale(0.85);
+      box-shadow:0 0 0 rgba(0,0,0,0);
+      filter:blur(0.15px);
+      transition:
+        opacity .32s ease,
+        transform .32s ease,
+        box-shadow .32s ease;
+      z-index:-1;
+    }
+    .nav-links a.nav-stars::after{
+      content:"✶ ✦ ✸";
+      position:absolute;
+      left:50%;
+      bottom:-16px;
+      transform:translateX(-50%) translateY(4px);
+      font-size:10px;
+      letter-spacing:4px;
+      color:#ffffff;
+      opacity:0;
+      text-shadow:0 0 6px rgba(255,255,255,0.7);
+      height:auto;
+      width:auto;
+      background:none;
+      box-shadow:none;
+    }
+    .nav-links a.nav-stars:hover::after{ width:auto; }
+    .nav-links a.nav-stars:hover{
+      color:#ffffff;
+      text-shadow:0 0 12px rgba(124,58,237,0.65);
+    }
+    .nav-links a.nav-stars:hover::before{
+      opacity:1;
+      transform:scale(1);
+      box-shadow:
+        0 0 18px rgba(124,58,237,0.75),
+        0 14px 36px rgba(0,0,0,0.85);
+      animation: navStarsBg 4s linear infinite;
+    }
+    .nav-links a.nav-stars:hover::after{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+      animation: navStarsTwinkle 1.6s ease-in-out infinite;
+    }
+    @keyframes navStarsBg{
+      0%{ background-position:0 0, 0 0, 0 0, 0 0; }
+      50%{ background-position:2px -3px, -2px 3px, 1px 2px, 0 0; }
+      100%{ background-position:0 0, 0 0, 0 0, 0 0; }
+    }
+    @keyframes navStarsTwinkle{
+      0%,100%{ text-shadow:0 0 6px rgba(255,255,255,0.6); opacity:0.85; }
+      50%{ text-shadow: 0 0 12px rgba(255,255,255,1), 0 0 20px rgba(124,58,237,0.9); opacity:1; }
+    }
+
+    /* ====== HERO ====== */
+    .hero{
+  padding:40px 0 80px;
+  position: relative;         
+  overflow: visible;          
+}
+    .hero-grid{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:50px;
+  align-items:center; 
+}
+
+    /* ===== HERO GLOBE PANEL (visible on all screens) ===== */
+.heroPanel.globePanel{
+  position: relative !important;
+  inset: auto !important;
+  width: min(520px, 44vw) !important;
+  height: min(520px, 44vw) !important;
+  margin: 0 auto 0 0 !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow: visible !important;
+  z-index: 6 !important;
+}
+
+/* mobile: center it + shrink */
+@media (max-width: 980px){
+  .heroPanel.globePanel{
+    width: min(420px, 86vw) !important;
+    height: min(420px, 86vw) !important;
+    margin: 18px auto 0 !important;
+  }
+}
+
+.headline{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  transform: translateY(-34px); 
+}
+    .subline{ font-size:16px; color: var(--muted); max-width: 980px; }
+    .ctaRow{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 22px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      font-size:13px;
+      transition:.25s;
+      user-select:none;
+      border:1px solid rgba(255,255,255,0.10);
+      cursor:pointer;
+    }
+    .btnPrimary{
+      background: var(--red);
+      border-color: rgba(179,31,36,0.65);
+      box-shadow: 0 18px 40px rgba(179,31,36,0.18);
+      color:#fff;
+    }
+    .btnPrimary:hover{transform: translateY(-2px); filter: brightness(1.05)}
+    .btnGhost{ background: rgba(20,20,20,0.65); color:#fff; }
+    .btnGhost:hover{transform: translateY(-2px); border-color: rgba(255,255,255,0.22)}
+
+    /* ===== BUTTON ARROW (ZISTIŤ VIAC →) ===== */
+    .btnArrow .arr{
+      display:inline-flex;
+      transition: transform .22s ease, opacity .22s ease;
+      opacity:.95;
+    }
+    .btnArrow:hover .arr{
+      transform: translateX(6px);
+      opacity:1;
+    }
+    .btnPrimary.btnArrow:hover{
+      box-shadow: 0 18px 44px rgba(179,31,36,0.26);
+    }
+
+    /* ===== HERO CTA – čitateľnejšie, výraznejšie ===== */
+.ctaRow--hero{
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.ctaRow--hero .btn{
+  padding: 16px 22px;       
+  font-size: 14px;          
+  letter-spacing: .08em;    
+  border-radius: 14px;
+}
+
+.ctaRow--hero .btnPrimary{
+  box-shadow: 0 22px 60px rgba(179,31,36,0.22);
+}
+
+.ctaRow--hero .btnGhost{
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.ctaRow--hero .btnGhost:hover{
+  border-color: rgba(179,31,36,0.35);
+  background: rgba(255,255,255,0.06);
+}
+
+.ctaHint{
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.72);
+  max-width: 720px;
+}
+
+/* mobil */
+@media (max-width: 980px){
+  .ctaRow--hero .btn{
+    font-size: 13px;
+    padding: 14px 18px;
+    letter-spacing: .07em;
+  }
+  .ctaHint{ font-size: 13px; }
+}
+
+
+    .heroCard{
+      background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.65));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:22px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .heroCard::before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.20), transparent 55%);
+      transform: rotate(12deg);
+    }
+    .heroCard > *{position:relative}
+    .statRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .stat{
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stat b{display:block;font-size:18px;color:#fff;margin-bottom:6px}
+    .stat span{font-size:12px;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px}
+
+    /* ====== BLOCKS ====== */
+    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:start; }
+    .panel{
+      background: rgba(20,20,20,0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:26px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute;
+      left:-60px; top:-60px;
+      width:160px; height:160px;
+      background: radial-gradient(circle, rgba(179,31,36,0.18), transparent 60%);
+    }
+    .panel > *{position:relative}
+
+    /* ====== CLICKABLE SERVICE CARD (mobilny autoservis) ====== */
+    .service-card{
+      cursor:pointer;
+      user-select:none;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .service-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(179,31,36,0.40);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+    }
+    .service-card:active{ transform: translateY(-4px) scale(0.995); }
+    .service-card .service-top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .service-card .service-icon{
+      width:44px; height:44px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+      flex:0 0 auto;
+    }
+    .service-card .service-icon svg{ width:22px; height:22px; color:#fff; opacity:.9; }
+    .service-card .service-arrow{
+      width:38px;height:38px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      opacity:.8;
+      transition:.22s;
+      flex:0 0 auto;
+    }
+    .service-card:hover .service-arrow{
+      opacity:1;
+      transform: translateX(2px);
+      border-color: rgba(179,31,36,0.35);
+    }
+    .service-pills{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .mini-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      font-size:11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      width: fit-content;
+    }
+    .mini-dot{ width:8px; height:8px; border-radius:999px; background: var(--red); box-shadow:0 0 12px rgba(179,31,36,.7); }
+
+    /* ====== STOCK (COLLAPSIBLE GRID) ===== */
+    .stock-strip{
+      margin-top: 16px;
+      padding: 10px 8px 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .stock-collapsible{
+      position: relative;
+      max-height: var(--stockCollapsed);
+      overflow: hidden;
+      transition: max-height .45s ease;
+      will-change: max-height;
+    }
+    .stock-fade{
+      pointer-events:none;
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 120px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(10,10,10,0.92));
+      opacity: 1;
+      transition: opacity .25s ease;
+    }
+    .stock-more{
+      position:absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 5;
+      border-radius: 14px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.55);
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size: 11px;
+      cursor:pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+      backdrop-filter: blur(8px);
+    }
+    .stock-more:hover{
+      transform: translateY(-2px);
+      background: rgba(179,31,36,0.18);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.65);
+    }
+    .stock-more:active{ transform: scale(0.98); }
+    .stock-more .chev{
+      display:inline-flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      transition: transform .25s ease;
+    }
+
+    .stock-scroll{
+      display:grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 16px;
+      padding: 16px 2px 18px;
+    }
+
+    .stock-strip.is-expanded .stock-collapsible{ max-height: var(--stockExpanded); }
+    .stock-strip.is-expanded .stock-fade{ opacity: 0; }
+    .stock-strip.is-expanded .stock-more .chev{ transform: rotate(180deg); }
+
+    .stock-item{
+      border:1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(20,20,20,0.96), rgba(10,10,10,0.82));
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+      cursor: pointer;
+      position: relative;
+      contain: layout paint;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+    .stock-item:hover{
+      transform: translateY(-5px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.55);
+      background: linear-gradient(180deg, rgba(24,24,24,1), rgba(8,8,8,0.9));
+    }
+
+    .stock-img{
+      position:relative;
+      aspect-ratio: 4/3;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .stock-img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transition: transform .2s ease;
+      transform: translateZ(0);
+    }
+    .stock-item:hover .stock-img img{ transform: scale(1.03); }
+
+    .bubble{
+      position:absolute;
+      left: 9px;
+      top: 9px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: .12em;
+      font-weight: 900;
+      text-transform: uppercase;
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px);
+    }
+    .bubble-new{ background: rgba(34,197,94,0.88); box-shadow: 0 10px 22px rgba(34,197,94,0.16); }
+    .bubble-used{ background: rgba(245,158,11,0.90); box-shadow: 0 10px 22px rgba(245,158,11,0.14); }
+
+    .stock-body{ padding: 12px 14px 14px; }
+    .stock-top{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      justify-content: space-between;
+    }
+    .stock-title{
+      font-size: 11px;
+      margin: 0;
+      letter-spacing: .11em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      color:#fff;
+      max-width: 65%;
+    }
+
+    .stock-price-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:4px;
+      margin-left:8px;
+      flex-shrink:0;
+    }
+    .stock-price{ font-weight: 900; font-size: 14px; white-space: nowrap; color:#fff; }
+    .stock-price-suffix{ font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing: .09em; }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding: 5px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .chip--stock{
+      background: radial-gradient(circle at 20% 0%, rgba(34,197,94,0.35), rgba(6,78,59,0.95));
+      border-color: rgba(34,197,94,0.95);
+      color:#eafff2;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-shadow:0 0 8px rgba(0,0,0,0.85);
+      box-shadow:
+        0 0 14px rgba(34,197,94,0.45),
+        0 10px 22px rgba(0,0,0,0.55);
+    }
+
+    .stock-tags{
+      margin-top: 8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+    }
+    .stock-tags .chip{
+      font-size: 9px;
+      padding: 4px 6px;
+      opacity: 0.65;
+      border-color: rgba(255,255,255,0.06);
+      background: transparent;
+      color: var(--muted2);
+      box-shadow:none;
+    }
+
+    .stock-location{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted2);
+      margin-top:6px;
+      opacity:.9;
+    }
+    .stock-location .pin{ width:14px; height:14px; flex:0 0 auto; color:rgba(255,255,255,0.8); }
+    .stock-location:hover{ color:#fff; opacity:1; }
+
+    .stock-actions{ display:flex; margin-top: 12px; }
+    .stock-actions .btn{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+    }
+
+    /* ====== MODAL PREVIEW ====== */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.86);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      padding:16px;
+    }
+    .modal-overlay.is-visible{ display:flex; }
+
+    .modal{
+      background: radial-gradient(circle at top, rgba(179,31,36,0.18), rgba(10,10,10,0.95));
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,0.14);
+      max-width:980px;
+      width:100%;
+      display:grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap:0;
+      box-shadow:0 30px 90px rgba(0,0,0,0.85);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .modal-close{
+      position:absolute;
+      right:14px;
+      top:10px;
+      border:none;
+      background:transparent;
+      color:rgba(255,255,255,0.7);
+      font-size:22px;
+      cursor:pointer;
+      padding:6px;
+      z-index:5;
+      transition:color .2s ease, transform .2s ease;
+    }
+    .modal-close:hover{ color:#fff; transform:scale(1.07); }
+
+    .modal-media{
+      position:relative;
+      background:rgba(0,0,0,0.7);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .modal-media img{
+      width:100%;
+      max-height:70vh;
+      object-fit:contain;
+      border-radius:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,0.85);
+      background:#050505;
+    }
+
+    .modal-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:38px;
+      height:38px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:20px;
+      color:#fff;
+      backdrop-filter:blur(6px);
+      transition:background .2s ease, transform .2s ease, border-color .2s ease, opacity .2s ease;
+      opacity:.85;
+    }
+    .modal-arrow:hover{
+      background:rgba(0,0,0,0.9);
+      border-color:rgba(179,31,36,0.7);
+      transform:translateY(-50%) scale(1.05);
+      opacity:1;
+    }
+    .modal-prev{ left:14px; }
+    .modal-next{ right:14px; }
+
+    .modal-info{
+      padding:24px 24px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      background:linear-gradient(180deg, rgba(10,10,10,0.95), rgba(5,5,5,0.98));
+    }
+    .modal-title{ font-size:16px; letter-spacing:.16em; text-transform:uppercase; }
+
+    .modal-location{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted2);
+    }
+    .modal-location svg{ width:14px; height:14px; }
+
+    .modal-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+    .modal-note{ font-size:14px; line-height:1.6; margin-top:4px; }
+
+    .modal-price-wrap{
+      margin-top:8px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:2px;
+    }
+    .modal-price{
+      font-size:26px;
+      font-weight:900;
+      color:var(--red);
+      letter-spacing:.06em;
+    }
+    .modal-price-suffix{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:var(--muted2);
+    }
+
+    .modal-meta{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+
+    .modal-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+    .modal-actions .btn{ padding:12px 18px; font-size:12px; }
+
+    .modal-counter{
+      position:absolute;
+      right:16px;
+      bottom:14px;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.7);
+      background:rgba(0,0,0,0.6);
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      backdrop-filter:blur(6px);
+    }
+
+    /* kontakt boxy, footer atď */
+    .contact-box{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+      max-width: 860px;
+    }
+    .contact-box label{
+      display:block;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 6px;
+    }
+    .contact-box textarea{
+      width:100%;
+      border-radius: 14px;
+      padding: 14px 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+      min-height: 140px;
+      resize: vertical;
+    }
+    .contact-box textarea:focus{
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
+    }
+    .contact-box input{
+      width:100%;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .contact-box input:focus{
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 0 0 3px rgba(179,31,36,0.12);
+    }
+    .contact-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .contact-actions{ margin-top: 8px; display:flex; flex-wrap:wrap; gap:10px; }
+
+    .reveal{opacity:0; transform: translateY(28px); transition: .8s ease}
+    .reveal.active{opacity:1; transform: translateY(0)}
+
+    footer{
+      padding:55px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.45);
+    }
+    .foot{
+      display:flex; gap:18px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      color: var(--muted2);
+      font-size:13px;
+    }
+
+    .contact-flex{
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 30px;
+    }
+    .contact-left{ display:flex; flex-direction:column; gap:14px; }
+
+    .company-box{
+      background: rgba(10,10,10,0.85);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:22px 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.5);
+    }
+    .company-box h3{ margin-top:0; margin-bottom:12px; text-transform:uppercase; }
+    .company-box p{ margin-bottom:14px; font-size:14px; line-height:1.6; }
+    .company-box b{ color:#fff; }
+
+    @media(max-width:980px){
+      .contact-flex{ grid-template-columns:1fr; }
+    }
+
+    .pill-row{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill--bazos{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,165,0,0.55);
+      background: rgba(255,165,0,0.06);
+      color:#fff;
+      text-decoration:none;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+      cursor:pointer;
+      margin-left:auto;
+      padding:10px 16px;
+      border-radius:999px;
+      box-shadow:0 10px 25px rgba(0,0,0,.5);
+    }
+    .dot--orange{ background:#ffa500; box-shadow:0 0 0 3px rgba(255,165,0,0.25); width:8px;height:8px;border-radius:999px;}
+    .pill-bazos-text{ font-size:13.5px; white-space:nowrap; }
+    .pill-arrow{
+      font-size:14px;
+      opacity:.8;
+      transform: translateY(-1px);
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .pill--bazos:hover{
+      background: rgba(255,165,0,0.14);
+      border-color:#ffa500;
+      box-shadow: 0 12px 32px rgba(255,165,0,0.35);
+      transform: translateY(-2px);
+    }
+    .pill--bazos:hover .pill-arrow{ transform: translate(3px, -4px); opacity:1; }
+    .pill--bazos:active{ transform: scale(0.98); }
+
+    .pill--catalog{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(179,31,36,0.75);
+      background: rgba(179,31,36,0.10);
+      color:#fff;
+      text-decoration:none;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+      cursor:pointer;
+      padding:10px 16px;
+      border-radius:999px;
+      box-shadow:0 10px 25px rgba(0,0,0,.5);
+    }
+    .dot--catalog{ background: var(--red); box-shadow:0 0 0 3px rgba(179,31,36,0.35); width:8px;height:8px;border-radius:999px;}
+    .pill--catalog:hover{
+      background: rgba(179,31,36,0.20);
+      border-color: var(--red);
+      box-shadow: 0 12px 32px rgba(179,31,36,0.40);
+      transform: translateY(-2px);
+    }
+    .pill--catalog:active{ transform: scale(0.98); }
+
+
+
+    /* ===== LANGUAGE SWITCH ===== */
+    .nav-wrap-rel{ position:relative; }
+    .lang-switch{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:0;
+      z-index:130;
+      height:40px;
+      min-width:92px;
+      padding:4px;
+      margin:0 10px;
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:999px;
+      background:rgba(10,10,10,0.78);
+      box-shadow:0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      isolation:isolate;
+      flex:0 0 auto;
+    }
+    .lang-switch::before{
+      content:"";
+      position:absolute;
+      top:4px;
+      left:4px;
+      width:calc(50% - 4px);
+      height:calc(100% - 8px);
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.72));
+      box-shadow:0 10px 24px rgba(179,31,36,0.22);
+      transition:transform .28s ease;
+      z-index:0;
+    }
+    .lang-switch[data-active="en"]::before{
+      transform:translateX(100%);
+    }
+    .lang-btn{
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:rgba(255,255,255,0.72);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      width:42px;
+      height:32px;
+      padding:0;
+      border-radius:999px;
+      cursor:pointer;
+      transition:color .2s ease, transform .2s ease, box-shadow .2s ease;
+      position:relative;
+      z-index:1;
+      flex:0 0 42px;
+    }
+    .lang-btn:hover{ color:#fff; }
+    .lang-btn.is-active{ color:#fff; }
+    .lang-sep{ display:none; }
+
+    /* jemná optimalizácia pre tých čo nechcú animácie */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 1400px){
+      .stock-scroll{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    }
+    @media (max-width: 1200px){
+      .stock-scroll{ grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 980px){
+      .wrap{ padding: 0 18px; max-width: 720px; margin: 0 auto; }
+      section{ padding: 78px 0; }
+      .hero{ padding: 70px 0 60px; }
+
+      .hero-grid{grid-template-columns:1fr; gap:22px}
+      .split{grid-template-columns:1fr; gap:18px}
+
+      h1{ font-size: clamp(34px, 7vw, 48px); line-height: 1.08; }
+      h2{ font-size: clamp(26px, 5.6vw, 34px); }
+      p, .subline{ font-size: 15px; line-height: 1.7; max-width: 100%; }
+
+      .hero-title{ flex-wrap: wrap; gap: 10px; }
+      .hero-logo-inline{ height: 64px; }
+      .hero-dash{ font-size: 22px; }
+      .hero-slogan-image{ height: 28px; }
+
+      .ctaRow{ gap: 10px; }
+      .btn{ width: 100%; justify-content: center; padding: 14px 18px; font-size: 13px; }
+
+      .heroCard{ padding: 18px; }
+      .statRow{ grid-template-columns: 1fr; gap: 10px; }
+      .stat b{ font-size: 16px; }
+
+      .nav-centered{
+        max-width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        padding: 26px 0 14px;
+      }
+
+      .lang-switch{
+        margin: 2px auto 0;
+      }
+
+      .nav-links{
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .nav-links a{ font-size: 12px; letter-spacing: .12em; }
+      .brand-mini img{height: 52px}
+
+      .panel{ padding: 22px; }
+      .contact-row{ grid-template-columns: 1fr; }
+
+      footer{ padding: 40px 0; }
+      .foot{ justify-content: center; text-align: center; gap: 10px; }
+
+      .modal{ grid-template-columns: 1fr; max-width: 640px; }
+      .modal-media{ padding:12px; }
+      .modal-info{ padding:18px 16px 16px; }
+      .modal-price{ font-size:22px; }
+
+      .stock-scroll{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stock-more{ right: 10px; bottom: 10px; }
+    }
+
+    @media (max-width:560px){
+      .stock-scroll{ grid-template-columns: 1fr; }
+    }
+
+    /* ===== RACEM COOKIES (BOTTOM-RIGHT WIDGET) ===== */
+    .cookieBar{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:10001;
+
+      width:min(360px, calc(100vw - 24px));
+      display:none;
+      gap:12px;
+      align-items:flex-start;
+
+      padding:14px 14px 12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+
+      background:
+        radial-gradient(540px 180px at 80% 120%, rgba(179,31,36,0.35), transparent 60%),
+        radial-gradient(520px 180px at 10% 0%, rgba(255,255,255,0.06), transparent 62%),
+        linear-gradient(180deg, rgba(16,16,16,0.96), rgba(8,8,8,0.94));
+      box-shadow: 0 24px 90px rgba(0,0,0,0.72);
+      backdrop-filter: blur(10px);
+
+      transform: translateY(14px);
+      opacity:0;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .cookieBar.show{
+      display:flex;
+      opacity:1;
+      transform: translateY(0);
+    }
+    .cookieBar::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:18px;
+      pointer-events:none;
+      background: radial-gradient(420px 120px at 80% 100%, rgba(179,31,36,0.22), transparent 62%);
+      opacity:.9;
+    }
+    .cookieBar > *{ position:relative; z-index:1; }
+
+    .cookieIco{
+      width:40px;height:40px;
+      border-radius:14px;
+      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      flex:0 0 auto;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+    }
+
+    .cookieText{
+      min-width:0;
+      font-size:12.5px;
+      line-height:1.55;
+      color:rgba(255,255,255,0.78);
+      margin-top:1px;
+    }
+    .cookieText b{color:#fff}
+    .cookieText a{
+      color:#fff;
+      opacity:.9;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .cookieBtn{
+      margin-left:auto;
+      align-self:center;
+
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      color:#fff;
+      font-weight:1000;
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+
+      background: linear-gradient(180deg, rgba(179,31,36,0.94), rgba(179,31,36,0.72));
+      box-shadow: 0 18px 55px rgba(179,31,36,0.18);
+      cursor:pointer;
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+      white-space:nowrap;
+    }
+    .cookieBtn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow: 0 18px 70px rgba(179,31,36,0.24);
+    }
+    .cookieBtn:active{ transform: translateY(0) scale(0.99); }
+
+    @media (max-width:560px){
+      .cookieBar{
+        right:12px;
+        bottom:12px;
+        width: calc(100vw - 24px);
+      }
+      .cookieBtn{ margin-left:0; width:100%; justify-content:center; }
+    }
+
+    /* ====== MOBILE COMPACT PATCH (PC nezmenené) ====== */
+    @media (max-width: 560px){
+      section{ padding: 52px 0 !important; }
+      .hero{ padding: 46px 0 40px !important; }
+      .wrap{ padding: 0 14px !important; }
+      .topbar{ top: 40px; }
+
+      h1{ font-size: 34px !important; line-height: 1.08 !important; }
+      h2{ font-size: 24px !important; line-height: 1.15 !important; }
+      h3{ font-size: 16px !important; }
+
+      p, .subline{
+        font-size: 14px !important;
+        line-height: 1.65 !important;
+      }
+
+      .hero-logo-inline{ height: 52px !important; }
+      .hero-slogan-image{ height: 22px !important; }
+      .hero-dash{ font-size: 18px !important; }
+
+      .panel{ padding: 16px !important; border-radius: 16px !important; }
+      .heroCard{ padding: 16px !important; border-radius: 16px !important; }
+
+      .pill{
+        font-size: 10px !important;
+        padding: 6px 10px !important;
+        letter-spacing: .45px !important;
+      }
+
+      .ctaRow{ gap: 10px !important; }
+      .ctaRow .btn{
+        width: calc(50% - 5px) !important;
+        padding: 12px 12px !important;
+        font-size: 12px !important;
+        border-radius: 12px !important;
+      }
+      .ctaRow .btn:only-child{ width: 100% !important; }
+
+      .stat{ padding: 12px !important; border-radius: 14px !important; }
+      .stat b{ font-size: 15px !important; }
+
+      .nav-centered{ padding: 10px 0 !important; gap: 10px !important; }
+      .brand-mini img{ height: 42px !important; }
+      .nav-links{ gap: 10px !important; }
+      .nav-links a{
+        font-size: 11px !important;
+        letter-spacing: .10em !important;
+        padding: 4px 0 !important;
+      }
+      .nav-links a::after{ bottom: -8px !important; }
+
+      .pill--bazos, .pill--catalog{ padding: 8px 12px !important; }
+      .pill-bazos-text{ font-size: 12px !important; }
+
+      .stock-title{ font-size: 10px !important; letter-spacing: .10em !important; }
+      .stock-price{ font-size: 13px !important; }
+      .stock-price-suffix{ font-size: 10px !important; }
+
+      .modal-info{ padding: 16px 14px 14px !important; }
+      .modal-price{ font-size: 20px !important; }
+    }
+
+    /* EXTRA: medzi 561–980 nech to nie je “tablet = obor” */
+    @media (max-width: 980px){
+      section{ padding: 64px 0 !important; }
+      .hero{ padding: 56px 0 48px !important; }
+      .panel{ padding: 20px !important; }
+      .heroCard{ padding: 18px !important; }
+    }
+
+
+    /* ====== PRODUCTS TEASER / CAROUSEL ====== */
+    .products-teaser-panel{
+      padding: 30px !important;
+      overflow: hidden;
+    }
+    .products-teaser-title{
+      margin-top: 16px;
+      margin-bottom: 8px;
+      font-size: 32px;
+    }
+    .products-teaser-sub{
+      max-width: 760px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 18px;
+    }
+    .products-carousel{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding: 4px 2px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .products-carousel::-webkit-scrollbar{ height: 8px; }
+    .products-carousel::-webkit-scrollbar-thumb{
+      background: rgba(179,31,36,0.55);
+      border-radius: 999px;
+    }
+    .products-carousel::-webkit-scrollbar-track{
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+    }
+    .product-teaser-card{
+      flex: 0 0 auto;
+      width: 170px;
+      min-width: 170px;
+      text-decoration:none;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(20,20,20,0.96), rgba(8,8,8,0.92));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      scroll-snap-align:start;
+    }
+    .product-teaser-card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .product-teaser-media{
+      position:relative;
+      width:100%;
+      height:115px;
+      background: rgba(255,255,255,0.03);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      overflow:hidden;
+    }
+    .product-teaser-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition: transform .22s ease;
+    }
+    .product-teaser-card:hover .product-teaser-media img{
+      transform: scale(1.04);
+    }
+    .product-teaser-body{
+      padding:10px 10px 12px;
+    }
+    .product-teaser-name{
+      font-size:11px;
+      line-height:1.4;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#f1f1f1;
+      min-height:46px;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .product-teaser-price{
+      margin-top:8px;
+      font-size:13px;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:.04em;
+    }
+    .products-teaser-cta{
+      margin-top: 18px;
+      display:flex;
+      justify-content:flex-start;
+    }
+
+    @media (max-width:980px){
+      .products-teaser-panel{
+        padding: 22px !important;
+      }
+      .products-teaser-title{
+        font-size: 26px;
+      }
+      .products-teaser-sub{
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .product-teaser-card{
+        width: 148px;
+        min-width: 148px;
+      }
+      .product-teaser-media{
+        height: 98px;
+      }
+      .product-teaser-name{
+        font-size: 10px;
+        min-height: 42px;
+      }
+      .product-teaser-price{
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width:560px){
+      .products-teaser-panel{
+        padding: 18px !important;
+      }
+      .products-teaser-title{
+        font-size: 22px;
+      }
+      .products-teaser-sub{
+        font-size: 12px;
+      }
+      .product-teaser-card{
+        width: 138px;
+        min-width: 138px;
+      }
+      .product-teaser-media{
+        height: 92px;
+      }
+      .products-teaser-cta .btn{
+        width: 100%;
+      }
+    }
+
+    /* ====== BODYKIT BRANDS STRIP (INDEX) ====== */
+    .brands-wrap{ margin-top: 16px; }
+
+    .brand-grid{
+      display:grid;
+      grid-template-columns: repeat(8, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .brands-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    .brands-title{ margin:0; }
+
+    .brands-cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      text-decoration:none;
+      padding: 16px 22px;
+      border-radius: 16px;
+
+      color:#fff;
+      font-weight: 1000;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 13px;
+
+      border: 1px solid rgba(179,31,36,0.60);
+      background: linear-gradient(180deg, rgba(179,31,36,0.98), rgba(179,31,36,0.68));
+      box-shadow:
+        0 22px 70px rgba(179,31,36,0.22),
+        0 18px 55px rgba(0,0,0,0.55);
+
+      position:relative;
+      overflow:hidden;
+
+      transition:
+        transform .18s ease,
+        filter .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+    }
+    .brands-cta::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 55%);
+      opacity:.65;
+      transform: rotate(12deg);
+    }
+    .brands-cta > *{ position:relative; z-index:1; }
+
+    .brands-cta:hover{
+      transform: translateY(-3px);
+      filter: brightness(1.06);
+      border-color: rgba(179,31,36,0.85);
+      box-shadow:
+        0 26px 90px rgba(179,31,36,0.30),
+        0 22px 75px rgba(0,0,0,0.68);
+    }
+    .brands-cta:active{ transform: translateY(-1px) scale(0.99); }
+
+    .brands-cta .ctaArrow{
+      display:inline-flex;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.20);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+      transition: transform .18s ease, background .18s ease;
+    }
+    .brands-cta:hover .ctaArrow{
+      transform: translateX(4px);
+      background: rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 980px){
+      .brands-cta{
+        width:100%;
+        padding: 18px 22px;
+        font-size: 13px;
+      }
+    }
+
+    /* ====== BRAND TILE WITH NAME (FIXED) ====== */
+    .brand-link{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+    .brand-tile{
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.75));
+      box-shadow: 0 14px 40px rgba(0,0,0,0.40);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .brand-tile::after{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background: radial-gradient(circle at 30% 30%, rgba(179,31,36,0.18), transparent 55%);
+      transform: rotate(18deg);
+      opacity:.85;
+    }
+    .brand-tile > *{ position:relative; z-index:1; }
+
+    .brand-tile:hover{
+      transform: translateY(-4px);
+      border-color: rgba(179,31,36,0.45);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.60);
+    }
+
+    /* ====== BRAND TILE – WHITE VARIANT (CSR) ====== */
+.brand-tile--white{
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* vypni červený "glow" overlay aby biela ostala čistá */
+.brand-tile--white::after{
+  display:none !important;
+}
+
+/* aby logo nebolo "zadusené" na bielej */
+.brand-tile--white .brand-logo{
+  filter: none !important;
+  opacity: 1 !important;
+  transform: scale(1.06);
+}
+
+/* hover nech stále sedí dizajnovo */
+.brand-tile--white:hover{
+  border-color: rgba(179,31,36,0.35) !important;
+  box-shadow: 0 18px 55px rgba(0,0,0,0.35) !important;
+}
+
+
+    .brand-inner{
+      width:100%;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-align:center;
+    }
+
+    .brand-logo{
+      width:100%;
+      height:62%;
+      object-fit:contain;
+      transform: scale(1.10);
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+      opacity:.95;
+    }
+
+    .brand-name{
+  margin-top: 12px;              
+  font-size: 12px;               
+  letter-spacing: .18em;         
+  text-transform: uppercase;
+  font-weight: 1000;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.3;
+  padding: 0 6px;
+  text-align: center;
+}
+
+    /* “coming soon” tile */
+    .brand-tile.is-empty{
+      cursor: default;
+      background: rgba(255,255,255,0.03);
+      box-shadow:none;
+    }
+    .brand-tile.is-empty::after{ display:none; }
+    .brand-tile.is-empty:hover{
+      transform:none;
+      border-color: rgba(255,255,255,0.10);
+      box-shadow:none;
+    }
+    .brand-tile.is-empty span{
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    /* brand-grid responsive */
+    @media (max-width: 1200px){
+      .brand-grid{ grid-template-columns: repeat(6, minmax(0,1fr)); }
+    }
+    @media (max-width: 980px){
+      .brand-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .brand-logo{ height:60%; }
+    }
+    @media (max-width: 560px){
+      .brand-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
+      .brand-tile{ border-radius: 14px; padding: 10px; }
+      .brand-name{ font-size: 10px; }
+      .brand-logo{ height:58%; }
+    }
+
+    /* ===== HERO SERVICES (doplnil som chýbajúce triedy) ===== */
+    .heroServices{ display:flex; flex-direction:column; gap:14px; margin-top:18px; }
+    .hsItem{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;
+      background: rgba(255,255,255,0.03);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .hsItem:hover{ transform: translateX(6px); border-color: rgba(179,31,36,0.35); }
+    .hsBar{
+      width:3px; height:42px; border-radius:10px;
+      background: linear-gradient(180deg, rgba(179,31,36,1), rgba(179,31,36,0.35));
+      box-shadow: 0 0 18px rgba(179,31,36,0.35);
+      flex:0 0 auto;
+    }
+    .hsTitle{
+      font-weight:1000;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#fff;
+    }
+    .hsSub{
+      margin-top:4px;
+      font-size:13px;
+      color: rgba(255,255,255,0.70);
+      letter-spacing:.02em;
+    }
+
+    /* ===== HERO GLOBE PANEL (doplnil som chýbajúce triedy) ===== */
+    .heroPanel.globePanel{
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+    }
+    .hpTitle{
+      font-weight:1000;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(255,255,255,0.85);
+      margin-bottom:12px;
+    }
+    
+    /* ✅ GLOBE WRAP – úplne bez kocky / bez glass efektu */
+.globeWrap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ✅ BIG ZOOMED GLOBE – nech ide mimo obrazovky (vpravo hore) */
+.globeWrap--big{
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+}
+
+
+
+  /* ===== RACEM GROUP watermark (MUSÍ byť NAD canvasom) ===== */
+.globeBrandWatermark{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%) scale(1.05);
+
+  width: 86%;
+  max-width: 560px;
+
+  opacity: 0.14;                 
+  filter: grayscale(100%) contrast(1.15);
+  mix-blend-mode: screen;         
+  pointer-events:none;
+
+  z-index: 2;                     
+}
+
+/* canvas pod watermarkom */
+#racemGlobe{
+  position: relative;
+  z-index: 1;
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* tooltip vždy navrchu */
+.globeTip{ z-index: 5; }
+
+/* mobil: trochu menej, nech to nevyzerá ako "plachta" */
+@media (max-width: 980px){
+  .globeBrandWatermark{
+    width: 92%;
+    opacity: 0.14;
+    transform: translate(-50%, -50%) scale(1.0);
+  }
+}
+
+
+/* na menších obrazovkách to skroť */
+@media (max-width: 980px){
+  .globeWrap--big{
+    transform: translate(6vw, -6vh) scale(1.05);
+    width: 520px;
+    height: 520px;
+  }
+}
+
+
+/* ✅ úplne vypni pseudo overlaye, ktoré robili sivý závoj */
+.globeWrap--big::before,
+.globeWrap--big::after{
+  content: none !important;
+  display: none !important;
+}
+
+
+
+/* mobil ešte menší */
+@media (max-width:980px){
+  .globeWrap{ max-width: 280px; margin: 0 auto; }
+}
+
+    #racemGlobe{ width:100%; height:100%; display:block; }
+
+    /* Tooltip bublinka */
+    .globeTip{
+      position:absolute;
+      left:0; top:0;
+      transform: translate(-50%, -115%);
+      min-width: 180px;
+      max-width: 240px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.7);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .12s ease, transform .12s ease;
+      z-index:5;
+    }
+    .globeTip.show{
+      opacity:1;
+      transform: translate(-50%, -125%);
+    }
+    .gtTop{ display:flex; align-items:center; gap:10px; }
+    .gtLogo{
+      width:30px; height:30px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+    }
+    .gtTitle{
+      font-weight:1000;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size: 11px;
+      color:#fff;
+    }
+    .gtSub{
+      margin-top:6px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.75);
+      letter-spacing:.06em;
+    }
+    .globeTip::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-8px;
+      width:14px;
+      height:14px;
+      background: rgba(0,0,0,0.72);
+      border-right:1px solid rgba(255,255,255,0.14);
+      border-bottom:1px solid rgba(255,255,255,0.14);
+      transform: translateX(-50%) rotate(45deg);
+      backdrop-filter: blur(10px);
+    }
+
+    .globeLegend{
+      margin-top:12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.18);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .legendItem{ display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,255,255,0.75); letter-spacing:.06em; }
+    .legendDot{
+      width:10px;height:10px;border-radius:999px;background: var(--red);
+      box-shadow:0 0 14px rgba(179,31,36,.55);
+    }
+
+    /* mobile */
+    @media (max-width:980px){
+      .heroPanel{ width:100%; }
+    }
+  
+.heroPanel.globePanel{ overflow: visible !important; }
+
+
+/* canvas nech reálne sedí */
+#racemGlobe{
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+
+/* hacker overlay: scanlines + jemný "CRT" shimmer */
+.globeOverlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  mix-blend-mode: screen;
+  opacity:.0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.00) 0px,
+      rgba(255,255,255,0.00) 8px,
+      rgba(255,255,255,0.06) 9px
+    ),
+    radial-gradient(circle at 50% 45%, rgba(179,31,36,0.10), transparent 60%);
+  animation: globeScan 6s linear infinite;
+}
+
+@keyframes globeScan{
+  0%{ transform: translateY(-8px); opacity:.30; }
+  50%{ transform: translateY(8px); opacity:.40; }
+  100%{ transform: translateY(-8px); opacity:.30; }
+}
+
+/* tooltip nech nie je obrovský */
+.globeTip{
+  min-width: 160px;
+  max-width: 220px;
+  background: rgba(0,0,0,.72);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+    
+#racemGlobe{ pointer-events: auto; }
+.globeOverlay{ display:none; } /* dočasne vypni overlay, kým ladíme hover */
+/* ===== GLOBE LEGEND – RACEM GROUP BRAND ===== */
+.globeLegend--brand{
+  position: relative;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+/* logo ako watermark */
+.globeLegendLogo{
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 75%;
+  max-width: 260px;
+  opacity: 0.5; /* 👈 50 % */
+  filter: grayscale(100%) contrast(1.1);
+  pointer-events: none;
+}
+
+/* text nad logom */
+.globeLegendText{
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+.globeLegendText b{
+  color: #fff;
+  font-weight: 900;
+}
+
+
+    /* ===== HERO CTA BOX (čitateľné, premium, nie nalepené) ===== */
+.heroCtaBox{
+  margin-top: 18px;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(520px 180px at 20% 0%, rgba(179,31,36,0.18), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.18));
+  box-shadow: 0 18px 55px rgba(0,0,0,0.45);
+}
+
+.heroCtaTop{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom: 12px;
+}
+
+.heroCtaTitle{
+  font-weight: 1000;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255,255,255,0.92);
+}
+
+.heroCtaSub{
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.72);
+  max-width: 620px;
+}
+
+.heroCtaBtns{
+  display:flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.heroCtaBtns .btn{
+  padding: 16px 20px;
+  font-size: 13px;
+  letter-spacing: .08em;
+  border-radius: 14px;
+}
+
+/* nech primárny vyzerá viac "wow" */
+.heroCtaBtns .btnPrimary{
+  box-shadow: 0 22px 65px rgba(179,31,36,0.24);
+}
+
+/* mobil: krásny stack */
+@media (max-width: 980px){
+  .heroCtaBtns .btn{ width: 100%; }
+  .heroCtaBox{ padding: 14px; }
+  .heroCtaSub{ font-size: 13px; }
+}
+/* ===== RACEM GROUP BG LOGO (NEROZHADZUJE LAYOUT) ===== */
+.rmgroup-bg{
+  position: fixed;
+  left: 72%;                 
+  top: 78%;                  
+  transform: translate(-50%, -50%);
+
+  width: min(780px, 62vw);   
+  height: auto;
+
+  opacity: 0.12;
+  pointer-events: none;
+  user-select: none;
+
+  z-index: -3;               
+  mix-blend-mode: normal;
+  filter: saturate(1.1) contrast(1.05);
+}
+@media (max-width: 980px){
+  .rmgroup-bg{
+    left: 62%;
+    top: 72%;
+    width: min(520px, 86vw);
+    opacity: 0.10;
+  }
+}
+/* poradie vrstiev */
+.bg{ z-index: -6; }
+.noise{ z-index: -5; }
+
+
+    @media (max-width: 980px){
+  .heroPanel.globePanel{
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 520px !important;
+    height: 520px !important;
+    margin: 0 auto !important;
+  }
+  .headline{ padding-right: 0 !important; }
+}
+
+    /* ===== FOOTER SOCIALS (RACEM) ===== */
+.footer-socials{
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 12px 14px;
+  border-radius: 16px;
+
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(20,20,20,0.45);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+  backdrop-filter: blur(10px);
+}
+
+.footer-socials a{
+  text-decoration: none;
+}
+
+/* for all social containers */
+.footer-social{
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  transition: transform .18s ease, background-color .25s ease, border-color .25s ease;
+}
+
+.footer-social:active{
+  transform: scale(0.94);
+}
+
+.footer-social svg{
+  width: 18px;
+}
+.footer-social svg path{
+  fill: #ffffff;
+}
+
+/* hover colors (tvoje pôvodné, len nech sedia na dark) */
+.footer-social.ig:hover{
+  background-color: #d62976;
+  border-color: rgba(214,41,118,0.8);
+}
+.footer-social.x:hover{
+  background-color: #00acee;
+  border-color: rgba(0,172,238,0.8);
+}
+.footer-social.in:hover{
+  background-color: #0072b1;
+  border-color: rgba(0,114,177,0.8);
+}
+.footer-social.wa:hover{
+  background-color: #128C7E;
+  border-color: rgba(18,140,126,0.85);
+}
+
+.footer-social:hover svg{
+  animation: footer-slide-in-top 0.3s both;
+}
+
+@keyframes footer-slide-in-top{
+  0%{ transform: translateY(-24px); opacity: 0; }
+  100%{ transform: translateY(0); opacity: 1; }
+}
+
+/* aby to bolo fakt “uplne dole” a pekne centrované */
+.footer-bottom{
+  margin-top: 18px;
+  display:flex;
+  justify-content:center;
+}
+/* ===== SHIPPING BAR – FULL WIDTH / EDGE CLOSE ===== */
+:root{ --stickyOffset: 34px; }
+
+.shipbar{
+  position: sticky;
+  top: 0;
+  z-index: 120;
+
+  height: 34px;
+  background: linear-gradient(90deg, #ffb800, #ff9800);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  color: #111;
+
+  display:flex;
+  align-items:center;
+}
+
+.shipbar.is-hidden{ display:none; }
+
+/* full width wrapper */
+.shipbar-inner{
+  width: 100%;
+  position: relative;
+
+  display:flex;
+  align-items:center;
+
+  padding-left: 14px;
+  padding-right: 44px; 
+}
+
+/* vlajky vľavo, čitateľnejšie */
+.shipbar-flags{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.shipbar-flags .flag{
+  font-size: 18px;       
+  line-height: 1;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.35)); 
+  transform: translateY(0.5px);
+}
+
+/* TEXT: zaberie všetko, je roztiahnutý a nie natlačený */
+.shipbar-textwrap{
+  flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
+  height: 20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 0 14px; 
+}
+
+.shipbar-text{
+  width: 100%;
+  text-align: center;
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;          
+  font-size: 13px;
+
+  letter-spacing: 0.22em;   
+  word-spacing: 0.6em;      
+  text-transform: uppercase;
+
+  color: #111;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform .28s ease, opacity .28s ease;
+}
+
+
+.shipbar-text.out{ transform: translateY(100%); opacity: 0; }
+.shipbar-text.in{ transform: translateY(-100%); opacity: 0; }
+
+/* CLOSE: úplne na kraji viewportu */
+.shipbar-close{
+  position: absolute;
+  right: 10px;          
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 26px;
+  height: 26px;
+  display:grid;
+  place-items:center;
+
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.22);
+  background: rgba(255,255,255,0.28);
+  color: rgba(0,0,0,0.78);
+
+  cursor: pointer;
+  font-weight: 1000;
+  line-height: 1;
+
+  transition: transform .15s ease, background .15s ease, color .15s ease;
+}
+.shipbar-close:hover{
+  background: rgba(255,255,255,0.45);
+  color:#000;
+  transform: translateY(-50%) translateY(-1px);
+}
+.shipbar-close:active{
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* topbar offset */
+.topbar{
+  position: sticky;
+  top: var(--stickyOffset, 0px);
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10,10,10,0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* MOBILE */
+@media (max-width: 560px){
+  :root{ --stickyOffset: 40px; }
+
+  .shipbar{ height: 40px; }
+
+  .shipbar-inner{
+    padding-left: 12px;
+    padding-right: 44px;
+  }
+
+  .shipbar-flags .flag{ font-size: 18px; }
+
+  .shipbar-textwrap{
+    height: 30px;
+    justify-content: flex-start;
+    padding: 0 10px;
+  }
+
+  .shipbar-text{
+    font-size: 12px;
+    line-height: 1.25;
+    letter-spacing: .06em;
+    white-space: normal;
+    text-align: left;
+  }
+}
+/* ============================
+   MOBILE GRID + GLOBE FIX
+   (daj úplne na KONIEC CSS)
+============================ */
+
+/* TABLET + MOBILE */
+@media (max-width: 980px){
+
+  /* 1) HERO: nech je layout čistý a nič nevyčnieva */
+  .hero{ overflow: hidden; } 
+  .hero-grid{ grid-template-columns: 1fr !important; }
+
+  /* 2) GLOBE: zruš “corner absolute” správanie na menších displejoch */
+  .heroPanel.globePanel{
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+
+    width: min(420px, 92vw) !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+
+    margin: 12px auto 0 !important;
+    z-index: 1 !important;
+  }
+
+  .globeWrap,
+  .globeWrap--big{
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+
+  #racemGlobe{
+    width: 100% !important;
+    height: 100% !important;
+    display:block;
+  }
+
+  /* 3) SERVICES pod logom: z jedného stĺpca na 2 vedľa seba */
+  .heroServices{
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+
+  .hsItem{
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 10px 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .hsBar{
+    width: 40px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+  }
+
+  .hsTitle{
+    font-size: 11px !important;
+    letter-spacing: .12em !important;
+  }
+  .hsSub{
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* 4) HERO CTA: 2 vedľa seba + posledné na celú šírku */
+  .heroCtaBtns{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .heroCtaBtns .btn{
+    width: 100% !important;
+    padding: 12px 12px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    justify-content: center !important;
+  }
+
+  /* tretie tlačidlo (Bodykity) na celú šírku */
+  .heroCtaBtns .btn:nth-child(3){
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* EXTRA SMALL */
+@media (max-width: 560px){
+
+  /* Services stále 2 vedľa seba, ale ešte kompaktnejšie */
+  .heroServices{ gap: 8px !important; }
+  .hsItem{ padding: 9px 9px !important; }
+  .hsSub{ font-size: 12px !important; }
+
+  /* Globe ešte menší, nech nezaberá pol stránky */
+  .heroPanel.globePanel{
+    width: min(360px, 92vw) !important;
+  }
+
+  /* CTA nech nie je obrovské */
+  .heroCtaBtns .btn{
+    font-size: 11.5px !important;
+    letter-spacing: .07em !important;
+  }
+}
+/* =========================================
+   MOBILE: COMPACT UI + BODYKITS ONE ROW
+   (daj úplne na KONIEC CSS)
+========================================= */
+
+@media (max-width: 980px){
+
+  /* celkovo menšie “kocky” */
+  section{ padding: 54px 0 !important; }
+  .wrap{ padding: 0 14px !important; }
+
+  h1{ font-size: clamp(30px, 7vw, 42px) !important; }
+  h2{ font-size: clamp(22px, 5.6vw, 30px) !important; }
+  p, .subline{ font-size: 13.5px !important; line-height: 1.6 !important; }
+
+  .panel{ padding: 16px !important; border-radius: 16px !important; }
+  .heroCard{ padding: 14px !important; border-radius: 16px !important; }
+
+  /* HERO: services menšie + 2 vedľa seba */
+  .heroServices{
+    display:grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+  .hsItem{
+    padding: 9px 9px !important;
+    border-radius: 14px !important;
+    gap: 7px !important;
+  }
+  .hsBar{
+    width: 34px !important;
+    height: 3px !important;
+  }
+  .hsTitle{ font-size: 10.5px !important; letter-spacing: .11em !important; }
+  .hsSub{ font-size: 12px !important; line-height: 1.45 !important; }
+
+  /* CTA: kompaktnejšie, 2 vedľa seba + tretie full */
+  .heroCtaBtns{
+    display:grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+  .heroCtaBtns .btn{
+    width:100% !important;
+    padding: 11px 10px !important;
+    font-size: 11.5px !important;
+    border-radius: 12px !important;
+    letter-spacing: .06em !important;
+  }
+  .heroCtaBtns .btn:nth-child(3){ grid-column: 1 / -1 !important; }
+
+  /* GLOBE: menší a stabilný */
+  .heroPanel.globePanel{
+    width: min(360px, 92vw) !important;
+    aspect-ratio: 1/1;
+    height: auto !important;
+    margin: 10px auto 0 !important;
+  }
+
+  /* =========================
+     BODYKITS: JEDEN RIADOK (SWIPE)
+     ========================= */
+
+  /* miesto gridu sprav “strip” */
+  .brand-grid{
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+
+    padding: 6px 2px 10px !important;
+    margin-top: 10px !important;
+
+    scroll-snap-type: x mandatory;
+  }
+
+  /* scrollbar nech je decentný */
+  .brand-grid::-webkit-scrollbar{ height: 8px; }
+  .brand-grid::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+
+  /* každý brand = fixná “kartička” v riadku */
+  .brand-link{
+    flex: 0 0 auto !important;
+    width: 110px !important;           
+    scroll-snap-align: start;
+  }
+
+  .brand-tile{
+    width: 110px !important;
+    height: 110px !important;
+    border-radius: 14px !important;
+    padding: 10px !important;
+  }
+
+  .brand-logo{
+    height: 62% !important;
+    transform: scale(1.05) !important;
+  }
+
+  .brand-name{
+    margin-top: 8px !important;
+    font-size: 10px !important;
+    letter-spacing: .14em !important;
+    line-height: 1.25 !important;
+  }
+
+  /* tie “coming soon” aby mali rovnakú šírku */
+  .brand-tile.is-empty{
+    flex: 0 0 auto !important;
+    width: 110px !important;
+    height: 110px !important;
+  }
+}
+
+/* EXTRA SMALL: ešte kompaktnejšie */
+@media (max-width: 560px){
+  .brand-link{ width: 98px !important; }
+  .brand-tile, .brand-tile.is-empty{ width: 98px !important; height: 98px !important; }
+  .brand-name{ font-size: 9.5px !important; letter-spacing: .13em !important; }
+
+  .heroServices{ gap: 7px !important; }
+  .hsSub{ font-size: 11.5px !important; }
+
+  .heroPanel.globePanel{ width: min(320px, 92vw) !important; }
+}
+
+  .heroPanel.globePanel {
+  position: relative;
+  width:  min(520px, 44vw);
+  height: min(520px, 44vw);
+  margin-left: auto;
+}
+
+.heroPanel.globePanel canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+/* =========================================
+   MOBILE COMPACT: HERO LOGO + NAV + SHIPBAR + FOOTER
+   (daj úplne na KONIEC CSS)
+========================================= */
+
+@media (max-width: 980px){
+
+  /* ---------- HERO: logo + BEAT THEM ALL vedľa seba ---------- */
+  .hero-title{
+    flex-wrap: nowrap !important;     
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-logo-inline{
+    height: 46px !important;          
+    width: auto !important;
+  }
+
+  .hero-dash{
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
+
+  .hero-slogan-image{
+    height: 18px !important;          
+    width: auto !important;
+    max-width: 56vw;                   
+    object-fit: contain !important;
+  }
+
+  /* keď je naozaj úzky mobil, radšej “zrež” slogan než wrap */
+  @media (max-width: 420px){
+    .hero-slogan-image{ max-width: 48vw !important; }
+  }
+
+  /* ---------- NAV: jeden riadok, menšie, swipe scroll ---------- */
+  .topbar{
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-centered{
+    padding: 10px 0 !important;
+    max-width: 100% !important;
+  }
+
+  .nav-links{
+    display: flex !important;
+    flex-wrap: nowrap !important;        
+    gap: 14px !important;
+    justify-content: flex-start !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+
+    padding: 0 8px 6px !important;
+    scroll-snap-type: x mandatory;
+  }
+
+  .nav-links a{
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+
+    font-size: 10.5px !important;
+    letter-spacing: .10em !important;
+    padding: 4px 0 !important;
+    opacity: .92;
+  }
+
+  /* nech scroll bar nevyzerá hnusne */
+  .nav-links::-webkit-scrollbar{ height: 6px; }
+  .nav-links::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+
+  /* ---------- SHIPBAR (žltá vec): menšia + menej “roztiahnuté” ---------- */
+  :root{ --stickyOffset: 30px; }
+
+  .shipbar{
+    height: 30px !important;
+  }
+
+  .shipbar-inner{
+    padding-left: 10px !important;
+    padding-right: 38px !important;
+  }
+
+  .shipbar-flags .flag{
+    font-size: 16px !important;
+  }
+
+  .shipbar-textwrap{
+    height: 18px !important;
+    padding: 0 10px !important;
+  }
+
+  .shipbar-text{
+    font-size: 11px !important;
+    letter-spacing: .08em !important;
+    word-spacing: .25em !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .shipbar-close{
+    right: 8px !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 9px !important;
+    font-size: 14px !important;
+  }
+
+  /* ---------- FOOTER: menší, kompaktnejší ---------- */
+  footer{
+    padding: 26px 0 !important;
+  }
+
+  .foot{
+    gap: 8px !important;
+    font-size: 11.5px !important;
+  }
+
+  .footer-socials{
+    padding: 8px 10px !important;
+    border-radius: 14px !important;
+    gap: 10px !important;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.35) !important;
+  }
+
+  .footer-social{
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .footer-social svg{ width: 16px !important; }
+}
+
+@media (max-width: 560px){
+
+  /* HERO ešte menší */
+  .hero-logo-inline{ height: 42px !important; }
+  .hero-slogan-image{ height: 16px !important; }
+
+  /* shipbar ešte o chlp menší */
+  :root{ --stickyOffset: 28px; }
+  .shipbar{ height: 28px !important; }
+  .shipbar-text{ font-size: 10.5px !important; letter-spacing: .06em !important; }
+
+  /* footer */
+  footer{ padding: 22px 0 !important; }
+  .foot{ font-size: 11px !important; }
+}
+/* posun celeho hero loga nizsie */
+.hero-title{
+  margin-top: 36px !important;
+}
+.hero-left{
+  padding-top: 10px !important;
+}
+/* =========================================
+   MOBILE TOPBAR: logo centered + horizontal scroll menu
+========================================= */
+@media (max-width: 980px){
+
+  /* topbar kompakt */
+  .nav-centered{
+    padding: 10px 0 !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+  }
+
+  /* logo hore v strede */
+  .brand-mini{
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .brand-mini img{
+    height: 46px !important;
+    width: auto !important;
+  }
+
+  /* menu: 1 riadok + swipe scroll */
+  .nav-links{
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+
+    padding: 0 12px 8px !important;
+    scroll-snap-type: x mandatory;
+  }
+
+  .nav-links a{
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+    white-space: nowrap !important;
+
+    font-size: 11px !important;
+    letter-spacing: .10em !important;
+    padding: 5px 0 !important;
+  }
+
+  /* scrollbar nech nie je hnusný */
+  .nav-links::-webkit-scrollbar{ height: 6px; }
+  .nav-links::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.14);
+    border-radius: 999px;
+  }
+
+  /* zruš wrap/centrovanie linkov z pôvodných pravidiel */
+  .nav-links{ flex-wrap: nowrap !important; }
+}
+/* ✅ MOBILE: HERO logo 2× väčšie (finálny override) */
+@media (max-width: 980px){
+  .hero-logo-inline{
+    height: 96px !important;  
+    width: auto !important;
+  }
+
+  /* nech to vizuálne sedí a nezaberie zbytočne výšku */
+  .hero-title{
+    margin-top: 16px !important; 
+    justify-content: center !important; 
+  }
+}
+
+@media (max-width: 560px){
+  .hero-logo-inline{
+    height: 120px !important;  
+  }
+}
+/* MOBILE HERO LOGO – nech sa nikdy nezväčší mimo obrazovky */
+@media (max-width: 980px){
+
+  .hero-title{
+    justify-content:center !important;
+    margin-top: 12px !important;
+  }
+
+  .hero-logo-inline{
+    height: auto !important;
+    width: auto !important;
+
+    max-width: 82vw !important;   
+    max-height: 72px !important;  
+    object-fit: contain !important;
+  }
+}
+
+/* malé telefóny */
+@media (max-width: 560px){
+  .hero-logo-inline{
+    max-width: 86vw !important;
+    max-height: 64px !important;
+  }
+}
+
+    /* ==================== NOVÉ: ORANŽOVÁ KONŠTRUKČNÁ PÁSKA + BLUR ==================== */
+    .construction-tape{
+      display:block;
+      background: repeating-linear-gradient(45deg, #ffaa00, #ffaa00 30px, #ff6d00 30px, #ff6d00 60px);
+      color:#0a0a0a;
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      padding:12px 32px;
+      text-align:center;
+      border:4px solid #111;
+      box-shadow:0 8px 22px rgba(0,0,0,.5);
+      transform:rotate(-2deg);
+      margin:20px 0 26px;
+      position:relative;
+      z-index:2;
+      overflow:hidden;
+    }
+    .construction-tape::after{
+      content:"⚠";
+      position:absolute;
+      left:22px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:22px;
+      opacity:.75;
+    }
+    .construction-tape::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+      animation:tapeShine 2.8s linear infinite;
+    }
+    @keyframes tapeShine{
+      0%{transform:translateX(-120%);}
+      100%{transform:translateX(300%);}
+    }
+
+    .blurred-content{
+      filter:blur(4px) saturate(0.65);
+      pointer-events:none;
+      user-select:none;
+      transition:filter .6s ease;
+    }
+    .blurred-content:hover{
+      filter:blur(1.8px) saturate(1);
+    }
+/* ===== RACEM FULL WIDTH BUTTON ===== */
+/* ===== BODYKITS: FULL WIDTH CTA (SMALLER) ===== */
+.brands-ctaRow{
+  width:100%;
+  margin-top:34px;
+}
+
+.brands-ctaFull{
+  display:block;
+  width:100%;
+  text-align:center;
+
+  padding:14px 0;              /* menšie ako tvoje veľké bary */
+  border-radius:16px;
+
+  color:#fff;
+  text-decoration:none;
+  font-weight:1000;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:14px;
+
+  border:1px solid rgba(179,31,36,0.55);
+  background: linear-gradient(180deg, rgba(179,31,36,0.92), rgba(179,31,36,0.62));
+  box-shadow:
+    0 18px 55px rgba(179,31,36,0.18),
+    0 18px 55px rgba(0,0,0,0.55);
+
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.brands-ctaFull:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  border-color: rgba(179,31,36,0.85);
+  box-shadow:
+    0 22px 75px rgba(179,31,36,0.26),
+    0 22px 75px rgba(0,0,0,0.68);
+}
+
+.brands-ctaFull:active{
+  transform: translateY(-1px) scale(0.995);
+}
+
+    .footer-brand{ text-decoration:none; }
+.footer-brand:hover{ filter: brightness(1.06); }
+
+.footer-bottom-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.footer-links{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.footer-links a{
+  color: rgba(255,255,255,0.72);
+  text-decoration:none;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 6px 0;
+  position:relative;
+}
+
+.footer-links a:hover{
+  color:#fff;
+  text-shadow: 0 0 14px rgba(179,31,36,0.25);
+}
+
+.footer-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:2px;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(179,31,36,.65);
+  transition: width .25s ease;
+}
+
+.footer-links a:hover::after{ width:100%; }
+
+    /* === REM PERFORMANCE NAV ITEM === */
+
+.nav-rem{
+  position:relative;
+  padding:10px 18px;
+  border-radius:14px;
+  text-decoration:none;
+  overflow:hidden;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(145deg,#1a1a1a,#0a0a0a);
+  border:1px solid rgba(179,31,36,.35);
+  transition:all .35s ease;
+  transform:translateZ(0);
+}
+
+.nav-rem-text{
+  font-family:'Oswald',sans-serif;
+  font-weight:800;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:13px;
+  color:#fff;
+  position:relative;
+  z-index:2;
+  transition:all .35s ease;
+}
+
+.nav-rem-glow{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center,
+    rgba(179,31,36,.6) 0%,
+    rgba(179,31,36,.25) 30%,
+    transparent 70%);
+  opacity:0;
+  transition:opacity .4s ease;
+  z-index:1;
+}
+
+/* HOVER – efekt “čo ti jebe” */
+
+.nav-rem:hover{
+  background:linear-gradient(145deg,#b31f24,#6e0e11);
+  box-shadow:
+    0 0 12px rgba(179,31,36,.8),
+    0 0 30px rgba(179,31,36,.6),
+    0 0 60px rgba(179,31,36,.35);
+  transform:translateY(-2px) scale(1.04);
+}
+
+.nav-rem:hover .nav-rem-text{
+  letter-spacing:.22em;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.6),
+    0 0 25px rgba(179,31,36,.9);
+}
+
+.nav-rem:hover .nav-rem-glow{
+  opacity:1;
+}
+
+/* ACTIVE STATE */
+
+.nav-rem:active{
+  transform:scale(.97);
+}
+
+    /* =========================
+   REM PERFORMANCE – RACE BANNER
+   ========================= */
+
+.nav-links a.nav-remx{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 16px 10px 18px;
+  text-decoration:none;
+  color:#fff;
+
+  /* RACING SHAPE (nie pill) */
+  border-radius: 10px;
+  clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 10px 50%);
+
+  /* BRUTAL IDLE LOOK */
+  background:
+    linear-gradient(180deg, rgba(179,31,36,0.95), rgba(60,8,10,0.92)),
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,0.18), transparent 55%);
+
+  border:1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 0 0 1px rgba(179,31,36,0.20) inset,
+    0 18px 55px rgba(0,0,0,0.55),
+    0 0 26px rgba(179,31,36,0.35);
+
+  transform: translateZ(0);
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+/* subtle scanlines + micro texture (idle) */
+.nav-links a.nav-remx::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.10) 0px,
+      rgba(255,255,255,0.10) 1px,
+      rgba(255,255,255,0.00) 7px
+    ),
+    radial-gradient(circle at 60% 40%, rgba(0,0,0,0.0), rgba(0,0,0,0.35));
+  mix-blend-mode: overlay;
+}
+
+/* racing edge highlight */
+.nav-links a.nav-remx::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: 12px;
+  clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 10px 50%);
+  pointer-events:none;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  opacity:.35;
+}
+
+/* Text */
+.nav-remx-label{
+  font-family:'Oswald',sans-serif;
+  font-weight: 1000;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height:1;
+  text-shadow:
+    0 2px 16px rgba(0,0,0,0.65),
+    0 0 22px rgba(179,31,36,0.35);
+}
+
+.nav-remx-sub{
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-weight: 900;
+  opacity: .85;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255,255,255,0.22);
+}
+
+/* =========================
+   HOVER “BIELY DYM / VIETOR” SWEEP
+   ========================= */
+
+.nav-links a.nav-remx .nav-remx-sweep{ display:none; } /* safety */
+
+.nav-links a.nav-remx:hover{
+  transform: translateY(-2px) scale(1.03);
+  border-color: rgba(255,255,255,0.18);
+  filter: brightness(1.03);
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.10) inset,
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 40px rgba(179,31,36,0.48);
+}
+
+/* “dym/vietor” prelet – extra pseudo-layer */
+.nav-links a.nav-remx:hover::after{
+  opacity: .55;
+}
+
+/* Smoke sweep layer (nový pseudo element cez ::marker? nie, spravíme cez ďalší ::before2 simuláciu pomocou box-shadow vnútri) */
+.nav-links a.nav-remx:hover{
+  /* nič */
+}
+
+.nav-links a.nav-remx:hover .nav-remx-label{
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.55),
+    0 0 28px rgba(179,31,36,0.75);
+}
+
+/* Wind/Smoke overlay: použijeme ďalší pseudo cez background-image animáciu */
+.nav-links a.nav-remx{
+  overflow:hidden; /* potrebné pre sweep */
+}
+
+.nav-links a.nav-remx > *{ position:relative; z-index:2; }
+
+/* Sweep “dym” */
+.nav-links a.nav-remx::selection{ background:transparent; }
+
+.nav-links a.nav-remx:hover::before{
+  opacity:.22; /* scanlines ostanú, ale jemnejšie */
+}
+
+.nav-links a.nav-remx:hover::after{
+  /* nech ostane edge highlight */
+}
+
+/* Toto je hlavný dym – pridáme ho ako vnútorný overlay cez box “glow” element */
+.nav-links a.nav-remx::backdrop{}
+
+/* Pridáme tretí overlay pomocou background na samotnom linku cez CSS variables */
+.nav-links a.nav-remx{
+  --sweepX: -160%;
+}
+
+.nav-links a.nav-remx:hover{
+  animation: remSweepKick .9s ease-out 1;
+}
+
+@keyframes remSweepKick{
+  0%{ --sweepX: -160%; }
+  35%{ --sweepX: 30%; }
+  100%{ --sweepX: 160%; }
+}
+
+/* Dym vykreslíme cez extra “wind gradient” layer v backgrounde */
+.nav-links a.nav-remx{
+  background:
+    /* wind/smoke layer (idle skoro neviditeľná) */
+    linear-gradient(115deg,
+      transparent 0%,
+      rgba(255,255,255,0.00) 35%,
+      rgba(255,255,255,0.28) 48%,
+      rgba(255,255,255,0.00) 62%,
+      transparent 100%) var(--sweepX) 0 / 220% 100% no-repeat,
+
+    /* base racing red */
+    linear-gradient(180deg, rgba(179,31,36,0.95), rgba(60,8,10,0.92)),
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,0.18), transparent 55%);
+}
+
+.nav-links a.nav-remx:hover{
+  /* sprav dym výraznejší + rozmazaný dojem */
+  filter: brightness(1.03);
+}
+
+.nav-links a.nav-remx:hover{
+  /* jemný “rozmazaný vietor” dojem cez shadow */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.10) inset,
+    0 24px 80px rgba(0,0,0,0.72),
+    0 0 40px rgba(179,31,36,0.48),
+    0 0 26px rgba(255,255,255,0.08);
+}
+
+/* Click */
+.nav-links a.nav-remx:active{
+  transform: translateY(-1px) scale(0.99);
+}
+
+    /* underline pre všetky menu položky OKREM REM */
+.nav-links a:not(.nav-remx)::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-10px;
+  height:2px;
+  width:0;
+  margin:auto;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(179,31,36,.65);
+  transition: width .25s ease;
+}
+.nav-links a:not(.nav-remx):hover::after{ width:100%; }
+
+    /* REM badge base (nechaj tvoj current look, iba doplnky) */
+.nav-links a.nav-remx{
+  position:relative;
+  overflow:hidden;           /* aby dym nešiel mimo */
+  isolation:isolate;         /* nech blend vyzerá pekne */
+}
+
+/* DYMIACI / VETERNÝ SWEEP LAYER */
+.nav-links a.nav-remx::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  z-index:1;
+  pointer-events:none;
+
+  /* biely “dym” + šmuhy */
+  background:
+    linear-gradient(115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.00) 38%,
+      rgba(255,255,255,0.55) 48%,
+      rgba(255,255,255,0.00) 60%,
+      rgba(255,255,255,0) 100%),
+    repeating-linear-gradient(115deg,
+      rgba(255,255,255,0.00) 0 18px,
+      rgba(255,255,255,0.10) 18px 20px,
+      rgba(255,255,255,0.00) 20px 36px);
+
+  filter: blur(10px);
+  opacity:0;
+  transform: translateX(-120%) rotate(-6deg);
+  mix-blend-mode: screen;
+}
+
+/* aby text bol NAD dymom */
+.nav-links a.nav-remx > *{
+  position:relative;
+  z-index:2;
+}
+
+/* hover: preletí “dym/vietor” */
+.nav-links a.nav-remx:hover::after{
+  opacity: .95;
+  animation: remWindSweep .75s ease-out forwards;
+}
+
+@keyframes remWindSweep{
+  0%   { transform: translateX(-120%) rotate(-6deg); opacity:0; }
+  15%  { opacity:.95; }
+  100% { transform: translateX(120%) rotate(-6deg); opacity:0; }
+}
+
+    .nav-links a.nav-remx:hover{
+  animation: remKick .22s ease-out 1;
+}
+@keyframes remKick{
+  0%{ transform: translateY(0) scale(1); }
+  60%{ transform: translateY(-2px) scale(1.03); }
+  100%{ transform: translateY(-1px) scale(1.02); }
+}
+  
+/* ===== GLOBE FIX: vpravo hore bez tooltipov ===== */
+.hero{
+  overflow: visible !important;
+}
+
+/* ===== FINAL GLOBE FIX ===== */
+html, body{
+  overflow-x: hidden !important;
+}
+
+.hero{
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.hero-grid{
+  position: relative !important;
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.headline{
+  position: relative;
+  z-index: 2;
+}
+
+.heroPanel.globePanel{
+  position: absolute !important;
+  right: -2vw !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: min(560px, 40vw) !important;
+  height: min(560px, 40vw) !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.heroPanel.globePanel canvas,
+#racemGlobe{
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+#globeTip,
+.globeTip,
+.globe-tooltip{
+  display: none !important;
+}
+
+@media (max-width: 980px){
+  .hero{
+    overflow: visible !important;
+  }
+
+  .hero-grid{
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  .heroPanel.globePanel{
+    position: relative !important;
+    right: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    width: min(420px, 86vw) !important;
+    height: min(420px, 86vw) !important;
+    margin: 18px auto 0 !important;
+  }
+}
+
+</style>
+</head>
+
+  <body id="top">
+  <div class="bg"></div>
+  <div class="noise"></div>
+    <img class="rmgroup-bg" src="assets/rmgroup.png" alt="" aria-hidden="true">
+
+    <!-- SHIPPING BAR (rotating + closable) -->
+<div class="shipbar" id="shipbar" role="status" aria-live="polite">
+  <div class="shipbar-inner">
+    <div class="shipbar-flags" aria-hidden="true" title="CZ • PL • HU • AT • EU">
+      <span class="flag">🇨🇿</span>
+      <span class="flag">🇵🇱</span>
+      <span class="flag">🇭🇺</span>
+      <span class="flag">🇦🇹</span>
+      <span class="flag">🇪🇺</span>
+    </div>
+
+    <div class="shipbar-textwrap">
+      <div class="shipbar-text" id="shipbarText">Odosielame do CZ, PL, HU, AT a celej EÚ.</div>
+    </div>
+
+    <button class="shipbar-close" id="shipbarClose" type="button" aria-label="Zavrieť">
+      ✕
+    </button>
+  </div>
+</div>
+
+
+
+
+  <div class="topbar">
+    <div class="wrap nav nav-centered nav-wrap-rel">
+
+      
+
+      <nav class="nav-links">
+        <a href="ponua.html">Naša ponuka</a>
+        <a href="#bodykity">Body Kits</a>
+        <a href="mobilny-autoservis.html">Mobilný autoservis</a>
+        <a href="hviezdne-stropy.html" class="nav-stars">Hviezdne stropy</a>
+        <div class="lang-switch" aria-label="Language switcher">
+        <button class="lang-btn" type="button" data-lang="sk">SK</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" type="button" data-lang="en">EN</button>
+      </div>
+       
+       <a href="https://www.racem.sk/remperformance" class="nav-remx">
+  <span class="nav-remx-label">REM Performance</span>
+  <span class="nav-remx-sub">division</span>
+</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+
+      <!-- LEFT -->
+      <div class="headline">
+        <h1 class="hero-title">
+          <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
+            <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
+          </a>
+        </h1>
+
+       <span class="sr-only">
+  RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.
+</span>
+
+        <!-- SERVICES UNDER LOGO -->
+        <div class="heroServices">
+          <div class="hsItem">
+            <span class="hsBar"></span>
+            <div class="hsText">
+              <div class="hsTitle">Turbokits &amp; Kompresorkits</div>
+              <div class="hsSub">Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov</div>
+            </div>
+          </div>
+
+          <div class="hsItem">
+            <span class="hsBar"></span>
+            <div class="hsText">
+              <div class="hsTitle">BODYKITS &amp; AERO</div>
+              <div class="hsSub">Najväčší autorizovaný predajca bodykitov na Slovensku</div>
+            </div>
+          </div>
+
+          <div class="hsItem">
+            <span class="hsBar"></span>
+            <div class="hsText">
+              <div class="hsTitle">Naše služby</div>
+              <div class="hsSub">Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla </div>
+            </div>
+          </div>
+
+          <div class="hsItem">
+            <span class="hsBar"></span>
+            <div class="hsText">
+              <div class="hsTitle">Performance a špotové diely</div>
+              <div class="hsSub">Široká ponuka dielov a doplnkov pre vaše autá</div>
+            </div>
+          </div>
+        </div>
+</div>
+        </div>
+
+
+     <!-- RIGHT (GLOBE PANEL) -->
+<div class="heroPanel globePanel">
+    <canvas id="racemGlobe"></canvas>
+</div>
+
+
+    </div>
+  </section>
+
+<section id="vsetky-produkty">
+    <div class="wrap">
+      <div class="panel reveal products-teaser-panel">
+        <span class="pill">
+          <span class="dot"></span>
+          všetky produkty • performance • styling • motorsport
+        </span>
+
+        <h2 class="products-teaser-title">Všetky produkty</h2>
+
+        <p class="products-teaser-sub">
+          Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.
+        </p>
+
+        <div id="productsCarousel" class="products-carousel" aria-label="Výber produktov"></div>
+
+        <div class="products-teaser-cta">
+          <a class="btn btnPrimary btnArrow" href="ponuka.html">Celá ponuka <span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- BODYKITY / ZNAČKY (INDEX) -->
+  <section id="bodykity">
+    <div class="wrap">
+      <div class="panel reveal" style="padding:34px;">
+        <span class="pill">
+          <span class="dot"></span>
+          widebody • stance • drift • performance
+        </span>
+
+        <div class="brands-head" style="margin-top:14px;">
+          <div>
+            <h2 class="brands-title">Všetko pre tvoj projekt</h2>
+            <p style="font-size:16px; max-width:980px; margin-top:10px;">
+              Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.
+            </p>
+          </div>
+
+          <a class="brands-cta" href="distribucia-kitov.html">
+            Objavuj RACEM Group
+            <span class="ctaArrow">→</span>
+          </a>
+        </div>
+
+        <div class="brands-wrap">
+          <div class="brand-grid" aria-label="Značky body kitov">
+            <!-- StreetFighter LA -->
+            <a class="brand-link" href="sfxla.html" title="StreetFighter LA (SFXLA)">
+              <div class="brand-tile brand-tile--white">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/SFXLA_small.avif" alt="StreetFighter LA logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">SFXLA</div>
+            </a>
+            <a class="brand-link" href="csr.html" title="CSR Automotive">
+              <div class="brand-tile brand-tile--white">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/CSR-Logo-Shop_transparent.svg" alt="CSR Automotive logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">CSR</div>
+            </a>
+            <a class="brand-link" href="cybul.html" title="CYBUL Radical Solutions">
+              <div class="brand-tile brand-tile--white">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/8189.jpg" alt="Cybul Logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">CYBUL</div>
+            </a>
+             <a class="brand-link" href="swagier.html" title="Swagier Custom Parts">
+              <div class="brand-tile brand-tile--white">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="assets/swagier.svg" alt="Swagier Logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">Swagier</div>
+            </a>
+             <a class="brand-link" href="cnc71.html" title="CNC71">
+              <div class="brand-tile brand-tile--white">
+                <div class="brand-inner">
+                  <img class="brand-logo" src="/cnc71.svg" alt="CNC71 Logo" loading="lazy" decoding="async">
+                </div>
+              </div>
+              <div class="brand-name">CNC71</div>
+             </a>
+          </div>
+        </div>
+
+    <!-- FULL WIDTH BUTTON (MENŠÍ) -->
+<div class="brands-ctaRow">
+  <a href="https://www.racem.sk/ponuka" class="brands-ctaFull">
+    ZOBRAZIŤ VŠETKO
+  </a>
+</div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+
+    <!-- KTO SME -->
+  <section id="kto-sme">
+    <div class="wrap">
+      <div class="split">
+
+        <!-- RACEM GROUP -->
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> racem group • komunita</span>
+          <h2 style="margin-top:18px;">Staň sa súčasťou RACEM Group</h2>
+
+          <p style="font-size:16px;">
+            Ak chceš <b>zľavy na bodykity, aero a vybrané diely</b>, môžeš sa stať súčasťou <b>RACEM Group</b>.
+          </p>
+
+          <p class="muted2" style="margin-top:10px;">
+Si tím, jazdec, garáž alebo organizátor zrazov?  
+Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, športové aj vybrané náhradné autodiely.
+</p>
+
+          <p class="muted2" style="margin-top:10px;">
+            Ak sa chceš stať súčasťou RACEM Group napíš nám: <b>„RACEM Group – členstvo“</b>.
+            Viac informácií o spolupráci ti pošleme po kontakte.
+          </p>
+
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
+            <a class="btn btnPrimary btnArrow" href="distribucia-kitov.html">Objavuj RACEM Group <span class="arr">→</span></a>
+          </div>
+        </div>
+
+        <!-- NOVÁ SEKCIA: TURBOKITY & KOMPRESOR KITY S ORANŽOVOU PÁSKOU -->
+        <div class="panel reveal">
+          <span class="pill"><span class="dot"></span> turbo kity • kompresor kity</span>
+          <h2 style="margin-top:18px;">Turbo &amp; kompresor kity</h2>
+
+          <!-- ORANŽOVÁ KONŠTRUKČNÁ PÁSKA -->
+          <div class="construction-tape">Pripravujeme pre Vás</div>
+
+          <!-- ZABLUROVANÝ TEXT -->
+          <div class="blurred-content">
+            <p style="font-size:16px;">
+              Výkonné turbodúchadlá a kompresory pre váš motor. Od jednoduchých stage kitov až po plne custom riešenia pre maximálny boost.
+            </p>
+            <p class="muted2" style="margin-top:10px;">
+              • Kompletné kity vrátane intercoolerov, wastegate, blow-off<br>
+              • Kompatibilita s VW, BMW, Audi, Mercedes, Porsche a ďalšími<br>
+              • Montáž + ECU remap na mieste alebo v dielni<br>
+            </p>
+          </div>
+
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnPrimary btnArrow" href="#kontakt">Kontakt <span class="arr">→</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+   <!-- VŠETKY PRODUKTY -->
+  
+
+
+  <!-- MOBILNÝ AUTOSERVIS -->
+  <section id="autoservis">
+    <div class="wrap">
+      <div class="split">
+
+        <div class="reveal">
+          <span class="pill">
+            <span class="dot"></span>
+            mobilný autoservis • obhliadky • pomoc na ceste
+          </span>
+
+          <h2 style="margin-top:18px;">
+            Váš servis na cestách
+          </h2>
+
+          <p style="font-size:16px;">
+            Keď nechcete presúvať auto do servisu alebo platiť odťah,
+            <b>prídeme za vami</b>.
+            Doma, vo firme, na sídlisku alebo priamo pri poruche.
+          </p>
+
+          <p class="muted2">
+            Riešime bežný servis, diagnostiku, obhliadky áut,
+            predkontrolu pred STK/EK a pomoc pri poruchách.
+            Ak sa oprava nedá spraviť na mieste, navrhneme
+            najrozumnejší ďalší postup.
+          </p>
+
+          <div class="ctaRow" style="margin-top:16px;">
+            <a class="btn btnPrimary btnArrow" href="mobilny-autoservis.html">
+              Zistiť viac <span class="arr">→</span>
+            </a>
+            <a class="btn btnGhost" href="#kontakt">
+              Kontakt
+            </a>
+          </div>
+        </div>
+
+        <div class="panel reveal service-card"
+             data-go="mobilny-autoservis.html"
+             style="padding:28px;">
+          <div class="service-top">
+            <div class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="M18.92 7.01C18.72 6.42 18.16 6 17.5 6h-11
+                     c-.66 0-1.22.42-1.42 1.01L3 13v7
+                     c0 .55.45 1 1 1h1c.55 0 1-.45
+                     1-1v-1h12v1c0 .55.45 1 1 1h1
+                     c.55 0 1-.45 1-1v-7l-2.08-5.99z"/>
+              </svg>
+            </div>
+
+            <div style="flex:1;">
+              <h3 style="margin:0 0 6px 0;">
+                Služby mobilného autoservisu
+              </h3>
+              <p class="muted2" style="margin:0;">
+                Menej presunov, menej stresu, viac času.
+              </p>
+            </div>
+
+            <div class="service-arrow">→</div>
+          </div>
+
+          <div class="service-pills">
+            <span class="mini-chip"><span class="mini-dot"></span> servis u vás</span>
+            <span class="mini-chip"><span class="mini-dot"></span> obhliadky áut</span>
+            <span class="mini-chip"><span class="mini-dot"></span> pred STK/EK</span>
+            <span class="mini-chip"><span class="mini-dot"></span> pomoc na ceste</span>
+          </div>
+
+          <div class="ctaRow" style="margin-top:14px;">
+            <a class="btn btnGhost btnArrow" href="mobilny-autoservis.html" style="width:100%; justify-content:center;">
+              Zistiť viac <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="wrap">
+      <h2 class="reveal">Kontakt</h2>
+      <p class="reveal">
+        Kontaktuj náš tím
+      </p>
+
+      <div class="panel reveal contact-flex">
+        <div class="contact-left">
+          <h3>KONTAKT</h3>
+          <p class="muted2"><b>Email:</b> info@remperformance.sk</p>
+          <p class="muted2">
+            Vyhľadanie dielov, návrh alternatív a individuálne konzultácie robíme zdarma.
+          </p>
+
+          <form id="contactForm" class="contact-box" action="https://formspree.io/f/mwvekvgy" method="POST">
+            <div>
+              <label for="contactName">Meno a priezvisko</label>
+              <input id="contactName" name="meno" type="text" placeholder="Meno a priezvisko" required>
+            </div>
+
+            <div class="contact-row">
+              <div>
+                <label for="contactEmail">Email</label>
+                <input id="contactEmail" name="email" type="email" placeholder="tvoj@email.sk" required>
+              </div>
+              <div>
+                <label for="contactPhone">Telefón</label>
+                <input id="contactPhone" name="telefon" type="text" placeholder="+421..." required>
+              </div>
+            </div>
+
+            <div>
+              <label for="kontaktMsg">Správa</label>
+              <textarea id="kontaktMsg" name="sprava" placeholder="Napíš tvoju správu sem..."></textarea>
+            </div>
+
+            <div class="contact-actions">
+              <button type="submit" class="btn btnPrimary">Odoslať</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="company-box">
+          <h3>ČO SA DEJE PO ODOSLANÍ</h3>
+
+          <p class="muted2 step-1">
+            <b>1. Pozrieme sa na tvoju požiadavku</b><br>
+            Podľa tvojich detailov vyberáme riešenie, ktoré dáva zmysel – nie len prvú vec z katalógu.
+          </p>
+
+          <p class="muted2 step-2">
+            <b>2. Overíme dostupnosť u dodávateľov</b><br>
+            Pozrieme sklad u partnerov (SR, ČR, EÚ, USA, JP), stav dielu, reálnu cenu, dodaciu lehotu,
+            cenu dodania.
+          </p>
+
+          <p class="muted2 step-3">
+            <b>3. Pošleme ti ponuku na e-mail</b><br>
+            Dostaneš prehľadnú ponuku – diel, stav, cena, doprava, fotky, dodacia lehota, pôvod.
+            Ak súhlasíš, objednávku potvrdíš a diel dovezieme k tebe.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL PREVIEW -->
+  <div class="modal-overlay" id="stockModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="Zavrieť náhľad">✕</button>
+
+      <div class="modal-media">
+        <button class="modal-arrow modal-prev" type="button" aria-label="Predchádzajúci obrázok">‹</button>
+        <img id="modalImage" src="" alt="">
+        <button class="modal-arrow modal-next" type="button" aria-label="Nasledujúci obrázok">›</button>
+        <div class="modal-counter" id="modalCounter">1 / 1</div>
+      </div>
+
+      <div class="modal-info">
+        <h3 class="modal-title" id="modalTitle"></h3>
+
+        <div class="modal-location" id="modalLocation" style="display:none;">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor"
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0
+                 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12
+                 2.5 2.5S13.38 11.5 12 11.5z"/>
+          </svg>
+          <span id="modalLocationText"></span>
+        </div>
+
+        <div class="modal-tags" id="modalTags"></div>
+
+        <p class="modal-note muted2" id="modalNote"></p>
+
+        <div class="modal-price-wrap">
+          <div class="modal-price" id="modalPrice"></div>
+          <div class="modal-price-suffix" id="modalPriceSuffix"></div>
+        </div>
+
+        <div class="modal-meta">
+          <span class="chip" id="modalCondition" style="display:none;"></span>
+          <span class="chip chip--stock" id="modalStockLabel" style="display:none;"></span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btnPrimary" type="button" id="modalInterestBtn">Mám záujem o tento diel</button>
+          <button class="btn btnGhost" type="button" id="modalCloseBtn">Zavrieť</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+  <div class="wrap foot footer-layout">
+    <div>
+      Prevádzkovateľ webu –
+      <a href="https://www.racem.sk/remperformance" class="footer-brand">
+        <span class="red"><b>REM Performance</b></span>
+      </a>
+    </div>
+
+    <div class="footer-center">
+      © 2026 REM Performance
+    </div>
+
+    <div class="muted2">
+      Performance diely • bodykity • aero • turbo kity • mobilný autoservis
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <div class="footer-bottom-row">
+      <div class="footer-socials" aria-label="Instagram profily RACEM">
+        <!-- RACEM.SK -->
+        <a
+          href="https://www.instagram.com/racem.sk/"
+          target="_blank"
+          rel="noopener"
+          class="footer-social ig"
+          aria-label="Instagram RACEM"
+          title="RACEM Instagram"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
+          </svg>
+        </a>
+
+        <!-- MAS RACEM -->
+        <a
+          href="https://www.instagram.com/mas_racem/"
+          target="_blank"
+          rel="noopener"
+          class="footer-social ig"
+          aria-label="Instagram MAS RACEM"
+          title="MAS RACEM Instagram"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003z"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="footer-links">
+        <a href="#kontakt">Kontakt</a>
+        <a href="#podmienky">Obchodné podmienky</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- RACEM COOKIES (bottom-right widget, 1 button) -->
+  <div class="cookieBar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Cookies">
+    <div class="cookieIco" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M21 12.6c-1.1.6-2.7.9-4 .5-2-.6-3.4-2.5-3.4-4.6 0-1.6.8-3.1 2.1-4-5.8-.8-10.7 3.7-10.7 9.5 0 5 4.1 9 9.1 9 4.7 0 8.6-3.5 8.9-8.2Z" stroke="white" stroke-width="1.8" opacity="0.85"/>
+        <path d="M8.2 14.1h.01M11.2 16.7h.01M12.7 12.2h.01M9.9 18.6h.01" stroke="white" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <div class="cookieText">
+      Používame <b>cookies / úložisko</b> na správne fungovanie stránky a základnú analytiku.
+      <a href="vop.html#cookies">Viac info</a>.
+    </div>
+
+    <button class="cookieBtn" id="cookieAccept" type="button">Akceptovať</button>
+  </div>
+
+  <!-- ✅ SCRIPT 1: všetko okrem globusu -->
+  <script>
+    // ===== MODAL STATE =====
+    const stockModal = document.getElementById('stockModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalNote = document.getElementById('modalNote');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalPriceSuffix = document.getElementById('modalPriceSuffix');
+    const modalLocationWrap = document.getElementById('modalLocation');
+    const modalLocationText = document.getElementById('modalLocationText');
+    const modalTags = document.getElementById('modalTags');
+    const modalCondition = document.getElementById('modalCondition');
+    const modalStockLabel = document.getElementById('modalStockLabel');
+    const modalCounter = document.getElementById('modalCounter');
+    const modalPrev = document.querySelector('.modal-prev');
+    const modalNext = document.querySelector('.modal-next');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalCloseIcon = document.querySelector('.modal-close');
+    const modalInterestBtn = document.getElementById('modalInterestBtn');
+
+    const modalState = { images: [], index: 0, card: null };
+
+    function updateModalImage() {
+      if (!modalState.images.length) return;
+      const src = modalState.images[modalState.index];
+      modalImg.src = src;
+      const total = modalState.images.length;
+      modalCounter.textContent = (modalState.index + 1) + ' / ' + total;
+    }
+
+    function openModalFromCard(card) {
+      modalState.card = card;
+
+      const titleEl = card.querySelector('.stock-title');
+      const priceEl = card.querySelector('.stock-price');
+      const suffixEl = card.querySelector('.stock-price-suffix');
+      const tagContainer = card.querySelector('.stock-tags');
+      const stockLabelEl = card.querySelector('.chip--stock');
+      const locSpan = card.querySelector('.stock-location span');
+
+      const title = titleEl ? titleEl.textContent.trim() : '';
+      const price = priceEl ? priceEl.textContent.trim() : '';
+      const suffix = suffixEl ? suffixEl.textContent.trim() : '';
+      const note = card.dataset.note || '';
+      const condition = card.dataset.condition || '';
+      const stockLabel = stockLabelEl ? stockLabelEl.textContent.trim() : '';
+      const city = locSpan ? locSpan.textContent.trim() : '';
+
+      let images = [];
+      if (card.dataset.images) {
+        images = card.dataset.images.split(',').map(s => s.trim()).filter(Boolean);
+      }
+      if (!images.length) {
+        const imgEl = card.querySelector('.stock-img img');
+        if (imgEl && imgEl.src) images = [imgEl.src];
+      }
+      if (!images.length) images = ['img/placeholder.jpg'];
+
+      modalState.images = images;
+      modalState.index = 0;
+
+      modalTitle.textContent = title || 'Diel';
+      modalPrice.textContent = price || 'Na dopyt';
+      modalPriceSuffix.textContent = suffix || '';
+      modalNote.textContent = note || '';
+
+      if (city) {
+        modalLocationText.textContent = city;
+        modalLocationWrap.style.display = 'flex';
+      } else {
+        modalLocationWrap.style.display = 'none';
+      }
+
+      if (tagContainer && tagContainer.innerHTML.trim()) modalTags.innerHTML = tagContainer.innerHTML;
+      else modalTags.innerHTML = '';
+
+      if (condition) {
+        modalCondition.textContent = condition.toUpperCase();
+        modalCondition.style.display = 'inline-flex';
+      } else modalCondition.style.display = 'none';
+
+      if (stockLabel) {
+        modalStockLabel.textContent = stockLabel;
+        modalStockLabel.style.display = 'inline-flex';
+      } else modalStockLabel.style.display = 'none';
+
+      updateModalImage();
+      stockModal.classList.add('is-visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      stockModal.classList.remove('is-visible');
+      document.body.style.overflow = '';
+      modalState.images = [];
+      modalState.index = 0;
+      modalState.card = null;
+    }
+
+    modalPrev?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!modalState.images.length) return;
+      modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+      updateModalImage();
+    });
+
+    modalNext?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!modalState.images.length) return;
+      modalState.index = (modalState.index + 1) % modalState.images.length;
+      updateModalImage();
+    });
+
+    modalCloseBtn?.addEventListener('click', closeModal);
+    modalCloseIcon?.addEventListener('click', closeModal);
+
+    stockModal?.addEventListener('click', (e) => {
+      if (e.target === stockModal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!stockModal?.classList.contains('is-visible')) return;
+      if (e.key === 'Escape') closeModal();
+      else if (e.key === 'ArrowRight') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index + 1) % modalState.images.length;
+          updateModalImage();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (modalState.images.length) {
+          modalState.index = (modalState.index - 1 + modalState.images.length) % modalState.images.length;
+          updateModalImage();
+        }
+      }
+    });
+
+    // ===== COLLAPSIBLE STOCK =====
+    const stockStrip = document.getElementById('stockStrip');
+    const stockToggle = document.getElementById('stockToggle');
+    const stockToggleText = document.getElementById('stockToggleText');
+    const stockFade = document.getElementById('stockFade');
+    const stockScrollEl = document.getElementById('stockScroll');
+
+    function setupStockCollapse() {
+      if (!stockStrip || !stockToggle || !stockScrollEl) return;
+
+      const firstCard = stockScrollEl.querySelector('.stock-item');
+      if (!firstCard) {
+        stockToggle.style.display = 'none';
+        if (stockFade) stockFade.style.display = 'none';
+        return;
+      }
+
+      const cardRect = firstCard.getBoundingClientRect();
+      const styles = window.getComputedStyle(stockScrollEl);
+      const gap = parseFloat(styles.rowGap || styles.gap || '16') || 16;
+
+      const paddingTop = parseFloat(styles.paddingTop || '16') || 16;
+      const paddingBottom = parseFloat(styles.paddingBottom || '18') || 18;
+
+      const oneRow = Math.ceil(cardRect.height + paddingTop + paddingBottom);
+      const fiveRows = Math.ceil((cardRect.height * 5) + (gap * 4) + paddingTop + paddingBottom);
+
+      document.documentElement.style.setProperty('--stockCollapsed', oneRow + 'px');
+      document.documentElement.style.setProperty('--stockExpanded', fiveRows + 'px');
+
+      const count = stockScrollEl.querySelectorAll('.stock-item').length;
+      if (count <= 7) {
+        stockToggle.style.display = 'none';
+        if (stockFade) stockFade.style.display = 'none';
+        return;
+      }
+
+      stockToggle.style.display = 'inline-flex';
+      if (stockFade) stockFade.style.display = 'block';
+
+      stockStrip.classList.remove('is-expanded');
+      stockToggle.setAttribute('aria-expanded', 'false');
+      stockToggleText.textContent = 'Zobraziť viac';
+
+      stockToggle.onclick = () => {
+        const expanded = stockStrip.classList.toggle('is-expanded');
+        stockToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        stockToggleText.textContent = expanded ? 'Zobraziť menej' : 'Zobraziť viac';
+      };
+    }
+
+    // ===== HOMEPAGE STOCK Z JSONU =====
+    async function loadHomepageStock() {
+      try {
+        const response = await fetch('skladom.json');
+        if (!response.ok) {
+          console.error('Nepodarilo sa načítať skladom.json');
+          return;
+        }
+
+        const data = await response.json();
+        const items = Array.isArray(data) ? data : (data.inStock || []);
+
+        const container = document.getElementById('stockScroll');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        items.forEach(item => {
+          if (item.showOnHome === false) return;
+
+          let images = [];
+          if (Array.isArray(item.images) && item.images.length > 0) {
+            images = item.images.filter(src => src && src.trim() !== '');
+          }
+          if (!images.length && item.image) images = [item.image];
+          if (!images.length) images = ['img/placeholder.jpg'];
+
+          const condText = (item.condition || '').toLowerCase();
+          const isNew = condText.startsWith('nov') || condText === 'new';
+
+          const bubbleClass = isNew ? 'bubble-new' : 'bubble-used';
+          const bubbleLabel = isNew ? 'NOVÉ' : 'POUŽITÉ';
+
+          const tagsHtml = Array.isArray(item.tags)
+            ? item.tags.map(tag => `<span class="chip chip--tag">${tag}</span>`).join('')
+            : '';
+
+          const article = document.createElement('article');
+          article.className = 'stock-item';
+          article.dataset.condition = isNew ? 'Nové' : 'Použité';
+          article.dataset.city = item.city || '';
+          article.dataset.partId = item.id || '';
+          article.dataset.note = item.note || '';
+          article.dataset.stockLabel = item.stockLabel || '';
+          article.dataset.price = item.price || '';
+          article.dataset.priceSuffix = item.price_suffix || '';
+
+          if (images.length) article.dataset.images = images.join(',');
+
+          article.innerHTML = `
+            <div class="stock-img">
+              <img src="${images[0]}" alt="${item.name || ''}" loading="lazy" decoding="async">
+              <span class="bubble ${bubbleClass}">${bubbleLabel}</span>
+            </div>
+
+            <div class="stock-body">
+              <div class="stock-top">
+                <h3 class="stock-title">${item.name || ''}</h3>
+                <div class="stock-price-wrap">
+                  <div class="stock-price">${item.price || 'Na dopyt'}</div>
+                  ${item.price_suffix ? `<div class="stock-price-suffix">${item.price_suffix}</div>` : ''}
+                  ${item.stockLabel ? `<div class="chip chip--stock">${item.stockLabel}</div>` : ''}
+                </div>
+              </div>
+
+              ${item.city ? `
+                <div class="stock-location">
+                  <svg viewBox="0 0 24 24" class="pin" aria-hidden="true">
+                    <path fill="currentColor"
+                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0
+                         9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12
+                         2.5 2.5S13.38 11.5 12 11.5z"/>
+                  </svg>
+                  <span>${item.city}</span>
+                </div>
+              ` : ''}
+
+              ${tagsHtml ? `<div class="stock-tags">${tagsHtml}</div>` : ''}
+
+              <div class="stock-actions">
+                <button class="btn btnPrimary stockInterestBtn" type="button">
+                  Mám záujem
+                </button>
+              </div>
+            </div>
+          `;
+
+          if (images.length > 1) {
+            const imgBox = article.querySelector('.stock-img');
+            const imgEl = article.querySelector('.stock-img img');
+            let currentIndex = 0;
+
+            if (imgBox && imgEl) {
+              imgBox.style.cursor = 'pointer';
+              imgBox.title = 'Kliknutím prepneš fotku';
+              imgBox.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                currentIndex = (currentIndex + 1) % images.length;
+                imgEl.src = images[currentIndex];
+              }, { passive: true });
+            }
+          }
+
+          container.appendChild(article);
+        });
+
+        if (!container.children.length) {
+          container.innerHTML = `
+            <div style="color:var(--muted2); font-size:14px;">
+              Momentálne nemáme žiadne diely označené ako <b>skladom</b>.
+            </div>`;
+          if (stockToggle) stockToggle.style.display = 'none';
+          if (stockFade) stockFade.style.display = 'none';
+          return;
+        }
+
+        requestAnimationFrame(() => setupStockCollapse());
+      } catch (err) {
+        console.error('Chyba pri načítaní skladom.json:', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadHomepageStock);
+
+    /// ===== SHIPPING BAR (rotate + closable + sticky offset) =====
+// ===== SHIPPING BAR (rotate + closable, NO MEMORY) =====
+(function shipbarSystem(){
+  const bar = document.getElementById("shipbar");
+  const el  = document.getElementById("shipbarText");
+  const closeBtn = document.getElementById("shipbarClose");
+  if (!bar || !el) return;
+
+  const messages = [
+    "Odosielame aj do Českej Republiky.",
+    "We ship across the European Union.",
+    "Wysyłamy produkty do Polski.",
+    "Szállítunk Magyarországra is.",
+    "Wir liefern nach Österreich."
+  ];
+
+  // shipbar je po reloade vždy VISIBLE
+  bar.classList.remove("is-hidden");
+
+  function setStickyOffset(){
+    const h = bar.classList.contains("is-hidden") ? 0 : Math.ceil(bar.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--stickyOffset", h + "px");
+  }
+
+  function hideBar(){
+    bar.classList.add("is-hidden");
+    setStickyOffset();
+  }
+
+  closeBtn?.addEventListener("click", hideBar);
+
+  setStickyOffset();
+  window.addEventListener("resize", setStickyOffset, { passive: true });
+
+  // rotator – 4 sekundy
+  let i = 0;
+  const intervalMs = 4000;
+
+  function swapText(next){
+    el.classList.add("out");
+    setTimeout(() => {
+      el.classList.remove("out");
+      el.classList.add("in");
+      el.textContent = next;
+      requestAnimationFrame(() => el.classList.remove("in"));
+    }, 220);
+  }
+
+  setInterval(() => {
+    if (bar.classList.contains("is-hidden")) return;
+    i = (i + 1) % messages.length;
+    swapText(messages[i]);
+  }, intervalMs);
+})();
+
+
+
+
+    // ===== REVEAL ON SCROLL =====
+    const reveals = document.querySelectorAll('.reveal');
+    const activate = () => {
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 110) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', activate, { passive: true });
+    window.addEventListener('load', activate);
+
+    // subtle parallax (passive)
+    window.addEventListener('scroll', () => {
+      const sc = window.scrollY;
+      const bg = document.querySelector('.bg');
+      if (bg) bg.style.transform = `translateY(${sc * 0.02}px)`;
+    }, { passive: true });
+
+    // ===== CLICKABLE SERVICE CARDS (data-go) =====
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('[data-go]');
+      if (!card) return;
+      const url = card.getAttribute('data-go');
+      if (!url) return;
+      if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea') || e.target.closest('select')) return;
+      window.location.href = url;
+    });
+
+    // ===== "Mám záujem" -> kontakt + predvyplnená správa =====
+    function handleInterestFromElement(btnOrCard) {
+      const card = btnOrCard.closest('.stock-item');
+      if (!card) return;
+
+      const title = card.querySelector('.stock-title')?.textContent?.trim() || '';
+      const price = card.querySelector('.stock-price')?.textContent?.trim() || '';
+      const cond  = card.getAttribute('data-condition') || '';
+      const city  = card.getAttribute('data-city') || '';
+      const partId = card.dataset.partId || '';
+
+      let text = `Mám záujem o diel: ${title}`;
+      if (partId) text += ` (ID: ${partId}`;
+      else text += ' (';
+
+      const extra = [price, cond, city].filter(Boolean).join(', ');
+      if (extra) text += (partId ? ', ' : '') + extra;
+
+      if (!text.endsWith(')')) text += ')';
+
+      window.location.hash = '#kontakt';
+
+      setTimeout(() => {
+        const ta = document.getElementById('kontaktMsg');
+        if (ta) {
+          ta.value = text;
+          ta.focus();
+          ta.selectionStart = ta.selectionEnd = ta.value.length;
+        }
+      }, 80);
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.stockInterestBtn');
+      if (!btn) return;
+      e.stopPropagation();
+      handleInterestFromElement(btn);
+    });
+
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.stock-item');
+      if (!card) return;
+
+      if (e.target.closest('.stockInterestBtn') || e.target.closest('a')) return;
+
+      e.preventDefault();
+      openModalFromCard(card);
+    });
+
+    modalInterestBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!modalState.card) return;
+      closeModal();
+      handleInterestFromElement(modalState.card);
+    });
+
+    // ===== RACEM COOKIES (one-button) =====
+    const COOKIE_KEY = "racem_cookie_consent"; // "accepted"
+    const cookieBar = document.getElementById("cookieBar");
+    const btnAccept = document.getElementById("cookieAccept");
+
+    function getConsent(){ return localStorage.getItem(COOKIE_KEY); }
+    function setConsent(v){ localStorage.setItem(COOKIE_KEY, v); }
+    function showCookie(){ cookieBar?.classList.add("show"); }
+    function hideCookie(){ cookieBar?.classList.remove("show"); }
+
+    // ===== GA4 (RACEM) =====
+    const GA_ID = "G-059W7F7HZZ"; // tvoje Measurement ID
+
+    function loadGA4(){
+      if (window.__ga4_loaded) return;
+      window.__ga4_loaded = true;
+
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+
+      gtag("js", new Date());
+      gtag("config", GA_ID, { anonymize_ip: true });
+    }
+
+    function runAnalyticsIfAllowed(){
+      if(getConsent() !== "accepted") return;
+      loadGA4();
+    }
+
+    (function initCookieBar(){
+      const c = getConsent();
+      if(!c) showCookie();
+      else runAnalyticsIfAllowed();
+    })();
+
+    btnAccept?.addEventListener("click", () => {
+      setConsent("accepted");
+      hideCookie();
+      runAnalyticsIfAllowed();
+    });
+  </script>
+
+  <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
+ <script type="module">
+  import createGlobe from "https://cdn.skypack.dev/cobe";
+
+  const LOCATIONS = [
+    { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
+    { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
+    { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
+    { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
+  ];
+
+  const canvas = document.getElementById("racemGlobe");
+  if (!canvas) {
+    console.warn("Canvas #racemGlobe not found");
+  } else {
+    let phi = 0;
+    const THETA = 0.22;
+    let globe = null;
+    let ro = null;
+
+    function rgb(hex) {
+      const h = hex.replace("#", "").trim();
+      const n = parseInt(h, 16);
+      const r = (n >> 16) & 255;
+      const g = (n >> 8) & 255;
+      const b = n & 255;
+      return [r / 255, g / 255, b / 255];
+    }
+
+    const RACEM_RED = rgb("#b31f24");
+
+    function sizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      const cssWidth = Math.max(2, Math.floor(rect.width));
+      const cssHeight = Math.max(2, Math.floor(rect.height));
+
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        dpr
+      };
+    }
+
+    function buildGlobe() {
+      const { width, height, dpr } = sizeCanvas();
+
+      if (typeof globe === "function") {
+        globe();
+        globe = null;
+      }
+
+      globe = createGlobe(canvas, {
+        devicePixelRatio: dpr,
+        width,
+        height,
+
+        phi: 0,
+        theta: THETA,
+
+        dark: 0,
+        diffuse: 1.25,
+        scale: 1.08,
+        mapSamples: 22000,
+        mapBrightness: 1.35,
+
+        baseColor: [0.06, 0.06, 0.07],
+        glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
+        markerColor: [0.95, 0.32, 0.34],
+
+        markers: LOCATIONS.map(l => ({
+          location: [l.lat, l.lon],
+          size: 0.085,
+        })),
+
+        onRender: (state) => {
+          state.phi = phi;
+          phi += 0.0032;
+        }
+      });
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        buildGlobe();
+
+        ro = new ResizeObserver(() => {
+          buildGlobe();
+        });
+
+        ro.observe(canvas);
+      });
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (ro) ro.disconnect();
+      if (typeof globe === "function") globe();
+    });
+  }
+</script>
+
+
+
+
+
+<script>
+(function(){
+  const container = document.getElementById("productsCarousel");
+  if(!container) return;
+
+  fetch("products.json")
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("products.json not found")))
+    .then(data => {
+      const products = Array.isArray(data.products) ? data.products.filter(p => p && p.title && p.productUrl && Array.isArray(p.images) && p.images.length) : [];
+      if(!products.length) return;
+
+      const shuffled = [...products].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, Math.min(10, shuffled.length));
+
+      container.innerHTML = selected.map(p => {
+        const title = String(p.title || "");
+        const img = String((p.images && p.images[0]) || "");
+        const url = String(p.productUrl || "ponuka.html");
+        const variant = Array.isArray(p.variants) && p.variants[0] ? p.variants[0] : null;
+        const price = variant && typeof variant.price !== "undefined" ? `${Number(variant.price).toFixed(2).replace(/\.00$/, "")} €` : "";
+
+        return `
+          <a class="product-teaser-card" href="${url}" target="_self" aria-label="${title}">
+            <div class="product-teaser-media">
+              <img src="${img}" alt="${title}" loading="lazy" decoding="async">
+            </div>
+            <div class="product-teaser-body">
+              <div class="product-teaser-name">${title}</div>
+              <div class="product-teaser-price">${price}</div>
+            </div>
+          </a>
+        `;
+      }).join("");
+    })
+    .catch(err => {
+      console.warn("Products teaser failed:", err);
+    });
+})();
+</script>
+
+
+
+<script>
+(function(){
+  const STORAGE_KEY = 'racem_lang';
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  const meta = {
+    title: document.querySelector('title'),
+    description: document.querySelector('meta[name="description"]'),
+    ogTitle: document.querySelector('meta[property="og:title"]'),
+    ogDescription: document.querySelector('meta[property="og:description"]'),
+    twitterTitle: document.querySelector('meta[name="twitter:title"]'),
+    twitterDescription: document.querySelector('meta[name="twitter:description"]')
+  };
+
+  const translations = {
+    sk: {
+      title: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity | REM Performance',
+      description: 'RACEM (REM Performance) – bodykity a widebody, certifikované aero (TÜV), športové a závodné diely, motorové a podvozkové časti, turbo/kompresor kity, hviezdne stropy a ďalšie úpravy.',
+      ogTitle: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity',
+      ogDescription: 'Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance.',
+      twitterTitle: 'RACEM | Bodykity, certifikované aero, turbo & kompresor kity',
+      twitterDescription: 'Bodykity, certifikované aero (TÜV), športové a závodné diely, motor & podvozok, turbo/kompresor kity, hviezdne stropy.',
+      values: {
+        '#shipbarText': 'Odosielame do CZ, PL, HU, AT a celej EÚ.',
+        '.nav-links a[href="ponua.html"]': 'Naša ponuka',
+        '.nav-links a[href="#bodykity"]': 'Body Kits',
+        '.nav-links a[href="mobilny-autoservis.html"]': 'Mobilný autoservis',
+        '#autoservis .pill': '<span class="dot"></span> mobilný autoservis • obhliadky • pomoc na ceste',
+        '#autoservis .reveal h2': 'Váš servis na cestách',
+        '#autoservis .reveal p[style*="font-size:16px"]': 'Keď nechcete presúvať auto do servisu alebo platiť odťah, <b>prídeme za vami</b>. Doma, vo firme, na sídlisku alebo priamo pri poruche.',
+        '#autoservis .reveal p.muted2': 'Riešime bežný servis, diagnostiku, obhliadky áut, predkontrolu pred STK/EK a pomoc pri poruchách. Ak sa oprava nedá spraviť na mieste, navrhneme najrozumnejší ďalší postup.',
+        '#autoservis .reveal .ctaRow a:nth-child(1)': 'Zistiť viac <span class="arr">→</span>',
+        '#autoservis .reveal .ctaRow a:nth-child(2)': 'Kontakt',
+        '#autoservis .service-top h3': 'Služby mobilného autoservisu',
+        '#autoservis .service-top p': 'Menej presunov, menej stresu, viac času.',
+        '#autoservis .service-pills span:nth-child(1)': '<span class="mini-dot"></span> servis u vás',
+        '#autoservis .service-pills span:nth-child(2)': '<span class="mini-dot"></span> obhliadky áut',
+        '#autoservis .service-pills span:nth-child(3)': '<span class="mini-dot"></span> pred STK/EK',
+        '#autoservis .service-pills span:nth-child(4)': '<span class="mini-dot"></span> pomoc na ceste',
+        '#autoservis .panel .ctaRow a': 'Zistiť viac <span class="arr">→</span>',
+        '.nav-links a.nav-stars': 'Hviezdne stropy',
+        '.nav-remx-label': 'REM Performance',
+        '.nav-remx-sub': 'division',
+        '.sr-only': 'RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.',
+        '.heroServices .hsItem:nth-child(1) .hsTitle': 'Turbokits & Kompresorkits',
+        '.heroServices .hsItem:nth-child(1) .hsSub': 'Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov',
+        '.heroServices .hsItem:nth-child(2) .hsTitle': 'BODYKITS & AERO',
+        '.heroServices .hsItem:nth-child(2) .hsSub': 'Najväčší autorizovaný predajca bodykitov na Slovensku',
+        '.heroServices .hsItem:nth-child(3) .hsTitle': 'Naše služby',
+        '.heroServices .hsItem:nth-child(3) .hsSub': 'Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla',
+        '.heroServices .hsItem:nth-child(4) .hsTitle': 'Performance a športové diely',
+        '.heroServices .hsItem:nth-child(4) .hsSub': 'Široká ponuka dielov a doplnkov pre vaše autá',
+        '#bodykity .pill': '<span class="dot"></span> widebody • stance • drift • performance',
+        '.brands-title': 'Všetko pre tvoj projekt',
+        '.brands-head p': 'Sme autorizovaný predajcovia týchto svetových značiek, ktoré Vám zabezpečujeme na mieru.',
+        '.brands-head .brands-cta': 'Objavuj RACEM Group <span class="ctaArrow">→</span>',
+        '.brands-ctaFull': 'ZOBRAZIŤ VŠETKO',
+        '#vsetky-produkty .pill': '<span class="dot"></span> všetky produkty • performance • styling • motorsport',
+        '.products-teaser-title': 'Všetky produkty',
+        '.products-teaser-sub': 'Výber z toho, čo u nás nájdeš — od intercoolerov a aero dielov až po osvetlenie, budíky a ďalšie performance doplnky.',
+        '.products-teaser-cta a': 'Celá ponuka <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .pill': '<span class="dot"></span> racem group • komunita',
+        '#kto-sme .panel:first-child h2': 'Staň sa súčasťou RACEM Group',
+        '#kto-sme .panel:first-child p:nth-of-type(1)': 'Ak chceš <b>zľavy na bodykity, aero a vybrané diely</b>, môžeš sa stať súčasťou <b>RACEM Group</b>.',
+        '#kto-sme .panel:first-child p:nth-of-type(2)': 'Si tím, jazdec, garáž alebo organizátor zrazov?<br>Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, športové aj vybrané náhradné autodiely.',
+        '#kto-sme .panel:first-child p:nth-of-type(3)': 'Ak sa chceš stať súčasťou RACEM Group napíš nám: <b>„RACEM Group – členstvo“</b>. Viac informácií o spolupráci ti pošleme po kontakte.',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(1)': 'Kontakt <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(2)': 'Objavuj RACEM Group <span class="arr">→</span>',
+        '#kto-sme .panel:nth-child(2) .pill': '<span class="dot"></span> turbo kity • kompresor kity',
+        '#kto-sme .panel:nth-child(2) h2': 'Turbo &amp; kompresor kity',
+        '.construction-tape': 'Pripravujeme pre Vás',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(1)': 'Výkonné turbodúchadlá a kompresory pre váš motor. Od jednoduchých stage kitov až po plne custom riešenia pre maximálny boost.',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(2)': '• Kompletné kity vrátane intercoolerov, wastegate, blow-off<br>• Kompatibilita s VW, BMW, Audi, Mercedes, Porsche a ďalšími<br>• Montáž + ECU remap na mieste alebo v dielni<br>',
+        '#kto-sme .panel:nth-child(2) .ctaRow a': 'Kontakt <span class="arr">→</span>',
+        '#modalInterestBtn': 'Mám záujem o tento diel',
+        '#modalCloseBtn': 'Zavrieť',
+        '.footer-layout > div:first-child': 'Prevádzkovateľ webu – <a href="https://www.racem.sk/remperformance" class="footer-brand"><span class="red"><b>REM Performance</b></span></a>',
+        '.footer-layout > div:last-child': 'Performance diely • bodykity • aero • turbo kity • mobilný autoservis',
+        '.footer-links a[href="#kontakt"]': 'Kontakt',
+        '#kontakt h2': 'Kontakt',
+        '#kontakt > .wrap > p': 'Kontaktuj náš tím',
+        '#kontakt .contact-left h3': 'KONTAKT',
+        '#kontakt label[for="contactName"]': 'Meno a priezvisko',
+        '#kontakt label[for="contactEmail"]': 'Email',
+        '#kontakt label[for="contactPhone"]': 'Telefón',
+        '#kontakt label[for="kontaktMsg"]': 'Správa',
+        '#kontakt button[type="submit"]': 'Odoslať',
+        '#kontakt .company-box .step-1': '<b>1. Pozrieme sa na tvoju požiadavku</b><br>Podľa tvojich detailov vyberáme riešenie, ktoré dáva zmysel – nie len prvú vec z katalógu.',
+        '#kontakt .company-box .step-2': '<b>2. Overíme dostupnosť u dodávateľov</b><br>Pozrieme sklad u partnerov (SR, ČR, EÚ, USA, JP), stav dielu, reálnu cenu, dodaciu lehotu, cenu dodania.',
+        '#kontakt .company-box .step-3': '<b>3. Pošleme ti ponuku na e-mail</b><br>Dostaneš prehľadnú ponuku – diel, stav, cena, doprava, fotky, dodacia lehota, pôvod. Ak súhlasíš, objednávku potvrdíš a diel dovezieme k tebe.',
+
+        '.footer-links a[href="#podmienky"]': 'Obchodné podmienky',
+        '.cookieText': 'Používame <b>cookies / úložisko</b> na správne fungovanie stránky a základnú analytiku. <a href="vop.html#cookies">Viac info</a>.',
+        '#cookieAccept': 'Akceptovať'
+      },
+      attrs: {
+        '#shipbarClose': { 'aria-label': 'Zavrieť' },
+        '.hero-logo-link': { 'aria-label': 'Kontakt' },
+        '.modal-close': { 'aria-label': 'Zavrieť náhľad' },
+        '.modal-prev': { 'aria-label': 'Predchádzajúci obrázok' },
+        '.modal-next': { 'aria-label': 'Nasledujúci obrázok' },
+        '#cookieBar': { 'aria-label': 'Cookies' },
+        '.lang-switch': { 'aria-label': 'Prepínač jazyka' }
+      }
+    },
+    en: {
+      title: 'RACEM | Body kits, certified aero, turbo & supercharger kits | REM Performance',
+      description: 'RACEM (REM Performance) – body kits and widebody, certified aero (TÜV), sport and racing parts, engine and chassis components, turbo/supercharger kits, starlight headliners and more.',
+      ogTitle: 'RACEM | Body kits, certified aero, turbo & supercharger kits',
+      ogDescription: 'Body kits, certified aero (TÜV), sport and racing parts, engine & chassis, turbo/supercharger kits, starlight headliners. RACEM – REM Performance.',
+      twitterTitle: 'RACEM | Body kits, certified aero, turbo & supercharger kits',
+      twitterDescription: 'Body kits, certified aero (TÜV), sport and racing parts, engine & chassis, turbo/supercharger kits, starlight headliners.',
+      values: {
+        '#shipbarText': 'We ship to CZ, PL, HU, AT and all across the EU.',
+        '.nav-links a[href="ponua.html"]': 'Our offer',
+        '.nav-links a[href="#bodykity"]': 'Body Kits',
+        '.nav-links a[href="mobilny-autoservis.html"]': 'Mobile workshop',
+        '#autoservis .pill': '<span class="dot"></span> mobile workshop • inspections • roadside help',
+        '#autoservis .reveal h2': 'Your service on the road',
+        '#autoservis .reveal p[style*="font-size:16px"]': 'If you do not want to move your car to a workshop or pay for towing, <b>we come to you</b>. At home, at work, on the street or directly at the breakdown.',
+        '#autoservis .reveal p.muted2': 'We handle regular service, diagnostics, vehicle inspections, pre-checks before STK/EK and roadside assistance. If the repair cannot be done on the spot, we will suggest the most reasonable next step.',
+        '#autoservis .reveal .ctaRow a:nth-child(1)': 'Learn more <span class="arr">→</span>',
+        '#autoservis .reveal .ctaRow a:nth-child(2)': 'Contact',
+        '#autoservis .service-top h3': 'Mobile workshop services',
+        '#autoservis .service-top p': 'Less moving around, less stress, more time.',
+        '#autoservis .service-pills span:nth-child(1)': '<span class="mini-dot"></span> service at your place',
+        '#autoservis .service-pills span:nth-child(2)': '<span class="mini-dot"></span> vehicle inspections',
+        '#autoservis .service-pills span:nth-child(3)': '<span class="mini-dot"></span> before STK/EK',
+        '#autoservis .service-pills span:nth-child(4)': '<span class="mini-dot"></span> roadside help',
+        '#autoservis .panel .ctaRow a': 'Learn more <span class="arr">→</span>',
+        '.nav-links a.nav-stars': 'Starlight headliners',
+        '.nav-remx-label': 'REM Performance',
+        '.nav-remx-sub': 'division',
+        '.sr-only': 'RACEM – performance parts, body kits, aero parts, turbo kits, supercharger kits.',
+        '.heroServices .hsItem:nth-child(1) .hsTitle': 'Turbo kits & Supercharger kits',
+        '.heroServices .hsItem:nth-child(1) .hsSub': 'We are preparing an exclusive plug-and-play range of turbo and supercharger kits for you',
+        '.heroServices .hsItem:nth-child(2) .hsTitle': 'BODY KITS & AERO',
+        '.heroServices .hsItem:nth-child(2) .hsSub': 'The largest authorized body kit seller in Slovakia',
+        '.heroServices .hsItem:nth-child(3) .hsTitle': 'Our services',
+        '.heroServices .hsItem:nth-child(3) .hsSub': 'Aero and body kit installation • diagnostics • professional installation reports • registration of accessories and modifications affecting vehicle technical parameters',
+        '.heroServices .hsItem:nth-child(4) .hsTitle': 'Performance & sport parts',
+        '.heroServices .hsItem:nth-child(4) .hsSub': 'A wide range of parts and accessories for your cars',
+        '#bodykity .pill': '<span class="dot"></span> widebody • stance • drift • performance',
+        '.brands-title': 'Everything for your project',
+        '.brands-head p': 'We are authorized dealers of these global brands and source them for you individually.',
+        '.brands-head .brands-cta': 'Discover RACEM Group <span class="ctaArrow">→</span>',
+        '.brands-ctaFull': 'VIEW ALL',
+        '#vsetky-produkty .pill': '<span class="dot"></span> all products • performance • styling • motorsport',
+        '.products-teaser-title': 'All products',
+        '.products-teaser-sub': 'A selection of what you can find with us — from intercoolers and aero parts to lighting, gauges and other performance accessories.',
+        '.products-teaser-cta a': 'Full offer <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .pill': '<span class="dot"></span> racem group • community',
+        '#kto-sme .panel:first-child h2': 'Become part of RACEM Group',
+        '#kto-sme .panel:first-child p:nth-of-type(1)': 'If you want <b>better prices on body kits, aero and selected parts</b>, you can become part of <b>RACEM Group</b>.',
+        '#kto-sme .panel:first-child p:nth-of-type(2)': 'Are you a team, driver, garage or event organizer?<br>That is exactly who we can secure better pricing for on body kits, aero parts, sport parts and selected replacement parts.',
+        '#kto-sme .panel:first-child p:nth-of-type(3)': 'If you want to become part of RACEM Group, write to us: <b>“RACEM Group – membership”</b>. We will send you more information about cooperation after contact.',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(1)': 'Contact <span class="arr">→</span>',
+        '#kto-sme .panel:first-child .ctaRow a:nth-child(2)': 'Discover RACEM Group <span class="arr">→</span>',
+        '#kto-sme .panel:nth-child(2) .pill': '<span class="dot"></span> turbo kits • supercharger kits',
+        '#kto-sme .panel:nth-child(2) h2': 'Turbo &amp; supercharger kits',
+        '.construction-tape': 'Coming soon',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(1)': 'High-performance turbochargers and superchargers for your engine. From simple stage kits to fully custom solutions for maximum boost.',
+        '#kto-sme .panel:nth-child(2) .blurred-content p:nth-of-type(2)': '• Complete kits including intercoolers, wastegate, blow-off<br>• Compatibility with VW, BMW, Audi, Mercedes, Porsche and more<br>• Installation + ECU remap on-site or in workshop<br>',
+        '#kto-sme .panel:nth-child(2) .ctaRow a': 'Contact <span class="arr">→</span>',
+        '#modalInterestBtn': 'I am interested in this part',
+        '#modalCloseBtn': 'Close',
+        '.footer-layout > div:first-child': 'Website operator – <a href="https://www.racem.sk/remperformance" class="footer-brand"><span class="red"><b>REM Performance</b></span></a>',
+        '.footer-layout > div:last-child': 'Performance parts • body kits • aero • turbo kits • mobile workshop',
+        '.footer-links a[href="#kontakt"]': 'Contact',
+        '#kontakt h2': 'Contact',
+        '#kontakt > .wrap > p': 'Contact our team',
+        '#kontakt .contact-left h3': 'CONTACT',
+        '#kontakt label[for="contactName"]': 'Full name',
+        '#kontakt label[for="contactEmail"]': 'Email',
+        '#kontakt label[for="contactPhone"]': 'Phone',
+        '#kontakt label[for="kontaktMsg"]': 'Message',
+        '#kontakt button[type="submit"]': 'Send',
+        '#kontakt .company-box h3': 'WHAT HAPPENS AFTER SUBMISSION',
+        '#kontakt .company-box .step-1': '<b>1. We review your request</b><br>Based on your details, we choose the solution that makes sense — not just the first thing from the catalog.',
+        '#kontakt .company-box .step-2': '<b>2. We verify availability with suppliers</b><br>We check stock with partners (SK, CZ, EU, USA, JP), part condition, real price, delivery time and shipping cost.',
+        '#kontakt .company-box .step-3': '<b>3. We send you an offer by e-mail</b><br>You will receive a clear offer — part, condition, price, shipping, photos, delivery time and origin. If you agree, you confirm the order and we deliver the part to you.',
+
+        '.footer-links a[href="#podmienky"]': 'Terms & conditions',
+        '.cookieText': 'We use <b>cookies / storage</b> for correct site functionality and basic analytics. <a href="vop.html#cookies">More info</a>.',
+        '#cookieAccept': 'Accept'
+      },
+      attrs: {
+        '#shipbarClose': { 'aria-label': 'Close' },
+        '.hero-logo-link': { 'aria-label': 'Contact' },
+        '.modal-close': { 'aria-label': 'Close preview' },
+        '.modal-prev': { 'aria-label': 'Previous image' },
+        '.modal-next': { 'aria-label': 'Next image' },
+        '#cookieBar': { 'aria-label': 'Cookies' },
+        '.lang-switch': { 'aria-label': 'Language switcher' }
+      }
+    }
+  };
+
+  function setContent(selector, value){
+    const el = $(selector);
+    if (!el) return;
+    el.innerHTML = value;
+  }
+
+  function setAttrs(selector, attrs){
+    const el = $(selector);
+    if (!el) return;
+    Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k,v));
+  }
+
+  function detectAutoLang(){
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'sk' || saved === 'en') return saved;
+    const navLangs = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    const joined = navLangs.join(',').toLowerCase();
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+    const isSkOrCs = joined.includes('sk') || joined.includes('cs');
+    const isSkOrCzTz = tz.includes('bratislava') || tz.includes('prague');
+    return (isSkOrCs || isSkOrCzTz) ? 'sk' : 'en';
+  }
+
+  function applyLanguage(lang, persist = false){
+    const pack = translations[lang] || translations.sk;
+    document.documentElement.lang = lang === 'en' ? 'en' : 'sk';
+
+    if (meta.title) document.title = pack.title;
+    if (meta.description) meta.description.setAttribute('content', pack.description);
+    if (meta.ogTitle) meta.ogTitle.setAttribute('content', pack.ogTitle);
+    if (meta.ogDescription) meta.ogDescription.setAttribute('content', pack.ogDescription);
+    if (meta.twitterTitle) meta.twitterTitle.setAttribute('content', pack.twitterTitle);
+    if (meta.twitterDescription) meta.twitterDescription.setAttribute('content', pack.twitterDescription);
+
+    Object.entries(pack.values).forEach(([selector, value]) => setContent(selector, value));
+    Object.entries(pack.attrs).forEach(([selector, attrs]) => setAttrs(selector, attrs));
+
+    $$('.lang-btn').forEach(btn => btn.classList.toggle('is-active', btn.dataset.lang === lang));
+    const switchEl = document.querySelector('.lang-switch');
+    if (switchEl) switchEl.setAttribute('data-active', lang === 'en' ? 'en' : 'sk');
+    if (persist) localStorage.setItem(STORAGE_KEY, lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    applyLanguage(detectAutoLang(), false);
+    $$('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang, true));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
