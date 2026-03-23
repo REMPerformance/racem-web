@@ -2981,8 +2981,36 @@ function inferSource(product, fallback){
   const txt = `${product.handle||''} ${product.title||''} ${product.productUrl||''}`.toLowerCase();
   if(txt.includes('cybul')) return 'CYBUL';
   if(txt.includes('swagier')) return 'SWAGIER';
+  if(txt.includes('cnc71')) return 'CNC71';
   if(txt.includes('sfxla')) return 'SFXLA';
   return fallback || 'RACEM';
+}
+function resolveLocalProductUrl(product){
+  const handle = String(product?.handle || '').trim();
+  if(!handle) return '';
+  const explicit = String(product?.localProductUrl || '').trim();
+  if(explicit) return explicit;
+  const source = String(product?.__sourceLabel || product?.source || '').trim().toUpperCase();
+  const folderMap = {
+    'RACEM': 'products',
+    'CYBUL': 'products-cybul',
+    'SWAGIER': 'products-swagier',
+    'SFXLA': 'products-cnc71',
+    'CNC71': 'products-cnc71'
+  };
+  const folder = folderMap[source] || 'products';
+  return `./${folder}/${encodeURIComponent(handle)}.html`;
+}
+function getProductDetailUrl(product){
+  return resolveLocalProductUrl(product) || String(product?.productUrl || '').trim();
+}
+function openProductPageById(id){
+  const product = PRODUCT_BY_ID.get(String(id || '').trim());
+  if(!product) return false;
+  const url = getProductDetailUrl(product);
+  if(!url) return false;
+  window.location.href = url;
+  return true;
 }
 function getDisplayStock(price){ return Number(price||0) > 1000 ? 'made_to_order' : 'in_stock'; }
 function extractMatches(text, regex){ const out=[]; String(text||'').replace(regex,m=>{out.push(m.trim()); return m;}); return out; }
@@ -3189,9 +3217,10 @@ function renderCards(list){
     const stockClass = p.stock==='in_stock' ? 'badge badge--stock' : 'badge badge--order';
     const checkoutVariant=(p.variants||[]).find(v=>String(v?.variantId||'').trim()) || (String(p.defaultVariantId||'').trim()?{variantId:p.defaultVariantId,price:p.price||0,title:productTitle(p),images:p.images||[]}:null);
     const hasCheckout = !!checkoutVariant?.variantId;
-    const hasShopLink = !!String(p.productUrl||'').trim();
-    const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
-    const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
+    const detailUrl = getProductDetailUrl(p);
+    const hasDetailPage = !!String(detailUrl||'').trim();
+    const action = hasCheckout ? 'cart' : 'detail-page';
+    const actionLabel = hasCheckout ? t('addCartBtn') : t('detailBtn');
     card.innerHTML=`
       <div class="thumb" data-open-detail="${escapeHtml(p.id)}" role="button" tabindex="0" aria-label="${escapeHtml(t('detailBtn'))}: ${escapeHtml(productTitle(p))}">
         ${thumbUrl ? `<img class="thumbImg" src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">` : ''}
@@ -3212,12 +3241,12 @@ function renderCards(list){
       </div>`;
     card.addEventListener('click', (e)=>{
       if(e.target.closest('button,a,[data-card-action],[data-open-detail]')) return;
-      openModal(p.id);
+      if(!openProductPageById(p.id)) openModal(p.id);
     });
     card.addEventListener('keydown', (e)=>{
       if((e.key==='Enter' || e.key===' ') && !e.target.closest('button,a,input,select,textarea')){
         e.preventDefault();
-        openModal(p.id);
+        if(!openProductPageById(p.id)) openModal(p.id);
       }
     });
     el.grid.appendChild(card);
@@ -3236,9 +3265,10 @@ function renderRecommended(){
     card.className='recoCard';
     const img=(p.images&&p.images[0])?p.images[0]:'';
     const hasCheckout = !!String(p.defaultVariantId||'').trim();
-    const hasShopLink = !!String(p.productUrl||'').trim();
-    const action = hasCheckout ? 'cart' : (hasShopLink ? 'shop' : 'detail');
-    const actionLabel = hasCheckout ? t('addCartBtn') : (hasShopLink ? t('openShopBtn') : t('detailBtn'));
+    const detailUrl = getProductDetailUrl(p);
+    const hasDetailPage = !!String(detailUrl||'').trim();
+    const action = hasCheckout ? 'cart' : 'detail-page';
+    const actionLabel = hasCheckout ? t('addCartBtn') : t('detailBtn');
     card.innerHTML=`
       <div class="recoMedia" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div>
       <h3 class="recoTitle" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(productTitle(p))}</h3>
@@ -3362,7 +3392,7 @@ function bindEvents(){
       e.preventDefault();
       e.stopPropagation();
       const id = detail.getAttribute('data-open-detail');
-      if(id) openModal(String(id));
+      if(id && !openProductPageById(String(id))) openModal(String(id));
       return;
     }
     const actionBtn=e.target.closest('[data-card-action]');
@@ -3378,7 +3408,10 @@ function bindEvents(){
         if(variant?.variantId) addToCart(product, variant, 1); else openModal(id);
         return;
       }
-      if(action==='shop' && product.productUrl){ window.open(product.productUrl,'_blank','noopener'); return; }
+      if(action==='detail-page'){
+        if(!openProductPageById(id)) openModal(id);
+        return;
+      }
       openModal(id);
       return;
     }
@@ -3395,7 +3428,7 @@ function bindEvents(){
     if(detail && (e.key==='Enter' || e.key===' ')){
       e.preventDefault();
       const id = detail.getAttribute('data-open-detail');
-      if(id) openModal(String(id));
+      if(id && !openProductPageById(String(id))) openModal(String(id));
     }
   });
 }
