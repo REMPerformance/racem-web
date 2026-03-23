@@ -3540,6 +3540,142 @@ html, body{
   }
 }
 
+
+
+/* ===== RACEM VEHICLE FILTER PANEL ===== */
+.racemFilterPanel{
+  width:min(560px, 46vw) !important;
+  height:auto !important;
+  margin:0 auto 0 0 !important;
+}
+.racemFilterPanel .rf-shell{
+  position:relative;
+  border-radius:26px;
+  padding:24px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.12);
+  background:
+    linear-gradient(180deg, rgba(18,18,18,0.96), rgba(8,8,8,0.94)),
+    radial-gradient(circle at 15% 15%, rgba(179,31,36,0.18), transparent 34%),
+    radial-gradient(circle at 85% 85%, rgba(179,31,36,0.12), transparent 36%);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,0.65),
+    inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+.racemFilterPanel .rf-shell::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 34px);
+  opacity:.28;
+}
+.racemFilterPanel .rf-shell::after{
+  content:"";
+  position:absolute;
+  right:-80px;
+  top:-80px;
+  width:220px;
+  height:220px;
+  border-radius:999px;
+  background:radial-gradient(circle, rgba(179,31,36,0.28), transparent 62%);
+  filter:blur(6px);
+  pointer-events:none;
+}
+.rf-shell > *{ position:relative; z-index:1; }
+.rf-topline{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.76);
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-size:10px;
+  font-weight:900;
+}
+.rf-pulse,.rf-status-dot{
+  width:9px;height:9px;border-radius:999px;background:var(--red);
+  box-shadow:0 0 0 4px rgba(179,31,36,0.15), 0 0 18px rgba(179,31,36,0.75);
+  animation: rfPulse 1.8s ease-in-out infinite;
+}
+@keyframes rfPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:.7}}
+.rf-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  margin-top:18px;
+}
+.rf-kicker{
+  color:rgba(255,255,255,0.52); font-size:11px; text-transform:uppercase; letter-spacing:.18em; font-weight:900;
+}
+.rf-title{
+  margin:8px 0 0; font-size:32px; line-height:1.05; letter-spacing:.04em; text-transform:uppercase;
+}
+.rf-status{
+  flex:0 0 auto;
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:10px; text-transform:uppercase; letter-spacing:.14em; font-weight:800; color:rgba(255,255,255,0.7);
+  padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.03);
+}
+.rf-sub{ margin-top:14px; max-width:100%; font-size:14px; color:rgba(255,255,255,0.72); }
+.rf-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+.rf-field{ display:flex; flex-direction:column; gap:8px; }
+.rf-label,.rf-minihead,.rf-readout-label{
+  font-size:10px; text-transform:uppercase; letter-spacing:.16em; font-weight:900; color:rgba(255,255,255,0.54);
+}
+.rf-select{
+  width:100%; appearance:none; border:none; outline:none;
+  min-height:54px; padding:0 16px; border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
+  color:#fff; font-size:14px; font-weight:800; letter-spacing:.04em;
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.rf-select:focus{ border-color:rgba(179,31,36,0.55); box-shadow:0 0 0 3px rgba(179,31,36,0.13); }
+.rf-select:disabled{ opacity:.55; cursor:not-allowed; }
+.rf-quick-wrap{ margin-top:18px; }
+.rf-chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.rf-chip{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.035); color:#fff; cursor:pointer;
+  font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase;
+  transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.rf-chip:hover,.rf-chip.is-active{
+  transform:translateY(-2px);
+  border-color:rgba(179,31,36,0.45);
+  background:rgba(179,31,36,0.16);
+  box-shadow:0 14px 34px rgba(0,0,0,0.4);
+}
+.rf-bottom{ display:grid; grid-template-columns:1fr auto; gap:14px; align-items:end; margin-top:22px; }
+.rf-readout{
+  min-height:72px; padding:14px 16px; border-radius:18px;
+  border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.035);
+  display:flex; flex-direction:column; justify-content:center; gap:6px;
+}
+.rf-readout strong{ font-size:16px; color:#fff; text-transform:uppercase; letter-spacing:.06em; }
+.rf-btn{ min-height:72px; min-width:220px; padding:16px 20px; border-radius:18px; }
+.rf-btn[disabled]{ opacity:.55; cursor:not-allowed; filter:grayscale(.2); }
+@media (max-width: 1200px){ .racemFilterPanel{ width:min(520px, 48vw) !important; } .rf-title{font-size:28px;} }
+@media (max-width: 980px){
+  .racemFilterPanel{ width:min(560px, 100%) !important; margin:12px auto 0 !important; }
+  .rf-head{ flex-direction:column; }
+}
+@media (max-width: 640px){
+  .racemFilterPanel .rf-shell{ padding:18px; border-radius:22px; }
+  .rf-grid,.rf-bottom{ grid-template-columns:1fr; }
+  .rf-btn{ width:100%; min-width:0; min-height:60px; }
+  .rf-title{ font-size:24px; }
+  .rf-chip{ width:calc(50% - 5px); }
+}
+@media (max-width: 420px){ .rf-chip{ width:100%; } }
+
 </style>
 </head>
 
@@ -3650,9 +3786,60 @@ html, body{
         </div>
 
 
-     <!-- RIGHT (GLOBE PANEL) -->
-<div class="heroPanel globePanel">
-    <canvas id="racemGlobe"></canvas>
+     <!-- RIGHT (RACEM VEHICLE FILTER) -->
+<div class="heroPanel globePanel racemFilterPanel reveal" id="racemVehiclePanel">
+  <div class="rf-shell">
+    <div class="rf-topline">
+      <span class="rf-pulse"></span>
+      <span>RACEM GARAGE ACCESS</span>
+    </div>
+
+    <div class="rf-head">
+      <div>
+        <div class="rf-kicker">SELECT PLATFORM</div>
+        <h3 class="rf-title">Nájdi diely pre svoj build</h3>
+      </div>
+      <div class="rf-status">
+        <span class="rf-status-dot"></span>
+        kompatibilita / filter / quick access
+      </div>
+    </div>
+
+    <p class="rf-sub">
+      Vyber si značku a platformu. Pošleme ťa priamo do <b>ponuka.html</b> s prednastaveným výberom pre tvoje auto.
+    </p>
+
+    <div class="rf-grid">
+      <label class="rf-field">
+        <span class="rf-label">Značka</span>
+        <select id="rfBrand" class="rf-select" aria-label="Vyber značku auta">
+          <option value="">Vyber značku</option>
+        </select>
+      </label>
+
+      <label class="rf-field">
+        <span class="rf-label">Model / platforma</span>
+        <select id="rfModel" class="rf-select" aria-label="Vyber model auta" disabled>
+          <option value="">Najprv vyber značku</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="rf-quick-wrap">
+      <div class="rf-minihead">Top platformy</div>
+      <div class="rf-chips" id="rfQuickChips"></div>
+    </div>
+
+    <div class="rf-bottom">
+      <div class="rf-readout" id="rfReadout">
+        <span class="rf-readout-label">TARGET</span>
+        <strong>Žiadna platforma nevybraná</strong>
+      </div>
+      <button class="btn btnPrimary rf-btn" id="rfGoBtn" type="button">
+        LOAD COMPATIBLE PARTS <span class="arr">→</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 
@@ -4606,110 +4793,167 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     });
   </script>
 
-  <!-- ✅ SCRIPT 2: globus samostatne ako module (FIX) -->
- <script type="module">
-  import createGlobe from "https://cdn.skypack.dev/cobe";
+  <!-- ✅ SCRIPT 2: RACEM vehicle selector -->
+  <script>
+  (function(){
+    const brandEl = document.getElementById("rfBrand");
+    const modelEl = document.getElementById("rfModel");
+    const goBtn = document.getElementById("rfGoBtn");
+    const chipsWrap = document.getElementById("rfQuickChips");
+    const readout = document.getElementById("rfReadout");
+    if(!brandEl || !modelEl || !goBtn || !chipsWrap || !readout) return;
 
-  const LOCATIONS = [
-    { name: "Piešťany",    lat: 48.5948, lon: 17.8250, detail: "RACEM Group" },
-    { name: "Los Angeles", lat: 34.0522, lon: -118.2437, detail: "USA • Streetfighter LA" },
-    { name: "Tokyo",       lat: 35.6762, lon: 139.6503, detail: "JP • VeilSide" },
-    { name: "Frankfurt",   lat: 50.1109, lon: 8.6821, detail: "DE • CSR Automotive" },
-  ];
+    const VEHICLES = {
+      bmw: [
+        { value:"e36", label:"E36", query:"bmw e36", quick:true },
+        { value:"e46", label:"E46", query:"bmw e46", quick:true },
+        { value:"e90", label:"E90 / E91 / E92", query:"bmw e90" },
+        { value:"e60", label:"E60 / E61", query:"bmw e60" },
+        { value:"f30", label:"F30 / F31", query:"bmw f30" },
+        { value:"f82", label:"F82 M4", query:"bmw f82" }
+      ],
+      audi: [
+        { value:"a4-b8", label:"A4 B8", query:"audi a4 b8", quick:true },
+        { value:"a5-8t", label:"A5 8T", query:"audi a5 8t" },
+        { value:"tt-8j", label:"TT 8J", query:"audi tt 8j" }
+      ],
+      volkswagen: [
+        { value:"golf4", label:"Golf IV", query:"vw golf 4" },
+        { value:"golf5", label:"Golf V", query:"vw golf 5", quick:true },
+        { value:"golf7", label:"Golf VII", query:"vw golf 7" },
+        { value:"scirocco", label:"Scirocco", query:"vw scirocco" }
+      ],
+      mercedes: [
+        { value:"w204", label:"W204 C-Class", query:"mercedes w204", quick:true },
+        { value:"w205", label:"W205 C-Class", query:"mercedes w205" },
+        { value:"c207", label:"C207 E-Class Coupe", query:"mercedes c207" }
+      ],
+      nissan: [
+        { value:"350z", label:"350Z", query:"nissan 350z", quick:true },
+        { value:"370z", label:"370Z", query:"nissan 370z" },
+        { value:"s14", label:"Silvia S14", query:"nissan s14" }
+      ],
+      toyota: [
+        { value:"gt86", label:"GT86 / BRZ", query:"toyota gt86", quick:true },
+        { value:"supra-a90", label:"Supra A90", query:"toyota supra a90" }
+      ]
+    };
 
-  const canvas = document.getElementById("racemGlobe");
-  if (!canvas) {
-    console.warn("Canvas #racemGlobe not found");
-  } else {
-    let phi = 0;
-    const THETA = 0.22;
-    let globe = null;
-    let ro = null;
+    const BRAND_LABELS = {
+      bmw:"BMW",
+      audi:"Audi",
+      volkswagen:"Volkswagen",
+      mercedes:"Mercedes-Benz",
+      nissan:"Nissan",
+      toyota:"Toyota"
+    };
 
-    function rgb(hex) {
-      const h = hex.replace("#", "").trim();
-      const n = parseInt(h, 16);
-      const r = (n >> 16) & 255;
-      const g = (n >> 8) & 255;
-      const b = n & 255;
-      return [r / 255, g / 255, b / 255];
+    function fillBrands(){
+      Object.entries(BRAND_LABELS).forEach(([value,label]) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = label;
+        brandEl.appendChild(opt);
+      });
     }
 
-    const RACEM_RED = rgb("#b31f24");
-
-    function sizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-      const cssWidth = Math.max(2, Math.floor(rect.width));
-      const cssHeight = Math.max(2, Math.floor(rect.height));
-
-      canvas.width = Math.floor(cssWidth * dpr);
-      canvas.height = Math.floor(cssHeight * dpr);
-
-      return {
-        width: canvas.width,
-        height: canvas.height,
-        dpr
-      };
-    }
-
-    function buildGlobe() {
-      const { width, height, dpr } = sizeCanvas();
-
-      if (typeof globe === "function") {
-        globe();
-        globe = null;
+    function renderModels(brand, selectedValue=""){
+      modelEl.innerHTML = "";
+      if(!brand || !VEHICLES[brand]){
+        modelEl.disabled = true;
+        modelEl.innerHTML = '<option value="">Najprv vyber značku</option>';
+        return;
       }
-
-      globe = createGlobe(canvas, {
-        devicePixelRatio: dpr,
-        width,
-        height,
-
-        phi: 0,
-        theta: THETA,
-
-        dark: 0,
-        diffuse: 1.25,
-        scale: 1.08,
-        mapSamples: 22000,
-        mapBrightness: 1.35,
-
-        baseColor: [0.06, 0.06, 0.07],
-        glowColor: [RACEM_RED[0], RACEM_RED[1], RACEM_RED[2]],
-        markerColor: [0.95, 0.32, 0.34],
-
-        markers: LOCATIONS.map(l => ({
-          location: [l.lat, l.lon],
-          size: 0.085,
-        })),
-
-        onRender: (state) => {
-          state.phi = phi;
-          phi += 0.0032;
-        }
+      modelEl.disabled = false;
+      modelEl.innerHTML = '<option value="">Vyber model / platformu</option>';
+      VEHICLES[brand].forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.value;
+        opt.textContent = item.label;
+        opt.dataset.query = item.query;
+        if(selectedValue && selectedValue === item.value) opt.selected = true;
+        modelEl.appendChild(opt);
       });
     }
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        buildGlobe();
+    function getSelectedVehicle(){
+      const brand = brandEl.value;
+      const model = modelEl.value;
+      const item = (VEHICLES[brand] || []).find(v => v.value === model) || null;
+      return { brand, model, item };
+    }
 
-        ro = new ResizeObserver(() => {
-          buildGlobe();
-        });
-
-        ro.observe(canvas);
+    function updateReadout(){
+      const { brand, item } = getSelectedVehicle();
+      const strong = readout.querySelector('strong') || document.createElement('strong');
+      if(!strong.parentNode) readout.appendChild(strong);
+      if(brand && item){
+        strong.textContent = `${BRAND_LABELS[brand]} ${item.label}`;
+        goBtn.disabled = false;
+      } else {
+        strong.textContent = 'Žiadna platforma nevybraná';
+        goBtn.disabled = true;
+      }
+      [...chipsWrap.querySelectorAll('.rf-chip')].forEach(chip => {
+        const active = chip.dataset.brand === brand && chip.dataset.model === (item?.value || '');
+        chip.classList.toggle('is-active', active);
       });
-    });
+    }
 
-    window.addEventListener("beforeunload", () => {
-      if (ro) ro.disconnect();
-      if (typeof globe === "function") globe();
+    function buildQuickChips(){
+      const quick = [];
+      Object.entries(VEHICLES).forEach(([brand, models]) => {
+        models.filter(m => m.quick).forEach(m => quick.push({ brand, ...m }));
+      });
+      quick.slice(0,8).forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'rf-chip';
+        btn.dataset.brand = item.brand;
+        btn.dataset.model = item.value;
+        btn.textContent = `${BRAND_LABELS[item.brand]} ${item.label}`;
+        btn.addEventListener('click', () => {
+          brandEl.value = item.brand;
+          renderModels(item.brand, item.value);
+          modelEl.value = item.value;
+          updateReadout();
+        });
+        chipsWrap.appendChild(btn);
+      });
+    }
+
+    function goToOffer(){
+      const { brand, item, model } = getSelectedVehicle();
+      if(!brand || !item) return;
+      const payload = {
+        brand,
+        brandLabel: BRAND_LABELS[brand],
+        model,
+        modelLabel: item.label,
+        query: item.query,
+        car: `${brand}-${model}`
+      };
+      try { localStorage.setItem('racemVehicleFilter', JSON.stringify(payload)); } catch(e) {}
+      const url = new URL('ponuka.html', window.location.href);
+      url.searchParams.set('car', payload.car);
+      url.searchParams.set('brand', payload.brand);
+      url.searchParams.set('model', payload.model);
+      url.searchParams.set('q', payload.query);
+      window.location.href = url.toString();
+    }
+
+    brandEl.addEventListener('change', () => {
+      renderModels(brandEl.value, '');
+      updateReadout();
     });
-  }
-</script>
+    modelEl.addEventListener('change', updateReadout);
+    goBtn.addEventListener('click', goToOffer);
+
+    fillBrands();
+    buildQuickChips();
+    updateReadout();
+  })();
+  </script>
 
 
 
