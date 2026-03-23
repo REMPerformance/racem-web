@@ -3542,140 +3542,281 @@ html, body{
 
 
 
+
+.hero-main{
+  max-width: 1240px;
+  position: relative;
+}
+.headline{
+  position: relative;
+  padding-right: min(470px, 34vw);
+}
+.hero-filter-center{
+  position:absolute;
+  top:6px;
+  right:0;
+  display:block;
+  width:min(430px, 32vw);
+  margin:0;
+  z-index:8;
+}
+
 /* ===== RACEM VEHICLE FILTER PANEL ===== */
 .racemFilterPanel{
-  width:min(560px, 46vw) !important;
+  width:100% !important;
+  max-width:none !important;
   height:auto !important;
-  margin:0 auto 0 0 !important;
+  justify-self:auto !important;
+  align-self:start !important;
+  margin:0 !important;
+  transform:none !important;
 }
 .racemFilterPanel .rf-shell{
   position:relative;
-  border-radius:26px;
-  padding:24px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.12);
-  background:
-    linear-gradient(180deg, rgba(18,18,18,0.96), rgba(8,8,8,0.94)),
-    radial-gradient(circle at 15% 15%, rgba(179,31,36,0.18), transparent 34%),
-    radial-gradient(circle at 85% 85%, rgba(179,31,36,0.12), transparent 36%);
-  box-shadow:
-    0 24px 70px rgba(0,0,0,0.65),
-    inset 0 0 0 1px rgba(255,255,255,0.03);
+  padding:8px 0 0;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  overflow:visible;
 }
 .racemFilterPanel .rf-shell::before{
   content:"";
   position:absolute;
-  inset:0;
-  pointer-events:none;
+  inset:-22px -24px -22px -28px;
+  border-radius:30px;
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 34px);
-  opacity:.28;
+    linear-gradient(180deg, rgba(15,15,15,0.38), rgba(8,8,8,0.14)),
+    radial-gradient(circle at 78% 22%, rgba(179,31,36,0.18), transparent 28%),
+    radial-gradient(circle at 18% 82%, rgba(179,31,36,0.10), transparent 30%);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 22px 60px rgba(0,0,0,0.30), inset 0 0 0 1px rgba(255,255,255,0.02);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  pointer-events:none;
 }
 .racemFilterPanel .rf-shell::after{
   content:"";
   position:absolute;
-  right:-80px;
-  top:-80px;
-  width:220px;
-  height:220px;
-  border-radius:999px;
-  background:radial-gradient(circle, rgba(179,31,36,0.28), transparent 62%);
-  filter:blur(6px);
+  left:-10px;
+  right:12%;
+  top:-6px;
+  height:1px;
+  background:linear-gradient(90deg, rgba(179,31,36,0), rgba(179,31,36,0.72), rgba(255,255,255,0.18), rgba(179,31,36,0));
+  opacity:.95;
   pointer-events:none;
 }
 .rf-shell > *{ position:relative; z-index:1; }
-.rf-topline{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 12px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,0.10);
-  background:rgba(255,255,255,0.04);
-  color:rgba(255,255,255,0.76);
+.rf-title{
+  margin:0 0 16px;
+  font-size:30px;
+  line-height:1.05;
+  letter-spacing:.01em;
+  text-transform:none;
+}
+.rf-title span{ display:none; }
+.rf-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.rf-field{ display:flex; flex-direction:column; gap:8px; }
+.rf-label{
+  font-size:11px;
   text-transform:uppercase;
   letter-spacing:.16em;
-  font-size:10px;
   font-weight:900;
-}
-.rf-pulse,.rf-status-dot{
-  width:9px;height:9px;border-radius:999px;background:var(--red);
-  box-shadow:0 0 0 4px rgba(179,31,36,0.15), 0 0 18px rgba(179,31,36,0.75);
-  animation: rfPulse 1.8s ease-in-out infinite;
-}
-@keyframes rfPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:.7}}
-.rf-head{
-  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
-  margin-top:18px;
-}
-.rf-kicker{
-  color:rgba(255,255,255,0.52); font-size:11px; text-transform:uppercase; letter-spacing:.18em; font-weight:900;
-}
-.rf-title{
-  margin:8px 0 0; font-size:32px; line-height:1.05; letter-spacing:.04em; text-transform:uppercase;
-}
-.rf-status{
-  flex:0 0 auto;
-  display:inline-flex; align-items:center; gap:10px;
-  font-size:10px; text-transform:uppercase; letter-spacing:.14em; font-weight:800; color:rgba(255,255,255,0.7);
-  padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.03);
-}
-.rf-sub{ margin-top:14px; max-width:100%; font-size:14px; color:rgba(255,255,255,0.72); }
-.rf-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
-.rf-field{ display:flex; flex-direction:column; gap:8px; }
-.rf-label,.rf-minihead,.rf-readout-label{
-  font-size:10px; text-transform:uppercase; letter-spacing:.16em; font-weight:900; color:rgba(255,255,255,0.54);
+  color:rgba(255,255,255,0.58);
 }
 .rf-select{
-  width:100%; appearance:none; border:none; outline:none;
-  min-height:54px; padding:0 16px; border-radius:16px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
-  color:#fff; font-size:14px; font-weight:800; letter-spacing:.04em;
+  width:100%;
+  appearance:none;
+  outline:none;
+  min-height:58px;
+  padding:0 18px;
+  border-radius:17px;
   border:1px solid rgba(255,255,255,0.10);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-  transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+    linear-gradient(90deg, rgba(179,31,36,0.06), transparent 38%);
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:.02em;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 10px 26px rgba(0,0,0,0.22);
+  transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
 }
-.rf-select:focus{ border-color:rgba(179,31,36,0.55); box-shadow:0 0 0 3px rgba(179,31,36,0.13); }
-.rf-select:disabled{ opacity:.55; cursor:not-allowed; }
-.rf-quick-wrap{ margin-top:18px; }
-.rf-chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-.rf-chip{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.10);
-  background:rgba(255,255,255,0.035); color:#fff; cursor:pointer;
-  font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase;
-  transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+.rf-select:hover{
+  border-color:rgba(255,255,255,0.17);
+  transform:translateY(-1px);
 }
-.rf-chip:hover,.rf-chip.is-active{
-  transform:translateY(-2px);
-  border-color:rgba(179,31,36,0.45);
-  background:rgba(179,31,36,0.16);
-  box-shadow:0 14px 34px rgba(0,0,0,0.4);
+.rf-select:focus{
+  border-color:rgba(179,31,36,0.68);
+  box-shadow:
+    0 0 0 4px rgba(179,31,36,0.12),
+    0 14px 34px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
-.rf-bottom{ display:grid; grid-template-columns:1fr auto; gap:14px; align-items:end; margin-top:22px; }
-.rf-readout{
-  min-height:72px; padding:14px 16px; border-radius:18px;
-  border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.035);
-  display:flex; flex-direction:column; justify-content:center; gap:6px;
+.rf-select:disabled{
+  opacity:.52;
+  cursor:not-allowed;
 }
-.rf-readout strong{ font-size:16px; color:#fff; text-transform:uppercase; letter-spacing:.06em; }
-.rf-btn{ min-height:72px; min-width:220px; padding:16px 20px; border-radius:18px; }
-.rf-btn[disabled]{ opacity:.55; cursor:not-allowed; filter:grayscale(.2); }
-@media (max-width: 1200px){ .racemFilterPanel{ width:min(520px, 48vw) !important; } .rf-title{font-size:28px;} }
+.rf-hint{
+  margin:10px 0 0;
+  font-size:12px;
+  color:rgba(255,255,255,0.48);
+  letter-spacing:.04em;
+}
+@media (max-width: 1200px){
+  .headline{
+    padding-right:min(390px, 34vw);
+  }
+  .hero-filter-center{
+    width:min(360px, 31vw);
+  }
+  .rf-title{ font-size:28px; }
+}
 @media (max-width: 980px){
-  .racemFilterPanel{ width:min(560px, 100%) !important; margin:12px auto 0 !important; }
-  .rf-head{ flex-direction:column; }
+  .headline{
+    padding-right:0;
+  }
+  .hero-filter-center{
+    position:static;
+    width:min(620px, 100%);
+    margin:28px 0 0;
+  }
+  .racemFilterPanel{
+    width:100% !important;
+  }
 }
 @media (max-width: 640px){
-  .racemFilterPanel .rf-shell{ padding:18px; border-radius:22px; }
-  .rf-grid,.rf-bottom{ grid-template-columns:1fr; }
-  .rf-btn{ width:100%; min-width:0; min-height:60px; }
-  .rf-title{ font-size:24px; }
-  .rf-chip{ width:calc(50% - 5px); }
+  .racemFilterPanel .rf-shell{ padding-top:0; }
+  .rf-grid{ grid-template-columns:1fr; }
+  .rf-title{ font-size:26px; }
+  .racemFilterPanel .rf-shell::before{ inset:-18px -14px; border-radius:24px; }
 }
-@media (max-width: 420px){ .rf-chip{ width:100%; } }
+.hero-filter-center {
+  display: none !important;   /* hide original position inside hero */
+}
+/* =============================================
+   Vehicle selector – fixed top-right corner
+============================================== */
+.vehicle-quick-selector {
+  position: fixed;
+  top: calc(var(--stickyOffset, 0px) + 12px);   /* below topbar / shipping bar */
+  right: 24px;
+  z-index: 90;                                  /* below modal, above most content */
+  max-width: 360px;
+  width: calc(100% - 48px);
+  pointer-events: auto;
+}
 
+#racemVehiclePanel {
+  background: rgba(20, 20, 20, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.65);
+  padding: 18px 20px;
+  color: white;
+}
+
+.rf-title {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.rf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.rf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rf-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.rf-select {
+  background: rgba(30, 30, 30, 0.9);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.rf-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rf-hint {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ─── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .vehicle-quick-selector {
+    right: 18px;
+  }
+}
+
+@media (max-width: 980px) {
+  .vehicle-quick-selector {
+    top: calc(var(--stickyOffset, 0px) + 8px);
+    right: 16px;
+    max-width: 340px;
+  }
+
+  #racemVehiclePanel {
+    padding: 16px;
+  }
+
+  .rf-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 560px) {
+  .vehicle-quick-selector {
+    right: 12px;
+    left: 12px;
+    width: calc(100% - 24px);
+    max-width: none;
+  }
+
+  .rf-title {
+    font-size: 14px;
+  }
+
+  .rf-select {
+    font-size: 13px;
+    padding: 8px 30px 8px 12px;
+  }
+}
 </style>
 </head>
 
@@ -3731,118 +3872,82 @@ html, body{
       </nav>
     </div>
   </div>
+<div class="vehicle-quick-selector" aria-label="Rýchly výber vozidla">
+  <div class="racemFilterPanel reveal" id="racemVehiclePanel">
+    <div class="rf-shell">
+      <h3 class="rf-title">Vyber si svoj model</h3>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap hero-grid">
+      <div class="rf-grid">
+        <label class="rf-field">
+          <span class="rf-label">Značka</span>
+          <select id="rfBrand" class="rf-select" aria-label="Vyber značku auta">
+            <option value="">Vyber značku</option>
+          </select>
+        </label>
 
-      <!-- LEFT -->
-      <div class="headline">
-        <h1 class="hero-title">
-          <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
-            <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
-          </a>
-        </h1>
-
-       <span class="sr-only">
-  RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.
-</span>
-
-        <!-- SERVICES UNDER LOGO -->
-        <div class="heroServices">
-          <div class="hsItem">
-            <span class="hsBar"></span>
-            <div class="hsText">
-              <div class="hsTitle">Turbokits &amp; Kompresorkits</div>
-              <div class="hsSub">Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov</div>
-            </div>
-          </div>
-
-          <div class="hsItem">
-            <span class="hsBar"></span>
-            <div class="hsText">
-              <div class="hsTitle">BODYKITS &amp; AERO</div>
-              <div class="hsSub">Najväčší autorizovaný predajca bodykitov na Slovensku</div>
-            </div>
-          </div>
-
-          <div class="hsItem">
-            <span class="hsBar"></span>
-            <div class="hsText">
-              <div class="hsTitle">Naše služby</div>
-              <div class="hsSub">Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla </div>
-            </div>
-          </div>
-
-          <div class="hsItem">
-            <span class="hsBar"></span>
-            <div class="hsText">
-              <div class="hsTitle">Performance a špotové diely</div>
-              <div class="hsSub">Široká ponuka dielov a doplnkov pre vaše autá</div>
-            </div>
-          </div>
-        </div>
-</div>
-        </div>
-
-
-     <!-- RIGHT (RACEM VEHICLE FILTER) -->
-<div class="heroPanel globePanel racemFilterPanel reveal" id="racemVehiclePanel">
-  <div class="rf-shell">
-    <div class="rf-topline">
-      <span class="rf-pulse"></span>
-      <span>RACEM GARAGE ACCESS</span>
-    </div>
-
-    <div class="rf-head">
-      <div>
-        <div class="rf-kicker">SELECT PLATFORM</div>
-        <h3 class="rf-title">Nájdi diely pre svoj build</h3>
+        <label class="rf-field">
+          <span class="rf-label">Model</span>
+          <select id="rfModel" class="rf-select" aria-label="Vyber model auta" disabled>
+            <option value="">Najprv vyber značku</option>
+          </select>
+        </label>
       </div>
-      <div class="rf-status">
-        <span class="rf-status-dot"></span>
-        kompatibilita / filter / quick access
-      </div>
-    </div>
 
-    <p class="rf-sub">
-      Vyber si značku a platformu. Pošleme ťa priamo do <b>ponuka.html</b> s prednastaveným výberom pre tvoje auto.
-    </p>
-
-    <div class="rf-grid">
-      <label class="rf-field">
-        <span class="rf-label">Značka</span>
-        <select id="rfBrand" class="rf-select" aria-label="Vyber značku auta">
-          <option value="">Vyber značku</option>
-        </select>
-      </label>
-
-      <label class="rf-field">
-        <span class="rf-label">Model / platforma</span>
-        <select id="rfModel" class="rf-select" aria-label="Vyber model auta" disabled>
-          <option value="">Najprv vyber značku</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="rf-quick-wrap">
-      <div class="rf-minihead">Top platformy</div>
-      <div class="rf-chips" id="rfQuickChips"></div>
-    </div>
-
-    <div class="rf-bottom">
-      <div class="rf-readout" id="rfReadout">
-        <span class="rf-readout-label">TARGET</span>
-        <strong>Žiadna platforma nevybraná</strong>
-      </div>
-      <button class="btn btnPrimary rf-btn" id="rfGoBtn" type="button">
-        LOAD COMPATIBLE PARTS <span class="arr">→</span>
-      </button>
+      <p class="rf-hint">Po výbere modelu ťa presmerujeme na ponuku s pripraveným filtrom.</p>
     </div>
   </div>
 </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-main">
+        <div class="headline">
+          <h1 class="hero-title">
+            <a href="#kontakt" class="hero-logo-link" aria-label="Kontakt">
+              <img src="assets/racem-logo.png" alt="RACEM" class="hero-logo-inline">
+            </a>
+          </h1>
 
+          <span class="sr-only">
+  RACEM – performance diely, bodykity, aero diely, turbokity, kompresor kity.
+</span>
 
+          <!-- SERVICES UNDER LOGO -->
+          <div class="heroServices">
+            <div class="hsItem">
+              <span class="hsBar"></span>
+              <div class="hsText">
+                <div class="hsTitle">Turbokits &amp; Kompresorkits</div>
+                <div class="hsSub">Pripravujeme pre Vás exkluzívnu ponuku plug n play Turbo a Kompresor kitov</div>
+              </div>
+            </div>
+
+            <div class="hsItem">
+              <span class="hsBar"></span>
+              <div class="hsText">
+                <div class="hsTitle">BODYKITS &amp; AERO</div>
+                <div class="hsSub">Najväčší autorizovaný predajca bodykitov na Slovensku</div>
+              </div>
+            </div>
+
+            <div class="hsItem">
+              <span class="hsBar"></span>
+              <div class="hsText">
+                <div class="hsTitle">Naše služby</div>
+                <div class="hsSub">Montáž aero dielov a bodykitov • diagnostika • správy o odbornej montáži • Zápis doplnkov a úprav ovplyvňujúcich technické parametre vozidla</div>
+              </div>
+            </div>
+
+            <div class="hsItem">
+              <span class="hsBar"></span>
+              <div class="hsText">
+                <div class="hsTitle">Performance a športové diely</div>
+                <div class="hsSub">Široká ponuka dielov a doplnkov pre vaše autá</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -4798,43 +4903,40 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   (function(){
     const brandEl = document.getElementById("rfBrand");
     const modelEl = document.getElementById("rfModel");
-    const goBtn = document.getElementById("rfGoBtn");
-    const chipsWrap = document.getElementById("rfQuickChips");
-    const readout = document.getElementById("rfReadout");
-    if(!brandEl || !modelEl || !goBtn || !chipsWrap || !readout) return;
+    if(!brandEl || !modelEl) return;
 
     const VEHICLES = {
       bmw: [
-        { value:"e36", label:"E36", query:"bmw e36", quick:true },
-        { value:"e46", label:"E46", query:"bmw e46", quick:true },
+        { value:"e36", label:"E36", query:"bmw e36" },
+        { value:"e46", label:"E46", query:"bmw e46" },
         { value:"e90", label:"E90 / E91 / E92", query:"bmw e90" },
         { value:"e60", label:"E60 / E61", query:"bmw e60" },
         { value:"f30", label:"F30 / F31", query:"bmw f30" },
         { value:"f82", label:"F82 M4", query:"bmw f82" }
       ],
       audi: [
-        { value:"a4-b8", label:"A4 B8", query:"audi a4 b8", quick:true },
+        { value:"a4-b8", label:"A4 B8", query:"audi a4 b8" },
         { value:"a5-8t", label:"A5 8T", query:"audi a5 8t" },
         { value:"tt-8j", label:"TT 8J", query:"audi tt 8j" }
       ],
       volkswagen: [
         { value:"golf4", label:"Golf IV", query:"vw golf 4" },
-        { value:"golf5", label:"Golf V", query:"vw golf 5", quick:true },
+        { value:"golf5", label:"Golf V", query:"vw golf 5" },
         { value:"golf7", label:"Golf VII", query:"vw golf 7" },
         { value:"scirocco", label:"Scirocco", query:"vw scirocco" }
       ],
       mercedes: [
-        { value:"w204", label:"W204 C-Class", query:"mercedes w204", quick:true },
+        { value:"w204", label:"W204 C-Class", query:"mercedes w204" },
         { value:"w205", label:"W205 C-Class", query:"mercedes w205" },
         { value:"c207", label:"C207 E-Class Coupe", query:"mercedes c207" }
       ],
       nissan: [
-        { value:"350z", label:"350Z", query:"nissan 350z", quick:true },
+        { value:"350z", label:"350Z", query:"nissan 350z" },
         { value:"370z", label:"370Z", query:"nissan 370z" },
         { value:"s14", label:"Silvia S14", query:"nissan s14" }
       ],
       toyota: [
-        { value:"gt86", label:"GT86 / BRZ", query:"toyota gt86", quick:true },
+        { value:"gt86", label:"GT86 / BRZ", query:"toyota gt86" },
         { value:"supra-a90", label:"Supra A90", query:"toyota supra a90" }
       ]
     };
@@ -4857,7 +4959,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       });
     }
 
-    function renderModels(brand, selectedValue=""){
+    function renderModels(brand){
       modelEl.innerHTML = "";
       if(!brand || !VEHICLES[brand]){
         modelEl.disabled = true;
@@ -4865,66 +4967,22 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
         return;
       }
       modelEl.disabled = false;
-      modelEl.innerHTML = '<option value="">Vyber model / platformu</option>';
+      modelEl.innerHTML = '<option value="">Vyber model</option>';
       VEHICLES[brand].forEach(item => {
         const opt = document.createElement('option');
         opt.value = item.value;
         opt.textContent = item.label;
         opt.dataset.query = item.query;
-        if(selectedValue && selectedValue === item.value) opt.selected = true;
         modelEl.appendChild(opt);
       });
     }
 
-    function getSelectedVehicle(){
+    function goToOffer(){
       const brand = brandEl.value;
       const model = modelEl.value;
-      const item = (VEHICLES[brand] || []).find(v => v.value === model) || null;
-      return { brand, model, item };
-    }
-
-    function updateReadout(){
-      const { brand, item } = getSelectedVehicle();
-      const strong = readout.querySelector('strong') || document.createElement('strong');
-      if(!strong.parentNode) readout.appendChild(strong);
-      if(brand && item){
-        strong.textContent = `${BRAND_LABELS[brand]} ${item.label}`;
-        goBtn.disabled = false;
-      } else {
-        strong.textContent = 'Žiadna platforma nevybraná';
-        goBtn.disabled = true;
-      }
-      [...chipsWrap.querySelectorAll('.rf-chip')].forEach(chip => {
-        const active = chip.dataset.brand === brand && chip.dataset.model === (item?.value || '');
-        chip.classList.toggle('is-active', active);
-      });
-    }
-
-    function buildQuickChips(){
-      const quick = [];
-      Object.entries(VEHICLES).forEach(([brand, models]) => {
-        models.filter(m => m.quick).forEach(m => quick.push({ brand, ...m }));
-      });
-      quick.slice(0,8).forEach(item => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'rf-chip';
-        btn.dataset.brand = item.brand;
-        btn.dataset.model = item.value;
-        btn.textContent = `${BRAND_LABELS[item.brand]} ${item.label}`;
-        btn.addEventListener('click', () => {
-          brandEl.value = item.brand;
-          renderModels(item.brand, item.value);
-          modelEl.value = item.value;
-          updateReadout();
-        });
-        chipsWrap.appendChild(btn);
-      });
-    }
-
-    function goToOffer(){
-      const { brand, item, model } = getSelectedVehicle();
+      const item = (VEHICLES[brand] || []).find(v => v.value === model);
       if(!brand || !item) return;
+
       const payload = {
         brand,
         brandLabel: BRAND_LABELS[brand],
@@ -4933,7 +4991,9 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
         query: item.query,
         car: `${brand}-${model}`
       };
+
       try { localStorage.setItem('racemVehicleFilter', JSON.stringify(payload)); } catch(e) {}
+
       const url = new URL('ponuka.html', window.location.href);
       url.searchParams.set('car', payload.car);
       url.searchParams.set('brand', payload.brand);
@@ -4943,15 +5003,15 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     }
 
     brandEl.addEventListener('change', () => {
-      renderModels(brandEl.value, '');
-      updateReadout();
+      renderModels(brandEl.value);
     });
-    modelEl.addEventListener('change', updateReadout);
-    goBtn.addEventListener('click', goToOffer);
+
+    modelEl.addEventListener('change', () => {
+      if(modelEl.value) goToOffer();
+    });
 
     fillBrands();
-    buildQuickChips();
-    updateReadout();
+    renderModels('');
   })();
   </script>
 
