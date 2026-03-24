@@ -2996,7 +2996,7 @@ function resolveLocalProductUrl(product){
     'RACEM': 'products-racem',
     'CYBUL': 'products-cybul',
     'SWAGIER': 'products-swagier',
-    'SFXLA': 'products-sfxla',
+    'SFXLA': 'products/generated',
     'CNC71': 'products-cnc71'
   };
   const folder = folderMap[source] || 'products';
@@ -3241,15 +3241,15 @@ function renderCards(list){
         </div>
       </div>`;
     card.addEventListener('click', (e)=>{
-  if(e.target.closest('button,a,[data-card-action],[data-open-detail]')) return;
-  openProductPageById(p.id);
-});
-card.addEventListener('keydown', (e)=>{
-  if((e.key==='Enter' || e.key===' ') && !e.target.closest('button,a,input,select,textarea')){
-    e.preventDefault();
-    openProductPageById(p.id);
-  }
-});
+      if(e.target.closest('button,a,[data-card-action],[data-open-detail]')) return;
+      if(!openProductPageById(p.id)) openModal(p.id);
+    });
+    card.addEventListener('keydown', (e)=>{
+      if((e.key==='Enter' || e.key===' ') && !e.target.closest('button,a,input,select,textarea')){
+        e.preventDefault();
+        if(!openProductPageById(p.id)) openModal(p.id);
+      }
+    });
     el.grid.appendChild(card);
   });
   if(el.loadMoreBtn){
@@ -3271,22 +3271,15 @@ function renderRecommended(){
     const action = hasCheckout ? 'cart' : 'detail-page';
     const actionLabel = hasCheckout ? t('addCartBtn') : t('detailBtn');
     card.innerHTML=`
-      <div class="recoMedia" onclick="openProductPageById('${escapeHtml(p.id)}')">
-  ${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}
-</div>
-<h3 class="recoTitle" onclick="openProductPageById('${escapeHtml(p.id)}')">
-  ${escapeHtml(productTitle(p))}
-</h3>
-<div class="recoMeta">${escapeHtml(productDesc(p))}</div>
-<div class="recoBottom">
-  <div class="priceBlock">
-    <div class="muted">${escapeHtml(t('priceFrom'))}</div>
-    <div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div>
-  </div>
-  <div class="recoActions">
-    <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
-  </div>
-</div>
+      <div class="recoMedia" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${img?`<img src="${escapeHtml(img)}" alt="${escapeHtml(productTitle(p))}" loading="lazy" decoding="async">`:''}</div>
+      <h3 class="recoTitle" data-open-detail="${escapeHtml(p.id)}" onclick="openProductDetail('${escapeHtml(p.id)}')">${escapeHtml(productTitle(p))}</h3>
+      <div class="recoMeta">${escapeHtml(productDesc(p))}</div>
+      <div class="recoBottom">
+        <div class="priceBlock"><div class="muted">${escapeHtml(t('priceFrom'))}</div><div class="price">${p.price ? escapeHtml(euro(p.price)) : escapeHtml(t('unavailable'))}</div></div>
+        <div class="recoActions">
+          <button class="${hasCheckout ? 'btn btn--red' : 'btn'}" type="button" data-card-action="${action}" data-product-id="${escapeHtml(p.id)}">${escapeHtml(actionLabel)}</button>
+        </div>
+      </div>`;
     el.recommendedGrid.appendChild(card);
   });
 }
@@ -3351,7 +3344,7 @@ function renderMeta(list){
 function openProductDetail(id){
   try{
     if(!id) return;
-    openModal(String(id));
+    if(!openProductPageById(String(id))) openModal(String(id));
   }catch(err){
     console.error('DETAIL OPEN ERROR', err, id);
   }
