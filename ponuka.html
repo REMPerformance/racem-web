@@ -2982,6 +2982,7 @@ function inferSource(product, fallback){
   if(txt.includes('cybul')) return 'CYBUL';
   if(txt.includes('swagier')) return 'SWAGIER';
   if(txt.includes('cnc71')) return 'CNC71';
+  if(txt.includes('racem')) return 'RACEM';
   if(txt.includes('sfxla')) return 'SFXLA';
   return fallback || 'RACEM';
 }
@@ -2992,10 +2993,10 @@ function resolveLocalProductUrl(product){
   if(explicit) return explicit;
   const source = String(product?.__sourceLabel || product?.source || '').trim().toUpperCase();
   const folderMap = {
-    'RACEM': 'products',
+    'RACEM': 'products-racem',
     'CYBUL': 'products-cybul',
     'SWAGIER': 'products-swagier',
-    'SFXLA': 'products-cnc71',
+    'SFXLA': 'products-sfxla',
     'CNC71': 'products-cnc71'
   };
   const folder = folderMap[source] || 'products';
