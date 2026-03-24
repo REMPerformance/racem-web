@@ -15,8 +15,8 @@
 <meta content="#b31f24" name="theme-color"/>
 <link href="https://racem.sk/" rel="canonical"/>
 <!-- ✅ Open Graph -->
-<meta content="website" property="og:type">
-<meta content="RACEM" property="og:site_name"/>
+<meta content="website" property="og:type"/>
+<meta content="RACEM" property="og:site_name">
 <meta content="sk_SK" property="og:locale"/>
 <meta content="RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity" property="og:title"/>
 <meta content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor &amp; podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance." property="og:description"/>
@@ -5554,6 +5554,21 @@ document.addEventListener('DOMContentLoaded', function(){
 
     if (this.value === 'bmw') {
       placeholder.innerHTML = '<img src="main/placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
+    } else {
+      placeholder.innerHTML = '';
+    }
+  });
+});
+</script><script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandSelect = document.getElementById('rfBrand');
+  const placeholder = document.getElementById('rfBrandSpot');
+
+  if(!brandSelect || !placeholder) return;
+
+  brandSelect.addEventListener('change', function () {
+    if (this.value === 'bmw') {
+      placeholder.innerHTML = '<img src="placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
     } else {
       placeholder.innerHTML = '';
     }
