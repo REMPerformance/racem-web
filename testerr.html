@@ -3810,6 +3810,24 @@ html, body{
   letter-spacing:.22em;
   font-size:15px;
 }
+.rf-brand-placeholder.has-media{
+  width:100%;
+  max-width:none;
+  aspect-ratio:auto;
+  height:100%;
+  padding:0;
+  gap:0;
+  border-style:solid;
+  border-color:rgba(255,255,255,0.08);
+  background:#050505;
+  overflow:hidden;
+}
+.rf-brand-media-el{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
 .rf-brand-overlay{
   display:flex;
   align-items:flex-end;
@@ -4147,7 +4165,23 @@ html, body{
 <div class="rf-search-wrap" id="rfSearchWrap">
 <button class="rf-search-btn" id="rfSearchBtn" type="button">HĽADAŤ</button>
 </div>
-<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"><div style="width:100%;height:220px;display:flex;align-items:center;justify-content:center;color:#888;font-weight:600;letter-spacing:2px;">PLACEHOLDER</div></div>
+<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot">
+<div class="rf-brand-media">
+<div class="rf-brand-placeholder" id="rfBrandPlaceholder">
+<strong>RACEM VISUAL SLOT</strong>
+<span>Sem pôjde logo, GIF alebo video vybranej značky</span>
+</div>
+</div>
+<div class="rf-brand-overlay">
+<div class="rf-brand-chip"><i></i><span id="rfBrandChipText">Najprv vyber značku</span></div>
+<div class="rf-brand-card" id="rfBrandCard">
+<div class="rf-brand-eyebrow">RACEM visual</div>
+<div class="rf-brand-logoMark" id="rfBrandLogoMark">--</div>
+<div class="rf-brand-name" id="rfBrandName">Čaká na výber</div>
+<div class="rf-brand-sub" id="rfBrandSub">Po výbere značky sa sem načíta logo alebo GIF z priečinka main/placeholder/.</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -5160,14 +5194,30 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       if(searchBtnEl) searchBtnEl.disabled = !isReady;
     }
 
+    function getBrandMediaPath(brand){
+      return brand ? `main/placeholder/${brand}.gif` : 'main/placeholder/default.gif';
+    }
+
+    function renderBrandPlaceholder(brand, meta){
+      if(!brandPlaceholderEl) return;
+      if(!brand || !meta){
+        brandPlaceholderEl.classList.remove('has-media');
+        brandPlaceholderEl.innerHTML = '<strong>RACEM VISUAL SLOT</strong><span>Sem pôjde logo, GIF alebo video vybranej značky</span>';
+        return;
+      }
+      const mediaSrc = getBrandMediaPath(brand);
+      brandPlaceholderEl.classList.add('has-media');
+      brandPlaceholderEl.innerHTML = `<img class="rf-brand-media-el" src="${mediaSrc}" alt="${meta.label} visual" loading="lazy" onerror="this.onerror=null;this.src='main/placeholder/default.gif';">`;
+    }
+
     function updateBrandVisual(brand){
       if(!brand || !BRAND_META[brand]){
         if(brandSpotEl) brandSpotEl.classList.remove('is-active');
         if(brandChipTextEl) brandChipTextEl.textContent = 'Najprv vyber značku';
         if(brandLogoMarkEl) brandLogoMarkEl.textContent = '--';
         if(brandNameEl) brandNameEl.textContent = 'Čaká na výber';
-        if(brandSubEl) brandSubEl.textContent = 'Po výbere značky sa tu vysunie RACEM placeholder pre logo alebo video.';
-        if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = '<strong>RACEM VISUAL SLOT</strong><span>Sem pôjde logo, foto alebo video vybraného výrobcu</span>';
+        if(brandSubEl) brandSubEl.textContent = 'Po výbere značky sa sem načíta logo alebo GIF z priečinka main/placeholder/.';
+        renderBrandPlaceholder('', null);
         return;
       }
       const meta = BRAND_META[brand];
@@ -5175,8 +5225,8 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       if(brandChipTextEl) brandChipTextEl.textContent = `${meta.label} pripravené`;
       if(brandLogoMarkEl) brandLogoMarkEl.textContent = meta.mark;
       if(brandNameEl) brandNameEl.textContent = meta.label;
-      if(brandSubEl) brandSubEl.textContent = meta.text;
-      if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = `<strong>${meta.label}</strong><span>${meta.visual}</span>`;
+      if(brandSubEl) brandSubEl.textContent = `${meta.text} Visual: ${getBrandMediaPath(brand)}`;
+      renderBrandPlaceholder(brand, meta);
     }
 
     function fillBrands(){
