@@ -686,6 +686,38 @@
   .brand-text--logo span{font-size:.62rem; letter-spacing:.22em}
 }
 
+
+.hero-track{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 28px;
+  z-index:2;
+}
+.hero-track svg{
+  width:88%;
+  height:88%;
+  display:block;
+}
+
+
+.hero-track{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px 34px;
+  z-index:2;
+}
+.hero-track svg{
+  width:72%;
+  height:92%;
+  display:block;
+}
+
 </style>
 </head>
 <body>
@@ -727,35 +759,92 @@
           <div class="hero-visual">
             <div class="hero-lines"></div>
             <div class="hero-blur"></div>
-            <div class="hero-track">
-              <svg viewBox="0 0 900 900" aria-hidden="true">
-                <defs>
-                  <linearGradient id="trackRed" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#ff4b52"/>
-                    <stop offset="45%" stop-color="#ff3138"/>
-                    <stop offset="100%" stop-color="#b31f24"/>
-                  </linearGradient>
-                  <filter id="trackSoftGlow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="12" result="blur"/>
-                  </filter>
-                </defs>
-                <path d="M156 664 C108 590,116 474,176 384 C248 276,404 218,544 236 C666 252,770 320,808 412 C840 490,818 584,746 648 C664 722,522 758,374 746 C276 738,198 712,156 664Z"
-                      fill="none" stroke="#ff3138" stroke-width="54" opacity=".14" filter="url(#trackSoftGlow)" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M156 664 C108 590,116 474,176 384 C248 276,404 218,544 236 C666 252,770 320,808 412 C840 490,818 584,746 648 C664 722,522 758,374 746 C276 738,198 712,156 664Z"
-                      fill="none" stroke="url(#trackRed)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="22 18"/>
-                <path d="M248 618 C214 566,220 486,266 420 C324 338,430 298,536 312 C618 322,684 364,710 426 C732 480,718 552,662 602 C600 656,494 682,386 674 C320 670,272 652,248 618Z"
-                      fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4" stroke-dasharray="4 12" stroke-linecap="round"/>
-                <circle cx="178" cy="386" r="8" fill="#ff3138"/>
-                <circle cx="544" cy="236" r="8" fill="#ff3138"/>
-                <circle cx="808" cy="412" r="8" fill="#ff3138"/>
-                <circle cx="746" cy="648" r="8" fill="#ff3138"/>
-                <circle cx="374" cy="746" r="8" fill="#ff3138"/>
-                <path d="M232 338 L278 372" stroke="rgba(255,255,255,.14)" stroke-width="3"/>
-                <path d="M680 309 L650 360" stroke="rgba(255,255,255,.14)" stroke-width="3"/>
-                <path d="M760 566 L700 550" stroke="rgba(255,255,255,.14)" stroke-width="3"/>
-              </svg>
-            </div>
-          </div></div></div>
+            
+
+
+<div class="hero-track">
+  <svg viewBox="0 0 700 900" aria-hidden="true">
+    <defs>
+      <linearGradient id="ringLine" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="55%" stop-color="#f4f4f4"/>
+        <stop offset="100%" stop-color="#d8d8d8"/>
+      </linearGradient>
+      <filter id="ringGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="8" result="b"/>
+      </filter>
+      <path id="trackPathMain" d="M356 58
+             C316 72,280 88,255 118
+             C232 146,232 178,201 205
+             C166 236,144 268,154 312
+             C164 356,144 392,120 430
+             C96 468,90 516,112 558
+             C136 604,172 634,209 660
+             C248 688,276 710,290 742
+             C304 774,306 812,322 844
+             C334 868,346 886,356 902
+             C370 884,378 858,386 830
+             C397 792,416 756,446 728
+             C476 700,516 680,544 648
+             C574 614,588 574,582 532
+             C576 488,554 452,540 412
+             C526 374,532 334,558 296
+             C584 258,610 224,610 184
+             C610 146,588 116,556 96
+             C520 74,478 72,440 82
+             C410 90,388 86,356 58Z"/>
+    </defs>
+
+    <use href="#trackPathMain"
+         fill="none"
+         stroke="#ff3138"
+         stroke-opacity=".12"
+         stroke-width="22"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         filter="url(#ringGlow)"/>
+
+    <use href="#trackPathMain"
+         fill="none"
+         stroke="url(#ringLine)"
+         stroke-width="7"
+         stroke-linecap="round"
+         stroke-linejoin="round"/>
+
+    <path d="M392 112
+             C358 122,324 136,300 160
+             C276 184,270 212,244 238
+             C216 266,196 294,202 332
+             C208 370,194 402,176 436
+             C158 470,156 512,174 548
+             C194 588,224 614,256 638
+             C290 664,318 690,334 722
+             C346 748,350 780,358 810
+             C366 786,378 756,396 728
+             C416 694,444 666,476 642
+             C506 620,532 594,536 560
+             C540 526,528 494,516 462
+             C504 430,498 396,504 360
+             C512 320,532 286,554 254"
+          fill="none"
+          stroke="rgba(255,255,255,.25)"
+          stroke-width="2"
+          stroke-dasharray="4 10"
+          stroke-linecap="round"/>
+
+    <g transform="translate(358 846)">
+      <rect x="-7" y="-7" width="14" height="14" rx="2" fill="#0a0a0a" stroke="#ffffff" stroke-width="1.2"/>
+      <path d="M-7 -7 H0 V0 H-7Z M0 0 H7 V7 H0Z M0 -7 H7 V0 H0Z M-7 0 H0 V7 H-7Z" fill="#ffffff"/>
+    </g>
+
+    <rect id="trackRunner" x="-6" y="-3" width="12" height="6" rx="1.5" fill="#ff3138">
+      <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#trackPathMain"/>
+      </animateMotion>
+    </rect>
+  </svg>
+</div>
+</div></div></div>
           </div>
         </div>
       </section>
