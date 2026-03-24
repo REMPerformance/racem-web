@@ -16,8 +16,8 @@
 <link href="https://racem.sk/" rel="canonical"/>
 <!-- ✅ Open Graph -->
 <meta content="website" property="og:type"/>
-<meta content="RACEM" property="og:site_name">
-<meta content="sk_SK" property="og:locale"/>
+<meta content="RACEM" property="og:site_name"/>
+<meta content="sk_SK" property="og:locale">
 <meta content="RACEM | Bodykity, certifikované aero, turbo &amp; kompresor kity" property="og:title"/>
 <meta content="Bodykity, certifikované aero (TÜV), športové a závodné diely, motor &amp; podvozok, turbo/kompresor kity, hviezdne stropy. RACEM – REM Performance." property="og:description"/>
 <meta content="https://racem.sk/" property="og:url"/>
@@ -4132,9 +4132,7 @@ html, body{
 <div class="rf-grid">
 <label class="rf-field">
 <span class="rf-label">Značka</span>
-<select aria-label="Vyber značku auta" class="rf-select" id="rfBrand">
-<option value="">Vyber značku</option>
-</select>
+<select aria-label="Vyber značku auta" class="rf-select" id="rfBrand"><option value="">Vyber značku</option><option value="bmw">BMW</option><option value="audi">Audi</option><option value="vw">Volkswagen</option><option value="mercedes">Mercedes</option><option value="nissan">Nissan</option><option value="mazda">Mazda</option></select>
 </label>
 <label class="rf-field">
 <span class="rf-label">Model</span>
@@ -5569,6 +5567,22 @@ document.addEventListener('DOMContentLoaded', function(){
   brandSelect.addEventListener('change', function () {
     if (this.value === 'bmw') {
       placeholder.innerHTML = '<img src="placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
+    } else {
+      placeholder.innerHTML = '';
+    }
+  });
+});
+</script><script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandSelect = document.getElementById('rfBrand');
+  const placeholder = document.getElementById('rfBrandSpot');
+
+  if(!brandSelect || !placeholder) return;
+
+  brandSelect.addEventListener('change', function () {
+    const brand = this.value;
+    if (brand) {
+      placeholder.innerHTML = '<img src="placeholder/' + brand + '.gif" style="width:100%;height:100%;object-fit:contain;">';
     } else {
       placeholder.innerHTML = '';
     }
