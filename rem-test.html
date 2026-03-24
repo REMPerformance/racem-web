@@ -58,53 +58,6 @@
     .hero-car,
     .hero-lines,
     .hero-blur,
-    
-    .series-car-art::before,
-    .series-car-art::after{
-      content:"";
-      position:absolute;
-      left:-22%;
-      right:-8%;
-      top:16%;
-      height:34%;
-      pointer-events:none;
-      z-index:1;
-      opacity:0;
-      mix-blend-mode:screen;
-      filter:blur(6px);
-      transition:opacity .35s ease;
-    }
-    .series-car-art::before{
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,0) 0 14px,
-          rgba(255,255,255,.085) 14px 24px,
-          rgba(255,255,255,0) 24px 42px
-        );
-      mask-image:linear-gradient(90deg, transparent 0%, rgba(0,0,0,.8) 18%, rgba(0,0,0,1) 55%, transparent 100%);
-      -webkit-mask-image:linear-gradient(90deg, transparent 0%, rgba(0,0,0,.8) 18%, rgba(0,0,0,1) 55%, transparent 100%);
-    }
-    .series-car-art::after{
-      top:24%;
-      height:20%;
-      background:
-        linear-gradient(90deg, transparent 0%, rgba(255,255,255,.05) 18%, rgba(255,255,255,.15) 46%, transparent 100%);
-      mask-image:linear-gradient(90deg, transparent 0%, #000 25%, #000 72%, transparent 100%);
-      -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 25%, #000 72%, transparent 100%);
-      filter:blur(12px);
-    }
-    .series-card:hover .series-car-art::before,
-    .series-card:hover .series-car-art::after{opacity:1}
-    .series-card.entry .series-car-art::before,
-    .series-card.entry .series-car-art::after{animation:airflow 3.2s linear infinite}
-    .series-card.street .series-car-art::before,
-    .series-card.street .series-car-art::after{animation:airflow 2.25s linear infinite}
-    .series-card.underground .series-car-art::before,
-    .series-card.underground .series-car-art::after{animation:airflow 1.55s linear infinite}
-    .series-card.pro .series-car-art::before,
-    .series-card.pro .series-car-art::after{animation:airflow .9s linear infinite}
-
     .section-glow{pointer-events:none}
 
     .top-beam{
@@ -125,7 +78,7 @@
         linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
       background-size:70px 70px;
-      mask-image:radial-gradient(circle at center, black 45%, transparent 88%);
+      
       opacity:.12;
       z-index:0;
     }
@@ -381,7 +334,7 @@
     }
     .series-card:hover .series-car-art img,
     .series-card:hover .series-car-art svg{
-      transform:translateY(-14px) scale(1.01);
+      transform:translateY(-16px) scale(1.01);
       filter:drop-shadow(0 28px 56px rgba(0,0,0,.82)) drop-shadow(0 0 34px rgba(179,31,36,.28));
       opacity:1;
     }
@@ -389,13 +342,12 @@
     .series-bg,
     .series-overlay,
     .series-track,
-    .series-car-art{display:flex; align-items:center; justify-content:center; opacity:.98; transform:translateY(-6px); overflow:hidden; mask-image:linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%); -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%)}
+    .series-car-art{position:absolute; inset:0}
     .series-bg{
       background:
-        radial-gradient(circle at 78% 12%, rgba(255,255,255,.10), transparent 18%),
-        radial-gradient(circle at 18% 76%, rgba(179,31,36,.22), transparent 24%),
-        linear-gradient(180deg, rgba(16,16,18,.18), rgba(0,0,0,.24)),
-        linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.18) 60%);
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.1), transparent 18%),
+        radial-gradient(circle at 20% 88%, rgba(179,31,36,.24), transparent 18%),
+        linear-gradient(160deg, rgba(255,255,255,.06), rgba(0,0,0,.16) 60%);
       opacity:1;
     }
     .series-track{
@@ -405,32 +357,18 @@
       opacity:.8;
       mix-blend-mode:screen;
     }
-    .series-overlay{background:linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.12) 36%, rgba(0,0,0,.66) 68%, rgba(0,0,0,.94) 100%)}
+    .series-overlay{background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.85) 100%)}
 
-    .series-card.entry{
-      background:
-        radial-gradient(circle at 18% 20%, rgba(255,255,255,.08), transparent 20%),
-        linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01));
-    }
-    .series-card.street{
-      background:
-        radial-gradient(circle at 72% 18%, rgba(255,49,56,.12), transparent 22%),
-        linear-gradient(180deg, rgba(179,31,36,.12), rgba(255,255,255,.012));
-    }
+    .series-card.entry{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));}
+    .series-card.street{background:linear-gradient(180deg, rgba(179,31,36,.13), rgba(255,255,255,.015));}
     .series-card.underground{
-      background:
-        radial-gradient(circle at 78% 18%, rgba(255,255,255,.05), transparent 18%),
-        radial-gradient(circle at 24% 72%, rgba(179,31,36,.10), transparent 18%),
-        linear-gradient(180deg, rgba(18,18,20,.22), rgba(0,0,0,.18));
-    }
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+}
     .series-card.pro{
-      background:
-        radial-gradient(circle at 78% 15%, rgba(255,255,255,.08), transparent 18%),
-        radial-gradient(circle at 20% 75%, rgba(255,49,56,.16), transparent 20%),
-        linear-gradient(180deg, rgba(255,49,56,.14), rgba(255,255,255,.015));
+      background:linear-gradient(180deg, rgba(255,49,56,.18), rgba(255,255,255,.02));
     }
 
-    .series-content{position:relative; z-index:4; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding-bottom:8px}
+    .series-content{position:absolute; bottom:20px; left:20px; right:20px; z-index:5; display:flex; flex-direction:column; gap:6px}
     .series-top{display:flex; justify-content:space-between; gap:12px; align-items:start}
     .series-tag{
       display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px;
@@ -438,12 +376,10 @@
     }
     .series-num{font-size:.85rem; letter-spacing:.22em; color:rgba(255,255,255,.48)}
 
-    .series-title{margin:0; font-size:clamp(2.2rem, 3.2vw, 3.9rem); line-height:.88; text-transform:uppercase; letter-spacing:-.055em; color:#ffffff; text-shadow:0 10px 28px rgba(0,0,0,.7), 0 2px 10px rgba(0,0,0,.85)}
+    .series-title{margin:0; font-size:clamp(2.4rem,3.2vw,3.6rem); line-height:.9; text-transform:uppercase; letter-spacing:-.04em; color:#fff; text-shadow:0 0 20px rgba(0,0,0,.9), 0 6px 30px rgba(0,0,0,.8)}
     .series-sub{display:none}
-    .series-copy{margin-top:auto; position:relative; z-index:4}
 
-    .series-car-art{display:flex; align-items:center; justify-content:center; opacity:.98; transform:translateY(-6px); overflow:hidden; mask-image:linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%); -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 14%, #000 88%, transparent 100%)}
-    .series-car-art svg,.series-car-art img{position:relative; z-index:2; width:calc(115% - 5px); height:auto; display:block; transform:translateY(-8px) scale(.985); transition:transform .35s ease, filter .35s ease, opacity .35s ease; filter:drop-shadow(0 25px 50px rgba(0,0,0,.8)) drop-shadow(0 0 30px rgba(179,31,36,.22)); opacity:.99}
+    .series-car-art{display:flex; align-items:center; justify-content:center; opacity:.96; transform:translateY(8px); overflow:hidden;  -webkit- height:auto; display:block; transform:translateY(-10px) scale(.985); transition:transform .35s ease, filter .35s ease, opacity .35s ease; filter:drop-shadow(0 25px 50px rgba(0,0,0,.8)) drop-shadow(0 0 30px rgba(179,31,36,.22)); opacity:.98}
 
     .section-glow{
       position:absolute; width:420px;height:420px;border-radius:50%; filter:blur(42px); opacity:.28; z-index:0;
@@ -530,7 +466,6 @@
     @keyframes carFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
     @keyframes sweep{0%{transform:translateX(-4%)}50%{transform:translateX(4%)}100%{transform:translateX(-4%)}}
     @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    @keyframes airflow{0%{transform:translateX(-10%); opacity:0}12%{opacity:.6}50%{opacity:1}100%{transform:translateX(12%); opacity:0}}
 
     @media (max-width: 1200px){
       .hero-grid,.visual-grid,.footer-cta{grid-template-columns:1fr}
@@ -564,20 +499,8 @@
   display: block;
 
   /* FADE TOP + BOTTOM */
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0,0,0,1) 12%,
-    rgba(0,0,0,1) 88%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0,0,0,1) 12%,
-    rgba(0,0,0,1) 88%,
-    transparent 100%
-  );
+  
+  -webkit-
 }
   </style>
 </head>
@@ -660,10 +583,10 @@
           </div>
 
           <div class="series-grid">
-            <article class="series-card entry"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/entry-transparent.png" alt="entry"></div><div class="series-content"><div class="series-top"><span class="series-tag">01 / Entry</span><span class="series-num">START</span></div><div class="series-copy"><h3 class="series-title">Entry<br>Series</h3><p class="series-sub">Generický športiak v coupe štýle. Silueta už pôsobí reálne, stále jednoduchý setup.</p></div></div></article>
-<article class="series-card street"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/street-transparent.png" alt="street"></div><div class="series-content"><div class="series-top"><span class="series-tag">02 / Street</span><span class="series-num">ROAD</span></div><div class="series-copy"><h3 class="series-title">Street<br>Series</h3><p class="series-sub">Coupe štýl s menším krídlom a nižším stance. Už to čítaš ako reálne auto.</p></div></div></article>
-<article class="series-card underground"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/underground-transparent.png" alt="underground"></div><div class="series-content"><div class="series-top"><span class="series-tag">03 / Underground</span><span class="series-num">RAW</span></div><div class="series-copy"><h3 class="series-title">Underground<br>Series</h3><p class="series-sub">Veľké krídlo, znížené coupe, meet vibe a brutálne podsvietenie pod autom.</p></div></div></article>
-<article class="series-card pro"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/pro-transparent.png" alt="pro"></div><div class="series-content"><div class="series-top"><span class="series-tag">04 / Pro</span><span class="series-num">TRACK</span></div><div class="series-copy"><h3 class="series-title">Pro<br>Series</h3><p class="series-sub">Nabúchané GT auto. Dáva to viac zmysel ako reálna race silueta, nie len abstrakt.</p></div></div></article>
+            <article class="series-card entry"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/entry-transparent.png" alt="entry"></div><div class="series-content"><div class="series-top"><span class="series-tag">01 / Entry</span><span class="series-num">START</span></div><div><h3 class="series-title">Entry<br>Series</h3><p class="series-sub">Generický športiak v coupe štýle. Silueta už pôsobí reálne, stále jednoduchý setup.</p></div></div></article>
+<article class="series-card street"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/street-transparent.png" alt="street"></div><div class="series-content"><div class="series-top"><span class="series-tag">02 / Street</span><span class="series-num">ROAD</span></div><div><h3 class="series-title">Street<br>Series</h3><p class="series-sub">Coupe štýl s menším krídlom a nižším stance. Už to čítaš ako reálne auto.</p></div></div></article>
+<article class="series-card underground"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/underground-transparent.png" alt="underground"></div><div class="series-content"><div class="series-top"><span class="series-tag">03 / Underground</span><span class="series-num">RAW</span></div><div><h3 class="series-title">Underground<br>Series</h3><p class="series-sub">Veľké krídlo, znížené coupe, meet vibe a brutálne podsvietenie pod autom.</p></div></div></article>
+<article class="series-card pro"><div class="series-bg"></div><div class="series-track"></div><div class="series-overlay"></div><div class="series-car-art"><img src="remp-files/pro-transparent.png" alt="pro"></div><div class="series-content"><div class="series-top"><span class="series-tag">04 / Pro</span><span class="series-num">TRACK</span></div><div><h3 class="series-title">Pro<br>Series</h3><p class="series-sub">Nabúchané GT auto. Dáva to viac zmysel ako reálna race silueta, nie len abstrakt.</p></div></div></article>
           </div>
         </div>
       </section>
