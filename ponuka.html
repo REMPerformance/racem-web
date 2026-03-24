@@ -2978,20 +2978,27 @@ function sourceLabelFromUrl(url){
   return base.replace('.json','').toUpperCase() || 'RACEM';
 }
 function inferSource(product, fallback){
-  const txt = `${product.handle||''} ${product.title||''} ${product.productUrl||''}`.toLowerCase();
-  if(txt.includes('cybul')) return 'CYBUL';
-  if(txt.includes('swagier')) return 'SWAGIER';
-  if(txt.includes('cnc71')) return 'CNC71';
-  if(txt.includes('racem')) return 'RACEM';
-  if(txt.includes('sfxla')) return 'SFXLA';
-  return fallback || 'RACEM';
+  return String(
+    product?.__sourceLabel ||
+    product?.source ||
+    fallback ||
+    'RACEM'
+  ).trim().toUpperCase();
 }
+
 function resolveLocalProductUrl(product){
   const handle = String(product?.handle || '').trim();
   if(!handle) return '';
+
   const explicit = String(product?.localProductUrl || '').trim();
   if(explicit) return explicit;
-  const source = String(product?.__sourceLabel || product?.source || '').trim().toUpperCase();
+
+  const source = String(
+    product?.__sourceLabel ||
+    product?.source ||
+    'RACEM'
+  ).trim().toUpperCase();
+
   const folderMap = {
     'RACEM': 'products-racem',
     'CYBUL': 'products-cybul',
@@ -2999,6 +3006,7 @@ function resolveLocalProductUrl(product){
     'SFXLA': 'products/generated',
     'CNC71': 'products-cnc71'
   };
+
   const folder = folderMap[source] || 'products';
   return `./${folder}/${encodeURIComponent(handle)}.html`;
 }
@@ -3119,7 +3127,7 @@ function normalizeProduct(rawProduct, sourceLabel='RACEM'){
     stockStatus:rawProduct?.stockStatus || rawProduct?.status || '',
     productUrl:rawProduct?.productUrl || (rawProduct?.handle ? ('https://shop.racem.sk/products/' + rawProduct.handle) : ''),
     defaultVariantId:String(defaultVariant?.variantId || '').trim(),
-    __sourceLabel: inferSource(rawProduct, sourceLabel)
+    __sourceLabel: String(sourceLabel || 'RACEM').trim().toUpperCase()
   };
 }
 async function loadFeed(){
