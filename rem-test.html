@@ -359,52 +359,67 @@
     }
     .series-card:hover .series-car-art img,
     .series-card:hover .series-car-art svg{
-      transform:translateY(-16px) scale(1.01);
-      filter:drop-shadow(0 28px 56px rgba(0,0,0,.82)) drop-shadow(0 0 34px rgba(179,31,36,.28));
+      transform:translate3d(-50%,-10px,0) scale(1.035);
+      filter:drop-shadow(0 30px 58px rgba(0,0,0,.84)) drop-shadow(0 0 36px rgba(179,31,36,.26));
       opacity:1;
     }
 
     .series-bg,
     .series-overlay,
     .series-track,
-    .series-car-art{position:absolute; inset:0}
-    .series-bg{
-      background:
-        radial-gradient(circle at 80% 10%, rgba(255,255,255,.1), transparent 18%),
-        radial-gradient(circle at 20% 88%, rgba(179,31,36,.24), transparent 18%),
-        linear-gradient(160deg, rgba(255,255,255,.06), rgba(0,0,0,.16) 60%);
-      opacity:1;
+    .series-car-art{
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
     }
-    .series-track{
+    .series-car-art img,
+    .series-car-art svg{
+      position:absolute;
+      left:50%;
+      top:64px;
+      width:92%;
+      max-width:none;
+      height:auto;
+      display:block;
+      transform:translate3d(-50%,0,0) scale(1);
+      transform-origin:center center;
+      transition:transform .42s cubic-bezier(.22,.61,.36,1), filter .42s ease, opacity .32s ease;
+      filter:drop-shadow(0 24px 46px rgba(0,0,0,.78)) drop-shadow(0 0 26px rgba(179,31,36,.18));
+      opacity:.99;
+      will-change:transform,filter;
+    }
+
+    .series-card.entry:hover .series-car-art img{ animation:carHoverFloat 1.8s ease-in-out infinite; }
+    .series-card.street:hover .series-car-art img{ animation:carHoverFloat 1.25s ease-in-out infinite; }
+    .series-card.pro:hover .series-car-art img{ animation:carHoverFloat .9s ease-in-out infinite; }
+
+    .series-card.underground:hover .series-car-art img{
+      animation:undergroundGlitch .42s steps(2,end) infinite;
+      filter:
+        drop-shadow(0 26px 52px rgba(0,0,0,.9))
+        drop-shadow(-4px 0 0 rgba(255,40,40,.28))
+        drop-shadow(4px 0 0 rgba(255,255,255,.10));
+    }
+
+    .series-card.underground:hover .series-car-art::after{
+      content:"";
+      position:absolute;
+      inset:54px 34px auto 34px;
+      height:120px;
       background:
-        repeating-linear-gradient(135deg, transparent 0 24px, rgba(255,255,255,.04) 24px 25px),
-        linear-gradient(transparent 84%, rgba(255,255,255,.05) 85%, transparent 86%);
-      opacity:.8;
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,0) 0 10px,
+          rgba(255,255,255,.055) 10px 13px,
+          rgba(255,50,56,.10) 13px 16px,
+          rgba(255,255,255,0) 16px 24px
+        );
       mix-blend-mode:screen;
+      opacity:.95;
+      pointer-events:none;
+      animation:undergroundOverlay .28s steps(2,end) infinite;
     }
-    .series-overlay{background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.85) 100%)}
-
-    .series-card.entry{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));}
-    .series-card.street{background:linear-gradient(180deg, rgba(179,31,36,.13), rgba(255,255,255,.015));}
-    .series-card.underground{
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-}
-    .series-card.pro{
-      background:linear-gradient(180deg, rgba(255,49,56,.18), rgba(255,255,255,.02));
-    }
-
-    .series-content{position:absolute; bottom:24px; left:24px; right:24px; z-index:6; display:flex; flex-direction:column; gap:10px}
-    .series-top{display:flex; justify-content:space-between; gap:12px; align-items:start}
-    .series-tag{
-      display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px;
-      background:rgba(0,0,0,.34); border:1px solid rgba(255,255,255,.09); font-size:.68rem; text-transform:uppercase; letter-spacing:.22em;
-    }
-    .series-num{font-size:.85rem; letter-spacing:.22em; color:rgba(255,255,255,.48)}
-
-    .series-title{margin:0; font-size:clamp(3rem,4.5vw,4.8rem); line-height:.88; text-transform:uppercase; letter-spacing:-.05em; color:#fff; font-weight:900}
-    .series-sub{display:none}
-
-    .series-car-art{display:flex; align-items:center; justify-content:center; opacity:.96; transform:translateY(8px); overflow:hidden;  -webkit- height:auto; display:block; transform:translateY(-10px) scale(.985); transition:transform .35s ease, filter .35s ease, opacity .35s ease; filter:drop-shadow(0 25px 50px rgba(0,0,0,.8)) drop-shadow(0 0 30px rgba(179,31,36,.22)); opacity:.98}
 
     .section-glow{
       position:absolute; width:420px;height:420px;border-radius:50%; filter:blur(42px); opacity:.28; z-index:0;
@@ -491,6 +506,24 @@
     @keyframes carFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
     @keyframes sweep{0%{transform:translateX(-4%)}50%{transform:translateX(4%)}100%{transform:translateX(-4%)}}
     @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    @keyframes carHoverFloat{
+      0%,100%{transform:translate3d(-50%,0,0) scale(1.035)}
+      50%{transform:translate3d(-50%,-6px,0) scale(1.042)}
+    }
+    @keyframes undergroundGlitch{
+      0%{transform:translate3d(-50%,0,0) scale(1.03)}
+      20%{transform:translate3d(calc(-50% - 5px),-1px,0) scale(1.032)}
+      40%{transform:translate3d(calc(-50% + 4px),2px,0) scale(1.037)}
+      60%{transform:translate3d(calc(-50% - 3px),-2px,0) scale(1.028)}
+      80%{transform:translate3d(calc(-50% + 6px),1px,0) scale(1.04)}
+      100%{transform:translate3d(-50%,0,0) scale(1.03)}
+    }
+    @keyframes undergroundOverlay{
+      0%{transform:translateX(0); opacity:.18}
+      35%{transform:translateX(-2px); opacity:.55}
+      70%{transform:translateX(3px); opacity:.32}
+      100%{transform:translateX(0); opacity:.12}
+    }
 
     @media (max-width: 1200px){
       .hero-grid,.visual-grid,.footer-cta{grid-template-columns:1fr}
@@ -513,21 +546,56 @@
       .btn{min-width:unset; width:100%}
       .hero-actions{display:grid; grid-template-columns:1fr}
     }
-    .series-car-art {
-  position: relative;
-  overflow: hidden;
+
+/* === FIX: big titles, no subtext === */
+.series-sub{display:none !important;}
+
+.series-content{
+  position:absolute;
+  left:20px;
+  right:20px;
+  bottom:20px;
+  z-index:6;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  height:calc(100% - 40px);
 }
 
-.series-car-art img {
-  width: calc(115% - 5px);
-  height: auto;
-  display: block;
-
-  /* FADE TOP + BOTTOM */
-  
-  -webkit-
+.series-title{
+  margin:0;
+  font-size:clamp(3rem, 3.9vw, 4.8rem);
+  line-height:.86;
+  text-transform:uppercase;
+  letter-spacing:-.07em;
+  color:#fff;
+  font-weight:900;
+  text-shadow:0 8px 26px rgba(0,0,0,.78), 0 2px 10px rgba(0,0,0,.92);
+  max-width:100%;
 }
-  </style>
+
+.series-content > div:last-child{
+  margin-top:auto;
+}
+
+.series-card.underground .series-title{
+  font-size:clamp(2.4rem, 3.1vw, 3.8rem);
+  line-height:.84;
+  letter-spacing:-.075em;
+}
+
+/* stronger bottom gradient for readability */
+.series-overlay{
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,.14) 42%,
+    rgba(0,0,0,.62) 68%,
+    rgba(0,0,0,.94) 100%
+  );
+}
+
+</style>
 </head>
 <body>
   <div class="top-beam"></div>
