@@ -3603,7 +3603,7 @@ function quickBuyByProductId(id){ const raw=PRODUCT_BY_ID.get(id); if(!raw) retu
 function goCheckout(){ if(m.buy?.dataset.mode==='shop') return openShop(activeProduct); if(!activeVariant?.variantId) return; window.location.href = `https://shop.racem.sk/cart/${encodeURIComponent(String(activeVariant.variantId).trim())}:1`; }
 function addActiveVariantToCart(){ if(!activeProduct || !activeVariant?.variantId) return; addToCart(activeProduct, activeVariant, 1); closeModal(); showCartAddedToast(productTitle(activeProduct)); pulseCartBar(); }
 
-const CART_KEY='racem_cart_v2'; let CART=[];
+const CART_KEY='racem_cart'; let CART=[];
 function loadCart(){ try{ CART=JSON.parse(localStorage.getItem(CART_KEY)||'[]'); }catch(_){ CART=[]; } if(!Array.isArray(CART)) CART=[]; renderCartBar(); renderCartModal(); }
 function saveCart(){ try{ localStorage.setItem(CART_KEY, JSON.stringify(CART)); }catch(_){} renderCartBar(); renderCartModal(); }
 function cartCount(){ return CART.reduce((s,i)=>s + Math.max(1, Number(i.qty||1)),0); }
@@ -3626,6 +3626,7 @@ document.getElementById('cartBarOpen')?.addEventListener('click', openCartModal)
 function renderAll(){ applyTranslations(); buildBrandSelect(); buildPlatformSelect(); buildSourceSelect(); buildTagSelect(); buildChips(); buildFeedChips(); const list=applyFilters(); renderCards(list); renderRecommended(); renderMeta(list); loadCart(); }
 function syncStickyOffsets(){ const header=document.querySelector('header'); if(!header) return; const root=document.documentElement; const rect=header.getBoundingClientRect(); const top=Math.max(0, Math.round(rect.top)); const h=Math.round(header.offsetHeight || rect.height || 92); root.style.setProperty('--header-offset', top + 'px'); root.style.setProperty('--header-h', h + 'px'); root.style.setProperty('--cart-top', `calc(${top}px + ${h}px + 10px)`); }
 window.addEventListener('resize', syncStickyOffsets); window.addEventListener('load', syncStickyOffsets);
+window.addEventListener('storage', (e)=>{ if(e.key===CART_KEY){ loadCart(); } });
 window.openProductDetail = function(id){ if(id) openModal(String(id)); };
 window.openDetail = window.openProductDetail;
 window.addProductToCart = function(id){
