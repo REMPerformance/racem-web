@@ -5589,5 +5589,44 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 });
-</script></body>
+</script>
+<script>
+const brandMedia = {
+  "audi": "main/placeholder/audi.gif",
+  "bmw": "main/placeholder/bmw.gif",
+  "mazda": "main/placeholder/mazda.gif",
+  "mercedes": "main/placeholder/mercedes.gif",
+  "nissan": "main/placeholder/nissan.gif",
+  "porsche": "main/placeholder/porsche.gif",
+  "seat": "main/placeholder/seat.gif",
+  "skoda": "main/placeholder/skoda.gif",
+  "toyota": "main/placeholder/toyota.gif",
+  "volkswagen": "main/placeholder/volkswagen.gif",
+
+  "renault": "main/placeholder/renault.png",
+  "peugeot": "main/placeholder/peugeot.png",
+  "kia": "main/placeholder/kia.png",
+  "hyundai": "main/placeholder/hyundai.png",
+  "lexus": "main/placeholder/lexus.png",
+  "subaru": "main/placeholder/subaru.png",
+  "honda": "main/placeholder/honda.png",
+  "ford": "main/placeholder/ford.png",
+  "mitsubishi": "main/placeholder/mitsubishi.png"
+};
+
+function updateBrandVisual(brand) {
+  const placeholder = document.getElementById("brand-visual");
+  if (!placeholder) return;
+
+  const key = brand.toLowerCase();
+
+  if (brandMedia[key]) {
+    placeholder.innerHTML = `<img src="${brandMedia[key]}" style="width:100%;height:100%;object-fit:contain;" />`;
+  } else {
+    placeholder.innerHTML = "";
+  }
+}
+</script>
+
+</body>
 </html>
