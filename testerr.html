@@ -4037,51 +4037,11 @@ html, body{
 }
 
 
-/* ===== BRAND VISUAL PLACEHOLDER ===== */
-.rf-brand-spot{
-  position: relative;
-  width: 100%;
-  min-height: 220px;
-  margin-top: 18px;
-  border-radius: 18px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(179,31,36,0.16), transparent 35%),
-    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 35%),
-    linear-gradient(180deg, rgba(15,15,15,0.96), rgba(8,8,8,0.92));
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.38);
-}
-.rf-brand-spot::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 34px);
-  opacity:.28;
-}
-.rf-brand-spot img{
-  position: relative;
-  z-index: 1;
-  display:block;
+.rf-brand-placeholder img{
   width:100%;
-  height:220px;
-  object-fit: contain;
-  padding: 18px;
-}
-.rf-brand-spot.is-empty{
-  min-height: 0;
-  height: 0;
-  margin-top: 0;
-  border-width: 0;
-  box-shadow: none;
-  background: transparent;
-  overflow: hidden;
-}
-@media (max-width: 980px){
-  .rf-brand-spot img{ height: 180px; }
+  height:100%;
+  object-fit:contain;
+  display:block;
 }
 
 </style>
@@ -4194,7 +4154,7 @@ html, body{
 <div class="rf-search-wrap" id="rfSearchWrap">
 <button class="rf-search-btn" id="rfSearchBtn" type="button">HĽADAŤ</button>
 </div>
-<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"></div>
+<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"><div style="width:100%;height:220px;display:flex;align-items:center;justify-content:center;color:#888;font-weight:600;letter-spacing:2px;">PLACEHOLDER</div></div>
 </div>
 </div>
 </div>
@@ -5207,6 +5167,63 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       if(searchBtnEl) searchBtnEl.disabled = !isReady;
     }
 
+    const BRAND_MEDIA = {
+      bmw: ["./bmw.gif","bmw.gif","./placeholder/bmw.gif","placeholder/bmw.gif","./main/placeholder/bmw.gif","main/placeholder/bmw.gif","/placeholder/bmw.gif"],
+      audi: ["./audi.gif","audi.gif","./placeholder/audi.gif","placeholder/audi.gif","./main/placeholder/audi.gif","main/placeholder/audi.gif","/placeholder/audi.gif"],
+      volkswagen: ["./volkswagen.gif","volkswagen.gif","./placeholder/volkswagen.gif","placeholder/volkswagen.gif","./main/placeholder/volkswagen.gif","main/placeholder/volkswagen.gif","/placeholder/volkswagen.gif"],
+      mercedes: ["./mercedes.gif","mercedes.gif","./placeholder/mercedes.gif","placeholder/mercedes.gif","./main/placeholder/mercedes.gif","main/placeholder/mercedes.gif","/placeholder/mercedes.gif"],
+      mazda: ["./mazda.gif","mazda.gif","./placeholder/mazda.gif","placeholder/mazda.gif","./main/placeholder/mazda.gif","main/placeholder/mazda.gif","/placeholder/mazda.gif"],
+      nissan: ["./nissan.gif","nissan.gif","./placeholder/nissan.gif","placeholder/nissan.gif","./main/placeholder/nissan.gif","main/placeholder/nissan.gif","/placeholder/nissan.gif"],
+      skoda: ["./skoda.gif","skoda.gif","./placeholder/skoda.gif","placeholder/skoda.gif","./main/placeholder/skoda.gif","main/placeholder/skoda.gif","/placeholder/skoda.gif"],
+      seat: ["./seat.gif","seat.gif","./placeholder/seat.gif","placeholder/seat.gif","./main/placeholder/seat.gif","main/placeholder/seat.gif","/placeholder/seat.gif"],
+      toyota: ["./toyota.gif","toyota.gif","./placeholder/toyota.gif","placeholder/toyota.gif","./main/placeholder/toyota.gif","main/placeholder/toyota.gif","/placeholder/toyota.gif"],
+      porsche: ["./porsche.gif","porsche.gif","./placeholder/porsche.gif","placeholder/porsche.gif","./main/placeholder/porsche.gif","main/placeholder/porsche.gif","/placeholder/porsche.gif"],
+
+      renault: ["./Renault.png","Renault.png","./placeholder/Renault.png","placeholder/Renault.png","./main/placeholder/Renault.png","main/placeholder/Renault.png","/placeholder/Renault.png"],
+      peugeot: ["./peugeot.png","peugeot.png","./placeholder/peugeot.png","placeholder/peugeot.png","./main/placeholder/peugeot.png","main/placeholder/peugeot.png","/placeholder/peugeot.png"],
+      kia: ["./kia.png","kia.png","./placeholder/kia.png","placeholder/kia.png","./main/placeholder/kia.png","main/placeholder/kia.png","/placeholder/kia.png"],
+      hyundai: ["./hyundai.png","hyundai.png","./placeholder/hyundai.png","placeholder/hyundai.png","./main/placeholder/hyundai.png","main/placeholder/hyundai.png","/placeholder/hyundai.png"],
+      lexus: ["./lexus.png","lexus.png","./placeholder/lexus.png","placeholder/lexus.png","./main/placeholder/lexus.png","main/placeholder/lexus.png","/placeholder/lexus.png"],
+      subaru: ["./subaru.png","subaru.png","./placeholder/subaru.png","placeholder/subaru.png","./main/placeholder/subaru.png","main/placeholder/subaru.png","/placeholder/subaru.png"],
+      honda: ["./honda.png","honda.png","./placeholder/honda.png","placeholder/honda.png","./main/placeholder/honda.png","main/placeholder/honda.png","/placeholder/honda.png"],
+      ford: ["./ford.png","ford.png","./placeholder/ford.png","placeholder/ford.png","./main/placeholder/ford.png","main/placeholder/ford.png","/placeholder/ford.png"],
+      mitsubishi: ["./mitsubishi.png","mitsubishi.png","./placeholder/mitsubishi.png","placeholder/mitsubishi.png","./main/placeholder/mitsubishi.png","main/placeholder/mitsubishi.png","/placeholder/mitsubishi.png"]
+    };
+
+    function mountBrandMedia(targetEl, brandKey, label){
+      if(!targetEl) return;
+      const sources = BRAND_MEDIA[brandKey] || [];
+      if(!sources.length){
+        targetEl.innerHTML = `<strong>${label}</strong><span>Logo vizuál nie je ešte pripravený.</span>`;
+        return;
+      }
+
+      let i = 0;
+      const img = document.createElement('img');
+      img.alt = `${label} logo visual`;
+      img.loading = 'eager';
+      img.decoding = 'async';
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '100%';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'contain';
+      img.style.display = 'block';
+
+      img.onerror = function(){
+        i += 1;
+        if(i < sources.length){
+          img.src = sources[i];
+        }else{
+          targetEl.innerHTML = `<strong>${label}</strong><span>Obrázok sa nenašiel. Skontroluj cestu k súboru.</span>`;
+        }
+      };
+
+      targetEl.innerHTML = '';
+      targetEl.appendChild(img);
+      img.src = sources[i];
+    }
+
     function updateBrandVisual(brand){
       if(!brand || !BRAND_META[brand]){
         if(brandSpotEl) brandSpotEl.classList.remove('is-active');
@@ -5223,7 +5240,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       if(brandLogoMarkEl) brandLogoMarkEl.textContent = meta.mark;
       if(brandNameEl) brandNameEl.textContent = meta.label;
       if(brandSubEl) brandSubEl.textContent = meta.text;
-      if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = `<strong>${meta.label}</strong><span>${meta.visual}</span>`;
+      if(brandPlaceholderEl) mountBrandMedia(brandPlaceholderEl, brand, meta.label);
     }
 
     function fillBrands(){
@@ -5590,63 +5607,53 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   });
 })();
 </script>
+<div id="modelPlaceholder"></div><script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandSelect = document.querySelector('select');
+  if(!brandSelect) return;
 
-<script>
-(function(){
-  const brandMedia = {
-    audi: "audi.gif",
-    bmw: "bmw.gif",
-    mazda: "mazda.gif",
-    mercedes: "mercedes.gif",
-    nissan: "nissan.gif",
-    porsche: "porsche.gif",
-    seat: "seat.gif",
-    skoda: "skoda.gif",
-    toyota: "toyota.gif",
-    volkswagen: "volkswagen.gif",
+  brandSelect.addEventListener('change', function () {
+    const placeholder = document.getElementById('modelPlaceholder');
+    if (!placeholder) return;
 
-    renault: "Renault.png",
-    peugeot: "peugeot.png",
-    kia: "kia.png",
-    hyundai: "hyundai.png",
-    lexus: "lexus.png",
-    subaru: "subaru.png",
-    honda: "honda.png",
-    ford: "ford.png",
-    mitsubishi: "mitsubishi.png"
-  };
-
-  function renderBrandVisual(brand){
-    const placeholder = document.getElementById("rfBrandSpot");
-    if(!placeholder) return;
-
-    const key = String(brand || "").trim().toLowerCase();
-    const media = brandMedia[key];
-
-    if(!media){
-      placeholder.innerHTML = "";
-      placeholder.classList.add("is-empty");
-      return;
+    if (this.value === 'bmw') {
+      placeholder.innerHTML = '<img src="main/placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
+    } else {
+      placeholder.innerHTML = '';
     }
-
-    placeholder.classList.remove("is-empty");
-    placeholder.innerHTML = '<img src="' + media + '" alt="' + key + ' logo visual" loading="eager" decoding="async">';
-  }
-
-  window.updateBrandVisual = renderBrandVisual;
-
-  document.addEventListener("DOMContentLoaded", function(){
-    const brandEl = document.getElementById("rfBrand");
-    if(!brandEl) return;
-
-    renderBrandVisual(brandEl.value);
-
-    brandEl.addEventListener("change", function(){
-      renderBrandVisual(this.value);
-    });
   });
-})();
-</script>
+});
+</script><script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandSelect = document.getElementById('rfBrand');
+  const placeholder = document.getElementById('rfBrandSpot');
 
+  if(!brandSelect || !placeholder) return;
+
+  brandSelect.addEventListener('change', function () {
+    if (this.value === 'bmw') {
+      placeholder.innerHTML = '<img src="placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
+    } else {
+      placeholder.innerHTML = '';
+    }
+  });
+});
+</script><script>
+document.addEventListener('DOMContentLoaded', function(){
+  const brandSelect = document.getElementById('rfBrand');
+  const placeholder = document.getElementById('rfBrandSpot');
+
+  if(!brandSelect || !placeholder) return;
+
+  brandSelect.addEventListener('change', function () {
+    const brand = this.value;
+    if (brand) {
+      placeholder.innerHTML = '<img src="placeholder/' + brand + '.gif" style="width:100%;height:100%;object-fit:contain;">';
+    } else {
+      placeholder.innerHTML = '';
+    }
+  });
+});
+</script>
 </body>
 </html>
