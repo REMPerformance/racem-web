@@ -4157,7 +4157,7 @@ html, body{
 <div class="rf-search-wrap" id="rfSearchWrap">
 <button class="rf-search-btn" id="rfSearchBtn" type="button">HĽADAŤ</button>
 </div>
-<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"></div></div>
+</div>
 </div>
 </div>
 </div>
@@ -5222,24 +5222,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
     }
 
     function updateBrandVisual(brand){
-      if(!brand || !BRAND_META[brand]){
-        if(brandSpotEl) {
-          brandSpotEl.classList.remove('is-active');
-          brandSpotEl.innerHTML = '';
-        }
-        if(brandChipTextEl) brandChipTextEl.textContent = 'Najprv vyber značku';
-        if(brandLogoMarkEl) brandLogoMarkEl.textContent = '--';
-        if(brandNameEl) brandNameEl.textContent = 'Čaká na výber';
-        if(brandSubEl) brandSubEl.textContent = 'Po výbere značky sa tu vysunie RACEM placeholder pre logo alebo video.';
-        return;
-      }
-      const meta = BRAND_META[brand];
-      if(brandSpotEl) brandSpotEl.classList.add('is-active');
-      if(brandChipTextEl) brandChipTextEl.textContent = `${meta.label} pripravené`;
-      if(brandLogoMarkEl) brandLogoMarkEl.textContent = meta.mark;
-      if(brandNameEl) brandNameEl.textContent = meta.label;
-      if(brandSubEl) brandSubEl.textContent = meta.text;
-      renderBrandIntoSpot(brand);
+      return;
     }
 
     function fillBrands(){
@@ -5606,91 +5589,5 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
   });
 })();
 </script>
-<div id="modelPlaceholder"></div><script>
-document.addEventListener('DOMContentLoaded', function(){
-  const brandSelect = document.querySelector('select');
-  if(!brandSelect) return;
-
-  brandSelect.addEventListener('change', function () {
-    const placeholder = document.getElementById('modelPlaceholder');
-    if (!placeholder) return;
-
-    if (this.value === 'bmw') {
-      placeholder.innerHTML = '<img src="main/placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
-    } else {
-      placeholder.innerHTML = '';
-    }
-  });
-});
-</script><script>
-document.addEventListener('DOMContentLoaded', function(){
-  const brandSelect = document.getElementById('rfBrand');
-  const placeholder = document.getElementById('rfBrandSpot');
-
-  if(!brandSelect || !placeholder) return;
-
-  brandSelect.addEventListener('change', function () {
-    if (this.value === 'bmw') {
-      placeholder.innerHTML = '<img src="placeholder/bmw.gif" style="width:100%;height:100%;object-fit:contain;">';
-    } else {
-      placeholder.innerHTML = '';
-    }
-  });
-});
-</script><script>
-document.addEventListener('DOMContentLoaded', function(){
-  const brandSelect = document.getElementById('rfBrand');
-  const placeholder = document.getElementById('rfBrandSpot');
-
-  if(!brandSelect || !placeholder) return;
-
-  brandSelect.addEventListener('change', function () {
-    const brand = this.value;
-    if (brand) {
-      placeholder.innerHTML = '<img src="placeholder/' + brand + '.gif" style="width:100%;height:100%;object-fit:contain;">';
-    } else {
-      placeholder.innerHTML = '';
-    }
-  });
-});
-</script>
-<script>
-const brandMedia = {
-  "audi": "main/placeholder/audi.gif",
-  "bmw": "main/placeholder/bmw.gif",
-  "mazda": "main/placeholder/mazda.gif",
-  "mercedes": "main/placeholder/mercedes.gif",
-  "nissan": "main/placeholder/nissan.gif",
-  "porsche": "main/placeholder/porsche.gif",
-  "seat": "main/placeholder/seat.gif",
-  "skoda": "main/placeholder/skoda.gif",
-  "toyota": "main/placeholder/toyota.gif",
-  "volkswagen": "main/placeholder/volkswagen.gif",
-
-  "renault": "main/placeholder/renault.png",
-  "peugeot": "main/placeholder/peugeot.png",
-  "kia": "main/placeholder/kia.png",
-  "hyundai": "main/placeholder/hyundai.png",
-  "lexus": "main/placeholder/lexus.png",
-  "subaru": "main/placeholder/subaru.png",
-  "honda": "main/placeholder/honda.png",
-  "ford": "main/placeholder/ford.png",
-  "mitsubishi": "main/placeholder/mitsubishi.png"
-};
-
-function updateBrandVisual(brand) {
-  const placeholder = document.getElementById("brand-visual");
-  if (!placeholder) return;
-
-  const key = brand.toLowerCase();
-
-  if (brandMedia[key]) {
-    placeholder.innerHTML = `<img src="${brandMedia[key]}" style="width:100%;height:100%;object-fit:contain;" />`;
-  } else {
-    placeholder.innerHTML = "";
-  }
-}
-</script>
-
 </body>
 </html>
