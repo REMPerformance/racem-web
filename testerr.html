@@ -4037,11 +4037,14 @@ html, body{
 }
 
 
-.rf-brand-placeholder img{
+.rf-brand-spot img{
+  display:block;
   width:100%;
   height:100%;
+  max-width:100%;
+  max-height:100%;
   object-fit:contain;
-  display:block;
+  padding:18px;
 }
 
 </style>
@@ -4154,7 +4157,7 @@ html, body{
 <div class="rf-search-wrap" id="rfSearchWrap">
 <button class="rf-search-btn" id="rfSearchBtn" type="button">HĽADAŤ</button>
 </div>
-<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"><div style="width:100%;height:220px;display:flex;align-items:center;justify-content:center;color:#888;font-weight:600;letter-spacing:2px;">PLACEHOLDER</div></div>
+<div aria-live="polite" class="rf-brand-spot" id="rfBrandSpot"></div></div>
 </div>
 </div>
 </div>
@@ -5190,48 +5193,44 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       mitsubishi: ["./mitsubishi.png","mitsubishi.png","./Mitsubishi.png","Mitsubishi.png","./placeholder/mitsubishi.png","placeholder/mitsubishi.png"]
     };
 
-    function mountBrandMedia(targetEl, brandKey, label){
-      if(!targetEl) return;
+    function renderBrandIntoSpot(brandKey){
+      if(!brandSpotEl) return;
       const sources = BRAND_MEDIA[brandKey] || [];
       if(!sources.length){
-        targetEl.innerHTML = `<strong>${label}</strong><span>Logo vizuál nie je ešte pripravený.</span>`;
+        brandSpotEl.innerHTML = '';
         return;
       }
 
-      let i = 0;
       const img = document.createElement('img');
-      img.alt = `${label} logo visual`;
+      img.alt = brandKey + ' visual';
       img.loading = 'eager';
       img.decoding = 'async';
-      img.style.maxWidth = '100%';
-      img.style.maxHeight = '100%';
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'contain';
-      img.style.display = 'block';
 
+      let i = 0;
       img.onerror = function(){
         i += 1;
         if(i < sources.length){
-          img.src = sources[i] + (sources[i].includes('?') ? '&' : '?') + 'v=2';
-        }else{
-          targetEl.innerHTML = `<strong>${label}</strong><span>Obrázok sa nenašiel. Skontroluj cestu k súboru.</span>`;
+          img.src = sources[i] + (sources[i].includes('?') ? '&' : '?') + 'v=3';
+        } else {
+          brandSpotEl.innerHTML = '';
         }
       };
 
-      targetEl.innerHTML = '';
-      targetEl.appendChild(img);
-      img.src = sources[i] + (sources[i].includes('?') ? '&' : '?') + 'v=2';
+      brandSpotEl.innerHTML = '';
+      brandSpotEl.appendChild(img);
+      img.src = sources[i] + '?v=3';
     }
 
     function updateBrandVisual(brand){
       if(!brand || !BRAND_META[brand]){
-        if(brandSpotEl) brandSpotEl.classList.remove('is-active');
+        if(brandSpotEl) {
+          brandSpotEl.classList.remove('is-active');
+          brandSpotEl.innerHTML = '';
+        }
         if(brandChipTextEl) brandChipTextEl.textContent = 'Najprv vyber značku';
         if(brandLogoMarkEl) brandLogoMarkEl.textContent = '--';
         if(brandNameEl) brandNameEl.textContent = 'Čaká na výber';
         if(brandSubEl) brandSubEl.textContent = 'Po výbere značky sa tu vysunie RACEM placeholder pre logo alebo video.';
-        if(brandPlaceholderEl) brandPlaceholderEl.innerHTML = '<strong>RACEM VISUAL SLOT</strong><span>Sem pôjde logo, foto alebo video vybraného výrobcu</span>';
         return;
       }
       const meta = BRAND_META[brand];
@@ -5240,7 +5239,7 @@ Presne pre takých vieme zabezpečiť lepšie ceny na bodykity, aero diely, špo
       if(brandLogoMarkEl) brandLogoMarkEl.textContent = meta.mark;
       if(brandNameEl) brandNameEl.textContent = meta.label;
       if(brandSubEl) brandSubEl.textContent = meta.text;
-      if(brandPlaceholderEl) mountBrandMedia(brandPlaceholderEl, brand, meta.label);
+      renderBrandIntoSpot(brand);
     }
 
     function fillBrands(){
@@ -5655,5 +5654,43 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+<script>
+const brandMedia = {
+  "audi": "main/placeholder/audi.gif",
+  "bmw": "main/placeholder/bmw.gif",
+  "mazda": "main/placeholder/mazda.gif",
+  "mercedes": "main/placeholder/mercedes.gif",
+  "nissan": "main/placeholder/nissan.gif",
+  "porsche": "main/placeholder/porsche.gif",
+  "seat": "main/placeholder/seat.gif",
+  "skoda": "main/placeholder/skoda.gif",
+  "toyota": "main/placeholder/toyota.gif",
+  "volkswagen": "main/placeholder/volkswagen.gif",
+
+  "renault": "main/placeholder/renault.png",
+  "peugeot": "main/placeholder/peugeot.png",
+  "kia": "main/placeholder/kia.png",
+  "hyundai": "main/placeholder/hyundai.png",
+  "lexus": "main/placeholder/lexus.png",
+  "subaru": "main/placeholder/subaru.png",
+  "honda": "main/placeholder/honda.png",
+  "ford": "main/placeholder/ford.png",
+  "mitsubishi": "main/placeholder/mitsubishi.png"
+};
+
+function updateBrandVisual(brand) {
+  const placeholder = document.getElementById("brand-visual");
+  if (!placeholder) return;
+
+  const key = brand.toLowerCase();
+
+  if (brandMedia[key]) {
+    placeholder.innerHTML = `<img src="${brandMedia[key]}" style="width:100%;height:100%;object-fit:contain;" />`;
+  } else {
+    placeholder.innerHTML = "";
+  }
+}
+</script>
+
 </body>
 </html>
