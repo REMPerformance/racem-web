@@ -3474,8 +3474,8 @@ function getShopifyCheckoutUrl(){
   const validItems = state.cart.filter(item => Number.isFinite(Number(item.variantId)) && Number(item.variantId) > 0 && item.qty > 0);
   if(!validItems.length) return '';
 
-  const baseUrl = validItems.find(item => item.productUrl)?.productUrl || 'https://shop.racem.sk';
-  let origin = 'https://shop.racem.sk';
+  const baseUrl = validItems.find(item => item.productUrl)?.productUrl || 'https://remperformance.sk/';
+  let origin = 'https://remperformance.sk/';
 
   try {
     origin = new URL(baseUrl).origin;
