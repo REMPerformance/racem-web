@@ -8,21 +8,21 @@
   <meta name="robots" content="index,follow" />
 
   
-  <link rel="canonical" href="https://www.racem.sk/ponuka.html" />
+  <link rel="canonical" href="https://remperformance.sk/ponuka.html" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="RACEM" />
   <meta property="og:title" content="RACEM | Performance Parts Catalog" />
   <meta property="og:description" content="RACEM performance parts catalog with advanced filters, multilingual UI and combined feeds from CYBUL, SWAGIER, SFXLA and RACEM." />
-  <meta property="og:url" content="https://www.racem.sk/ponuka.html" />
-  <meta property="og:image" content="https://www.racem.sk/assets/racem-logo.png" />
+  <meta property="og:url" content="https://remperformance.sk/ponuka.html" />
+  <meta property="og:image" content="https://remperformance.sk/assets/racem-logo.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RACEM | Performance Parts Catalog" />
   <meta name="twitter:description" content="RACEM performance parts catalog with advanced filters, multilingual UI and combined feeds from CYBUL, SWAGIER, SFXLA and RACEM." />
-  <meta name="twitter:image" content="https://www.racem.sk/assets/racem-logo.png" />
+  <meta name="twitter:image" content="https://remperformance.sk/assets/racem-logo.png" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -30,9 +30,9 @@
     "@context":"https://schema.org",
     "@type":"CollectionPage",
     "name":"RACEM Performance Parts Catalog",
-    "url":"https://www.racem.sk/ponuka.html",
+    "url":"https://remperformance.sk/ponuka.html",
     "description":"Combined performance parts catalog from RACEM, CYBUL, SWAGIER and SFXLA with advanced filtering and multilingual interface.",
-    "isPartOf":{"@type":"WebSite","name":"RACEM","url":"https://www.racem.sk/"},
+    "isPartOf":{"@type":"WebSite","name":"RACEM","url":"https://remperformance.sk/"},
     "about":["performance parts","body kits","widebody kits","suspension parts","drift parts","street parts","track parts"]
   }
   </script>
@@ -2726,7 +2726,7 @@ max-height:110px;
         </div>
         <div class="footerPanel">
           <h4 data-i18n="footerContactTitle">Contact</h4>
-          <p><a href="mailto:info@remperformance.sk">info@remperformance.sk</a><br><a href="https://www.racem.sk/">www.racem.sk</a><br><a href="https://shop.racem.sk/">shop.racem.sk</a></p>
+          <p><a href="mailto:info@remperformance.sk">info@remperformance.sk</a><br><a href="https://remperformance.sk/">https://remperformance.sk</a><br><a href="https://remperformance.sk/">racem.sk</a></p>
         </div>
       </div>
       <div class="footerMeta">
@@ -3126,7 +3126,7 @@ function normalizeProduct(rawProduct, sourceLabel='RACEM'){
     images,
     price:fallbackPrice,
     stockStatus:rawProduct?.stockStatus || rawProduct?.status || '',
-    productUrl:rawProduct?.productUrl || (rawProduct?.handle ? ('https://shop.racem.sk/products/' + rawProduct.handle) : ''),
+    productUrl:rawProduct?.productUrl || (rawProduct?.handle ? ('https://remperformance.sk/products/' + rawProduct.handle) : ''),
     defaultVariantId:String(defaultVariant?.variantId || '').trim(),
     __sourceLabel: String(sourceLabel || 'RACEM').trim().toUpperCase()
   };
@@ -3146,7 +3146,7 @@ async function loadFeed(){
   const ok=responses.filter(Boolean);
   const normalizedProducts = ok.flatMap(f => (f.json.products||[]).map(p => normalizeProduct(p, f.label)));
   FEED = {
-    meta:{currency:'EUR', shopDomain:'shop.racem.sk'},
+    meta:{currency:'EUR', shopDomain:'racem.sk'},
     categories: uniq(ok.flatMap(f=>Array.isArray(f.json.categories)?f.json.categories:[])),
     products: normalizedProducts
   };
@@ -3160,7 +3160,7 @@ async function loadFeed(){
     const tags = uniq(Array.isArray(p.tags)?p.tags.map(String):[]);
     const platforms = getFitmentList(p).slice(0,8);
     return {
-      id:p.id, handle:p.handle, title:p.title, short:p.short||'', descriptionHtml:p.descriptionHtml||'', category:p.category || 'Uncategorized', brand:p.manufacturer || p.__sourceLabel || 'RACEM', source:p.__sourceLabel || 'RACEM', stock:p.stockStatus==='in_stock' ? 'in_stock' : getDisplayStock(minPrice), price:minPrice, tags, top:tags.some(t=>norm(t)==='top'), images:allImages, productUrl:p.productUrl || (p.handle ? ('https://shop.racem.sk/products/' + p.handle) : ''), platforms, variants, defaultVariantId: defaultVariant?.variantId ? String(defaultVariant.variantId).trim() : '', hasMeaningfulVariants: getMeaningfulVariants(variants).length > 0, searchable: norm([p.title, stripHtml(p.descriptionHtml), p.category, p.manufacturer, tags.join(' '), platforms.join(' '), p.__sourceLabel].join(' '))
+      id:p.id, handle:p.handle, title:p.title, short:p.short||'', descriptionHtml:p.descriptionHtml||'', category:p.category || 'Uncategorized', brand:p.manufacturer || p.__sourceLabel || 'RACEM', source:p.__sourceLabel || 'RACEM', stock:p.stockStatus==='in_stock' ? 'in_stock' : getDisplayStock(minPrice), price:minPrice, tags, top:tags.some(t=>norm(t)==='top'), images:allImages, productUrl:p.productUrl || (p.handle ? ('https://racem.sk/products/' + p.handle) : ''), platforms, variants, defaultVariantId: defaultVariant?.variantId ? String(defaultVariant.variantId).trim() : '', hasMeaningfulVariants: getMeaningfulVariants(variants).length > 0, searchable: norm([p.title, stripHtml(p.descriptionHtml), p.category, p.manufacturer, tags.join(' '), platforms.join(' '), p.__sourceLabel].join(' '))
     };
   });
 }
